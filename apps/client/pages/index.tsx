@@ -61,13 +61,27 @@ export default function Home({
         twSite={me.social.twitter}
       />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <SectionContainer>
-          <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+        {settings.banner.src ? (
+          <div
+            className="space-y-2 py-40 md:space-y-3"
+            style={{ background: `url(${settings.banner.src})` }}
+          >
+            <SectionContainer>
+              <div className="py-10">
+                <PageTitle>{me.name}</PageTitle>
+                <p className="text-center text-lg leading-7">{settings.site_description}</p>
+              </div>
+            </SectionContainer>
+          </div>
+        ) : (
+          <div className="mx-auto max-w-3xl space-y-2 py-20 md:space-y-2">
             <PageTitle>{me.name}</PageTitle>
-            <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+            <p className="text-center text-base leading-7 text-gray-500 dark:text-gray-400">
               {settings.site_description}
             </p>
           </div>
+        )}
+        <SectionContainer>
           {posts?.__typename === 'Exception' ? 'No posts found.' : ''}
           {posts?.__typename === 'PostsNode' && posts.rows.length === 0 && (
             <span className="py-16 text-gray-400">Hi, my name is {me.name}!</span>

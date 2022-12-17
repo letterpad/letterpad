@@ -40,8 +40,8 @@ const Appearance: React.FC<Props> = ({ settings }) => {
             updateSettings({
               site_logo: {
                 src: res.src,
-                width: res.size.width,
-                height: res.size.height,
+                width: res.size?.width,
+                height: res.size?.height,
               },
             });
           }}
@@ -54,8 +54,8 @@ const Appearance: React.FC<Props> = ({ settings }) => {
             updateSettings({
               site_favicon: {
                 src: res.src,
-                width: res.size.width,
-                height: res.size.height,
+                width: res.size?.width,
+                height: res.size?.height,
               },
             });
           }}
@@ -68,8 +68,8 @@ const Appearance: React.FC<Props> = ({ settings }) => {
             updateSettings({
               banner: {
                 src: res.src,
-                width: res.size.width,
-                height: res.size.height,
+                width: res.size?.width,
+                height: res.size?.height,
               },
             });
           }}

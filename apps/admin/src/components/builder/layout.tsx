@@ -35,11 +35,7 @@ export const Layout: FC<Props> = ({ editable = true }) => {
           );
         })}
       </div>
-      <div
-        data-type="portal"
-        id="modal-creatives"
-        className="absolute top-0 left-0 z-10"
-      ></div>
     </div>
   );
 };
+export default Layout;

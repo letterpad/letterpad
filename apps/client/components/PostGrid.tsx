@@ -26,7 +26,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                 className="bg-day dark:bg-night group w-full bg-opacity-50 dark:bg-opacity-50"
               >
                 <Link
-                  className="c-card block transform overflow-hidden rounded-lg bg-transparent transition duration-500 group-hover:scale-105"
+                  className="c-card block transform overflow-hidden rounded-lg bg-transparent transition duration-300 group-hover:scale-[1.02]"
                   href={slug ?? ''}
                 >
                   <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
@@ -34,31 +34,34 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                       <Image src={cover_image.src ?? ''} layout="fill" alt={title} />
                     </span>
                   </div>
-                  <div className="py-4">
+                  <div className="h-40 py-4 px-2 md:px-0">
                     <span className="inline-flex w-full items-center justify-between">
-                      <span className="flex items-center gap-1">
+                      <span className="flex items-center gap-1 text-xs">
                         <IconBook />
                         {stats?.reading_time} min read
                       </span>
 
-                      <time dateTime={publishedAt} className="text-sm font-semibold">
+                      <time dateTime={publishedAt} className="text-xs">
                         {formatDate(publishedAt)}
                       </time>
                     </span>
-                    <h2 className="mt-2 mb-2 font-bold md:text-xl">{title}</h2>
+
+                    <h2 className="mt-2 mb-2 font-bold md:text-base">{title}</h2>
                     <p className="text-sm tracking-wider text-gray-600 dark:text-gray-300">
                       {excerpt}
                     </p>
-                    {tags?.__typename === 'TagsNode' &&
-                      tags.rows.map(({ name }) => (
-                        <Link href={`/tag/${kebabCase(name)}`} key={name}>
-                          <a className="mt-4 mr-1 inline-block rounded border border-gray-700 py-1 px-2 text-xs font-medium">
-                            {name.split(' ').join('-')}
-                          </a>
-                        </Link>
-                      ))}
                   </div>
                 </Link>
+                {tags?.__typename === 'TagsNode' &&
+                  tags.rows.map(({ name }) => (
+                    <Link
+                      href={`/tag/${kebabCase(name)}`}
+                      key={name}
+                      className="mr-1 inline-block  text-xs font-medium text-gray-400"
+                    >
+                      #{name.split(' ').join('-')}
+                    </Link>
+                  ))}
               </div>
             );
           })}

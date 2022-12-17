@@ -23,7 +23,7 @@ export const ThumbnailList = <T extends { src: string; description?: string; cap
   }, [index]);
 
   return (
-    <div className="flex h-screen flex-col overflow-scroll" ref={ref}>
+    <div className="flex flex-col" ref={ref}>
       {items.map((item, i) => (
         <div key={i}>
           <Image

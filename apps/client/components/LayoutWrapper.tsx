@@ -46,8 +46,8 @@ const LayoutWrapper = ({ children, props }: Props) => {
   const menu = getMenu(routes);
   return (
     <>
-      <SectionContainer>
-        <header className="flex items-center justify-between py-10 ">
+      <div className="border-b-[1px] dark:border-gray-700">
+        <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-8 md:px-20">
           <div>
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle logo={props.settings.site_logo} title={props.settings.site_title} />
@@ -59,16 +59,16 @@ const LayoutWrapper = ({ children, props }: Props) => {
             <MobileNav routes={routes} />
           </div>
         </header>
-      </SectionContainer>
+      </div>
       <main className="mb-auto" ref={contentRef}>
         {children}
       </main>
       <br />
       <br />
       <br />
-      <SectionContainer>
+      <div className="border-b-[1px] dark:border-gray-700">
         <Footer author={props.me} settings={props.settings} />
-      </SectionContainer>
+      </div>
     </>
   );
 };

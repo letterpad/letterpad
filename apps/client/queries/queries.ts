@@ -85,6 +85,7 @@ export const pageFragment = gql`
             name
             slug
           }
+          __typename
         }
       }
       author {
@@ -140,6 +141,7 @@ export const postsFragment = gql`
               name
               slug
             }
+            __typename
           }
         }
       }

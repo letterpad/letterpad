@@ -7,7 +7,7 @@ import Subscribe from './Subscribe';
 export default function Footer({ author, settings }) {
   const { social } = author;
   return (
-    <footer className="border-t border-gray-200 border-opacity-60 dark:border-gray-700">
+    <footer className="mx-auto max-w-7xl border-t border-gray-200 border-opacity-60 px-8 dark:border-gray-700 md:px-20">
       <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
         <LogoWithTitle logo={settings.site_logo} title={settings.site_title} />
 
