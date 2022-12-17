@@ -14,7 +14,7 @@ const Query: QueryResolvers<ResolverContext> = {
       .filter(({ username }) => isValidUrl(`https://${username}.letterpad.app`))
       .map(({ username, last_seen }) => {
         return {
-          route: `https://${username}.letterpad.app`,
+          route: `https://${username}.letterpad.app/sitemap.xml`,
           lastmod: last_seen
             ? new Date(last_seen).toISOString()
             : new Date().toISOString(),
