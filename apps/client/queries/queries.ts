@@ -193,23 +193,3 @@ export const sitemapFragment = gql`
     __typename
   }
 `;
-
-export const feedFragment = gql`
-  fragment feedFragment on FeedResponse {
-    ... on Feed {
-      rows {
-        guid
-        title
-        link
-        description
-        pubDate
-        author
-        categories
-      }
-    }
-    ... on FeedError {
-      message
-    }
-    __typename
-  }
-`;
