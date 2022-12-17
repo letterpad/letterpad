@@ -64,7 +64,7 @@ export default function Home({
         <SectionContainer>
           <div className="space-y-2 pt-6 pb-8 md:space-y-5">
             <PageTitle>{me.name}</PageTitle>
-            <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+            <p className="text-center text-lg leading-7 text-gray-500 dark:text-gray-400">
               {settings.site_description}
             </p>
           </div>

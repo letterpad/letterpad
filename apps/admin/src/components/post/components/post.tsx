@@ -20,6 +20,12 @@ import { debounce } from "@/shared/utils";
 
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
+import dynamic from "next/dynamic";
+
+// const LazyLayoutBuilder = dynamic(
+//   () => import("@/components/builder/layout"),
+//   { ssr: false },
+// );
 
 export const Post = () => {
   const router = useRouter();

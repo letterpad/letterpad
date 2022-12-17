@@ -6,7 +6,7 @@ import { Portal } from "@/components/portal";
 import { disableScroll } from "@/shared/utils";
 
 import { MasonryGrid } from "./masonry/grid";
-import { isLastImage, reorder } from "./masonry/selectors";
+import { isLastImage } from "./masonry/selectors";
 import { Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
 import { BlockItem, BlockMasonry } from "../../types";
@@ -60,13 +60,13 @@ export const SectionMasonry: FC<Props> = ({ item, position }) => {
   return (
     <Wrapper className={`row-${rowIndex}`}>
       <MasonryGrid
-        items={reorder(item.masonry, 4) ?? []}
+        items={item.masonry ?? []}
         onSelect={onSelect}
         onRemove={onRemove}
         preview={preview}
       />
       <div className="modal">
-        <Portal id="modal-creatives">
+        <Portal id="modal-root">
           <GalleryModal
             items={item.masonry ?? []}
             onSelect={onImageChange}

@@ -1,6 +1,6 @@
+import dynamic from 'next/dynamic';
 import { FC, ReactNode, useEffect, useState } from 'react';
 import { Parallax } from 'react-parallax';
-import StickyBox from 'react-sticky-box';
 
 import { PageFragmentFragment } from '@/lib/graphql';
 
@@ -8,8 +8,12 @@ import { GalleryModal } from '@/components/gallery';
 import { Portal } from '@/components/portal';
 
 import { MasonryGrid } from './masonry/grid';
-import { isLastImage, reorder } from './masonry/selectors';
+import { isLastImage } from './masonry/selectors';
 import { BlockItem } from './types';
+
+const ReactStickyBox = dynamic(() => import('react-sticky-box'), {
+  ssr: false,
+});
 
 interface Props {
   data: PageFragmentFragment;
@@ -31,29 +35,28 @@ export const PhotoStory: FC<Props> = ({ data }) => {
               (item.data[1]?.type === 'image' ? 'flex-col-reverse' : 'flex-col ')
             }
           >
-            {columns.map((col) => {
+            {columns.map((col, colIndex) => {
               const _item = item.data[col];
               return (
-                <>
-                  <div
-                    className="relative flex w-full justify-center align-middle"
-                    style={{ backgroundColor: _item.bgColor }}
-                  >
-                    <SectionImage
-                      columns={item.columns}
-                      item={_item}
-                      cover={item.cover}
-                      rowIndex={rowIndex}
-                    />
-                    <SectionText
-                      columns={item.columns}
-                      text={_item?.text}
-                      type={_item.type}
-                      cover={item.cover}
-                    />
-                    <SectionMasonry item={_item} position={[rowIndex]} />
-                  </div>
-                </>
+                <div
+                  className="relative flex w-full justify-center align-middle"
+                  style={{ backgroundColor: _item.bgColor }}
+                  key={rowIndex + colIndex}
+                >
+                  <SectionImage
+                    columns={item.columns}
+                    item={_item}
+                    cover={item.cover}
+                    rowIndex={rowIndex}
+                  />
+                  <SectionText
+                    columns={item.columns}
+                    text={_item?.text}
+                    type={_item.type}
+                    cover={item.cover}
+                  />
+                  <SectionMasonry item={_item} position={[rowIndex]} />
+                </div>
               );
             })}
           </div>
@@ -75,7 +78,7 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
   const className = 'w-full';
 
   return (
-    <StickyBox
+    <ReactStickyBox
       data-background
       style={{
         height: getHeight(cover),
@@ -101,7 +104,7 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
           />
         </Wrapper>
       </Parallax>
-    </StickyBox>
+    </ReactStickyBox>
   );
 };
 
@@ -152,7 +155,7 @@ export const SectionMasonry: FC<{ item: BlockItem; position: [rowIndex: number] 
 
   return (
     <Wrapper className={`row-${rowIndex} lg:py-0`}>
-      <MasonryGrid items={reorder(item.masonry, 4) ?? []} onSelect={onSelect} />
+      <MasonryGrid items={item.masonry ?? []} onSelect={onSelect} />
       <div className="modal">
         <Portal id="modal-creatives">
           <GalleryModal

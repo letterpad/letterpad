@@ -99,6 +99,7 @@ class MyDocument extends Document {
         </Head>
         <body className="line-numbers bg-white text-black antialiased dark:bg-black dark:bg-opacity-20 dark:text-white">
           <Main />
+          <div id="modal-creatives" />
           <NextScript />
         </body>
       </Html>

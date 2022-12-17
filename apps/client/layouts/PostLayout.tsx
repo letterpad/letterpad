@@ -88,8 +88,8 @@ export default function PostLayout({ data, next, prev, children }: Props) {
         site_name={settings.site_title}
       />
       <ScrollTop />
-      <div className="mx-auto flex max-w-screen-xl justify-between pt-10">
-        <article className="post format-blue dark:format-invert mx-auto w-full max-w-2xl">
+      <div className="mx-auto flex max-w-4xl  justify-between pt-10">
+        <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-6'}>
             <address className={'mb-6 flex items-center not-italic' + (isPage && ' hidden')}>
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
@@ -106,11 +106,11 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                   </div>
                 )}
                 <div className="w-full">
-                  <div className="flex flex-1 justify-between">
+                  <div className="flex flex-1 items-center justify-between">
                     <a
                       href="#"
                       rel="author"
-                      className="font-sans text-lg font-extrabold text-gray-900 dark:text-white"
+                      className="text-md font-sans font-bold text-gray-900 dark:text-white"
                     >
                       {author.name}
                     </a>
@@ -136,7 +136,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
             </address>
             <PageTitle>{title}</PageTitle>
           </header>
-          <div className="prose max-w-none pb-8 text-lg dark:prose-dark">{children}</div>
+          <div className="content prose pb-8 text-lg dark:prose-dark">{children}</div>
 
           <div
             className={

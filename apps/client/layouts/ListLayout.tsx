@@ -14,14 +14,14 @@ interface Props {
 export default function ListLayout({ posts, title }: Props) {
   return (
     <SectionContainer>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="content divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <PageTitle>{title}</PageTitle>
         </div>
         <ul>
           {/* {!filteredBlogPosts.length && 'No posts found.'} */}
-          {posts.rows.map((frontMatter) => {
-            const { slug, publishedAt, title, tags, excerpt, stats } = frontMatter;
+          {posts.rows.map((post) => {
+            const { slug, publishedAt, title, tags, excerpt, stats } = post;
             return (
               <li key={slug} className="py-4">
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
