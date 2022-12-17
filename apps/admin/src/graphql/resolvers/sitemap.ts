@@ -1,7 +1,27 @@
-import { PostStatusOptions, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
+import { prisma } from "@/lib/prisma";
+import { PostStatusOptions, QueryResolvers } from "@/__generated__/__types__";
 
 const Query: QueryResolvers<ResolverContext> = {
+  sitemaps: async (_root, _args) => {
+    const subdomains = await prisma.author.findMany({
+      select: {
+        username: true,
+        last_seen: true,
+      },
+    });
+    const rows = subdomains.map(({ username, last_seen }) => {
+      return {
+        route: `https://${username}.letterpad.app`,
+        lastmod: last_seen
+          ? new Date(last_seen).toISOString()
+          : new Date().toISOString(),
+        priority: 1,
+        changefreq: "daily",
+      };
+    });
+    return { message: "", rows, __typename: "SiteMapList" };
+  },
   sitemap: async (_root, _args, { client_author_id, prisma, session }) => {
     const id = client_author_id || session?.user.id;
     if (!id) return { message: "Author Id not found", rows: [] };

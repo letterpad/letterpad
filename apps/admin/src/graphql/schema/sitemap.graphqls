@@ -17,4 +17,5 @@ union SiteMapResponse = SiteMapList | SiteMapError
 
 type Query {
   sitemap: SiteMapResponse!
+  sitemaps: SiteMapResponse!
 }

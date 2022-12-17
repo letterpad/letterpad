@@ -556,6 +556,7 @@ export type Query = {
   posts: PostsResponse;
   settings: SettingResponse;
   sitemap: SiteMapResponse;
+  sitemaps: SiteMapResponse;
   stats?: Maybe<StatsResponse>;
   subscriber: SubscriberResponse;
   subscribers: SubscribersNode;

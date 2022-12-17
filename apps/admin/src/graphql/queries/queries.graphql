@@ -185,6 +185,22 @@ query Stats {
   }
 }
 
+query Sitemaps {
+  sitemaps {
+    ... on SiteMapList {
+      rows {
+        route
+        priority
+        lastmod
+      }
+    }
+    ... on SiteMapError {
+      message
+    }
+    __typename
+  }
+}
+
 query settings {
   settings {
     ... on Setting {
