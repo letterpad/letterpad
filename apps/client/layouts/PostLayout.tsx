@@ -110,7 +110,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                     <a
                       href="#"
                       rel="author"
-                      className="text-md font-sans font-bold text-gray-900 dark:text-white"
+                      className="text-md font-sans font-medium text-gray-900 dark:text-white"
                     >
                       {author.name}
                     </a>

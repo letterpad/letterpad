@@ -140,6 +140,7 @@ export const postsFragment = gql`
               name
               slug
             }
+            __typename
           }
         }
       }
