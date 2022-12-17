@@ -15,13 +15,13 @@ export const NewDomain: React.FC<{
   mapped?: boolean;
   ssl?: boolean;
 }> = ({ name, mapped = false }) => {
-  const [domain, setDomain] = useState("");
+  const [domain, setDomain] = useState(name);
 
   const [removeDomain] = useRemoveDomainMutation();
   const { updateLocalState, createUpdateDomain } = useDomainMutation();
 
-  const next = async (values) => {
-    const result = await createUpdateDomain({ name: values.domain });
+  const mapDomain = async () => {
+    const result = await createUpdateDomain({ name: domain });
     if (result.data?.createOrUpdateDomain.ok) {
       if (result.data?.createOrUpdateDomain.message)
         Message().success({
@@ -64,7 +64,7 @@ export const NewDomain: React.FC<{
           disabled={mapped}
         />
         {!mapped && (
-          <Buttonv2 variant="primary" type="submit">
+          <Buttonv2 variant="primary" type="submit" onClick={() => mapDomain()}>
             Map my domain
           </Buttonv2>
         )}

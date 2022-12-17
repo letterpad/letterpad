@@ -10,7 +10,7 @@ export const Content = ({ children }) => {
     }
   }, []);
   return (
-    <div className="flex min-h-0 w-full overflow-y-auto p-4" ref={ref}>
+    <div className="flex min-h-0 w-full overflow-y-auto" ref={ref}>
       <div className="flex-1">{children}</div>
     </div>
   );
