@@ -42,7 +42,7 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
           )}
           onClick={() => sidebarVisible && setSidebarVisible(!isMobileOrTablet)}
         >
-          {right}
+          <div className="px-6">{right}</div>
           <SiteFooter />
         </div>
       </div>
