@@ -15,7 +15,29 @@ type SiteMapError {
 
 union SiteMapResponse = SiteMapList | SiteMapError
 
+
+type FeedNode {
+  guid: String!
+  title: String!
+  link: String!
+  description: String!
+  pubDate: String!
+  author: String!
+  categories: [String!]!
+}
+
+type Feed {
+  rows: [FeedNode!]!
+}
+
+type FeedError {
+  message: String
+}
+
+union FeedResponse = Feed | FeedError
+
 type Query {
   sitemap: SiteMapResponse!
   sitemaps: SiteMapResponse!
+  feed: FeedResponse!
 }
