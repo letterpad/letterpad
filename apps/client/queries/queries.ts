@@ -85,6 +85,7 @@ export const pageFragment = gql`
             name
             slug
           }
+          __typename
         }
       }
       author {

@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 
 import { PageQueryWithHtmlQuery } from '@/lib/graphql';
+import kebabCase from '@/lib/utils/kebabCase';
 
 import Comments from '@/components/comments';
 import { IconBook } from '@/components/icons';
@@ -11,7 +12,6 @@ import ScrollTop from '@/components/ScrollTop';
 import SectionContainer from '@/components/SectionContainer';
 import { BlogSEO } from '@/components/SEO';
 import { Share } from '@/components/share';
-import Tag from '@/components/Tag';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {
@@ -91,7 +91,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
       <div className="mx-auto flex max-w-4xl  justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-6'}>
-            <address className={'mb-6 flex items-center not-italic' + (isPage && ' hidden')}>
+            <address className={'mb-6 flex items-center not-italic ' + (isPage && ' hidden')}>
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
                 {author.avatar && (
                   <div className="mr-4">
@@ -135,8 +135,20 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               </div>
             </address>
             <PageTitle>{title}</PageTitle>
+            <div className="text-center">
+              {tags?.__typename === 'TagsNode' &&
+                tags.rows.map(({ name }) => (
+                  <Link
+                    href={`/tag/${kebabCase(name)}`}
+                    key={name}
+                    className="mr-1 inline-block  text-sm  font-bold text-green-600 hover:text-green-500"
+                  >
+                    #{name.split(' ').join('-')}
+                  </Link>
+                ))}
+            </div>
           </header>
-          <div className="content prose pb-8 text-lg dark:prose-dark">{children}</div>
+          <div className="content prose pb-8 pt-4 text-lg dark:prose-dark">{children}</div>
 
           <div
             className={
