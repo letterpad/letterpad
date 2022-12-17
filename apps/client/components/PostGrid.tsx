@@ -52,16 +52,18 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                     </p>
                   </div>
                 </Link>
-                {tags?.__typename === 'TagsNode' &&
-                  tags.rows.map(({ name }) => (
-                    <Link
-                      href={`/tag/${kebabCase(name)}`}
-                      key={name}
-                      className="mr-1 inline-block  text-xs font-medium text-gray-400"
-                    >
-                      #{name.split(' ').join('-')}
-                    </Link>
-                  ))}
+                <div className="px-2 md:px-0">
+                  {tags?.__typename === 'TagsNode' &&
+                    tags.rows.map(({ name }) => (
+                      <Link
+                        href={`/tag/${kebabCase(name)}`}
+                        key={name}
+                        className="mr-1 inline-block  text-xs font-medium text-gray-400"
+                      >
+                        #{name.split(' ').join('-')}
+                      </Link>
+                    ))}
+                </div>
               </div>
             );
           })}
