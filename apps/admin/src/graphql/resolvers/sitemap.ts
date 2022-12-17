@@ -3,6 +3,51 @@ import { prisma } from "@/lib/prisma";
 import { PostStatusOptions, QueryResolvers } from "@/__generated__/__types__";
 
 const Query: QueryResolvers<ResolverContext> = {
+  feed: async (_root, _args, { client_author_id, prisma, session }) => {
+    const id = client_author_id || session?.user.id;
+    if (!id) return { message: "Author Id not found", rows: [] };
+    const setting = await prisma.setting.findFirst({
+      where: { author: { id } },
+    });
+    if (!setting) return { message: "Author not found", rows: [] };
+    const siteUrl = setting?.site_url;
+    const posts = await prisma.post.findMany({
+      select: {
+        updatedAt: true,
+        publishedAt: true,
+        title: true,
+        slug: true,
+        type: true,
+        excerpt: true,
+        author: {
+          select: {
+            name: true,
+          },
+        },
+        tags: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      where: { author: { id }, status: PostStatusOptions.Published },
+      orderBy: { updatedAt: "desc" },
+    });
+
+    const rows = posts.map((post) => ({
+      guid: `${siteUrl}/${post.type}/${post.slug}`,
+      link: `${siteUrl}/${post.type}/${post.slug}`,
+      title: post.title,
+      description: post.excerpt,
+      pubDate: new Date(
+        post.publishedAt || post.updatedAt || new Date(),
+      ).toISOString(),
+      author: `${setting?.site_email} (${post?.author?.name})`,
+      categories: post.tags.map((tag) => tag.name),
+    }));
+
+    return { message: "", rows, __typename: "Feed" };
+  },
   sitemaps: async (_root, _args) => {
     const subdomains = await prisma.author.findMany({
       select: {

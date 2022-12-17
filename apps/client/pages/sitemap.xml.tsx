@@ -30,8 +30,6 @@ export const getServerSideProps = async (context) => {
             <url>
               <loc>${row.route}</loc>
               <lastmod>${row.lastmod}</lastmod>
-              <changefreq>monthly</changefreq>
-              <priority>${row.priority}</priority>
             </url>
         `;
     });
