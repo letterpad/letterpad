@@ -12,6 +12,7 @@ import ScrollTop from '@/components/ScrollTop';
 import SectionContainer from '@/components/SectionContainer';
 import { BlogSEO } from '@/components/SEO';
 import { Share } from '@/components/share';
+import { Speak } from '@/components/speech/speech';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {
@@ -146,6 +147,9 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                     #{name.split(' ').join('-')}
                   </Link>
                 ))}
+            </div>
+            <div className="flex items-center justify-center gap-2 py-2 text-center">
+              Listen <Speak html={post.html ?? ''} />
             </div>
           </header>
           <div className="content prose pb-8 pt-4 text-lg dark:prose-dark">{children}</div>

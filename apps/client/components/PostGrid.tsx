@@ -34,7 +34,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                       <Image src={cover_image.src ?? ''} layout="fill" alt={title} />
                     </span>
                   </div>
-                  <div className="h-40 py-4 px-2 md:px-0">
+                  <div className="h-52 py-4 px-2 md:px-0">
                     <span className="inline-flex w-full items-center justify-between">
                       <span className="flex items-center gap-1 text-xs">
                         <IconBook />
