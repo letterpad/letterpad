@@ -137,3 +137,6 @@ input:-webkit-autofill:focus {
   padding: 14px 18px;
   border-radius: 8px;
 }
+.prose h2 + figure {
+  margin-top: 1.4rem !important;
+}
