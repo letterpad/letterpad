@@ -23,6 +23,9 @@
   .content {
     @apply mx-auto max-w-4xl px-4 sm:px-4 md:px-0;
   }
+  .highlight-speech {
+    @apply rounded-md bg-slate-200 dark:bg-slate-800;
+  }
   /* ... */
 }
 body {
