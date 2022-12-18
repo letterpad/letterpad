@@ -71,6 +71,7 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
   return s === 'start' ? (
     <button
       onClick={() => {
+        clearTimeout(speechRef.current?.timeout);
         speechRef.current?.pause();
         setS('paused');
       }}
