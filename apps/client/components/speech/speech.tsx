@@ -5,22 +5,26 @@ import { IconPause, IconPlay } from '../icons';
 
 export const Speak: FC<{ html: string }> = ({ html }) => {
   const speechRef = useRef<TextToSpeech>();
-  const [mounted, setMounded] = useState(false);
+  const [, setMounted] = useState(false);
   const cursorRef = useRef<number>(-1);
   const elementsRef = useRef<NodeListOf<Element>>();
   const [s, setS] = useState('');
 
   const status = (event) => {
     if (event.type === 'end') speak();
-    if (speechRef.current) setS(speechRef.current.getStatus());
+    if (speechRef.current) setS(event.type);
   };
 
   useEffect(() => {
+    //@ts-ignore
+    if (!window.chrome || !('speechSynthesis' in window)) {
+      return;
+    }
     const tts = new TextToSpeech();
     if (tts) {
       speechRef.current = tts;
-      setMounded(true);
       if (!speechRef.current) return;
+      setMounted(true);
       tts.engine.addEventListener('end', status.bind(this));
       tts.engine.addEventListener('pause', status.bind(this));
       tts.engine.addEventListener('resume', status.bind(this));
@@ -35,7 +39,7 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
       speechRef.current.engine.removeEventListener('resume', status.bind(this));
       speechRef.current.engine.removeEventListener('start', status.bind(this));
     };
-  }, []);
+  }, [html, status]);
 
   useEffect(() => {
     const div = document.querySelector('.prose');
@@ -46,7 +50,7 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
 
   const speak = () => {
     if (s === 'paused') {
-      setS('speaking');
+      setS('start');
       return speechRef.current?.resume();
     }
     if (!elementsRef.current) return;
@@ -59,14 +63,13 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
       node.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
       node.classList.add('highlight-speech');
       speechRef.current?.speak(node.textContent ?? '');
-      setS('speaking');
+      setS('start');
     } else {
       cursorRef.current = -1;
     }
   };
-
   if (!speechRef.current) return null;
-  return s === 'speaking' ? (
+  return s === 'start' ? (
     <button
       onClick={() => {
         speechRef.current?.pause();

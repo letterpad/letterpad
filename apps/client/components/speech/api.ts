@@ -1,10 +1,10 @@
 export class TextToSpeech {
   engine: SpeechSynthesisUtterance;
-  constructor({ volume = 1, rate = 1.2, pitch = 1, lang = 'en' } = {}) {
+  timeout;
+  constructor({ volume = 1, rate = 1.2, pitch = 0.8, lang = 'en' } = {}) {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       throw new Error('Text to speech is not supported in your browser.');
     }
-
     this.engine = new SpeechSynthesisUtterance();
     this.setLanguage(lang).setPitch(pitch).setRate(rate).setVolume(volume);
     this.setVoice('Google UK English Male');
@@ -14,10 +14,26 @@ export class TextToSpeech {
     this.cancel();
     this.setText(text);
     this.setVoice('Google UK English Male');
+    this.resumeWhenInterupted();
     window.speechSynthesis.speak(this.engine);
     return this;
   }
 
+  myTimer() {
+    this.pause();
+    this.resume();
+    this.timeout = setTimeout(this.myTimer, 10000);
+  }
+
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=679437
+  resumeWhenInterupted() {
+    clearTimeout(this.timeout);
+
+    this.timeout = setTimeout(this.myTimer.bind(this), 10000);
+    this.engine.onend = () => {
+      clearTimeout(this.timeout);
+    };
+  }
   mute() {
     return this.setVolume(0);
   }
@@ -53,14 +69,17 @@ export class TextToSpeech {
 
   pause() {
     window.speechSynthesis.pause();
+    clearTimeout(this.timeout);
   }
 
   resume() {
     window.speechSynthesis.resume();
+    this.resumeWhenInterupted();
   }
 
   cancel() {
     window.speechSynthesis.cancel();
+    clearTimeout(this.timeout);
   }
 
   setVoice(voice: string) {
@@ -70,18 +89,5 @@ export class TextToSpeech {
       this.engine.voice = selectedVoice;
     }
     return this;
-  }
-
-  getStatus() {
-    if (window.speechSynthesis.speaking) {
-      return 'speaking';
-    }
-    if (window.speechSynthesis.paused) {
-      return 'paused';
-    }
-    if (window.speechSynthesis.pending) {
-      return 'pending';
-    }
-    return 'stopped';
   }
 }
