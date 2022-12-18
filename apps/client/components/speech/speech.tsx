@@ -10,12 +10,11 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
   const elementsRef = useRef<NodeListOf<Element>>();
   const [s, setS] = useState('');
 
-  const status = (event) => {
-    if (event.type === 'end') speak();
-    if (speechRef.current) setS(event.type);
-  };
-
   useEffect(() => {
+    const status = (event) => {
+      if (event.type === 'end') speak();
+      if (speechRef.current) setS(event.type);
+    };
     //@ts-ignore
     if (!window.chrome || !('speechSynthesis' in window)) {
       return;
@@ -39,7 +38,7 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
       speechRef.current.engine.removeEventListener('resume', status.bind(this));
       speechRef.current.engine.removeEventListener('start', status.bind(this));
     };
-  }, [html, status]);
+  }, [html]);
 
   useEffect(() => {
     const div = document.querySelector('.prose');
