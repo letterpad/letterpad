@@ -50,14 +50,15 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
   }, [onChange]);
 
   useEffect(() => {
-    if (!editorRef.current) return;
-    editorRef.current.on("openFileExplorer", () => {
-      onMediaBrowse();
-    });
+    if (editorRef.current) {
+      editorRef.current.on("openFileExplorer", () => {
+        onMediaBrowse();
+      });
+    }
     return () => {
       editorRef.current?.off("openFileExplorer");
     };
-  }, [onMediaBrowse]);
+  }, [onMediaBrowse, editorRef.current]);
 
   useEffect(() => {
     if (typeof html == "undefined") {
