@@ -8,7 +8,7 @@ interface Props {
   isMobileOrTablet: boolean;
   isDesktop: boolean;
 }
-export const Responsive = createContext<Props>({} as Props);
+const Responsive = createContext<Props>({} as Props);
 
 export const ResponsiveProvider = ({ children }) => {
   const { md, lg } = useResponsive();

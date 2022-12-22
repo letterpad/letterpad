@@ -1,8 +1,7 @@
+@import url('./creative.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('./creative.css');
 
 @layer components {
   .button-primary {
