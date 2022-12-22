@@ -37,13 +37,6 @@ body {
 address {
   font-style: normal;
 }
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: sans-serif;
-}
 .post {
   font-family: 'Source Serif Pro', serif;
 }
@@ -54,7 +47,7 @@ h5 {
   margin-bottom: 8px;
   line-height: 3rem;
 }
-
+/* 
 .prose h2 {
   font-size: 1.6rem;
   font-weight: 700;
@@ -63,7 +56,7 @@ h5 {
   text-align: left;
   line-height: 2.5rem;
   letter-spacing: -0.45px;
-}
+} */
 
 @media only screen and (max-width: 600px) {
   .prose h1 {
@@ -71,11 +64,11 @@ h5 {
     margin-bottom: 8px;
     line-height: 2.5rem;
   }
-  .prose h2 {
+  /* .prose h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     line-height: 1.9rem;
-  }
+  } */
 }
 
 .prose p,

@@ -1,6 +1,5 @@
 // @ts-check
 /* eslint-disable @typescript-eslint/no-var-requires */
-
 const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
 
@@ -55,6 +54,9 @@ module.exports = {
                 color: `${theme('colors.primary.600')} !important`,
               },
               code: { color: theme('colors.primary.400') },
+            },
+            'h1, h2, h3, h4, h5, h6': {
+              fontFamily: 'sans-serif'
             },
             h1: {
               fontWeight: '700',
