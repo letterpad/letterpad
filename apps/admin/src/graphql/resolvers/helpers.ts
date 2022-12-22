@@ -91,11 +91,13 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
       const src = $el.attr("src");
       if (!src) return;
       if (!src.startsWith("http")) return;
-      logger.debug("Getting dimensions of ", src);
-      const size = await getImageDimensions(src);
-      $el.attr("height", size.height.toString());
-      $el.attr("width", size.width.toString());
-      logger.info("Image width x height", { ...size });
+      if (!$el.attr("width") || !$el.attr("height")) {
+        logger.debug("Getting dimensions of ", src);
+        const size = await getImageDimensions(src);
+        $el.attr("height", size.height.toString());
+        $el.attr("width", size.width.toString());
+        logger.info("Image width x height", { ...size });
+      }
     }
     return $.html();
   } catch (e: any) {

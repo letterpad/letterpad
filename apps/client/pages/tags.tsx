@@ -74,7 +74,7 @@ export default function Tags({
                 <div key={t.name} className="mt-2 mb-2 mr-5">
                   <Tag text={t.name} />
                   <Link
-                    href={`/tags/${kebabCase(t.name)}`}
+                    href={`/tag/${kebabCase(t.name)}`}
                     className="-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"
                   >
                     {`(${count})`}
