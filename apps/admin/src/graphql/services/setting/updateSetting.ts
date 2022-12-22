@@ -27,21 +27,24 @@ export const updateSetting = async (
       },
     });
     const setting_id = author?.setting?.id;
-    if (!setting_id)
+    const settings = args.options.pop();
+    if (!setting_id || !settings)
       return { __typename: "NotFound", message: "Setting now found" };
 
-    const promises = args.options.map((setting) => {
-      const option = Object.keys(setting)[0] as keyof Omit<
-        Setting,
-        "__typename"
-      >;
-      let value = Object.values(setting)[0] as ValueOf<Setting>;
+    const data = {} as ChangeTypeOfKeys<
+      Omit<Setting, "__typename">,
+      "menu" | "banner" | "site_logo" | "site_favicon",
+      string
+    >;
+
+    Object.keys(settings).map((option) => {
+      let value = settings[option];
 
       if (option === "css") {
-        setting.css = (value as string) || "";
+        value = value ?? "";
       }
       const isImageOption =
-        setting.banner || setting.site_logo || setting.site_favicon;
+        settings.banner || settings.site_logo || settings.site_favicon;
 
       const internalImage = isImageOption?.src.startsWith(process.env.ROOT_URL);
       if (isImageOption && internalImage) {
@@ -55,23 +58,19 @@ export const updateSetting = async (
       if (["menu", "banner", "site_logo", "site_favicon"].includes(option)) {
         value = JSON.stringify(value);
       }
-      logger.info(
-        `Updating settings with id ${setting_id}- ` + option + " : " + value,
-      );
 
-      return prisma.setting.update({
-        data: {
-          [option]: value,
-        },
-        where: { id: setting_id },
-      });
+      data[option] = value;
     });
+    logger.info(`Updating settings with id ${setting_id}- `, data);
 
-    await Promise.all(promises);
-
+    await prisma.setting.update({
+      data: data,
+      where: { id: setting_id },
+    });
     const setting = await prisma.setting.findUnique({
       where: { id: setting_id },
     });
+
     if (setting) {
       return {
         ...mapSettingToGraphql(setting),
@@ -85,4 +84,15 @@ export const updateSetting = async (
     message: "You are not authorized",
     __typename: "UnAuthorized",
   };
+};
+
+export type ChangeTypeOfKeys<
+  T extends object,
+  Keys extends keyof T,
+  NewType,
+> = {
+  // Loop to every key. We gonna check if the key
+  // is assignable to Keys. If yes, change the type.
+  // Else, retain the type.
+  [key in keyof T]: key extends Keys ? NewType : T[key];
 };
