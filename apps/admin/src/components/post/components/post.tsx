@@ -75,7 +75,7 @@ export const Post = () => {
 
       {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
-          <div style={{ maxWidth: 660, margin: "0 auto" }}>
+          <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px" }}>
             {/* <PostDate date={post?.updatedAt} /> */}
             {loading ? (
               <PostTitlePlaceholder />

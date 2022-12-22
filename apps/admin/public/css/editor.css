@@ -7,7 +7,7 @@ body {
   font-family: "Source Serif Pro", serif;
   background: transparent;
   line-height: 1.8;
-  font-size: 1.05em;
+  font-size: 1.2rem;
   overflow-x: hidden;
   color: rgba(var(--color), 0.7);
   margin: 0;
@@ -57,7 +57,6 @@ p,
 i,
 a {
   margin-top: 21px;
-  font-size: 1.2rem;
   line-height: 1.5;
 }
 pre {
@@ -74,6 +73,10 @@ figure {
   margin: 0px;
   margin-top: 10px;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 figure img {
   max-width: 100%;
@@ -82,7 +85,8 @@ figure img {
 figure figcaption {
   font-size: 0.8rem;
   text-align: center;
-  padding: 10px 0;
+  padding: 5px 0;
+  width: 100%;
 }
 figcaption a {
   font-size: 0.8rem;
@@ -214,10 +218,9 @@ figure img {
   cursor: pointer;
 }
 
-[data-id="image-focussed"] {
-  outline: 2px solid #d932c0;
-}
-
 hr {
   border: 1px solid rgb(var(--color-border));
+}
+h2 + figure {
+  margin-top: 1.4rem !important;
 }

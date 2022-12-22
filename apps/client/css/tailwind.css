@@ -119,6 +119,10 @@ input:-webkit-autofill:focus {
   text-align: center;
   font-size: 0.9rem;
 }
+.prose figcaption a {
+  font-size: inherit;
+  text-decoration: none;
+}
 .btn-primary,
 .btn-primary-big {
   background: #3b7eeb !important;
@@ -136,6 +140,12 @@ input:-webkit-autofill:focus {
 .btn-primary-big {
   padding: 14px 18px;
   border-radius: 8px;
+}
+.prose figure {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 .prose h2 + figure {
   margin-top: 1.4rem !important;

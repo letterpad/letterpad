@@ -15,6 +15,7 @@ if (typeof window !== "undefined") {
   require("tinymce/plugins/codesample");
   require("tinymce/plugins/directionality");
   // require("tinymce/plugins/image");
+  require("../plugins/image");
   require("tinymce/plugins/pagebreak");
   require("tinymce/icons/default");
   require("tinymce/skins/ui/oxide-dark/skin.min.css");
