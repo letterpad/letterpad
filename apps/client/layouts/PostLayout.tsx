@@ -111,7 +111,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                     <a
                       href="#"
                       rel="author"
-                      className="text-md font-sans font-medium text-gray-900 dark:text-white"
+                      className="font-sans text-md font-medium text-gray-900 dark:text-white"
                     >
                       {author.name}
                     </a>
@@ -152,7 +152,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               Listen <Speak html={post.html ?? ''} />
             </div>
           </header>
-          <div className="content prose pb-8 pt-4 text-lg dark:prose-dark">{children}</div>
+          <div className="content prose pb-8 pt-4 dark:prose-dark">{children}</div>
 
           <div
             className={

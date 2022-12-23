@@ -43,7 +43,7 @@ export const Component = ({ children, activeKey, onChange }) => {
                 >
                   <div
                     className={classNames(
-                      "border border-gray-200 p-5 font-light dark:border-gray-700",
+                      "border border-gray-200 p-4 font-light dark:border-gray-700",
                       {
                         "border-b-0":
                           !isLastItem && child.props.id !== activeTab,
@@ -76,7 +76,7 @@ const Header = ({
       <button
         type="button"
         className={classNames(
-          "flex w-full items-center justify-between  border  border-gray-200 p-5 text-left font-medium text-gray-600 hover:bg-gray-200 focus:ring-4 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
+          "flex w-full items-center justify-between  border  border-gray-200 p-4 text-left font-medium text-gray-600 hover:bg-gray-200 focus:ring-4 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
           {
             "rounded-t-lg": isFirstItem,
             "rounded-b-lg border-b": isLastItem && !isActive,

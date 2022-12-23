@@ -11,7 +11,7 @@ class MyDocument extends Document {
           <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
           <script src={basePath + `/prism/prism.js`} async />
         </Head>
-        <body>
+        <body className="text-base">
           <Main />
           <NextScript />
         </body>

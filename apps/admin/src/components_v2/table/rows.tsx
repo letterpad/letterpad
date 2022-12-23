@@ -10,7 +10,7 @@ interface Props {
 
 const classes = {
   row: "hover:dark:bg-gray-800",
-  cell: "border-b border-gray-200 bg-white px-5 py-5 text-sm dark:bg-black/10 dark:text-gray-100 dark:border-gray-800 ",
+  cell: "border-b border-gray-200 bg-white px-5 py-5 dark:bg-black/10 dark:text-gray-100 dark:border-gray-800 ",
 };
 
 export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
