@@ -32,7 +32,9 @@ const Subscribe = () => {
     <div id="subscribe" className="flex ">
       <div className="w-full text-center">
         <div className="md:items-left flex max-w-xl  flex-col items-center  p-1 pr-0 text-left ">
-          <span className="mb-2 hidden text-gray-500 md:block">Subscribe to my newsletter</span>
+          <span className="mb-2 hidden text-gray-500 md:block">
+            Subscribe to my newsletter
+          </span>
           <div>
             <input
               type="email"

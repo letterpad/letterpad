@@ -18,11 +18,10 @@ const Sitemap = () => {
 };
 
 export const getServerSideProps = async (context) => {
-  const response = await fetchProps<SitemapQueryQuery, SitemapQueryQueryVariables>(
-    sitemapQuery,
-    {},
-    context.req.headers.host
-  );
+  const response = await fetchProps<
+    SitemapQueryQuery,
+    SitemapQueryQueryVariables
+  >(sitemapQuery, {}, context.req.headers.host);
 
   if (response.props.data.sitemap.__typename === 'SiteMapList') {
     const items = response.props.data.sitemap.rows.map((row) => {

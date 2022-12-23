@@ -8,7 +8,7 @@ import { NextApiRequestWithFormData } from "@/graphql/types";
 
 const Create = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   if (req.method === "POST") {
     try {

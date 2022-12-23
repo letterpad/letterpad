@@ -44,7 +44,7 @@ export const Switch: FC<Props> = ({
               "h-5 w-9": size === "sm",
               "h-6 w-11": size === "md",
               "h-7 w-14": size === "lg",
-            },
+            }
           )}
         ></div>
       </label>

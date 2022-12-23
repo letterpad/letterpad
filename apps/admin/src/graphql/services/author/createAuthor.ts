@@ -12,12 +12,12 @@ import { EmailTemplates } from "@/graphql/types";
 
 export const createAuthor = async (
   args: RequireFields<MutationCreateAuthorArgs, "data">,
-  { prisma }: ResolverContext,
+  { prisma }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
   if (args.data?.token) {
     const response = await validateCaptcha(
       process.env.RECAPTCHA_KEY_SERVER,
-      args.data.token,
+      args.data.token
     );
     if (!response) {
       return {

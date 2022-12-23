@@ -10,7 +10,11 @@ export async function executeQuery<
   Data,
   Variables extends Record<string, unknown>,
   identifier = string
->(query: DocumentNode, variables: Variables, identifier: string): Promise<PageProps<Data>> {
+>(
+  query: DocumentNode,
+  variables: Variables,
+  identifier: string
+): Promise<PageProps<Data>> {
   const queryText = print(query);
   const resp = await fetch(process.env.GRAPHQL_URL as string, {
     method: 'POST',
@@ -28,12 +32,20 @@ export async function executeQuery<
   return resp.json();
 }
 
-export async function fetchProps<Data, Variables extends Record<string, unknown>, host = ''>(
+export async function fetchProps<
+  Data,
+  Variables extends Record<string, unknown>,
+  host = ''
+>(
   query: DocumentNode,
   variables: Variables,
   host: string
 ): Promise<{ props: PageProps<Data> }> {
-  const { data, errors } = await executeQuery<Data, Variables, string>(query, variables, host);
+  const { data, errors } = await executeQuery<Data, Variables, string>(
+    query,
+    variables,
+    host
+  );
 
   return {
     props: {

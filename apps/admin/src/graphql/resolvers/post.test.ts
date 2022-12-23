@@ -28,7 +28,7 @@ describe("Test Post Query Graphql API", () => {
           name: "first-post",
           slug: "/tag/first-post",
         },
-      ]),
+      ])
     );
 
     expect(firstRecord.author).toEqual({
@@ -76,7 +76,7 @@ describe("Test Post Query Graphql API", () => {
         slug: createPathWithPrefix(textToSlug(title), "post"),
         title: "New Post",
         status: PostStatusOptions.Draft,
-      }),
+      })
     );
   });
 

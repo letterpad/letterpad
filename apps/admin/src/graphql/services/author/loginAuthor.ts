@@ -6,7 +6,7 @@ import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 
 export const loginAuthor = async (
   args: MutationLoginArgs,
-  { prisma }: ResolverContext,
+  { prisma }: ResolverContext
 ): Promise<ResolversTypes["LoginResponse"]> => {
   const author = await prisma.author.findFirst({
     where: { email: args.data?.email },
@@ -20,7 +20,7 @@ export const loginAuthor = async (
     }
     const authenticated = await bcrypt.compare(
       args.data?.password || "",
-      author.password,
+      author.password
     );
 
     if (!authenticated) {

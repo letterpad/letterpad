@@ -71,7 +71,7 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
       const author = await validateSingleAuthorImport(res, data, session.user);
       if (!author) {
         throw new Error(
-          "This author does not exist. You can only import your own.",
+          "This author does not exist. You can only import your own."
         );
       }
     }
@@ -79,7 +79,7 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
       data.authors,
       isAuthUserAdmin,
       session.user,
-      passwords,
+      passwords
     );
 
     return res.send(response);
@@ -97,7 +97,7 @@ export async function startImport(
   data: { [email: string]: IAuthorData },
   isAdmin: boolean,
   session: SessionData,
-  passwords: Record<string, Record<string, string>>,
+  passwords: Record<string, Record<string, string>>
 ) {
   const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
@@ -203,7 +203,7 @@ export async function startImport(
 async function validateSingleAuthorImport(
   res,
   data: IImportExportData,
-  sessionUser: SessionData,
+  sessionUser: SessionData
 ) {
   if (Object.keys(data.authors).length > 1) {
     res.status(200).send({

@@ -93,7 +93,7 @@ class Umami {
           authorization: `Bearer ${this.token}`,
         },
         method: "GET",
-      },
+      }
     )
       .then((res) => res.json())
       .catch((err) => logger.error(err));
@@ -185,55 +185,55 @@ class Umami {
 
   async getChartPageviews() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/pageviews?unit=${this.resolution}&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/pageviews?unit=${this.resolution}&tz=Etc%2FUTC`
     );
   }
 
   async getChartEvents() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/events?unit=${this.resolution}&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/events?unit=${this.resolution}&tz=Etc%2FUTC`
     );
   }
 
   async getEvents() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/metrics?type=event&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/metrics?type=event&tz=Etc%2FUTC`
     );
   }
 
   async getUrls() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/metrics?type=url&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/metrics?type=url&tz=Etc%2FUTC`
     );
   }
 
   async getReferrers() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/metrics?type=referrer&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/metrics?type=referrer&tz=Etc%2FUTC`
     );
   }
 
   async getBrowsers() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/metrics?type=browser&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/metrics?type=browser&tz=Etc%2FUTC`
     );
   }
 
   async getOses() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/metrics?type=os&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/metrics?type=os&tz=Etc%2FUTC`
     );
   }
 
   async getDevices() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/metrics?type=device&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/metrics?type=device&tz=Etc%2FUTC`
     );
   }
 
   async getCountries() {
     return await this.request(
-      `${this.url}/api/website/${this.website}/metrics?type=country&tz=Etc%2FUTC`,
+      `${this.url}/api/website/${this.website}/metrics?type=country&tz=Etc%2FUTC`
     );
   }
 
@@ -286,7 +286,7 @@ export const addUmamAnalyticsiIfNotExists = async (email: string) => {
       const api = await umamiApi();
       const website = (await api.addWebsite(
         author.username,
-        `${author.username}.letterpad.app`,
+        `${author.username}.letterpad.app`
       )) as Record<string, any>;
       await prisma.author.update({
         data: {

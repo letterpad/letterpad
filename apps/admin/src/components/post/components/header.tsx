@@ -39,7 +39,7 @@ const Header: React.VFC<Props> = ({ post }) => {
           <span
             className={classNames(
               "rounded-md p-1.5 px-2 text-xs text-white shadow-sm",
-              className,
+              className
             )}
             data-testid="postStatus"
           >

@@ -8,7 +8,7 @@ import { sendMail } from "../sendMail";
 
 export async function sendNewPostEmail(
   data: EmailNewPostProps,
-  models: PrismaClient,
+  models: PrismaClient
 ) {
   try {
     const template = await getNewPostContent(data, models);

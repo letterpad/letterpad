@@ -37,7 +37,7 @@ const getAuthorIdFromRequest = async (context: Context) => {
       if (author_id) {
         logger.debug(
           "Author from Authorization header after decrypting - ",
-          author_id,
+          author_id
         );
       }
     }
@@ -45,7 +45,7 @@ const getAuthorIdFromRequest = async (context: Context) => {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2021") {
         throw new Error(
-          "Database is not ready. Run `yarn seed` from terminal.",
+          "Database is not ready. Run `yarn seed` from terminal."
         );
       }
     } else {

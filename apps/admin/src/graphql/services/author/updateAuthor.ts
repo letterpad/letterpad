@@ -21,7 +21,7 @@ interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
 
 export const updateAuthor = async (
   args: RequireFields<MutationUpdateAuthorArgs, "author">,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
   if (!session?.user.id) {
     return {
@@ -123,7 +123,7 @@ export const updateAuthor = async (
           const api = await umamiApi();
           await api.changeWebsite(
             `${args.author.username}.letterpad.app`,
-            author.analytics_id,
+            author.analytics_id
           );
         }
       } catch (e: any) {

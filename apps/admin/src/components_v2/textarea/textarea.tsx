@@ -66,7 +66,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
           error && classes.error,
           classes.base,
           disabled && classes.disabled,
-          className,
+          className
         )}
         {...rest}
       />

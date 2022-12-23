@@ -27,7 +27,7 @@ const Appearance: React.FC<Props> = ({ settings }) => {
 
   const debounceUpdateSettingsAPI = useMemo(
     () => debounce((data) => updateSettingsAPI(data), 500),
-    [updateSettingsAPI],
+    [updateSettingsAPI]
   );
   return (
     <div className="grid gap-8">

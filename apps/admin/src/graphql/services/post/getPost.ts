@@ -9,7 +9,7 @@ import { decrypt } from "@/graphql/utils/crypto";
 
 export const getPost = async (
   args: QueryPostArgs,
-  { prisma, session, client_author_id }: ResolverContext,
+  { prisma, session, client_author_id }: ResolverContext
 ): Promise<ResolversTypes["PostResponse"]> => {
   const session_author_id = session?.user.id;
   if (!args.filters) {

@@ -45,7 +45,7 @@ export const Menu: FC<Props> = ({ items, selectedKey, onSelect, ...props }) => {
                 className={classNames(
                   classes.base,
                   classes.hover,
-                  item.key === selectedKey && classes.selected,
+                  item.key === selectedKey && classes.selected
                 )}
                 onClick={() => {
                   onSelect(item.key);

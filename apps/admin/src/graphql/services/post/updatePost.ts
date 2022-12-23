@@ -19,7 +19,7 @@ import { textToSlug } from "@/utils/slug";
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["UpdatePostResponse"]> => {
   if (!session?.user.id) {
     return {
@@ -111,21 +111,21 @@ export const updatePost = async (
       newPostArgs.data.slug = await slugify(
         prisma.post,
         textToSlug(args.data.slug.split("/").pop() ?? ""),
-        existingPost.author_id,
+        existingPost.author_id
       );
     }
     if (args.data.title && existingPost.slug.includes("untitled")) {
       newPostArgs.data.slug = await slugify(
         prisma.post,
         textToSlug(args.data.title.trim()),
-        existingPost.author_id,
+        existingPost.author_id
       );
     }
 
     if (args.data.html) {
       newPostArgs.data.html = await formatHtml(args.data.html);
       newPostArgs.data.reading_time = getReadingTimeFromHtml(
-        newPostArgs.data.html,
+        newPostArgs.data.html
       );
     }
     if (args.data.html_draft) {

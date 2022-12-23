@@ -14,7 +14,7 @@ describe("Test Settings Graphql API", () => {
       expect.objectContaining({
         site_title: settings?.site_title,
         site_tagline: settings?.site_tagline,
-      }),
+      })
     );
   });
 
@@ -23,10 +23,10 @@ describe("Test Settings Graphql API", () => {
 
     // expect(result.settings.banner.src).toContain("unsplash");
     expect(result.settings.site_favicon.src).toContain(
-      "https://letterpad.app/admin/uploads/logo.png",
+      "https://letterpad.app/admin/uploads/logo.png"
     );
     expect(result.settings.site_logo.src).toContain(
-      "https://letterpad.app/admin/uploads/logo.png",
+      "https://letterpad.app/admin/uploads/logo.png"
     );
   });
 
@@ -71,7 +71,7 @@ describe("Test Settings Graphql API", () => {
       expect.objectContaining({
         site_title: change[0].site_title,
         site_description: change[1].site_description,
-      }),
+      })
     );
   });
 });

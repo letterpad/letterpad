@@ -34,7 +34,7 @@ class Socket {
 
   async connectSocketAndAddListeners() {
     if (this.editor && !this.listenersActivated) {
-      this.grammar.activateListeners(this.editor.getDoc(), this.onChange);
+      this.grammar.activateListeners(this.editor.getElement(), this.onChange);
     }
     this.socket = await this._initSocket();
 
@@ -80,7 +80,7 @@ class Socket {
   }
 
   removeGrammar() {
-    const domBody = this.editor?.getDoc().body;
+    const domBody = this.editor?.getElement();
     if (!domBody) return false;
     domBody.querySelectorAll("span.mark").forEach((spanElmt) => {
       spanElmt.outerHTML = spanElmt.innerHTML;
@@ -113,7 +113,7 @@ class Socket {
   }
 
   private _getDomNodesForCorrection() {
-    const body = this.editor?.getBody();
+    const body = this.editor?.getElement();
     const nodelist = body?.querySelectorAll("p, li, blockquote, h1, h2");
 
     const elementsArr = nodelist ? Array.from(nodelist) : [];

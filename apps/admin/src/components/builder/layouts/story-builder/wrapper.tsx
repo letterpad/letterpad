@@ -9,7 +9,7 @@ export const Wrapper: FC<{ children: ReactNode; className?: string }> = ({
     <div
       className={classNames(
         "margin-auto flex h-full w-full flex-col items-baseline justify-center p-6 py-20 px-10 leading-6 text-gray-800 dark:text-white lg:px-40",
-        className,
+        className
       )}
     >
       {children}

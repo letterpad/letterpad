@@ -42,7 +42,7 @@ export const SectionMasonry: FC<Props> = ({ item, position }) => {
         masonry: data,
       },
       rowIndex,
-      colIndex,
+      colIndex
     );
   };
 

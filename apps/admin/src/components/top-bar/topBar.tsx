@@ -14,7 +14,7 @@ export const TopBar = () => {
   const { sidebarVisible, setSidebarVisible, isMobileOrTablet } =
     useResponsiveLayout();
   return (
-    <div className="flex flex-row items-center justify-between p-4">
+    <div className="flex flex-row items-center justify-between py-4">
       <div>
         {isMobileOrTablet && (
           <Buttonv2

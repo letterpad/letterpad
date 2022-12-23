@@ -38,7 +38,7 @@ export const SectionImage: FC<Props> = ({
         type: item?.type ?? "text",
       },
       rowIndex,
-      colIndex,
+      colIndex
     );
   };
 
@@ -54,7 +54,7 @@ export const SectionImage: FC<Props> = ({
         {
           "bg-gray-200": true,
           "dark:bg-gray-800": true,
-        },
+        }
       )}
     >
       <Parallax

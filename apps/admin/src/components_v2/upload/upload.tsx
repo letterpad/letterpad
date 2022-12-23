@@ -48,7 +48,7 @@ export const Upload: FC<Props> = ({
     const config = {
       onUploadProgress: function (progressEvent) {
         const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total,
+          (progressEvent.loaded * 100) / progressEvent.total
         );
         progress(percentCompleted);
       },

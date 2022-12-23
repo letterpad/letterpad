@@ -8,7 +8,7 @@ import logger from "@/shared/logger";
 
 export const getStats = async (
   _,
-  { client_author_id, session, prisma }: ResolverContext,
+  { client_author_id, session, prisma }: ResolverContext
 ): Promise<ResolversTypes["StatsResponse"]> => {
   logger.debug("Reached resolver: stats");
   const result = {

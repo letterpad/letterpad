@@ -10,7 +10,10 @@ interface Props {
 export const MasonryGrid: FC<Props> = ({ items, onSelect }) => {
   const rows = items.map((item, i) => {
     return (
-      <div key={item.src} className="group relative aspect-square cursor-pointer">
+      <div
+        key={item.src}
+        className="group relative aspect-square cursor-pointer"
+      >
         <Image
           src={item.src as string}
           alt="img"

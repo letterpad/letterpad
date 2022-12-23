@@ -71,7 +71,7 @@ function print(
   fileName: string,
   message: string,
   tagColor: string,
-  rest: any[],
+  rest: any[]
 ) {
   if (process.env.DEBUG !== "true") return null;
   console.log("");

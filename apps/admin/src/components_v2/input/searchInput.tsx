@@ -75,7 +75,7 @@ export const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
           classes.variant[variant],
           disabled && classes.disabled,
           className,
-          "rounded-r-none border-r-0",
+          "rounded-r-none border-r-0"
         )}
         onChange={(e) => {
           setInputValue(e.target.value);

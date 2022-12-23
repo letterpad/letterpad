@@ -24,7 +24,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
       setLoading(false);
       if (error) {
         return setError(
-          "Rate limit for Unsplash has exceeded for free version. Please try after sometime.",
+          "Rate limit for Unsplash has exceeded for free version. Please try after sometime."
         );
       }
       if (rows.length === 0) {
@@ -37,7 +37,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
       }
       setTotalCount(count);
     },
-    [data, page],
+    [data, page]
   );
 
   const searchUnsplash = useCallback(
@@ -53,7 +53,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
           setLoading(false);
         });
     },
-    [handleUnsplashResponse, url],
+    [handleUnsplashResponse, url]
   );
 
   const resetAll = () => {

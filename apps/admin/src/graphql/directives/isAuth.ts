@@ -2,7 +2,7 @@ import { getDirective, MapperKind, mapSchema } from "@graphql-tools/utils";
 import { defaultFieldResolver, GraphQLSchema } from "graphql";
 
 export function isAuthDirective(
-  directiveName: string,
+  directiveName: string
 ): (schema: GraphQLSchema) => GraphQLSchema {
   return (schema) =>
     mapSchema(schema, {
@@ -10,7 +10,7 @@ export function isAuthDirective(
         const upperDirective = getDirective(
           schema,
           fieldConfig,
-          directiveName,
+          directiveName
         )?.[0];
         if (upperDirective) {
           const { resolve = defaultFieldResolver } = fieldConfig;

@@ -13,7 +13,7 @@ import { PostContextType } from "@/components/post/types";
 import { Setting } from "@/__generated__/__types__";
 
 export const PostContext = createContext<PostContextType>(
-  {} as PostContextType,
+  {} as PostContextType
 );
 
 export const PostProvider: React.FC<{
@@ -43,7 +43,7 @@ export const PostProvider: React.FC<{
       setHelpers,
       onMediaBrowse,
       onFileExplorerClose,
-    ],
+    ]
   );
 
   return useMemo(() => {

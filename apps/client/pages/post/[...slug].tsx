@@ -3,7 +3,10 @@ import { InferGetServerSidePropsType } from 'next';
 import { meFragment, pageFragment, settingsFragment } from 'queries/queries';
 
 import { fetchProps } from '@/lib/client';
-import { PageQueryWithHtmlQuery, PageQueryWithHtmlQueryVariables } from '@/lib/graphql';
+import {
+  PageQueryWithHtmlQuery,
+  PageQueryWithHtmlQueryVariables,
+} from '@/lib/graphql';
 
 import PostLayout from '@/layouts/PostLayout';
 
@@ -49,7 +52,10 @@ export default function Blog({
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<PageQueryWithHtmlQuery, PageQueryWithHtmlQueryVariables>(
+  const response = await fetchProps<
+    PageQueryWithHtmlQuery,
+    PageQueryWithHtmlQueryVariables
+  >(
     pageQueryWithHtml,
     {
       slug: context.params.slug.join('/'),

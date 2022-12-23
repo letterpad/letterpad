@@ -100,7 +100,7 @@ export async function createAuthorWithSettings(
     avatar?: string;
   },
   setting: SettingInputType,
-  rolename: ROLES = ROLES.AUTHOR,
+  rolename: ROLES = ROLES.AUTHOR
 ) {
   const { token, verified = false, avatar = "", ...authorData } = data;
   const role = await prisma.role.findFirst({ where: { name: rolename } });

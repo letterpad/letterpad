@@ -20,7 +20,7 @@ import { SessionData } from "@/graphql/types";
 import { getReadableDate } from "@/shared/utils";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
 type P = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -152,7 +152,7 @@ export async function getServerSideProps({ req, res }) {
       author?.stripe_customer_id!,
       {
         expand: ["subscriptions"], // 2
-      },
+      }
     );
     if (!customer.deleted) {
       const charges = await stripe.charges.list({

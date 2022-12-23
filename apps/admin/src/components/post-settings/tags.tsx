@@ -29,7 +29,7 @@ const Tags = ({ post, header }: IProps) => {
 
   const computedTags = useMemo(
     () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
-    [data],
+    [data]
   );
 
   useEffect(() => {

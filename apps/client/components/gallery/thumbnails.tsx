@@ -3,11 +3,13 @@ import { useEffect, useRef } from 'react';
 
 interface Props<T> {
   items: T[];
-  onSelect: (index: number) => void;
+  onSelect: (_index: number) => void;
   index: number;
 }
 
-export const ThumbnailList = <T extends { src: string; description?: string; caption?: string }>({
+export const ThumbnailList = <
+  T extends { src: string; description?: string; caption?: string }
+>({
   items,
   onSelect,
   index,

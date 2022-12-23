@@ -12,7 +12,7 @@ import { getEmailTemplate } from "./templates/getTemplate";
 export async function enqueueEmailAndSend(props: EmailProps) {
   if (!hasCredentials()) {
     return logger.debug(
-      "No client found to send emails. Terminating enqueuing Email",
+      "No client found to send emails. Terminating enqueuing Email"
     );
   }
   try {

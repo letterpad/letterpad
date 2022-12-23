@@ -60,7 +60,9 @@ export const getServerSideProps = async (context) => {
       <managingEditor>${settings.site_email} (${me.name})</managingEditor>
       <webMaster>${settings.site_email} (${me.name})</webMaster>
       <lastBuildDate>Thu, 15 Dec 2022 00:00:00 GMT</lastBuildDate>
-      <atom:link href="${settings.site_url}/feed.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="${
+        settings.site_url
+      }/feed.xml" rel="self" type="application/rss+xml"/>
       ${items.join('')}
     </channel></rss>`;
 

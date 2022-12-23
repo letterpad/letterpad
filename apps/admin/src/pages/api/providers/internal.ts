@@ -8,7 +8,7 @@ import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
 export function uploadToInternal(
   file: BlobCorrected,
   uploadPath: string,
-  src: string,
+  src: string
 ): Promise<IMediaUploadResult> {
   return new Promise((resolve, reject) => {
     const { buffer, originalname } = file;

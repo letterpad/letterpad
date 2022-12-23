@@ -10,7 +10,7 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadLatestPosts = async (
   _args: unknown,
-  { prisma }: ResolverContext,
+  { prisma }: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
   const condition: Prisma.PostFindManyArgs = {
     where: {

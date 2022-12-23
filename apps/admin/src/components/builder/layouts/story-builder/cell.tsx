@@ -11,11 +11,11 @@ import { useBuilderContext } from "../../context";
 import { Block } from "../../types";
 
 const LazySectionImage = lazy(() =>
-  import("./image").then((m) => ({ default: m.SectionImage })),
+  import("./image").then((m) => ({ default: m.SectionImage }))
 );
 
 const LazyContentToolbar = lazy(() =>
-  import("../../toolbar").then((m) => ({ default: m.ContentToolbar })),
+  import("../../toolbar").then((m) => ({ default: m.ContentToolbar }))
 );
 
 interface Props {
@@ -28,7 +28,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const { preview, updateCell } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [formats, setFormats] = useState(
-    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote link | forecolor",
+    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote link | forecolor"
   );
   const item = row?.data[colIndex];
   const isText = item?.type === "text";
@@ -41,7 +41,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
     <div
       className={classNames(
         "relative flex w-full justify-center align-middle",
-        "row-" + rowIndex,
+        "row-" + rowIndex
       )}
       style={{ backgroundColor: item?.bgColor }}
       onClick={() => setEditorOpen(isText || columns === 1)}
@@ -50,7 +50,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         <LazyContentToolbar
           setEditorOpen={(visible) => {
             setFormats(
-              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor",
+              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor"
             );
             setEditorOpen(visible);
           }}
@@ -66,7 +66,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
                 type: "text",
               },
               rowIndex,
-              colIndex,
+              colIndex
             )
           }
         />
@@ -79,7 +79,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             editable={!isFirstRow}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor",
+                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor"
               );
               setEditorOpen(true);
             }}
@@ -97,7 +97,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             cover={row?.cover}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | link | forecolor",
+                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | link | forecolor"
               );
               setEditorOpen(true);
             }}
@@ -121,7 +121,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
                 type: "image",
               },
               rowIndex,
-              colIndex,
+              colIndex
             );
           } else if (isMasonry) {
             const data = images.map((image) => {
@@ -137,7 +137,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
                 type: "masonry",
               },
               rowIndex,
-              colIndex,
+              colIndex
             );
           }
         }}

@@ -4,7 +4,7 @@ import "./core";
 
 import FileExplorer from "@/components/file-explorer";
 
-import { basePath } from "@/constants";
+import { basePath, gaTrackingId } from "@/constants";
 
 import { socket } from "./socket";
 import { insertImageInEditor } from "../commands";
@@ -47,7 +47,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
         }
       });
     }
-  }, [onChange]);
+  }, [onChange, editorRef.current]);
 
   useEffect(() => {
     if (editorRef.current) {

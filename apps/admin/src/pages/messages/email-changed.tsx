@@ -26,7 +26,7 @@ const Verified = () => {
         status="success"
         title="Email Verified"
         subTitle={`Your email has been successfully changed to ${queryParams.get(
-          "newEmail",
+          "newEmail"
         )}. Click the below button to login`}
         extra={[
           <Buttonv2 key="login" onClick={doLogin}>

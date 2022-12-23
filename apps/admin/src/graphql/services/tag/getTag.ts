@@ -3,7 +3,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getTag = async (
   args: QueryTagArgs,
-  { session, client_author_id, prisma }: ResolverContext,
+  { session, client_author_id, prisma }: ResolverContext
 ): Promise<ResolversTypes["TagResponse"]> => {
   const authorId = session?.user.id || client_author_id;
 

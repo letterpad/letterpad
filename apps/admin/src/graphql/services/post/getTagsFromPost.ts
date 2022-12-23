@@ -2,7 +2,7 @@ import { ResolversParentTypes } from "@/__generated__/__types__";
 
 export const getTagsFromPost = async (
   id: number,
-  { prisma },
+  { prisma }
 ): Promise<ResolversParentTypes["TagsResponse"]> => {
   const tags = await prisma.tag.findMany({
     where: { posts: { some: { id } } },

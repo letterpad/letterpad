@@ -30,7 +30,7 @@ describe("Test Tags Graphql API", () => {
           },
           slug: "/tag/first-post",
         },
-      ]),
+      ])
     );
   });
 

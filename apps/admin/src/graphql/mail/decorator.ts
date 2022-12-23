@@ -7,7 +7,7 @@ export const bodyDecorator = (
   html: string,
   recipient_email: string,
   author_id: number,
-  subcriber_id: number,
+  subcriber_id: number
 ) => {
   const token = getUnsubscribeToken({
     email: recipient_email,
@@ -18,7 +18,7 @@ export const bodyDecorator = (
 
   const baseTemplate = path.resolve(
     process.cwd(),
-    "src/graphql/mail/templates/base.twig",
+    "src/graphql/mail/templates/base.twig"
   );
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires

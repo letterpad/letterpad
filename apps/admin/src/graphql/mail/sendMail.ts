@@ -7,7 +7,7 @@ import logger from "@/shared/logger";
 export async function sendMail(
   data: Mail,
   meta: EmailTemplateMeta,
-  addUnsubscribe = false,
+  addUnsubscribe = false
 ) {
   if (!hasCredentials()) {
     return logger.debug("No client found to send emails");

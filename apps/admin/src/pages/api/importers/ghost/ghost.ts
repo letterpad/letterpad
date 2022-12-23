@@ -15,7 +15,7 @@ import { Optional } from "../../../../types";
 
 export function convertGhostToLetterpad(
   data: IImportExportGhostData,
-  user: SessionData,
+  user: SessionData
 ): IImportExportData {
   const posts: IAuthorData["posts"] = [];
   const author = getAuthor(data.db[0].data.users, user);
@@ -92,7 +92,7 @@ function getPostTagsMapper(data: IGhostDb["data"]) {
 
 function getAuthor(
   users: IGhostDb["data"]["users"],
-  session: SessionData,
+  session: SessionData
 ): IAuthorData["author"] | null {
   const author = users.pop();
 

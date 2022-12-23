@@ -4,13 +4,13 @@ import { stripe } from "@/lib/stripe";
 
 const handleStripeWebhook = async (
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   try {
     const event = stripe.webhooks.constructEvent(
       req.body,
       req.headers["stripe-signature"]!,
-      process.env.STRIPE_WEBHOOK_SECRET!,
+      process.env.STRIPE_WEBHOOK_SECRET!
     );
     switch (event.type) {
       case "subscription.created": {

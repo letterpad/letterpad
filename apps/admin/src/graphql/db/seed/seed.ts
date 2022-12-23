@@ -156,7 +156,7 @@ export async function insertRolePermData() {
             permission_id: permission.id,
             role_id: ADMIN.id,
           },
-        }),
+        })
       ),
     ]);
   }
@@ -169,7 +169,7 @@ export async function insertRolePermData() {
             permission_id: permission.id,
             role_id: REVIEWER.id,
           },
-        }),
+        })
       ),
     ]);
   }
@@ -182,7 +182,7 @@ export async function insertRolePermData() {
             permission_id: permission.id,
             role_id: READER.id,
           },
-        }),
+        })
       ),
     ]);
   }
@@ -195,7 +195,7 @@ export async function insertRolePermData() {
             permission_id: permission.id,
             role_id: AUTHOR.id,
           },
-        }),
+        })
       ),
     ]);
   }
@@ -213,7 +213,7 @@ async function insertAuthors() {
       token: "",
     },
     { site_title: "Admin Account" },
-    ROLES.ADMIN,
+    ROLES.ADMIN
   );
   await prisma.author.update({
     where: { id: adminAuthor?.id },
@@ -228,7 +228,7 @@ async function insertAuthors() {
       password: "demo",
       token: "",
     },
-    { site_title: "Demo Account", site_tagline: "Hello, I am letterpad" },
+    { site_title: "Demo Account", site_tagline: "Hello, I am letterpad" }
   );
 
   return await prisma.author.update({
@@ -311,6 +311,6 @@ export const cleanupDatabase = () => {
       //@ts-ignore
       const model = prisma[modelName];
       return model && model?.deleteMany ? model.deleteMany() : null;
-    }),
+    })
   );
 };

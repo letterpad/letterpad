@@ -22,7 +22,7 @@ const groupClass = "gallery";
 */
 export const addGalleryWrapper = (
   htmlStr: string,
-  selector = "figure.lp-image",
+  selector = "figure.lp-image"
 ) => {
   const $ = cheerio.load(htmlStr.replace(/\n/, ""));
 

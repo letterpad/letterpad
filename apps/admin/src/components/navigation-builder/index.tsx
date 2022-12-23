@@ -22,7 +22,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
     (data: NavigationItemType[]) => {
       updateOption(prepareForBackend(data));
     },
-    [updateOption],
+    [updateOption]
   );
 
   if (loading) return null;

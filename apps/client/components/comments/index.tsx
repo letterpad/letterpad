@@ -6,9 +6,12 @@ interface Props {
   provider: CommentProviders;
 }
 
-const UtterancesComponent = dynamic(() => import('@/components/comments/Utterances'), {
-  ssr: false,
-});
+const UtterancesComponent = dynamic(
+  () => import('@/components/comments/Utterances'),
+  {
+    ssr: false,
+  }
+);
 
 const GiscusComponent = dynamic(() => import('@/components/comments/Giscus'), {
   ssr: false,
@@ -20,7 +23,9 @@ const DisqusComponent = dynamic(() => import('@/components/comments/Disqus'), {
 
 const Comments = ({ provider }: Props) => {
   const term =
-    typeof window !== 'undefined' ? window.location?.origin + window.location.pathname : '';
+    typeof window !== 'undefined'
+      ? window.location?.origin + window.location.pathname
+      : '';
 
   return (
     <div id="comment">

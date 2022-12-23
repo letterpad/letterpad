@@ -11,7 +11,7 @@ import { EventAction, track } from "@/track";
 
 const updatePostRequest = async (
   attrs: Omit<InputUpdatePost, "id">,
-  postId: number,
+  postId: number
 ) => {
   track({
     eventAction: EventAction.Change,
@@ -32,7 +32,7 @@ const debounceUpdatePost = debounce(updatePostRequest, 1000);
 
 export const updatePostApi = async (
   attrs: Omit<InputUpdatePost, "id">,
-  id: Post["id"],
+  id: Post["id"]
 ) => {
   await debounceUpdatePost(attrs, id);
 };

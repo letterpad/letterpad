@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import { TextToSpeech } from './api';
 import { IconPause, IconPlay } from '../icons';
@@ -10,7 +10,7 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
   const elementsRef = useRef<NodeListOf<Element>>();
   const [s, setS] = useState('');
 
-  const speak = () => {
+  const speak = useCallback(() => {
     if (s === 'paused') {
       setS('start');
       return speechRef.current?.resume();
@@ -22,14 +22,18 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
 
     if (elementsRef.current && elementsRef.current.length > cursorRef.current) {
       const node = elementsRef.current[cursorRef.current];
-      node.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      node.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      });
       node.classList.add('highlight-speech');
       speechRef.current?.speak(node.textContent ?? '');
       setS('start');
     } else {
       cursorRef.current = -1;
     }
-  };
+  }, [s]);
 
   useEffect(() => {
     const status = (event) => {

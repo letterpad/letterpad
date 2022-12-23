@@ -9,7 +9,9 @@ import {
 
 export const Share = ({ title, summary, url, className }) => {
   return (
-    <div className={'flex flex-col items-center justify-start gap-8 ' + className}>
+    <div
+      className={'flex flex-col items-center justify-start gap-8 ' + className}
+    >
       <div className="flex gap-1">
         <LinkedinShareButton title={title} summary={summary} url={url}>
           <LinkedinIcon

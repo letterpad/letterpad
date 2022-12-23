@@ -9,7 +9,9 @@ interface Props {
 const Tag = ({ text }: Props) => {
   return (
     <Link href={`/tag/${kebabCase(text)}`}>
-      <a className="link mr-3 text-xs font-medium uppercase">{text.split(' ').join('-')}</a>
+      <a className="link mr-3 text-xs font-medium uppercase">
+        {text.split(' ').join('-')}
+      </a>
     </Link>
   );
 };

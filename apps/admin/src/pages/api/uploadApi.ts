@@ -35,7 +35,7 @@ export const config = {
 
 const uploadApi = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   await multerAny(req, res);
   const _session = await getSession({ req });
@@ -68,7 +68,7 @@ const uploadApi = async (
 
       const hex = hashSum.digest("hex");
       const extension = file.originalname.substr(
-        file.originalname.lastIndexOf(".") + 1,
+        file.originalname.lastIndexOf(".") + 1
       );
       file.hash = hex;
       const filename = hex + "." + extension;
@@ -85,7 +85,7 @@ const uploadApi = async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            basePath + "/uploads/" + filename,
+            basePath + "/uploads/" + filename
           );
         }
         await upsertMedia(result, session.user.id);

@@ -31,7 +31,7 @@ export const Post = () => {
 
   const debounceUpdatePostAPI = useMemo(
     () => debounce((data) => updatePostAPI(data), 500),
-    [updatePostAPI],
+    [updatePostAPI]
   );
 
   const { helpers } = usePostContext() as PostContextType;
@@ -53,7 +53,7 @@ export const Post = () => {
         updateLocalState({ id: id, html, stats, html_draft: "" });
       }
     },
-    [debounceUpdatePostAPI, status, updateLocalState],
+    [debounceUpdatePostAPI, status, updateLocalState]
   );
 
   if (!loading && data && data.post.__typename !== "Post") {

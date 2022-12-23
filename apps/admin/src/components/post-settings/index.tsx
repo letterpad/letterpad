@@ -39,7 +39,7 @@ const Actions = ({ post }: IProps) => {
   const { updatePost } = useUpdatePost();
   const debounceUpdatePost = useMemo(
     () => debounce((data) => updatePost(data), 500),
-    [updatePost],
+    [updatePost]
   );
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const Actions = ({ post }: IProps) => {
   const formatSlug = (slug: string) => {
     const formattedSlug = createPathWithPrefix(
       textToSlug(getLastPartFromPath(slug)),
-      post.type,
+      post.type
     );
     setSlug(formattedSlug);
     debounceUpdatePost({ id: post.id, slug: formattedSlug });

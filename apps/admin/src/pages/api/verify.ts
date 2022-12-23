@@ -12,7 +12,7 @@ import { VerifyUserOrSubscriberToken } from "@/types";
 
 const Verify = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   try {
     try {
@@ -21,7 +21,7 @@ const Verify = async (
       return res.redirect(basePath + "/messages/expired");
     }
     const token = decodeJWTToken<VerifyUserOrSubscriberToken>(
-      req.query.token as string,
+      req.query.token as string
     );
     const isSubscriber = req.query.subscriber;
     let update;
@@ -48,7 +48,7 @@ const Verify = async (
     if (!update) {
       return res.redirect(
         basePath +
-          "/messages/verified?msg=Either you are already verified or verification failed.",
+          "/messages/verified?msg=Either you are already verified or verification failed."
       );
     }
     res.redirect(basePath + "/messages/verified");

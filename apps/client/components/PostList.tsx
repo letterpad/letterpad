@@ -36,7 +36,10 @@ const PostList: React.VFC<Props> = ({ posts }) => {
                     <div className="space-y-6">
                       <div>
                         <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                          <Link href={`${slug}`} className="text-gray-900 dark:text-gray-100">
+                          <Link
+                            href={`${slug}`}
+                            className="text-gray-900 dark:text-gray-100"
+                          >
                             {title}
                           </Link>
                         </h2>
@@ -51,7 +54,11 @@ const PostList: React.VFC<Props> = ({ posts }) => {
                       </div>
                     </div>
                     <div className="text-base font-medium leading-6">
-                      <Link href={`${slug}`} className="link" aria-label={`Read "${title}"`}>
+                      <Link
+                        href={`${slug}`}
+                        className="link"
+                        aria-label={`Read "${title}"`}
+                      >
                         Read more &rarr;
                       </Link>
                     </div>

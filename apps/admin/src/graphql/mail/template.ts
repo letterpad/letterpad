@@ -15,12 +15,12 @@ export function getTemplate(template: EmailTemplates): {
 
   const body = fs.readFileSync(
     path.join(emailTemplatesDir, `${template}/body.twig`),
-    "utf-8",
+    "utf-8"
   );
 
   const subject = fs.readFileSync(
     path.join(emailTemplatesDir, `${template}/subject.twig`),
-    "utf-8",
+    "utf-8"
   );
   cache[template] = { body: body.toString(), subject: subject.toString() };
 

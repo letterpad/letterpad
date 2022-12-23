@@ -71,7 +71,7 @@ const Loading = () => {
   return (
     <div
       className={classNames(
-        "absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 gap-2",
+        "absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 gap-2"
       )}
     >
       <AiOutlineLoading3Quarters
@@ -90,7 +90,7 @@ const AddImage: FC<Props> = ({ url }) => {
         "absolute top-1/2 left-1/2 flex h-12 flex-1 -translate-x-1/2 -translate-y-1/2 items-center gap-2",
         {
           hidden: url,
-        },
+        }
       )}
     >
       <AiOutlinePlus size={24} />
@@ -105,7 +105,7 @@ const RemoveImage: FC<Props> = ({ url, onRemove, openImage }) => {
         "absolute top-1/2 left-1/2  hidden -translate-x-1/2 -translate-y-1/2 gap-2",
         {
           "group-hover:flex": url,
-        },
+        }
       )}
     >
       <div className="flex gap-2 rounded-md bg-white p-2">

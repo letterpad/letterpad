@@ -13,7 +13,7 @@ import { getLastPartFromPath } from "@/utils/slug";
 
 export const getPosts = async (
   args: QueryPostsArgs,
-  { prisma, session, client_author_id }: ResolverContext,
+  { prisma, session, client_author_id }: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
   const session_author_id = session?.user.id;
   const authorId = session_author_id || client_author_id;
@@ -95,7 +95,7 @@ export const getPosts = async (
 
 async function getTagSlugOfFirstMenuItemIfPossible(
   prisma: PrismaClient,
-  author_id: number,
+  author_id: number
 ) {
   const authorWithSetting = await prisma.author.findFirst({
     where: { id: author_id },

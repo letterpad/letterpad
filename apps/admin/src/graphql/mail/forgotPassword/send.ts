@@ -8,7 +8,7 @@ import { sendMail } from "../sendMail";
 
 export async function sendForgotPasswordEmail(
   data: EmailForgotPasswordProps,
-  prisma: PrismaClient,
+  prisma: PrismaClient
 ) {
   try {
     const template = await getForgotPasswordContent(data, prisma);

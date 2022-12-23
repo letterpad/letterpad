@@ -48,7 +48,7 @@ export const Component = ({ children, activeKey, onChange }) => {
                         "border-b-0":
                           !isLastItem && child.props.id !== activeTab,
                         "rounded-b-lg": isLastItem,
-                      },
+                      }
                     )}
                   >
                     {children}
@@ -83,7 +83,7 @@ const Header = ({
             "border-t-0": !isFirstItem && !isActive,
             "border-b-0": isActive,
             "bg-gray-200 dark:bg-gray-800": isActive,
-          },
+          }
         )}
         aria-expanded="true"
         onClick={onClick}

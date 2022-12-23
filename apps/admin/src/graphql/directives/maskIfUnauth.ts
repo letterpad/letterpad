@@ -7,7 +7,7 @@ import {
 } from "graphql";
 
 export function maskIfUnauth(
-  directiveName: string,
+  directiveName: string
 ): (schema: GraphQLSchema) => GraphQLSchema {
   return (schema) =>
     mapSchema(schema, {
@@ -15,7 +15,7 @@ export function maskIfUnauth(
         const upperDirective = getDirective(
           schema,
           fieldConfig,
-          directiveName,
+          directiveName
         )?.[0];
         if (upperDirective) {
           const { resolve = defaultFieldResolver } = fieldConfig;

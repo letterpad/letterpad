@@ -32,7 +32,9 @@ export const PhotoStory: FC<Props> = ({ data }) => {
             data-row={rowIndex}
             className={
               'relative flex flex-1  lg:flex-row ' +
-              (item.data[1]?.type === 'image' ? 'flex-col-reverse' : 'flex-col ')
+              (item.data[1]?.type === 'image'
+                ? 'flex-col-reverse'
+                : 'flex-col ')
             }
           >
             {columns.map((col, colIndex) => {
@@ -97,7 +99,11 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
       >
         <Wrapper>
           <div
-            className={columns == 2 ? 'margin-auto max-w-full lg:max-w-[calc(500px)]' : ''}
+            className={
+              columns == 2
+                ? 'margin-auto max-w-full lg:max-w-[calc(500px)]'
+                : ''
+            }
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(item?.text ?? ''),
             }}
@@ -126,10 +132,10 @@ const SectionText: FC<any> = ({ columns, text, type }) => {
   );
 };
 
-export const SectionMasonry: FC<{ item: BlockItem; position: [rowIndex: number] }> = ({
-  item,
-  position,
-}) => {
+export const SectionMasonry: FC<{
+  item: BlockItem;
+  position: [rowIndex: number];
+}> = ({ item, position }) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [rowIndex] = position;
 
@@ -170,7 +176,10 @@ export const SectionMasonry: FC<{ item: BlockItem; position: [rowIndex: number] 
   );
 };
 
-const Wrapper: FC<{ children: ReactNode; className?: string }> = ({ children, className }) => {
+const Wrapper: FC<{ children: ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => {
   return (
     <div
       className={

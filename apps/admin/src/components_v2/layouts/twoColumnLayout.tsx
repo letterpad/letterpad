@@ -26,7 +26,7 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
         <aside
           className={classNames(
             "top-0  h-screen min-w-[250px] -translate-x-full transform bg-zinc-900 transition-transform duration-150 ease-in md:sticky  md:shadow",
-            { "translate-x-0": sidebarVisible || isDesktop },
+            { "translate-x-0": sidebarVisible || isDesktop }
           )}
         >
           {left}
@@ -38,7 +38,7 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
               "-ml-[250px]": !sidebarVisible,
               "translate-x-0 blur-lg": sidebarVisible && isMobileOrTablet,
               "min-w-full": !!isMobileOrTablet,
-            },
+            }
           )}
           onClick={() => sidebarVisible && setSidebarVisible(!isMobileOrTablet)}
         >

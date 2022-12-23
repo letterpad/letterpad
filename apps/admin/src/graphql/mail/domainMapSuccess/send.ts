@@ -8,7 +8,7 @@ import { sendMail } from "../sendMail";
 
 export async function sendDomainMapSuccessEmail(
   data: DomainMapSuccessProps,
-  models: PrismaClient,
+  models: PrismaClient
 ) {
   try {
     const template = await getdomainMapSuccessContent(data, models);

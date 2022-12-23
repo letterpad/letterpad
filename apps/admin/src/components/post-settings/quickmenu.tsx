@@ -6,6 +6,8 @@ import { Buttonv2 } from "@/components_v2/button";
 
 import { EventAction, track } from "@/track";
 
+import ThemeSwitcher from "../theme-switcher";
+
 interface Props {
   siteUrl: string;
   postHash: string;
@@ -68,6 +70,7 @@ export const QuickMenu: FC<Props> = ({
       >
         <IoSettingsOutline size={18} />
       </a>
+      <ThemeSwitcher />
     </div>
   );
 };

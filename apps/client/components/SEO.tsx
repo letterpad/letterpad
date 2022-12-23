@@ -41,7 +41,9 @@ const CommonSEO = ({
       <meta property="og:description" content={description} />
       <meta property="og:title" content={title} />
       {Array.isArray(ogImage) ? (
-        ogImage.map(({ url }) => <meta property="og:image" content={url} key={url} />)
+        ogImage.map(({ url }) => (
+          <meta property="og:image" content={url} key={url} />
+        ))
       ) : (
         <meta property="og:image" content={ogImage} key={ogImage} />
       )}
@@ -137,7 +139,8 @@ export const BlogSEO = ({
 }: BlogSeoProps) => {
   const publishedAt = new Date(date).toISOString();
   const modifiedAt = new Date(lastmod || date).toISOString();
-  const imagesArr = images.length === 0 ? [] : typeof images === 'string' ? [images] : images;
+  const imagesArr =
+    images.length === 0 ? [] : typeof images === 'string' ? [images] : images;
 
   const featuredImages = imagesArr.map((img) => {
     return {
@@ -199,8 +202,12 @@ export const BlogSEO = ({
         site_name={site_name}
       />
       <Head>
-        {date && <meta property="article:published_time" content={publishedAt} />}
-        {lastmod && <meta property="article:modified_time" content={modifiedAt} />}
+        {date && (
+          <meta property="article:published_time" content={publishedAt} />
+        )}
+        {lastmod && (
+          <meta property="article:modified_time" content={modifiedAt} />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

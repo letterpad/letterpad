@@ -8,7 +8,7 @@ export async function getOrCreateSlug(
   postModel: Prisma.PostDelegate<false>,
   id: number,
   newSlug?: string | null,
-  newTitle?: string,
+  newTitle?: string
 ) {
   const existingPost = await postModel.findFirst({ where: { id } });
 
@@ -19,7 +19,7 @@ export async function getOrCreateSlug(
     newSlug = await slugify(
       postModel,
       textToSlug(newSlug),
-      existingPost.author_id,
+      existingPost.author_id
     );
     return newSlug;
   }
@@ -33,7 +33,7 @@ export async function getOrCreateSlug(
     newSlug = await slugify(
       postModel,
       textToSlug(newTitle),
-      existingPost.author_id,
+      existingPost.author_id
     );
     return newSlug;
   }

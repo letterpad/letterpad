@@ -14,7 +14,7 @@ import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";
 
 export const createPost = async (
   args: MutationCreatePostArgs,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["CreatePostResponse"]> => {
   if (!args.data || !session?.user.id) {
     return {
@@ -92,7 +92,7 @@ export const createPost = async (
       prisma.post,
       newPost.id,
       slug,
-      args.data.title,
+      args.data.title
     );
     await prisma.post.update({
       data: { slug: newSlug },

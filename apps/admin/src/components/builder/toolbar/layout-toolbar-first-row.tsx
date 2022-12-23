@@ -15,7 +15,7 @@ export const LayoutToolbarFirstRow: FC<Props> = ({ onChange, item }) => {
   return (
     <div
       className={classNames(
-        "left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border-b  border-solid border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-700 dark:bg-gray-800",
+        "left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border-b  border-solid border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-700 dark:bg-gray-800"
       )}
     >
       <button

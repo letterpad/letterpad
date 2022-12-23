@@ -4,7 +4,7 @@ import { NextApiRequestWithFormData } from "@/graphql/types";
 
 const analyse = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   const body = JSON.parse(req.body);
   const text = await fetch(process.env.LANGUAGE_TOOL_URL, {

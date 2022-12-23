@@ -78,10 +78,22 @@ class MyDocument extends Document {
           <meta name="application-name" content="Letterpad" />
           <meta name="msapplication-TileColor" content="#FFFFFF" />
           <meta name="msapplication-TileImage" content="mstile-144x144.png" />
-          <meta name="msapplication-square70x70logo" content="mstile-70x70.png" />
-          <meta name="msapplication-square150x150logo" content="mstile-150x150.png" />
-          <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
-          <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
+          <meta
+            name="msapplication-square70x70logo"
+            content="mstile-70x70.png"
+          />
+          <meta
+            name="msapplication-square150x150logo"
+            content="mstile-150x150.png"
+          />
+          <meta
+            name="msapplication-wide310x150logo"
+            content="mstile-310x150.png"
+          />
+          <meta
+            name="msapplication-square310x310logo"
+            content="mstile-310x310.png"
+          />
           <meta name="msapplication-TileColor" content="#000000" />
           <meta name="theme-color" content="#000000" />
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />

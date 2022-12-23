@@ -10,7 +10,12 @@ interface Props<T = any> {
   index: number;
   onClose: () => void;
 }
-export const GalleryModal: FC<Props> = ({ onSelect, index, items, onClose }) => {
+export const GalleryModal: FC<Props> = ({
+  onSelect,
+  index,
+  items,
+  onClose,
+}) => {
   const [size, setSize] = useState([1400, 800]);
   const [item, setItem] = useState(items[index]);
 
@@ -29,7 +34,7 @@ export const GalleryModal: FC<Props> = ({ onSelect, index, items, onClose }) => 
     const height = isPortrait ? maxH : 800;
     setItem(items[index]);
     setSize([width, height]);
-  }, [index]);
+  }, [index, items]);
 
   if (index < 0 || !item) return null;
   return (
@@ -44,7 +49,11 @@ export const GalleryModal: FC<Props> = ({ onSelect, index, items, onClose }) => 
             stroke="currentColor"
             className="h-6 w-6"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -52,7 +61,12 @@ export const GalleryModal: FC<Props> = ({ onSelect, index, items, onClose }) => 
         <ThumbnailList items={items} onSelect={onSelect} index={index} />
       </div>
       <div className="relative flex h-screen w-full items-center justify-center">
-        <Image alt="Mountains" src={item.src as string} width={size[0]} height={size[1]} />
+        <Image
+          alt="Mountains"
+          src={item.src as string}
+          width={size[0]}
+          height={size[1]}
+        />
         {/* <Description description={item.description} /> */}
         <Controls
           maxReached={true}

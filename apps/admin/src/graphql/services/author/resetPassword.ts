@@ -10,7 +10,7 @@ import { ForgotPasswordToken } from "@/types";
 
 export const resetPassword = async (
   args,
-  { prisma }: ResolverContext,
+  { prisma }: ResolverContext
 ): Promise<ResolversTypes["ForgotPasswordResponse"]> => {
   try {
     const token = args.token;

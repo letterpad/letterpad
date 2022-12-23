@@ -75,7 +75,7 @@ const Builder = () => {
           setGrid([]);
       }
     },
-    [setGrid, setPreview],
+    [setGrid, setPreview]
   );
 
   useEffect(() => {

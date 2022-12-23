@@ -49,7 +49,7 @@ beforeAll(async () => {
   try {
     // global.console = require("console");
     await execShellCommand(
-      "DATABASE_URL='file:data/test.sqlite' npx prisma db push --force-reset --schema prisma/sqlite/schema.prisma",
+      "DATABASE_URL='file:data/test.sqlite' npx prisma db push --force-reset --schema prisma/sqlite/schema.prisma"
     );
   } catch (err) {
     logger.error(err);

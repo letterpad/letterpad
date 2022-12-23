@@ -1,12 +1,16 @@
 import { ReactNode, useEffect, useRef } from 'react';
 
-import { MeFragment, Navigation, NavigationType, SettingsFragment } from '@/lib/graphql';
+import {
+  MeFragment,
+  Navigation,
+  NavigationType,
+  SettingsFragment,
+} from '@/lib/graphql';
 
 import Footer from './Footer';
 import Link from './Link';
 import { LogoWithTitle } from './Logo';
 import MobileNav from './MobileNav';
-import SectionContainer from './SectionContainer';
 import ThemeSwitch from './ThemeSwitch';
 
 interface Props {
@@ -30,7 +34,10 @@ const LayoutWrapper = ({ children, props }: Props) => {
       contentRef.current.style.minHeight = extraHeight + contentHeight + 'px';
     }
   }, []);
-  if (props.settings.__typename !== 'Setting' || props.me?.__typename !== 'Author')
+  if (
+    props.settings.__typename !== 'Setting' ||
+    props.me?.__typename !== 'Author'
+  )
     return <div>Setting not found</div>;
 
   const { show_about_page, show_tags_page } = props.settings;
@@ -50,7 +57,10 @@ const LayoutWrapper = ({ children, props }: Props) => {
         <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-8 md:px-20">
           <div>
             <Link href="/" aria-label={props.settings.site_title}>
-              <LogoWithTitle logo={props.settings.site_logo} title={props.settings.site_title} />
+              <LogoWithTitle
+                logo={props.settings.site_logo}
+                title={props.settings.site_title}
+              />
             </Link>
           </div>
           <div className="flex items-center text-base leading-5">

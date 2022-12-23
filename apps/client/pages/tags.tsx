@@ -69,7 +69,8 @@ export default function Tags({
           <div className="flex max-w-lg flex-wrap">
             {Object.keys(tags).length === 0 && 'No tags found.'}
             {tags.rows.map((t) => {
-              const count = t.posts?.__typename === 'PostsNode' ? t.posts.count : 0;
+              const count =
+                t.posts?.__typename === 'PostsNode' ? t.posts.count : 0;
               return (
                 <div key={t.name} className="mt-2 mb-2 mr-5">
                   <Tag text={t.name} />
