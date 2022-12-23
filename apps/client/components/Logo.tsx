@@ -19,9 +19,9 @@ export const LogoWithTitle = ({ logo, title }: { logo?: Logo | null; title: stri
       </span>
       {hasTitle &&
         (logoExist ? (
-          <div className="text-md mt-2 hidden font-bold md:block">{title}</div>
+          <div className="mt-2 hidden text-md font-bold md:block">{title}</div>
         ) : (
-          <div className="text-md mt-2  font-bold">{title}</div>
+          <div className="mt-2 text-md font-bold">{title}</div>
         ))}
     </div>
   );

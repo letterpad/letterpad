@@ -10,6 +10,27 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
   const elementsRef = useRef<NodeListOf<Element>>();
   const [s, setS] = useState('');
 
+  const speak = () => {
+    if (s === 'paused') {
+      setS('start');
+      return speechRef.current?.resume();
+    }
+    if (!elementsRef.current) return;
+    const current = elementsRef.current[cursorRef.current];
+    if (current) current.classList.remove('highlight-speech');
+    cursorRef.current += 1;
+
+    if (elementsRef.current && elementsRef.current.length > cursorRef.current) {
+      const node = elementsRef.current[cursorRef.current];
+      node.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      node.classList.add('highlight-speech');
+      speechRef.current?.speak(node.textContent ?? '');
+      setS('start');
+    } else {
+      cursorRef.current = -1;
+    }
+  };
+
   useEffect(() => {
     const status = (event) => {
       if (event.type === 'end') speak();
@@ -38,7 +59,7 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
       speechRef.current.engine.removeEventListener('resume', status.bind(this));
       speechRef.current.engine.removeEventListener('start', status.bind(this));
     };
-  }, [html]);
+  }, [html, speak]);
 
   useEffect(() => {
     const div = document.querySelector('.prose');
@@ -47,26 +68,6 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
     cursorRef.current = -1;
   }, [html]);
 
-  const speak = () => {
-    if (s === 'paused') {
-      setS('start');
-      return speechRef.current?.resume();
-    }
-    if (!elementsRef.current) return;
-    const current = elementsRef.current[cursorRef.current];
-    if (current) current.classList.remove('highlight-speech');
-    cursorRef.current += 1;
-
-    if (elementsRef.current && elementsRef.current.length > cursorRef.current) {
-      const node = elementsRef.current[cursorRef.current];
-      node.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      node.classList.add('highlight-speech');
-      speechRef.current?.speak(node.textContent ?? '');
-      setS('start');
-    } else {
-      cursorRef.current = -1;
-    }
-  };
   if (!speechRef.current) return null;
   return s === 'start' ? (
     <button
