@@ -67,7 +67,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
   }, [html, text]);
 
   return (
-    <>
+    <div className="serif prose dark:prose-dark">
       <Editor
         onInit={async (_evt, editor) => {
           if (editor) {
@@ -75,10 +75,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             editorRef.current = editor;
             socket.setEditor(editorRef.current);
             socket.connectSocketAndAddListeners();
-            const className = isDark ? "dark" : "light";
-            const body = editor.getDoc().body;
-            body.classList.remove("dark", "light");
-            body.classList.add(className);
             setHelpers && setHelpers(editor);
             const domBody = editor.getDoc();
             await insertScript("/admin/tippy/popper.min.js", domBody.head);
@@ -110,6 +106,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           }
         }}
         init={{
+          inline: true,
           image_caption: true,
           paste_preprocess: function (pl, o) {
             o.content = o.content
@@ -135,7 +132,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             "lists image link quickbars autoresize  code codesample directionality wordcount",
           skin: "none",
           skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
-          content_css: basePath + "/css/editor.css",
+          // content_css: basePath + "/css/editor.css",
           height: "100%",
           quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
@@ -217,7 +214,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           display: none !important;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

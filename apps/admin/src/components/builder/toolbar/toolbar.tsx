@@ -31,7 +31,7 @@ export const Toolbar = ({ rowIndex }) => {
         </p>
       }
     >
-      <button className="text-md my-10 flex flex-row items-center  gap-2 rounded-md">
+      <button className="my-10 flex flex-row items-center gap-2  rounded-md text-md">
         <IconAdd stroke="rgb(var(--color))" size={28} />
       </button>
     </Tooltip>

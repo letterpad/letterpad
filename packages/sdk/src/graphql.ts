@@ -129,6 +129,29 @@ export type Failed = LetterpadError & {
   type?: Maybe<Failed>;
 };
 
+export type Feed = {
+  __typename?: "Feed";
+  rows: Array<FeedNode>;
+};
+
+export type FeedError = {
+  __typename?: "FeedError";
+  message?: Maybe<Scalars["String"]>;
+};
+
+export type FeedNode = {
+  __typename?: "FeedNode";
+  author: Scalars["String"];
+  categories: Array<Scalars["String"]>;
+  description: Scalars["String"];
+  guid: Scalars["String"];
+  link: Scalars["String"];
+  pubDate: Scalars["String"];
+  title: Scalars["String"];
+};
+
+export type FeedResponse = Feed | FeedError;
+
 export type Forbidden = LetterpadError & {
   __typename?: "Forbidden";
   message: Scalars["String"];
@@ -548,6 +571,7 @@ export type Query = {
   domain: DomainResponse;
   email: EmailResponse;
   emails: Array<Maybe<Email>>;
+  feed: FeedResponse;
   letterpadLatestPost: PostResponse;
   letterpadLatestPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;

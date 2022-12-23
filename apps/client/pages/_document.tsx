@@ -85,10 +85,6 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#000000" />
           <meta name="theme-color" content="#000000" />
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-          <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
-            async
-          />
           <script src="/static/prism.js" async />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -97,7 +93,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body className="line-numbers bg-white text-black antialiased dark:bg-black dark:bg-opacity-20 dark:text-white">
+        <body className="line-numbers text-md antialiased dark:bg-opacity-20">
           <Main />
           <div id="modal-creatives" />
           <NextScript />

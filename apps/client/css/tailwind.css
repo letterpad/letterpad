@@ -1,34 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import url('./creative.css');
 
-@layer components {
-  .button-primary {
-    @apply rounded-sm bg-gray-800 px-4 py-3 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg;
-  }
-  .link {
-    @apply text-sm font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400;
-  }
-  .link {
-    @apply text-sm font-medium text-primary-600 hover:text-primary-600 dark:hover:text-primary-400;
-  }
-  .social-link {
-    @apply fill-current text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400;
-  }
-  .creatives-cta {
-    @apply mr-2 mb-2 rounded-md bg-blue-700 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
-  }
-  .content {
-    @apply mx-auto max-w-4xl px-4 sm:px-4 md:px-0;
-  }
-  .highlight-speech {
-    @apply rounded-md bg-slate-200 dark:bg-slate-800;
-  }
-  /* ... */
-}
-body {
+/* body {
   background: transparent;
   overflow-x: hidden;
   color: rgba(var(--color), 0.7);
@@ -37,13 +9,6 @@ body {
 }
 address {
   font-style: normal;
-}
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: sans-serif;
 }
 .post {
   font-family: 'Source Serif Pro', serif;
@@ -54,8 +19,8 @@ h5 {
   text-align: left;
   margin-bottom: 8px;
   line-height: 3rem;
-}
-
+} */
+/* 
 .prose h2 {
   font-size: 1.6rem;
   font-weight: 700;
@@ -64,22 +29,22 @@ h5 {
   text-align: left;
   line-height: 2.5rem;
   letter-spacing: -0.45px;
-}
+} */
 
 @media only screen and (max-width: 600px) {
-  .prose h1 {
+  /* .prose h1 {
     font-size: 2rem;
     margin-bottom: 8px;
     line-height: 2.5rem;
-  }
-  .prose h2 {
+  } */
+  /* .prose h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     line-height: 1.9rem;
-  }
+  } */
 }
 
-.prose p,
+/* .prose p,
 .prose i,
 .prose a {
   margin-top: 21px;
@@ -89,7 +54,6 @@ h5 {
 .prose pre {
   font-size: 0.7em;
   font-family: 'Roboto Mono', monospace !important;
-  /* background: rgba(var(--section-bg), 1) !important; */
   padding: 0.8rem !important;
   opacity: 0.9;
 }
@@ -102,14 +66,14 @@ h5 {
     margin-left: -24px;
     margin-right: -24px;
   }
-}
+} */
 /* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
 }
 
-.prose :where(pre):not(:where([class~='not-prose'] *)) {
+/* .prose :where(pre):not(:where([class~='not-prose'] *)) {
   font-size: 80%;
   max-width: 85vw;
   overflow-y: auto;
@@ -149,4 +113,4 @@ input:-webkit-autofill:focus {
 }
 .prose h2 + figure {
   margin-top: 1.4rem !important;
-}
+} */

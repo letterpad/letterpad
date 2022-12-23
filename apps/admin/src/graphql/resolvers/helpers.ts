@@ -88,9 +88,10 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
       const el = $bodyImages[i];
       const $el = $(el);
       $el.attr("loading", "lazy");
+      $el.removeAttr("class");
       const src = $el.attr("src");
-      if (!src) return;
-      if (!src.startsWith("http")) return;
+      if (!src) return $.html();
+      if (!src.startsWith("http")) return $.html();
       if (!$el.attr("width") || !$el.attr("height")) {
         logger.debug("Getting dimensions of ", src);
         const size = await getImageDimensions(src);

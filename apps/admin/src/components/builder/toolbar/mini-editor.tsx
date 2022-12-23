@@ -11,8 +11,7 @@ interface Props {
 const isBrowser = typeof window !== "undefined";
 
 const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
-  const editorRef = useRef<Editor["editor"]>(null);
-  const isDark = isBrowser && document.body.classList.contains("dark");
+  const editorRef = useRef<Editor["editor"]>();
   const [html, setHtml] = useState(text);
 
   useEffect(() => {
@@ -26,12 +25,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
       <Editor
         onInit={async (_evt, editor) => {
           if (editor) {
-            //@ts-ignore
             editorRef.current = editor;
-            const className = isDark ? "dark" : "light";
-            const body = editor.getDoc().body;
-            body.classList.remove("dark", "light");
-            body.classList.add(className);
           }
         }}
         initialValue={html}
@@ -48,7 +42,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
           width: "100%",
           placeholder: "....[ text ]....",
           menubar: false,
-          content_css: basePath + "/css/editor-mini.css",
+          // content_css: basePath + "/css/editor-mini.css",
           toolbar: false,
           quickbars_insert_toolbar: false,
           fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
@@ -102,10 +96,6 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
         }}
       />
       <style jsx global>{`
-        .dark iframe {
-          margin-bottom: 50px;
-          background-color: transparent;
-        }
         .tox .tox-edit-area__iframe {
           background-color: transparent !important;
           line-height: 24 !important;

@@ -17,7 +17,7 @@ const ErrorMessage = ({ title, description }) => {
             {title}
           </div>
           {description && (
-            <div className="text-md ml-3 text-red-700 dark:text-red-800">
+            <div className="ml-3 text-md text-red-700 dark:text-red-800">
               {description}
             </div>
           )}

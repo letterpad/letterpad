@@ -32,7 +32,7 @@ export const Select: FC<Props> = ({
           onChange(e.target.value);
         }}
         value={selected}
-        className="block w-full rounded-md border border-gray-300 bg-gray-50  p-1.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 "
+        className="block w-full rounded-md border border-gray-300 bg-gray-50  px-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 "
       >
         {items.map(({ key, label }) => (
           <option key={key} value={key}>

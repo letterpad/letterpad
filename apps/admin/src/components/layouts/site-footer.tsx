@@ -1,4 +1,4 @@
-import { GithubOutlined } from "@ant-design/icons";
+import { AiFillGithub } from "react-icons/ai";
 
 export const SiteFooter = () => {
   return (
@@ -10,7 +10,7 @@ export const SiteFooter = () => {
           target="_blank"
           rel="noreferrer"
         >
-          <GithubOutlined />
+          <AiFillGithub size={18} />
         </a>
       </div>
     </div>

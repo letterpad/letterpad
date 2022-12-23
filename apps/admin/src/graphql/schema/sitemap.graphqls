@@ -15,7 +15,6 @@ type SiteMapError {
 
 union SiteMapResponse = SiteMapList | SiteMapError
 
-
 type FeedNode {
   guid: String!
   title: String!

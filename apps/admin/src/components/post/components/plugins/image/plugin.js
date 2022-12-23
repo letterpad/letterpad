@@ -133,7 +133,7 @@
         throw new Error(
           message !== null && message !== void 0
             ? message
-            : "Called getOrDie on None",
+            : "Called getOrDie on None"
         );
       } else {
         return this.value;
@@ -195,7 +195,7 @@
     for (let i = 0, len = xs.length; i < len; ++i) {
       if (!isArray(xs[i])) {
         throw new Error(
-          "Arr.flatten item " + i + " was not an array, input: " + xs,
+          "Arr.flatten item " + i + " was not an array, input: " + xs
         );
       }
       nativePush.apply(r, xs[i]);
@@ -227,7 +227,7 @@
         ":: Value ",
         value,
         ":: Element ",
-        dom,
+        dom
       );
       throw new Error("Attribute value was not simple");
     }
@@ -468,7 +468,7 @@
       reader.onerror = () => {
         var _a;
         reject(
-          (_a = reader.error) === null || _a === void 0 ? void 0 : _a.message,
+          (_a = reader.error) === null || _a === void 0 ? void 0 : _a.message
         );
       };
       reader.readAsDataURL(blob);
@@ -540,7 +540,7 @@
     DOM.insertAfter(figureElm, image);
     figureElm.appendChild(image);
     figureElm.appendChild(
-      DOM.create("figcaption", { contentEditable: "true" }, "Caption"),
+      DOM.create("figcaption", { contentEditable: "true" }, "Caption")
     );
     figureElm.contentEditable = "false";
   };
@@ -649,7 +649,7 @@
       setBorderStyle(image, data.borderStyle);
     }
     return normalizeCss(
-      (_a = image.getAttribute("style")) !== null && _a !== void 0 ? _a : "",
+      (_a = image.getAttribute("style")) !== null && _a !== void 0 ? _a : ""
     );
   };
   const create = (normalizeCss, data) => {
@@ -660,14 +660,18 @@
         ...data,
         caption: false,
       },
-      image,
+      image
     );
     setAlt(image, data.alt, data.isDecorative);
     if (data.caption) {
       const figure = DOM.create("figure", { class: "image" });
       figure.appendChild(image);
       figure.appendChild(
-        DOM.create("figcaption", { contentEditable: "true" }, data.alt || "caption"),
+        DOM.create(
+          "figcaption",
+          { contentEditable: "true" },
+          data.alt || "caption"
+        )
       );
       figure.contentEditable = "false";
       return figure;
@@ -728,7 +732,7 @@
   const write = (normalizeCss, newData, image) => {
     const oldData = read(normalizeCss, image);
     updateProp(image, oldData, newData, "caption", (image, _name, _value) =>
-      toggleCaption(image),
+      toggleCaption(image)
     );
     updateProp(image, oldData, newData, "src", updateAttrib);
     updateProp(image, oldData, newData, "title", updateAttrib);
@@ -737,14 +741,14 @@
       oldData,
       newData,
       "width",
-      setSize("width", normalizeCss),
+      setSize("width", normalizeCss)
     );
     updateProp(
       image,
       oldData,
       newData,
       "height",
-      setSize("height", normalizeCss),
+      setSize("height", normalizeCss)
     );
     updateProp(image, oldData, newData, "class", updateAttrib);
     updateProp(
@@ -754,36 +758,36 @@
       "style",
       normalized(
         (image, value) => updateAttrib(image, "style", value),
-        normalizeCss,
-      ),
+        normalizeCss
+      )
     );
     updateProp(
       image,
       oldData,
       newData,
       "hspace",
-      normalized(setHspace, normalizeCss),
+      normalized(setHspace, normalizeCss)
     );
     updateProp(
       image,
       oldData,
       newData,
       "vspace",
-      normalized(setVspace, normalizeCss),
+      normalized(setVspace, normalizeCss)
     );
     updateProp(
       image,
       oldData,
       newData,
       "border",
-      normalized(setBorder, normalizeCss),
+      normalized(setBorder, normalizeCss)
     );
     updateProp(
       image,
       oldData,
       newData,
       "borderStyle",
-      normalized(setBorderStyle, normalizeCss),
+      normalized(setBorderStyle, normalizeCss)
     );
     updateAlt(image, oldData, newData);
   };
@@ -792,7 +796,7 @@
     const css = editor.dom.styles.parse(cssText);
     const mergedCss = mergeMargins(css);
     const compressed = editor.dom.styles.parse(
-      editor.dom.styles.serialize(mergedCss),
+      editor.dom.styles.serialize(mergedCss)
     );
     return editor.dom.styles.serialize(compressed);
   };
@@ -812,12 +816,12 @@
     const dom = editor.dom;
     const textBlockElements = filter(
       editor.schema.getTextBlockElements(),
-      (_, parentElm) => !editor.schema.isValidChild(parentElm, "figure"),
+      (_, parentElm) => !editor.schema.isValidChild(parentElm, "figure")
     );
     const textBlock = dom.getParent(
       figure.parentNode,
       (node) => hasNonNullableKey(textBlockElements, node.nodeName),
-      editor.getBody(),
+      editor.getBody()
     );
     if (textBlock) {
       return (_a = dom.split(textBlock, figure)) !== null && _a !== void 0
@@ -891,7 +895,7 @@
     if (image) {
       const selectedImageData = read(
         (css) => normalizeCss$1(editor, css),
-        image,
+        image
       );
       const data = {
         ...selectedImageData,
@@ -1082,7 +1086,7 @@
 
   const collect = (editor) => {
     const urlListSanitizer = ListUtils.sanitizer((item) =>
-      editor.convertURL(item.value || item.url || "", "src"),
+      editor.convertURL(item.value || item.url || "", "src")
     );
     const futureImageList = new Promise((completer) => {
       createImageList(editor, (imageList) => {
@@ -1096,8 +1100,8 @@
                 },
               ],
               items,
-            ]),
-          ),
+            ])
+          )
         );
       });
     });
@@ -1114,7 +1118,7 @@
     const hasAccessibilityOptions = showAccessibilityOptions(editor);
     const automaticUploads = isAutomaticUploadsEnabled(editor);
     const prependURL = Optional.some(getPrependUrl(editor)).filter(
-      (preUrl) => isString(preUrl) && preUrl.length > 0,
+      (preUrl) => isString(preUrl) && preUrl.length > 0
     );
     return futureImageList.then((imageList) => ({
       image,
@@ -1216,7 +1220,7 @@
       [
         {
           ...getDialogContainerType(
-            info.classList.isSome() && info.hasImageCaption,
+            info.classList.isSome() && info.hasImageCaption
           ),
           items: flatten([
             classList.toArray(),
@@ -1477,7 +1481,7 @@
             api.unblock();
           }
         });
-      },
+      }
     );
   };
   const changeHandler = (helpers, info, state) => (api, evt) => {
@@ -1526,7 +1530,7 @@
     editor.execCommand(
       "mceUpdateImage",
       false,
-      toImageData(finalData, info.hasAccessibilityOptions),
+      toImageData(finalData, info.hasAccessibilityOptions)
     );
     editor.editorUpload.uploadImagesAuto();
     api.close();
@@ -1542,7 +1546,7 @@
         (dimensions) => ({
           width: String(dimensions.width),
           height: String(dimensions.height),
-        }),
+        })
       );
     }
   };
@@ -1580,7 +1584,7 @@
           return Promise.reject(
             (_a = results[0].error) === null || _a === void 0
               ? void 0
-              : _a.message,
+              : _a.message
           );
         } else {
           return results[0];
@@ -1598,7 +1602,7 @@
       uploadImage: uploadImage(editor),
     };
     const open = () => {
-      return editor.fire('openFileExplorer', {});
+      return editor.fire("openFileExplorer", {});
       collect(editor)
         .then((info) => {
           const state = createState(info);
@@ -1626,7 +1630,7 @@
             onClose: closeHandler(state),
             onAction: (dialogApi, details) => {
               if (details.name === "file-explorer") {
-                editor.fire('openFileExplorer', {data: 123});
+                editor.fire("openFileExplorer", { data: 123 });
               }
             },
           };
@@ -1665,7 +1669,7 @@
       editor.parser.addNodeFilter("figure", toggleContentEditableState(true));
       editor.serializer.addNodeFilter(
         "figure",
-        toggleContentEditableState(false),
+        toggleContentEditableState(false)
       );
     });
   };
@@ -1679,7 +1683,7 @@
         buttonApi.setActive(isNonNullable(getSelectedImage(editor)));
         return editor.selection.selectorChangedWithUnbind(
           "img:not([data-mce-object]):not([data-mce-placeholder]),figure.image",
-          buttonApi.setActive,
+          buttonApi.setActive
         ).unbind;
       },
     });
