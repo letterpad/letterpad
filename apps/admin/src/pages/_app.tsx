@@ -1,18 +1,18 @@
 import { ApolloProvider } from "@apollo/client";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import React, { createContext } from "react";
+import React from "react";
 import "lazysizes";
 
+import "ui/tailwind/base.css";
 import "../../public/css/globals.css";
+import "../../public/css/grammar-tooltip.css";
+import "ui/tailwind/editor.css";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
 import Main from "@/components/main";
-import {
-  Responsive,
-  ResponsiveProvider,
-} from "@/components_v2/layouts/responsiveProvider";
+import { ResponsiveProvider } from "@/components_v2/layouts/responsiveProvider";
 
 import { basePath } from "@/constants";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";

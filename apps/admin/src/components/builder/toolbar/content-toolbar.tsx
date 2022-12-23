@@ -1,12 +1,12 @@
 import classNames from "classnames";
+import dynamic from "next/dynamic";
 import { FC, ReactNode } from "react";
 
-import dynamic from "next/dynamic";
-import { useBuilderContext } from "../context";
-import { BlockItem } from "../types";
 import { ColorPicker } from "./color";
 import { Reset } from "./helpers";
 import { IconDelete, IconImage } from "./icons";
+import { useBuilderContext } from "../context";
+import { BlockItem } from "../types";
 
 const ReactStickyBox = dynamic(() => import("react-sticky-box"), {
   ssr: false,

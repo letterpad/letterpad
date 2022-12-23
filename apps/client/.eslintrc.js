@@ -8,6 +8,6 @@ module.exports = {
     es6: true,
   },
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': 'off',
   },
 };

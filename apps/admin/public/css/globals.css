@@ -1,29 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-  .icon-class {
-    @apply border border-gray-200 bg-white py-2 px-4 text-sm font-medium text-blue-700 hover:bg-gray-100 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white dark:focus:text-white dark:focus:ring-blue-500;
-  }
-  .icon-class-1 {
-    @apply py-2 px-4 hover:text-blue-400;
-  }
-  .button {
-    @apply rounded-md px-2 py-1 text-center text-sm font-medium focus:outline-none focus:ring-4 focus:ring-blue-300;
-  }
-  .btn-success {
-    @apply bg-green-700 text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
-  }
-  .creatives-cta {
-    @apply mr-2 mb-2 rounded-md bg-blue-700 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
-  }
-}
-
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-
-@import url("./editor-mini.css");
-@import url("./buttons.css");
 [data-color-scheme="dark"] {
   color-scheme: dark;
 }
@@ -31,32 +6,24 @@
 [data-color-scheme="light"] {
   color-scheme: light;
 }
-html,
-body {
-  padding: 0 !important;
-  margin: 0 !important;
+html:not(.prose),
+body:not(.prose) {
+  padding: 0;
+  margin: 0;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
-  font-size: 0.9rem !important;
-  color: rgba(var(--color), 0.8) !important;
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: rgba(var(--color), 0.8);
   min-height: 100vh;
-  padding: 0px !important;
+  padding: 0px;
 }
-p,
-i,
-a {
+/* p:not(.prose *),
+i:not(.prose *),
+a:not(.prose *) {
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 0.9rem;
-}
-.ant-layout {
-  min-height: 100vh;
-}
+} */
 
-.dark .ant-modal-content,
-.dark .ant-modal-header {
-  background: rgba(var(--content-bg), 1);
-}
 html.no-transitions * {
   animation-duration: 0s !important;
 }
@@ -148,14 +115,6 @@ a {
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-@media (max-width: 900px) {
-  .register .ant-form-item {
-    margin-bottom: 12px;
-  }
-  .register .ant-form-item-label {
-    padding-bottom: 0px;
   }
 }
 

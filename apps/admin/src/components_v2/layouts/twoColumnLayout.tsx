@@ -22,7 +22,7 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
           className="fixed inset-0 bg-zinc-800 bg-opacity-50 dark:bg-opacity-80"
         ></div>
       )} */}
-      <div className="fixed flex min-h-screen w-full flex-row bg-gray-100 text-gray-800 dark:bg-zinc-900 dark:text-gray-800">
+      <div className="fixed flex min-h-screen w-full flex-row bg-gray-100 dark:bg-zinc-900">
         <aside
           className={classNames(
             "top-0  h-screen min-w-[250px] -translate-x-full transform bg-zinc-900 transition-transform duration-150 ease-in md:sticky  md:shadow",

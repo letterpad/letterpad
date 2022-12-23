@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap');
+@import './creatives.css';
+@import './prism.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.6/tippy.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@300;400;600;700&display=swap');
+
+.prose {
+  .mce-content-body {
+    outline: none;
+  }
+  @media only screen and (max-width: 600px) {
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      line-height: 2.5rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+  p,
+  i,
+  a {
+    margin-top: 21px;
+    line-height: 1.5;
+  }
+  pre {
+    font-size: 0.7em;
+    font-family: 'Roboto Mono', monospace !important;
+    padding: 0.8rem !important;
+    opacity: 0.9;
+  }
+  pre code {
+    background-color: initial;
+  }
+  figure {
+    margin: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+  }
+  figure figcaption {
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 5px 0;
+    width: 100%;
+  }
+
+  a {
+    color: rgb(var(--accent));
+    text-decoration: none;
+  }
+
+  [data-mce-selected='inline-boundary'] {
+    /* color: initial; */
+  }
+  .highlight {
+    color: rgb(221, 79, 79);
+  }
+
+  .mark {
+    /* text-decoration: underline; */
+    cursor: pointer;
+    border-bottom: 3px solid #d932c0;
+  }
+
+  .dark code {
+    color: #88cead;
+  }
+  code {
+    font-family: inherit;
+    background: #4eaa3730;
+    padding: 2px 4px;
+    border-radius: 6px;
+    color: #3b7157;
+  }
+  .mce-offscreen-selection {
+    display: none;
+  }
+  figure img {
+    cursor: pointer;
+  }
+
+  hr {
+    border: 1px solid rgb(var(--color-border));
+  }
+  h2 + figure {
+    margin-top: 1.4rem !important;
+  }
+}

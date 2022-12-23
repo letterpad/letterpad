@@ -8,9 +8,9 @@ import { basePath } from "@/constants";
 
 import { socket } from "./socket";
 import { insertImageInEditor } from "../commands";
-import { initImagePlugin } from "../plugins/image";
 import { textPatterns } from "../textPatterns";
 import { usePostContext } from "../..";
+
 interface Props {
   text: string;
   onChange: (_html: string) => void;
@@ -29,6 +29,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
   const isDark = document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
   const contentLoadedRef = useRef(false);
+
   useEffect(() => {
     return () => {
       socket.disconnect();
@@ -49,13 +50,24 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
   }, [onChange]);
 
   useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.on("openFileExplorer", () => {
+        onMediaBrowse();
+      });
+    }
+    return () => {
+      editorRef.current?.off("openFileExplorer");
+    };
+  }, [onMediaBrowse, editorRef.current]);
+
+  useEffect(() => {
     if (typeof html == "undefined") {
       setHtml(text);
     }
   }, [html, text]);
 
   return (
-    <>
+    <div className="serif prose dark:prose-dark">
       <Editor
         onInit={async (_evt, editor) => {
           if (editor) {
@@ -63,10 +75,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             editorRef.current = editor;
             socket.setEditor(editorRef.current);
             socket.connectSocketAndAddListeners();
-            const className = isDark ? "dark" : "light";
-            const body = editor.getDoc().body;
-            body.classList.remove("dark", "light");
-            body.classList.add(className);
             setHelpers && setHelpers(editor);
             const domBody = editor.getDoc();
             await insertScript("/admin/tippy/popper.min.js", domBody.head);
@@ -98,6 +106,8 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           }
         }}
         init={{
+          inline: true,
+          image_caption: true,
           paste_preprocess: function (pl, o) {
             o.content = o.content
               .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")
@@ -119,16 +129,16 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           socket,
           branding: false,
           plugins:
-            "lists link quickbars autoresize  code codesample directionality wordcount",
+            "lists image link quickbars autoresize  code codesample directionality wordcount",
           skin: "none",
           skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
-          content_css: basePath + "/css/editor.css",
+          // content_css: basePath + "/css/editor.css",
           height: "100%",
           quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
             "h1 h2 mark bold italic underline link nlpcheck nlpremove ltr rtl",
           quickbars_insert_toolbar:
-            "bullist numlist blockquote hr codesample customImage",
+            "bullist numlist blockquote hr codesample customImage image",
           statusbar: false,
           formats: {
             hilitecolor: {
@@ -143,7 +153,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
               .forEach((e) => e.removeAttribute("srcset"));
           },
           setup: function (editor) {
-            initImagePlugin(editor, { onMediaBrowse });
             editor.ui.registry.addButton("mark", {
               icon: "highlight-bg-color",
               onAction: function (_) {
@@ -188,7 +197,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           helpers && insertImageInEditor(helpers, images);
           onFileExplorerClose();
         }}
-        // setUploading={}
       />
       <style jsx global>{`
         .dark iframe {
@@ -206,7 +214,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           display: none !important;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

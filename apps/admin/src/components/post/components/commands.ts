@@ -1,19 +1,22 @@
 import { Editor } from "@tinymce/tinymce-react";
 
 export const insertImageInEditor = (editor: Editor["editor"], images: any) => {
-  images.map((image) => {
-    const range = editor?.selection.getRng();
-    const doc = editor?.getDoc();
-    const newNode = doc?.createElement("figure");
-    newNode?.setAttribute("contenteditable", "false");
-    if (newNode && range) {
-      newNode.innerHTML = `
-            <img src="${image.src}" style="display: block; margin-left: auto; margin-right: auto;">
-            <figcaption contexteditable="false">${image.caption}</figcaption>
-      `;
-      range.insertNode(newNode);
+  images.reverse().map((image, index) => {
+    if (index > 0) {
+      const range = editor?.selection.getRng();
+      const doc = editor?.getDoc();
       const lineBreak = doc?.createElement("br");
-      if (lineBreak) range.insertNode(lineBreak);
+      if (lineBreak) {
+        range?.insertNode(lineBreak);
+        editor?.selection.select(lineBreak);
+      }
     }
+    editor?.execCommand("mceUpdateImage", false, {
+      src: image.src,
+      width: image.width,
+      height: image.height,
+      caption: true,
+      alt: image.caption,
+    });
   });
 };

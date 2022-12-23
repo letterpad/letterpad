@@ -14,7 +14,7 @@ export const Header: FC<Props> = ({ columns }) => {
           return (
             <th
               key={item.key}
-              className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+              className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left font-semibold uppercase tracking-wider text-gray-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               {item.title}
             </th>

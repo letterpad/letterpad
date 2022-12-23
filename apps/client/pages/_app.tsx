@@ -1,9 +1,10 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
+import 'lazysizes';
 
-import '@/css/tailwind.css';
-import '@/css/prism.css';
+import 'ui/tailwind/base.css';
+import 'ui/tailwind/editor.css';
 import '@fontsource/inter/variable-full.css';
 
 import Analytics from '@/components/analytics';

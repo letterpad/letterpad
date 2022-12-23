@@ -1,5 +1,6 @@
 module.exports = {
-  extends: ["next", "turbo", "prettier", "next/core-web-vitals"],
+  // extends: ["next", "turbo", "prettier", "next/core-web-vitals"],
+  extends: ["next", "turbo", "next/core-web-vitals"],
   globals: {
     React: true,
     JSX: true,
@@ -73,6 +74,6 @@ module.exports = {
   plugins: [
     "@typescript-eslint",
     "simple-import-sort",
-    "eslint-plugin-prettier",
+    // "eslint-plugin-prettier",
   ],
 };

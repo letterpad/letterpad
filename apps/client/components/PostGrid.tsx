@@ -34,7 +34,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                       <Image src={cover_image.src ?? ''} layout="fill" alt={title} />
                     </span>
                   </div>
-                  <div className="h-52 py-4 px-2 md:px-0">
+                  <div className="h-44 py-4 px-2 md:px-0">
                     <span className="inline-flex w-full items-center justify-between">
                       <span className="flex items-center gap-1 text-xs">
                         <IconBook />
@@ -46,7 +46,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                       </time>
                     </span>
 
-                    <h2 className="mt-2 mb-2 font-bold md:text-base">{title}</h2>
+                    <h2 className="mt-2 mb-2 font-bold">{title}</h2>
                     <p className="text-sm tracking-wider text-gray-600 dark:text-gray-300">
                       {excerpt}
                     </p>
@@ -58,7 +58,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                       <Link
                         href={`/tag/${kebabCase(name)}`}
                         key={name}
-                        className="mr-1 inline-block  text-xs font-medium text-gray-400"
+                        className="mr-1 inline-block text-sm font-medium text-gray-400"
                       >
                         #{name.split(' ').join('-')}
                       </Link>

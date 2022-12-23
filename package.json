@@ -10,6 +10,7 @@
     "build": "turbo run build --parallel --cache-dir=.turbo",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "e2e:ci": "turbo run e2e:ci",
@@ -21,11 +22,19 @@
     "seed": "turbo run seed"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@tailwindcss/typography": "^0.5.8",
+    "autoprefixer": "^10.4.13",
     "eslint-config-custom": "*",
-    "husky": "^8.0.1",
+    "husky": "^8.0.2",
+    "postcss": "^8.4.20",
+    "postcss-import": "^15.1.0",
     "prettier": "latest",
+    "prettier-plugin-tailwindcss": "^0.1.7",
     "react-dom": "^18.2.0",
     "react-parallax": "^3.5.1",
+    "tailwindcss": "^3.2.4",
     "ts-prune": "^0.10.3",
     "turbo": "latest"
   },
@@ -38,6 +47,7 @@
   "packageManager": "yarn@1.22.19",
   "dependencies": {
     "axios": "^1.2.0",
+    "lazysizes": "^5.3.2",
     "react-icons": "^4.6.0"
   }
 }
