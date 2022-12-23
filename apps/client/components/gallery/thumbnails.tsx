@@ -7,7 +7,9 @@ interface Props<T> {
   index: number;
 }
 
-export const ThumbnailList = <T extends { src: string; description?: string; caption?: string }>({
+export const ThumbnailList = <
+  T extends { src: string; description?: string; caption?: string }
+>({
   items,
   onSelect,
   index,

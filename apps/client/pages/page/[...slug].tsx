@@ -3,7 +3,10 @@ import { InferGetServerSidePropsType } from 'next';
 import { meFragment, pageFragment, settingsFragment } from 'queries/queries';
 
 import { fetchProps } from '@/lib/client';
-import { PageQueryWithHtmlQuery, PageQueryWithHtmlQueryVariables } from '@/lib/graphql';
+import {
+  PageQueryWithHtmlQuery,
+  PageQueryWithHtmlQueryVariables,
+} from '@/lib/graphql';
 
 import Creative from '@/layouts/Creative';
 import PostLayout from '@/layouts/PostLayout';
@@ -44,7 +47,14 @@ export default function Blog({
     post.page_type === 'story-builder' &&
     settings.__typename === 'Setting'
   ) {
-    return <Creative data={post} site_name={settings.site_title} settings={settings} me={me} />;
+    return (
+      <Creative
+        data={post}
+        site_name={settings.site_title}
+        settings={settings}
+        me={me}
+      />
+    );
   }
   if (post.__typename === 'Post' && settings.__typename === 'Setting') {
     return (
@@ -57,7 +67,10 @@ export default function Blog({
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<PageQueryWithHtmlQuery, PageQueryWithHtmlQueryVariables>(
+  const response = await fetchProps<
+    PageQueryWithHtmlQuery,
+    PageQueryWithHtmlQueryVariables
+  >(
     pageQueryWithHtml,
     {
       slug: context.params.slug.join('/'),

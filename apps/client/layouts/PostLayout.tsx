@@ -52,7 +52,17 @@ export default function PostLayout({ data, next, prev, children }: Props) {
     return null;
   }
 
-  const { slug, publishedAt, title, excerpt, updatedAt, cover_image, tags, author, type } = post;
+  const {
+    slug,
+    publishedAt,
+    title,
+    excerpt,
+    updatedAt,
+    cover_image,
+    tags,
+    author,
+    type,
+  } = post;
   if (author?.__typename !== 'Author') return null;
   const authorDetails = [
     {
@@ -83,7 +93,9 @@ export default function PostLayout({ data, next, prev, children }: Props) {
         lastmod={updatedAt}
         images={cover_image.src ? [cover_image.src] : []}
         slug={slug ?? ''}
-        tags={tags?.__typename === 'TagsNode' ? tags.rows.map((t) => t.name) : []}
+        tags={
+          tags?.__typename === 'TagsNode' ? tags.rows.map((t) => t.name) : []
+        }
         fileName={title}
         canonicalUrl={postUrl}
         site_name={settings.site_title}
@@ -92,7 +104,11 @@ export default function PostLayout({ data, next, prev, children }: Props) {
       <div className="mx-auto flex max-w-4xl  justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-6'}>
-            <address className={'mb-6 flex items-center not-italic ' + (isPage && ' hidden')}>
+            <address
+              className={
+                'mb-6 flex items-center not-italic ' + (isPage && ' hidden')
+              }
+            >
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
                 {author.avatar && (
                   <div className="mr-4">
@@ -126,7 +142,8 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                     {author.occupation}
                   </p>
                   <p className="flex text-sm font-light text-gray-500 dark:text-gray-400">
-                    <time title={printPublishedAt}>{printPublishedAt}</time> &nbsp;•&nbsp;
+                    <time title={printPublishedAt}>{printPublishedAt}</time>{' '}
+                    &nbsp;•&nbsp;
                     <span className="flex items-center gap-1">
                       <IconBook />
                       {post.stats?.reading_time} min read
@@ -152,7 +169,9 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               Listen <Speak html={post.html ?? ''} />
             </div>
           </header>
-          <div className="content prose pb-8 pt-4 dark:prose-dark">{children}</div>
+          <div className="content prose pb-8 pt-4 dark:prose-dark">
+            {children}
+          </div>
 
           <div
             className={
@@ -180,7 +199,9 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               >
                 {author.name}
               </a>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">{author.bio}</p>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                {author.bio}
+              </p>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400"></p>
             </div>
           </div>

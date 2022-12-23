@@ -23,13 +23,27 @@ export default function Footer({ author, settings }) {
         <div className="flex flex-col items-center  sm:mt-0 sm:items-end">
           <div className="mb-3 flex space-x-4">
             {settings.site_email && (
-              <SocialIcon kind="mail" href={`mailto:${settings.site_email}`} size={6} />
+              <SocialIcon
+                kind="mail"
+                href={`mailto:${settings.site_email}`}
+                size={6}
+              />
             )}
-            {social.github && <SocialIcon kind="github" href={social.github} size={6} />}
-            {social.facebook && <SocialIcon kind="facebook" href={social.facebook} size={6} />}
-            {social.youtube && <SocialIcon kind="youtube" href={social.youtube} size={6} />}
-            {social.linkedin && <SocialIcon kind="linkedin" href={social.linkedin} size={6} />}
-            {social.twitter && <SocialIcon kind="twitter" href={social.twitter} size={6} />}
+            {social.github && (
+              <SocialIcon kind="github" href={social.github} size={6} />
+            )}
+            {social.facebook && (
+              <SocialIcon kind="facebook" href={social.facebook} size={6} />
+            )}
+            {social.youtube && (
+              <SocialIcon kind="youtube" href={social.youtube} size={6} />
+            )}
+            {social.linkedin && (
+              <SocialIcon kind="linkedin" href={social.linkedin} size={6} />
+            )}
+            {social.twitter && (
+              <SocialIcon kind="twitter" href={social.twitter} size={6} />
+            )}
           </div>
         </div>
         <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-300">
@@ -42,7 +56,10 @@ export default function Footer({ author, settings }) {
           </div>
           <div>{` • `}</div>
           <div>
-            <Link href="https://github.com/letterpad/letterpad" className="link">
+            <Link
+              href="https://github.com/letterpad/letterpad"
+              className="link"
+            >
               Open Source
             </Link>
           </div>

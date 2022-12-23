@@ -42,7 +42,14 @@ export default function Blog({
   }
   if (post.author?.__typename !== 'Author') return null;
   if (post.page_type === 'zigzag') {
-    return <Creative data={post} site_name={settings.site_title} settings={settings} me={me} />;
+    return (
+      <Creative
+        data={post}
+        site_name={settings.site_title}
+        settings={settings}
+        me={me}
+      />
+    );
   }
   return (
     <PostLayout data={{ post, settings, me }}>
@@ -52,7 +59,10 @@ export default function Blog({
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<PreviewQueryQuery, PreviewQueryQueryVariables>(
+  const response = await fetchProps<
+    PreviewQueryQuery,
+    PreviewQueryQueryVariables
+  >(
     previewQuery,
     { previewHash: context.params.hash },
     context.req.headers.host

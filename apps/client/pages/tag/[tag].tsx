@@ -1,6 +1,11 @@
 import gql from 'graphql-tag';
 import { InferGetServerSidePropsType } from 'next';
-import { meFragment, postsFragment, settingsFragment, tagsFragment } from 'queries/queries';
+import {
+  meFragment,
+  postsFragment,
+  settingsFragment,
+  tagsFragment,
+} from 'queries/queries';
 
 import { fetchProps } from '@/lib/client';
 import { TagPostsQueryQuery, TagPostsQueryQueryVariables } from '@/lib/graphql';
@@ -58,11 +63,10 @@ export default function Tag({
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<TagPostsQueryQuery, TagPostsQueryQueryVariables>(
-    tagsQuery,
-    { tagSlug: context.params.tag },
-    context.req.headers.host
-  );
+  const response = await fetchProps<
+    TagPostsQueryQuery,
+    TagPostsQueryQueryVariables
+  >(tagsQuery, { tagSlug: context.params.tag }, context.req.headers.host);
   return {
     props: { ...response.props.data, tagName: context.params.tag },
   };

@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 
-import { MeFragment, PageFragmentFragment, SettingsFragment } from '@/lib/graphql';
+import {
+  MeFragment,
+  PageFragmentFragment,
+  SettingsFragment,
+} from '@/lib/graphql';
 import formatDate from '@/lib/utils/formatDate';
 
 import { IconBook } from '@/components/icons';
@@ -20,10 +24,20 @@ interface Props {
   settings: SettingsFragment['settings'];
   me: MeFragment['me'];
 }
-export default function PostSimple({ site_name, data, next, prev, children, settings, me }: Props) {
-  const { slug, publishedAt, title, excerpt, updatedAt, cover_image, tags } = data;
+export default function PostSimple({
+  site_name,
+  data,
+  next,
+  prev,
+  children,
+  settings,
+  me,
+}: Props) {
+  const { slug, publishedAt, title, excerpt, updatedAt, cover_image, tags } =
+    data;
   if (settings.__typename !== 'Setting') return null;
-  if (me?.__typename !== 'Author' || data.author?.__typename !== 'Author') return null;
+  if (me?.__typename !== 'Author' || data.author?.__typename !== 'Author')
+    return null;
   const authorDetails = [
     {
       name: data.author.name,
@@ -49,7 +63,9 @@ export default function PostSimple({ site_name, data, next, prev, children, sett
         lastmod={updatedAt}
         images={cover_image.src ? [cover_image.src] : []}
         slug={slug ?? ''}
-        tags={tags?.__typename === 'TagsNode' ? tags.rows.map((t) => t.name) : []}
+        tags={
+          tags?.__typename === 'TagsNode' ? tags.rows.map((t) => t.name) : []
+        }
         fileName={title}
         site_name={site_name}
         authorDetails={authorDetails}
@@ -64,7 +80,9 @@ export default function PostSimple({ site_name, data, next, prev, children, sett
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                     <IconBook />
-                    <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
+                    <time dateTime={publishedAt}>
+                      {formatDate(publishedAt)}
+                    </time>
                   </dd>
                 </div>
               </dl>
@@ -78,7 +96,9 @@ export default function PostSimple({ site_name, data, next, prev, children, sett
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
+              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">
+                {children}
+              </div>
             </div>
             {/* <Comments frontMatter={frontMatter} /> */}
             <footer>

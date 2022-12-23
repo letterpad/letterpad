@@ -1,7 +1,12 @@
 import gql from 'graphql-tag';
 import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-import { meFragment, pageQuery, postsQuery, settingsFragment } from 'queries/queries';
+import {
+  meFragment,
+  pageQuery,
+  postsQuery,
+  settingsFragment,
+} from 'queries/queries';
 
 import { fetchProps, PageProps } from '@/lib/client';
 import {
@@ -49,7 +54,12 @@ export default function Home({
     <>
       <Head>
         {settings.site_favicon.src && (
-          <link rel="icon" type="image/png" sizes="32x32" href={settings.site_favicon.src} />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href={settings.site_favicon.src}
+          />
         )}
       </Head>
       <PageSEO
@@ -69,7 +79,9 @@ export default function Home({
             <SectionContainer>
               <div className="py-10">
                 <PageTitle>{me.name}</PageTitle>
-                <p className="text-center text-lg leading-7">{settings.site_description}</p>
+                <p className="text-center text-lg leading-7">
+                  {settings.site_description}
+                </p>
               </div>
             </SectionContainer>
           </div>
@@ -84,19 +96,37 @@ export default function Home({
         <SectionContainer>
           {posts?.__typename === 'Exception' ? 'No posts found.' : ''}
           {posts?.__typename === 'PostsNode' && posts.rows.length === 0 && (
-            <span className="py-16 text-gray-400">Hi, my name is {me.name}!</span>
+            <span className="py-16 text-gray-400">
+              Hi, my name is {me.name}!
+            </span>
           )}
 
-          {!isPage && posts.__typename === 'PostsNode' && <Component posts={posts} />}
-          {isPage && page.__typename === 'Post' && page.page_type === 'default' && (
-            <PostSimple data={page} site_name={settings.site_title} settings={settings} me={me}>
-              <div dangerouslySetInnerHTML={{ __html: page.html }}></div>
-            </PostSimple>
+          {!isPage && posts.__typename === 'PostsNode' && (
+            <Component posts={posts} />
           )}
+          {isPage &&
+            page.__typename === 'Post' &&
+            page.page_type === 'default' && (
+              <PostSimple
+                data={page}
+                site_name={settings.site_title}
+                settings={settings}
+                me={me}
+              >
+                <div dangerouslySetInnerHTML={{ __html: page.html }}></div>
+              </PostSimple>
+            )}
         </SectionContainer>
-        {isPage && page.__typename === 'Post' && page.page_type !== 'default' && (
-          <Creative data={page} site_name={settings.site_title} settings={settings} me={me} />
-        )}
+        {isPage &&
+          page.__typename === 'Post' &&
+          page.page_type !== 'default' && (
+            <Creative
+              data={page}
+              site_name={settings.site_title}
+              settings={settings}
+              me={me}
+            />
+          )}
       </div>
     </>
   );
@@ -150,7 +180,8 @@ export async function getServerSideProps(context: any) {
     };
   }
   const firstItemOfMenu = menu[0];
-  const isHomePageACollectionOfPosts = firstItemOfMenu.type === NavigationType.Tag;
+  const isHomePageACollectionOfPosts =
+    firstItemOfMenu.type === NavigationType.Tag;
   const isHomePageASinglePage = firstItemOfMenu.type === NavigationType.Page;
 
   const result = {

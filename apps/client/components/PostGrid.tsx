@@ -19,7 +19,15 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
       <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-2 xl:grid-cols-3">
         {posts.__typename === 'PostsNode' &&
           posts.rows.map((post) => {
-            const { slug, publishedAt, title, tags, excerpt, cover_image, stats } = post;
+            const {
+              slug,
+              publishedAt,
+              title,
+              tags,
+              excerpt,
+              cover_image,
+              stats,
+            } = post;
             return (
               <div
                 key={slug}
@@ -31,7 +39,11 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                 >
                   <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
                     <span>
-                      <Image src={cover_image.src ?? ''} layout="fill" alt={title} />
+                      <Image
+                        src={cover_image.src ?? ''}
+                        layout="fill"
+                        alt={title}
+                      />
                     </span>
                   </div>
                   <div className="h-44 py-4 px-2 md:px-0">

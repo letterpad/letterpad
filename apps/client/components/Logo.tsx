@@ -7,7 +7,13 @@ interface Logo {
   height?: number | null;
 }
 
-export const LogoWithTitle = ({ logo, title }: { logo?: Logo | null; title: string }) => {
+export const LogoWithTitle = ({
+  logo,
+  title,
+}: {
+  logo?: Logo | null;
+  title: string;
+}) => {
   const logoProps = getLogoWidthAndHeight({ ...logo, title });
   const { className, ...props } = logoProps;
   const hasTitle = typeof title === 'string';
@@ -49,7 +55,12 @@ function getLogoWidthAndHeight({ width, height, src, title = '' }: Props2) {
   }
   if (ratio < 1) {
     const ratio = width / height;
-    return { width: 40, height: 40 / ratio, src, className: 'flex-row items-left ' };
+    return {
+      width: 40,
+      height: 40 / ratio,
+      src,
+      className: 'flex-row items-left ',
+    };
   }
   return { classname: '', width, height, src };
 }

@@ -23,7 +23,14 @@ export default function About({
   if (me?.__typename !== 'Author') return <div>Author not found</div>;
   if (settings.__typename !== 'Setting') return <div>Setting not found</div>;
 
-  const { name, social, avatar = '/static/images/avatar.png', bio, occupation, company_name } = me;
+  const {
+    name,
+    social,
+    avatar = '/static/images/avatar.png',
+    bio,
+    occupation,
+    company_name,
+  } = me;
   const { site_email } = settings;
   return (
     <AuthorLayout
