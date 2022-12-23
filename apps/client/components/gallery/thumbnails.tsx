@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 
 interface Props<T> {
   items: T[];
-  onSelect: (index: number) => void;
+  onSelect: (_index: number) => void;
   index: number;
 }
 

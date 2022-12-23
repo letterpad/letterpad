@@ -12,7 +12,7 @@ interface CorrectionOffset {
 type CorrectionOffsetList = { [offset: string]: CorrectionOffset };
 
 export interface GrammarBase {
-  activateListeners(html: Document, onChange: () => void): void;
+  activateListeners(html: HTMLElement, onChange: () => void): void;
   getSuggestedHtml(html: string, correction: LanguageResponse): string;
 }
 
@@ -22,7 +22,7 @@ export default class Grammar implements GrammarBase {
   output = "";
   onChange = () => null;
 
-  public activateListeners(document: Document, onChange) {
+  public activateListeners(document: HTMLElement, onChange) {
     this.handleSuggestionClick(document);
     this.handleIgnoreSuggestionClick(document);
     this.onChange = onChange;
@@ -115,7 +115,7 @@ export default class Grammar implements GrammarBase {
     };
   }
 
-  private handleIgnoreSuggestionClick(dom: Document) {
+  private handleIgnoreSuggestionClick(dom: HTMLElement) {
     //@ts-ignore
     window.ignoreSuggestion = (offset: number, tooltipEle: HTMLElement) => {
       const markedEle = dom.querySelector(`[data-offset-start='${offset}']`);

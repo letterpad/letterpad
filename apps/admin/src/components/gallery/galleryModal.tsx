@@ -7,7 +7,7 @@ import { BlockMasonry } from "../builder/types";
 
 interface Props {
   items: BlockMasonry[];
-  onSelect: (index: number) => void;
+  onSelect: (_index: number) => void;
   index: number;
   onClose: () => void;
 }

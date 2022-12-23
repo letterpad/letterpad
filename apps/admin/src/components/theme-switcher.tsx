@@ -38,7 +38,7 @@ const ThemeSwitcher = () => {
         {theme === "dark" ? (
           <BiSun fill="#fff" size={20} />
         ) : (
-          <BsMoonStars size={20} />
+          <BsMoonStars size={16} />
         )}
       </div>
 

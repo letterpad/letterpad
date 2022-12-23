@@ -34,7 +34,7 @@ export const GalleryModal: FC<Props> = ({
     const height = isPortrait ? maxH : 800;
     setItem(items[index]);
     setSize([width, height]);
-  }, [index]);
+  }, [index, items]);
 
   if (index < 0 || !item) return null;
   return (
