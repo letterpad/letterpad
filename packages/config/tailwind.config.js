@@ -28,26 +28,28 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        serif: ['Source Serif Pro', ...defaultTheme.fontFamily.serif],
+        serif: [...defaultTheme.fontFamily.serif,'Source Serif Pro'],
         // serif: ['sans-serif', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
-        xs: '.85rem',
-        sm: '0.95rem',
-        tiny: '.9rem',
+        xs: '.7rem',
+        sm: '.8rem',
+        base: '.85rem',
+        md: '.9',
         lg: '1.3rem',
-        base: '1.1rem',
+        prose: '1.2rem'
       },
       colors: {
         primary: colors.green,
-        //@ts-ignore
-        gray: colors.neutral, // TODO: Remove ts-ignore after tw types gets updated to v3
+        gray: colors.slate
       },
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            fontSize: theme('fontSize.base'),
+            fontSize: theme('fontSize.prose'),
             color: theme('colors.gray.700'),
+            fontFamily: theme('fontFamily.serif'),
+            maxWidth: 'inherit',
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {
@@ -75,9 +77,9 @@ module.exports = {
             'h4,h5,h6': {
               color: theme('colors.gray.900'),
             },
-            pre: {
-              backgroundColor: theme('colors.gray.800'),
-            },
+            // pre: {
+            //   backgroundColor: theme('colors.gray.800'),
+            // },
             code: {
               color: '#3b7157',
               backgroundColor: '#4eaa3730',
@@ -120,6 +122,9 @@ module.exports = {
               color: theme('colors.gray.900'),
               borderLeftColor: theme('colors.green.600'),
             },
+            'figcaption a': {
+              color: theme('colors.green.500'),
+            }
           },
         },
         dark: {
@@ -149,9 +154,9 @@ module.exports = {
             'h4,h5,h6': {
               color: theme('colors.gray.100'),
             },
-            pre: {
-              backgroundColor: theme('colors.gray.900'),
-            },
+            // pre: {
+            //   backgroundColor: theme('colors.gray.900'),
+            // },
             code: {
               color: '#88cead',
             },

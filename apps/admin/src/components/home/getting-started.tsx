@@ -55,7 +55,6 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
           </span>
         </PageHeader>
         <div
-          className="site-layout-background "
           style={{
             fontSize: "1rem",
             padding: "40px 20px",
