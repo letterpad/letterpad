@@ -71,7 +71,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           }
         />
       )}
-      <div className="w-full">
+      <div className="w-full text-center">
         {isText && !isFirstRow && (
           <SectionText
             columns={columns}

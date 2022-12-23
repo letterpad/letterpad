@@ -667,7 +667,11 @@
       const figure = DOM.create("figure", { class: "image" });
       figure.appendChild(image);
       figure.appendChild(
-        DOM.create("figcaption", { contentEditable: "true" }, data.alt || "caption"),
+        DOM.create(
+          "figcaption",
+          { contentEditable: "true" },
+          data.alt || "caption",
+        ),
       );
       figure.contentEditable = "false";
       return figure;
@@ -1598,7 +1602,7 @@
       uploadImage: uploadImage(editor),
     };
     const open = () => {
-      return editor.fire('openFileExplorer', {});
+      return editor.fire("openFileExplorer", {});
       collect(editor)
         .then((info) => {
           const state = createState(info);
@@ -1626,7 +1630,7 @@
             onClose: closeHandler(state),
             onAction: (dialogApi, details) => {
               if (details.name === "file-explorer") {
-                editor.fire('openFileExplorer', {data: 123});
+                editor.fire("openFileExplorer", { data: 123 });
               }
             },
           };

@@ -1,6 +1,7 @@
-import { ResolverContext } from "@/graphql/context";
 import { prisma } from "@/lib/prisma";
+
 import { PostStatusOptions, QueryResolvers } from "@/__generated__/__types__";
+import { ResolverContext } from "@/graphql/context";
 
 const Query: QueryResolvers<ResolverContext> = {
   feed: async (_root, _args, { client_author_id, prisma, session }) => {
