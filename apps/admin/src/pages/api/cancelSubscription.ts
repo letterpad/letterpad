@@ -6,7 +6,7 @@ import { NextApiRequestWithFormData } from "./../../graphql/types";
 
 const CancelSubscription = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   try {
     const subscription_id = req.body.subscription_id as string;

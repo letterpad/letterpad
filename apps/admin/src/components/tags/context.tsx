@@ -45,7 +45,7 @@ export const TagsProvider: React.FC<{
   const [editTagId, setEditTagId] = useState<React.Key | null>(null);
   const computedTags = useMemo(
     () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
-    [data],
+    [data]
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -56,7 +56,7 @@ export const TagsProvider: React.FC<{
           ...item,
           key: item.name,
           posts: item.posts?.__typename === "PostsNode" ? item.posts.count : 0,
-        })),
+        }))
       );
     }
   }, [computedTags, loading]);
@@ -69,7 +69,7 @@ export const TagsProvider: React.FC<{
       }
       setTags([...tags].filter((item) => item.key !== key));
     },
-    [deleteTagsMutation, tags],
+    [deleteTagsMutation, tags]
   );
 
   const editTag = useCallback(async (key: React.Key) => {
@@ -103,7 +103,7 @@ export const TagsProvider: React.FC<{
       if (newData) setTags(newData);
       setEditTagId(null);
     },
-    [tags, updateTagsMutation],
+    [tags, updateTagsMutation]
   );
 
   const addTag = useCallback(() => {
@@ -127,7 +127,7 @@ export const TagsProvider: React.FC<{
         saveTag,
         headers: getHeaders({ tags, deleteTag, editTag }),
       }),
-      [addTag, deleteTag, editTag, loading, saveTag, tags, updateTagsMutation],
+      [addTag, deleteTag, editTag, loading, saveTag, tags, updateTagsMutation]
     );
 
   const tagToBeEdited = tags.filter((item) => item.key === editTagId).pop();

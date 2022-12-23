@@ -38,7 +38,7 @@ export const SectionText: FC<Props> = ({
         type: item?.type ?? "text",
       },
       rowIndex,
-      colIndex,
+      colIndex
     );
   };
   if (item.type === "image") return null;

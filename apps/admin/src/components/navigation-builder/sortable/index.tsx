@@ -58,7 +58,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    }),
+    })
   );
 
   const handleDragEnd = (result) => {
@@ -68,7 +68,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
     }
     if (active.id !== over.id) {
       const oldIndex = libraries.findIndex(
-        (library) => library.id === active.id,
+        (library) => library.id === active.id
       );
       const newIndex = libraries.findIndex((library) => library.id === over.id);
       updateLibraries(arrayMove(libraries, oldIndex, newIndex));
@@ -94,7 +94,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
 
   const onItemChange = (change: IMenuWithError) => {
     const modified = libraries.map((item) =>
-      item.id === change.id ? change : item,
+      item.id === change.id ? change : item
     );
     updateLibraries(modified);
   };

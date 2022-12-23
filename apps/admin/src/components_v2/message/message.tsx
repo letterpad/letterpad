@@ -27,7 +27,7 @@ export const Message = () => {
 };
 
 const Display = (
-  props: DisplayProps & { displayType?: "modal" | "message" },
+  props: DisplayProps & { displayType?: "modal" | "message" }
 ) => {
   const { displayType, duration, title, ...rest } = props;
 
@@ -37,6 +37,6 @@ const Display = (
       onConfirm={() => {
         clearText(0);
       }}
-    />,
+    />
   );
 };

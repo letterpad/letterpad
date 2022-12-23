@@ -72,13 +72,13 @@ export const Buttonv2 = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>(
           classes.variant[variant],
           pill && classes.pill,
           disabled && classes.disabled,
-          className,
+          className
         )}
         {...rest}
       >
         {children}
       </button>
     );
-  },
+  }
 );
 Buttonv2.displayName = "Button";

@@ -220,7 +220,7 @@ async function resetDemo() {
           password: cloneData.authors["demo@demo.com"].password,
           role_id: cloneData.authors["demo@demo.com"].role_id.toString(),
         },
-      },
+      }
     );
   } catch (e: any) {
     logger.error(e);

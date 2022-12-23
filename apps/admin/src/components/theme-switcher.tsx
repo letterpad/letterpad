@@ -23,7 +23,7 @@ const ThemeSwitcher = () => {
         eventLabel: `theme.switcher - ${color}`,
       });
     },
-    [theme],
+    [theme]
   );
 
   useEffect(() => {

@@ -12,7 +12,7 @@ interface IOptions {
 export async function uploadToCloudinary(
   file: BlobCorrected,
   uploadPath: string,
-  options: IOptions,
+  options: IOptions
 ): Promise<IMediaUploadResult> {
   Cloudinary.v2.config(options);
 
@@ -42,7 +42,7 @@ export async function uploadToCloudinary(
               error: error?.message,
               name: "",
             });
-      },
+      }
     );
   });
 }

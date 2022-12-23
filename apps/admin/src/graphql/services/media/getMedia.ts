@@ -5,7 +5,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getMedia = async (
   args: QueryMediaArgs,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["MediaNode"]> => {
   if (!session?.user.id) {
     return {

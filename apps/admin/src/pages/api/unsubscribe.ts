@@ -11,7 +11,7 @@ import { UnsubscribeToken } from "@/types";
 
 const Unsubscribe = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   try {
     const isValidToken = verifyToken(req.query.token as string);
@@ -29,7 +29,7 @@ const Unsubscribe = async (
       return res.redirect(basePath + "/messages/unsubscribed");
     } else {
       return res.redirect(
-        basePath + "/messages/unsubscribed?msg=Email not found in the system.",
+        basePath + "/messages/unsubscribed?msg=Email not found in the system."
       );
     }
   } catch (e: any) {

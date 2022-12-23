@@ -6,7 +6,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const deleteTags = async (
   args: MutationDeleteTagsArgs,
-  { session, prisma }: ResolverContext,
+  { session, prisma }: ResolverContext
 ): Promise<ResolversTypes["DeleteTagsResponse"]> => {
   if (!args.name) {
     return {

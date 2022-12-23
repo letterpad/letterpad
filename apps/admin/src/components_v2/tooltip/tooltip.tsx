@@ -53,7 +53,7 @@ export const Tooltip = ({
         getReferenceProps({
           ref: reference,
           ...children.props,
-        }),
+        })
       )}
       <FloatingPortal id="tooltip-portal">
         {flag && !disabled && (

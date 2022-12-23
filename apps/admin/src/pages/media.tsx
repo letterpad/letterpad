@@ -38,7 +38,7 @@ const Media = () => {
     if (res?.__typename === "MediaUpdateResult") {
       Message().success({ content: "Updated", duration: 3 });
       const updateSrc = images.rows.map((item) =>
-        item.id === img.id ? { ...img } : item,
+        item.id === img.id ? { ...img } : item
       );
       setImages({ ...images, rows: updateSrc });
     }

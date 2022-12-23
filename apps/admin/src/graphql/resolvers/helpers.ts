@@ -13,7 +13,7 @@ const slugOfUntitledPost = "untitled";
 export async function slugify(
   PostModel: Prisma.PostDelegate<false>,
   slug: string = slugOfUntitledPost,
-  author_id: number,
+  author_id: number
 ): Promise<string> {
   slug = textToSlug(slug);
   const result = await PostModel.findFirst({
@@ -49,7 +49,7 @@ export const getReadableDate = (timestamp: Date) => {
 };
 
 export async function getImageDimensions(
-  url: string,
+  url: string
 ): Promise<{ width: number; height: number; type: string }> {
   const actionToTry = () =>
     new Promise((resolve, reject) =>
@@ -66,7 +66,7 @@ export async function getImageDimensions(
           .on("error", function (err) {
             return reject(err);
           });
-      }),
+      })
     );
 
   const response = actionToTry();
@@ -124,7 +124,7 @@ interface ICaptchaResult {
 export async function validateCaptcha(serverKey: string, clientToken: string) {
   if (process.env.NODE_ENV === "test") return true;
   const response: ICaptchaResult = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${serverKey}&response=${clientToken}`,
+    `https://www.google.com/recaptcha/api/siteverify?secret=${serverKey}&response=${clientToken}`
   ).then((res) => res.json());
 
   if (response.success) {

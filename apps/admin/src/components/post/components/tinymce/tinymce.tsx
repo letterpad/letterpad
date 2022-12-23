@@ -47,7 +47,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
         }
       });
     }
-  }, [onChange]);
+  }, [onChange, editorRef.current]);
 
   useEffect(() => {
     if (editorRef.current) {

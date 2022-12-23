@@ -9,7 +9,7 @@ import { execShellCommand } from "@/shared/execShellCommand";
 
 export const createOrUpdateDomain = async (
   args: MutationCreateOrUpdateDomainArgs,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["UpdateDomainResponse"]> => {
   if (!session?.user.id || !args.data.name) {
     return {
@@ -40,7 +40,7 @@ export const createOrUpdateDomain = async (
       await execShell("nginxSetConfig_443", domainName);
       await wait(200);
       const verify = await execShellCommand(
-        `./scripts/domainMapping.sh verifySSL ${domainName}`,
+        `./scripts/domainMapping.sh verifySSL ${domainName}`
       );
 
       await prisma.domain.create({
@@ -87,7 +87,7 @@ export const createOrUpdateDomain = async (
 async function execShell(fn, domain = "") {
   try {
     const result = await execShellCommand(
-      `./scripts/domainMapping.sh ${fn} ${domain}`.trim(),
+      `./scripts/domainMapping.sh ${fn} ${domain}`.trim()
     );
     if (result.includes("success")) {
       return {

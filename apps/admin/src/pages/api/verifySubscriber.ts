@@ -15,7 +15,7 @@ import { VerifySubscriberToken } from "@/types";
 
 const Verify = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   try {
     if (!req.query.token || typeof req.query.token !== "string") {

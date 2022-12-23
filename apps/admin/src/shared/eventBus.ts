@@ -27,7 +27,7 @@ export function publish(eventType: PubSubEvent, arg) {
   if (!subscriptions[eventType]) return;
 
   Object.keys(subscriptions[eventType]).forEach((key) =>
-    subscriptions[eventType][key](arg),
+    subscriptions[eventType][key](arg)
   );
 }
 

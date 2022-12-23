@@ -3,7 +3,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getPermissionFromAuthor = async (
   id: number,
-  { prisma }: ResolverContext,
+  { prisma }: ResolverContext
 ): Promise<Permissions[]> => {
   const author = await prisma.author.findFirst({
     where: { id },

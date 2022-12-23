@@ -3,7 +3,7 @@ import { IImageAttrsResult } from "../types";
 export const getImageAttrs = (
   src: string,
   sizes?: number[],
-  srcSizes?: string,
+  srcSizes?: string
 ): IImageAttrsResult => {
   if (!src) return {};
   if (src.startsWith("data")) return { src };
@@ -79,7 +79,7 @@ export function makeCloudinaryUrl(src, width): string {
   const replace = /image\/upload\/(.*)\/blog-images/;
   const url = src.replace(
     replace,
-    `image/upload/q_auto,f_auto,w_${width}/v1/blog-images`,
+    `image/upload/q_auto,f_auto,w_${width}/v1/blog-images`
   );
 
   return url;

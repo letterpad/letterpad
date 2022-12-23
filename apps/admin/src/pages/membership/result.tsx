@@ -10,7 +10,7 @@ const ResultPage = () => {
     router.query.session_id
       ? `/admin/api/checkout_session/${router.query.session_id}`
       : null,
-    fetchGetJSON,
+    fetchGetJSON
   );
 
   if (error) return <div>failed to load</div>;

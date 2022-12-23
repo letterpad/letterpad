@@ -68,7 +68,7 @@ export const useUpdateSettings = () => {
         },
       });
     },
-    [updateOption],
+    [updateOption]
   );
 
   const updateLocalState = (data: SettingInputType) => {

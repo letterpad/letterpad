@@ -3,7 +3,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getDomain = async (
   _args: unknown,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["DomainResponse"]> => {
   if (!session?.user.id) {
     return {

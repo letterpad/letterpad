@@ -8,7 +8,7 @@ import { sendMail } from "../sendMail";
 
 export async function sendVerifyUserEmail(
   data: PasswordChangeSuccessProps,
-  models: PrismaClient,
+  models: PrismaClient
 ) {
   try {
     const template = await getPasswordChangeSuccessContent(data, models);
@@ -21,7 +21,7 @@ export async function sendVerifyUserEmail(
     };
   } catch (e: any) {
     logger.error(
-      "Could not send mail - " + EmailTemplates.PasswordChangeSuccess,
+      "Could not send mail - " + EmailTemplates.PasswordChangeSuccess
     );
     throw e;
   }

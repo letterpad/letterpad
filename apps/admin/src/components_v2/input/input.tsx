@@ -56,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
           {addonBefore && (
             <span
               className={classNames(
-                "absolute border-r border-gray-300 p-2 text-gray-700 dark:border-gray-600 dark:text-gray-400",
+                "absolute border-r border-gray-300 p-2 text-gray-700 dark:border-gray-600 dark:text-gray-400"
               )}
             >
               {addonBefore}
@@ -72,7 +72,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
               classes.variant[variant],
               disabled && classes.disabled,
               className,
-              { "pl-10": addonBefore },
+              { "pl-10": addonBefore }
             )}
             {...rest}
           />
@@ -91,7 +91,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
         classes.base,
         classes.variant[variant],
         disabled && classes.disabled,
-        className,
+        className
       )}
       {...rest}
     />

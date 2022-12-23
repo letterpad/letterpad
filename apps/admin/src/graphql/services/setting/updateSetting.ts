@@ -10,7 +10,7 @@ import logger from "@/shared/logger";
 
 export const updateSetting = async (
   args: MutationUpdateOptionsArgs,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["SettingResponse"]> => {
   if (!session?.user.id) {
     return {
@@ -50,7 +50,7 @@ export const updateSetting = async (
       if (isImageOption && internalImage) {
         isImageOption.src = isImageOption.src?.replace(
           process.env.ROOT_URL,
-          "",
+          ""
         );
 
         value = JSON.stringify(isImageOption);
@@ -89,7 +89,7 @@ export const updateSetting = async (
 export type ChangeTypeOfKeys<
   T extends object,
   Keys extends keyof T,
-  NewType,
+  NewType
 > = {
   // Loop to every key. We gonna check if the key
   // is assignable to Keys. If yes, change the type.

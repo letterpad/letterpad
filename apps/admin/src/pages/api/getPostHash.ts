@@ -6,7 +6,7 @@ import { encrypt } from "@/graphql/utils/crypto";
 
 const getHashFromPostId = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   const _session = await getSession({ req });
 

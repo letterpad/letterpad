@@ -6,7 +6,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const updateMedia = async (
   args: MutationUpdateMediaArgs,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["MediaUpdateResponse"]> => {
   if (!session?.user.id) {
     return {

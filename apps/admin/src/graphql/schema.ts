@@ -8,7 +8,7 @@ import { maskIfUnauth } from "./directives/maskIfUnauth";
 import { resolversArr } from "./resolvers";
 
 const loadedFiles = loadFilesSync(
-  join(process.cwd(), "src/graphql/schema/**/*.graphqls"),
+  join(process.cwd(), "src/graphql/schema/**/*.graphqls")
 );
 const typeDefs = mergeTypeDefs(loadedFiles);
 
@@ -20,5 +20,5 @@ const executableSchema = makeExecutableSchema({
 });
 
 export const schema = maskIfUnauth("maskIfUnauth")(
-  isAuthDirective("isAuth")(executableSchema),
+  isAuthDirective("isAuth")(executableSchema)
 );

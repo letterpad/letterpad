@@ -8,7 +8,7 @@ import { sendMail } from "../sendMail";
 
 export async function sendVerifyUserEmail(
   data: EmailVerifyNewUserProps,
-  models: PrismaClient,
+  models: PrismaClient
 ) {
   try {
     const template = await getVerifyUserEmailContent(data, models);

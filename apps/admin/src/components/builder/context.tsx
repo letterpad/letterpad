@@ -102,7 +102,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
       ];
       setGrid(newGrid);
     },
-    [grid],
+    [grid]
   );
 
   const addMasonry = useCallback(
@@ -116,7 +116,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
       ];
       return setGrid(newGrid);
     },
-    [grid],
+    [grid]
   );
 
   const addTextRow = (rowIndex: number) => {

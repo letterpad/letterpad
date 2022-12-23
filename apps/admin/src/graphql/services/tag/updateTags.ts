@@ -6,7 +6,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const updateTags = async (
   args: MutationUpdateTagsArgs,
-  { session, prisma }: ResolverContext,
+  { session, prisma }: ResolverContext
 ): Promise<ResolversTypes["UpdateTagsResponse"]> => {
   if (!session?.user) {
     return {

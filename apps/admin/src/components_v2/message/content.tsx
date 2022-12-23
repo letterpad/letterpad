@@ -31,13 +31,13 @@ export const MessageMarkup: FC<InternalMessageProps> = ({
   return (
     <div
       className={classNames(
-        "text-md my-2 flex w-full items-center  rounded-md p-3 shadow-md",
+        "my-2 flex w-full items-center rounded-md  p-3 text-md shadow-md",
         {
           "bg-green-200": success,
           "bg-red-200": error,
           "bg-orange-200": warn,
           "bg-gray-200 dark:bg-gray-800": loading,
-        },
+        }
       )}
     >
       {showIcon && (

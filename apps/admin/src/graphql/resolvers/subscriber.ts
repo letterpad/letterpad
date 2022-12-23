@@ -119,7 +119,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
   updateSubscriber: async (_, args, { prisma }) => {
     const decodedToken = decodeJWTToken<VerifySubscriberToken>(
-      args.data?.secret_id || "",
+      args.data?.secret_id || ""
     );
     if (!decodedToken) {
       return {

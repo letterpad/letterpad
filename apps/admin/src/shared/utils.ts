@@ -35,7 +35,7 @@ export const getDateTime = (d?: Date) => {
 
 export function debounce<Params extends any[]>(
   func: (...args: Params) => any,
-  timeout: number,
+  timeout: number
 ): (...args: Params) => Promise<any> {
   let timer: NodeJS.Timeout;
 

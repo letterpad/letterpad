@@ -9,7 +9,7 @@ import logger from "@/shared/logger";
 
 export const getTags = async (
   args: QueryTagsArgs,
-  { session, client_author_id, prisma }: ResolverContext,
+  { session, client_author_id, prisma }: ResolverContext
 ): Promise<ResolversTypes["TagsResponse"]> => {
   const authorId = session?.user.id || client_author_id;
 

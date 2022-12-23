@@ -31,7 +31,7 @@ export const PopConfirm: FC<Props> = ({
       <div
         className={classNames(
           "fixed top-0 left-0 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40",
-          { hidden: !display },
+          { hidden: !display }
         )}
         style={{ zIndex: 41 }}
       />
@@ -43,7 +43,7 @@ export const PopConfirm: FC<Props> = ({
           {
             hidden: !display,
           },
-          className,
+          className
         )}
       >
         <div className="relative h-full w-full max-w-md md:h-auto">

@@ -84,7 +84,7 @@ export default class Grammar implements GrammarBase {
               message: suggestion.match.message,
               name: category.name,
             },
-            { offset },
+            { offset }
           );
           this.output += `<span class="mark ${issueType}" data-tippy-content="${tooltip}" data-offset-start="${offset}">`;
           wordEndOffset = suggestion.length + i;

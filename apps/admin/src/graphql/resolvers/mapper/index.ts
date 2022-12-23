@@ -35,7 +35,7 @@ export const mapAuthorToGraphql = <T extends DbAuthor>(author: T) => {
           github: "",
           instagram: "",
           linkedin: "",
-        }),
+        })
     ),
     __typename: "Author",
   } as Author & T;

@@ -7,7 +7,7 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadLatestPost = async (
   args: QueryLetterpadLatestPostArgs,
-  { prisma }: ResolverContext,
+  { prisma }: ResolverContext
 ): Promise<ResolversTypes["PostResponse"]> => {
   if (!args.filters) {
     return {

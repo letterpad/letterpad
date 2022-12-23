@@ -3,7 +3,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const removeDomain = async (
   _args: unknown,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["RemoveDomainResponse"]> => {
   if (!session?.user.id) {
     return {

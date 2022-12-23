@@ -8,7 +8,7 @@ import { NextApiRequestWithFormData } from "@/graphql/types";
 
 const sendFeedback = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   if (!req.body.feedback) {
     return res.status(403).send("Invalid input");

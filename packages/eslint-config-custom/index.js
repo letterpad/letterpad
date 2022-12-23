@@ -1,6 +1,5 @@
 module.exports = {
-  // extends: ["next", "turbo", "prettier", "next/core-web-vitals"],
-  extends: ["next", "turbo", "next/core-web-vitals"],
+  extends: ["next", "turbo", "prettier", "next/core-web-vitals"],
   globals: {
     React: true,
     JSX: true,
@@ -10,7 +9,7 @@ module.exports = {
     "@next/next/no-img-element": "off",
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "off",
-    "prettier/prettier": "off",
+    "prettier/prettier": "error",
     "turbo/no-undeclared-env-vars": "off",
     "react/react-in-jsx-scope": "off",
     "jsx-a11y/anchor-is-valid": [
@@ -74,6 +73,6 @@ module.exports = {
   plugins: [
     "@typescript-eslint",
     "simple-import-sort",
-    // "eslint-plugin-prettier",
+    "eslint-plugin-prettier",
   ],
 };

@@ -19,7 +19,7 @@ export const Basic: React.VFC<Props> = ({ data }) => {
 
   const debounceUpdateAuthorAPI = useMemo(
     () => debounce((data) => updateAuthorAPI(data), 500),
-    [updateAuthorAPI],
+    [updateAuthorAPI]
   );
 
   const update = (data: Omit<InputAuthor, "id">) => {

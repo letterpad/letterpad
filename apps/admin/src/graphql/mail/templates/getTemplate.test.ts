@@ -48,7 +48,7 @@ describe("Email templates", () => {
         template_id: EmailTemplates.NewPost,
         post_id: post.createPost.id,
       },
-      prisma,
+      prisma
     );
     if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
@@ -75,7 +75,7 @@ describe("Email templates", () => {
         subscriber_id: 1,
         author_id: 2,
       },
-      prisma,
+      prisma
     );
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
@@ -106,7 +106,7 @@ describe("Email templates", () => {
         subscriber_id: 1,
         author_id: 2,
       },
-      prisma,
+      prisma
     );
     if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
@@ -143,7 +143,7 @@ describe("Email templates", () => {
         template_id: EmailTemplates.VerifyNewUser,
         author_id: resonse.createAuthor.id,
       },
-      prisma,
+      prisma
     );
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
@@ -192,7 +192,7 @@ describe("Email templates", () => {
         template_id: EmailTemplates.VerifyChangedEmail,
         author_id: response1.createAuthor.id,
       },
-      prisma,
+      prisma
     );
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
@@ -220,7 +220,7 @@ describe("Email templates", () => {
         template_id: EmailTemplates.ForgotPassword,
         author_id: 2,
       },
-      prisma,
+      prisma
     );
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);

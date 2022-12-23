@@ -54,7 +54,7 @@ async function send({ html, subject, to, author_id, author_name }: Props2) {
         subject: subject,
         html: body,
       },
-      addBcc,
+      addBcc
     );
 
     return response;

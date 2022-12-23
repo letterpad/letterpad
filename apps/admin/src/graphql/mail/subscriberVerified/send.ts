@@ -6,7 +6,7 @@ import { getVerifySubscriberEmailContent } from "./content";
 import SendMail from "../sendMail";
 
 export async function sendVerifySubscriberEmail(
-  data: EmailVerifySubscriberProps,
+  data: EmailVerifySubscriberProps
 ) {
   try {
     const template = await getVerifySubscriberEmailContent(data);

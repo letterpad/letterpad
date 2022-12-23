@@ -40,10 +40,10 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
     const postTags = post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
 
     const navLinkedWithTags = postTags.find((tag) =>
-      navigationTags?.includes(tag.name.toLowerCase()),
+      navigationTags?.includes(tag.name.toLowerCase())
     );
     const navLinkedWithPages = navigationPages?.find(
-      (page) => page === post.slug?.replace("/page/", "").toLowerCase(),
+      (page) => page === post.slug?.replace("/page/", "").toLowerCase()
     );
 
     if (active) {

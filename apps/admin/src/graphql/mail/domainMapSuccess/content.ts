@@ -8,7 +8,7 @@ import { addLineBreaks } from "../utils";
 
 export async function getdomainMapSuccessContent(
   data: DomainMapSuccessProps,
-  prisma: PrismaClient,
+  prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
   const template = getTemplate(data.template_id);
 

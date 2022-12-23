@@ -30,7 +30,7 @@ export const useTracking = () => {
         document,
         "script",
         "https://www.google-analytics.com/analytics.js",
-        "ga",
+        "ga"
       );
 
       window.ga("create", trackingId, "auto");

@@ -6,7 +6,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const deleteMedia = async (
   args: MutationDeleteMediaArgs,
-  { prisma, session }: ResolverContext,
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["MediaDeleteResponse"]> => {
   if (!session?.user) {
     return {

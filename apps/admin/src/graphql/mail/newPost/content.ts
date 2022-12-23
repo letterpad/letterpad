@@ -8,7 +8,7 @@ import { addLineBreaks } from "../utils";
 
 export async function getNewPostContent(
   data: EmailNewPostProps,
-  prisma: PrismaClient,
+  prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
   const template = getTemplate(data.template_id);
   const post = await prisma.post.findFirst({

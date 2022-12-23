@@ -40,7 +40,7 @@ const providers = (): NextAuthOptions["providers"] => [
           }
           const authenticated = await bcrypt.compare(
             credentials?.password || "",
-            author.password,
+            author.password
           );
           return authenticated ? author : null;
         }
@@ -49,7 +49,7 @@ const providers = (): NextAuthOptions["providers"] => [
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === "P2021") {
             throw new Error(
-              "Database is not ready. Run `yarn seed` from terminal.",
+              "Database is not ready. Run `yarn seed` from terminal."
             );
           }
         }
@@ -96,7 +96,7 @@ const options = (): NextAuthOptions => ({
             {
               site_title: token.name,
               site_email: token.email,
-            },
+            }
           );
           if (newAuthor) {
             await onBoardUser(newAuthor.id);

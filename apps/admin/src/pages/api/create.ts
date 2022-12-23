@@ -9,7 +9,7 @@ import { NextApiRequestWithFormData } from "./../../graphql/types";
 
 const Create = async (
   req: NextApiRequestWithFormData,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) => {
   try {
     const type = req.query.type as PostTypes;

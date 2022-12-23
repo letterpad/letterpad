@@ -21,7 +21,7 @@ export const useUpdatePost = () => {
         },
       });
     },
-    [updatePostMutation],
+    [updatePostMutation]
   );
 
   async function updatePost(data: InputUpdatePost) {

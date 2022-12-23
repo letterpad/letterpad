@@ -44,7 +44,7 @@ const Filters = ({
       uniqueData.map((tag) => ({
         slug: tag.slug,
         name: tag.name,
-      })),
+      }))
     );
   }, [filters, loading, onChange, showPageTypes, showTags, tags]);
 

@@ -41,7 +41,7 @@ export const ContentToolbar: FC<Props> = ({
                 updateCell(
                   { image: { src: "" }, type: "image" },
                   rowIndex,
-                  colIndex,
+                  colIndex
                 )
               }
             />
@@ -64,7 +64,7 @@ export const ContentToolbar: FC<Props> = ({
                     updateCell(
                       { image: { src: "" }, type: "image" },
                       rowIndex,
-                      colIndex,
+                      colIndex
                     )
                   }
                 />
@@ -93,7 +93,7 @@ export const ContentToolbar: FC<Props> = ({
                     updateCell(
                       { masonry: [], type: "masonry" },
                       rowIndex,
-                      colIndex,
+                      colIndex
                     )
                   }
                 />
@@ -147,7 +147,7 @@ const Button: FC<ButtonProps> = ({
         className,
         {
           active: active,
-        },
+        }
       )}
       onClick={(e) => {
         e.preventDefault();

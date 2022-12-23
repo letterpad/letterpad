@@ -41,7 +41,7 @@ const Query: QueryResolvers<ResolverContext> = {
       title: post.title,
       description: post.excerpt,
       pubDate: new Date(
-        post.publishedAt || post.updatedAt || new Date(),
+        post.publishedAt || post.updatedAt || new Date()
       ).toISOString(),
       author: `${setting?.site_email} (${post?.author?.name})`,
       categories: post.tags.map((tag) => tag.name),
@@ -133,7 +133,7 @@ const isValidUrl = (urlString) => {
       "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
       "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
       "(\\#[-a-z\\d_]*)?$",
-    "i",
+    "i"
   ); // validate fragment locator
   return !!urlPattern.test(urlString);
 };

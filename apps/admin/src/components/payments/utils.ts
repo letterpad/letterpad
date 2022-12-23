@@ -12,7 +12,7 @@ export const getStripe = () => {
 
 export function formatAmountForDisplay(
   amount: number,
-  currency: string,
+  currency: string
 ): string {
   let numberFormat = new Intl.NumberFormat(["en-US"], {
     style: "currency",
@@ -32,7 +32,7 @@ export function formatAmountForDisplay(
 
 export function formatAmountForStripe(
   amount: number,
-  currency: string,
+  currency: string
 ): number {
   let numberFormat = new Intl.NumberFormat(["en-US"], {
     style: "currency",

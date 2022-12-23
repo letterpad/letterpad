@@ -26,9 +26,9 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           updateAuthorAPI({
             social: { ...removeTypenames(social), ...inp },
           }),
-        500,
+        500
       ),
-    [social, updateAuthorAPI],
+    [social, updateAuthorAPI]
   );
 
   const verify = (e: ChangeEvent) => {

@@ -11,7 +11,7 @@ import { addLineBreaks } from "../utils";
 
 export async function getEmailChangeSuccessContent(
   data: EmailChangeSuccessProps,
-  prisma: PrismaClient,
+  prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
   const template = getTemplate(data.template_id);
 

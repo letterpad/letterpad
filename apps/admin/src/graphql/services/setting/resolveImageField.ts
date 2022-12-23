@@ -2,7 +2,7 @@ import { Image, ResolversParentTypes } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 
 export const resolveImageField = async (
-  image: Image | undefined,
+  image: Image | undefined
 ): Promise<ResolversParentTypes["Image"]> => {
   image = parse(image ?? "");
   if (image?.src && !image.src.startsWith("http")) {

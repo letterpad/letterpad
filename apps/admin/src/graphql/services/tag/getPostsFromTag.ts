@@ -7,7 +7,7 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getPostsFromTag = async (
   name: string,
-  { session, prisma, client_author_id }: ResolverContext,
+  { session, prisma, client_author_id }: ResolverContext
 ): Promise<ResolversParentTypes["PostsResponse"]> => {
   const authorId = session?.user.id || client_author_id;
   if (!authorId) {

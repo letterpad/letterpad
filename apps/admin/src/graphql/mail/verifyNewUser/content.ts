@@ -12,7 +12,7 @@ import { addLineBreaks } from "../utils";
 
 export async function getVerifyUserEmailContent(
   data: EmailVerifyNewUserProps,
-  prisma: PrismaClient,
+  prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
   const template = getTemplate(data.template_id);
   const author = await prisma.author.findFirst({

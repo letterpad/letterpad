@@ -16,7 +16,7 @@ const NavigationPanel: React.FC<Props> = ({ settings }) => {
 
   const debounceUpdateSettings = useMemo(
     () => debounce((data) => updateSettingsAPI(data), 500),
-    [updateSettingsAPI],
+    [updateSettingsAPI]
   );
 
   const updateMenu = (menu: Navigation[]) => {

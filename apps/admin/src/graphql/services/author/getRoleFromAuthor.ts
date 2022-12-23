@@ -3,7 +3,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getRoleFromAuthor = async (
   id: number,
-  { prisma }: ResolverContext,
+  { prisma }: ResolverContext
 ): Promise<Role> => {
   const author = await prisma.author.findFirst({
     where: { id },

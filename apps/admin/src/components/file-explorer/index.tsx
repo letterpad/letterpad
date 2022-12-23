@@ -30,7 +30,7 @@ const FileExplorer = ({
 }: IProps) => {
   const [uploading, setUploading] = useState(false);
   const [mediaProvider, setMediaProvider] = useState<MediaProvider>(
-    MediaProvider.Letterpad,
+    MediaProvider.Letterpad
   );
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const isUnsplash = mediaProvider === MediaProvider.Unsplash;
@@ -95,7 +95,7 @@ const FileExplorer = ({
       }
       setSelection(urls);
     },
-    [multi, selectedUrls],
+    [multi, selectedUrls]
   );
 
   const renderer = useCallback(
@@ -109,7 +109,7 @@ const FileExplorer = ({
         />
       ));
     },
-    [selectedUrls, onMediaSelected],
+    [selectedUrls, onMediaSelected]
   );
 
   const hasSelectedImages = Object.keys(selectedUrls).length > 0;
@@ -169,7 +169,7 @@ const FileExplorer = ({
             if (!e.target.files) return;
             const filesArr = Array.from(e.target.files);
             const fileSizeIncrease = filesArr.filter(
-              (file) => file.size > 10000000,
+              (file) => file.size > 10000000
             );
             if (fileSizeIncrease.length > 0) {
               alert("File size should be less than 10MB");
