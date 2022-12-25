@@ -913,6 +913,50 @@ export type MeFragmentFragment = {
   } | null;
 };
 
+export type FeedQueryVariables = Exact<{ [key: string]: never }>;
+
+export type FeedQuery = {
+  __typename?: "Query";
+  feed:
+    | {
+        __typename: "Feed";
+        rows: Array<{
+          __typename?: "FeedNode";
+          guid: string;
+          title: string;
+          link: string;
+          description: string;
+          pubDate: string;
+          author: string;
+          categories: Array<string>;
+        }>;
+      }
+    | { __typename: "FeedError"; message?: string | null };
+};
+
+type FeedFragment_Feed_Fragment = {
+  __typename: "Feed";
+  rows: Array<{
+    __typename?: "FeedNode";
+    guid: string;
+    title: string;
+    link: string;
+    description: string;
+    pubDate: string;
+    author: string;
+    categories: Array<string>;
+  }>;
+};
+
+type FeedFragment_FeedError_Fragment = {
+  __typename: "FeedError";
+  message?: string | null;
+};
+
+export type FeedFragmentFragment =
+  | FeedFragment_Feed_Fragment
+  | FeedFragment_FeedError_Fragment;
+
 export type PostQueryVariables = Exact<{
   slug?: InputMaybe<Scalars["String"]>;
 }>;
@@ -1255,6 +1299,25 @@ export const MeFragmentFragmentDoc = `
   }
 }
     `;
+export const FeedFragmentFragmentDoc = `
+    fragment feedFragment on FeedResponse {
+  ... on Feed {
+    rows {
+      guid
+      title
+      link
+      description
+      pubDate
+      author
+      categories
+    }
+  }
+  ... on FeedError {
+    message
+  }
+  __typename
+}
+    `;
 export const PageFragmentFragmentDoc = `
     fragment pageFragment on Post {
   id
@@ -1406,6 +1469,14 @@ export const MeDocument = `
   }
 }
     ${MeFragmentFragmentDoc}`;
+export const FeedDocument = `
+    query feed {
+  feed {
+    __typename
+    ...feedFragment
+  }
+}
+    ${FeedFragmentFragmentDoc}`;
 export const PostDocument = `
     query post($slug: String) {
   post(filters: {slug: $slug}) {
@@ -1481,6 +1552,13 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options
       ) as Promise<MeQuery>;
+    },
+    feed(variables?: FeedQueryVariables, options?: C): Promise<FeedQuery> {
+      return requester<FeedQuery, FeedQueryVariables>(
+        FeedDocument,
+        variables,
+        options
+      ) as Promise<FeedQuery>;
     },
     post(variables?: PostQueryVariables, options?: C): Promise<PostQuery> {
       return requester<PostQuery, PostQueryVariables>(

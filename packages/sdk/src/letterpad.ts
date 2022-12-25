@@ -6,6 +6,7 @@ import {
   handleSettingsErrors,
   handleSitemapErrors,
   handleTagsErrors,
+  handleFeedErrors
 } from "./errors.js";
 import { getSdk, PostsQuery } from "./graphql.js";
 import { createRequester } from "./requester.js";
@@ -78,5 +79,11 @@ export class Letterpad {
     const authorResponse = await this.sdk.me();
     handleAuthorErrors(authorResponse.me);
     return authorResponse.me;
+  }
+
+  async getFeed() {
+    const feedResponse = await this.sdk.feed();
+    handleFeedErrors(feedResponse.feed);
+    return feedResponse.feed;
   }
 }
