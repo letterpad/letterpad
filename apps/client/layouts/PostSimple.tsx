@@ -1,10 +1,10 @@
+import {
+  MeFragmentFragment,
+  PageFragmentFragment,
+  SettingsFragmentFragment,
+} from 'letterpad-sdk';
 import { ReactNode } from 'react';
 
-import {
-  MeFragment,
-  PageFragmentFragment,
-  SettingsFragment,
-} from '@/lib/graphql';
 import formatDate from '@/lib/utils/formatDate';
 
 import { IconBook } from '@/components/icons';
@@ -21,8 +21,8 @@ interface Props {
   next?: { slug: string; title: string };
   prev?: { slug: string; title: string };
   site_name: string;
-  settings: SettingsFragment['settings'];
-  me: MeFragment['me'];
+  settings: SettingsFragmentFragment;
+  me: MeFragmentFragment;
 }
 export default function PostSimple({
   site_name,

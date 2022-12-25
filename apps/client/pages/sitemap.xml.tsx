@@ -1,30 +1,22 @@
-import gql from 'graphql-tag';
-import { sitemapFragment } from 'queries/queries';
-
-import { fetchProps } from '@/lib/client';
-import { SitemapQueryQuery, SitemapQueryQueryVariables } from '@/lib/graphql';
-
-export const sitemapQuery = gql`
-  query SitemapQuery {
-    sitemap {
-      ...sitemapFragment
-    }
-  }
-  ${sitemapFragment}
-`;
+import { Letterpad } from 'letterpad-sdk';
 
 const Sitemap = () => {
-  return <div>Hello</div>;
+  return <div></div>;
 };
 
 export const getServerSideProps = async (context) => {
-  const response = await fetchProps<
-    SitemapQueryQuery,
-    SitemapQueryQueryVariables
-  >(sitemapQuery, {}, context.req.headers.host);
+  const letterpad = new Letterpad({
+    letterpadServer: {
+      url: process.env.API_URL!,
+      token: process.env.CLIENT_ID!,
+      host: context.req.headers.host,
+    },
+  });
 
-  if (response.props.data.sitemap.__typename === 'SiteMapList') {
-    const items = response.props.data.sitemap.rows.map((row) => {
+  const sitemapResponse = await letterpad.getSitemap();
+
+  if (sitemapResponse.__typename === 'SiteMapList') {
+    const items = sitemapResponse.rows.map((row) => {
       return `
             <url>
               <loc>${row.route}</loc>

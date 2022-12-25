@@ -1,6 +1,6 @@
+import { PostsFragmentFragment } from 'letterpad-sdk';
 import React from 'react';
 
-import { PostsFragmentFragment } from '@/lib/graphql';
 import formatDate from '@/lib/utils/formatDate';
 
 import Link from '@/components/Link';

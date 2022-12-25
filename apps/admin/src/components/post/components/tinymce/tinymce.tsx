@@ -80,21 +80,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             await insertScript("/admin/tippy/popper.min.js", domBody.head);
             await insertScript("/admin/tippy/tippy.min.js", domBody.head);
             socket.applyTooltip();
-            editor.on("SelectionChange", function () {
-              let node = editor.selection.getNode();
-              const prevNode = editor
-                .getDoc()
-                .querySelector("[data-id='image-focussed']");
-              if (prevNode) {
-                prevNode.removeAttribute("data-id");
-              }
-              if (node.nodeName === "IMG" && node.parentElement) {
-                node = node.parentElement;
-              }
-              if (node.nodeName === "FIGURE") {
-                node.setAttribute("data-id", "image-focussed");
-              }
-            });
           }
         }}
         initialValue={html}

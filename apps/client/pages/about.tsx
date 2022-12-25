@@ -1,28 +1,12 @@
-import gql from 'graphql-tag';
+import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
-import { meFragment, settingsFragment } from 'queries/queries';
-
-import { fetchProps } from '@/lib/client';
-import { AboutQueryQuery, AboutQueryQueryVariables } from '@/lib/graphql';
 
 import AuthorLayout from '@/layouts/AuthorLayout';
-
-const aboutQuery = gql`
-  query AboutQuery {
-    ...me
-    ...settings
-  }
-  ${meFragment}
-  ${settingsFragment}
-`;
 
 export default function About({
   settings,
   me,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (me?.__typename !== 'Author') return <div>Author not found</div>;
-  if (settings.__typename !== 'Setting') return <div>Setting not found</div>;
-
   const {
     name,
     social,
@@ -54,13 +38,18 @@ export default function About({
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<AboutQueryQuery, AboutQueryQueryVariables>(
-    aboutQuery,
-    {},
-    context.req.headers.host
-  );
+  const letterpad = new Letterpad({
+    letterpadServer: {
+      url: process.env.API_URL!,
+      token: process.env.CLIENT_ID!,
+      host: context.req.headers.host,
+    },
+  });
+
+  const me = await letterpad.getAuthor();
+  const settings = await letterpad.getSettings();
 
   return {
-    props: response.props.data,
+    props: { me, settings },
   };
 }

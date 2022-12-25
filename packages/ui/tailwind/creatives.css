@@ -66,10 +66,6 @@
     font-size: 2.5rem;
   }
 }
-[data-id='image-focussed'] {
-  outline: 2px solid #d932c0;
-}
-
 hr {
   border: 1px solid rgb(var(--color-border));
 }

@@ -1,0 +1,24 @@
+query feed {
+  feed {
+    __typename
+    ...feedFragment
+  }
+}
+
+fragment feedFragment on FeedResponse {
+  ... on Feed {
+    rows {
+      guid
+      title
+      link
+      description
+      pubDate
+      author
+      categories
+    }
+  }
+  ... on FeedError {
+    message
+  }
+  __typename
+}

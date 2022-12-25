@@ -1,5 +1,5 @@
-query post($slug: String) {
-  post(filters: { slug: $slug }) {
+query post($filters: PostFilters) {
+  post(filters: $filters) {
     __typename
     ...pageFragment
     ... on LetterpadError {
@@ -50,6 +50,7 @@ fragment pageFragment on Post {
       name
       avatar
       occupation
+      bio
     }
   }
   cover_image {

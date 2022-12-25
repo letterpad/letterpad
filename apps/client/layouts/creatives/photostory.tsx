@@ -1,8 +1,7 @@
+import { PageFragmentFragment } from 'letterpad-sdk';
 import dynamic from 'next/dynamic';
 import { FC, ReactNode, useEffect, useState } from 'react';
 import { Parallax } from 'react-parallax';
-
-import { PageFragmentFragment } from '@/lib/graphql';
 
 import { GalleryModal } from '@/components/gallery';
 import { Portal } from '@/components/portal';

@@ -35,7 +35,7 @@ module.exports = {
         xs: '.7rem',
         sm: '.8rem',
         base: '.85rem',
-        md: '.9',
+        md: '.9rem',
         lg: '1.3rem',
         prose: '1.2rem'
       },

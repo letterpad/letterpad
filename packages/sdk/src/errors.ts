@@ -102,3 +102,13 @@ export function handleSettingsErrors(settings: {
       throw new LetterpadUnauthorizedError(settings.message);
   }
 }
+
+export function handleFeedErrors(feed: {
+  __typename?: string;
+  message?: string;
+}): asserts feed is { __typename: "Feed" } {
+  switch (feed.__typename) {
+    case "FeedError":
+      throw new LetterpadNotFoundError(feed.message);
+  }
+}

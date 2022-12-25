@@ -1,52 +1,15 @@
-import gql from 'graphql-tag';
+import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
-import { meFragment, pageFragment, settingsFragment } from 'queries/queries';
-
-import { fetchProps } from '@/lib/client';
-import {
-  PageQueryWithHtmlQuery,
-  PageQueryWithHtmlQueryVariables,
-} from '@/lib/graphql';
 
 import Creative from '@/layouts/Creative';
 import PostLayout from '@/layouts/PostLayout';
-
-const pageQueryWithHtml = gql`
-  query PageQueryWithHtml($slug: String) {
-    post(filters: { slug: $slug }) {
-      ...pageFragment
-      ... on Post {
-        html
-        author {
-          ... on Author {
-            name
-            bio
-            avatar
-          }
-          __typename
-        }
-      }
-      __typename
-    }
-    ...me
-    ...settings
-  }
-
-  ${pageFragment}
-  ${meFragment}
-  ${settingsFragment}
-`;
 
 export default function Blog({
   post,
   settings,
   me,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (
-    post.__typename === 'Post' &&
-    post.page_type === 'story-builder' &&
-    settings.__typename === 'Setting'
-  ) {
+  if (post.page_type === 'story-builder') {
     return (
       <Creative
         data={post}
@@ -56,29 +19,32 @@ export default function Blog({
       />
     );
   }
-  if (post.__typename === 'Post' && settings.__typename === 'Setting') {
-    return (
-      <PostLayout data={{ post, settings, me }}>
-        <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
-      </PostLayout>
-    );
-  }
-  return null;
+
+  return (
+    <PostLayout data={{ post, settings, me }}>
+      <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
+    </PostLayout>
+  );
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<
-    PageQueryWithHtmlQuery,
-    PageQueryWithHtmlQueryVariables
-  >(
-    pageQueryWithHtml,
-    {
-      slug: context.params.slug.join('/'),
+  const letterpad = new Letterpad({
+    letterpadServer: {
+      url: process.env.API_URL!,
+      token: process.env.CLIENT_ID!,
+      host: context.req.headers.host,
     },
-    context.req.headers.host
-  );
+  });
+
+  const post = await letterpad.getPost(context.params.slug.join('/'));
+  const settings = await letterpad.getSettings();
+  const me = await letterpad.getAuthor();
 
   return {
-    props: response.props.data,
+    props: {
+      post,
+      settings,
+      me,
+    },
   };
 }
