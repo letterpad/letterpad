@@ -16,13 +16,6 @@ body:not(.prose) {
   min-height: 100vh;
   padding: 0px;
 }
-/* p:not(.prose *),
-i:not(.prose *),
-a:not(.prose *) {
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  font-size: 0.9rem;
-} */
 
 html.no-transitions * {
   animation-duration: 0s !important;
