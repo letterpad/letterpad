@@ -17,12 +17,14 @@ fragment settingsFragment on Setting {
   site_title
   site_tagline
   site_email
+  site_url
   site_description
+  theme
   menu {
     label
     type
     original_name
-    label
+    slug
   }
   site_logo {
     src

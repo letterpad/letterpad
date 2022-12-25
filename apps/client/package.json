@@ -36,7 +36,8 @@
     "smoothscroll-polyfill": "^0.4.4",
     "tsconfig": "*",
     "config": "*",
-    "ui": "*"
+    "ui": "*",
+    "letterpad-sdk": "*"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.11",

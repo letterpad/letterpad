@@ -1,9 +1,6 @@
-import gql from 'graphql-tag';
+import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
-import { meFragment, settingsFragment } from 'queries/queries';
 
-import { fetchProps } from '@/lib/client';
-import { TagsQueryQuery, TagsQueryQueryVariables } from '@/lib/graphql';
 import kebabCase from '@/lib/utils/kebabCase';
 
 import Link from '@/components/Link';
@@ -11,33 +8,6 @@ import PageTitle from '@/components/PageTitle';
 import SectionContainer from '@/components/SectionContainer';
 import { PageSEO } from '@/components/SEO';
 import Tag from '@/components/Tag';
-
-const tagsQuery = gql`
-  query TagsQuery {
-    tags(filters: { active: true }) {
-      __typename
-      ... on TagsNode {
-        rows {
-          name
-          posts {
-            __typename
-            ... on PostsNode {
-              count
-            }
-          }
-        }
-      }
-      ... on TagsError {
-        message
-      }
-    }
-    ...settings
-    ...me
-  }
-
-  ${settingsFragment}
-  ${meFragment}
-`;
 
 export default function Tags({
   tags,
@@ -91,12 +61,22 @@ export default function Tags({
 }
 
 export const getServerSideProps = async (context: any) => {
-  const data = await fetchProps<TagsQueryQuery, TagsQueryQueryVariables>(
-    tagsQuery,
-    {},
-    context.req.headers.host
-  );
+  const letterpad = new Letterpad({
+    letterpadServer: {
+      url: process.env.API_URL!,
+      token: process.env.CLIENT_ID!,
+      host: context.req.headers.host,
+    },
+  });
+  const tags = await letterpad.listTags();
+  const settings = await letterpad.getSettings();
+  const me = await letterpad.getAuthor();
+
   return {
-    props: data.props.data,
+    props: {
+      tags,
+      settings,
+      me,
+    },
   };
 };

@@ -13,6 +13,7 @@ import { createRequester } from "./requester.js";
 export interface LetterpadServerOptions {
   url: string;
   token: string;
+  host?: string
 }
 
 export interface LetterpadSdkOptions {
@@ -71,5 +72,11 @@ export class Letterpad {
     const settingsResponse = await this.sdk.settings();
     handleSettingsErrors(settingsResponse.settings);
     return settingsResponse.settings;
+  }
+
+  async getAuthor() {
+    const authorResponse = await this.sdk.me();
+    handleAuthorErrors(authorResponse.me);
+    return authorResponse.me;
   }
 }

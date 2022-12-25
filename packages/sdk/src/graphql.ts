@@ -866,6 +866,53 @@ export type UpdateSubscriptionResponse = {
 
 export type UpdateTagsResponse = EditTaxResponse | TagsError;
 
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  __typename?: "Query";
+  me?:
+    | {
+        __typename: "Author";
+        name: string;
+        bio?: string | null;
+        occupation?: string | null;
+        avatar?: string | null;
+        company_name?: string | null;
+        analytics_uuid?: string | null;
+        social?: {
+          __typename?: "Social";
+          twitter?: string | null;
+          facebook?: string | null;
+          github?: string | null;
+          instagram?: string | null;
+          linkedin?: string | null;
+        } | null;
+      }
+    | { __typename: "Exception"; message: string }
+    | { __typename: "Failed"; message: string }
+    | { __typename: "NotFound"; message: string }
+    | { __typename: "UnAuthorized"; message: string }
+    | null;
+};
+
+export type MeFragmentFragment = {
+  __typename: "Author";
+  name: string;
+  bio?: string | null;
+  occupation?: string | null;
+  avatar?: string | null;
+  company_name?: string | null;
+  analytics_uuid?: string | null;
+  social?: {
+    __typename?: "Social";
+    twitter?: string | null;
+    facebook?: string | null;
+    github?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+  } | null;
+};
+
 export type PostQueryVariables = Exact<{
   slug?: InputMaybe<Scalars["String"]>;
 }>;
@@ -1061,7 +1108,9 @@ export type SettingsQuery = {
         site_title: string;
         site_tagline?: string | null;
         site_email: string;
+        site_url: string;
         site_description?: string | null;
+        theme?: string | null;
         site_footer?: string | null;
         banner?: {
           __typename?: "Image";
@@ -1074,6 +1123,7 @@ export type SettingsQuery = {
           label: string;
           type: NavigationType;
           original_name: string;
+          slug: string;
         }>;
         site_logo?: {
           __typename?: "Image";
@@ -1096,7 +1146,9 @@ export type SettingsFragmentFragment = {
   site_title: string;
   site_tagline?: string | null;
   site_email: string;
+  site_url: string;
   site_description?: string | null;
+  theme?: string | null;
   site_footer?: string | null;
   banner?: {
     __typename?: "Image";
@@ -1109,6 +1161,7 @@ export type SettingsFragmentFragment = {
     label: string;
     type: NavigationType;
     original_name: string;
+    slug: string;
   }>;
   site_logo?: {
     __typename?: "Image";
@@ -1169,10 +1222,39 @@ export type TagsQuery = {
     | { __typename: "TagsError"; message: string }
     | {
         __typename: "TagsNode";
-        rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
+        rows: Array<{
+          __typename?: "Tag";
+          name: string;
+          slug: string;
+          posts?:
+            | { __typename: "Exception" }
+            | { __typename: "PostsNode"; count: number }
+            | { __typename: "UnAuthorized" }
+            | null;
+        }>;
       };
 };
 
+export const MeFragmentFragmentDoc = `
+    fragment meFragment on Author {
+  ... on Author {
+    __typename
+    name
+    bio
+    occupation
+    avatar
+    company_name
+    analytics_uuid
+    social {
+      twitter
+      facebook
+      github
+      instagram
+      linkedin
+    }
+  }
+}
+    `;
 export const PageFragmentFragmentDoc = `
     fragment pageFragment on Post {
   id
@@ -1276,12 +1358,14 @@ export const SettingsFragmentFragmentDoc = `
   site_title
   site_tagline
   site_email
+  site_url
   site_description
+  theme
   menu {
     label
     type
     original_name
-    label
+    slug
   }
   site_logo {
     src
@@ -1311,6 +1395,17 @@ export const SitemapFragmentFragmentDoc = `
   __typename
 }
     `;
+export const MeDocument = `
+    query me {
+  me {
+    __typename
+    ...meFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+    ${MeFragmentFragmentDoc}`;
 export const PostDocument = `
     query post($slug: String) {
   post(filters: {slug: $slug}) {
@@ -1362,6 +1457,12 @@ export const TagsDocument = `
       rows {
         name
         slug
+        posts {
+          __typename
+          ... on PostsNode {
+            count
+          }
+        }
       }
     }
   }
@@ -1374,6 +1475,13 @@ export type Requester<C = {}, E = unknown> = <R, V>(
 ) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    me(variables?: MeQueryVariables, options?: C): Promise<MeQuery> {
+      return requester<MeQuery, MeQueryVariables>(
+        MeDocument,
+        variables,
+        options
+      ) as Promise<MeQuery>;
+    },
     post(variables?: PostQueryVariables, options?: C): Promise<PostQuery> {
       return requester<PostQuery, PostQueryVariables>(
         PostDocument,

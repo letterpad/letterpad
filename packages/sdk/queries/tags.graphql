@@ -8,6 +8,12 @@ query tags {
       rows {
         name
         slug
+        posts {
+          __typename
+          ... on PostsNode {
+            count
+          }
+        }
       }
     }
   }

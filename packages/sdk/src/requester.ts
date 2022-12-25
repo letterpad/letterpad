@@ -8,6 +8,7 @@ export function createRequester(options: LetterpadSdkOptions) {
         authorization: `Bearer ${options.letterpadServer.token}`,
         accept: "application/json",
         "content-type": "application/json",
+        identifier: options.letterpadServer.host
       },
       body: JSON.stringify({
         query,

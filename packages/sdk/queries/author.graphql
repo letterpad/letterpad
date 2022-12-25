@@ -1,0 +1,28 @@
+query me {
+  me {
+    __typename
+    ...meFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+
+fragment meFragment on Author {
+  ... on Author {
+    __typename
+    name
+    bio
+    occupation
+    avatar
+    company_name
+    analytics_uuid
+    social {
+      twitter
+      facebook
+      github
+      instagram
+      linkedin
+    }
+  }
+}

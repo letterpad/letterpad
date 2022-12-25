@@ -1,35 +1,9 @@
-import gql from 'graphql-tag';
+import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
-import {
-  meFragment,
-  postsFragment,
-  settingsFragment,
-  tagsFragment,
-} from 'queries/queries';
-
-import { fetchProps } from '@/lib/client';
-import { TagPostsQueryQuery, TagPostsQueryQueryVariables } from '@/lib/graphql';
 
 import { TagSEO } from '@/components/SEO';
 
 import ListLayout from '@/layouts/ListLayout';
-
-export const tagsQuery = gql`
-  query TagPostsQuery($tagSlug: String!) {
-    posts(filters: { tagSlug: $tagSlug }) {
-      ...postsFragment
-    }
-    tag(slug: $tagSlug) {
-      ...tagsFragment
-    }
-    ...me
-    ...settings
-  }
-  ${tagsFragment}
-  ${postsFragment}
-  ${meFragment}
-  ${settingsFragment}
-`;
 
 export default function Tag({
   posts,
@@ -63,11 +37,24 @@ export default function Tag({
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<
-    TagPostsQueryQuery,
-    TagPostsQueryQueryVariables
-  >(tagsQuery, { tagSlug: context.params.tag }, context.req.headers.host);
+  const letterpad = new Letterpad({
+    letterpadServer: {
+      url: process.env.API_URL!,
+      token: process.env.CLIENT_ID!,
+      host: context.req.headers.host,
+    },
+  });
+
+  const posts = await letterpad.listPosts(context.params.tag);
+  const settings = await letterpad.getSettings();
+  const me = await letterpad.getAuthor();
+
   return {
-    props: { ...response.props.data, tagName: context.params.tag },
+    props: {
+      posts,
+      settings,
+      me,
+      tagName: context.params.tag,
+    },
   };
 }
