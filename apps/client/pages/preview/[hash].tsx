@@ -1,38 +1,11 @@
 import gql from 'graphql-tag';
+import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
-import { meFragment, pageFragment, settingsFragment } from 'queries/queries';
-
-import { fetchProps } from '@/lib/client';
-import { PreviewQueryQuery, PreviewQueryQueryVariables } from '@/lib/graphql';
 
 import Creative from '@/layouts/Creative';
 import PostLayout from '@/layouts/PostLayout';
 
-export const previewQuery = gql`
-  query PreviewQuery($previewHash: String) {
-    post(filters: { previewHash: $previewHash }) {
-      ...pageFragment
-      ... on Post {
-        html
-        author {
-          ... on Author {
-            name
-            avatar
-          }
-          __typename
-        }
-      }
-      __typename
-    }
-    ...me
-    ...settings
-  }
-  ${pageFragment}
-  ${meFragment}
-  ${settingsFragment}
-`;
-
-export default function Blog({
+export default function Preview({
   post,
   settings,
   me,
@@ -59,15 +32,24 @@ export default function Blog({
 }
 
 export async function getServerSideProps(context: any) {
-  const response = await fetchProps<
-    PreviewQueryQuery,
-    PreviewQueryQueryVariables
-  >(
-    previewQuery,
-    { previewHash: context.params.hash },
-    context.req.headers.host
-  );
+  const letterpad = new Letterpad({
+    letterpadServer: {
+      url: process.env.API_URL!,
+      token: process.env.CLIENT_ID!,
+      host: context.req.headers.host,
+    },
+  });
+  const post = await letterpad.getPost({
+    previewHash: context.params.hash,
+  });
+  const settings = await letterpad.getSettings();
+  const me = await letterpad.getAuthor();
+
   return {
-    props: response.props.data,
+    props: {
+      post,
+      settings,
+      me,
+    },
   };
 }

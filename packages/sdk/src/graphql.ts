@@ -958,7 +958,7 @@ export type FeedFragmentFragment =
   | FeedFragment_FeedError_Fragment;
 
 export type PostQueryVariables = Exact<{
-  slug?: InputMaybe<Scalars["String"]>;
+  filters?: InputMaybe<PostFilters>;
 }>;
 
 export type PostQuery = {
@@ -1487,8 +1487,8 @@ export const FeedDocument = `
 }
     ${FeedFragmentFragmentDoc}`;
 export const PostDocument = `
-    query post($slug: String) {
-  post(filters: {slug: $slug}) {
+    query post($filters: PostFilters) {
+  post(filters: $filters) {
     __typename
     ...pageFragment
     ... on LetterpadError {

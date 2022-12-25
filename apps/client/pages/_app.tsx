@@ -8,7 +8,6 @@ import 'ui/tailwind/base.css';
 import 'ui/tailwind/editor.css';
 import '@fontsource/inter/variable-full.css';
 
-import Analytics from '@/components/analytics';
 import { ClientReload } from '@/components/ClientReload';
 import LayoutWrapper from '@/components/LayoutWrapper';
 
@@ -26,7 +25,6 @@ export default function App({ Component, pageProps }: AppProps<PageProps>) {
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
       {isDevelopment && isSocket && <ClientReload />}
-      <Analytics id={pageProps.me?.analytics_uuid} />
       {pageProps.settings ? (
         <LayoutWrapper props={pageProps}>
           <Component {...pageProps} />
