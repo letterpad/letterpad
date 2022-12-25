@@ -15,7 +15,7 @@ export const getPost = async (
   if (!args.filters) {
     return {
       __typename: "InvalidArguments",
-      message: "No object for `filters` provided as arguments",
+      message: "Arguments { filters: {...} } are required}",
     };
   }
 

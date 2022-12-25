@@ -52,14 +52,6 @@ export default function PostLayout({ data, next, prev, children }: Props) {
     }
   }, [data]);
 
-  if (
-    post.__typename !== 'Post' ||
-    settings.__typename !== 'Setting' ||
-    me?.__typename !== 'Author'
-  ) {
-    return null;
-  }
-
   const {
     slug,
     publishedAt,
