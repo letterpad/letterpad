@@ -1,8 +1,8 @@
 import {
-  MeFragment,
+  MeFragmentFragment,
   PageFragmentFragment,
-  SettingsFragment,
-} from '@/lib/graphql';
+  SettingsFragmentFragment,
+} from 'letterpad-sdk';
 
 import ScrollTop from '@/components/ScrollTop';
 import { BlogSEO } from '@/components/SEO';
@@ -12,8 +12,8 @@ import { PhotoStory } from './creatives/photostory';
 interface Props {
   data: PageFragmentFragment;
   site_name: string;
-  settings: SettingsFragment['settings'];
-  me: MeFragment['me'];
+  settings: SettingsFragmentFragment;
+  me: MeFragmentFragment;
 }
 export default function Creative({ site_name, data, settings, me }: Props) {
   const { slug, publishedAt, title, excerpt, updatedAt, cover_image, tags } =

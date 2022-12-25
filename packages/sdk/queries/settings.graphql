@@ -20,6 +20,8 @@ fragment settingsFragment on Setting {
   site_url
   site_description
   theme
+  show_about_page
+  show_tags_page
   menu {
     label
     type

@@ -1,6 +1,10 @@
+import {
+  MeFragmentFragment,
+  PageFragmentFragment,
+  SettingsFragmentFragment,
+} from 'letterpad-sdk';
 import { ReactNode, useEffect } from 'react';
 
-import { PageQueryWithHtmlQuery } from '@/lib/graphql';
 import kebabCase from '@/lib/utils/kebabCase';
 
 import Comments from '@/components/comments';
@@ -23,7 +27,11 @@ export const getReadableDate = (timestamp: Date | number) => {
 };
 
 interface Props {
-  data: PageQueryWithHtmlQuery;
+  data: {
+    post: PageFragmentFragment;
+    settings: SettingsFragmentFragment;
+    me: MeFragmentFragment;
+  };
   next?: { slug: string; title: string };
   prev?: { slug: string; title: string };
   children: ReactNode;

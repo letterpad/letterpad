@@ -1,11 +1,10 @@
-import { ReactNode, useEffect, useRef } from 'react';
-
 import {
-  MeFragment,
+  Author,
   Navigation,
   NavigationType,
-  SettingsFragment,
-} from '@/lib/graphql';
+  SettingsFragmentFragment,
+} from 'letterpad-sdk';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import Footer from './Footer';
 import Link from './Link';
@@ -16,8 +15,8 @@ import ThemeSwitch from './ThemeSwitch';
 interface Props {
   children: ReactNode;
   props: {
-    settings: SettingsFragment['settings'];
-    me: MeFragment['me'];
+    settings: SettingsFragmentFragment;
+    me: Author;
   };
 }
 
@@ -44,10 +43,20 @@ const LayoutWrapper = ({ children, props }: Props) => {
 
   const routes = [...props.settings.menu];
   if (show_tags_page) {
-    routes.push({ slug: '/tags', label: 'Tags', type: NavigationType.Page });
+    routes.push({
+      slug: '/tags',
+      label: 'Tags',
+      type: NavigationType.Page,
+      original_name: 'Tags',
+    });
   }
   if (show_about_page) {
-    routes.push({ slug: '/about', label: 'About', type: NavigationType.Page });
+    routes.push({
+      slug: '/about',
+      label: 'About',
+      type: NavigationType.Page,
+      original_name: 'About',
+    });
   }
 
   const menu = getMenu(routes);

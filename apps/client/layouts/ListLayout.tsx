@@ -1,4 +1,5 @@
-import { PostsFragmentFragment } from '@/lib/graphql';
+import { PostsFragmentFragment } from 'letterpad-sdk';
+
 import formatDate from '@/lib/utils/formatDate';
 
 import { IconBook } from '@/components/icons';

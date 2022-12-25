@@ -1,9 +1,11 @@
-import { Letterpad } from 'letterpad-sdk';
+import {
+  Letterpad,
+  NavigationType,
+  PageFragmentFragment,
+  PostsFragmentFragment,
+} from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-
-import { PageProps } from '@/lib/client';
-import { NavigationType, PageQueryQuery, PostsQueryQuery } from '@/lib/graphql';
 
 import PageTitle from '@/components/PageTitle';
 import PostGrid from '@/components/PostGrid';
@@ -70,7 +72,6 @@ export default function Home({
           </div>
         )}
         <SectionContainer>
-          {posts?.__typename === 'Exception' ? 'No posts found.' : ''}
           {posts?.__typename === 'PostsNode' && posts.rows.length === 0 && (
             <span className="py-16 text-gray-400">
               Hi, my name is {me.name}!
@@ -145,14 +146,13 @@ export async function getServerSideProps(context: any) {
       settings,
       isPage: isHomePageASinglePage,
       isPosts: isHomePageACollectionOfPosts,
-      posts: null as PageProps<PostsQueryQuery>['data']['posts'] | null,
-      page: null as PageProps<PageQueryQuery>['data']['post'] | null,
+      posts: null as unknown as PostsFragmentFragment,
+      page: null as unknown as PageFragmentFragment,
     },
   };
 
   if (isHomePageACollectionOfPosts) {
     const posts = await letterpad.listPosts(firstItemOfMenu.slug);
-
     result.props = {
       ...result.props,
       posts,

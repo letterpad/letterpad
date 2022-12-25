@@ -1002,6 +1002,7 @@ export type PostQuery = {
               name: string;
               avatar?: string | null;
               occupation?: string | null;
+              bio?: string | null;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1048,6 +1049,7 @@ export type PageFragmentFragment = {
         name: string;
         avatar?: string | null;
         occupation?: string | null;
+        bio?: string | null;
       }
     | { __typename: "Exception"; message: string }
     | { __typename: "Failed"; message: string }
@@ -1155,6 +1157,8 @@ export type SettingsQuery = {
         site_url: string;
         site_description?: string | null;
         theme?: string | null;
+        show_about_page?: boolean | null;
+        show_tags_page?: boolean | null;
         site_footer?: string | null;
         banner?: {
           __typename?: "Image";
@@ -1193,6 +1197,8 @@ export type SettingsFragmentFragment = {
   site_url: string;
   site_description?: string | null;
   theme?: string | null;
+  show_about_page?: boolean | null;
+  show_tags_page?: boolean | null;
   site_footer?: string | null;
   banner?: {
     __typename?: "Image";
@@ -1359,6 +1365,7 @@ export const PageFragmentFragmentDoc = `
       name
       avatar
       occupation
+      bio
     }
   }
   cover_image {
@@ -1424,6 +1431,8 @@ export const SettingsFragmentFragmentDoc = `
   site_url
   site_description
   theme
+  show_about_page
+  show_tags_page
   menu {
     label
     type

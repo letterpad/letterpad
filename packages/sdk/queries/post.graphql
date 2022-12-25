@@ -50,6 +50,7 @@ fragment pageFragment on Post {
       name
       avatar
       occupation
+      bio
     }
   }
   cover_image {

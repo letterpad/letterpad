@@ -1,6 +1,5 @@
+import { Navigation } from 'letterpad-sdk';
 import React, { useState } from 'react';
-
-import { Navigation } from '@/lib/graphql';
 
 import Link from './Link';
 
