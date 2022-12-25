@@ -96,13 +96,14 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
         style={{
           minHeight: getHeight(cover),
         }}
+        contentClassName="w-full"
       >
-        <Wrapper>
+        <Wrapper className="w-full">
           <div
             className={
               columns == 2
                 ? 'margin-auto max-w-full lg:max-w-[calc(500px)]'
-                : ''
+                : 'w-full'
             }
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(item?.text ?? ''),
