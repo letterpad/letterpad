@@ -5,8 +5,7 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "build.tsc.mjs": "tsc -p tsconfig.json",
     "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
-    "build": "yarn codegen && yarn build.tsc.mjs && yarn build.tsc.cjs && ./fixup.sh",
-    "dev": "tsc -p tsconfig.json -w"
+    "build": "yarn codegen && yarn build.tsc.mjs && yarn build.tsc.cjs && ./fixup.sh"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
