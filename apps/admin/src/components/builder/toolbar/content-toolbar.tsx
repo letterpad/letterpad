@@ -5,7 +5,7 @@ import { FC, ReactNode, useCallback, useState } from "react";
 import { ColorPicker } from "./color";
 import { ColorPickerGradient } from "./colorpicker";
 import { Reset } from "./helpers";
-import { IconDelete, IconImage } from "./icons";
+import { IconDelete, IconImage, IconSetting } from "./icons";
 import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
 
@@ -53,7 +53,7 @@ export const ContentToolbar: FC<Props> = ({
   if (isFirstRow) {
     return (
       <Wrapper>
-        <div className="inline-flex  shadow-sm">
+        <div className="inline-flex  gap-2 shadow-sm">
           <Button onClick={() => setFileExplorerOpen(true)}>
             <IconImage size={20} />
             <Reset
@@ -67,12 +67,13 @@ export const ContentToolbar: FC<Props> = ({
               }
             />
           </Button>
+
           <Button
             onClick={() => {
               setShowBgPattern(true);
             }}
           >
-            setting
+            <IconSetting />
           </Button>
         </div>
         {showBgPattern && (
@@ -80,7 +81,6 @@ export const ContentToolbar: FC<Props> = ({
             {...item?.image?.pattern}
             onChange={updatePattern}
             onClose={() => setShowBgPattern(false)}
-            onReset={() => updatePattern({})}
           />
         )}
       </Wrapper>

@@ -11,7 +11,6 @@ import { Pattern } from "../../types";
 interface Props extends Pattern {
   onChange: (pattern: Pattern) => void;
   onClose: () => void;
-  onReset: () => void;
 }
 
 export const ColorPickerGradient: FC<Props> = ({
@@ -20,7 +19,6 @@ export const ColorPickerGradient: FC<Props> = ({
   gradientStart,
   gradientEnd,
   onClose,
-  onReset,
 }) => {
   const [bg, setBg] = useState(background);
   const [gStart, setGStart] = useState(gradientStart);
@@ -34,6 +32,13 @@ export const ColorPickerGradient: FC<Props> = ({
       gradientEnd: gEnd,
     });
   }, [bg, gStart, gEnd]);
+
+  const handleReset = () => {
+    setGStart("");
+    setGEnd("");
+    setBg("");
+    onChange({ background: "", gradientStart: "", gradientEnd: "" });
+  };
 
   return (
     <div className="absolute -left-72 top-12 flex w-[24rem] flex-col gap-2 rounded-md bg-slate-200 p-4 dark:bg-slate-900">
@@ -92,7 +97,7 @@ export const ColorPickerGradient: FC<Props> = ({
         <Buttonv2 size="small" variant="ghost" onClick={onClose}>
           Close
         </Buttonv2>
-        <Buttonv2 size="small" onClick={onReset}>
+        <Buttonv2 size="small" onClick={handleReset}>
           Reset
         </Buttonv2>
       </div>

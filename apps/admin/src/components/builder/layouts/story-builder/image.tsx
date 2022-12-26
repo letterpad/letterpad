@@ -85,7 +85,7 @@ export const SectionImage: FC<Props> = ({
           className={"dots"}
           style={{
             backgroundSize: "3px 3px",
-            backgroundColor: item?.image?.pattern?.background,
+            backgroundColor: item?.image?.pattern?.background ?? "",
             backgroundImage: `radial-gradient(${item?.image?.pattern?.gradientStart}, ${item?.image?.pattern?.gradientEnd})`,
           }}
         ></div>
