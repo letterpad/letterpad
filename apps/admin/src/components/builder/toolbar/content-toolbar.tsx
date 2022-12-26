@@ -1,8 +1,9 @@
 import classNames from "classnames";
 import dynamic from "next/dynamic";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useCallback, useState } from "react";
 
 import { ColorPicker } from "./color";
+import { ColorPickerGradient } from "./colorpicker";
 import { Reset } from "./helpers";
 import { IconDelete, IconImage } from "./icons";
 import { useBuilderContext } from "../context";
@@ -28,7 +29,27 @@ export const ContentToolbar: FC<Props> = ({
   onBgColorChange,
 }) => {
   const { removeCell, updateCell } = useBuilderContext();
+  const [showBgPattern, setShowBgPattern] = useState(false);
   const isFirstRow = rowIndex === 0;
+
+  const updatePattern = useCallback(
+    (pattern) => {
+      updateCell(
+        {
+          image: {
+            ...item?.image,
+            pattern,
+            src: item?.image?.src ?? "",
+          },
+          type: "image",
+        },
+        rowIndex,
+        colIndex
+      );
+    },
+    [colIndex, item?.image, rowIndex, updateCell]
+  );
+
   if (isFirstRow) {
     return (
       <Wrapper>
@@ -46,7 +67,22 @@ export const ContentToolbar: FC<Props> = ({
               }
             />
           </Button>
+          <Button
+            onClick={() => {
+              setShowBgPattern(true);
+            }}
+          >
+            setting
+          </Button>
         </div>
+        {showBgPattern && (
+          <ColorPickerGradient
+            {...item?.image?.pattern}
+            onChange={updatePattern}
+            onClose={() => setShowBgPattern(false)}
+            onReset={() => updatePattern({})}
+          />
+        )}
       </Wrapper>
     );
   }
