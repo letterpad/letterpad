@@ -24,7 +24,7 @@ interface Props {
   settings: SettingsFragmentFragment;
   me: MeFragmentFragment;
 }
-export default function PostSimple({
+export default function PageHomeLayout({
   site_name,
   data,
   next,
@@ -72,54 +72,33 @@ export default function PostSimple({
       />
       <ScrollTop />
       <article>
-        <div>
-          <header>
-            <div className="space-y-1 border-b border-gray-200 py-10 text-center dark:border-gray-700">
-              <dl>
-                <div>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-300">
-                    <IconBook />
-                    <time dateTime={publishedAt}>
-                      {formatDate(publishedAt)}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
+        <div
+          className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0 "
+          style={{ gridTemplateRows: 'auto 1fr' }}
+        >
+          <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
+            <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">
+              {children}
             </div>
-          </header>
-          <div
-            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0 "
-            style={{ gridTemplateRows: 'auto 1fr' }}
-          >
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">
-                {children}
-              </div>
-            </div>
-            {/* <Comments frontMatter={frontMatter} /> */}
-            <footer>
-              <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
-                {prev && (
-                  <div className="pt-4 xl:pt-8">
-                    <Link href={`/blog/${prev.slug}`} className="link">
-                      &larr; {prev.title}
-                    </Link>
-                  </div>
-                )}
-                {next && (
-                  <div className="pt-4 xl:pt-8">
-                    <Link href={`/blog/${next.slug}`} className="link">
-                      {next.title} &rarr;
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </footer>
           </div>
+          <footer>
+            <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
+              {prev && (
+                <div className="pt-4 xl:pt-8">
+                  <Link href={`/blog/${prev.slug}`} className="link">
+                    &larr; {prev.title}
+                  </Link>
+                </div>
+              )}
+              {next && (
+                <div className="pt-4 xl:pt-8">
+                  <Link href={`/blog/${next.slug}`} className="link">
+                    {next.title} &rarr;
+                  </Link>
+                </div>
+              )}
+            </div>
+          </footer>
         </div>
       </article>
     </SectionContainer>

@@ -15,7 +15,7 @@ import { PageSEO } from '@/components/SEO';
 import Creative from '@/layouts/Creative';
 import GridLayout from '@/layouts/GridLayout';
 import ListLayout from '@/layouts/ListLayout';
-import PostSimple from '@/layouts/PostSimple';
+import PageHomeLayout from '@/layouts/PageHomeLayout';
 
 // const MAX_DISPLAY = 5;
 
@@ -83,14 +83,14 @@ export default function Home({
           <Component posts={posts} />
         )}
         {isPage && page?.__typename === 'Post' && page.page_type === 'default' && (
-          <PostSimple
+          <PageHomeLayout
             data={page}
             site_name={settings.site_title}
             settings={settings}
             me={me}
           >
             <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
-          </PostSimple>
+          </PageHomeLayout>
         )}
 
         {isPage &&
