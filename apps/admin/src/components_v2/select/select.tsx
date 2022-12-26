@@ -21,7 +21,7 @@ export const Select: FC<Props> = ({
       {title && (
         <label
           htmlFor={id}
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-400"
+          className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
         >
           {title}
         </label>

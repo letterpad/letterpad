@@ -28,7 +28,8 @@ export default function ListLayout({ posts, title }: Props) {
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                   <PublishedAt
                     publishedAt={publishedAt}
-                    className="hidden text-sm xl:block"
+                    className="text-sm xl:block"
+                    reading_time={stats?.reading_time}
                   />
                   <div className="space-y-3 xl:col-span-3">
                     <div>
@@ -40,15 +41,6 @@ export default function ListLayout({ posts, title }: Props) {
                           {title}
                         </Link>
                       </h3>
-                      <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-300">
-                        <PublishedAt
-                          publishedAt={publishedAt}
-                          className="xl:hidden"
-                        />
-                        <span className="xl:hidden">•</span>
-                        <IconBook />
-                        <span>{stats?.reading_time} min read</span>
-                      </div>
                       <div className="flex flex-wrap">
                         {tags?.__typename === 'TagsNode' &&
                           tags.rows.map((tag) => (
@@ -56,7 +48,7 @@ export default function ListLayout({ posts, title }: Props) {
                           ))}
                       </div>
                     </div>
-                    <div className="prose max-w-none text-sm leading-6 text-gray-500 dark:text-gray-400">
+                    <div className="prose max-w-none text-sm leading-6 text-gray-500 dark:text-gray-300">
                       {excerpt}
                     </div>
                   </div>
@@ -70,11 +62,15 @@ export default function ListLayout({ posts, title }: Props) {
   );
 }
 
-const PublishedAt = ({ publishedAt, className }) => (
+const PublishedAt = ({ publishedAt, className, reading_time }) => (
   <dl className={className}>
     <dt className="sr-only">Published on</dt>
-    <dd className=" font-medium leading-6 text-gray-500 dark:text-gray-400">
+    <dd className=" font-medium leading-6 text-gray-500 dark:text-gray-300">
       <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
     </dd>
+    <span className="flex items-center gap-1">
+      <IconBook />
+      {reading_time} min read
+    </span>
   </dl>
 );

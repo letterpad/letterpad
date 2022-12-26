@@ -56,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
           {addonBefore && (
             <span
               className={classNames(
-                "absolute border-r border-gray-300 p-2 text-gray-700 dark:border-gray-600 dark:text-gray-400"
+                "absolute border-r border-gray-300 p-2 text-gray-700 dark:border-gray-600 dark:text-gray-300"
               )}
             >
               {addonBefore}

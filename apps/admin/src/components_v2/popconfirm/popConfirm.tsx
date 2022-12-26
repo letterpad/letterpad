@@ -49,7 +49,7 @@ export const PopConfirm: FC<Props> = ({
         <div className="relative h-full w-full max-w-md md:h-auto">
           <div className="relative rounded-md bg-white shadow dark:bg-gray-700">
             <div className="p-6 text-center">
-              <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-300">
                 {title}
               </h3>
               {description && <span>{description}</span>}

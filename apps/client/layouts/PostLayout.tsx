@@ -138,10 +138,10 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                       className="hidden md:block"
                     />
                   </div>
-                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                  <p className="text-sm font-light text-gray-500 dark:text-gray-300">
                     {author.occupation}
                   </p>
-                  <p className="flex text-sm font-light text-gray-500 dark:text-gray-400">
+                  <p className="flex text-sm font-light text-gray-500 dark:text-gray-300">
                     <time title={printPublishedAt}>{printPublishedAt}</time>{' '}
                     &nbsp;•&nbsp;
                     <span className="flex items-center gap-1">
@@ -197,10 +197,10 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               >
                 {author.name}
               </a>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm font-light text-gray-500 dark:text-gray-300">
                 {author.bio}
               </p>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400"></p>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-300"></p>
             </div>
           </div>
           {type === 'post' && <Comments provider="utterances" />}

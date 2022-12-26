@@ -78,7 +78,7 @@ export default function PostSimple({
               <dl>
                 <div>
                   <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-300">
                     <IconBook />
                     <time dateTime={publishedAt}>
                       {formatDate(publishedAt)}
