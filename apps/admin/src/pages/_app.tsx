@@ -2,11 +2,12 @@ import { ApolloProvider } from "@apollo/client";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
+import { Button } from "ui";
 import "lazysizes";
 
-import "ui/tailwind/base.css";
+import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
-import "ui/tailwind/editor.css";
+import "ui/css/editor.css";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
@@ -31,6 +32,7 @@ function LetterpadApp({
     <SessionProvider session={session} basePath={basePath + "/api/auth"}>
       <ApolloProvider client={apolloBrowserClient}>
         {Indicator}
+        <Button variant="danger">Hello</Button>
         <ResponsiveProvider>
           <div id="message" />
           <Main Component={Component} props={{ ...pageProps }} />

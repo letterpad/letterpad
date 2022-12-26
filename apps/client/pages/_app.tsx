@@ -4,8 +4,8 @@ import Head from 'next/head';
 import { ThemeProvider } from 'next-themes';
 import 'lazysizes';
 
-import 'ui/tailwind/base.css';
-import 'ui/tailwind/editor.css';
+import 'ui/css/tailwind.css';
+import 'ui/css/editor.css';
 import '@fontsource/inter/variable-full.css';
 
 import LayoutWrapper from '@/components/LayoutWrapper';
