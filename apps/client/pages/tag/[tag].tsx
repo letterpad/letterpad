@@ -1,6 +1,8 @@
 import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
 
+import PageTitle from '@/components/PageTitle';
+import SectionContainer from '@/components/SectionContainer';
 import { TagSEO } from '@/components/SEO';
 
 import ListLayout from '@/layouts/ListLayout';
@@ -11,8 +13,6 @@ export default function Tag({
   tagName,
   settings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // Capitalize first letter and convert space to dash
-  // const title = tagName[0].toUpperCase() + tagName.split(' ').join('-').slice(1);
   if (
     posts.__typename !== 'PostsNode' ||
     settings.__typename !== 'Setting' ||
@@ -31,7 +31,12 @@ export default function Tag({
         url={settings.site_url + 'tags'}
         twSite={me.social?.twitter}
       />
-      <ListLayout posts={posts} title={tagName} />
+      <SectionContainer>
+        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+          <PageTitle>{tagName}</PageTitle>
+        </div>
+      </SectionContainer>
+      <ListLayout posts={posts} />
     </>
   );
 }

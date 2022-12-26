@@ -3,17 +3,19 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { TextToSpeech } from './api';
 import { IconPause, IconPlay } from '../icons';
 
+let tts: TextToSpeech | null = null;
+if (typeof window !== 'undefined') {
+  tts = new TextToSpeech();
+}
 export const Speak: FC<{ html: string }> = ({ html }) => {
-  const speechRef = useRef<TextToSpeech>();
   const [, setMounted] = useState(false);
   const cursorRef = useRef<number>(-1);
   const elementsRef = useRef<NodeListOf<Element>>();
   const [s, setS] = useState('');
-
   const speak = useCallback(() => {
     if (s === 'paused') {
       setS('start');
-      return speechRef.current?.resume();
+      return tts?.resume();
     }
     if (!elementsRef.current) return;
     const current = elementsRef.current[cursorRef.current];
@@ -28,40 +30,37 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
         inline: 'center',
       });
       node.classList.add('highlight-speech');
-      speechRef.current?.speak(node.textContent ?? '');
+      tts?.speak(node.textContent ?? '');
       setS('start');
     } else {
       cursorRef.current = -1;
     }
-  }, [s]);
+  }, [s, elementsRef]);
 
   useEffect(() => {
     const status = (event) => {
       if (event.type === 'end') speak();
-      if (speechRef.current) setS(event.type);
+      if (tts) setS(event.type);
     };
     //@ts-ignore
-    if (!window.chrome || !('speechSynthesis' in window)) {
+    if (!window.chrome || !('speechSynthesis' in window) || !tts) {
       return;
     }
-    const tts = new TextToSpeech();
-    if (tts) {
-      speechRef.current = tts;
-      if (!speechRef.current) return;
-      setMounted(true);
-      tts.engine.addEventListener('end', status.bind(this));
-      tts.engine.addEventListener('pause', status.bind(this));
-      tts.engine.addEventListener('resume', status.bind(this));
-      tts.engine.addEventListener('start', status.bind(this));
-    }
+
+    setMounted(true);
+    tts.engine.addEventListener('end', status.bind(this));
+    tts.engine.addEventListener('pause', status.bind(this));
+    tts.engine.addEventListener('resume', status.bind(this));
+    tts.engine.addEventListener('start', status.bind(this));
+
     return () => {
-      if (!speechRef.current) return;
-      elementsRef.current = undefined;
-      tts.cancel();
-      speechRef.current.engine.removeEventListener('end', status.bind(this));
-      speechRef.current.engine.removeEventListener('pause', status.bind(this));
-      speechRef.current.engine.removeEventListener('resume', status.bind(this));
-      speechRef.current.engine.removeEventListener('start', status.bind(this));
+      if (!tts) return;
+      // elementsRef.current = undefined;
+      tts?.cancel();
+      tts?.engine.removeEventListener('end', status.bind(this));
+      tts?.engine.removeEventListener('pause', status.bind(this));
+      tts?.engine.removeEventListener('resume', status.bind(this));
+      tts?.engine.removeEventListener('start', status.bind(this));
     };
   }, [html, speak]);
 
@@ -72,12 +71,12 @@ export const Speak: FC<{ html: string }> = ({ html }) => {
     cursorRef.current = -1;
   }, [html]);
 
-  if (!speechRef.current) return null;
+  if (!tts) return null;
   return s === 'start' ? (
     <button
       onClick={() => {
-        clearTimeout(speechRef.current?.timeout);
-        speechRef.current?.pause();
+        clearTimeout(tts?.timeout);
+        tts?.pause();
         setS('paused');
       }}
     >

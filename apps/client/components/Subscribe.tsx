@@ -32,14 +32,14 @@ const Subscribe = () => {
     <div id="subscribe" className="flex ">
       <div className="w-full text-center">
         <div className="md:items-left flex max-w-xl  flex-col items-center  p-1 pr-0 text-left ">
-          <span className="mb-2 hidden text-gray-500 md:block">
+          <span className="mb-2 hidden text-gray-600 dark:text-gray-300 md:block">
             Subscribe to my newsletter
           </span>
           <div>
             <input
               type="email"
               placeholder="yourmail@example.com"
-              className="flex-1 border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-900 dark:bg-gray-900 dark:text-gray-200  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 md:w-64"
+              className="flex-1 rounded-l-md border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-900 dark:bg-gray-900  dark:text-gray-200 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 md:w-64"
               onChange={(e) => setEmail(e.target.value.trim())}
               value={email}
             />
