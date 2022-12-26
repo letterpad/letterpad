@@ -169,9 +169,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               Listen <Speak html={post.html ?? ''} />
             </div>
           </header>
-          <div className="content prose pb-8 pt-4 dark:prose-dark">
-            {children}
-          </div>
+          <div className="prose pb-8 pt-4 dark:prose-dark">{children}</div>
 
           <div
             className={
