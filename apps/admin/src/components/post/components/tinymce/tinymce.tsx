@@ -117,7 +117,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             "lists image link quickbars autoresize  code codesample directionality wordcount",
           skin: "none",
           skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
-          // content_css: basePath + "/css/editor.css",
           height: "100%",
           quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
@@ -132,6 +131,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             },
           },
           text_patterns: textPatterns,
+          paste_remove_styles: true,
           onpageload: () => {
             editorRef.current?.dom.doc
               .querySelectorAll("img")

@@ -5,6 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@300;400;600;700&display=swap');
 
 .prose {
+  word-break: break-word;
   .mce-content-body {
     outline: none;
   }

@@ -28,7 +28,6 @@ export const getImageAttrs = (
       sizes: srcSizes,
       "data-srcset": srcSet,
       srcSet: base64Url,
-      width: "100%",
       loading: "lazy",
       class: "lazyload",
     };
