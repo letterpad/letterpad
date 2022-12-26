@@ -28,7 +28,7 @@ const Integrations: React.FC<Props> = ({
   };
   return (
     <>
-      <p className="dark:text-gray-400">
+      <p className="dark:text-gray-300">
         <span>
           Cloudinary helps in optimising all your images and are served by a
           CDN.

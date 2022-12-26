@@ -50,7 +50,7 @@ export const Drawer: FC<Props> = ({
       >
         <h5
           id="drawer-label"
-          className="mb-4 inline-flex items-center text-base font-semibold text-gray-500 dark:text-gray-400"
+          className="mb-4 inline-flex items-center text-base font-semibold text-gray-500 dark:text-gray-300"
         >
           {title}
         </h5>
@@ -63,7 +63,7 @@ export const Drawer: FC<Props> = ({
           <IconClose />
           <span className="sr-only">Close menu</span>
         </button>
-        <div className="mb-6 flex-1 text-sm text-gray-500 dark:text-gray-400">
+        <div className="mb-6 flex-1 text-sm text-gray-500 dark:text-gray-300">
           {children}
         </div>
         <div className="bottom-0 left-0">{footer}</div>

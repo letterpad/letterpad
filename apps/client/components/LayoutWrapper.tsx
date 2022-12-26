@@ -63,7 +63,7 @@ const LayoutWrapper = ({ children, props }: Props) => {
   return (
     <>
       <div className="border-b-[1px] dark:border-gray-700">
-        <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-8 md:px-20">
+        <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-4 md:px-20">
           <div>
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle

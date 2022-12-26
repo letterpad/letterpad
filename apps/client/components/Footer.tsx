@@ -16,7 +16,7 @@ export default function Footer({ author, settings }) {
       <div className="py-8 text-center md:max-w-sm md:text-left">
         <div
           dangerouslySetInnerHTML={{ __html: settings.site_footer }}
-          className="w-full text-gray-500 dark:text-gray-500"
+          className="w-full text-gray-500 dark:text-gray-300"
         ></div>
       </div>
       <div className="mt-4 flex w-full flex-col items-center justify-between border-t border-gray-200 border-opacity-60 py-6 dark:border-gray-700  md:mt-4 md:flex-row">

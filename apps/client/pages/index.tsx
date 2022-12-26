@@ -66,7 +66,7 @@ export default function Home({
         ) : (
           <div className="mx-auto max-w-3xl space-y-2 py-20 md:space-y-2">
             <PageTitle>{me.name}</PageTitle>
-            <p className="text-center text-md leading-7 text-gray-500 dark:text-gray-400">
+            <p className="px-4 text-center text-md leading-7 text-gray-500 dark:text-gray-300">
               {settings.site_description}
             </p>
           </div>

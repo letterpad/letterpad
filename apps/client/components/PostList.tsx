@@ -23,8 +23,8 @@ const PostList: React.VFC<Props> = ({ posts }) => {
             <li key={slug} className="py-12">
               <article>
                 <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                  <dl className="flex flex-row justify-between gap-2 text-sm font-light text-gray-500 dark:text-gray-400 md:flex-col">
-                    <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                  <dl className="flex flex-row justify-between gap-2 text-sm font-light text-gray-500 dark:text-gray-300 md:flex-col">
+                    <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-300">
                       <time title={publishedAt}>{formatDate(publishedAt)}</time>
                     </dd>
                     <span className="flex items-center gap-1">
@@ -49,7 +49,7 @@ const PostList: React.VFC<Props> = ({ posts }) => {
                           ))}
                         </div>
                       </div>
-                      <div className="max-w-none font-sans text-gray-500 dark:text-gray-400">
+                      <div className="max-w-none font-sans text-gray-500 dark:text-gray-300">
                         {excerpt}
                       </div>
                     </div>

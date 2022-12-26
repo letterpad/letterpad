@@ -50,7 +50,7 @@ const Header = ({ activeTab, label, onClick, id }) => {
       <button
         onClick={() => onClick(id)}
         className={classNames("inline-block rounded-t-lg border-b-2 p-4", {
-          "border-gray-100 text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:border-transparent dark:border-gray-700 dark:text-gray-400 dark:hover:text-gray-300":
+          "border-gray-100 text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:border-transparent dark:border-gray-700 dark:text-gray-300 dark:hover:text-gray-300":
             activeTab !== id,
           "border-blue-600 text-blue-600 hover:text-blue-600 dark:border-blue-500 dark:text-blue-500 dark:hover:text-blue-500":
             activeTab === id,
