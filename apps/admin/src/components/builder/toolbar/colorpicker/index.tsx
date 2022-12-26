@@ -20,28 +20,18 @@ export const ColorPickerGradient: FC<Props> = ({
   gradientEnd,
   onClose,
 }) => {
-  const [bg, setBg] = useState(background);
-  const [gStart, setGStart] = useState(gradientStart);
-  const [gEnd, setGEnd] = useState(gradientEnd);
-  const [active, setActive] = useState("bg");
+  const [active, setActive] = useState("background");
 
-  useEffect(() => {
-    onChange({
-      background: bg,
-      gradientStart: gStart,
-      gradientEnd: gEnd,
-    });
-  }, [bg, gStart, gEnd]);
+  const handleChange = (change) => {
+    onChange({ background, gradientStart, gradientEnd, ...change });
+  };
 
   const handleReset = () => {
-    setGStart("");
-    setGEnd("");
-    setBg("");
     onChange({ background: "", gradientStart: "", gradientEnd: "" });
   };
 
   return (
-    <div className="absolute -left-72 top-12 flex w-[24rem] flex-col gap-2 rounded-md bg-slate-200 p-4 dark:bg-slate-900">
+    <div className="absolute -left-80 top-12 flex w-[24rem] flex-col gap-2 rounded-md bg-slate-200 p-4 dark:bg-slate-900">
       <div className="mb-4 flex justify-between">
         <span>Background Overlay Enhancer</span>
         <IoClose size={20} className="cursor-pointer" onClick={onClose} />
@@ -49,33 +39,42 @@ export const ColorPickerGradient: FC<Props> = ({
       <div className="flex w-full flex-row justify-between gap-2">
         <div className="flex flex-col items-start gap-2">
           <ColorBox
-            color={bg}
-            isActive={active === "bg"}
+            color={background}
+            isActive={active === "background"}
             label="Background"
-            setActive={() => setActive("bg")}
+            setActive={() => setActive("background")}
           />
           <ColorBox
-            color={gStart}
-            isActive={active === "gStart"}
+            color={gradientStart}
+            isActive={active === "gradientStart"}
             label="Dot Gradient Start"
-            setActive={() => setActive("gStart")}
+            setActive={() => setActive("gradientStart")}
           />
           <ColorBox
-            color={gEnd}
-            isActive={active === "gEnd"}
+            color={gradientEnd}
+            isActive={active === "gradientEnd"}
             label="Dot Gradient End"
-            setActive={() => setActive("gEnd")}
+            setActive={() => setActive("gradientEnd")}
           />
         </div>
         <div>
-          {active === "bg" && (
-            <RgbaStringColorPicker color={bg} onChange={setBg} />
+          {active === "background" && (
+            <RgbaStringColorPicker
+              color={background}
+              onChange={(color) => handleChange({ background: color })}
+            />
           )}
-          {active === "gStart" && (
-            <RgbaStringColorPicker color={gStart} onChange={setGStart} />
+          {active === "gradientStart" && (
+            <RgbaStringColorPicker
+              color={gradientStart}
+              onChange={(color) => handleChange({ gradientStart: color })}
+            />
           )}
-          {active === "gEnd" && (
-            <RgbaStringColorPicker color={gEnd} onChange={setGEnd} />
+          {active === "gradientEnd" && (
+            <RgbaStringColorPicker
+              color={gradientEnd}
+              onChange={(color) => handleChange({ gradientEnd: color })}
+            />
           )}
         </div>
         <style jsx global>{`

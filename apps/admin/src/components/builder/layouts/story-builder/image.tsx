@@ -43,6 +43,9 @@ export const SectionImage: FC<Props> = ({
     );
   };
 
+  const hasbgImage =
+    item?.image?.pattern?.gradientStart && item?.image?.pattern?.gradientEnd;
+  const backgroundImage = `radial-gradient(${item?.image?.pattern?.gradientStart}, ${item?.image?.pattern?.gradientEnd})`;
   return (
     <StickyBox
       data-background
@@ -86,7 +89,7 @@ export const SectionImage: FC<Props> = ({
           style={{
             backgroundSize: "3px 3px",
             backgroundColor: item?.image?.pattern?.background ?? "",
-            backgroundImage: `radial-gradient(${item?.image?.pattern?.gradientStart}, ${item?.image?.pattern?.gradientEnd})`,
+            backgroundImage: hasbgImage ? backgroundImage : "",
           }}
         ></div>
       )}
