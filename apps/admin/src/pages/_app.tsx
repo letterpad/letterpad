@@ -6,7 +6,6 @@ import "lazysizes";
 
 import "ui/tailwind/base.css";
 import "../../public/css/globals.css";
-import "../../public/css/grammar-tooltip.css";
 import "ui/tailwind/editor.css";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";

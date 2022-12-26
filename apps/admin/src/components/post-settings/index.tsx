@@ -84,7 +84,6 @@ const Actions = ({ post }: IProps) => {
   return (
     <>
       <QuickMenu
-        grammar={post.page_type !== PageType["Story Builder"]}
         preview={post.page_type !== PageType["Story Builder"]}
         siteUrl={settings?.site_url ?? ""}
         postHash={postHash}

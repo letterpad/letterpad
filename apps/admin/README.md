@@ -8,7 +8,7 @@ Letterpad Admin is the dashboard for publishing blogs.
 - Uses Graphql, React Apollo, NextJS and Prisma
 - Uses TinyMCE editor, specially composed for Letterpad
 - Theme customisation (css) from Dashboard.
-- Use Language Tool AI Model to check grammar.
+- Use Grammarly to check grammar.
 - CDN Powered images (Uses cloudinary and Unsplash)
 - Connects to multiple databases. Default is sqlite3
 - Can be used as a multi-user service
