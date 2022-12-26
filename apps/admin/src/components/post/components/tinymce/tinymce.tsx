@@ -40,7 +40,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
     return () => {
       editor?.off("openFileExplorer");
     };
-  }, [onMediaBrowse]);
+  }, [onMediaBrowse, editorRef.current]);
 
   useEffect(() => {
     if (typeof html == "undefined") {
