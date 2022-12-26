@@ -102,7 +102,7 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
             className={
               columns == 2
                 ? 'margin-auto max-w-full lg:max-w-[calc(500px)]'
-                : 'w-full'
+                : 'z-[2] w-full'
             }
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(item?.text ?? ''),
@@ -110,6 +110,16 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
           />
         </Wrapper>
       </Parallax>
+      {rowIndex === 0 && (
+        <div
+          className={'dots'}
+          style={{
+            backgroundSize: '3px 3px',
+            backgroundColor: item?.image?.pattern?.background ?? '',
+            backgroundImage: `radial-gradient(${item?.image?.pattern?.gradientStart}, ${item?.image?.pattern?.gradientEnd})`,
+          }}
+        ></div>
+      )}
     </ReactStickyBox>
   );
 };
@@ -123,7 +133,7 @@ const SectionText: FC<any> = ({ columns, text, type }) => {
       data-text
       className={
         'my-20 flex w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white ' +
-        (columns == 2 ? 'max-w-full lg:max-w-[calc(500px)]' : 'w-full')
+        (columns == 2 ? 'max-w-full lg:max-w-[calc(500px)]' : 'w-full ')
       }
       dangerouslySetInnerHTML={{
         __html: decodeURIComponent(text),

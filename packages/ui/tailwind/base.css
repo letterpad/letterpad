@@ -38,4 +38,11 @@
   .highlight-speech {
     @apply rounded-md bg-slate-200 dark:bg-slate-800;
   }
+
+  /* creatives */
+  .dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 }

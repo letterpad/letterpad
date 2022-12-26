@@ -21,7 +21,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
   }, [html, text]);
 
   return (
-    <div className="editor-wrapper  w-full">
+    <div className="editor-wrapper z-[2] w-full">
       <Editor
         onInit={async (_evt, editor) => {
           if (editor) {

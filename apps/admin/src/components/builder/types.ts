@@ -1,8 +1,15 @@
+export interface Pattern {
+  background?: string;
+  gradientStart?: string;
+  gradientEnd?: string;
+}
+
 interface BlockImage {
   width?: number;
   height?: number;
   src: string;
   description?: string;
+  pattern?: Pattern;
 }
 
 export interface BlockMasonry {

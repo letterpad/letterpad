@@ -6,10 +6,11 @@ import StickyBox from "react-sticky-box";
 import { getHeight, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
 import MiniEditor from "../../toolbar/mini-editor";
+import { BlockItem } from "../../types";
 
 interface Props {
   columns: number;
-  item: any;
+  item?: BlockItem;
   position: [rowIndex: number, colIndex: number];
   formats: string;
   cover?: "small" | "big" | "banner";
@@ -42,6 +43,9 @@ export const SectionImage: FC<Props> = ({
     );
   };
 
+  const hasbgImage =
+    item?.image?.pattern?.gradientStart && item?.image?.pattern?.gradientEnd;
+  const backgroundImage = `radial-gradient(${item?.image?.pattern?.gradientStart}, ${item?.image?.pattern?.gradientEnd})`;
   return (
     <StickyBox
       data-background
@@ -69,7 +73,7 @@ export const SectionImage: FC<Props> = ({
         }}
       >
         <Wrapper>
-          {preview && <Text columns={columns} text={item.text} />}
+          {preview && <Text columns={columns} text={item?.text} />}
           {!preview && firstRow ? (
             <MiniEditor
               onChange={update}
@@ -79,6 +83,16 @@ export const SectionImage: FC<Props> = ({
           ) : null}
         </Wrapper>
       </Parallax>
+      {firstRow && (
+        <div
+          className={"dots"}
+          style={{
+            backgroundSize: "3px 3px",
+            backgroundColor: item?.image?.pattern?.background ?? "",
+            backgroundImage: hasbgImage ? backgroundImage : "",
+          }}
+        ></div>
+      )}
     </StickyBox>
   );
 };
@@ -87,7 +101,9 @@ const Text = ({ columns, text = "" }) => (
   <div
     data-text
     className={
-      columns == 2 ? "margin-auto max-w-full lg:max-w-[calc(500px)]" : "w-full"
+      columns == 2
+        ? "margin-auto max-w-full lg:max-w-[calc(500px)]"
+        : "z-[2] w-full"
     }
     dangerouslySetInnerHTML={{
       __html: decodeURIComponent(text),

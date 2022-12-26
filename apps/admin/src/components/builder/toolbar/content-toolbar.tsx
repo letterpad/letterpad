@@ -1,10 +1,11 @@
 import classNames from "classnames";
 import dynamic from "next/dynamic";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useCallback, useState } from "react";
 
 import { ColorPicker } from "./color";
+import { ColorPickerGradient } from "./colorpicker";
 import { Reset } from "./helpers";
-import { IconDelete, IconImage } from "./icons";
+import { IconDelete, IconImage, IconSetting } from "./icons";
 import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
 
@@ -28,11 +29,31 @@ export const ContentToolbar: FC<Props> = ({
   onBgColorChange,
 }) => {
   const { removeCell, updateCell } = useBuilderContext();
+  const [showBgPattern, setShowBgPattern] = useState(false);
   const isFirstRow = rowIndex === 0;
+
+  const updatePattern = useCallback(
+    (pattern) => {
+      updateCell(
+        {
+          image: {
+            ...item?.image,
+            pattern,
+            src: item?.image?.src ?? "",
+          },
+          type: "image",
+        },
+        rowIndex,
+        colIndex
+      );
+    },
+    [colIndex, item?.image, rowIndex, updateCell]
+  );
+
   if (isFirstRow) {
     return (
       <Wrapper>
-        <div className="inline-flex  shadow-sm">
+        <div className="inline-flex  gap-2 shadow-sm">
           <Button onClick={() => setFileExplorerOpen(true)}>
             <IconImage size={20} />
             <Reset
@@ -46,7 +67,22 @@ export const ContentToolbar: FC<Props> = ({
               }
             />
           </Button>
+
+          <Button
+            onClick={() => {
+              setShowBgPattern(true);
+            }}
+          >
+            <IconSetting />
+          </Button>
         </div>
+        {showBgPattern && (
+          <ColorPickerGradient
+            {...item?.image?.pattern}
+            onChange={updatePattern}
+            onClose={() => setShowBgPattern(false)}
+          />
+        )}
       </Wrapper>
     );
   }
