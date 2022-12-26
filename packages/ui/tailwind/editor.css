@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap');
 @import './creatives.css';
 @import './prism.css';
-@import 'https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.6/tippy.min.css';
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@300;400;600;700&display=swap');
 
 .prose {
