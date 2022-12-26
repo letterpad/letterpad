@@ -4,23 +4,17 @@ import formatDate from '@/lib/utils/formatDate';
 
 import { IconBook } from '@/components/icons';
 import Link from '@/components/Link';
-import PageTitle from '@/components/PageTitle';
 import SectionContainer from '@/components/SectionContainer';
 import Tag from '@/components/Tag';
 interface Props {
   posts: PostsFragmentFragment;
-  title: string;
 }
 
-export default function ListLayout({ posts, title }: Props) {
+export default function ListLayout({ posts }: Props) {
   return (
     <SectionContainer>
       <div className="content divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <PageTitle>{title}</PageTitle>
-        </div>
         <ul>
-          {/* {!filteredBlogPosts.length && 'No posts found.'} */}
           {posts.rows.map((post) => {
             const { slug, publishedAt, title, tags, excerpt, stats } = post;
             return (
@@ -48,7 +42,7 @@ export default function ListLayout({ posts, title }: Props) {
                           ))}
                       </div>
                     </div>
-                    <div className="prose max-w-none text-sm leading-6 text-gray-500 dark:text-gray-300">
+                    <div className="prose max-w-none text-md leading-6 text-gray-500 dark:text-gray-300">
                       {excerpt}
                     </div>
                   </div>

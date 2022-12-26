@@ -8,13 +8,14 @@ import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 
 import PageTitle from '@/components/PageTitle';
-import PostGrid from '@/components/PostGrid';
-import PostList from '@/components/PostList';
+// import PostList from '@/components/PostList';
 import SectionContainer from '@/components/SectionContainer';
 import { PageSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
-import PostSimple from '@/layouts/PostSimple';
+import GridLayout from '@/layouts/GridLayout';
+import ListLayout from '@/layouts/ListLayout';
+import PageHomeLayout from '@/layouts/PageHomeLayout';
 
 // const MAX_DISPLAY = 5;
 
@@ -26,7 +27,7 @@ export default function Home({
   posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { theme = 'minimal' } = settings;
-  const Component = theme === 'minimal' ? PostList : PostGrid;
+  const Component = theme === 'minimal' ? ListLayout : GridLayout;
 
   return (
     <>
@@ -77,25 +78,21 @@ export default function Home({
               Hi, my name is {me.name}!
             </span>
           )}
-
-          {!isPage && posts?.__typename === 'PostsNode' && (
-            <Component posts={posts} />
-          )}
-          {isPage &&
-            page?.__typename === 'Post' &&
-            page.page_type === 'default' && (
-              <PostSimple
-                data={page}
-                site_name={settings.site_title}
-                settings={settings}
-                me={me}
-              >
-                <div
-                  dangerouslySetInnerHTML={{ __html: page.html ?? '' }}
-                ></div>
-              </PostSimple>
-            )}
         </SectionContainer>
+        {!isPage && posts?.__typename === 'PostsNode' && (
+          <Component posts={posts} />
+        )}
+        {isPage && page?.__typename === 'Post' && page.page_type === 'default' && (
+          <PageHomeLayout
+            data={page}
+            site_name={settings.site_title}
+            settings={settings}
+            me={me}
+          >
+            <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
+          </PageHomeLayout>
+        )}
+
         {isPage &&
           page?.__typename === 'Post' &&
           page.page_type !== 'default' && (
