@@ -42,7 +42,7 @@ export const getPost = async (
       const html =
         post.status === PostStatusOptions.Published
           ? post.html ?? post.html_draft
-          : post.html_draft;
+          : post.html_draft ?? "";
       return { ...mapPostToGraphql(post), html, __typename: "Post" };
     }
     return { __typename: "NotFound", message: "Post not found" };

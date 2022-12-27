@@ -4,9 +4,9 @@ import { SessionProvider } from "next-auth/react";
 import React from "react";
 import "lazysizes";
 
-import "ui/tailwind/base.css";
+import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
-import "ui/tailwind/editor.css";
+import "ui/css/editor.css";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
