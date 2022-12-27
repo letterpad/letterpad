@@ -32,7 +32,6 @@ function LetterpadApp({
     <SessionProvider session={session} basePath={basePath + "/api/auth"}>
       <ApolloProvider client={apolloBrowserClient}>
         {Indicator}
-        <Button variant="danger">Hello</Button>
         <ResponsiveProvider>
           <div id="message" />
           <Main Component={Component} props={{ ...pageProps }} />
