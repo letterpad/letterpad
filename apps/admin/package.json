@@ -1,6 +1,6 @@
 {
   "name": "letterpad-admin",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "author": "Abhishek Saha",
   "license": "MIT",
   "prisma": {
