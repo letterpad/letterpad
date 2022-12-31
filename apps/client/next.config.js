@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app cdnjs.cloudflare.com localhost:3002 collect.letterpad.app utteranc.es letterpad.app;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' *;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src * blob: data:;
   media-src 'none';
@@ -62,7 +62,12 @@ module.exports = withBundleAnalyzer({
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
   },
   images: {
-    domains: ['res.cloudinary.com', 'images.unsplash.com', 'localhost', 'letterpad.app'],
+    domains: [
+      'res.cloudinary.com',
+      'images.unsplash.com',
+      'localhost',
+      'letterpad.app',
+    ],
   },
   async headers() {
     return [
