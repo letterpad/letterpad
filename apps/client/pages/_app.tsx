@@ -16,7 +16,7 @@ interface PageProps {
   me: Author;
 }
 export default function App({ Component, pageProps }: AppProps<PageProps>) {
-  const { srcs, contents } = getScripts(pageProps.settings.scripts);
+  const { srcs, contents } = getScripts(pageProps.settings?.scripts ?? '');
   return (
     <ThemeProvider attribute="class" defaultTheme="system">
       <Head>
