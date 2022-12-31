@@ -1,7 +1,5 @@
 import bcrypt from "bcryptjs";
 
-import { analytics_on, umamiApi } from "@/lib/umami";
-
 import {
   InputAuthor,
   MutationUpdateAuthorArgs,
@@ -118,17 +116,6 @@ export const updateAuthor = async (
           author_id: author.id,
         },
       });
-      try {
-        if (author.analytics_id && analytics_on) {
-          const api = await umamiApi();
-          await api.changeWebsite(
-            `${args.author.username}.letterpad.app`,
-            author.analytics_id
-          );
-        }
-      } catch (e: any) {
-        //
-      }
     }
     return {
       __typename: "Author",

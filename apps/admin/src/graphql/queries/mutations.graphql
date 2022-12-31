@@ -74,6 +74,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
       cloudinary_key
       cloudinary_name
       cloudinary_secret
+      scripts
       intro_dismissed
       show_about_page
       show_tags_page

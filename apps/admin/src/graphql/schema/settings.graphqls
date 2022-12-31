@@ -27,6 +27,7 @@ type Setting {
   cloudinary_key: String @maskIfUnauth
   cloudinary_name: String @maskIfUnauth
   cloudinary_secret: String @maskIfUnauth
+  scripts: String
   menu: [Navigation!]!
   css: String
   theme: String
@@ -61,6 +62,7 @@ input SettingInputType {
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
+  scripts: String
   menu: [InputNavigation!]
   css: String
   theme: String

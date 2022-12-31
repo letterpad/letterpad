@@ -29,6 +29,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
     router.replace({ query: { selected: key } });
   };
   const [deleteAuthor] = useDeleteAuthorMutation();
+
   const confirm = async () => {
     await deleteAuthor();
     router.push("/login?deleted=true");
@@ -88,7 +89,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
             </div>
             <PopConfirm
               title="Are you sure you want to delete your account ?"
-              onConfirm={() => alert(1)}
+              onConfirm={() => confirm}
               okText="Yes"
               cancelText="No"
             >

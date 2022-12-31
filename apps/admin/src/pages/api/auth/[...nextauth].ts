@@ -8,7 +8,6 @@ import GoogleProvider from "next-auth/providers/google";
 
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
-import { addUmamAnalyticsiIfNotExists } from "@/lib/umami";
 
 import { report } from "@/components/error";
 
@@ -74,7 +73,6 @@ const options = (): NextAuthOptions => ({
       if (!token.email) {
         throw new Error("Invalid session");
       }
-      await addUmamAnalyticsiIfNotExists(token.email);
       const author = await prisma.author.findFirst({
         where: { email: token.email },
       });
