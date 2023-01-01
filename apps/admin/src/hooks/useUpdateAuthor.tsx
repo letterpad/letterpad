@@ -15,13 +15,13 @@ import { EventAction, track } from "@/track";
 
 const key = "author";
 
-export const useUpdateAuthor = (id: number) => {
+export const useUpdateAuthor = (id: number, withTracking = true) => {
   const [updateAuthorMutation, progress] = useUpdateAuthorMutation();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function updateAuthorAPI(data: Omit<InputAuthor, "id">) {
-    if (!data.password) {
+    if (!data.password && withTracking) {
       track({
         eventAction: EventAction.Change,
         eventCategory: "profile",
@@ -39,7 +39,7 @@ export const useUpdateAuthor = (id: number) => {
   }
 
   async function updateAuthor(data: Omit<InputAuthor, "id">) {
-    if (!data.password) {
+    if (!data.password && withTracking) {
       track({
         eventAction: EventAction.Change,
         eventCategory: "profile",
@@ -56,7 +56,7 @@ export const useUpdateAuthor = (id: number) => {
         author: { ...data, id },
       },
       optimisticResponse: (cache) => {
-        const data = { ...meData.me, ...cache.author };
+        const data = { ...(meData?.me ?? {}), ...cache.author };
         return {
           updateAuthor: {
             ...data,
@@ -111,6 +111,7 @@ export const useUpdateAuthor = (id: number) => {
           });
       }
     }
+    return res;
   }
 
   const updateLocalState = (data: Omit<InputAuthor, "id">) => {
