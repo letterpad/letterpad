@@ -15,11 +15,6 @@ const Header: React.VFC<Props> = ({ post }) => {
   if (!post) return null;
 
   if (post.__typename === "Post") {
-    const className =
-      post.status === PostStatusOptions.Published
-        ? "bg-green-700"
-        : "bg-orange-600";
-
     const isPost = post.type === PostTypes.Post;
 
     const goBack = (e) => {
@@ -38,8 +33,11 @@ const Header: React.VFC<Props> = ({ post }) => {
           </a>
           <span
             className={classNames(
-              "rounded-md p-1.5 px-2 text-xs text-white shadow-sm",
-              className
+              "rounded-md p-1.5 px-2 text-xs  font-semibold uppercase tracking-wide",
+              {
+                "text-green-500": post.status === PostStatusOptions.Published,
+                "text-orange-500": post.status === PostStatusOptions.Draft,
+              }
             )}
             data-testid="postStatus"
           >

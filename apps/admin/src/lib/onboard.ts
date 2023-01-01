@@ -60,15 +60,16 @@ export const onBoardUser = async (id: number) => {
 
 function getWelcomePost(name: string) {
   const post_cover =
-    "https://images.unsplash.com/photo-1516035054744-d474c5209db5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80";
+    "https://images.unsplash.com/photo-1625992865747-d814b125ab22?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2970&q=80";
 
   const html = `This is ${name}. I am starting a brand new site and I am excited to see how this goes. Please visit me after few days to see what I have written or subscribe to my newsletter to get notified when I publish a new post.`;
   const title = "Coming Soon";
 
+  const excerpt = `This is ${name}. I am starting a brand new site and I am excited to see how this goes.`;
   const post = {
     title,
     html: html,
-    excerpt: html,
+    excerpt,
     cover_image: post_cover,
     cover_image_width: 1500,
     cover_image_height: 900,
