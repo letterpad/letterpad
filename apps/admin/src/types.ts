@@ -2,7 +2,7 @@
 
 import { DefaultUser } from "next-auth";
 
-import { Navigation, Setting } from "@/__generated__/__types__";
+import { Navigation, RegisterStep, Setting } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { ROLES, SessionData } from "@/graphql/types";
 
@@ -14,6 +14,7 @@ declare module "next-auth" {
       name: string;
       id: number;
       role: ROLES;
+      register_step: RegisterStep;
     };
   }
 }

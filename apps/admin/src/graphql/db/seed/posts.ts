@@ -35,16 +35,4 @@ export const postsList = [
     page_type: "default",
     page_data: JSON.stringify({ rows: [] }),
   },
-  {
-    title: "Letterpad Typography",
-    type: "page",
-    status: "published",
-    cover_image:
-      "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-    cover_image_width: 1482,
-    cover_image_height: 900,
-    html_draft: "",
-    page_type: "default",
-    page_data: JSON.stringify({ rows: [] }),
-  },
 ];

@@ -1,24 +1,24 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { signOut } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import { Logo } from "@/components/login/views/Logo";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
 import { Message } from "@/components_v2/message";
 
+import { RegisterStep } from "@/__generated__/__types__";
 import {
   CreateAuthorDocument,
   useCreateAuthorMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { sanitizeUsername } from "@/shared/utils";
+import { registrationPaths } from "@/constants";
 import { EventAction, track } from "@/track";
 
 export const RegisterForm = () => {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
   const [error, setError] = useState<null | Record<string, string>>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [createAuthor] = useCreateAuthorMutation();
@@ -26,6 +26,12 @@ export const RegisterForm = () => {
   const [_, setProcessing] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    signOut({
+      redirect: false,
+    });
+  }, []);
 
   const registerAction = async () => {
     setProcessing(true);
@@ -37,14 +43,7 @@ export const RegisterForm = () => {
     let errors = {};
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
-      const formWithToken = { email, username, name, token, password };
-      if (!username || !sanitizeUsername(username)) {
-        errors = {
-          ...errors,
-          username:
-            "Only letters, numbers, underscore, hyphen and dot are allowed",
-        };
-      }
+      const formWithToken = { email, token, password };
       if (email.length === 0) {
         errors = {
           ...errors,
@@ -62,12 +61,6 @@ export const RegisterForm = () => {
             "Should be 8 character long and should contain at least one number",
         };
       }
-      if (name.length < 3 || name.search(/^([ \u00c0-\u01ffa-zA-Z'-])+$/) < 0) {
-        errors = {
-          ...errors,
-          name: "Should be 3 character long and may contain specific special characters",
-        };
-      }
       if (Object.keys(errors).length > 0) {
         setProcessing(false);
         setError(errors);
@@ -79,7 +72,6 @@ export const RegisterForm = () => {
         variables: {
           data: {
             ...formWithToken,
-            setting: { site_title: "My Blog" },
           },
         },
       });
@@ -89,7 +81,14 @@ export const RegisterForm = () => {
           content: out.message,
           duration: 5,
         });
-      } else {
+      } else if (out.__typename === "Author") {
+        if (
+          out.register_step &&
+          out.register_step !== RegisterStep.Registered
+        ) {
+          return router.push(registrationPaths[out.register_step]);
+        }
+
         track({
           eventAction: EventAction.Click,
           eventCategory: "register",
@@ -102,7 +101,6 @@ export const RegisterForm = () => {
 
     setProcessing(false);
   };
-
   return (
     <>
       <div className="bg-white dark:bg-gray-900">
@@ -135,27 +133,6 @@ export const RegisterForm = () => {
                 <p className="mt-3 text-gray-500 dark:text-gray-300">
                   Register your free account
                 </p>
-              </div>
-              <div className="mt-8">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="mb-2 block text-sm text-gray-600 dark:text-gray-200"
-                  >
-                    Name
-                  </label>
-                  <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    type="text"
-                    name="email"
-                    id="name"
-                    placeholder="John Doe"
-                    required
-                    className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
-                  />
-                  <p className="text-rose-500">{error?.name}</p>
-                </div>
               </div>
 
               <div className="mt-8">
@@ -199,26 +176,6 @@ export const RegisterForm = () => {
                   />
                   <p className="text-rose-400">{error?.password}</p>
                 </div>
-                <div className="mt-8">
-                  <div>
-                    <label
-                      htmlFor="username"
-                      className="mb-2 block text-sm text-gray-600 dark:text-gray-200"
-                    >
-                      Username
-                    </label>
-                    <input
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value.trim())}
-                      type="text"
-                      name="username"
-                      id="username"
-                      placeholder="jacksparrow"
-                      className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
-                    />
-                    <p className="text-rose-400">{error?.username}</p>
-                  </div>
-                </div>
                 <div className="mt-6">
                   <button
                     className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
@@ -248,3 +205,16 @@ export const RegisterForm = () => {
     </>
   );
 };
+
+// else if (
+//         out.__typename === "Author" &&
+//         out.register_step &&
+//         out.register_step !== RegisterStep.Registered
+//       ) {
+//         track({
+//           eventAction: EventAction.Click,
+//           eventCategory: "register",
+//           eventLabel: out.register_step,
+//         });
+//         router.push("/register?step=" + out.register_step);
+//       }

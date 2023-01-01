@@ -27,6 +27,7 @@ model Author {
   role_id             Int
   login_type          String       @default("credentials")
   last_seen           DateTime?
+  register_step       String?     @default("")   @db.VarChar(50)
   role                Role         @relation(fields: [role_id], references: [id])
   domain              Domain?
   posts               Post[]

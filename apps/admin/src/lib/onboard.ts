@@ -2,9 +2,9 @@ import bcrypt from "bcryptjs";
 
 import {
   InputCreateAuthor,
-  InputCreatePost,
   PostStatusOptions,
   PostTypes,
+  RegisterStep,
   SettingInputType,
 } from "@/__generated__/__types__";
 import { defaultSettings } from "@/graphql/db/seed/constants";
@@ -106,6 +106,9 @@ export async function createAuthorWithSettings(
   if (role) {
     const newAuthor = await prisma.author.create({
       data: {
+        name: "",
+        username: "",
+        register_step: RegisterStep.ProfileInfo,
         ...authorData,
         avatar,
         verified,
@@ -128,7 +131,7 @@ export async function createAuthorWithSettings(
           create: {
             ...defaultSettings,
             ...mapSettingToDb(setting),
-            site_url: `https://${authorData.username}.letterpad.app`,
+            // site_url: `https://${authorData.username}.letterpad.app`,
             client_token: encryptEmail(authorData.email),
           },
         },

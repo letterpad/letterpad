@@ -8,7 +8,8 @@ import { useTracking } from "@/hooks/usetracking";
 import ThemeSwitcher from "@/components/theme-switcher";
 import { TwoColumnLayout } from "@/components_v2/layouts";
 
-import { basePath } from "@/constants";
+import { RegisterStep } from "@/__generated__/__types__";
+import { basePath, registrationPaths } from "@/constants";
 import { useHomeQueryQuery } from "@/graphql/queries/queries.graphql";
 import { Page } from "@/page";
 
@@ -24,6 +25,9 @@ interface IProps {
   Component: Page;
   props: any;
 }
+
+const { ProfileInfo, SiteInfo } = RegisterStep;
+
 const Main = ({ Component, props }: IProps) => {
   useTracking();
   const router = useRouter();
@@ -31,6 +35,7 @@ const Main = ({ Component, props }: IProps) => {
   const session = useSession();
   const isPublic =
     Component.isLogin || Component.isPublic || Component.isMessage;
+  const { register_step } = session.data?.user || {};
 
   useEffect(() => {
     ThemeSwitcher.switch(localStorage.theme);
@@ -40,10 +45,27 @@ const Main = ({ Component, props }: IProps) => {
   useEffect(() => {
     if (!isPublic && session.status === "unauthenticated") {
       router.push("/login");
+      return;
     }
-  }, [isPublic, router, session.status]);
+    if (isPublic) return;
+    switch (register_step) {
+      case ProfileInfo:
+        if (router.pathname !== registrationPaths[ProfileInfo]) {
+          router.push(registrationPaths[ProfileInfo]);
+        }
+        break;
 
-  if (loading) {
+      case SiteInfo:
+        if (router.pathname !== registrationPaths[SiteInfo]) {
+          router.push(registrationPaths[SiteInfo]);
+        }
+        break;
+      default:
+        break;
+    }
+  }, [isPublic, router, register_step, session.status]);
+
+  if (loading || session.status === "loading") {
     return <LoadingScreen />;
   }
 
@@ -78,7 +100,11 @@ const Main = ({ Component, props }: IProps) => {
     );
   }
 
-  if (!node) {
+  if (
+    !node &&
+    session.status === "authenticated" &&
+    session.data.user?.register_step === RegisterStep.Registered
+  ) {
     node = (
       <TwoColumnLayout
         left={

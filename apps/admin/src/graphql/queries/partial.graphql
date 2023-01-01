@@ -105,6 +105,7 @@ fragment MeFragment on Author {
   username
   analytics_id
   analytics_uuid
+  register_step
   social {
     github
     twitter

@@ -81,7 +81,6 @@ export async function seed(folderCheck = true) {
     await insertPost(postsList[0], author?.id);
     await insertPost(postsList[1], author?.id);
     await insertPost(postsList[2], author?.id);
-    await insertPost(postsList[3], author?.id);
     console.timeEnd("Insert post and page and tags");
   } catch (e: any) {
     console.log(e);
