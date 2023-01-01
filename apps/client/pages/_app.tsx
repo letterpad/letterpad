@@ -3,7 +3,6 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
 import { ThemeProvider } from 'next-themes';
-import 'lazysizes';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';

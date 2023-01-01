@@ -24,12 +24,10 @@ export const getImageAttrs = (
   if (url.hostname.includes("cloudinary")) {
     const srcSet = sizes.map((w) => makeCloudinaryImage(src, w)).join(", ");
     return {
-      src: makeCloudinaryUrl(src, sizes[sizes.length - 1]),
+      src: base64Url,
       sizes: srcSizes,
-      "data-srcset": srcSet,
-      srcSet: base64Url,
+      srcSet: srcSet,
       loading: "lazy",
-      class: "lazyload",
     };
   }
 
@@ -37,12 +35,10 @@ export const getImageAttrs = (
     base64Url = makeUnsplashUrl(src, 30);
     const srcSet = sizes.map((w) => makeUnsplashImage(src, w)).join(", ");
     return {
-      src: makeUnsplashUrl(src, sizes[sizes.length - 1]),
+      src: base64Url,
       sizes: srcSizes,
-      "data-srcset": srcSet,
-      srcSet: base64Url,
+      srcSet: srcSet,
       loading: "lazy",
-      class: "lazyload",
     };
   }
   return {

@@ -2,7 +2,6 @@ import { ApolloProvider } from "@apollo/client";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
-import "lazysizes";
 
 import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
