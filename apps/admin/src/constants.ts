@@ -6,4 +6,5 @@ export { basePath } from "../next.config";
 export const registrationPaths = {
   [RegisterStep.ProfileInfo]: "/update/profile-info",
   [RegisterStep.SiteInfo]: "/update/site-info",
+  [RegisterStep.Registered]: "/posts",
 };

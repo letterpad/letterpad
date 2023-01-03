@@ -16,12 +16,6 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
 
   return (
     <>
-      {/* {sidebarVisible && (
-        <div
-          onClick={() => setSidebarVisible(false)}
-          className="fixed inset-0 bg-zinc-800 bg-opacity-50 dark:bg-opacity-80"
-        ></div>
-      )} */}
       <div className="fixed flex min-h-screen w-full flex-row bg-gray-100 dark:bg-zinc-900">
         <aside
           className={classNames(

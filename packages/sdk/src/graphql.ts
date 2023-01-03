@@ -639,8 +639,8 @@ export type QueryUpdateSubscriptionArgs = {
 };
 
 export enum RegisterStep {
-  Done = "Done",
   ProfileInfo = "ProfileInfo",
+  Registered = "Registered",
   SiteInfo = "SiteInfo",
 }
 

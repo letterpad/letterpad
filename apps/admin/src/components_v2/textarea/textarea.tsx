@@ -20,6 +20,7 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
   className?: string;
   disabled?: boolean;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  labelClassName?: string;
   error?: boolean;
 }
 
@@ -50,12 +51,18 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     disabled = false,
     error,
     label,
+    labelClassName,
     ...rest
   } = props;
   return (
     <div>
       {label && (
-        <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label
+          className={classNames(
+            "mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300",
+            labelClassName
+          )}
+        >
           {label}
         </label>
       )}

@@ -11,9 +11,12 @@ import { Message } from "@/components_v2/message";
 import { RegisterStep } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 
-export const SiteInfo = ({ session }) => {
-  const [site_title, setSiteTitle] = useState("");
-  const [site_description, setSiteDescription] = useState("");
+export const SiteInfo = ({ session, settings }) => {
+  const [site_title, setSiteTitle] = useState(settings.site_title);
+  const [site_tagline, setSiteTagline] = useState(settings.site_tagline);
+  const [site_description, setSiteDescription] = useState(
+    settings.site_description
+  );
   const [error, setError] = useState<null | Record<string, string>>(null);
   const { updateSettings } = useUpdateSettings();
   const { updateAuthor } = useUpdateAuthor(session.id, false);
@@ -58,6 +61,7 @@ export const SiteInfo = ({ session }) => {
     const optionsResult = await updateSettings({
       site_title,
       site_description,
+      site_tagline,
     });
 
     if (optionsResult.data?.updateOptions?.__typename !== "Setting") {
@@ -106,7 +110,7 @@ export const SiteInfo = ({ session }) => {
                   <Logo />
                 </h2>
                 <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
-                  We need a few more details to setup your dashboard
+                  We need a few more details to update your dashboard
                 </h2>
                 <p className="mt-3 font-semibold uppercase text-gray-500 dark:text-gray-300">
                   Site Information (2/2)
@@ -117,23 +121,39 @@ export const SiteInfo = ({ session }) => {
                   <div>
                     <Input
                       label="Name of your site"
-                      className="text-sm"
+                      className="text-md"
+                      labelClassName="text-md"
                       value={site_title}
                       onChange={(e) => setSiteTitle(e.target.value)}
                       name="email"
                       id="name"
-                      placeholder="John Doe"
+                      placeholder="Give your website a title"
                       required
                     />
                     <p className="text-rose-500">{error?.site_title}</p>
                   </div>
                 </div>
-
+                <div className="mt-8">
+                  <div>
+                    <Input
+                      label="Site Tagline"
+                      className="text-md"
+                      labelClassName="text-md"
+                      value={site_tagline}
+                      onChange={(e) => setSiteTagline(e.target.value)}
+                      name="site_tagline"
+                      id="site_tagline"
+                      placeholder="A short description about your site"
+                    />
+                    <p className="text-rose-500">{error?.site_tagline}</p>
+                  </div>
+                </div>
                 <div className="mt-8">
                   <div>
                     <Input
                       label="Site Description"
-                      className="text-sm"
+                      className="text-md"
+                      labelClassName="text-md"
                       value={site_description}
                       onChange={(e) => setSiteDescription(e.target.value)}
                       name="site_description"

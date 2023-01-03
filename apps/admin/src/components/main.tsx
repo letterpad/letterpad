@@ -16,7 +16,6 @@ import { Page } from "@/page";
 import { initPageProgress } from "./../shared/utils";
 import LoginLayout from "./layouts/LoginLayout";
 import MessageLayout from "./layouts/MessageLayout";
-import AuthenticatedNoLayout from "./layouts/NoLayout";
 import { LoadingScreen } from "./loading-screen";
 import { Sidebar } from "./sidebar";
 import { TopBar } from "./top-bar/topBar";
@@ -26,7 +25,7 @@ interface IProps {
   props: any;
 }
 
-const { ProfileInfo, SiteInfo } = RegisterStep;
+const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
 
 const Main = ({ Component, props }: IProps) => {
   useTracking();
@@ -58,6 +57,14 @@ const Main = ({ Component, props }: IProps) => {
       case SiteInfo:
         if (router.pathname !== registrationPaths[SiteInfo]) {
           router.push(registrationPaths[SiteInfo]);
+        }
+        break;
+      case Registered:
+        if (
+          router.pathname === registrationPaths[SiteInfo] ||
+          router.pathname === registrationPaths[ProfileInfo]
+        ) {
+          router.push(registrationPaths[Registered]);
         }
         break;
       default:
@@ -92,10 +99,11 @@ const Main = ({ Component, props }: IProps) => {
 
   if (Component.noLayout) {
     node = (
-      <AuthenticatedNoLayout
-        render={({ settings, session }) => {
-          return <Component {...props} settings={settings} session={session} />;
-        }}
+      <Component
+        {...props}
+        settings={data?.settings}
+        session={session.data?.user}
+        me={data?.me}
       />
     );
   }

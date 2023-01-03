@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Logo } from "@/components/login/views/Logo";
 import { Input } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
+import { TextArea } from "@/components_v2/textarea";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import {
@@ -15,9 +16,10 @@ import { registrationPaths } from "@/constants";
 import { sanitizeUsername } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
-export const UpdateProfile = ({ session }) => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+export const UpdateProfile = ({ session, me }) => {
+  const [name, setName] = useState(session.name);
+  const [username, setUsername] = useState(session.username);
+  const [bio, setBio] = useState(me.bio);
   const [error, setError] = useState<null | Record<string, string>>(null);
   const [updateAuthor] = useUpdateAuthorMutation();
 
@@ -26,6 +28,7 @@ export const UpdateProfile = ({ session }) => {
   const router = useRouter();
 
   const updateProfile = async () => {
+    if (!session.id) return router.push("/login");
     setProcessing(true);
     setError(null);
     Message().loading({
@@ -59,6 +62,7 @@ export const UpdateProfile = ({ session }) => {
         author: {
           username,
           name,
+          bio,
           register_step: RegisterStep.SiteInfo,
           id: session.id,
         },
@@ -101,7 +105,7 @@ export const UpdateProfile = ({ session }) => {
                   <Logo />
                 </h2>
                 <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
-                  We need a few more details to setup your dashboard
+                  We need a few more details to update your dashboard
                 </h2>
                 <p className="mt-3 font-semibold uppercase text-gray-500 dark:text-gray-300">
                   Author Information (1/2)
@@ -111,8 +115,9 @@ export const UpdateProfile = ({ session }) => {
                 <div className="mt-4">
                   <div>
                     <Input
-                      label="Author Name"
-                      className="text-sm"
+                      label="Your Name"
+                      className="text-md"
+                      labelClassName="text-md"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       name="email"
@@ -127,8 +132,11 @@ export const UpdateProfile = ({ session }) => {
                 <div className="mt-8">
                   <div>
                     <Input
-                      label=" Username - This will be used as your website URL"
-                      className="text-sm"
+                      addonBefore="https://"
+                      addonAfter=".letterpad.app"
+                      label="Username"
+                      className="text-md"
+                      labelClassName="text-md"
                       value={username}
                       onChange={(e) => setUsername(e.target.value.trim())}
                       name="username"
@@ -136,6 +144,20 @@ export const UpdateProfile = ({ session }) => {
                       placeholder="jacksparrow"
                     />
                     <p className="text-rose-500">{error?.username}</p>
+                  </div>
+                </div>
+                <div className="mt-8">
+                  <div>
+                    <TextArea
+                      label="About you"
+                      className="text-md"
+                      labelClassName="text-md"
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      name="bio"
+                      id="about-me"
+                      placeholder="Hi, I am Jack. I am a software engineer. I love to write about tech."
+                    />
                   </div>
                 </div>
                 <div className="mt-6">
