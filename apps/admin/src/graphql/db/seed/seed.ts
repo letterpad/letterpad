@@ -8,6 +8,7 @@ import { promisify } from "util";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
 
+import { RegisterStep } from "@/__generated__/__types__";
 import { ROLES } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
@@ -209,6 +210,7 @@ async function insertAuthors() {
       email: "admin@admin.com",
       username: "admin",
       password: "admin",
+      register_step: RegisterStep.Registered,
       token: "",
     },
     { site_title: "Admin Account" },
@@ -225,6 +227,7 @@ async function insertAuthors() {
       email: "demo@demo.com",
       username: "demo",
       password: "demo",
+      register_step: RegisterStep.Registered,
       token: "",
     },
     { site_title: "Demo Account", site_tagline: "Hello, I am letterpad" }

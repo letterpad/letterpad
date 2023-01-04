@@ -1,4 +1,4 @@
-import { ResolversTypes } from "@/__generated__/__types__";
+import { RegisterStep, ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { getSocialLink } from "@/graphql/resolvers/helpers";
 
@@ -27,6 +27,7 @@ export const getAuthor = async (
 
     return {
       ...author,
+      register_step: author.register_step as RegisterStep,
       social: getSocialLink(JSON.parse(author.social as string)),
       avatar,
       analytics_id: author.analytics_id || undefined,
