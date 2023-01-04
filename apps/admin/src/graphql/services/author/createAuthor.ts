@@ -64,17 +64,6 @@ export const createAuthor = async (
     };
   }
 
-  // const usernameExist = await prisma.author.findFirst({
-  //   where: { username: args.data?.username },
-  // });
-
-  // if (usernameExist) {
-  //   return {
-  //     __typename: "Failed",
-  //     message: "Username already exist",
-  //   };
-  // }
-
   const { setting = {}, ...authorData } = args.data;
 
   const created = await createAuthorWithSettings(authorData, setting);

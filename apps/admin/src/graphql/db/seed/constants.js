@@ -27,11 +27,11 @@ module.exports.subjects = {
 
 module.exports.defaultSettings = {
   site_title: "Letterpad",
-  site_tagline: "My space",
+  site_tagline: "",
   site_email: "admin@letterpad.app",
   site_url: "",
-  site_footer: "Letterpad is an open source project licensed under MIT.",
-  site_description: "Use this space to describe your blog.",
+  site_footer: "Powered by Letterpad",
+  site_description: "",
   subscribe_embed: "",
   display_author_info: true,
   site_logo: JSON.stringify({

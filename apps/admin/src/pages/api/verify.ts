@@ -35,13 +35,10 @@ const Verify = async (
         where: { id: token.author_id },
       });
       if (!author?.verified) {
-        const result = await prisma.author.update({
+        await prisma.author.update({
           data: { verified: true },
           where: { id: token.author_id },
         });
-        if (result) {
-          onBoardUser(result.id);
-        }
       }
       update = author;
     }

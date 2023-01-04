@@ -54,7 +54,7 @@ export const SiteInfo = ({ session, settings }) => {
     }
     return true;
   };
-  const updateProfile = async () => {
+  const updateSite = async () => {
     const processed = processData();
     if (!processed) return;
 
@@ -167,7 +167,7 @@ export const SiteInfo = ({ session, settings }) => {
                   <button
                     className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
                     data-testid="loginBtn"
-                    onClick={updateProfile}
+                    onClick={updateSite}
                   >
                     Update Site
                   </button>
