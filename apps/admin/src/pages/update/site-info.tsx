@@ -87,7 +87,7 @@ export const SiteInfo = ({ session, settings }) => {
       track({
         eventAction: EventAction.Click,
         eventCategory: "register",
-        eventLabel: RegisterStep.Registered,
+        eventLabel: out.register_step!,
       });
       router.push("/posts");
     } else if (out?.__typename === "Failed") {

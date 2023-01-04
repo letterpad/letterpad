@@ -205,16 +205,3 @@ export const RegisterForm = () => {
     </>
   );
 };
-
-// else if (
-//         out.__typename === "Author" &&
-//         out.register_step &&
-//         out.register_step !== RegisterStep.Registered
-//       ) {
-//         track({
-//           eventAction: EventAction.Click,
-//           eventCategory: "register",
-//           eventLabel: out.register_step,
-//         });
-//         router.push("/register?step=" + out.register_step);
-//       }
