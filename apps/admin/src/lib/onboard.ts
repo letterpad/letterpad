@@ -101,7 +101,12 @@ export async function createAuthorWithSettings(
   setting: SettingInputType,
   rolename: ROLES = ROLES.AUTHOR
 ) {
-  const { token, verified = false, avatar = "", ...authorData } = data;
+  const {
+    token,
+    verified = false,
+    avatar = "https://res.cloudinary.com/abhisheksaha/image/upload/v1672944041/blog-images/6611482_account_avatar_basic_person_user_icon_eisadm.png",
+    ...authorData
+  } = data;
   const role = await prisma.role.findFirst({ where: { name: rolename } });
   if (role) {
     const newAuthor = await prisma.author.create({

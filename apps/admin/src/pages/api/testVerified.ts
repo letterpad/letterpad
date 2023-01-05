@@ -8,13 +8,16 @@ const VerifyTestUser = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse
 ) => {
+  if (process.env.NODE_ENV !== "test")
+    return res.status(401).send("Not Authorized");
+  if (!req.query.email) return res.status(400).send("Email is required");
   try {
     await prisma.author.update({
       data: {
         verified: true,
       },
       where: {
-        email: "test@test.com",
+        email: req.query.email as string,
       },
     });
     res.send("Test user verified");

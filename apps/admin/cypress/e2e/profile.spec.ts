@@ -5,9 +5,9 @@ describe("Profile", () => {
     cy.getTestId("email").type(email);
     cy.getTestId("password").type("testing@123");
     cy.getTestId("registerBtn").click();
-    // cy.wait("@createAuthorMutation");
+    cy.wait("@createAuthorMutation");
     cy.location("pathname").should("include", "/messages/registered");
-    cy.request(`/api/testVerified`);
+    cy.request(`/api/testVerified?email=${email}`);
     cy.visitLogin();
     cy.getTestId("email").type(email);
     cy.getTestId("password").type("testing@123");
