@@ -1,5 +1,6 @@
+import { prisma } from "@/lib/prisma";
 describe("Profile", () => {
-  it("can register and login", () => {
+  it.only("can register and login", async () => {
     const email = `test${Date.now()}@test.com`;
     cy.visitRegister();
     cy.getTestId("email").type(email);

@@ -4,7 +4,7 @@ export default defineConfig({
   defaultCommandTimeout: 12000,
   projectId: "x2wi9m",
   env: {
-    NODE_ENV: "test",
+    CYPRESS_NODE_ENV: "test",
   },
   e2e: {
     // We've imported your old cypress plugins here.

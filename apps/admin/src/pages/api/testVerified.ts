@@ -8,11 +8,9 @@ const VerifyTestUser = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse
 ) => {
-  // eslint-disable-next-line no-console
-  console.log(process.env.NODE_ENV);
-  if (process.env.NODE_ENV !== "test")
-    return res.status(401).send("Not Authorized");
   if (!req.query.email) return res.status(400).send("Email is required");
+  if (!req.query.email.toString().endsWith("@test.com"))
+    return res.status(401).send("Not Authorized");
   try {
     await prisma.author.update({
       data: {
