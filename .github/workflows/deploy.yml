@@ -69,4 +69,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
+            cd /var/www/html/letterpad-turbo/apps/admin
+            yarn prisma:migrate:run
             pm2 reload letterpad-turbo
