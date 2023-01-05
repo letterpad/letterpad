@@ -24,8 +24,6 @@ export const RegisterForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [createAuthor] = useCreateAuthorMutation();
 
-  const [_, setProcessing] = useState(false);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -35,11 +33,10 @@ export const RegisterForm = () => {
   }, []);
 
   const registerAction = async () => {
-    setProcessing(true);
     setError(null);
     Message().loading({
       content: "Please wait",
-      duration: 5,
+      duration: 10,
     });
     let errors = {};
     if (executeRecaptcha) {
@@ -63,7 +60,6 @@ export const RegisterForm = () => {
         };
       }
       if (Object.keys(errors).length > 0) {
-        setProcessing(false);
         setError(errors);
         Message().destroy();
         return;
@@ -99,9 +95,12 @@ export const RegisterForm = () => {
         Message().success({ content: "Succcess", duration: 5 });
         router.push("/messages/registered");
       }
+    } else {
+      Message().error({
+        content: "Please enable recaptcha",
+        duration: 10,
+      });
     }
-
-    setProcessing(false);
   };
   return (
     <>
