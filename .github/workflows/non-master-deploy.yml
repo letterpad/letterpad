@@ -8,7 +8,7 @@ env:
 
 jobs:
   job_one:
-    name: Test
+    name: Build Test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -61,7 +61,7 @@ jobs:
       - name: Run Build
         run: yarn run build
   job_two:
-    name: Test
+    name: API Test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
