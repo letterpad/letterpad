@@ -126,7 +126,8 @@ export const SiteInfo = ({ session, settings }) => {
                       value={site_title}
                       onChange={(e) => setSiteTitle(e.target.value)}
                       name="email"
-                      id="name"
+                      id="siteName"
+                      data-testid="siteName"
                       placeholder="Give your website a title"
                       required
                     />
@@ -143,6 +144,7 @@ export const SiteInfo = ({ session, settings }) => {
                       onChange={(e) => setSiteTagline(e.target.value)}
                       name="site_tagline"
                       id="site_tagline"
+                      data-testid="siteTagline"
                       placeholder="A short description about your site"
                     />
                     <p className="text-rose-500">{error?.site_tagline}</p>
@@ -155,6 +157,7 @@ export const SiteInfo = ({ session, settings }) => {
                       className="text-md"
                       labelClassName="text-md"
                       value={site_description}
+                      data-testid="siteDescription"
                       onChange={(e) => setSiteDescription(e.target.value)}
                       name="site_description"
                       id="site_description"
@@ -166,7 +169,7 @@ export const SiteInfo = ({ session, settings }) => {
                 <div className="mt-6">
                   <button
                     className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                    data-testid="loginBtn"
+                    data-testid="updateSiteBtn"
                     onClick={updateSite}
                   >
                     Update Site

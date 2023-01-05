@@ -47,6 +47,7 @@ const Main = ({ Component, props }: IProps) => {
       return;
     }
     if (isPublic) return;
+    debugger;
     switch (register_step) {
       case ProfileInfo:
         if (router.pathname !== registrationPaths[ProfileInfo]) {

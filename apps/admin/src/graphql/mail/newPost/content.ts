@@ -51,7 +51,7 @@ export async function getNewPostContent(
 
   const body = bodyTemplate.render({
     blog_name: post.author.setting?.site_title,
-    full_name: "Friend",
+    full_name: "Letterpad User",
     post_title: post?.title,
     excerpt: post?.excerpt,
     cover_image_link: post?.cover_image

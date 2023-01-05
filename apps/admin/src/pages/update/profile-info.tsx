@@ -123,6 +123,7 @@ export const UpdateProfile = ({ session, me }) => {
                       name="email"
                       id="name"
                       placeholder="John Doe"
+                      data-testid="name"
                       required
                     />
                     <p className="text-rose-500">{error?.name}</p>
@@ -137,6 +138,7 @@ export const UpdateProfile = ({ session, me }) => {
                       label="Username"
                       className="text-md"
                       labelClassName="text-md"
+                      data-testid="username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value.trim())}
                       name="username"
@@ -154,6 +156,7 @@ export const UpdateProfile = ({ session, me }) => {
                       labelClassName="text-md"
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
+                      data-testid="bio"
                       name="bio"
                       id="about-me"
                       placeholder="Hi, I am Jack. I am a software engineer. I love to write about tech."
@@ -163,7 +166,7 @@ export const UpdateProfile = ({ session, me }) => {
                 <div className="mt-6">
                   <button
                     className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                    data-testid="loginBtn"
+                    data-testid="updateProfile"
                     onClick={updateProfile}
                   >
                     Update Profile
