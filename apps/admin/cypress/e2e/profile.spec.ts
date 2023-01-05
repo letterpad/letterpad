@@ -1,5 +1,5 @@
 describe("Profile", () => {
-  it("can register and login", async () => {
+  it("can register and login", () => {
     const email = `test${Date.now()}@test.com`;
     cy.visitRegister();
     cy.getTestId("email").type(email);
