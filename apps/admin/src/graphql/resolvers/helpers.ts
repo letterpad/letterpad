@@ -123,14 +123,18 @@ interface ICaptchaResult {
 
 export async function validateCaptcha(serverKey: string, clientToken: string) {
   if (process.env.NODE_ENV === "test") return true;
-  const response: ICaptchaResult = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${serverKey}&response=${clientToken}`
-  ).then((res) => res.json());
+  try {
+    const response: ICaptchaResult = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${serverKey}&response=${clientToken}`
+    ).then((res) => res.json());
 
-  if (response.success) {
-    return true;
+    if (response.success) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
   }
-  return false;
 }
 
 const prepareLink = (host: string, link: string | undefined) => {

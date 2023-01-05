@@ -87,3 +87,4 @@ jobs:
           ROOT_URL: "http://localhost:3000/admin"
           NEXTAUTH_URL: "http://localhost:3000/admin/api/auth"
           SECRET_KEY: "some-secret"
+          NODE_ENV: "test"
