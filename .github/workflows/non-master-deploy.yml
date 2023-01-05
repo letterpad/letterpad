@@ -88,3 +88,5 @@ jobs:
           NEXTAUTH_URL: "http://localhost:3000/admin/api/auth"
           SECRET_KEY: "some-secret"
           NODE_ENV: "test"
+          RECAPTCHA_KEY_CLIENT: "6Lf3a9QjAAAAALIzxbDw5MX9-Mu_ZjH8NLzRxAAc" # test key
+          RECAPTCHA_KEY_SERVER: "6Lf3a9QjAAAAAKwvGzcmUTJNaEcnxNqu7hU0giDI" # test key
