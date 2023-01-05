@@ -38,10 +38,10 @@ export const createApolloTestServer = async () => {
 
 let server;
 beforeAll(async () => {
+  global.console = require("console");
   await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
-  console.log("server listening at " + url);
 });
 
 afterAll(async () => {
