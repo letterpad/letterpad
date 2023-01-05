@@ -1,6 +1,6 @@
 describe("Profile", () => {
   it("can register and login", () => {
-    const email = `test-${Date.now()}@test.com`;
+    const email = `test${Date.now()}@test.com`;
     cy.visitRegister();
     cy.getTestId("email").type(email);
     cy.getTestId("password").type("testing@123");
