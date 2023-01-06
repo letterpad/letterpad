@@ -4,6 +4,7 @@ describe("Profile", () => {
     cy.visitRegister();
     cy.getTestId("email").type(email);
     cy.getTestId("password").type("testing@123");
+    cy.wait(1000);
     cy.getTestId("registerBtn").click();
     cy.wait("@createAuthorMutation");
     cy.location("pathname").should("include", "/messages/registered");
