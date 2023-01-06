@@ -18,7 +18,9 @@ import { EventAction, track } from "@/track";
 
 export const UpdateProfile = ({ session, me }) => {
   const [name, setName] = useState(session.name);
-  const [username, setUsername] = useState(session.username);
+  const [username, setUsername] = useState(
+    isInteger(session.username) ? "" : session.username
+  );
   const [bio, setBio] = useState(me.bio);
   const [error, setError] = useState<null | Record<string, string>>(null);
   const [updateAuthor] = useUpdateAuthorMutation();
@@ -183,3 +185,5 @@ export const UpdateProfile = ({ session, me }) => {
 
 UpdateProfile.noLayout = true;
 export default UpdateProfile;
+
+const isInteger = (num) => /^-?[0-9]+$/.test(num + "");
