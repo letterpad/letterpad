@@ -1,9 +1,4 @@
 #!/bin/bash
-set -a
-source .env
-source .env.production.local
-set +a
-exec $@
 
 PRISMA_FILE="sqlite/schema.prisma"
 
