@@ -61,7 +61,7 @@ export const updateAuthor = async (
           username: args.author.username,
           id: {
             not: {
-              equals: session.user.id,
+              equals: args.author.id,
             },
           },
         },
@@ -98,7 +98,7 @@ export const updateAuthor = async (
 
     const author = await prisma.author.update({
       data: dataToUpdate,
-      where: { id: session.user.id },
+      where: { id: args.author.id },
     });
 
     //@todo: the date difference is to make sure users dont receive another email.
