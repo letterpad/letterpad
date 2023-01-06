@@ -186,7 +186,7 @@ jobs:
           node_modules/cypress/bin/cypress install
           yarn e2e:ci
         env:
-          DATABASE_URL: "file:../data/test.sqlite"
+          DATABASE_URL: "file:../data/test_3.sqlite"
           ROOT_URL: "http://localhost:3000/admin"
           NEXTAUTH_URL: "http://localhost:3000/admin/api/auth"
           SECRET_KEY: "some-secret"
