@@ -35,6 +35,7 @@ interface Props extends HTMLProps<HTMLInputElement> {
   addonBefore?: string;
   addonAfter?: string;
   help?: string;
+  limit?: number;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -49,8 +50,19 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     addonBefore,
     addonAfter,
     labelClassName,
+    limit,
     ...rest
   } = props;
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length <= rest.value?.length!) {
+      return rest.onChange?.(e);
+    }
+    if (limit && e.target.value.length > limit) {
+      return;
+    }
+    rest.onChange?.(e);
+  };
 
   if (label) {
     return (
@@ -82,6 +94,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
               }
             )}
             {...rest}
+            onChange={onChange}
           />
           {addonAfter && (
             <span
@@ -94,6 +107,9 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
           )}
         </div>
         {help && <span className="py-4 text-sm text-gray-500">{help}</span>}
+        {limit && (
+          <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
+        )}
       </div>
     );
   }

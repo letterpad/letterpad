@@ -7,6 +7,7 @@ import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 import { Logo } from "@/components/login/views/Logo";
 import { Input } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
+import { TextArea } from "@/components_v2/textarea";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
@@ -146,13 +147,14 @@ export const SiteInfo = ({ session, settings }) => {
                       id="site_tagline"
                       data-testid="siteTagline"
                       placeholder="A short description about your site"
+                      limit={60}
                     />
                     <p className="text-rose-500">{error?.site_tagline}</p>
                   </div>
                 </div>
                 <div className="mt-8">
                   <div>
-                    <Input
+                    <TextArea
                       label="Site Description"
                       className="text-md"
                       labelClassName="text-md"
@@ -162,6 +164,7 @@ export const SiteInfo = ({ session, settings }) => {
                       name="site_description"
                       id="site_description"
                       placeholder="A short description about your site"
+                      limit={190}
                     />
                     <p className="text-rose-500">{error?.site_description}</p>
                   </div>

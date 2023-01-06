@@ -37,6 +37,7 @@ const General: React.FC<Props> = ({ settings }) => {
           value={fields.site_title}
           placeholder="Name of your blog"
           data-testid="siteTitle"
+          limit={30}
         />
 
         <Input
@@ -45,6 +46,7 @@ const General: React.FC<Props> = ({ settings }) => {
           value={fields.site_tagline}
           placeholder="A short phrase for your blog"
           data-testid="siteTagline"
+          limit={60}
         />
 
         <Input
@@ -69,6 +71,7 @@ const General: React.FC<Props> = ({ settings }) => {
           placeholder="Write something about your site. Will be used in SEO and other pages"
           autoGrow={true}
           data-testid="shortDescription"
+          limit={190}
         />
 
         <TextArea

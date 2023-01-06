@@ -115,7 +115,7 @@ export const UpdateProfile = ({ session, me }) => {
                 <div className="mt-4">
                   <div>
                     <Input
-                      label="Your Name"
+                      label="Full Name"
                       className="text-md"
                       labelClassName="text-md"
                       value={name}

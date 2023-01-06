@@ -22,6 +22,7 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   labelClassName?: string;
   error?: boolean;
+  limit?: number;
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
@@ -45,6 +46,16 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     }
   };
 
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length <= rest.value?.length!) {
+      return rest.onChange?.(e);
+    }
+    if (limit && e.target.value.length > limit) {
+      return;
+    }
+    rest.onChange?.(e);
+  };
+
   const {
     className,
     autoGrow = false,
@@ -52,10 +63,11 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     error,
     label,
     labelClassName,
+    limit,
     ...rest
   } = props;
   return (
-    <div>
+    <div className="relative">
       {label && (
         <label
           className={classNames(
@@ -76,7 +88,11 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
           className
         )}
         {...rest}
+        onChange={onChange}
       />
+      {limit && (
+        <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
+      )}
     </div>
   );
 });
