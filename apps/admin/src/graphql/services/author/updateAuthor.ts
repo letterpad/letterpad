@@ -101,7 +101,7 @@ export const updateAuthor = async (
       where: { id: args.author.id },
     });
 
-    //@todo: the date difference is to make sure users dont receive another email.
+    //@todo:the date difference is to make sure users dont receive another email.
     // remove this after 2023-06-06
     if (
       dataToUpdate.register_step === RegisterStep.Registered &&
