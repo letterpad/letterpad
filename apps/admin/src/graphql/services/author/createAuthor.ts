@@ -1,7 +1,10 @@
+import bcrypt from "bcryptjs";
+
 import { createAuthorWithSettings } from "@/lib/onboard";
 
 import {
   MutationCreateAuthorArgs,
+  RegisterStep,
   RequireFields,
   ResolversTypes,
 } from "@/__generated__/__types__";
@@ -32,20 +35,32 @@ export const createAuthor = async (
   });
 
   if (authorExistData) {
+    const validated = await bcrypt.compare(
+      args.data?.password || "",
+      authorExistData.password
+    );
+    if (validated) {
+      if (
+        authorExistData.register_step === RegisterStep.ProfileInfo ||
+        authorExistData.register_step === RegisterStep.SiteInfo
+      ) {
+        const { id, email, username, name, register_step, verified } =
+          authorExistData;
+        return {
+          id,
+          email,
+          username,
+          name,
+          register_step,
+          verified,
+          __typename: "Author",
+        };
+      }
+    }
+
     return {
       __typename: "Failed",
       message: "Email already exist. Did you forget your password ?",
-    };
-  }
-
-  const usernameExist = await prisma.author.findFirst({
-    where: { username: args.data?.username },
-  });
-
-  if (usernameExist) {
-    return {
-      __typename: "Failed",
-      message: "Username already exist",
     };
   }
 
@@ -67,6 +82,8 @@ export const createAuthor = async (
         email,
         username,
         name,
+        register_step: (created.register_step ??
+          RegisterStep.ProfileInfo) as RegisterStep,
         __typename: "Author",
       };
     }

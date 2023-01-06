@@ -101,7 +101,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
         site_name={settings.site_title}
       />
       <ScrollTop />
-      <div className="mx-auto flex max-w-4xl  justify-between pt-10">
+      <div className="mx-auto flex w-full  max-w-4xl justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-6'}>
             <address

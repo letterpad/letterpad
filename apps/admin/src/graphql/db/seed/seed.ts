@@ -8,6 +8,7 @@ import { promisify } from "util";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
 
+import { RegisterStep } from "@/__generated__/__types__";
 import { ROLES } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
@@ -81,7 +82,6 @@ export async function seed(folderCheck = true) {
     await insertPost(postsList[0], author?.id);
     await insertPost(postsList[1], author?.id);
     await insertPost(postsList[2], author?.id);
-    await insertPost(postsList[3], author?.id);
     console.timeEnd("Insert post and page and tags");
   } catch (e: any) {
     console.log(e);
@@ -210,6 +210,7 @@ async function insertAuthors() {
       email: "admin@admin.com",
       username: "admin",
       password: "admin",
+      register_step: RegisterStep.Registered,
       token: "",
     },
     { site_title: "Admin Account" },
@@ -226,6 +227,7 @@ async function insertAuthors() {
       email: "demo@demo.com",
       username: "demo",
       password: "demo",
+      register_step: RegisterStep.Registered,
       token: "",
     },
     { site_title: "Demo Account", site_tagline: "Hello, I am letterpad" }
@@ -246,7 +248,7 @@ async function insertAuthors() {
       company_name: "Letterpad",
       bio: "You can write some information about yourself for the world to know you a little better.",
       avatar:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZmFjZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+        "https://res.cloudinary.com/abhisheksaha/image/upload/v1672944041/blog-images/6611482_account_avatar_basic_person_user_icon_eisadm.png",
     },
   });
 }

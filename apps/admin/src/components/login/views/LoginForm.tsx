@@ -30,7 +30,6 @@ export const LoginForm = ({
       eventCategory: "login",
       eventLabel: `User logged in`,
     });
-
     if (result.success && result.redirectUrl) {
       Message().success({ content: result.message, duration: 3 });
       const { callbackUrl } = router.query;

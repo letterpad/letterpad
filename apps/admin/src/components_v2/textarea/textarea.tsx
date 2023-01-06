@@ -20,7 +20,9 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
   className?: string;
   disabled?: boolean;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  labelClassName?: string;
   error?: boolean;
+  limit?: number;
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
@@ -44,18 +46,35 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     }
   };
 
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length <= rest.value?.length!) {
+      return rest.onChange?.(e);
+    }
+    if (limit && e.target.value.length > limit) {
+      return;
+    }
+    rest.onChange?.(e);
+  };
+
   const {
     className,
     autoGrow = false,
     disabled = false,
     error,
     label,
+    labelClassName,
+    limit,
     ...rest
   } = props;
   return (
-    <div>
+    <div className="relative">
       {label && (
-        <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label
+          className={classNames(
+            "mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300",
+            labelClassName
+          )}
+        >
           {label}
         </label>
       )}
@@ -69,7 +88,11 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
           className
         )}
         {...rest}
+        onChange={onChange}
       />
+      {limit && (
+        <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
+      )}
     </div>
   );
 });

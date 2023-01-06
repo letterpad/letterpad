@@ -29,7 +29,7 @@
     "prisma:seed": "dotenv scripts/seed.sh",
     "prisma:studio": "dotenv scripts/studio.sh",
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts",
-    "cy:open": "cypress open --browser chrome",
+    "cy:open": "cypress open --env SECRET_KEY='some-secret' --browser chrome",
     "cy:run": "cypress run --record --key e2c7bae0-47ed-49e5-8ea8-b0c26c3493f7 --browser chrome",
     "e2e:ci": "yarn prisma:seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
     "e2e": "yarn prisma:seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open",

@@ -5,11 +5,8 @@ export default function generatePost(type) {
   const post = {
     html: mdToHtml(postMd()),
   };
-  const page = {
-    html: mdToHtml(pageMd()),
-  };
 
-  const data = { post, page };
+  const data = { post };
   return data[type];
 }
 
@@ -74,84 +71,11 @@ And there you have it! Everything you need to design and share prototypes.
   `;
 }
 
-function pageMd() {
-  return `
-You may choose to use markdown or the inline editing toolbars for writing text. The toolbar can be found by writing a text and selecting it or by clicking the + icon on every new line.
-
-# A big heading
-
-**Lorem Ipsum** is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-
-## A sub heading
-
-**Lorem Ipsum** is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-
-## Code blocks
-
-Codeblocks are supported as well.
-
-\`\`\`javascript
-const a = 1;
-const b = 2;
-const sum = a + n;
-\`\`\`
-
-## Blockquotes
-
-**Lorem Ipsum** is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-
-> The blockquote element is used to indicate the quotation of a large section of text from another source.
-
-## Lists
-
-*   Create a list by starting a line with +, - or * followed by a space.
-*   Sub-lists are made by tab:
-    *   Marker character change forces new list start:
-    *   Ac tristique libero volutpat at
-    *   Facilisis in pretium nisl aliquet
-    *   Nulla volutpat aliquam velit
-*   Very easy!
-
-## Code
-
-You can mark a \`word\` like this by two backticks (\`\`).
-
-## Embeds
-
-This will be available soon.
-
-## Links
-
-You can wrap [certain text with link](http://google.com) or just have the url [http://google.com](http://google.com) which will automatically convert into a link.
-
-## Image
-
-![](https://images.unsplash.com/photo-1491824989090-cc2d0b57eb0d)
-
-[Ricardo Gomez Angel](https://unsplash.com/es/@rgaleriacom?utm_source=LetterpadEditor&utm_medium=referral) on [Unsplash](https://unsplash.com/?utm_source=LetterpadEditor&utm_medium=referral)
-
-
-_Lorem Ipsum_ is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-
-> **Lorem Ipsum** is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-
-* * *
-
-And thats about it!
-`;
-}
-
 export const menu = [
   {
     label: "home",
     original_name: "home",
     slug: "home",
     type: NavigationType.Tag,
-  },
-  {
-    label: "Page",
-    original_name: "Page",
-    slug: "letterpad-typography",
-    type: NavigationType.Page,
   },
 ];

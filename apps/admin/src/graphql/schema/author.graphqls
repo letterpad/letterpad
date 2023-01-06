@@ -6,6 +6,12 @@ type Social {
   linkedin: String
 }
 
+enum RegisterStep {
+   ProfileInfo
+   SiteInfo
+   Registered
+}
+
 type Author {
   id: Int!
   email: String!
@@ -25,6 +31,7 @@ type Author {
   first_post_published: Boolean
   settings_updated: Boolean
   profile_updated: Boolean
+  register_step: RegisterStep
   stripe_customer_id: String
   stripe_subscription_id: String
 }
@@ -62,6 +69,7 @@ input InputAuthor {
   password: String
   roleId: Int
   avatar: String
+  register_step: RegisterStep
   username: String
   first_post_published: Boolean
   settings_updated: Boolean
@@ -73,8 +81,9 @@ input InputAuthor {
 input InputCreateAuthor {
   email: String!
   setting: SettingInputType
-  name: String!
-  username: String!
+  name: String
+  username: String
+  register_step: RegisterStep
   password: String!
   token: String!
 }

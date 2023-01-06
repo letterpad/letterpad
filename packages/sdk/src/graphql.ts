@@ -36,6 +36,7 @@ export type Author = {
   occupation?: Maybe<Scalars["String"]>;
   permissions?: Maybe<Array<Permissions>>;
   profile_updated?: Maybe<Scalars["Boolean"]>;
+  register_step?: Maybe<RegisterStep>;
   role?: Maybe<Role>;
   settings_updated?: Maybe<Scalars["Boolean"]>;
   social?: Maybe<Social>;
@@ -184,6 +185,7 @@ export type InputAuthor = {
   occupation?: InputMaybe<Scalars["String"]>;
   password?: InputMaybe<Scalars["String"]>;
   profile_updated?: InputMaybe<Scalars["Boolean"]>;
+  register_step?: InputMaybe<RegisterStep>;
   roleId?: InputMaybe<Scalars["Int"]>;
   settings_updated?: InputMaybe<Scalars["Boolean"]>;
   social?: InputMaybe<InputSocial>;
@@ -194,11 +196,12 @@ export type InputAuthor = {
 
 export type InputCreateAuthor = {
   email: Scalars["String"];
-  name: Scalars["String"];
+  name?: InputMaybe<Scalars["String"]>;
   password: Scalars["String"];
+  register_step?: InputMaybe<RegisterStep>;
   setting?: InputMaybe<SettingInputType>;
   token: Scalars["String"];
-  username: Scalars["String"];
+  username?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputCreatePost = {
@@ -634,6 +637,12 @@ export type QueryTagsArgs = {
 export type QueryUpdateSubscriptionArgs = {
   type?: InputMaybe<Scalars["String"]>;
 };
+
+export enum RegisterStep {
+  ProfileInfo = "ProfileInfo",
+  Registered = "Registered",
+  SiteInfo = "SiteInfo",
+}
 
 export type RemoveDomainResponse = {
   __typename?: "RemoveDomainResponse";

@@ -104,7 +104,7 @@ export function initPageProgress() {
   Router.events.on("routeChangeError", () => NProgress.done());
 }
 
-const expr = /^[a-zA-Z0-9._]*$/;
+const expr = /^[a-z0-9_]*$/;
 export const sanitizeUsername = (username: string) => {
   return expr.test(username);
 };

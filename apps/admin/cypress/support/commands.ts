@@ -13,6 +13,7 @@ declare global {
       visitPosts: () => void;
       visitPages: () => void;
       visitProfile: () => void;
+      visitRegister: () => void;
       visitSettings: () => void;
     }
   }
@@ -84,6 +85,7 @@ Cypress.Commands.add("visitHome", () => cy.visit("/home"));
 Cypress.Commands.add("visitPosts", () => cy.visit("/posts"));
 Cypress.Commands.add("visitPages", () => cy.visit("/creatives"));
 Cypress.Commands.add("visitProfile", () => cy.visit("/profile"));
+Cypress.Commands.add("visitRegister", () => cy.visit("/register"));
 Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
 
 //-----
@@ -101,7 +103,7 @@ beforeEach(function () {
     aliasMutation(req, "updatePost");
     aliasMutation(req, "UpdateOptions");
     aliasMutation(req, "UpdateAuthor");
-    aliasMutation(req, "UpdateOptions");
+    aliasMutation(req, "createAuthor");
   });
   cy.intercept("/admin/api/auth/session").as("getSession");
   cy.intercept("/admin/api/auth/callback/credentials?").as("getCredentials");

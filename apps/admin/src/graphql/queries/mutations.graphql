@@ -11,6 +11,7 @@ mutation Login($data: LoginData) {
       permissions
       bio
       username
+      register_step
     }
 
     ... on LoginError {
@@ -53,6 +54,9 @@ mutation createAuthor($data: InputCreateAuthor!) {
     ... on Author {
       name
       id
+      register_step
+      verified,
+      username
     }
     ... on Failed {
       message
@@ -124,6 +128,7 @@ mutation UpdateAuthor($author: InputAuthor!) {
       company_name
       avatar
       username
+      register_step
     }
     ... on Exception {
       message

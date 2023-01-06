@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 
 import { report } from "@/components/error";
 
+import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 
 const providers = (): NextAuthOptions["providers"] => [
@@ -35,20 +36,30 @@ const providers = (): NextAuthOptions["providers"] => [
         });
         if (author) {
           if (!author.verified) {
-            throw new Error("Your email id is not verified yet.");
+            return Promise.reject(
+              new Error("Your email id is not verified yet.")
+            );
           }
           const authenticated = await bcrypt.compare(
             credentials?.password || "",
             author.password
           );
-          return authenticated ? author : null;
+          return authenticated
+            ? author
+            : Promise.reject(
+                new Error("Incorrect password. Please try again.")
+              );
+        } else {
+          return Promise.reject(
+            new Error("The email you provided is not registered.")
+          );
         }
       } catch (e: any) {
         report.error(e);
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === "P2021") {
-            throw new Error(
-              "Database is not ready. Run `yarn seed` from terminal."
+            return Promise.reject(
+              new Error("Database is not ready. Run `yarn seed` from terminal.")
             );
           }
         }
@@ -92,7 +103,6 @@ const options = (): NextAuthOptions => ({
               login_type: token.provider as string,
             },
             {
-              site_title: token.name,
               site_email: token.email,
             }
           );
@@ -109,7 +119,8 @@ const options = (): NextAuthOptions => ({
         });
 
         if (finalAuthor) {
-          const { id, email, username, avatar, name } = finalAuthor;
+          const { id, email, username, avatar, name, register_step } =
+            finalAuthor;
           session.user = {
             id,
             email,
@@ -118,6 +129,7 @@ const options = (): NextAuthOptions => ({
             avatar,
             image: avatar,
             role: finalAuthor.role.name,
+            register_step,
           } as any;
         }
       } catch (e: any) {
@@ -131,6 +143,7 @@ const options = (): NextAuthOptions => ({
         ses.user.username = author.username;
         ses.user.avatar = author.avatar;
         ses.user.name = author.name;
+        ses.user.register_step = author.register_step as RegisterStep;
       }
       return ses;
     },

@@ -11,20 +11,16 @@ describe("Settings", () => {
     cy.getTestId("general").click();
 
     cy.getTestId("siteTitle").type("site title");
-    // cy.wait("@UpdateOptionsMutation");
 
     cy.getTestId("shortDescription").type("short description").tab();
-    // cy.wait("@UpdateOptionsMutation");
 
     cy.getTestId("siteTagline").type("site tagline");
-    // cy.wait("@UpdateOptionsMutation");
 
     cy.getTestId("siteEmail").type("site email");
-    // cy.wait("@UpdateOptionsMutation");
 
     cy.getTestId("footerDescription").type("footer description").tab();
-    // cy.wait("@UpdateOptionsMutation");
     cy.getTestId("save-general").click();
+    cy.wait("@UpdateOptionsMutation");
   });
 
   it("can can select pages", () => {

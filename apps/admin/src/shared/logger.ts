@@ -74,7 +74,6 @@ function print(
   rest: any[]
 ) {
   if (process.env.DEBUG !== "true") return null;
-  console.log("");
   console.log.apply(console, [
     tagColor + bright + `[${tagName} - ${getDateTime()}]${reset}`,
     magenta + ` ${fileName}${reset}: `,

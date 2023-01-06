@@ -26,13 +26,16 @@ interface Props extends HTMLProps<HTMLInputElement> {
   value?: string;
   variant?: "primary" | "secondary" | "danger" | "dark" | "success" | "warning";
   className?: string;
+  labelClassName?: string;
   disabled?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: HTMLInputElement["type"];
   error?: boolean;
   label?: string;
   addonBefore?: string;
+  addonAfter?: string;
   help?: string;
+  limit?: number;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -45,18 +48,31 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     label,
     help,
     addonBefore,
+    addonAfter,
+    labelClassName,
+    limit,
     ...rest
   } = props;
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length <= rest.value?.length!) {
+      return rest.onChange?.(e);
+    }
+    if (limit && e.target.value.length > limit) {
+      return;
+    }
+    rest.onChange?.(e);
+  };
 
   if (label) {
     return (
       <div>
-        <Label label={label} className="mb-2" />
+        <Label label={label} className={"mb-2 " + labelClassName} />
         <div className="relative flex items-center">
           {addonBefore && (
             <span
               className={classNames(
-                "absolute border-r border-gray-300 p-2 text-gray-700 dark:border-gray-600 dark:text-gray-300"
+                "rounded-l-md border-[1px] border-r border-gray-300 bg-neutral-100 p-2 py-[0.58rem] text-gray-500 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300"
               )}
             >
               {addonBefore}
@@ -72,12 +88,28 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
               classes.variant[variant],
               disabled && classes.disabled,
               className,
-              { "pl-10": addonBefore }
+              {
+                "rounded-l-none border-l-0": addonBefore,
+                "rounded-r-none border-r-0": addonAfter,
+              }
             )}
             {...rest}
+            onChange={onChange}
           />
+          {addonAfter && (
+            <span
+              className={classNames(
+                "rounded-r-md border-[1px] border-r border-gray-300 bg-neutral-100 p-2 py-[0.58rem] text-gray-500 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300"
+              )}
+            >
+              {addonAfter}
+            </span>
+          )}
         </div>
         {help && <span className="py-4 text-sm text-gray-500">{help}</span>}
+        {limit && (
+          <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
+        )}
       </div>
     );
   }

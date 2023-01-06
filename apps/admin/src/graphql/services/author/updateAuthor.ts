@@ -1,8 +1,11 @@
 import bcrypt from "bcryptjs";
 
+import { onBoardUser } from "@/lib/onboard";
+
 import {
   InputAuthor,
   MutationUpdateAuthorArgs,
+  RegisterStep,
   RequireFields,
   ResolversTypes,
 } from "@/__generated__/__types__";
@@ -92,6 +95,11 @@ export const updateAuthor = async (
       data: dataToUpdate,
       where: { id: args.author.id },
     });
+
+    if (dataToUpdate.register_step === RegisterStep.Registered) {
+      onBoardUser(author.id);
+    }
+
     if (newEmail) {
       await enqueueEmailAndSend({
         template_id: EmailTemplates.VerifyChangedEmail,

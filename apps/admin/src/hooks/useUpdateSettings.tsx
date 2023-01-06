@@ -53,6 +53,8 @@ export const useUpdateSettings = () => {
         Message().error({ content: error, duration: 10 });
       }
     }
+
+    return res;
   }
 
   const updateSettingsAPI = useCallback(

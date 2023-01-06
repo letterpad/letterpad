@@ -2,13 +2,12 @@ import bcrypt from "bcryptjs";
 
 import {
   InputCreateAuthor,
-  InputCreatePost,
   PostStatusOptions,
   PostTypes,
+  RegisterStep,
   SettingInputType,
 } from "@/__generated__/__types__";
 import { defaultSettings } from "@/graphql/db/seed/constants";
-import generatePost from "@/graphql/db/seed/contentGenerator";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { EmailTemplates, ROLES } from "@/graphql/types";
@@ -27,7 +26,7 @@ export const onBoardUser = async (id: number) => {
       slug: siteConfig.default_tag,
     };
 
-    const welcomeContent = getWelcomePost();
+    const welcomeContent = getWelcomePost(newAuthor.name);
     await prisma.post.create({
       data: {
         ...welcomeContent.post,
@@ -59,18 +58,18 @@ export const onBoardUser = async (id: number) => {
   }
 };
 
-function getWelcomePost() {
+function getWelcomePost(name: string) {
   const post_cover =
-    "https://images.unsplash.com/photo-1516035054744-d474c5209db5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80";
+    "https://images.unsplash.com/photo-1625992865747-d814b125ab22?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2970&q=80";
 
-  const { html } = generatePost(PostTypes.Post);
-  const title = "Welcome to Letterpad";
+  const html = `This is ${name}. I am starting a brand new site and I am excited to see how this goes. Please visit me after few days to see what I have written or subscribe to my newsletter to get notified when I publish a new post.`;
+  const title = "Coming Soon";
 
+  const excerpt = `This is ${name}. I am starting a brand new site and I am excited to see how this goes.`;
   const post = {
-    title: "Welcome to Letterpad",
+    title,
     html: html,
-    excerpt:
-      "You can use this space to write a small description about the topic. This will be helpful in SEO.",
+    excerpt,
     cover_image: post_cover,
     cover_image_width: 1500,
     cover_image_height: 900,
@@ -79,12 +78,12 @@ function getWelcomePost() {
     slug: textToSlug(title),
     createdAt: new Date(),
     publishedAt: new Date(),
-    reading_time: "5 mins",
+    reading_time: "1 min",
     stats: JSON.stringify({
-      words: 100,
-      reading_time: 5,
-      characters: 1000,
-      spaceless_characters: 800,
+      words: html.split(" ").length,
+      reading_time: 1,
+      characters: html.length,
+      spaceless_characters: html.split(" ").length - 30,
     }),
     page_data: JSON.stringify({ rows: [] }),
     page_type: "default",
@@ -102,11 +101,19 @@ export async function createAuthorWithSettings(
   setting: SettingInputType,
   rolename: ROLES = ROLES.AUTHOR
 ) {
-  const { token, verified = false, avatar = "", ...authorData } = data;
+  const {
+    token,
+    verified = false,
+    avatar = "https://res.cloudinary.com/abhisheksaha/image/upload/v1672944041/blog-images/6611482_account_avatar_basic_person_user_icon_eisadm.png",
+    ...authorData
+  } = data;
   const role = await prisma.role.findFirst({ where: { name: rolename } });
   if (role) {
     const newAuthor = await prisma.author.create({
       data: {
+        name: "",
+        username: "",
+        register_step: RegisterStep.ProfileInfo,
         ...authorData,
         avatar,
         verified,
@@ -129,7 +136,7 @@ export async function createAuthorWithSettings(
           create: {
             ...defaultSettings,
             ...mapSettingToDb(setting),
-            site_url: `https://${authorData.username}.letterpad.app`,
+            // site_url: `https://${authorData.username}.letterpad.app`,
             client_token: encryptEmail(authorData.email),
           },
         },

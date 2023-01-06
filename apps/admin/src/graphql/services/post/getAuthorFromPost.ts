@@ -14,6 +14,8 @@ export const getAuthorFromPost = async (
     return {
       __typename: "Author",
       ...post.author,
+      register_step: post.author
+        .register_step as ResolversTypes["RegisterStep"],
       analytics_id: post.author.analytics_id || undefined,
       analytics_uuid: post.author.analytics_uuid || undefined,
       stripe_customer_id: post.author.stripe_customer_id || undefined,

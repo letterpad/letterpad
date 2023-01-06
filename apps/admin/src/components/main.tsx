@@ -8,14 +8,14 @@ import { useTracking } from "@/hooks/usetracking";
 import ThemeSwitcher from "@/components/theme-switcher";
 import { TwoColumnLayout } from "@/components_v2/layouts";
 
-import { basePath } from "@/constants";
+import { RegisterStep } from "@/__generated__/__types__";
+import { basePath, registrationPaths } from "@/constants";
 import { useHomeQueryQuery } from "@/graphql/queries/queries.graphql";
 import { Page } from "@/page";
 
 import { initPageProgress } from "./../shared/utils";
 import LoginLayout from "./layouts/LoginLayout";
 import MessageLayout from "./layouts/MessageLayout";
-import AuthenticatedNoLayout from "./layouts/NoLayout";
 import { LoadingScreen } from "./loading-screen";
 import { Sidebar } from "./sidebar";
 import { TopBar } from "./top-bar/topBar";
@@ -24,6 +24,9 @@ interface IProps {
   Component: Page;
   props: any;
 }
+
+const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
+
 const Main = ({ Component, props }: IProps) => {
   useTracking();
   const router = useRouter();
@@ -31,6 +34,7 @@ const Main = ({ Component, props }: IProps) => {
   const session = useSession();
   const isPublic =
     Component.isLogin || Component.isPublic || Component.isMessage;
+  const { register_step } = session.data?.user || {};
 
   useEffect(() => {
     ThemeSwitcher.switch(localStorage.theme);
@@ -40,10 +44,35 @@ const Main = ({ Component, props }: IProps) => {
   useEffect(() => {
     if (!isPublic && session.status === "unauthenticated") {
       router.push("/login");
+      return;
     }
-  }, [isPublic, router, session.status]);
+    if (isPublic) return;
+    switch (register_step) {
+      case ProfileInfo:
+        if (router.pathname !== registrationPaths[ProfileInfo]) {
+          router.push(registrationPaths[ProfileInfo]);
+        }
+        break;
 
-  if (loading) {
+      case SiteInfo:
+        if (router.pathname !== registrationPaths[SiteInfo]) {
+          router.push(registrationPaths[SiteInfo]);
+        }
+        break;
+      case Registered:
+        if (
+          router.pathname === registrationPaths[SiteInfo] ||
+          router.pathname === registrationPaths[ProfileInfo]
+        ) {
+          router.push(registrationPaths[Registered]);
+        }
+        break;
+      default:
+        break;
+    }
+  }, [isPublic, router, register_step, session.status]);
+
+  if (loading || session.status === "loading") {
     return <LoadingScreen />;
   }
 
@@ -70,15 +99,20 @@ const Main = ({ Component, props }: IProps) => {
 
   if (Component.noLayout) {
     node = (
-      <AuthenticatedNoLayout
-        render={({ settings, session }) => {
-          return <Component {...props} settings={settings} session={session} />;
-        }}
+      <Component
+        {...props}
+        settings={data?.settings}
+        session={session.data?.user}
+        me={data?.me}
       />
     );
   }
 
-  if (!node) {
+  if (
+    !node &&
+    session.status === "authenticated" &&
+    session.data.user?.register_step === RegisterStep.Registered
+  ) {
     node = (
       <TwoColumnLayout
         left={
