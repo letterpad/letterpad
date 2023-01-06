@@ -30,6 +30,11 @@ export const updateAuthor = async (
       message: "You are not authorized to update this author",
     };
   }
+  const exisitingAuthor = await prisma.author.findFirst({
+    where: {
+      id: session.user.id,
+    },
+  });
   try {
     const dataToUpdate = { ...args.author } as InputAuthorForDb & {
       verified?: boolean;
@@ -56,7 +61,7 @@ export const updateAuthor = async (
           username: args.author.username,
           id: {
             not: {
-              equals: args.author.id,
+              equals: session.user.id,
             },
           },
         },
@@ -93,10 +98,17 @@ export const updateAuthor = async (
 
     const author = await prisma.author.update({
       data: dataToUpdate,
-      where: { id: args.author.id },
+      where: { id: session.user.id },
     });
 
-    if (dataToUpdate.register_step === RegisterStep.Registered) {
+    //@todo: the date difference is to make sure users dont receive another email.
+    // remove this after 2023-06-06
+    if (
+      dataToUpdate.register_step === RegisterStep.Registered &&
+      exisitingAuthor?.createdAt &&
+      Date.parse(exisitingAuthor.createdAt.toDateString()) >=
+        Date.parse("2023-01-06")
+    ) {
       onBoardUser(author.id);
     }
 

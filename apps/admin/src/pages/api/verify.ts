@@ -1,6 +1,5 @@
 import { NextApiResponse } from "next";
 
-import { onBoardUser } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
