@@ -6,7 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
-import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
+import { createAuthorWithSettings } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
 
 import { report } from "@/components/error";
@@ -100,15 +100,13 @@ const options = (): NextAuthOptions => ({
               password: "",
               token: "",
               verified: true,
+              register_step: RegisterStep.ProfileInfo,
               login_type: token.provider as string,
             },
             {
               site_email: token.email,
             }
           );
-          if (newAuthor) {
-            await onBoardUser(newAuthor.id);
-          }
         }
 
         const finalAuthor = await prisma.author.findFirst({
