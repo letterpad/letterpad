@@ -5,12 +5,6 @@ const menu = [
     slug: "home",
     type: "tag",
   },
-  {
-    label: "Page",
-    original_name: "Page",
-    slug: "letterpad-typography",
-    type: "page",
-  },
 ];
 
 /**
@@ -47,12 +41,13 @@ module.exports.defaultSettings = {
   css: "",
   theme: "minimal",
   menu: JSON.stringify(menu),
+  design: JSON.stringify({ brand_color: "#d93097" }),
   cloudinary_key: "",
   cloudinary_name: "",
   cloudinary_secret: "",
   client_token: "",
   banner: JSON.stringify({}),
   intro_dismissed: false,
-  show_about_page: true,
-  show_tags_page: true,
+  show_about_page: false,
+  show_tags_page: false,
 };

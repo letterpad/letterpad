@@ -47,12 +47,6 @@ describe("Test Settings Graphql API", () => {
         slug: "/tag/home",
         type: "tag",
       },
-      {
-        label: "Page",
-        original_name: "Page",
-        slug: "/page/letterpad-typography",
-        type: "page",
-      },
     ]);
   });
 

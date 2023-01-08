@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { CSSProperties, ReactNode, useEffect, useState } from "react";
 
 import { IconClose } from "@/components/builder/toolbar/icons";
@@ -13,6 +14,7 @@ interface Props {
   header?: ReactNode;
   footer?: ReactNode[];
   zIndex?: number;
+  size?: "sm" | "md" | "lg";
 }
 
 export const Modal = (props: Props) => {
@@ -36,7 +38,15 @@ export const Modal = (props: Props) => {
           className="h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
           style={{ zIndex: props.zIndex ?? 50 }}
         >
-          <div className="relative h-full w-full  max-w-2xl p-4 md:h-auto">
+          <div
+            className={classNames(
+              "relative h-full w-full  max-w-2xl p-4 md:h-auto",
+              {
+                "max-w-3xl": props.size === "md",
+                "max-w-7xl": props.size === "lg",
+              }
+            )}
+          >
             <div className="relative rounded-md bg-white shadow dark:bg-gray-800">
               <div className="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-700">
                 <h3 className="text-lg font-medium text-gray-600 dark:text-gray-200">

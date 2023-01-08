@@ -13,7 +13,7 @@ interface Props {
 export default function ListLayout({ posts }: Props) {
   return (
     <SectionContainer>
-      <div className="content divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="content divide-y divide-gray-200 py-12 dark:divide-gray-700">
         <ul>
           {posts.rows.map((post) => {
             const { slug, publishedAt, title, tags, excerpt, stats } = post;
@@ -42,7 +42,7 @@ export default function ListLayout({ posts }: Props) {
                           ))}
                       </div>
                     </div>
-                    <div className="prose max-w-none text-md leading-6 text-gray-500 dark:text-gray-300">
+                    <div className="max-w-none text-md leading-6 text-gray-500 dark:text-gray-300">
                       {excerpt}
                     </div>
                   </div>

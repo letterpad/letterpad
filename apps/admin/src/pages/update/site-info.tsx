@@ -5,16 +5,18 @@ import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { Logo } from "@/components/login/views/Logo";
-import { Input } from "@/components_v2/input";
+import { Input, Label } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
 import { TextArea } from "@/components_v2/textarea";
 
 import { RegisterStep } from "@/__generated__/__types__";
+import { removeTypenames } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 export const SiteInfo = ({ session, settings }) => {
   const [site_title, setSiteTitle] = useState(settings.site_title);
   const [site_tagline, setSiteTagline] = useState(settings.site_tagline);
+  const [design, setDesign] = useState(removeTypenames(settings.design));
   const [site_description, setSiteDescription] = useState(
     settings.site_description
   );
@@ -63,6 +65,7 @@ export const SiteInfo = ({ session, settings }) => {
       site_title,
       site_description,
       site_tagline,
+      design,
     });
 
     if (optionsResult.data?.updateOptions?.__typename !== "Setting") {
@@ -118,6 +121,21 @@ export const SiteInfo = ({ session, settings }) => {
                 </p>
               </div>
               <div className="md:px-40">
+                <div className="mt-4">
+                  <div>
+                    <Label
+                      label="Choose a brand color"
+                      className="mb-2 text-md"
+                    />
+                    <input
+                      type="color"
+                      value={design.brand_color ?? "#d93097"}
+                      onChange={(e) =>
+                        setDesign({ ...design, brand_color: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
                 <div className="mt-4">
                   <div>
                     <Input

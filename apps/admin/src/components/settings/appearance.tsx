@@ -1,27 +1,20 @@
-import highlight from "highlight.js";
-import hljs from "highlight.js/lib/core";
-import hljsCssLang from "highlight.js/lib/languages/css";
-import Editor from "react-simple-code-editor";
-
-hljs.registerLanguage("css", hljsCssLang);
-import { useMemo, useRef } from "react";
-
-import "highlight.js/styles/night-owl.css";
+import { useMemo } from "react";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
+import { Buttonv2 } from "@/components_v2/button";
 import { Label } from "@/components_v2/input";
 import { RadioGroup } from "@/components_v2/radio";
+import { TextArea } from "@/components_v2/textarea";
 import { Upload } from "@/components_v2/upload";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { debounce } from "@/shared/utils";
+import { debounce, removeTypenames } from "@/shared/utils";
 
 interface Props {
   settings: SettingsFragmentFragment;
 }
 const Appearance: React.FC<Props> = ({ settings }) => {
-  const editorRef = useRef<any>(null);
   const { updateSettings, updateLocalState, updateSettingsAPI } =
     useUpdateSettings();
 
@@ -31,6 +24,22 @@ const Appearance: React.FC<Props> = ({ settings }) => {
   );
   return (
     <div className="grid gap-8">
+      <div className="flex flex-col gap-4">
+        <Label label="Brand Color" />
+        <input
+          type="color"
+          className="h-20 w-32"
+          value={settings?.design?.brand_color ?? "#d93097"}
+          onChange={(e) =>
+            updateSettings({
+              design: {
+                ...removeTypenames(settings.design),
+                brand_color: e.target.value,
+              },
+            })
+          }
+        />
+      </div>
       <div className="grid grid-cols-3">
         <Upload
           label="Logo"
@@ -78,59 +87,29 @@ const Appearance: React.FC<Props> = ({ settings }) => {
       <RadioGroup
         label="Layout Style"
         items={[
-          { label: "Minimal", value: "minimal" },
-          { label: "Magazine", value: "magazine" },
+          { label: "List", value: "minimal" },
+          { label: "Grid", value: "magazine" },
         ]}
         selected={settings.theme ?? "minimal"}
         onChange={(item) => updateSettings({ theme: item.value })}
       />
       <div>
-        <Label label="CSS" />
-
-        <div id="css-editor">
-          <Editor
-            value={settings.css ?? ""}
-            onValueChange={(code) => {
-              debounceUpdateSettingsAPI({ css: code });
-              updateLocalState({ css: code });
-            }}
-            ref={editorRef}
-            onChange={() => {
-              editorRef.current._input.style.height =
-                editorRef.current._input.parentElement.scrollHeight + "px";
-            }}
-            className="hljs"
-            placeholder="Add css to customise your website"
-            highlight={(code) => {
-              return highlight.highlight(code, { language: "css" }).value;
-            }}
-            padding={10}
-            style={{
-              fontFamily: '"Fira code", "Fira Mono", monospace',
-              fontSize: 13,
-              height: "100%",
-              overflowY: "scroll",
-            }}
-          />
-        </div>
-        <style jsx>{`
-          #css-editor {
-            flex: 1;
-            overflow: auto;
-            height: 300px;
-            border: 1px solid #333;
-            width: 600px;
-          }
-          @media (max-width: 767px) {
-            #css-editor {
-              width: 100%;
-            }
-          }
-          pre,
-          .hljs {
-            overflow-y: scroll;
-          }
-        `}</style>
+        <TextArea
+          label="CSS"
+          defaultValue={settings.css ?? ""}
+          onBlur={(e) => {
+            debounceUpdateSettingsAPI({ css: e.target.value });
+            updateLocalState({ css: e.target.value });
+          }}
+          placeholder="Add css to customise your website"
+          style={{
+            fontFamily: '"Fira code", "Fira Mono", monospace',
+            fontSize: 13,
+            minHeight: 200,
+          }}
+        />
+        <br />
+        <Buttonv2 onClick={() => debounceUpdateSettingsAPI({})}>Save</Buttonv2>
       </div>
     </div>
   );

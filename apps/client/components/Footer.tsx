@@ -50,7 +50,7 @@ export default function Footer({ author, settings }) {
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>{` • `}</div>
           <div>
-            <Link href="https://letterpad.app" className="link">
+            <Link href="https://letterpad.app" className="hover:text-accent-50">
               Letterpad
             </Link>
           </div>
@@ -58,7 +58,7 @@ export default function Footer({ author, settings }) {
           <div>
             <Link
               href="https://github.com/letterpad/letterpad"
-              className="link"
+              className="hover:text-accent-50"
             >
               Open Source
             </Link>

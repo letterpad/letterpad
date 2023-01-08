@@ -76,6 +76,11 @@ export type DeleteTagsResult = {
   ok: Scalars["Boolean"];
 };
 
+export type Design = {
+  __typename?: "Design";
+  brand_color?: Maybe<Scalars["String"]>;
+};
+
 export type Domain = {
   __typename?: "Domain";
   id: Scalars["Int"];
@@ -216,6 +221,10 @@ export type InputCreatePost = {
   tags?: InputMaybe<Array<InputMaybe<TagsInputType>>>;
   title?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<PostTypes>;
+};
+
+export type InputDesign = {
+  brand_color?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputDomain = {
@@ -672,6 +681,7 @@ export type Setting = {
   cloudinary_name?: Maybe<Scalars["String"]>;
   cloudinary_secret?: Maybe<Scalars["String"]>;
   css?: Maybe<Scalars["String"]>;
+  design?: Maybe<Design>;
   display_author_info: Scalars["Boolean"];
   id: Scalars["Int"];
   intro_dismissed: Scalars["Boolean"];
@@ -702,6 +712,7 @@ export type SettingInputType = {
   cloudinary_name?: InputMaybe<Scalars["String"]>;
   cloudinary_secret?: InputMaybe<Scalars["String"]>;
   css?: InputMaybe<Scalars["String"]>;
+  design?: InputMaybe<InputDesign>;
   display_author_info?: InputMaybe<Scalars["Boolean"]>;
   intro_dismissed?: InputMaybe<Scalars["Boolean"]>;
   menu?: InputMaybe<Array<InputNavigation>>;
@@ -1173,6 +1184,7 @@ export type SettingsQuery = {
         scripts?: string | null;
         show_about_page?: boolean | null;
         show_tags_page?: boolean | null;
+        display_author_info: boolean;
         site_footer?: string | null;
         banner?: {
           __typename?: "Image";
@@ -1180,6 +1192,7 @@ export type SettingsQuery = {
           width?: number | null;
           height?: number | null;
         } | null;
+        design?: { __typename?: "Design"; brand_color?: string | null } | null;
         menu: Array<{
           __typename?: "Navigation";
           label: string;
@@ -1214,6 +1227,7 @@ export type SettingsFragmentFragment = {
   scripts?: string | null;
   show_about_page?: boolean | null;
   show_tags_page?: boolean | null;
+  display_author_info: boolean;
   site_footer?: string | null;
   banner?: {
     __typename?: "Image";
@@ -1221,6 +1235,7 @@ export type SettingsFragmentFragment = {
     width?: number | null;
     height?: number | null;
   } | null;
+  design?: { __typename?: "Design"; brand_color?: string | null } | null;
   menu: Array<{
     __typename?: "Navigation";
     label: string;
@@ -1449,6 +1464,10 @@ export const SettingsFragmentFragmentDoc = `
   scripts
   show_about_page
   show_tags_page
+  display_author_info
+  design {
+    brand_color
+  }
   menu {
     label
     type

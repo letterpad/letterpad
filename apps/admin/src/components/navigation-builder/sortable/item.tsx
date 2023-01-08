@@ -116,11 +116,15 @@ export const Item: FC<Props> = ({
           >
             Select Content
           </Buttonv2>
-          <Buttonv2 variant="danger" onClick={() => onRemove(library)}>
+          <Buttonv2
+            variant="danger"
+            onClick={() => onRemove(library)}
+            className="py-0 px-0"
+          >
             <AiOutlineDelete
-              size={20}
+              size={38}
               data-testid="button-nav-delete"
-              className="menu-delete py-1"
+              className="menu-delete p-2"
             />
           </Buttonv2>
         </div>

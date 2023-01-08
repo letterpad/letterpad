@@ -93,7 +93,12 @@ export const Upload: FC<Props> = ({
             onChange={uploadImage}
             ref={ref}
           />
-          <Preview url={url} onRemove={handleSuccess} loading={uploading} />
+          <Preview
+            url={url}
+            onRemove={handleSuccess}
+            loading={uploading}
+            openFileExplorer={() => setExplorerVisible(true)}
+          />
         </div>
         <FileExplorer
           isVisible={explorerVisible}

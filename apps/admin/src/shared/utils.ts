@@ -84,7 +84,7 @@ export const uploadFile = async ({
     });
 };
 
-export function removeTypenames<T>(data: T): Omit<T, "__typename"> {
+export function removeTypenames<T>(data: T = {} as T): Omit<T, "__typename"> {
   const omitTypename = <K extends string>(key: K, value: T) => {
     if (typeof key === "string" && key === "__typename") {
       return undefined;

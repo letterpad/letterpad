@@ -27,7 +27,7 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
   const localRef = useRef<HTMLTextAreaElement>();
-  useEffect(() => {
+  const onKeyUp = () => {
     if (!localRef.current) {
       return;
     }
@@ -35,7 +35,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     localRef.current.style.overflow = "hidden";
     const next = `${localRef.current.scrollHeight}px`;
     localRef.current.style.height = next;
-  }, [localRef, props.value]);
+  };
 
   const setRef = (node: HTMLTextAreaElement) => {
     localRef.current = node;
@@ -89,6 +89,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
         )}
         {...rest}
         onChange={onChange}
+        onKeyUp={onKeyUp}
       />
       {limit && (
         <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>

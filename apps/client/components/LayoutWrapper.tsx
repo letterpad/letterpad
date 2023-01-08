@@ -10,6 +10,8 @@ import Footer from './Footer';
 import Link from './Link';
 import { LogoWithTitle } from './Logo';
 import MobileNav from './MobileNav';
+import PageTitle from './PageTitle';
+import SectionContainer from './SectionContainer';
 import ThemeSwitch from './ThemeSwitch';
 
 interface Props {
@@ -17,6 +19,7 @@ interface Props {
   props: {
     settings: SettingsFragmentFragment;
     me: Author;
+    showBrand?: boolean;
   };
 }
 
@@ -62,13 +65,16 @@ const LayoutWrapper = ({ children, props }: Props) => {
   const menu = getMenu(routes);
   return (
     <>
-      <div className="border-b-[1px] dark:border-gray-700">
+      <div
+        className={'bg-accent-50  bg-cover text-white'}
+        style={{ backgroundImage: `url(${props.settings.banner?.src})` }}
+      >
         <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-4 md:px-20">
           <div>
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
-                title={props.settings.site_title}
+                title={props.showBrand ? '' : props.settings.site_title}
               />
             </Link>
           </div>
@@ -78,6 +84,19 @@ const LayoutWrapper = ({ children, props }: Props) => {
             <MobileNav routes={routes} />
           </div>
         </header>
+        {props.showBrand && (
+          <div className="space-y-2  py-32 md:space-y-3">
+            <SectionContainer>
+              <div className="py-10">
+                <BrandText
+                  tagline={props.settings.site_tagline}
+                  title={props.settings.site_title}
+                  description={props.settings.site_description}
+                />
+              </div>
+            </SectionContainer>
+          </div>
+        )}
       </div>
       <main className="mb-auto" ref={contentRef}>
         {children}
@@ -100,7 +119,7 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
       <a
         key={item.slug}
         href={item.slug}
-        className="p-1 font-medium capitalize text-gray-900 dark:text-gray-100 sm:p-4"
+        className="p-1 text-md font-medium capitalize text-gray-50 sm:p-4"
       >
         {item.label}
       </a>
@@ -109,10 +128,22 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
         key={item.slug}
         href={i === 0 ? '/' : item.slug}
         target="_self"
-        className="link -1 font-medium capitalize sm:p-4"
+        className="text-md font-medium capitalize text-gray-50 sm:p-4"
       >
         {item.label}
       </Link>
     );
   });
 }
+
+const BrandText = ({ title, tagline, description }) => {
+  return (
+    <>
+      <PageTitle>{title}</PageTitle>
+      <p className="pb-4 text-center text-lg font-bold leading-10">{tagline}</p>
+      <p className="px-4 text-center text-md font-medium italic leading-6">
+        "{description}"
+      </p>
+    </>
+  );
+};

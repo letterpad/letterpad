@@ -34,7 +34,7 @@ module.exports = {
       },
       fontSize: {
         xs: '.7rem',
-        sm: '.8rem',
+        sm: '.85rem',
         base: '.9rem',
         md: '1rem',
         lg: '1.3rem',
@@ -42,7 +42,15 @@ module.exports = {
       },
       colors: {
         primary: colors.green,
-        gray: colors.slate
+        gray: colors.slate,
+        accent: {
+          50: "var(--brand-accent)",
+          100: '#f4f5f7',
+        },
+        zinc: {
+          800: "#131e32",
+          900: "#101827",
+        }
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -78,9 +86,6 @@ module.exports = {
             'h4,h5,h6': {
               color: theme('colors.gray.900'),
             },
-            // pre: {
-            //   backgroundColor: theme('colors.gray.800'),
-            // },
             code: {
               color: '#3b7157',
               backgroundColor: '#4eaa3730',
@@ -121,7 +126,7 @@ module.exports = {
             strong: { color: theme('colors.gray.600') },
             blockquote: {
               color: theme('colors.gray.900'),
-              borderLeftColor: theme('colors.green.600'),
+              borderLeftColor: theme('colors.accent.50'),
             },
             'figcaption a': {
               color: theme('colors.green.500'),
@@ -134,7 +139,7 @@ module.exports = {
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {
-                color: `${theme('colors.primary.400')} !important`,
+                color: `${theme('colors.accent.50')} !important`,
               },
               code: { color: theme('colors.primary.400') },
             },
@@ -185,7 +190,7 @@ module.exports = {
             },
             blockquote: {
               color: theme('colors.gray.100'),
-              borderLeftColor: theme('colors.green.600'),
+              borderLeftColor: theme('colors.accent.50'),
             },
           },
         },

@@ -17,12 +17,18 @@ interface NoImage {
 }
 interface Props {
   url: string;
-  onRemove: (args: NoImage[]) => void;
+  onRemove?: (args: NoImage[]) => void;
   loading?: boolean;
   openImage?: () => void;
+  openFileExplorer?: () => void;
 }
 
-export const Preview: FC<Props> = ({ url, onRemove, loading }) => {
+export const Preview: FC<Props> = ({
+  url,
+  onRemove,
+  loading,
+  openFileExplorer,
+}) => {
   const [show, setShow] = useState<boolean>(false);
   return (
     <div
@@ -38,7 +44,7 @@ export const Preview: FC<Props> = ({ url, onRemove, loading }) => {
             onRemove={onRemove}
             openImage={() => setShow(true)}
           />
-          <AddImage url={url} onRemove={onRemove} />
+          <AddImage url={url} openFileExplorer={openFileExplorer} />
         </>
       )}
       {url && (
@@ -83,7 +89,7 @@ const Loading = () => {
   );
 };
 
-const AddImage: FC<Props> = ({ url }) => {
+const AddImage: FC<Props> = ({ url, openFileExplorer }) => {
   return (
     <div
       className={classNames(
@@ -92,6 +98,7 @@ const AddImage: FC<Props> = ({ url }) => {
           hidden: url,
         }
       )}
+      onClick={openFileExplorer}
     >
       <AiOutlinePlus size={24} />
     </div>
@@ -110,7 +117,7 @@ const RemoveImage: FC<Props> = ({ url, onRemove, openImage }) => {
     >
       <div className="flex gap-2 rounded-md bg-white p-2">
         <AiOutlineEye onClick={() => openImage!()} />
-        <AiOutlineDelete onClick={() => onRemove([{ src: "" }])} />
+        <AiOutlineDelete onClick={() => onRemove?.([{ src: "" }])} />
       </div>
     </div>
   );

@@ -23,12 +23,6 @@
   .button-primary {
     @apply rounded-sm bg-gray-800 px-4 py-3 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg;
   }
-  .link {
-    @apply text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 text-sm font-medium;
-  }
-  .social-link {
-    @apply hover:text-primary-500 dark:hover:text-primary-400 fill-current text-gray-700 dark:text-gray-300;
-  }
   .creatives-cta {
     @apply mr-2 mb-2 rounded-md bg-blue-700 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
   }
@@ -46,3 +40,4 @@
     height: 100%;
   }
 }
+

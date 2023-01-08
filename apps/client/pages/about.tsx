@@ -15,7 +15,7 @@ export default function About({
     occupation,
     company_name,
   } = me;
-  const { site_email } = settings;
+  const { site_email, site_description } = settings;
   return (
     <AuthorLayout
       site_title={settings.site_title}
@@ -32,6 +32,8 @@ export default function About({
         banner: settings.banner?.src,
       }}
     >
+      <div dangerouslySetInnerHTML={{ __html: site_description ?? '' }} />
+      <br />
       <div dangerouslySetInnerHTML={{ __html: bio ?? '' }} />
     </AuthorLayout>
   );

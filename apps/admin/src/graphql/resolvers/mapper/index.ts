@@ -48,6 +48,7 @@ export const mapSettingToDb = (setting: SettingInputType) => {
     banner: JSON.stringify(setting.banner),
     site_favicon: JSON.stringify(setting.site_favicon),
     site_logo: JSON.stringify(setting.site_logo),
+    design: JSON.stringify(setting.design),
   }) as DbSetting;
 };
 
@@ -57,6 +58,7 @@ export const mapSettingToGraphql = (setting: DbSetting) => {
     menu: JSON.parse(setting.menu),
     banner: JSON.parse(setting.banner),
     logo: JSON.parse(setting.site_logo),
+    design: JSON.parse(setting.design),
     cover_image: JSON.parse(setting.site_favicon),
     __typename: "Setting",
   } as Setting;

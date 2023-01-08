@@ -46,7 +46,7 @@ export default function Tags({
                   <Tag text={t.name} />
                   <Link
                     href={`/tag/${kebabCase(t.name)}`}
-                    className="-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"
+                    className="-ml-2 text-sm font-semibold uppercase text-gray-600 hover:text-accent-50 dark:text-gray-300"
                   >
                     {`(${count})`}
                   </Link>

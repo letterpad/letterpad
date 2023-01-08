@@ -138,10 +138,10 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                       className="hidden md:block"
                     />
                   </div>
-                  <p className="text-sm font-light text-gray-500 dark:text-gray-300">
+                  <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
                     {author.occupation}
                   </p>
-                  <p className="flex text-sm font-light text-gray-500 dark:text-gray-300">
+                  <p className="flex text-sm font-normal text-gray-500 dark:text-gray-300">
                     <time title={printPublishedAt}>{printPublishedAt}</time>{' '}
                     &nbsp;•&nbsp;
                     <span className="flex items-center gap-1">
@@ -159,7 +159,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                   <Link
                     href={`/tag/${kebabCase(name)}`}
                     key={name}
-                    className="mr-1 inline-block  text-sm  font-bold text-green-600 hover:text-green-500"
+                    className="mr-1  inline-block  text-sm font-medium opacity-60 hover:text-accent-50 hover:opacity-100"
                   >
                     #{name.split(' ').join('-')}
                   </Link>
@@ -171,38 +171,38 @@ export default function PostLayout({ data, next, prev, children }: Props) {
           </header>
           <div className="prose pb-8 pt-4 dark:prose-dark">{children}</div>
 
-          <div
-            className={
-              'mb-10 mr-3 flex items-center rounded-md border p-8 text-sm text-gray-900 dark:border-gray-800 dark:text-white ' +
-              (isPage || !author.bio ? 'hidden' : '')
-            }
-          >
-            <div className="mr-4 hidden md:block">
-              {author.avatar && (
-                <Image
-                  loader={({ src }) => src}
-                  src={author.avatar}
-                  width="94px"
-                  height="94px"
-                  alt={author.name}
-                  className="h-16 w-16 rounded-full"
-                />
-              )}
+          {settings.display_author_info && !isPage && author.bio && (
+            <div
+              className={
+                'mb-10 mr-3 flex items-center rounded-md border p-8 text-sm text-gray-900 dark:border-gray-800 dark:text-white '
+              }
+            >
+              <div className="mr-4 hidden md:block">
+                {author.avatar && (
+                  <Image
+                    loader={({ src }) => src}
+                    src={author.avatar}
+                    width="94px"
+                    height="94px"
+                    alt={author.name}
+                    className="h-16 w-16 rounded-full"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <a
+                  href="#"
+                  rel="author"
+                  className="font-sans text-xl font-extrabold text-gray-900 dark:text-white "
+                >
+                  {author.name}
+                </a>
+                <p className="text-md font-normal leading-5 text-gray-500 dark:text-gray-300">
+                  {author.bio}
+                </p>
+              </div>
             </div>
-            <div>
-              <a
-                href="#"
-                rel="author"
-                className="font-sans text-xl font-extrabold text-gray-900 dark:text-white "
-              >
-                {author.name}
-              </a>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-300">
-                {author.bio}
-              </p>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-300"></p>
-            </div>
-          </div>
+          )}
           {type === 'post' && <Comments provider="utterances" />}
         </article>
       </div>

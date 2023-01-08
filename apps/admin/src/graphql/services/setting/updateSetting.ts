@@ -33,7 +33,7 @@ export const updateSetting = async (
 
     const data = {} as ChangeTypeOfKeys<
       Omit<Setting, "__typename">,
-      "menu" | "banner" | "site_logo" | "site_favicon",
+      "menu" | "banner" | "site_logo" | "site_favicon" | "design",
       string
     >;
 
@@ -55,14 +55,17 @@ export const updateSetting = async (
 
         value = JSON.stringify(isImageOption);
       }
-      if (["menu", "banner", "site_logo", "site_favicon"].includes(option)) {
+      if (
+        ["menu", "banner", "site_logo", "site_favicon", "design"].includes(
+          option
+        )
+      ) {
         value = JSON.stringify(value);
       }
 
       data[option] = value;
     });
     logger.info(`Updating settings with id ${setting_id}- `, data);
-
     await prisma.setting.update({
       data: data,
       where: { id: setting_id },
