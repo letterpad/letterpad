@@ -43,7 +43,10 @@ const Subscribe = () => {
               onChange={(e) => setEmail(e.target.value.trim())}
               value={email}
             />
-            <button className="button-primary" onClick={doSubscribe}>
+            <button
+              className="button-primary bg-accent-50 text-white"
+              onClick={doSubscribe}
+            >
               Subscribe
             </button>
           </div>

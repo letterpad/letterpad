@@ -159,7 +159,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                   <Link
                     href={`/tag/${kebabCase(name)}`}
                     key={name}
-                    className="mr-1 inline-block  text-sm  font-bold text-green-600 hover:text-green-500"
+                    className="mr-1 inline-block  text-sm  font-bold text-accent-50 hover:text-accent-100"
                   >
                     #{name.split(' ').join('-')}
                   </Link>

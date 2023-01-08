@@ -20,14 +20,16 @@ export const LogoWithTitle = ({
   const logoExist = !!logo?.src;
   return (
     <div className={'flex justify-between ' + className}>
-      <span className="mr-2 flex">
-        {logo?.src && <Image alt={title} {...props} src={logo.src} />}
-      </span>
+      {logo?.src && (
+        <span className="mr-2 flex">
+          <Image alt={title} {...props} src={logo.src} />
+        </span>
+      )}
       {hasTitle &&
         (logoExist ? (
           <div className="mt-2 hidden text-md font-bold md:block">{title}</div>
         ) : (
-          <div className="mt-2 text-md font-bold">{title}</div>
+          <div className="text-md font-bold">{title}</div>
         ))}
     </div>
   );

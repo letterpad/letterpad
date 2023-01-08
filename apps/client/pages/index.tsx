@@ -49,29 +49,7 @@ export default function Home({
         url={settings.site_url}
         twSite={me.social?.twitter}
       />
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        {settings.banner?.src ? (
-          <div
-            className="space-y-2 py-40 md:space-y-3"
-            style={{ background: `url(${settings.banner.src})` }}
-          >
-            <SectionContainer>
-              <div className="py-10">
-                <PageTitle>{me.name}</PageTitle>
-                <p className="text-center text-lg leading-7">
-                  {settings.site_description}
-                </p>
-              </div>
-            </SectionContainer>
-          </div>
-        ) : (
-          <div className="mx-auto max-w-3xl space-y-2 py-20 md:space-y-2">
-            <PageTitle>{me.name}</PageTitle>
-            <p className="px-4 text-center text-md leading-7 text-gray-500 dark:text-gray-300">
-              {settings.site_description}
-            </p>
-          </div>
-        )}
+      <div className="">
         <SectionContainer>
           {posts?.__typename === 'PostsNode' && posts.rows.length === 0 && (
             <span className="py-16 text-gray-400">
@@ -145,6 +123,7 @@ export async function getServerSideProps(context: any) {
       isPosts: isHomePageACollectionOfPosts,
       posts: null as unknown as PostsFragmentFragment,
       page: null as unknown as PageFragmentFragment,
+      showBrand: true,
     },
   };
 

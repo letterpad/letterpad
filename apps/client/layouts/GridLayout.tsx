@@ -43,23 +43,24 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                       src={cover_image.src ?? ''}
                       layout="fill"
                       alt={title}
+                      objectFit="cover"
                     />
                   </span>
                 </div>
                 <div className="h-44 py-4 px-2 md:px-0">
                   <span className="inline-flex w-full items-center justify-between">
-                    <span className="flex items-center gap-1 text-xs">
+                    <span className="flex items-center gap-1 text-sm">
                       <IconBook />
                       {stats?.reading_time} min read
                     </span>
 
-                    <time dateTime={publishedAt} className="text-xs">
+                    <time dateTime={publishedAt} className="text-sm">
                       {formatDate(publishedAt)}
                     </time>
                   </span>
 
-                  <h2 className="mt-2 mb-2 font-bold">{title}</h2>
-                  <p className="text-sm tracking-wider text-gray-600 dark:text-gray-300">
+                  <h2 className="mt-2 mb-2 font-bold leading-5">{title}</h2>
+                  <p className="text-base tracking-tight text-gray-600 dark:text-gray-300">
                     {excerpt}
                   </p>
                 </div>

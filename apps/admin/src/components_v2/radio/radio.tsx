@@ -30,7 +30,7 @@ export function RadioGroup<T extends Key>({
           return (
             <div
               key={item.value}
-              className={classNames("flex items-center", {
+              className={classNames("flex  items-center", {
                 "mr-4": item !== items[items.length - 1],
               })}
             >
@@ -45,7 +45,7 @@ export function RadioGroup<T extends Key>({
               />
               <label
                 htmlFor={id}
-                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ml-2 cursor-pointer text-sm font-medium "
               >
                 {item.label}
               </label>
