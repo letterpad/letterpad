@@ -9,7 +9,7 @@ import { TextArea } from "@/components_v2/textarea";
 import { Upload } from "@/components_v2/upload";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { debounce } from "@/shared/utils";
+import { debounce, removeTypenames } from "@/shared/utils";
 
 interface Props {
   settings: SettingsFragmentFragment;
@@ -33,6 +33,7 @@ const Appearance: React.FC<Props> = ({ settings }) => {
           onChange={(e) =>
             updateSettings({
               design: {
+                ...removeTypenames(settings.design),
                 brand_color: e.target.value,
               },
             })

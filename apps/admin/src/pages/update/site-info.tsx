@@ -10,12 +10,13 @@ import { Message } from "@/components_v2/message";
 import { TextArea } from "@/components_v2/textarea";
 
 import { RegisterStep } from "@/__generated__/__types__";
+import { removeTypenames } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 export const SiteInfo = ({ session, settings }) => {
   const [site_title, setSiteTitle] = useState(settings.site_title);
   const [site_tagline, setSiteTagline] = useState(settings.site_tagline);
-  const [design, setDesign] = useState(settings.design);
+  const [design, setDesign] = useState(removeTypenames(settings.design));
   const [site_description, setSiteDescription] = useState(
     settings.site_description
   );
