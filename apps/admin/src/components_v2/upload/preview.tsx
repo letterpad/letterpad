@@ -117,7 +117,7 @@ const RemoveImage: FC<Props> = ({ url, onRemove, openImage }) => {
     >
       <div className="flex gap-2 rounded-md bg-white p-2">
         <AiOutlineEye onClick={() => openImage!()} />
-        <AiOutlineDelete onClick={() => onRemove([{ src: "" }])} />
+        <AiOutlineDelete onClick={() => onRemove?.([{ src: "" }])} />
       </div>
     </div>
   );
