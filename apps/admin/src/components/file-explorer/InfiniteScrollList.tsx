@@ -22,17 +22,11 @@ const InfiniteScrollList = ({
           hasMore={data.length < count}
           loader={null}
         >
-          <div className="image-grid">{data}</div>
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+            {data}
+          </div>
         </InfiniteScroll>
       </div>
-      <style jsx>{`
-        .image-grid {
-          display: grid;
-          grid-gap: 10px;
-          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-          /* grid-auto-rows: minmax(50px, auto); */
-        }
-      `}</style>
     </>
   );
 };
