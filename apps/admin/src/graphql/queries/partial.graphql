@@ -74,6 +74,9 @@ fragment SettingsFragment on Setting {
   intro_dismissed
   show_about_page
   show_tags_page
+  design {
+    brand_color
+  }
   menu {
     label
     original_name

@@ -117,6 +117,7 @@ const FileExplorer = ({
   return (
     <NoSsr>
       <Modal
+        size="lg"
         className="file-explorer"
         header={
           <div className="flex items-center gap-4">

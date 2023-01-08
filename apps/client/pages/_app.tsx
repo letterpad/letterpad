@@ -20,6 +20,13 @@ export default function App({ Component, pageProps }: AppProps<PageProps>) {
     <ThemeProvider attribute="class" defaultTheme="system">
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <style>
+          {`
+          html {
+            --brand-accent: ${pageProps.settings?.design?.brand_color};
+          }
+          `}
+        </style>
       </Head>
       {srcs.map((src) => (
         <Script strategy="afterInteractive" src={src} key={src} />

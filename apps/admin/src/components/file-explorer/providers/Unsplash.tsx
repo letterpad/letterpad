@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import { SearchInput } from "@/components_v2/input";
 
@@ -20,7 +20,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [loading, setLoading] = useState(false);
 
   const handleUnsplashResponse = useCallback(
-    ({ rows, count, error }: any) => {
+    ({ rows, count, error, page }: any) => {
       setLoading(false);
       if (error) {
         return setError(
@@ -37,7 +37,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
       }
       setTotalCount(count);
     },
-    [data, page]
+    [data]
   );
 
   const searchUnsplash = useCallback(
@@ -46,6 +46,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
         return setLoading(false);
       }
       setLoading(true);
+      setPage(page);
       fetchUnsplashMedia(url, page, searchTerm)
         .then(handleUnsplashResponse)
         .catch((_e) => {
@@ -81,7 +82,6 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   return (
     <div>
       <SearchInput
-        // onChange={(e) => setQuery(e.target.value)}
         value={query}
         enterButton="Search"
         data-testid="input-unsplash"
@@ -127,6 +127,7 @@ const fetchUnsplashMedia = async (url: string, page: number, query: string) => {
         };
       }),
       count,
+      page,
     };
     return images;
   } catch (e: any) {

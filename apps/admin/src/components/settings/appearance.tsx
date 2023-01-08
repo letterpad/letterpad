@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { Buttonv2 } from "@/components_v2/button";
+import { Label } from "@/components_v2/input";
 import { RadioGroup } from "@/components_v2/radio";
 import { TextArea } from "@/components_v2/textarea";
 import { Upload } from "@/components_v2/upload";
@@ -23,6 +24,21 @@ const Appearance: React.FC<Props> = ({ settings }) => {
   );
   return (
     <div className="grid gap-8">
+      <div className="flex flex-col gap-4">
+        <Label label="Brand Color" />
+        <input
+          type="color"
+          className="h-20 w-32"
+          value={settings?.design?.brand_color ?? "#d93097"}
+          onChange={(e) =>
+            updateSettings({
+              design: {
+                brand_color: e.target.value,
+              },
+            })
+          }
+        />
+      </div>
       <div className="grid grid-cols-3">
         <Upload
           label="Logo"
@@ -92,7 +108,7 @@ const Appearance: React.FC<Props> = ({ settings }) => {
           }}
         />
         <br />
-        <Buttonv2 onClick={() => debounceUpdateSettingsAPI()}>Save</Buttonv2>
+        <Buttonv2 onClick={() => debounceUpdateSettingsAPI({})}>Save</Buttonv2>
       </div>
     </div>
   );

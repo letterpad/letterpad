@@ -146,7 +146,8 @@ model Setting {
   intro_dismissed     Boolean
   show_about_page     Boolean   @default(true)
   show_tags_page      Boolean   @default(false)
-  scripts             String?    @db.Text
+  design              String    @default("{}") @db.VarChar(300)
+  scripts             String?   @db.Text
   author_id           Int       @unique
   author              Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }

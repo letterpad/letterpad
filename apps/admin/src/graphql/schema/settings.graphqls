@@ -11,6 +11,10 @@ type Navigation {
   label: String!
 }
 
+type Design {
+  brand_color: String
+}
+
 type Setting {
   id: Int!
   site_title: String!
@@ -34,6 +38,7 @@ type Setting {
   banner: Image
   site_logo: Image
   site_favicon: Image
+  design: Design
   client_token: String! @maskIfUnauth
 }
 
@@ -42,6 +47,10 @@ input InputNavigation {
   slug: String!
   original_name: String!
   label: String!
+}
+
+input InputDesign {
+  brand_color: String
 }
 
 input InputImage {
@@ -67,6 +76,7 @@ input SettingInputType {
   css: String
   theme: String
   banner: InputImage
+  design: InputDesign
   site_logo: InputImage
   site_favicon: InputImage
   intro_dismissed: Boolean

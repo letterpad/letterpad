@@ -2,12 +2,6 @@ import { ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 
-// const SECURE_SETTINGS = [
-//   "cloudinary_key",
-//   "cloudinary_name",
-//   "cloudinary_secret",
-// ];
-
 export const getSetting = async (
   _args: unknown,
   { session, client_author_id, prisma }: ResolverContext
@@ -23,11 +17,6 @@ export const getSetting = async (
     });
 
     if (author && author.setting) {
-      // SECURE_SETTINGS.forEach((securedKey: string) => {
-      //   if (!session?.user.id && author.setting) {
-      //     author.setting[securedKey] = "";
-      //   }
-      // });
       return { ...mapSettingToGraphql(author.setting) };
     }
   }

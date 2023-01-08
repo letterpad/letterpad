@@ -90,7 +90,7 @@ const LayoutWrapper = ({ children, props }: Props) => {
               <div className="py-10">
                 <BrandText
                   tagline={props.settings.site_tagline}
-                  title={props.me.name}
+                  title={props.settings.site_title}
                   description={props.settings.site_description}
                 />
               </div>

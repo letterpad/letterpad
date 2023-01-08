@@ -44,8 +44,12 @@ module.exports = {
         primary: colors.green,
         gray: colors.slate,
         accent: {
-          50: colors.teal[500],
+          50: "var(--brand-accent)",
           100: '#f4f5f7',
+        },
+        zinc: {
+          800: "#131e32",
+          900: "#101827",
         }
       },
       typography: (theme) => ({
