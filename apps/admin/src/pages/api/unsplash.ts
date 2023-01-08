@@ -16,7 +16,7 @@ const unsplash = async (req, res) => {
     return res.status(200).json({});
   }
   // contninue with searching for photos
-  const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21`;
+  const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21&orientation=landscape`;
 
   try {
     const response = await fetch(endpoint).then((data) => data.json());

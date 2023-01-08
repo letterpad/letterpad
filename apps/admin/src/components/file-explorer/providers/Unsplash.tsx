@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { SearchInput } from "@/components_v2/input";
 
@@ -75,8 +75,11 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const loadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    searchUnsplash(query, nextPage);
+    searchUnsplash(query === "" ? "random" : query, nextPage);
   };
+  useEffect(() => {
+    searchUnsplash("random");
+  }, []);
 
   const jsxElements = useMemo(() => renderer(data), [data, renderer]);
   return (
