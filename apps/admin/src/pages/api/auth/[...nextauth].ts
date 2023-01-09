@@ -14,6 +14,8 @@ import { report } from "@/components/error";
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 
+import { isBlackListed } from "./blacklist";
+
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -31,6 +33,11 @@ const providers = (): NextAuthOptions["providers"] => [
     },
     authorize: async (credentials): Promise<any> => {
       try {
+        if (isBlackListed(credentials?.email!)) {
+          return Promise.reject(
+            new Error("Your email domain has been blacklisted.")
+          );
+        }
         const author = await prisma.author.findFirst({
           where: { email: credentials?.email },
         });

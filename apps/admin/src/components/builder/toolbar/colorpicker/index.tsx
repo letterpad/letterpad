@@ -31,7 +31,7 @@ export const ColorPickerGradient: FC<Props> = ({
   };
 
   return (
-    <div className="absolute -left-80 top-12 flex w-[24rem] flex-col gap-2 rounded-md bg-slate-200 p-4 dark:bg-slate-900">
+    <div className="absolute -left-80 top-12 flex w-[24rem] flex-col gap-2 rounded-md bg-slate-300 p-4 dark:bg-slate-900">
       <div className="mb-4 flex justify-between">
         <span>Background Overlay Enhancer</span>
         <IoClose size={20} className="cursor-pointer" onClick={onClose} />

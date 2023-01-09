@@ -1,5 +1,6 @@
 #creative {
   font-family: 'Lato', sans-serif;
+  --accent: 14, 114, 207;
   h1 {
     font-size: 4rem;
     line-height: 1.2;
@@ -11,7 +12,7 @@
     font-size: 3rem;
     line-height: 1;
   }
-  p,
+   p,
   i,
   a {
     /* margin-top: 21px; */
