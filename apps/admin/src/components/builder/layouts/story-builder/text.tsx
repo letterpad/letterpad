@@ -62,7 +62,9 @@ const Text = ({ columns, text = "" }) => (
   <div
     data-text
     className={
-      columns == 2 ? "margin-auto max-w-full lg:max-w-[calc(500px)]" : "w-full"
+      columns == 2
+        ? "margin-auto w-full max-w-full lg:max-w-[calc(500px)]"
+        : "w-full"
     }
     dangerouslySetInnerHTML={{
       __html: decodeURIComponent(text),

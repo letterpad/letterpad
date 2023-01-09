@@ -12,11 +12,15 @@ import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { validateCaptcha } from "@/graphql/resolvers/helpers";
 import { EmailTemplates } from "@/graphql/types";
+import { isBlackListed } from "@/pages/api/auth/blacklist";
 
 export const createAuthor = async (
   args: RequireFields<MutationCreateAuthorArgs, "data">,
   { prisma }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
+  if (isBlackListed(args.data?.email)) {
+    return Promise.reject(new Error("Your email domain has been blacklisted."));
+  }
   if (args.data?.token) {
     const response = await validateCaptcha(
       process.env.RECAPTCHA_KEY_SERVER,

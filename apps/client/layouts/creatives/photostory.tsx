@@ -101,7 +101,7 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
           <div
             className={
               columns == 2
-                ? 'margin-auto max-w-full lg:max-w-[calc(500px)]'
+                ? 'margin-auto w-full max-w-full lg:max-w-[calc(500px)]'
                 : 'z-[2] w-full'
             }
             dangerouslySetInnerHTML={{

@@ -71,17 +71,6 @@
     cursor: pointer;
     border-bottom: 3px solid #d932c0;
   }
-
-  .dark code {
-    color: #88cead;
-  }
-  code {
-    font-family: inherit;
-    background: #4eaa3730;
-    padding: 2px 4px;
-    border-radius: 6px;
-    color: #3b7157;
-  }
   .mce-offscreen-selection {
     display: none;
   }

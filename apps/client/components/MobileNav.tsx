@@ -51,7 +51,7 @@ const MobileNav: React.VFC<Props> = ({ routes }) => {
         </svg>
       </button>
       <div
-        className={`fixed top-24 right-0 z-10 h-full w-full transform bg-gray-200 opacity-95 duration-300 ease-in-out dark:bg-gray-800 ${
+        className={`fixed top-24 right-0 z-10 h-full w-full transform bg-zinc-900 text-slate-200 duration-300 ease-in-out ${
           navShow ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -61,7 +61,9 @@ const MobileNav: React.VFC<Props> = ({ routes }) => {
           className="fixed h-full w-full cursor-auto focus:outline-none"
           onClick={onToggleNav}
         ></button>
-        <nav className="fixed mt-8 h-full">{getMenu(routes)}</nav>
+        <nav className="fixed mt-8 h-full" onClick={onToggleNav}>
+          {getMenu(routes)}
+        </nav>
       </div>
     </div>
   );
@@ -77,7 +79,7 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
           <a
             key={item.slug}
             href={item.slug}
-            className="p-1 font-medium capitalize text-gray-900 dark:text-gray-100 sm:p-4"
+            className="p-1 font-medium capitalize  sm:p-4"
           >
             {item.label}
           </a>
@@ -86,7 +88,7 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
             key={item.slug}
             href={i === 0 ? '/' : item.slug}
             target="_self"
-            className="text-2xl font-bold capitalize tracking-widest text-gray-900 dark:text-gray-100"
+            className="text-2xl font-bold capitalize tracking-widest "
           >
             {item.label}
           </Link>
