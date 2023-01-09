@@ -25,20 +25,25 @@ const Appearance: React.FC<Props> = ({ settings }) => {
   return (
     <div className="grid gap-8">
       <div className="flex flex-col gap-4">
-        <Label label="Brand Color" />
-        <input
-          type="color"
-          className="h-20 w-32"
-          value={settings?.design?.brand_color ?? "#d93097"}
-          onChange={(e) =>
-            updateSettings({
-              design: {
-                ...removeTypenames(settings.design),
-                brand_color: e.target.value,
-              },
-            })
-          }
-        />
+        <Label label="Brand Color - Choose a color that reflects your brand." />
+        <div className="flex flex-row items-center gap-2">
+          <input
+            type="color"
+            className="h-20 w-32"
+            value={settings?.design?.brand_color ?? "#d93097"}
+            onChange={(e) =>
+              updateSettings({
+                design: {
+                  ...removeTypenames(settings.design),
+                  brand_color: e.target.value,
+                },
+              })
+            }
+          />
+          <Buttonv2 onClick={() => window.open(settings.site_url, "_blank")}>
+            Preview
+          </Buttonv2>
+        </div>
       </div>
       <div className="grid grid-cols-3">
         <Upload

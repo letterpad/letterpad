@@ -22,7 +22,7 @@ export default function ListLayout({ posts }: Props) {
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                   <PublishedAt
                     publishedAt={publishedAt}
-                    className="text-sm xl:block"
+                    className="flex justify-between text-sm xl:block"
                     reading_time={stats?.reading_time}
                   />
                   <div className="space-y-3 xl:col-span-3">
@@ -35,12 +35,12 @@ export default function ListLayout({ posts }: Props) {
                           {title}
                         </Link>
                       </h3>
-                      <div className="flex flex-wrap">
+                      {/* <div className="flex flex-wrap">
                         {tags?.__typename === 'TagsNode' &&
                           tags.rows.map((tag) => (
                             <Tag key={tag.name} text={tag.name} />
                           ))}
-                      </div>
+                      </div> */}
                     </div>
                     <div className="max-w-none text-md leading-6 text-gray-500 dark:text-gray-300">
                       {excerpt}
@@ -57,9 +57,9 @@ export default function ListLayout({ posts }: Props) {
 }
 
 const PublishedAt = ({ publishedAt, className, reading_time }) => (
-  <dl className={className}>
+  <dl className={className + ' ' + 'text-gray-500 dark:text-gray-400'}>
     <dt className="sr-only">Published on</dt>
-    <dd className=" font-medium leading-6 text-gray-500 dark:text-gray-300">
+    <dd className=" font-medium leading-6 ">
       <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
     </dd>
     <span className="flex items-center gap-1">
