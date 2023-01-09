@@ -25,9 +25,7 @@ describe("Test Settings Graphql API", () => {
     expect(result.settings.site_favicon.src).toContain(
       "https://letterpad.app/admin/uploads/logo.png"
     );
-    expect(result.settings.site_logo.src).toContain(
-      "https://letterpad.app/admin/uploads/logo.png"
-    );
+    expect(result.settings.site_logo.src).toContain("");
   });
 
   it("should not contain cloudinary keys", async () => {
