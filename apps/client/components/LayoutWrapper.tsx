@@ -85,7 +85,7 @@ const LayoutWrapper = ({ children, props }: Props) => {
           </div>
         </header>
         {props.showBrand && (
-          <div className="space-y-2  py-32 md:space-y-3">
+          <div className="py:10 space-y-2 md:space-y-3 md:py-32">
             <SectionContainer>
               <div className="py-10">
                 <BrandText
@@ -140,9 +140,11 @@ const BrandText = ({ title, tagline, description }) => {
   return (
     <>
       <PageTitle>{title}</PageTitle>
-      <p className="pb-4 text-center text-lg font-bold leading-10">{tagline}</p>
-      <p className="px-4 text-center text-md font-medium italic leading-6">
-        "{description}"
+      <p className="pb-4 text-center text-md font-bold leading-10 md:text-lg">
+        {tagline}
+      </p>
+      <p className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md">
+        {description}
       </p>
     </>
   );

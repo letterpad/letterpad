@@ -213,7 +213,7 @@ async function insertAuthors() {
       register_step: RegisterStep.Registered,
       token: "",
     },
-    { site_title: "Admin Account" },
+    { site_title: "Admin Account", site_url: "http://localhost:3000" },
     ROLES.ADMIN
   );
   await prisma.author.update({
@@ -230,7 +230,11 @@ async function insertAuthors() {
       register_step: RegisterStep.Registered,
       token: "",
     },
-    { site_title: "Demo Account", site_tagline: "Hello, I am letterpad" }
+    {
+      site_title: "Demo Account",
+      site_tagline: "Easily create and publish your blog on Letterpad",
+      site_url: "http://localhost:3000",
+    }
   );
 
   return await prisma.author.update({

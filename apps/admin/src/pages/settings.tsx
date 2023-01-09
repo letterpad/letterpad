@@ -57,7 +57,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
             <Pages settings={settings} />
           </Accordion.Item>
           <Accordion.Item label="Navigation" id="navigation">
-            <div className="pb-8 dark:text-gray-300">
+            <div className="pb-8 dark:text-gray-400">
               Configure the navigation menu of your blog. The first item in the
               navigation menu will be the homepage of your blog.
             </div>

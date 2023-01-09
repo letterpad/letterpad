@@ -65,7 +65,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                   </p>
                 </div>
               </Link>
-              <div className="px-2 md:px-0">
+              {/* <div className="px-2 md:px-0">
                 {tags?.__typename === 'TagsNode' &&
                   tags.rows.map(({ name }) => (
                     <Link
@@ -76,7 +76,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                       #{name.split(' ').join('-')}
                     </Link>
                   ))}
-              </div>
+              </div> */}
             </div>
           );
         })}

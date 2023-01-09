@@ -29,7 +29,7 @@ module.exports.defaultSettings = {
   subscribe_embed: "",
   display_author_info: true,
   site_logo: JSON.stringify({
-    src: "https://letterpad.app/admin/uploads/logo.png",
+    src: "",
     width: 200,
     height: 200,
   }),
@@ -46,7 +46,9 @@ module.exports.defaultSettings = {
   cloudinary_name: "",
   cloudinary_secret: "",
   client_token: "",
-  banner: JSON.stringify({}),
+  banner: JSON.stringify({
+    src: "https://images.unsplash.com/photo-1557682250-33bd709cbe85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw1OTQ0NHwwfDF8c2VhcmNofDc4fHxibHVlJTIwd2FsbHBhcGVyfGVufDB8MHx8fDE2NzMyNDEzMjU&ixlib=rb-4.0.3&q=80&w=1080",
+  }),
   intro_dismissed: false,
   show_about_page: false,
   show_tags_page: false,

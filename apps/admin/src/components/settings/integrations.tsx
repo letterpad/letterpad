@@ -32,7 +32,7 @@ const Integrations: React.FC<Props> = ({
     <>
       <div className="mb-4">
         <Label label="Cloudinary" className="mb-4 text-md font-bold" />
-        <p className="dark:text-gray-300">
+        <p className="dark:text-gray-400">
           <span>
             Cloudinary helps in optimising all your images and are served by a
             CDN.
@@ -80,7 +80,7 @@ const Integrations: React.FC<Props> = ({
         </div>
         <div>
           <Label label="Add Scripts" className="mb-4 text-md font-bold" />
-          <p className="mb-4 dark:text-gray-300">
+          <p className="mb-4 dark:text-gray-400">
             <span>
               You can add scripts to your website. This can be used to add
               analytics, monitoring, alerts, etc.

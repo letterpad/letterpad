@@ -44,7 +44,7 @@ const Subscribe = () => {
               value={email}
             />
             <button
-              className="button-primary bg-accent-50 text-white"
+              className="button-primary bg-accent-50 text-white hover:bg-accent-50 hover:opacity-80"
               onClick={doSubscribe}
             >
               Subscribe
