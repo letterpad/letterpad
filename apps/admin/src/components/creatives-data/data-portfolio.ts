@@ -6,25 +6,25 @@ export const portfolioData: Block[] = [
     columns: 1,
     data: [
       {
-        text: "%3Chtml%3E%3Cbody%3E%3Ch1%3EHello!%3C%2Fh1%3E%0A%3Cp%3EI%20am%20%3Cstrong%3EAlexandra%3C%2Fstrong%3E%2C%20a%20%3Cstrong%3E%3Cspan%20style%3D%22color%3A%20rgb(224%2C%2062%2C%2045)%3B%22%3Eweb%3C%2Fspan%3E%3C%2Fstrong%3E%20designer.%3C%2Fp%3E%0A%3Cp%3E%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Ch1%3EHello!%3C%2Fh1%3E%0A%3Cp%3E%3Cspan%20style%3D%22font-family%3A%20'PT%20Sans'%3B%20font-size%3A%2014pt%3B%22%3EI%20am%20Alexandra%2C%20a%20web%20designer%20with%20a%20passion%20for%20crafting%20visually%20stunning%20and%20user-friendly%20websites.%20%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%3E%3Cspan%20style%3D%22font-family%3A%20'PT%20Sans'%3B%20font-size%3A%2014pt%3B%22%3EI%20specialize%20in%20creating%20responsive%20designs%20and%20custom-coded%20features%20that%20enhance%20the%20overall%20user%20experience.%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%3E%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
         type: "image",
         image: {
-          src: "https://images.unsplash.com/photo-1584237863847-b21b4f7ccd4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDE2fHxmb2d8ZW58MHx8fHwxNjY2NTQxODMx&ixlib=rb-4.0.3&q=80&w=1080",
-          width: 5105,
-          height: 2967,
+          src: "https://images.unsplash.com/photo-1557682250-33bd709cbe85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=Mnw1OTQ0NHwwfDF8c2VhcmNofDE1fHxncmFkaWVudHxlbnwwfDB8fHwxNjczMzQ3MDU2&ixlib=rb-4.0.3&q=80&w=1080",
+          width: 5000,
+          height: 3500,
           description:
-            "Unsplash - Joseph Daniel | https://unsplash.com/photos/7FprFl6VIu8",
+            'Photo by <a href="https://unsplash.com/@lukechesser?utm_source=Letterpad Editor&utm_medium=referral">Luke Chesser</a> on <a href="https://unsplash.com/?utm_source=Letterpad Editor&utm_medium=referral">Unsplash</a>',
         },
       },
     ],
-    cover: "big",
+    cover: "small",
   },
   {
     id: "e655a0aa",
     columns: 1,
     data: [
       {
-        text: "%3Chtml%3E%3Cbody%3E%3Ch2%20style%3D%22text-align%3A%20center%3B%22%3E%3Cstrong%3ECreative%20Portfolio%3C%2Fstrong%3E%3C%2Fh2%3E%0A%3Cp%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cstrong%3ELorem%20Ipsum%3C%2Fstrong%3E%C2%A0is%20simply%20dummy%20text%20of%20the%20printing%20and%20typesetting%20industry.%20Lorem%20Ipsum%20has%20been%20the%20industry's%20standard%20dummy%20text%20ever%20since%20the%201500s%2C%20when%20an%20unknown%20printer%20took%20a%20galley%20of%20type%20and%20scrambled%20it%20to%20make%20a%20type%20specimen%20book.%20It%20has%20survived%20not%20only%20five%20centuries%2C%20but%20also%20the%20leap%20into%20electronic%20typesetting%2C%20remaining%20essentially%20unchanged.%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Ch2%20style%3D%22text-align%3A%20center%3B%22%3E%3Cstrong%3ECreative%20Portfolio%3C%2Fstrong%3E%3C%2Fh2%3E%0A%3Cp%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20'PT%20Sans'%3B%20font-size%3A%2012pt%3B%22%3EShowcase%20your%20work%20in%20a%20stunning%2C%20professional%20way%20and%20make%20a%20lasting%20impression%20on%20potential%20clients%20and%20employers.%20%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20'PT%20Sans'%3B%20font-size%3A%2012pt%3B%22%3EOur%20portfolio%20service%20is%20designed%20for%20artists%2C%20designers%2C%20and%20creatives%20of%20all%20kinds.%20With%20our%20custom-designed%20layouts%20and%20emphasis%20on%20visual%20storytelling%2C%20%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20'PT%20Sans'%3B%20font-size%3A%2012pt%3B%22%3Eyour%20portfolio%20will%20stand%20out%20from%20the%20crowd%20and%20effectively%20communicate%20your%20unique%20style%20and%20talents.%3C%2Fspan%3E%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
         type: "text",
       },
     ],

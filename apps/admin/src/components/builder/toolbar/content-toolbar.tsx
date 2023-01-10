@@ -5,7 +5,7 @@ import { FC, ReactNode, useCallback, useState } from "react";
 import { ColorPicker } from "./color";
 import { ColorPickerGradient } from "./colorpicker";
 import { Reset } from "./helpers";
-import { IconDelete, IconImage, IconSetting } from "./icons";
+import { IconDelete, IconGradient, IconImage } from "./icons";
 import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
 
@@ -73,7 +73,7 @@ export const ContentToolbar: FC<Props> = ({
               setShowBgPattern(true);
             }}
           >
-            <IconSetting />
+            <IconGradient size={18} />
           </Button>
         </div>
         {showBgPattern && (
@@ -106,7 +106,7 @@ export const ContentToolbar: FC<Props> = ({
                 />
               </Button>
               <Button onClick={() => removeCell(rowIndex, colIndex)}>
-                <IconDelete />
+                <IconDelete size={18} />
               </Button>
             </>
           )}
@@ -135,7 +135,7 @@ export const ContentToolbar: FC<Props> = ({
                 />
               </Button>
               <Button onClick={() => removeCell(rowIndex, colIndex)}>
-                <IconDelete />
+                <IconDelete size={18} />
               </Button>
             </>
           )}
@@ -150,7 +150,7 @@ export const ContentToolbar: FC<Props> = ({
         <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
         {!isFirstRow && (
           <Button onClick={() => removeCell(rowIndex, colIndex)}>
-            <IconDelete />
+            <IconDelete size={18} />
           </Button>
         )}
         <style jsx global>{`
