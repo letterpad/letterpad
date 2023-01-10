@@ -19,16 +19,32 @@ export const Content: React.VFC<Props> = ({ data }) => {
   };
   return (
     <Accordion onChange={onPanelClick} activeKey={router.query.selected}>
-      <Accordion.Item label="Basic Information" id="basic">
+      <Accordion.Item
+        label="Basic Information"
+        id="basic"
+        description="Author information and details"
+      >
         <Basic data={data} />
       </Accordion.Item>
-      <Accordion.Item label="Change Email and Username" id="email">
+      <Accordion.Item
+        label="Change Email and Username"
+        id="email"
+        description="Credentials related information"
+      >
         <EmailAndUsername data={data} />
       </Accordion.Item>
-      <Accordion.Item label="Social Information" id="social">
+      <Accordion.Item
+        label="Social Information"
+        id="social"
+        description="Change links to social networks"
+      >
         <Social social={data.social} id={data.id} />
       </Accordion.Item>
-      <Accordion.Item label="Change Password" id="changePassword">
+      <Accordion.Item
+        label="Change Password"
+        id="changePassword"
+        description="Change your password"
+      >
         <ChangePassword id={data.id} />
       </Accordion.Item>
     </Accordion>
