@@ -1,6 +1,6 @@
 import { RegisterStep } from "@/__generated__/__types__";
 
-export const gaTrackingId = "G-D8L4KM499F";
+export const gaTrackingId = "UA-120251616-1";
 export { basePath } from "../next.config";
 
 export const registrationPaths = {
