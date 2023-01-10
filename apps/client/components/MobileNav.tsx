@@ -6,7 +6,7 @@ import Link from './Link';
 interface Props {
   routes: Omit<Navigation, 'original_name'>[];
 }
-const MobileNav: React.VFC<Props> = ({ routes }) => {
+export const MobileNav: React.VFC<Props> = ({ routes }) => {
   const [navShow, setNavShow] = useState(false);
 
   const onToggleNav = () => {
@@ -61,7 +61,7 @@ const MobileNav: React.VFC<Props> = ({ routes }) => {
           className="fixed h-full w-full cursor-auto focus:outline-none"
           onClick={onToggleNav}
         ></button>
-        <nav className="fixed mt-8 h-full" onClick={onToggleNav}>
+        <nav className="fixed mt-8 h-full w-full" onClick={onToggleNav}>
           {getMenu(routes)}
         </nav>
       </div>
@@ -69,17 +69,15 @@ const MobileNav: React.VFC<Props> = ({ routes }) => {
   );
 };
 
-export default MobileNav;
-
 function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
   return menu.map((item, i) => {
     return (
-      <div key={item.label} className="px-12 py-4">
+      <div key={item.label} className="px-12 py-4 text-center">
         {item.type === 'custom' ? (
           <a
             key={item.slug}
             href={item.slug}
-            className="p-1 font-medium capitalize  sm:p-4"
+            className="w-full p-1 font-medium  capitalize sm:p-4"
           >
             {item.label}
           </a>
@@ -88,7 +86,7 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
             key={item.slug}
             href={i === 0 ? '/' : item.slug}
             target="_self"
-            className="text-2xl font-bold capitalize tracking-widest "
+            className="w-full text-2xl font-bold capitalize tracking-widest"
           >
             {item.label}
           </Link>
