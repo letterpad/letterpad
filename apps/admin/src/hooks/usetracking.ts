@@ -4,14 +4,14 @@ import { useEffect } from "react";
 
 import { gaTrackingId } from "@/constants";
 
-export const useTracking = () => {
+export const useTracking = (userId?: number) => {
   const trackingId = gaTrackingId;
 
   const router = useRouter();
   // Initialize ga
   useEffect(() => {
     if (process.env.NODE_ENV !== "production") return;
-    if (trackingId) {
+    if (trackingId && !window.ga) {
       (function (i, s, o, g, r, a, m) {
         i["GoogleAnalyticsObject"] = r;
         (i[r] =
@@ -36,7 +36,11 @@ export const useTracking = () => {
       window.ga("create", trackingId, "auto");
       window.ga("send", "pageview");
     }
-  }, [trackingId]);
+    if (userId) {
+      window.ga("set", "dimension1", userId);
+      window.ga("set", "userId", userId);
+    }
+  }, [trackingId, userId]);
 
   // track events automatically
   useEffect(() => {

@@ -28,10 +28,10 @@ interface IProps {
 const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
 
 const Main = ({ Component, props }: IProps) => {
-  useTracking();
   const router = useRouter();
   const { data, loading } = useHomeQueryQuery();
   const session = useSession();
+  useTracking(session?.data?.user?.id);
   const isPublic =
     Component.isLogin || Component.isPublic || Component.isMessage;
   const { register_step } = session.data?.user || {};
