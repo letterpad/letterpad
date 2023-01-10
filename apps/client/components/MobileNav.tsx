@@ -77,7 +77,7 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
           <a
             key={item.slug}
             href={item.slug}
-            className="w-full p-1 font-medium  capitalize sm:p-4"
+            className="flex justify-center  p-1 font-medium capitalize sm:p-4"
           >
             {item.label}
           </a>
@@ -86,7 +86,7 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
             key={item.slug}
             href={i === 0 ? '/' : item.slug}
             target="_self"
-            className="w-full text-2xl font-bold capitalize tracking-widest"
+            className="flex justify-center text-2xl font-bold capitalize"
           >
             {item.label}
           </Link>
