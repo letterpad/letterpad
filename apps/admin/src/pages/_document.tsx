@@ -1,8 +1,7 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import Script from "next/script";
 import React from "react";
 
-import { basePath, gaTrackingId } from "@/constants";
+import { basePath } from "@/constants";
 
 class MyDocument extends Document {
   render() {
