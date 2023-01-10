@@ -118,6 +118,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                       width="64px"
                       height="64px"
                       alt={author.name}
+                      objectFit="cover"
                       className="mr-3  h-16 w-16 rounded-full "
                     />
                   </div>

@@ -54,7 +54,7 @@ export default function AuthorLayout({
                 alt="avatar"
                 width="192px"
                 height="auto"
-                className="h-48 w-48 rounded-full"
+                className="h-48 w-48 rounded-full object-cover"
               />
             )}
             <h3 className="pt-4 pb-2 text-2xl font-bold leading-8 tracking-tight">
