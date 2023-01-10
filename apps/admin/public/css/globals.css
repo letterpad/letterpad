@@ -145,7 +145,7 @@ select {
 .btn-primary,
 .btn-primary-big {
   background: #3b7eeb !important;
-  color: #ffffff;
+  color: #ffffff !important;
   padding: 10px 12px;
   border-radius: 8px;
 }
@@ -153,7 +153,7 @@ select {
 .btn-primary:hover,
 .btn-primary-big:hover {
   background: #316dce !important;
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .btn-primary-big {

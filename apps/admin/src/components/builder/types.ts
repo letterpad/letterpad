@@ -37,4 +37,5 @@ export interface Block {
   data: BlockItem[];
   cover?: "big" | "small" | "banner";
   id: string;
+  download_location?: string;
 }

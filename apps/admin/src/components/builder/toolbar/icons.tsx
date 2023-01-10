@@ -2,6 +2,7 @@ import { IconBaseProps } from "react-icons";
 import {
   AiOutlineArrowDown,
   AiOutlineArrowUp,
+  AiOutlineBgColors,
   AiOutlineDelete,
   AiOutlineEye,
 } from "react-icons/ai";
@@ -9,7 +10,6 @@ import { BiImageAdd } from "react-icons/bi";
 import { BsLayoutThreeColumns } from "react-icons/bs";
 import { IoIosRefresh } from "react-icons/io";
 import { IoAddCircleOutline, IoCloseOutline, IoText } from "react-icons/io5";
-import { MdGradient } from "react-icons/md";
 import { RiFullscreenFill, RiToolsFill } from "react-icons/ri";
 import { TbLayoutColumns } from "react-icons/tb";
 
@@ -58,4 +58,6 @@ export const IconEye = (props: IconBaseProps) => <AiOutlineEye {...props} />;
 
 export const IconTools = (props: IconBaseProps) => <RiToolsFill {...props} />;
 
-export const IconSetting = (props: IconBaseProps) => <MdGradient {...props} />;
+export const IconGradient = (props: IconBaseProps) => (
+  <AiOutlineBgColors {...props} />
+);
