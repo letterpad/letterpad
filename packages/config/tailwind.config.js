@@ -36,6 +36,7 @@ module.exports = {
         xs: '.7rem',
         sm: '.85rem',
         base: '.9rem',
+        'base-1': '0.95rem',
         md: '1rem',
         lg: '1.3rem',
         prose: '1.2rem'
@@ -43,6 +44,7 @@ module.exports = {
       colors: {
         primary: colors.green,
         gray: colors.slate,
+        muted: colors.slate[400],
         accent: {
           50: "var(--brand-accent)",
           100: '#f4f5f7',

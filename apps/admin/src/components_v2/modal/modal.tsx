@@ -49,7 +49,7 @@ export const Modal = (props: Props) => {
           >
             <div className="relative rounded-md bg-white shadow dark:bg-gray-800">
               <div className="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-700">
-                <h3 className="text-lg font-medium text-gray-600 dark:text-gray-200">
+                <h3 className="text-md font-medium text-gray-600 dark:text-gray-200">
                   {props.header}
                 </h3>
                 <button
@@ -62,11 +62,13 @@ export const Modal = (props: Props) => {
                 </button>
               </div>
 
-              <div className="p-6">{props.children}</div>
+              <div className="p-2">{props.children}</div>
 
-              <div className="flex items-end justify-end space-x-2 rounded-b border-t border-gray-200 py-4 px-4 dark:border-gray-700">
-                <>{props.footer}</>
-              </div>
+              {props.footer && (
+                <div className="flex items-end justify-end space-x-2 rounded-b border-t border-gray-200 py-4 px-4 dark:border-gray-700">
+                  <>{props.footer}</>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useRef } from 'react';
 import Footer from './Footer';
 import Link from './Link';
 import { LogoWithTitle } from './Logo';
-import MobileNav from './MobileNav';
+import { MobileNav } from './MobileNav';
 import PageTitle from './PageTitle';
 import SectionContainer from './SectionContainer';
 import ThemeSwitch from './ThemeSwitch';
