@@ -5,7 +5,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   env: {
     ROOT: __dirname,
     RAYGUN_API_KEY: process.env.RAYGUN_API_KEY,
