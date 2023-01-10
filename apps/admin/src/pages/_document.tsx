@@ -21,7 +21,7 @@ class MyDocument extends Document {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', ${gaTrackingId});
+          gtag('config', '${gaTrackingId}');
         `}
           </Script>
         </Head>
