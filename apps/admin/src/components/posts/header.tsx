@@ -59,7 +59,16 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
         header="Select a Creative"
         show={showModal}
         toggle={setShowModal}
-        footer={[]}
+        footer={[
+          <Buttonv2
+            variant="secondary"
+            size="normal"
+            key="1"
+            onClick={() => setShowModal(false)}
+          >
+            Cancel
+          </Buttonv2>,
+        ]}
       >
         <div className="grid grid-cols-2">
           <Card
@@ -91,7 +100,7 @@ const Card = ({ title, description, onClick }) => {
     <a className="hover:text-inherit " onClick={handleClick}>
       <div className="card hover:shadow-xs m-2 cursor-pointer rounded-lg border hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:border-gray-700 dark:hover:bg-black/30">
         <div className="m-3">
-          <h2 className="mb-2 text-lg">{title}</h2>
+          <h2 className="mb-2 text-md">{title}</h2>
           <p className="opacity-70">{description}</p>
         </div>
       </div>

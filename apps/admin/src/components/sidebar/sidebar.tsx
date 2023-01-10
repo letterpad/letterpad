@@ -3,11 +3,11 @@ import { signOut } from "next-auth/react";
 import { FC } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { BsEnvelope, BsImages, BsTags } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
 import { CiSettings } from "react-icons/ci";
 import { HiOutlineUsers } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
+import { VscDebugDisconnect } from "react-icons/vsc";
 
 import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
 import { Menu } from "@/components_v2/menu";
@@ -51,31 +51,31 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
             items={[
               {
                 label: "Posts",
-                icon: <BsEnvelope />,
+                icon: <BsEnvelope size={14} />,
                 key: "/posts",
                 badge: _stats?.posts?.published.toString(),
               },
               {
                 label: "Creatives",
-                icon: <RiLayout4Line />,
+                icon: <RiLayout4Line size={16} />,
                 key: "/creatives",
                 badge: _stats?.pages?.published.toString(),
               },
               {
                 label: "Media",
-                icon: <BsImages />,
+                icon: <BsImages size={14} />,
                 key: "/media",
                 badge: _stats?.media?.toString(),
               },
               {
                 label: "Tags",
-                icon: <BsTags />,
+                icon: <BsTags size={15} />,
                 key: "/tags",
                 badge: _stats?.tags?.toString(),
               },
               {
                 label: "Profile",
-                icon: <MdManageAccounts />,
+                icon: <MdManageAccounts size={16} />,
                 key: "/profile",
               },
               {
@@ -85,27 +85,27 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
               },
               {
                 label: "Domain Mapping",
-                icon: <CgProfile />,
+                icon: <VscDebugDisconnect size={16} />,
                 key: "/domain-mapping",
               },
               {
                 label: "Settings",
-                icon: <CiSettings />,
+                icon: <CiSettings size={18} />,
                 key: "/settings",
               },
               {
                 label: "Subscribers",
-                icon: <HiOutlineUsers />,
+                icon: <HiOutlineUsers size={14} />,
                 key: "/subscribers",
               },
               // {
               //   label: "Membership",
-              //   icon: <CiSettings />,
+              //   icon: <CiSettings size={16}/>,
               //   key: "/membership",
               // },
               {
                 label: "Logout",
-                icon: <BiLogOut />,
+                icon: <BiLogOut size={16} />,
                 key: "/logout",
               },
             ]}
