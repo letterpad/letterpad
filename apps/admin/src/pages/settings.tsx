@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Button } from "ui";
 import { Accordion } from "ui";
+import { TextArea } from "ui";
 
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";
@@ -12,7 +13,6 @@ import Pages from "@/components/settings/pages";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
 import { PopConfirm } from "@/components_v2/popconfirm";
-import { TextArea } from "@/components_v2/textarea";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";

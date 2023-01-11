@@ -1,6 +1,6 @@
-import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { TextArea } from "ui";
 
-import { TextArea } from "@/components_v2/textarea";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 interface Props {
   onEnter(): void;

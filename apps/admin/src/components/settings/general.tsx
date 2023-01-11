@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Button } from "ui";
 import { Input } from "ui";
+import { TextArea } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-
-import { TextArea } from "@/components_v2/textarea";
 
 import { SettingInputType } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
