@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { Button } from "ui";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Result } from "@/components_v2/result";
 
 const Verified = () => {
@@ -27,9 +27,9 @@ const Verified = () => {
         title="Email Verified"
         subTitle="Your email has been successfully verified with Letterpad. Click the below button to login"
         extra={[
-          <Buttonv2 key="login" onClick={doLogin}>
+          <Button key="login" onClick={doLogin}>
             Login
-          </Buttonv2>,
+          </Button>,
         ]}
       />
     </>

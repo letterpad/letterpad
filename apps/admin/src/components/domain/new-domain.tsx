@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from "react";
+import { Button } from "ui";
 
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Input } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
 
@@ -64,15 +64,15 @@ export const NewDomain: React.FC<{
           disabled={mapped}
         />
         {!mapped && (
-          <Buttonv2 variant="primary" type="submit" onClick={() => mapDomain()}>
+          <Button variant="primary" type="submit" onClick={() => mapDomain()}>
             Map my domain
-          </Buttonv2>
+          </Button>
         )}
 
         {mapped && (
-          <Buttonv2 variant="danger" onClick={removeMapping}>
+          <Button variant="danger" onClick={removeMapping}>
             Remove Mapping
-          </Buttonv2>
+          </Button>
         )}
       </div>
     </>

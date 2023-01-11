@@ -1,10 +1,10 @@
 import { basePath } from "next.config";
 import { useCallback, useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Button } from "ui";
 
 import Internal from "@/components/file-explorer/providers/Internal";
 import Unsplash from "@/components/file-explorer/providers/Unsplash";
-import { Buttonv2 } from "@/components_v2/button";
 import { Modal } from "@/components_v2/modal";
 
 import { Media } from "@/__generated__/__types__";
@@ -131,25 +131,25 @@ const FileExplorer = ({
         toggle={closeWindow}
         zIndex={1301} // 1300 is tinymce insert toolbar
         footer={[
-          <Buttonv2 key="back" onClick={closeWindow} variant="ghost">
+          <Button key="back" onClick={closeWindow} variant="ghost">
             Cancel
-          </Buttonv2>,
+          </Button>,
           hasSelectedImages ? (
-            <Buttonv2 key="insert" onClick={insertMedia}>
+            <Button key="insert" onClick={insertMedia}>
               Insert
-            </Buttonv2>
+            </Button>
           ) : null,
           isInternal ? (
-            <Buttonv2
+            <Button
               key="upload"
               onClick={() => {
                 hiddenInputRef.current?.click();
               }}
             >
               Browse
-            </Buttonv2>
+            </Button>
           ) : null,
-          <Buttonv2
+          <Button
             key="provider"
             onClick={() => {
               setSelection({});
@@ -157,7 +157,7 @@ const FileExplorer = ({
             }}
           >
             {isUnsplash ? "My Media" : "Search Online"}
-          </Buttonv2>,
+          </Button>,
         ]}
       >
         {isInternal && <Internal renderer={renderer} />}

@@ -1,12 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import { FC, useEffect } from "react";
+import { Button } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
 import { setIntroDimissed } from "@/components/home/visibility";
 import { ChangeUsername } from "@/components/profile/change-username";
-import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
 
@@ -94,14 +94,14 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
                       </Link>
                       .
                     </p>
-                    <Buttonv2
+                    <Button
                       variant="dark"
                       size="small"
                       onClick={() => updateStatus("profile_updated")}
                       className="mt-2"
                     >
                       Done
-                    </Buttonv2>
+                    </Button>
                   </Section>
                 )}
                 {!author.settings_updated && (
@@ -113,14 +113,14 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
                       </Link>
                       .
                     </p>
-                    <Buttonv2
+                    <Button
                       variant="dark"
                       size="small"
                       onClick={() => updateStatus("settings_updated")}
                       className="mt-2"
                     >
                       Done
-                    </Buttonv2>
+                    </Button>
                   </Section>
                 )}
               </>

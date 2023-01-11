@@ -2,8 +2,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FC, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
+import { Button } from "ui";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Input as Inputv2 } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
 
@@ -109,14 +109,14 @@ export const Item: FC<Props> = ({
             value={type + ": " + library.original_name}
             disabled
           />
-          <Buttonv2
+          <Button
             variant="dark"
             onClick={() => openSuggestions(library.id)}
             data-testid="content-modal-btn"
           >
             Select Content
-          </Buttonv2>
-          <Buttonv2
+          </Button>
+          <Button
             variant="danger"
             onClick={() => onRemove(library)}
             className="py-0 px-0"
@@ -126,7 +126,7 @@ export const Item: FC<Props> = ({
               data-testid="button-nav-delete"
               className="menu-delete p-2"
             />
-          </Buttonv2>
+          </Button>
         </div>
 
         <style jsx global>{`

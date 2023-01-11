@@ -8,9 +8,9 @@ import {
 } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
+import { Button } from "ui";
 
 import { TagRow, TagsContextType } from "@/components/tags/types";
-import { Buttonv2 } from "@/components_v2/button";
 import { Input } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
 import { Modal } from "@/components_v2/modal";
@@ -140,15 +140,15 @@ export const TagsProvider: React.FC<{
         show={!!editTagId}
         header={`Editing tag: ${tagToBeEdited?.name}`}
         footer={[
-          <Buttonv2
+          <Button
             key="close"
             variant="ghost"
             onClick={() => setEditTagId(null)}
             size="normal"
           >
             Cancel
-          </Buttonv2>,
-          <Buttonv2
+          </Button>,
+          <Button
             key="save"
             variant="primary"
             onClick={() =>
@@ -158,7 +158,7 @@ export const TagsProvider: React.FC<{
             size="normal"
           >
             Save
-          </Buttonv2>,
+          </Button>,
         ]}
       >
         <Input

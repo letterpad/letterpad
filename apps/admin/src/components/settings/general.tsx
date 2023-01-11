@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { Button } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Input } from "@/components_v2/input";
 import { TextArea } from "@/components_v2/textarea";
 
@@ -84,12 +84,12 @@ const General: React.FC<Props> = ({ settings }) => {
           data-testid="footerDescription"
         />
       </div>
-      <Buttonv2
+      <Button
         onClick={() => updateSettingsAPI(fields)}
         data-testid="save-general"
       >
         Save
-      </Buttonv2>
+      </Button>
     </>
   );
 };

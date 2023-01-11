@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { IoEyeOutline, IoSettingsOutline } from "react-icons/io5";
-
-import { Buttonv2 } from "@/components_v2/button";
+import { Button } from "ui";
 
 import { EventAction, track } from "@/track";
 

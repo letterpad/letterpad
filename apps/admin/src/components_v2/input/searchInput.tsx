@@ -8,8 +8,7 @@ import React, {
   useState,
 } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
-import { Buttonv2 } from "../button";
+import { Button } from "ui";
 
 const classes = {
   base: "px-4 py-2 focus:outline-none transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
@@ -90,7 +89,7 @@ export const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
         {...rest}
       />
 
-      <Buttonv2
+      <Button
         type="submit"
         className="rounded-l-none"
         onClick={() => onSearch && onSearch(inputValue)}
@@ -101,7 +100,7 @@ export const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
         ) : (
           enterButton
         )}
-      </Buttonv2>
+      </Button>
     </div>
   );
 });

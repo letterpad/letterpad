@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { Button } from "ui";
 
 import { Layout } from "@/components/builder";
 import {
@@ -15,7 +16,6 @@ import {
   weddingData,
 } from "@/components/creatives-data";
 import ThemeSwitcher from "@/components/theme-switcher";
-import { Buttonv2 } from "@/components_v2/button";
 
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
@@ -121,13 +121,13 @@ const Builder = () => {
             </option>
           </select>
           <EditSwitch />
-          <Buttonv2
+          <Button
             onClick={() => {
               router.push("/register");
             }}
           >
             Register
-          </Buttonv2>
+          </Button>
           <ThemeSwitcher />
         </div>
       </div>

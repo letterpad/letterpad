@@ -1,6 +1,6 @@
 import Image from "next/image";
+import { Button } from "ui";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Input } from "@/components_v2/input";
 import { Modal } from "@/components_v2/modal";
 import { TextArea } from "@/components_v2/textarea";
@@ -23,20 +23,16 @@ const MediaUpdateModal = ({
       style={{ top: 20 }}
       show={!!img?.id}
       footer={[
-        <Buttonv2
-          key="back"
-          onClick={() => onChange(undefined)}
-          variant="ghost"
-        >
+        <Button key="back" onClick={() => onChange(undefined)} variant="ghost">
           Cancel
-        </Buttonv2>,
-        <Buttonv2
+        </Button>,
+        <Button
           key="submit"
           variant="primary"
           onClick={() => img && onUpdate(img)}
         >
           Save
-        </Buttonv2>,
+        </Button>,
       ]}
       toggle={() => onChange(undefined)}
     >

@@ -2,8 +2,8 @@ import classNames from "classnames";
 import { FC, useEffect, useState } from "react";
 import { RgbaStringColorPicker } from "react-colorful";
 import { IoClose } from "react-icons/io5";
+import { Button } from "ui";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Label } from "@/components_v2/input";
 
 import { Pattern } from "../../types";
@@ -93,12 +93,12 @@ export const ColorPickerGradient: FC<Props> = ({
         `}</style>
       </div>
       <div className="mt-4 flex justify-end gap-2">
-        <Buttonv2 size="small" variant="ghost" onClick={onClose}>
+        <Button size="small" variant="ghost" onClick={onClose}>
           Close
-        </Buttonv2>
-        <Buttonv2 size="small" onClick={handleReset}>
+        </Button>
+        <Button size="small" onClick={handleReset}>
           Reset
-        </Buttonv2>
+        </Button>
       </div>
     </div>
   );

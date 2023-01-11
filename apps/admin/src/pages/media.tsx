@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
+import { Button } from "ui";
 
 import MediaUpdateModal from "@/components/modals/media-update-modal";
-import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
 import { Message } from "@/components_v2/message";
 import { PageHeader } from "@/components_v2/page-header";
@@ -76,13 +76,13 @@ const Media = () => {
                     onClick={() => setPreview(image)}
                   />
                 </div>
-                <Buttonv2
+                <Button
                   size="small"
                   variant="danger"
                   onClick={() => deleteImage(image)}
                 >
                   Delete
-                </Buttonv2>
+                </Button>
               </div>
             );
           })}

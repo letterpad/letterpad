@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
+import { Button } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Input } from "@/components_v2/input";
 
 import { sanitizeUsername } from "@/shared/utils";
@@ -54,14 +54,14 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
             onChange={onUsernameChange}
           />
         </div>
-        <Buttonv2
+        <Button
           variant="primary"
           onClick={updateAuthor}
           disabled={!saveButtonEnabled}
           className="col-span-2 lg:col-span-1"
         >
           Save
-        </Buttonv2>
+        </Button>
       </div>
       <span className="-mt-4 text-sm text-red-500">{error}</span>
     </>

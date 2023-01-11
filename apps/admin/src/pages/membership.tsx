@@ -6,12 +6,12 @@ import Head from "next/head";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
+import { Button } from "ui";
 
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
-import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
 import { Table } from "@/components_v2/table";
@@ -75,13 +75,13 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
             </span>
           </p>
           {active ? (
-            <Buttonv2 onClick={deleteSubscription} variant="danger">
+            <Button onClick={deleteSubscription} variant="danger">
               Cancel Subscription
-            </Buttonv2>
+            </Button>
           ) : (
-            <Buttonv2 type="submit" onClick={handleClick}>
+            <Button type="submit" onClick={handleClick}>
               Subscribe
-            </Buttonv2>
+            </Button>
           )}
         </div>
         {active && (

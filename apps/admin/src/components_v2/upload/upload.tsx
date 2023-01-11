@@ -1,13 +1,13 @@
 import axios from "axios";
 import { basePath } from "next.config";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { Button } from "ui";
 
 import FileExplorer from "@/components/file-explorer";
 
 import { IMediaUploadResult } from "@/graphql/types";
 
 import { Preview } from "./preview";
-import { Buttonv2 } from "../button";
 import { Label } from "../input";
 
 interface Props {

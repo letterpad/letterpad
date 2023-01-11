@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { Button } from "ui";
 
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";
@@ -8,7 +9,6 @@ import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
 import { Accordion } from "@/components_v2/accordion";
-import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
 import { PopConfirm } from "@/components_v2/popconfirm";
@@ -121,7 +121,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               okText="Yes"
               cancelText="No"
             >
-              <Buttonv2 variant="danger">Delete your account</Buttonv2>
+              <Button variant="danger">Delete your account</Button>
             </PopConfirm>
           </Accordion.Item>
         </Accordion>

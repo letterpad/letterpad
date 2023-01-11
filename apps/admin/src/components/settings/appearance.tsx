@@ -1,8 +1,8 @@
 import { useMemo } from "react";
+import { Button } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Label } from "@/components_v2/input";
 import { RadioGroup } from "@/components_v2/radio";
 import { TextArea } from "@/components_v2/textarea";
@@ -40,9 +40,9 @@ const Appearance: React.FC<Props> = ({ settings }) => {
               })
             }
           />
-          <Buttonv2 onClick={() => window.open(settings.site_url, "_blank")}>
+          <Button onClick={() => window.open(settings.site_url, "_blank")}>
             Preview
-          </Buttonv2>
+          </Button>
         </div>
       </div>
       <div className="grid grid-cols-3">
@@ -114,7 +114,7 @@ const Appearance: React.FC<Props> = ({ settings }) => {
           }}
         />
         <br />
-        <Buttonv2 onClick={() => debounceUpdateSettingsAPI({})}>Save</Buttonv2>
+        <Button onClick={() => debounceUpdateSettingsAPI({})}>Save</Button>
       </div>
     </div>
   );

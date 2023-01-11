@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { MouseEvent, ReactNode, useState } from "react";
+import { Button } from "ui";
 
-import { Buttonv2 } from "@/components_v2/button";
 import { Modal } from "@/components_v2/modal";
 import { PageHeader } from "@/components_v2/page-header";
 
@@ -43,14 +43,14 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
         className="site-page-header"
         title={title}
         extra={[
-          <Buttonv2
+          <Button
             size="normal"
             key="1"
             data-testid="createPostBtn"
             onClick={() => onNewClick()}
           >
             {buttonLabel}
-          </Buttonv2>,
+          </Button>,
         ]}
       >
         {children}
@@ -60,14 +60,14 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
         show={showModal}
         toggle={setShowModal}
         footer={[
-          <Buttonv2
+          <Button
             variant="secondary"
             size="normal"
             key="1"
             onClick={() => setShowModal(false)}
           >
             Cancel
-          </Buttonv2>,
+          </Button>,
         ]}
       >
         <div className="grid grid-cols-2">

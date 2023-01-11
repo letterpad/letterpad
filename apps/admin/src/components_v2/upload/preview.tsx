@@ -6,8 +6,8 @@ import {
   AiOutlineLoading3Quarters,
   AiOutlinePlus,
 } from "react-icons/ai";
+import { Button } from "ui";
 
-import { Buttonv2 } from "../button";
 import { Modal } from "../modal";
 
 interface NoImage {
@@ -55,14 +55,14 @@ export const Preview: FC<Props> = ({
         show={show}
         header="Preview"
         footer={[
-          <Buttonv2
+          <Button
             key="close"
             variant="primary"
             onClick={() => setShow(false)}
             size="normal"
           >
             Close
-          </Buttonv2>,
+          </Button>,
         ]}
       >
         <div className="flex justify-center">

@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import React, { FC, ReactNode, useState } from "react";
-
-import { Buttonv2 } from "../button";
+import { Button } from "ui";
 
 interface Props {
   onConfirm: () => void;
@@ -54,20 +53,17 @@ export const PopConfirm: FC<Props> = ({
               </h3>
               {description && <span>{description}</span>}
               <div className="mt-5 flex justify-center gap-2">
-                <Buttonv2
+                <Button
                   variant="danger"
                   onClick={() => onConfirm()}
                   className="okModalBtn"
                 >
                   {okText}
-                </Buttonv2>
+                </Button>
                 {cancelText && (
-                  <Buttonv2
-                    variant="secondary"
-                    onClick={() => setDisplay(false)}
-                  >
+                  <Button variant="secondary" onClick={() => setDisplay(false)}>
                     {cancelText}
-                  </Buttonv2>
+                  </Button>
                 )}
               </div>
             </div>

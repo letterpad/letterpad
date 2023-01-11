@@ -1,8 +1,7 @@
 import { FC, useEffect } from "react";
+import { IoCloseOutline } from "react-icons/io5";
 
-import { IconClose } from "@/components/builder/toolbar/icons";
-
-import { disableScroll } from "@/shared/utils";
+import { disableScroll } from "../../utils";
 
 interface Props {
   show: boolean;
@@ -58,9 +57,9 @@ export const Drawer: FC<Props> = ({
           onClick={() => onClose()}
           type="button"
           data-testid="close-drawer"
-          className="absolute top-2.5 right-2.5 inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+          className="absolute top-2.5 right-2.5 inline-flex items-center rounded-lg bg-transparent p-1 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
         >
-          <IconClose />
+          <IoCloseOutline size={20} />
           <span className="sr-only">Close menu</span>
         </button>
         <div className="mb-6 flex-1 text-sm text-gray-500 dark:text-gray-300">

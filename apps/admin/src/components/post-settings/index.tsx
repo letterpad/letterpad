@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
+import { Drawer } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
-import { Drawer as Drawerv2 } from "@/components_v2/drawer";
 import { SearchInput } from "@/components_v2/input";
 import { Switch } from "@/components_v2/switch";
 import { TextArea } from "@/components_v2/textarea";
@@ -89,7 +89,7 @@ const Actions = ({ post }: IProps) => {
         postHash={postHash}
         showDrawer={showDrawer}
       />
-      <Drawerv2 show={visible} title="Settings" onClose={onClose} dir="right">
+      <Drawer show={visible} title="Settings" onClose={onClose} dir="right">
         <div className="space-y-10 whitespace-normal">
           <PublishButton postId={post.id} menu={settings?.menu ?? []} />
           <div
@@ -178,7 +178,7 @@ const Actions = ({ post }: IProps) => {
             />
           </div>
         </div>
-      </Drawerv2>
+      </Drawer>
     </>
   );
 };
