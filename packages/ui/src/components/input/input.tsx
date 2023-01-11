@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { ChangeEvent, FC, forwardRef, HTMLProps } from "react";
+import { ChangeEvent, forwardRef, HTMLProps } from "react";
 
 import { Label } from "./label";
 

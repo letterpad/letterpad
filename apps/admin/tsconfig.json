@@ -22,5 +22,6 @@
     "tests/**/*",
     "migrations/**/*",
     "config/*",
-    "src/types.d.ts", "../../packages/ui/src/components/input" ]
-, "../../packages/ui/src/components/button"}
+    "src/types.d.ts"
+  ]
+}

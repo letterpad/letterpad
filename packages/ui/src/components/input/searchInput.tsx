@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, {
+import {
   ChangeEvent,
   FC,
   forwardRef,
@@ -8,7 +8,8 @@ import React, {
   useState,
 } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { Button } from "ui";
+
+import { Button } from "../button";
 
 const classes = {
   base: "px-4 py-2 focus:outline-none transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
