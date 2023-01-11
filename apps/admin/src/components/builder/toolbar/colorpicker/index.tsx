@@ -1,10 +1,9 @@
 import classNames from "classnames";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { RgbaStringColorPicker } from "react-colorful";
 import { IoClose } from "react-icons/io5";
 import { Button } from "ui";
-
-import { Label } from "@/components_v2/input";
+import { Label } from "ui";
 
 import { Pattern } from "../../types";
 

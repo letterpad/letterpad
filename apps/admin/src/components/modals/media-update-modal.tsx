@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Button } from "ui";
+import { Input } from "ui";
 
-import { Input } from "@/components_v2/input";
 import { Modal } from "@/components_v2/modal";
 import { TextArea } from "@/components_v2/textarea";
 

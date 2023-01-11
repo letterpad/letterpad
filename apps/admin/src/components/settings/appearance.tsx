@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { Button } from "ui";
+import { Label } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
-import { Label } from "@/components_v2/input";
 import { RadioGroup } from "@/components_v2/radio";
 import { TextArea } from "@/components_v2/textarea";
 import { Upload } from "@/components_v2/upload";

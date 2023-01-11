@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-
-import { Accordion } from "@/components_v2/accordion";
+import { Accordion } from "ui";
 
 import { MeFragmentFragment } from "@/__generated__/queries/partial.graphql";
 

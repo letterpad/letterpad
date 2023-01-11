@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import { Button } from "ui";
+import { Input } from "ui";
 
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
-import { Input } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
 
 import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";

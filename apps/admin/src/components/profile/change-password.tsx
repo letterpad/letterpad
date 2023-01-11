@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Button } from "ui";
+import { Input } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
-
-import { Input } from "@/components_v2/input";
 
 interface Props {
   id: number;

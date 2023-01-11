@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { ChangeEvent, FC, useEffect, useState } from "react";
-
-import { Label } from "../input";
+import { Label } from "ui";
 
 interface Props {
   label: string;

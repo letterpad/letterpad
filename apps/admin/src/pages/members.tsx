@@ -2,10 +2,10 @@ import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "ui";
+import { Input } from "ui";
 
 import Editor from "@/components/post/components/editor";
 import { Content } from "@/components_v2/content";
-import { Input } from "@/components_v2/input";
 import { PageHeader } from "@/components_v2/page-header";
 import { Table } from "@/components_v2/table";
 import { Tabs } from "@/components_v2/tabs";

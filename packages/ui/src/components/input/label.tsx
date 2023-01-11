@@ -1,6 +1,11 @@
 import classNames from "classnames";
+import { FC } from "react";
 
-export const Label = ({ label, className = "" }) => {
+interface Props {
+  label: string;
+  className?: string;
+}
+export const Label: FC<Props> = ({ label, className = "" }) => {
   return (
     <label
       className={classNames(

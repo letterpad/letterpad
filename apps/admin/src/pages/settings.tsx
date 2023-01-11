@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Button } from "ui";
+import { Accordion } from "ui";
 
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";
@@ -8,7 +9,6 @@ import General from "@/components/settings/general";
 import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
-import { Accordion } from "@/components_v2/accordion";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
 import { PopConfirm } from "@/components_v2/popconfirm";

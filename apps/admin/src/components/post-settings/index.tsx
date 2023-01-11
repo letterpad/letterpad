@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import { Drawer } from "ui";
+import { SearchInput } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
-import { SearchInput } from "@/components_v2/input";
 import { Switch } from "@/components_v2/switch";
 import { TextArea } from "@/components_v2/textarea";
 import { Upload } from "@/components_v2/upload";

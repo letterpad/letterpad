@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
+import { Input, Label } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
-import { Input, Label } from "@/components_v2/input";
 import { TextArea } from "@/components_v2/textarea";
 import { Upload } from "@/components_v2/upload";
 

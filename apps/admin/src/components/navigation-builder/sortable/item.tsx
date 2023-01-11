@@ -3,8 +3,8 @@ import { CSS } from "@dnd-kit/utilities";
 import { FC, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
 import { Button } from "ui";
+import { Input as Inputv2 } from "ui";
 
-import { Input as Inputv2 } from "@/components_v2/input";
 import { Message } from "@/components_v2/message";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";

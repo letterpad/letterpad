@@ -2,13 +2,13 @@ import axios from "axios";
 import { basePath } from "next.config";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { Button } from "ui";
+import { Label } from "ui";
 
 import FileExplorer from "@/components/file-explorer";
 
 import { IMediaUploadResult } from "@/graphql/types";
 
 import { Preview } from "./preview";
-import { Label } from "../input";
 
 interface Props {
   progress?: (percentCompleted: number) => void;

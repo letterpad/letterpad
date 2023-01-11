@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "ui";
+import { Input, Label } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
-import { Input, Label } from "@/components_v2/input";
 import { TextArea } from "@/components_v2/textarea";
 
 import { SettingInputType } from "@/__generated__/__types__";
