@@ -1,7 +1,8 @@
+import { Switch } from "ui";
+
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { Divider } from "@/components_v2/divider";
-import { Switch } from "@/components_v2/switch";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 

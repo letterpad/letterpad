@@ -1,4 +1,4 @@
-import { Tooltip } from "@/components_v2/tooltip";
+import { Tooltip } from "ui";
 
 import { IconAdd } from "./icons";
 import { useBuilderContext } from "../context";
