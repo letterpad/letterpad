@@ -1,6 +1,7 @@
 import classNames from "classnames";
-import { FC, Key } from "react";
-import { Label } from "ui";
+import { Key } from "react";
+
+import { Label } from "../input";
 
 interface RadioItem<T> {
   value: T;

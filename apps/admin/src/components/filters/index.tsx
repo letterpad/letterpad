@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-import { Select } from "@/components_v2/select";
+import { Select } from "ui";
 
 import {
   PostsFilters,

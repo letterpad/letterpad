@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import Link from "next/link";
 import { FC } from "react";
 
 interface Item {
@@ -13,6 +12,7 @@ interface Props {
   items: Item[];
   selectedKey: string;
   onSelect: (key: string) => void;
+  Link: any;
 }
 
 const classes = {
@@ -24,7 +24,13 @@ const classes = {
     "ml-auto flex items-center justify-center rounded-full bg-gray-700 w-5 h-5 text-xs font-semibold text-gray-200 shadow-md",
 };
 
-export const Menu: FC<Props> = ({ items, selectedKey, onSelect, ...props }) => {
+export const Menu: FC<Props> = ({
+  items,
+  selectedKey,
+  onSelect,
+  Link,
+  ...props
+}) => {
   return (
     <ul className="flex w-full flex-col">
       {items.map((item) => {

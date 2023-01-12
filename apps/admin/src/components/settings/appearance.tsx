@@ -2,10 +2,10 @@ import { useMemo } from "react";
 import { Button } from "ui";
 import { Label } from "ui";
 import { TextArea } from "ui";
+import { RadioGroup } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
-import { RadioGroup } from "@/components_v2/radio";
 import { Upload } from "@/components_v2/upload";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";

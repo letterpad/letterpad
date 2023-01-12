@@ -1,10 +1,5 @@
 import classNames from "classnames";
-import React, {
-  forwardRef,
-  MouseEvent,
-  PropsWithChildren,
-  ReactNode,
-} from "react";
+import { forwardRef, MouseEvent, PropsWithChildren, ReactNode } from "react";
 
 const classes = {
   base: "focus:outline-none transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
