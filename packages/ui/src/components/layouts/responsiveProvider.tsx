@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, FC, useContext, useState } from "react";
 
-import { useResponsive } from "@/hooks/useResponsive";
+import { useResponsive } from "./useResponsive";
 
 interface Props {
   sidebarVisible: boolean;
@@ -10,7 +10,7 @@ interface Props {
 }
 const Responsive = createContext<Props>({} as Props);
 
-export const ResponsiveProvider = ({ children }) => {
+export const ResponsiveProvider: FC = ({ children }) => {
   const { md, lg } = useResponsive();
   const isDesktop = md || lg;
   const isMobileOrTablet = !md;

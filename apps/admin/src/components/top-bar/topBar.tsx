@@ -1,10 +1,9 @@
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
 import { Button } from "ui";
+import { useResponsiveLayout } from "ui";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
-
-import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
 
 import FeedbackForm from "../feedback-form";
 import ThemeSwitcher from "../theme-switcher";

@@ -5,6 +5,7 @@ import { Accordion } from "ui";
 import { TextArea } from "ui";
 import { PopConfirm } from "ui";
 import { PageHeader } from "ui";
+import { Content } from "ui";
 
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";
@@ -12,7 +13,6 @@ import General from "@/components/settings/general";
 import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
-import { Content } from "@/components_v2/content";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";

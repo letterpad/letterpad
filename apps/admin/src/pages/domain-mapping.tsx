@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { PageHeader } from "ui";
+import { Content } from "ui";
 
 import { NewDomain } from "@/components/domain/new-domain";
 import Loading from "@/components/loading";
-import { Content } from "@/components_v2/content";
 
 import { useDomainQuery } from "@/__generated__/queries/queries.graphql";
 

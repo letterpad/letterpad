@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button } from "ui";
 import { Table } from "ui";
+import { Content } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -12,7 +13,6 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
 import { creativesColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
-import { Content } from "@/components_v2/content";
 
 import {
   PostsFilters,

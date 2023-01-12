@@ -6,9 +6,9 @@ import { Input } from "ui";
 import { Tabs } from "ui";
 import { Table } from "ui";
 import { PageHeader } from "ui";
+import { Content } from "ui";
 
 import Editor from "@/components/post/components/editor";
-import { Content } from "@/components_v2/content";
 
 import { ROLES } from "@/graphql/types";
 

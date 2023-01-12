@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Table } from "ui";
+import { Content } from "ui";
 
 import { TagRow } from "@/components/tags/types";
-import { Content } from "@/components_v2/content";
 
 import { useTagsContext } from "./context";
 

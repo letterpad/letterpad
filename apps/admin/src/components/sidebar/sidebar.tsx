@@ -8,8 +8,8 @@ import { HiOutlineUsers } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 import { VscDebugDisconnect } from "react-icons/vsc";
+import { useResponsiveLayout } from "ui";
 
-import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
 import { Menu } from "@/components_v2/menu";
 
 import { HomeQueryQuery } from "@/__generated__/queries/queries.graphql";

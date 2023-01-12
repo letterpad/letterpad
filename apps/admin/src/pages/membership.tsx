@@ -9,12 +9,12 @@ import { FC } from "react";
 import { Button } from "ui";
 import { Table } from "ui";
 import { PageHeader } from "ui";
+import { Content } from "ui";
 
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
-import { Content } from "@/components_v2/content";
 
 import { SessionData } from "@/graphql/types";
 import { getReadableDate } from "@/shared/utils";

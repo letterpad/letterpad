@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useContext } from "react";
 import { Table } from "ui";
+import { Content } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -17,7 +18,6 @@ import {
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
-import { Content } from "@/components_v2/content";
 
 import {
   PostsFilters,

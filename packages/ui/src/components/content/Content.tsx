@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 
-export const Content = ({ children }) => {
+export const Content: FC = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

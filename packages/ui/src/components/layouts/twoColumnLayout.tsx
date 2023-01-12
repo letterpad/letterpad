@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import { FC, ReactNode } from "react";
 
-import { SiteFooter } from "@/components/layouts/site-footer";
-
 import { useResponsiveLayout } from "./responsiveProvider";
 
 interface Props {
@@ -36,8 +34,7 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
           )}
           onClick={() => sidebarVisible && setSidebarVisible(!isMobileOrTablet)}
         >
-          <div className="px-6">{right}</div>
-          <SiteFooter />
+          {right}
         </div>
       </div>
     </>

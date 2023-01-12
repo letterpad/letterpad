@@ -59,4 +59,4 @@ export const useResponsive = () => {
   return state;
 };
 
-const str = (obj) => JSON.stringify(obj);
+const str = (obj: Record<any, any>) => JSON.stringify(obj);
