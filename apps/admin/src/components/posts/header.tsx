@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { MouseEvent, ReactNode, useState } from "react";
 import { Button } from "ui";
+import { Modal } from "ui";
 
-import { Modal } from "@/components_v2/modal";
 import { PageHeader } from "@/components_v2/page-header";
 
 import { PostTypes } from "@/__generated__/__types__";

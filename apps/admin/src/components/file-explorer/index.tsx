@@ -2,10 +2,10 @@ import { basePath } from "next.config";
 import { useCallback, useRef, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Button } from "ui";
+import { Modal } from "ui";
 
 import Internal from "@/components/file-explorer/providers/Internal";
 import Unsplash from "@/components/file-explorer/providers/Unsplash";
-import { Modal } from "@/components_v2/modal";
 
 import { Media } from "@/__generated__/__types__";
 import { uploadFile } from "@/shared/utils";

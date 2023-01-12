@@ -1,7 +1,7 @@
 import { Button } from "ui";
+import { Modal } from "ui";
 
 import { Divider } from "@/components_v2/divider";
-import { Modal } from "@/components_v2/modal";
 
 import { NavigationType } from "@/__generated__/__types__";
 

@@ -10,10 +10,10 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { Button } from "ui";
 import { Input } from "ui";
+import { Modal } from "ui";
 
 import { TagRow, TagsContextType } from "@/components/tags/types";
 import { Message } from "@/components_v2/message";
-import { Modal } from "@/components_v2/modal";
 
 import {
   useDeleteTagsMutation,

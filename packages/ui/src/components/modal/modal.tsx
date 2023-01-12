@@ -1,7 +1,6 @@
 import classNames from "classnames";
-import React, { CSSProperties, ReactNode, useEffect, useState } from "react";
-
-import { IconClose } from "@/components/builder/toolbar/icons";
+import { CSSProperties, ReactNode, useEffect, useState } from "react";
+import { IoClose } from "react-icons/io5";
 
 import { Portal } from "./portal";
 
@@ -57,7 +56,7 @@ export const Modal = (props: Props) => {
                   className="ml-auto inline-flex items-center rounded-md bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white"
                   onClick={() => props.toggle(false)}
                 >
-                  <IconClose size={20} />
+                  <IoClose size={20} />
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>

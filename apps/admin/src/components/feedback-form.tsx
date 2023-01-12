@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "ui";
 import { TextArea } from "ui";
+import { Modal } from "ui";
 
 import { Message } from "@/components_v2/message";
-import { Modal } from "@/components_v2/modal";
 
 import { basePath } from "@/constants";
 
