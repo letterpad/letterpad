@@ -4,4 +4,6 @@ export * from "./src/components/button";
 export * from "./src/components/drawer";
 export * from "./src/components/input";
 export * from "./src/components/modal";
+export * from "./src/components/result";
+export * from "./src/components/tabs";
 export * from "./src/components/textarea";

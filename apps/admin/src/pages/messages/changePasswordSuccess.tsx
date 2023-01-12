@@ -1,8 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Button } from "ui";
-
-import { Result } from "@/components_v2/result";
+import { Button, Result } from "ui";
 
 const ChangePasswordSuccess = () => {
   const router = useRouter();

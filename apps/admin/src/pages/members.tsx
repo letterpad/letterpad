@@ -3,12 +3,12 @@ import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "ui";
 import { Input } from "ui";
+import { Tabs } from "ui";
 
 import Editor from "@/components/post/components/editor";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
 import { Table } from "@/components_v2/table";
-import { Tabs } from "@/components_v2/tabs";
 
 import { ROLES } from "@/graphql/types";
 

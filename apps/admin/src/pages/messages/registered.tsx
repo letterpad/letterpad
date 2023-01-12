@@ -1,8 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Button } from "ui";
-
-import { Result } from "@/components_v2/result";
+import { Result } from "ui";
 
 const Registered = () => {
   const router = useRouter();
