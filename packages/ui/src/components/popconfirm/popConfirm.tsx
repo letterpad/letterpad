@@ -1,6 +1,7 @@
 import classNames from "classnames";
-import React, { FC, ReactNode, useState } from "react";
-import { Button } from "ui";
+import { FC, ReactNode, useState } from "react";
+
+import { Button } from "../button";
 
 interface Props {
   onConfirm: () => void;

@@ -2,12 +2,12 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Input, Label } from "ui";
 import { TextArea } from "ui";
+import { Message } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { Logo } from "@/components/login/views/Logo";
-import { Message } from "@/components_v2/message";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { removeTypenames } from "@/shared/utils";

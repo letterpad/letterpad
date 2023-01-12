@@ -4,8 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
 import { Button } from "ui";
 import { Input as Inputv2 } from "ui";
-
-import { Message } from "@/components_v2/message";
+import { Message } from "ui";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 

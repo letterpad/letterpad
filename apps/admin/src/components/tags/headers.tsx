@@ -1,6 +1,5 @@
 import { Button } from "ui";
-
-import { PopConfirm } from "@/components_v2/popconfirm";
+import { PopConfirm } from "ui";
 
 export function getHeaders({ tags, deleteTag, editTag }) {
   return [

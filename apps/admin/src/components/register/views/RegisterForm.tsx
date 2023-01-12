@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { Message } from "ui";
 
 import { doLogin } from "@/components/login/actions";
 import { Logo } from "@/components/login/views/Logo";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
-import { Message } from "@/components_v2/message";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import {

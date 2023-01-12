@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
-
-import { Message } from "@/components_v2/message";
+import { Message } from "ui";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";

@@ -1,6 +1,5 @@
 import { signIn } from "next-auth/react";
-
-import { Message } from "@/components_v2/message";
+import { Message } from "ui";
 
 import {
   ForgotPasswordDocument,

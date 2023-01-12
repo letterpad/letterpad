@@ -11,9 +11,9 @@ import { useEffect } from "react";
 import { Button } from "ui";
 import { Input } from "ui";
 import { Modal } from "ui";
+import { Message } from "ui";
 
 import { TagRow, TagsContextType } from "@/components/tags/types";
-import { Message } from "@/components_v2/message";
 
 import {
   useDeleteTagsMutation,

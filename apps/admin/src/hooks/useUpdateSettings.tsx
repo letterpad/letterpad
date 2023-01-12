@@ -1,6 +1,5 @@
 import { useCallback } from "react";
-
-import { Message } from "@/components_v2/message";
+import { Message } from "ui";
 
 import { SettingInputType } from "@/__generated__/__types__";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";

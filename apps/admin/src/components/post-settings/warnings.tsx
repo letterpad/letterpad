@@ -1,4 +1,4 @@
-import { Message } from "@/components_v2/message";
+import { Message } from "ui";
 
 export function warnNoTags() {
   Message().warn({

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-import { Message } from "@/components_v2/message";
+import { Message } from "ui";
 
 import { subscribe } from "@/shared/eventBus";
 

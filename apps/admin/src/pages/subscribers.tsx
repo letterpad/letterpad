@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { Table } from "ui";
+import { PageHeader } from "ui";
 
 import ErrorMessage from "@/components/ErrorMessage";
 import { Content } from "@/components_v2/content";
-import { PageHeader } from "@/components_v2/page-header";
 
 import { useSubscribersQuery } from "@/graphql/queries/queries.graphql";
 

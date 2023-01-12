@@ -1,5 +1,3 @@
-import React from "react";
-
 import { clearText } from "./clear";
 import { portal } from "./root";
 import { DisplayProps, Props } from "./types";

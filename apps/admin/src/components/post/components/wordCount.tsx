@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-
-import { LinePlaceholder } from "@/components_v2/placeholders";
+import { LinePlaceholder } from "uis";
 
 export const WordCount = () => {
   const [visible, setVisible] = useState(true);

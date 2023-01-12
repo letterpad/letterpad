@@ -2,11 +2,11 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 import { Button } from "ui";
+import { Message } from "ui";
+import { PageHeader } from "ui";
 
 import MediaUpdateModal from "@/components/modals/media-update-modal";
 import { Content } from "@/components_v2/content";
-import { Message } from "@/components_v2/message";
-import { PageHeader } from "@/components_v2/page-header";
 
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
 import { useMediaQuery } from "@/__generated__/queries/queries.graphql";

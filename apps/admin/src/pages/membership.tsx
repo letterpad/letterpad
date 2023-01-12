@@ -8,13 +8,13 @@ import { getSession } from "next-auth/react";
 import { FC } from "react";
 import { Button } from "ui";
 import { Table } from "ui";
+import { PageHeader } from "ui";
 
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
 import { Content } from "@/components_v2/content";
-import { PageHeader } from "@/components_v2/page-header";
 
 import { SessionData } from "@/graphql/types";
 import { getReadableDate } from "@/shared/utils";

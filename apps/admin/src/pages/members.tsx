@@ -5,10 +5,10 @@ import { Button } from "ui";
 import { Input } from "ui";
 import { Tabs } from "ui";
 import { Table } from "ui";
+import { PageHeader } from "ui";
 
 import Editor from "@/components/post/components/editor";
 import { Content } from "@/components_v2/content";
-import { PageHeader } from "@/components_v2/page-header";
 
 import { ROLES } from "@/graphql/types";
 

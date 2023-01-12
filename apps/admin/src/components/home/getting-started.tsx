@@ -2,13 +2,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { FC, useEffect } from "react";
 import { Button } from "ui";
+import { PageHeader } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
 import { setIntroDimissed } from "@/components/home/visibility";
 import { ChangeUsername } from "@/components/profile/change-username";
 import { Content } from "@/components_v2/content";
-import { PageHeader } from "@/components_v2/page-header";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
