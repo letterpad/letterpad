@@ -69,7 +69,7 @@ const FeedbackForm = () => {
         ]}
       >
         <p>
-          Help articles are in progress and will take somee time to release. In
+          Help articles are in progress and will take some time to release. In
           the meantime, if you have any questions, use this feedback form.{" "}
           <br />
           <br />
