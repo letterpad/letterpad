@@ -4,7 +4,7 @@ import { TextArea } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
-import { Upload } from "@/components_v2/upload";
+import { Upload } from "@/components/upload";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";

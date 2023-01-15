@@ -8,9 +8,8 @@ import {
   useState,
 } from "react";
 
-import { createId } from "@/shared/utils";
-
-import { Block, BlockItem } from "./types";
+import { Block, BlockItem } from "../types";
+import { createId } from "../utils";
 
 interface Props {
   children: ReactNode;

@@ -103,7 +103,12 @@ export const ColorPickerGradient: FC<Props> = ({
   );
 };
 
-const ColorBox = ({ color, isActive, setActive, label }) => {
+const ColorBox: FC<{
+  color?: string;
+  isActive: boolean;
+  setActive: () => void;
+  label: string;
+}> = ({ color, isActive, setActive, label }) => {
   return (
     <div className="flex flex-col gap-2">
       <Label label={label} />

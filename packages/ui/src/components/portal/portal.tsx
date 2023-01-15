@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { createPortal } from "react-dom";
 
 const isBrowser = typeof window !== "undefined";
@@ -21,7 +21,7 @@ function usePortal(id: string) {
   return getRootElem();
 }
 
-export const Portal = ({ id, children }) => {
+export const Portal: FC<{ id: string }> = ({ id, children }) => {
   const target = usePortal(id);
   if (!target) return children;
   return createPortal(children, target);

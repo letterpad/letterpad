@@ -1,7 +1,7 @@
 import { Button } from "ui";
 
 import { IconEye, IconTools } from "./icons";
-import { useBuilderContext } from "../context";
+import { useBuilderContext } from "../context/context";
 
 export const EditSwitch = () => {
   const { preview, setPreview } = useBuilderContext();

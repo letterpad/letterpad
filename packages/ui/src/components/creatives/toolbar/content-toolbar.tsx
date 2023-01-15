@@ -6,7 +6,7 @@ import { ColorPicker } from "./color";
 import { ColorPickerGradient } from "./colorpicker";
 import { Reset } from "./helpers";
 import { IconDelete, IconGradient, IconImage } from "./icons";
-import { useBuilderContext } from "../context";
+import { useBuilderContext } from "../context/context";
 import { BlockItem } from "../types";
 
 const ReactStickyBox = dynamic(() => import("react-sticky-box"), {
@@ -195,7 +195,7 @@ const Button: FC<ButtonProps> = ({
   );
 };
 
-const Wrapper = ({ children }) => (
+const Wrapper: FC = ({ children }) => (
   <div className="absolute top-0 right-0 z-10 m-4 h-full text-center">
     <ReactStickyBox className="mb-10" offsetTop={20}>
       {children}

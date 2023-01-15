@@ -2,12 +2,12 @@ import classNames from "classnames";
 import { FC } from "react";
 
 import { Cell } from "./cell";
-import { useBuilderContext } from "../../context";
-import { Toolbar } from "../../toolbar";
-import { LayoutToolbar } from "../../toolbar/layout-toolbar";
-import { LayoutToolbarFirstRow } from "../../toolbar/layout-toolbar-first-row";
-import { Swap } from "../../toolbar/swap";
-import { Block } from "../../types";
+import { useBuilderContext } from "../context/context";
+import { Toolbar } from "../toolbar";
+import { LayoutToolbar } from "../toolbar/layout-toolbar";
+import { LayoutToolbarFirstRow } from "../toolbar/layout-toolbar-first-row";
+import { Swap } from "../toolbar/swap";
+import { Block } from "../types";
 
 export interface RowProps {
   row: Block;

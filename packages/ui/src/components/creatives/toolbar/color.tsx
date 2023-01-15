@@ -1,8 +1,11 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 
 import { Reset } from "./helpers";
 
-export const ColorPicker = ({ color, onColorChange }) => {
+export const ColorPicker: FC<{
+  color: string;
+  onColorChange: (color: string) => void;
+}> = ({ color, onColorChange }) => {
   const colorPickerRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -29,7 +32,7 @@ export const ColorPicker = ({ color, onColorChange }) => {
         onChange={(e) => onColorChange(e.target.value)}
       />
       <Reset
-        visible={color}
+        visible={!!color}
         className="-mt-7"
         onClick={() => onColorChange("")}
       />

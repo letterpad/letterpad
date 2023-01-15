@@ -1,9 +1,6 @@
 import classNames from "classnames";
 import { FC } from "react";
 
-import { createId } from "@/shared/utils";
-
-import { IconDown, IconFullWidth, IconSplit, IconUp } from "./icons";
 import { Block } from "../types";
 
 interface Props {

@@ -1,15 +1,13 @@
 import Head from "next/head";
 import { FC } from "react";
 
-import { Row } from "@/components/builder/layouts/story-builder";
-
-import { PageType } from "@/graphql/types";
-
-import { useBuilderContext } from "./context";
+import { Row } from "./components";
+import { useBuilderContext } from "./context/context";
 import { EditSwitch } from "./toolbar/editSwitch";
+import { BlockItem } from "./types";
 
 interface Props {
-  type: PageType;
+  type: BlockItem["type"];
   editable?: boolean;
 }
 

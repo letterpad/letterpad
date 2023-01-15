@@ -1,15 +1,13 @@
 import { FC, useEffect, useState } from "react";
 
-import { GalleryModal } from "@/components/gallery";
-import { Portal } from "@/components/portal";
-
-import { disableScroll } from "@/shared/utils";
-
 import { MasonryGrid } from "./masonry/grid";
 import { isLastImage } from "./masonry/selectors";
 import { Wrapper } from "./wrapper";
-import { useBuilderContext } from "../../context";
-import { BlockItem, BlockMasonry } from "../../types";
+import { useBuilderContext } from "../context/context";
+import { BlockItem, BlockMasonry } from "../types";
+import { GalleryModal } from "../../gallery";
+import { Portal } from "../../portal";
+import { disableScroll } from "../../../utils";
 
 interface Props {
   item: BlockItem;

@@ -4,9 +4,9 @@ import { Parallax } from "react-parallax";
 import StickyBox from "react-sticky-box";
 
 import { getHeight, Wrapper } from "./wrapper";
-import { useBuilderContext } from "../../context";
-import MiniEditor from "../../toolbar/mini-editor";
-import { BlockItem } from "../../types";
+import { useBuilderContext } from "../context/context";
+import MiniEditor from "../toolbar/mini-editor";
+import { BlockItem } from "../types";
 
 interface Props {
   columns: number;

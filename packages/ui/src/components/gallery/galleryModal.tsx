@@ -3,7 +3,7 @@ import { FC } from "react";
 
 import { Controls } from "./controls";
 import { ThumbnailList } from "./thumbnails";
-import { BlockMasonry } from "../builder/types";
+import { BlockMasonry } from "../creatives/types";
 
 interface Props {
   items: BlockMasonry[];
@@ -67,7 +67,7 @@ export const GalleryModal: FC<Props> = ({
   );
 };
 
-const Description = ({ description }) => {
+const Description: FC<{ description?: string }> = ({ description }) => {
   return (
     <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-80 p-2 py-8 text-white">
       {description}

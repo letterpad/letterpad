@@ -1,10 +1,9 @@
-import classNames from "classnames";
-import { FC, ReactNode, useEffect } from "react";
+import { FC, useEffect } from "react";
 
 import { getHeight, Wrapper } from "./wrapper";
-import { useBuilderContext } from "../../context";
-import MiniEditor from "../../toolbar/mini-editor";
-import { BlockItem } from "../../types";
+import { useBuilderContext } from "../context/context";
+import MiniEditor from "../toolbar/mini-editor";
+import { BlockItem } from "../types";
 
 interface Props {
   columns: number;
@@ -46,7 +45,7 @@ export const SectionText: FC<Props> = ({
   return (
     <Wrapper className={`row-${rowIndex}`}>
       {preview ? (
-        <Text columns={columns} text={item.text} />
+        <Text columns={columns} text={item.text ?? ""} />
       ) : (
         <MiniEditor
           onChange={update}
@@ -58,7 +57,10 @@ export const SectionText: FC<Props> = ({
   );
 };
 
-const Text = ({ columns, text = "" }) => (
+const Text: FC<{ columns: number; text: string }> = ({
+  columns,
+  text = "",
+}) => (
   <div
     data-text
     className={

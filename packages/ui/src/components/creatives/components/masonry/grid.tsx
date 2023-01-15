@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { FC } from "react";
+import { IoRemoveCircleOutline } from "react-icons/io5";
 
-import { RemoveButton } from "@/components/gallery/remove";
-
-import { BlockMasonry } from "../../../types";
+import { BlockMasonry } from "../../types";
+import { Button } from "../../../button";
 
 interface Props {
   items: BlockMasonry[];
@@ -30,7 +30,11 @@ export const MasonryGrid: FC<Props> = ({
           objectFit="cover"
           onClick={() => onSelect(i)}
         />
-        {!preview && <RemoveButton onClick={() => onRemove(item.id)} />}
+        {!preview && (
+          <Button onClick={() => onRemove(item.id)}>
+            <IoRemoveCircleOutline />
+          </Button>
+        )}
       </div>
     );
   });

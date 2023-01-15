@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { IoSwapHorizontal } from "react-icons/io5";
-import { Button } from "ui";
+
+import { Button } from "../../button";
 
 interface Props {
   onClick: () => void;

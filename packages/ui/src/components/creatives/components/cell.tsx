@@ -1,21 +1,19 @@
 import classNames from "classnames";
 import { FC, lazy, useState } from "react";
 
-import FileExplorer from "@/components/file-explorer";
-
-import { createId } from "@/shared/utils";
-
+// import FileExplorer from "@/components/file-explorer";
 import { SectionMasonry } from "./masonry";
 import { SectionText } from "./text";
-import { useBuilderContext } from "../../context";
-import { Block } from "../../types";
+import { useBuilderContext } from "../context/context";
+import { Block } from "../types";
+import { createId } from "../utils";
 
 const LazySectionImage = lazy(() =>
   import("./image").then((m) => ({ default: m.SectionImage }))
 );
 
 const LazyContentToolbar = lazy(() =>
-  import("../../toolbar").then((m) => ({ default: m.ContentToolbar }))
+  import("../toolbar").then((m) => ({ default: m.ContentToolbar }))
 );
 
 interface Props {
@@ -107,7 +105,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           <SectionMasonry item={item} position={[rowIndex, colIndex]} />
         )}
       </div>
-      <FileExplorer
+      {/* <FileExplorer
         multi={true}
         isVisible={!!fileExplorerOpen}
         handleCancel={() => setFileExplorerOpen(false)}
@@ -141,7 +139,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             );
           }
         }}
-      />
+      /> */}
     </div>
   );
 };

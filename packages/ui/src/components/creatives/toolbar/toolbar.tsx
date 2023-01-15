@@ -1,9 +1,10 @@
+import { FC } from "react";
 import { Tooltip } from "ui";
 
 import { IconAdd } from "./icons";
-import { useBuilderContext } from "../context";
+import { useBuilderContext } from "../context/context";
 
-export const Toolbar = ({ rowIndex }) => {
+export const Toolbar: FC<{ rowIndex: number }> = ({ rowIndex }) => {
   const { addTextRow, addRow, addMasonry } = useBuilderContext();
   return (
     <Tooltip

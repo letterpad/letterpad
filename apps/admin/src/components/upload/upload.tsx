@@ -1,7 +1,6 @@
 import axios from "axios";
 import { basePath } from "next.config";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import { Button } from "ui";
 import { Label } from "ui";
 
 import FileExplorer from "@/components/file-explorer";

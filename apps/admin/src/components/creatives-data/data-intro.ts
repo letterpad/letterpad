@@ -1,4 +1,4 @@
-import { Block } from "../builder/types";
+import { Block } from "ui/src/components/builder/types";
 
 export const introData: Block[] = [
   {

@@ -2,6 +2,7 @@ import * as React from "react";
 export * from "./src/components/accordion";
 export * from "./src/components/button";
 export * from "./src/components/content";
+export * from "./src/components/creatives";
 export * from "./src/components/divider";
 export * from "./src/components/drawer";
 export * from "./src/components/input";

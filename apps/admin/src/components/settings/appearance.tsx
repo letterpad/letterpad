@@ -6,7 +6,7 @@ import { RadioGroup } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
-import { Upload } from "@/components_v2/upload";
+import { Upload } from "@/components/upload";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { debounce, removeTypenames } from "@/shared/utils";

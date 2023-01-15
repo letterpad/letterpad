@@ -7,7 +7,7 @@ import { Switch } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
-import { Upload } from "@/components_v2/upload";
+import { Upload } from "@/components/upload";
 
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
