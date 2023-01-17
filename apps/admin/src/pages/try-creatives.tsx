@@ -2,13 +2,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { Button } from "ui";
+import { BuilderContext, EditSwitch, Layout, useBuilderContext } from "ui";
 
-import { Layout } from "@/components/builder";
-import {
-  BuilderContext,
-  useBuilderContext,
-} from "@/components/builder/context";
-import { EditSwitch } from "@/components/builder/toolbar/editSwitch";
 import {
   introData,
   paintingData,
@@ -17,6 +12,7 @@ import {
 } from "@/components/creatives-data";
 import ThemeSwitcher from "@/components/theme-switcher";
 
+import { CreativesHead } from "@/creatives";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
@@ -131,7 +127,11 @@ const Builder = () => {
           <ThemeSwitcher />
         </div>
       </div>
-      <Layout type={PageType["Story Builder"]} editable={false} />
+      <Layout
+        type={PageType["Story Builder"]}
+        editable={false}
+        head={<CreativesHead />}
+      />
     </>
   );
 };

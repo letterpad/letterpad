@@ -2,10 +2,10 @@ import classNames from "classnames";
 import { FC, useState } from "react";
 import { RgbaStringColorPicker } from "react-colorful";
 import { IoClose } from "react-icons/io5";
-import { Button } from "ui";
-import { Label } from "ui";
 
 import { Pattern } from "../../types";
+import { Button } from "../../../button";
+import { Label } from "../../../input";
 
 interface Props extends Pattern {
   onChange: (pattern: Pattern) => void;

@@ -1,4 +1,3 @@
-import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 interface IInfiniteScrollListProps {
@@ -7,7 +6,7 @@ interface IInfiniteScrollListProps {
   loadMore: () => void;
 }
 
-const InfiniteScrollList = ({
+export const InfiniteScrollList = ({
   data,
   count,
   loadMore,
@@ -30,5 +29,3 @@ const InfiniteScrollList = ({
     </>
   );
 };
-
-export default InfiniteScrollList;

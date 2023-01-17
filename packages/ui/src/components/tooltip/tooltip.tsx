@@ -9,15 +9,15 @@ import {
   useFloating,
   useInteractions,
 } from "@floating-ui/react-dom-interactions";
-import React, { useRef } from "react";
+import { cloneElement, ReactElement, ReactNode, useRef } from "react";
 
 import { useFlag } from "./useFlag";
 
 type TooltipProps = {
-  children: React.ReactElement;
+  children: ReactElement;
   disabled?: boolean;
   follow?: boolean;
-  render: React.ReactNode;
+  render: ReactNode;
   position?: Placement;
 };
 
@@ -47,8 +47,8 @@ export const Tooltip = ({
   ]);
 
   return (
-    <React.Fragment>
-      {React.cloneElement(
+    <>
+      {cloneElement(
         children,
         getReferenceProps({
           ref: reference,
@@ -75,7 +75,7 @@ export const Tooltip = ({
           </div>
         )}
       </FloatingPortal>
-    </React.Fragment>
+    </>
   );
 };
 

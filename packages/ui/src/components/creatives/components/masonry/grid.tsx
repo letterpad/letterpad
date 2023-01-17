@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { FC } from "react";
 import { IoRemoveCircleOutline } from "react-icons/io5";
 
@@ -23,11 +22,10 @@ export const MasonryGrid: FC<Props> = ({
         key={item.src}
         className="group relative aspect-square cursor-pointer"
       >
-        <Image
+        <img
           src={item.src as string}
-          alt="img"
-          layout="fill"
-          objectFit="cover"
+          alt={item.caption}
+          style={{ objectFit: "cover" }}
           onClick={() => onSelect(i)}
         />
         {!preview && (

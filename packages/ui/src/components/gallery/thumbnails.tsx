@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 interface Props<T> {
@@ -28,7 +27,7 @@ export const ThumbnailList = <
     <div className="flex h-screen flex-col overflow-scroll" ref={ref}>
       {items.map((item, i) => (
         <div key={i}>
-          <Image
+          <img
             src={item.src as string}
             width={100}
             height={100}
@@ -39,7 +38,8 @@ export const ThumbnailList = <
                 : "opacity-50 hover:opacity-100 ")
             }
             onClick={() => onSelect(i)}
-            objectFit="fill"
+            loading="lazy"
+            style={{ objectFit: "fill" }}
             alt={item.description || item.caption}
           />
         </div>

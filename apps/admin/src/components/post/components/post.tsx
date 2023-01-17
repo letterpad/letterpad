@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
-import { PostTitlePlaceholder } from "uis";
+import { PostTitlePlaceholder } from "ui";
+import { Layout as LayoutBuilder } from "ui";
+import { BuilderContext } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
-import { Layout as LayoutBuilder } from "@/components/builder";
-import { BuilderContext } from "@/components/builder/context";
 import ErrorMessage from "@/components/ErrorMessage";
 import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
@@ -15,6 +15,7 @@ import { Title } from "@/components/post/components/title";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import { CreativesHead } from "@/creatives";
 import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
@@ -113,7 +114,7 @@ export const Post = () => {
               })
             }
           >
-            <LayoutBuilder type={post.page_type} />
+            <LayoutBuilder type={post.page_type} head={<CreativesHead />} />
           </BuilderContext>
         </div>
       )}

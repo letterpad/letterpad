@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { FC } from "react";
 
 import { Controls } from "./controls";
@@ -49,11 +48,12 @@ export const GalleryModal: FC<Props> = ({
         <ThumbnailList items={items} onSelect={onSelect} index={index} />
       </div>
       <div className="relative flex h-screen w-full items-center justify-center">
-        <Image
-          alt="Mountains"
+        <img
+          alt={item.caption}
           src={item.src as string}
           width={width}
           height={height}
+          loading="lazy"
         />
         <Description description={item.description} />
         <Controls

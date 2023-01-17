@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { InfiniteScrollList } from "ui";
 
 import { Media } from "@/__generated__/__types__";
 import { MediaDocument } from "@/__generated__/queries/queries.graphql";
@@ -7,8 +8,6 @@ import {
   MediaQuery,
   MediaQueryVariables,
 } from "@/graphql/queries/queries.graphql";
-
-import InfiniteScrollList from "../InfiniteScrollList";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];

@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
-import { TextBlockPlaceholder } from "uis";
+import { TextBlockPlaceholder } from "ui";
 
 const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"), {
   suspense: true,

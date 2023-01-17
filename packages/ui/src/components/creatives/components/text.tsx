@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 
 import { getHeight, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../context/context";
-import MiniEditor from "../toolbar/mini-editor";
+import { MiniEditor } from "../toolbar/mini-editor";
 import { BlockItem } from "../types";
 
 interface Props {

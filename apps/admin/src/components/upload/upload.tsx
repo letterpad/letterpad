@@ -3,7 +3,7 @@ import { basePath } from "next.config";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { Label } from "ui";
 
-import FileExplorer from "@/components/file-explorer";
+import { FileExplorer } from "@/components/file-explorer";
 
 import { IMediaUploadResult } from "@/graphql/types";
 
@@ -100,6 +100,7 @@ export const Upload: FC<Props> = ({
           />
         </div>
         <FileExplorer
+          multi={true}
           isVisible={explorerVisible}
           handleCancel={() => setExplorerVisible(false)}
           onInsert={async (files) => {

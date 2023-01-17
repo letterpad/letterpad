@@ -5,6 +5,7 @@ export * from "./src/components/content";
 export * from "./src/components/creatives";
 export * from "./src/components/divider";
 export * from "./src/components/drawer";
+export * from "./src/components/file-explorer";
 export * from "./src/components/input";
 export * from "./src/components/layouts";
 export * from "./src/components/menu";

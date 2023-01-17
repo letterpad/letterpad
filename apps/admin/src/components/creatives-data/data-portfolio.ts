@@ -1,4 +1,4 @@
-import { Block } from "ui/src/components/builder/types";
+import { Block } from "ui";
 
 export const portfolioData: Block[] = [
   {

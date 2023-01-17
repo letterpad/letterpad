@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import dynamic from "next/dynamic";
-import { FC, ReactNode, useCallback, useState } from "react";
+// import dynamic from "next/dynamic";
+import { FC, lazy, ReactNode, useCallback, useState } from "react";
 
 import { ColorPicker } from "./color";
 import { ColorPickerGradient } from "./colorpicker";
@@ -9,9 +9,7 @@ import { IconDelete, IconGradient, IconImage } from "./icons";
 import { useBuilderContext } from "../context/context";
 import { BlockItem } from "../types";
 
-const ReactStickyBox = dynamic(() => import("react-sticky-box"), {
-  ssr: false,
-});
+const ReactStickyBox = lazy(() => import("react-sticky-box"));
 interface Props {
   setEditorOpen: (visible: boolean) => void;
   editorOpen: boolean;

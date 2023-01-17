@@ -105,6 +105,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           <SectionMasonry item={item} position={[rowIndex, colIndex]} />
         )}
       </div>
+      {/* TODO - DO NOT MERGE UNTILL THIS IS DONE: Abhi to take care of file explorer in creatives package */}
       {/* <FileExplorer
         multi={true}
         isVisible={!!fileExplorerOpen}

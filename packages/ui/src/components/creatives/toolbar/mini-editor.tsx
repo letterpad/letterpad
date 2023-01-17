@@ -1,7 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { basePath } from "next.config";
 import { useEffect, useRef, useState } from "react";
-import "@/components/post/components/tinymce/core";
 
 interface Props {
   text: string;
@@ -10,7 +8,11 @@ interface Props {
 }
 const isBrowser = typeof window !== "undefined";
 
-const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
+export const MiniEditor: React.FC<Props> = ({
+  text,
+  onChange,
+  formats = "",
+}) => {
   const editorRef = useRef<Editor["editor"]>();
   const [html, setHtml] = useState(text);
 
@@ -114,5 +116,3 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
     </div>
   );
 };
-
-export default MiniEditor;

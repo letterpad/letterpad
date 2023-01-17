@@ -3,7 +3,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef, useState } from "react";
 import "./core";
 
-import FileExplorer from "@/components/file-explorer";
+import { FileExplorer } from "@/components/file-explorer";
 
 import { basePath } from "@/constants";
 
