@@ -1,88 +1,94 @@
-import { Message } from "ui";
+import Link from "next/link";
+import { FC } from "react";
 
-export function warnNoTags() {
-  Message().warn({
-    displayType: "modal",
-    title: "Post not published",
-    className: "no-tags-modal",
-    content: (
-      <div>
-        You have not added tags to your post. Add a tag/tags and ensure its set
-        up in Settings → Navigation. This is necessary for your post to be
-        visible in your homepage.
-        <p>
-          <a
-            target="_blank"
-            href="https://docs.letterpad.app/publishing/grouping-posts#setup-navigation-menu-to-display-the-tag"
-            rel="noreferrer"
-          >
-            Click here
-          </a>{" "}
-          to know more.
-        </p>
-      </div>
-    ),
-  });
-}
+export const WarnNoTags = () => {
+  return (
+    <div>
+      You have not added tags to your post. Add a tag/tags and ensure its linked
+      with Navigation Menu by visiting{" "}
+      <Link href="/settings?selected=navigation">
+        <a className="text-blue-500 hover:text-blue-700">
+          Settings → Navigation
+        </a>
+      </Link>
+      . This is necessary for your post to be visible in your website.
+      <br />
+      <a
+        target="_blank"
+        href="https://docs.letterpad.app/publishing/grouping-posts#setup-navigation-menu-to-display-the-tag"
+        rel="noreferrer"
+        className="text-blue-500 hover:text-blue-700"
+      >
+        Click here
+      </a>{" "}
+      to know more.
+    </div>
+  );
+};
 
-export function tagNotLinkedWithNavigation(tags: string[]) {
+export const TagNotLinkedWithNavigation: FC<{ tags: string[] }> = ({
+  tags,
+}) => {
   const hasTags = tags.length > 0;
   const tagsCount = tags.length;
   const plural = tagsCount > 1;
   const tagsStr = tags.join(", ");
 
-  const message = `Currently the navigation menu has ${
-    plural ? "these tags" : "this tag"
-  } - ${tagsStr}. You should use a tag from above or create a new tag and link it in
-        navigation menu. You can do so by going to Settings → Navigation → New.
-        Then give a name and select a tag from the dropdown.`;
-
-  Message().warn({
-    displayType: "modal",
-    title: "Post not published",
-    className: "tags-notlinked-modal",
-    content: (
-      <div>
-        Atleast one tag of this post should be linked in Navigation. <br />
-        {hasTags && message}
+  return (
+    <div>
+      Atleast one tag of this post should be linked in Navigation. <br />
+      <br />
+      {hasTags && (
         <p>
-          <a
-            target="_blank"
-            href="https://docs.letterpad.app/navigation-menu"
-            rel="noreferrer"
-          >
-            Click here
-          </a>{" "}
-          to know more.
+          Currently the navigation menu has {plural ? "these tags" : "the tag"}{" "}
+          - <strong className="italic">{tagsStr}</strong>. You need to link one
+          of the tag from this Post to the Navigation Menu so that this post is
+          visible in your website. You can do so by going to{" "}
+          <Link href="/settings?selected=navigation">
+            <a className="text-blue-500 hover:text-blue-700">
+              Settings → Navigation
+            </a>
+          </Link>{" "}
+          → New. Then give a name and select a tag by clicking content.
         </p>
-      </div>
-    ),
-  });
-}
+      )}
+      <br />
+      <a
+        target="_blank"
+        href="https://docs.letterpad.app/navigation-menu"
+        rel="noreferrer"
+        className="text-blue-500 hover:text-blue-700"
+      >
+        Click here
+      </a>{" "}
+      to know more.
+    </div>
+  );
+};
 
-export function pageNotLinkedWithNavigation() {
-  Message().warn({
-    className: "page-link-modal", //used by cypress
-    title: "Post not published",
-    displayType: "modal",
-    content: (
-      <div>
-        This page has has not been linked in Navigation. Without linking, the
-        page wont be displayed in your blog.
-        <br />
-        You can link this page by going to Settings → Navigation → New. Then
-        give a name and select this page from the dropdown.
-        <p>
-          <a
-            target="_blank"
-            href="https://docs.letterpad.app/navigation-menu"
-            rel="noreferrer"
-          >
-            Click here
-          </a>{" "}
-          to know more.
-        </p>
-      </div>
-    ),
-  });
-}
+export const PageNotLinkedWithNavigation = () => {
+  return (
+    <div>
+      This page has has not been linked with Navigation. Without linking, the
+      page wont be displayed in your blog.
+      <br />
+      You can link this page by going to{" "}
+      <Link href="/settings?selected=navigation">
+        <a className="text-blue-500 hover:text-blue-700">
+          Settings → Navigation
+        </a>
+      </Link>{" "}
+      → New. Then give a name and select this page by clicking Content.
+      <br />
+      <a
+        target="_blank"
+        href="https://docs.letterpad.app/navigation-menu"
+        rel="noreferrer"
+        className="text-blue-500 hover:text-blue-700"
+      >
+        Click here
+      </a>{" "}
+      to know more.
+    </div>
+  );
+};

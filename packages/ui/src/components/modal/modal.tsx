@@ -24,6 +24,7 @@ export const Modal = ({
   header,
   footer,
   children,
+  className,
   show = false,
 }: Props) => {
   const [display, setDisplay] = useState<boolean>(show ? true : false);
@@ -44,7 +45,10 @@ export const Modal = ({
           id="defaultModal"
           tabIndex={-1}
           aria-hidden="true"
-          className="h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
+          className={classNames(
+            "h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
+            className
+          )}
           style={{ zIndex: zIndex ?? 50 }}
         >
           <div
