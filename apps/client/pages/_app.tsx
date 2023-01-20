@@ -23,7 +23,9 @@ export default function App({ Component, pageProps }: AppProps<PageProps>) {
         <style>
           {`
           html {
-            --brand-accent: ${pageProps.settings?.design?.brand_color};
+            --brand-accent: ${
+              pageProps.settings?.design?.brand_color ?? '#d93097'
+            };
           }
           `}
         </style>

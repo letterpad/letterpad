@@ -51,7 +51,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
             items={[
               {
                 label: "Posts",
-                icon: <BsEnvelope size={14} />,
+                icon: <BsEnvelope size={16} />,
                 key: "/posts",
                 badge: _stats?.posts?.published.toString(),
               },
@@ -63,13 +63,13 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
               },
               {
                 label: "Media",
-                icon: <BsImages size={14} />,
+                icon: <BsImages size={16} />,
                 key: "/media",
                 badge: _stats?.media?.toString(),
               },
               {
                 label: "Tags",
-                icon: <BsTags size={15} />,
+                icon: <BsTags size={16} />,
                 key: "/tags",
                 badge: _stats?.tags?.toString(),
               },
@@ -90,12 +90,12 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
               },
               {
                 label: "Settings",
-                icon: <CiSettings size={18} />,
+                icon: <CiSettings size={16} />,
                 key: "/settings",
               },
               {
                 label: "Subscribers",
-                icon: <HiOutlineUsers size={14} />,
+                icon: <HiOutlineUsers size={16} />,
                 key: "/subscribers",
               },
               // {
