@@ -20,6 +20,7 @@ export interface BlockMasonry {
   caption?: string;
   aspectRatio?: number;
   id: string;
+  download_location?: string;
 }
 
 export interface BlockItem {

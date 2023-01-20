@@ -70,12 +70,12 @@ export const SectionImage: FC<Props> = ({
       )}
     >
       <Parallax
-        strength={200}
+        strength={100}
         lazy={true}
         bgImage={item?.image?.src}
         className="flex h-full w-full flex-col items-center justify-center"
         bgImageStyle={{ height: "100%", objectFit: "cover" }}
-        contentClassName="w-full"
+        contentClassName="w-full z-10"
         style={{
           minHeight: height,
         }}
