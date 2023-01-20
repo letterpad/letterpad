@@ -1,9 +1,7 @@
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import React, { useState } from "react";
-import { Input } from "ui";
-import { TextArea } from "ui";
-import { Message } from "ui";
+import { Input, Message, TextArea } from "ui";
 
 import { Logo } from "@/components/login/views/Logo";
 

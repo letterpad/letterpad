@@ -1,5 +1,4 @@
-import { Button } from "ui";
-import { PopConfirm } from "ui";
+import { Button, PopConfirm } from "ui";
 
 export function getHeaders({ tags, deleteTag, editTag }) {
   return [

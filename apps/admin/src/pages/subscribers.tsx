@@ -1,7 +1,5 @@
 import Head from "next/head";
-import { Table } from "ui";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import { Content, PageHeader, Table } from "ui";
 
 import ErrorMessage from "@/components/ErrorMessage";
 

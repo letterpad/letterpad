@@ -1,8 +1,5 @@
 import { useMemo } from "react";
-import { Button } from "ui";
-import { Label } from "ui";
-import { TextArea } from "ui";
-import { RadioGroup } from "ui";
+import { Button, Label, RadioGroup, TextArea } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 

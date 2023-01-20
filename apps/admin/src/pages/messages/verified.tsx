@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Button } from "ui";
-import { Result } from "ui";
+import { Button, Result } from "ui";
 
 const Verified = () => {
   const router = useRouter();

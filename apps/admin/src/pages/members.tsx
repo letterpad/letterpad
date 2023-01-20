@@ -1,12 +1,7 @@
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Button } from "ui";
-import { Input } from "ui";
-import { Tabs } from "ui";
-import { Table } from "ui";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import { Button, Content, Input, PageHeader, Table, Tabs } from "ui";
 
 import Editor from "@/components/post/components/editor";
 

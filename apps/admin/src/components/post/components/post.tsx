@@ -1,9 +1,11 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
-import { PostTitlePlaceholder } from "ui";
-import { Layout as LayoutBuilder } from "ui";
-import { BuilderContext } from "ui";
+import {
+  BuilderContext,
+  Layout as LayoutBuilder,
+  PostTitlePlaceholder,
+} from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 

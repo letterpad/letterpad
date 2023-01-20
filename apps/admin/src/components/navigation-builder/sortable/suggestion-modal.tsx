@@ -1,6 +1,4 @@
-import { Button } from "ui";
-import { Modal } from "ui";
-import { Divider } from "ui";
+import { Button, Divider, Modal } from "ui";
 
 import { NavigationType } from "@/__generated__/__types__";
 

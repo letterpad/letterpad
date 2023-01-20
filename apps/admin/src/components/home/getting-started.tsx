@@ -1,9 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { FC, useEffect } from "react";
-import { Button } from "ui";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import { Button, Content, PageHeader } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 

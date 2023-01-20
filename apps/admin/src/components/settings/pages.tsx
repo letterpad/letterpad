@@ -1,5 +1,4 @@
-import { Switch } from "ui";
-import { Divider } from "ui";
+import { Divider, Switch } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 

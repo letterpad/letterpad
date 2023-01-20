@@ -21,5 +21,6 @@
     "tests/**/*",
     "migrations/**/*",
     "config/*",
-    "src/types.d.ts" ]
+    "src/types.d.ts"
+  ]
 }

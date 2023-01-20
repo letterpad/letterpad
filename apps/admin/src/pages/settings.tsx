@@ -1,11 +1,14 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Button } from "ui";
-import { Accordion, AccordionItem } from "ui";
-import { TextArea } from "ui";
-import { PopConfirm } from "ui";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import {
+  Accordion,
+  AccordionItem,
+  Button,
+  Content,
+  PageHeader,
+  PopConfirm,
+  TextArea,
+} from "ui";
 
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";

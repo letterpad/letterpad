@@ -1,9 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useContext } from "react";
-import { Table } from "ui";
-import { Content } from "ui";
+import React, { useContext, useState } from "react";
+import { Content, Table } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 

@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import { Input, Label } from "ui";
-import { TextArea } from "ui";
+import { Input, Label, TextArea } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 

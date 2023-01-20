@@ -1,8 +1,13 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { Button } from "ui";
-import { BuilderContext, EditSwitch, Layout, useBuilderContext } from "ui";
+import {
+  BuilderContext,
+  Button,
+  EditSwitch,
+  Layout,
+  useBuilderContext,
+} from "ui";
 
 import {
   introData,

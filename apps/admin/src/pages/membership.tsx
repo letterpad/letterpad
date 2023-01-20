@@ -6,10 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
-import { Button } from "ui";
-import { Table } from "ui";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import { Button, Content, PageHeader, Table } from "ui";
 
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";

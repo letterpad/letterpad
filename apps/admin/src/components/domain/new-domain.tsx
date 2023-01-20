@@ -1,7 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { Button } from "ui";
-import { Input } from "ui";
-import { Message } from "ui";
+import { Button, Input, Message } from "ui";
 
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 

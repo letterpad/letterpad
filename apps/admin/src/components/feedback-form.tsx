@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "ui";
-import { TextArea } from "ui";
-import { Modal } from "ui";
-import { Message } from "ui";
+import { Button, Message, Modal, TextArea } from "ui";
 
 import { basePath } from "@/constants";
 

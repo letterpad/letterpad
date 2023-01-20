@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import { MouseEvent, ReactNode, useState } from "react";
-import { Button } from "ui";
-import { Modal } from "ui";
-import { PageHeader } from "ui";
+import { Button, Modal, PageHeader } from "ui";
 
 import { PostTypes } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";

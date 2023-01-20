@@ -1,6 +1,5 @@
 import Head from "next/head";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import { Content, PageHeader } from "ui";
 
 import { NewDomain } from "@/components/domain/new-domain";
 import Loading from "@/components/loading";

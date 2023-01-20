@@ -1,8 +1,7 @@
 import clipboard from "clipboard";
 import { useEffect, useRef, VFC } from "react";
 import { MdContentCopy } from "react-icons/md";
-import { Button } from "ui";
-import { Message } from "ui";
+import { Button, Message } from "ui";
 
 interface Props {
   elementId: string;

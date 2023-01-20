@@ -3,10 +3,10 @@ import {
   createContext,
   ReactNode,
   useCallback,
+  useContext,
   useMemo,
   useState,
 } from "react";
-import { useContext } from "react";
 
 import { PostContextType } from "@/components/post/types";
 

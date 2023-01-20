@@ -1,8 +1,7 @@
 import Cloudinary from "cloudinary";
 import fs from "fs";
 
-import { BlobCorrected } from "@/graphql/types";
-import { IMediaUploadResult } from "@/graphql/types";
+import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
 
 interface IOptions {
   api_key: string;

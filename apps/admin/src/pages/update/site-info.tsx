@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Input, Label } from "ui";
-import { TextArea } from "ui";
-import { Message } from "ui";
+import { Input, Label, Message, TextArea } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";

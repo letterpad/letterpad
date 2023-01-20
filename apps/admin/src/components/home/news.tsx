@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { FC } from "react";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import { Content, PageHeader } from "ui";
 
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { SettingsFragmentFragment } from "@/graphql/queries/partial.graphql";

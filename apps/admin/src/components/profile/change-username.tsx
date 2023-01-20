@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
-import { Button } from "ui";
-import { Input } from "ui";
+import { Button, Input } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 

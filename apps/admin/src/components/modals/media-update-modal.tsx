@@ -1,8 +1,5 @@
 import Image from "next/image";
-import { Button } from "ui";
-import { Input } from "ui";
-import { TextArea } from "ui";
-import { Modal } from "ui";
+import { Button, Input, Modal, TextArea } from "ui";
 
 import { Media } from "@/__generated__/__types__";
 

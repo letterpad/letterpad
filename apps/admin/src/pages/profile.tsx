@@ -1,6 +1,5 @@
 import Head from "next/head";
-import { PageHeader } from "ui";
-import { Content } from "ui";
+import { Content, PageHeader } from "ui";
 
 import Loading from "@/components/loading";
 import { Content as ProfileContent } from "@/components/profile/content";

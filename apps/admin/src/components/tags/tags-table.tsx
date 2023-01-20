@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table } from "ui";
-import { Content } from "ui";
+import { Content, Table } from "ui";
 
 import { TagRow } from "@/components/tags/types";
 

@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Button } from "ui";
-import { Input, Label } from "ui";
-import { TextArea } from "ui";
+import { Button, Input, Label, TextArea } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 

@@ -1,9 +1,6 @@
 import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
-import { Drawer } from "ui";
-import { SearchInput } from "ui";
-import { TextArea } from "ui";
-import { Switch } from "ui";
+import { Drawer, SearchInput, Switch, TextArea } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
