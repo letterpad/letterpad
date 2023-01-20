@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Button } from "ui";
-import { Accordion } from "ui";
+import { Accordion, AccordionItem } from "ui";
 import { TextArea } from "ui";
 import { PopConfirm } from "ui";
 import { PageHeader } from "ui";
@@ -46,29 +46,32 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
         </span>
       </PageHeader>
       <Content>
-        <Accordion onChange={onPanelClick} activeKey={router.query.selected}>
-          <Accordion.Item
+        <Accordion
+          onChange={onPanelClick}
+          activeKey={router.query.selected as string}
+        >
+          <AccordionItem
             label="General Settings"
             id="general"
             description="Basic details and metadata of your site"
           >
             <General settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Appearance"
             id="appearance"
             description="Customise the look and feel of your site"
           >
             <Appearance settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Pages"
             id="pages"
             description="Optional pages to add to your site"
           >
             <Pages settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Navigation"
             id="navigation"
             description="Configure the navigation menu of your site"
@@ -78,8 +81,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               blog.
             </div>
             <Navigation settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Integrations"
             id="integrations"
             description="Integrations and code injections"
@@ -88,8 +91,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               settings={settings}
               cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
             />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Keys"
             id="keys"
             description="Custom token to access letterpad API"
@@ -104,8 +107,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               />
               <CopyToClipboard elementId="client_token" />
             </div>
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Delete your account"
             id="account"
             description="Danger Zone"
@@ -123,7 +126,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
             >
               <Button variant="danger">Delete your account</Button>
             </PopConfirm>
-          </Accordion.Item>
+          </AccordionItem>
         </Accordion>
       </Content>
     </>

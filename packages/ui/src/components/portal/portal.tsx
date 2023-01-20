@@ -21,9 +21,12 @@ function usePortal(id: string) {
   return getRootElem();
 }
 
-export const Portal: FC<{ id: string; children: ReactNode }> = ({
+export const Portal = ({
   id,
   children,
+}: {
+  id: string;
+  children: ReactNode;
 }) => {
   const target = usePortal(id);
   if (!target) return children;

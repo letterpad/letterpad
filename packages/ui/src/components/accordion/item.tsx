@@ -7,6 +7,7 @@
 //   children: React.ReactNode;
 // }
 // This is only an interface for props
+//@ts-ignore
 export const Item = ({ children, label, id, description }) => {
   return null;
 };

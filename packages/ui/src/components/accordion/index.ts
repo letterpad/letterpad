@@ -1,6 +1,2 @@
-import { Component } from "./accordion";
-import { Item } from "./item";
-
-export const Accordion = Object.assign(Component, {
-  Item,
-});
+export { Component as Accordion } from "./accordion";
+export { Item as AccordionItem } from "./item";

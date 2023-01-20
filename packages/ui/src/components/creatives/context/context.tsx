@@ -89,7 +89,7 @@ export const BuilderContext: FC<Props> = ({
   };
 
   const addRow = useCallback(
-    (rowIndex, columns = 2) => {
+    (rowIndex: number, columns = 2) => {
       const isPrevRowImageLeft =
         grid[grid.length - 1].data[0]?.type === "image";
       const newItem = { ...createDefaultItem() };
@@ -120,7 +120,7 @@ export const BuilderContext: FC<Props> = ({
   );
 
   const addMasonry = useCallback(
-    (rowIndex) => {
+    (rowIndex: number) => {
       const newItem = { ...createDefaultItem() };
       newItem.data = [{ type: "masonry" }];
       const newGrid: Block[] = [

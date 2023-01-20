@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Children, FC, ReactNode, useState } from "react";
+import { Children, FC, ReactElement, ReactNode, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { CgMathMinus } from "react-icons/cg";
 
@@ -8,6 +8,14 @@ interface Props {
   activeKey: string;
   onChange: (key: string) => void;
 }
+
+interface EnrichedChildren {
+  id: string;
+  description: string;
+  label: string;
+  children?: ReactNode;
+}
+
 export const Component: FC<Props> = ({ children, activeKey, onChange }) => {
   const [activeTab, setActiveTab] = useState(activeKey);
 
@@ -24,7 +32,9 @@ export const Component: FC<Props> = ({ children, activeKey, onChange }) => {
       <div data-accordion="collapse">
         {Children.map(children, (child, index) => {
           if (!child) return null;
-          const { label, id, children, description } = child.props;
+          let typedChild: React.ReactElement<EnrichedChildren> =
+            child as ReactElement;
+          const { label, id, children, description } = typedChild.props;
           const isFirstItem = index === 0;
           const isLastItem = index === totalChildren - 1;
 
@@ -40,7 +50,7 @@ export const Component: FC<Props> = ({ children, activeKey, onChange }) => {
                 testId={id}
                 description={description}
               />
-              {child.props.id === activeTab && (
+              {typedChild.props.id === activeTab && (
                 <div
                   className={classNames({
                     hidden: activeTab !== id,
@@ -51,7 +61,7 @@ export const Component: FC<Props> = ({ children, activeKey, onChange }) => {
                       "border border-gray-200 p-4 dark:border-gray-700",
                       {
                         "border-b-0":
-                          !isLastItem && child.props.id !== activeTab,
+                          !isLastItem && typedChild.props.id !== activeTab,
                         "rounded-b-lg": isLastItem,
                       }
                     )}

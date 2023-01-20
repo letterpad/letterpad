@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 import { useBuilderContext } from "../../context/context";
 import { Toolbar } from "../../toolbar";
@@ -12,6 +12,7 @@ export interface RowProps {
   row: Block;
   isPrevRowImageLeft: boolean;
   rowIndex: number;
+  children: ReactNode;
 }
 
 export const ToolbarProvider: FC<RowProps> = ({
