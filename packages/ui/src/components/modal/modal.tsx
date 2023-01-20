@@ -71,7 +71,7 @@ export const Modal = ({
                 </button>
               </div>
 
-              <div className="p-2">{children}</div>
+              <div className="p-4">{children}</div>
 
               {footer && (
                 <div className="flex items-end justify-end space-x-2 rounded-b border-t border-gray-200 py-4 px-4 dark:border-gray-700">

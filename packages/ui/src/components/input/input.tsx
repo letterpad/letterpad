@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { ChangeEvent, forwardRef, HTMLProps } from "react";
+import { ChangeEvent, forwardRef, HTMLProps, KeyboardEvent } from "react";
 
 import { Label } from "./label";
 
@@ -36,6 +36,7 @@ interface Props extends HTMLProps<HTMLInputElement> {
   addonAfter?: string;
   help?: string;
   limit?: number;
+  onEnter?: (event: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -51,9 +52,9 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     addonAfter,
     labelClassName,
     limit,
+    onEnter,
     ...rest
   } = props;
-
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length <= rest.value?.length!) {
       return rest.onChange?.(e);
@@ -93,6 +94,11 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
                 "rounded-r-none border-r-0": addonAfter,
               }
             )}
+            onKeyDown={(ev) => {
+              if (ev.key === "Enter") {
+                onEnter?.(ev);
+              }
+            }}
             {...rest}
             onChange={onChange}
           />

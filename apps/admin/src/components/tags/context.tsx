@@ -127,6 +127,11 @@ export const TagsProvider: React.FC<{
       [addTag, deleteTag, editTag, loading, saveTag, tags, updateTagsMutation]
     );
 
+  const onSave = () => {
+    if (tagToBeEdited)
+      saveTag({ ...tagToBeEdited, name: inputRef.current?.value ?? "" });
+  };
+
   const tagToBeEdited = tags.filter((item) => item.key === editTagId).pop();
   return (
     <TagsContext.Provider value={context}>
@@ -145,15 +150,7 @@ export const TagsProvider: React.FC<{
           >
             Cancel
           </Button>,
-          <Button
-            key="save"
-            variant="primary"
-            onClick={() =>
-              tagToBeEdited &&
-              saveTag({ ...tagToBeEdited, name: inputRef.current?.value ?? "" })
-            }
-            size="normal"
-          >
+          <Button key="save" variant="primary" onClick={onSave} size="normal">
             Save
           </Button>,
         ]}
@@ -162,6 +159,7 @@ export const TagsProvider: React.FC<{
           label="Rename Tag"
           defaultValue={tagToBeEdited?.name}
           ref={inputRef}
+          onEnter={onSave}
         />
       </Modal>
     </TagsContext.Provider>
