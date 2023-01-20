@@ -118,11 +118,22 @@ export const TagsProvider: React.FC<{
         variables: {
           data: { name, slug, old_name: item.name },
         },
+        updateQueries: {
+          Tags: (prev) => {
+            return {
+              ...prev,
+              tags: {
+                ...prev.tags,
+                rows: newData,
+              },
+            };
+          },
+        },
       });
-      if (newData) setTags(newData);
+      postsQuery.refetch();
       setEditTagId(null);
     },
-    [tags, updateTagsMutation]
+    [tags, updateTagsMutation, postsQuery]
   );
 
   const addTag = useCallback(() => {
