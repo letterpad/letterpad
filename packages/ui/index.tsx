@@ -22,3 +22,4 @@ export * from "./src/components/table";
 export * from "./src/components/tabs";
 export * from "./src/components/textarea";
 export * from "./src/components/tooltip";
+export { useKeyPress } from "./src/hooks/useKeyPress";
