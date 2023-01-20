@@ -7,7 +7,7 @@ import { ColorPickerGradient } from "./colorpicker";
 import { Reset } from "./helpers";
 import { IconDelete, IconGradient, IconImage } from "./icons";
 import { useBuilderContext } from "../context/context";
-import { BlockItem } from "../types";
+import { BlockItem, Pattern } from "../types";
 
 const ReactStickyBox = lazy(() => import("react-sticky-box"));
 interface Props {
@@ -31,7 +31,7 @@ export const ContentToolbar: FC<Props> = ({
   const isFirstRow = rowIndex === 0;
 
   const updatePattern = useCallback(
-    (pattern) => {
+    (pattern: Pattern) => {
       updateCell(
         {
           image: {
@@ -151,7 +151,7 @@ export const ContentToolbar: FC<Props> = ({
             <IconDelete size={18} />
           </Button>
         )}
-        <style jsx global>{`
+        <style>{`
           .active {
             background: #21212b !important;
           }
@@ -193,7 +193,7 @@ const Button: FC<ButtonProps> = ({
   );
 };
 
-const Wrapper: FC = ({ children }) => (
+const Wrapper: FC<{ children?: ReactNode }> = ({ children }) => (
   <div className="absolute top-0 right-0 z-10 m-4 h-full text-center">
     <ReactStickyBox className="mb-10" offsetTop={20}>
       {children}

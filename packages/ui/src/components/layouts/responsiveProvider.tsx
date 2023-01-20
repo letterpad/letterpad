@@ -1,4 +1,4 @@
-import { createContext, FC, useContext, useState } from "react";
+import { createContext, FC, ReactNode, useContext, useState } from "react";
 
 import { useResponsive } from "./useResponsive";
 
@@ -10,7 +10,9 @@ interface Props {
 }
 const Responsive = createContext<Props>({} as Props);
 
-export const ResponsiveProvider: FC = ({ children }) => {
+export const ResponsiveProvider: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const { md, lg } = useResponsive();
   const isDesktop = md || lg;
   const isMobileOrTablet = !md;

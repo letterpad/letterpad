@@ -1,12 +1,17 @@
 import classNames from "classnames";
-import { Children, useState } from "react";
+import { Children, FC, ReactNode, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { CgMathMinus } from "react-icons/cg";
 
-export const Component = ({ children, activeKey, onChange }) => {
+interface Props {
+  children: ReactNode;
+  activeKey: string;
+  onChange: (key: string) => void;
+}
+export const Component: FC<Props> = ({ children, activeKey, onChange }) => {
   const [activeTab, setActiveTab] = useState(activeKey);
 
-  const onClickTabItem = (id) => {
+  const onClickTabItem = (id: string) => {
     if (id === activeTab) {
       id = "";
     }
@@ -18,6 +23,7 @@ export const Component = ({ children, activeKey, onChange }) => {
     <>
       <div data-accordion="collapse">
         {Children.map(children, (child, index) => {
+          if (!child) return null;
           const { label, id, children, description } = child.props;
           const isFirstItem = index === 0;
           const isLastItem = index === totalChildren - 1;
@@ -62,7 +68,7 @@ export const Component = ({ children, activeKey, onChange }) => {
   );
 };
 
-const Header = ({
+const Header: FC<any> = ({
   isActive,
   label,
   description,
