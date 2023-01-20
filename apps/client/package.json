@@ -1,5 +1,6 @@
 {
   "name": "letterpad-client",
+  "author": "Abhishek Saha",
   "version": "1.5.1",
   "private": true,
   "scripts": {

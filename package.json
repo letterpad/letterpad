@@ -1,6 +1,7 @@
 {
   "name": "letterpad-blog",
   "version": "0.0.1",
+  "author": "Abhishek Saha",
   "private": true,
   "workspaces": [
     "apps/*",
