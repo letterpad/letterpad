@@ -132,7 +132,6 @@
     "jest": "^27.0.5",
     "lint-staged": "^12.4.2",
     "node-env-file": "^0.1.8",
-    "react-parallax": "^3.5.1",
     "react-test-renderer": "18.2.0",
     "start-server-and-test": "^1.14.0",
     "ts-jest": "^27.0.3",

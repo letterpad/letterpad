@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { FC, lazy, useState } from "react";
 
-// import FileExplorer from "@/components/file-explorer";
 import { SectionMasonry } from "./masonry";
 import { SectionText } from "./text";
 import { useBuilderContext } from "../context/context";
@@ -9,7 +8,9 @@ import { Block } from "../types";
 import { createId } from "../utils";
 
 const LazySectionImage = lazy(() =>
-  import("./image").then((m) => ({ default: m.SectionImage }))
+  import("./image").then((m) => ({
+    default: m.SectionImage,
+  }))
 );
 
 const LazyContentToolbar = lazy(() =>
@@ -23,10 +24,10 @@ interface Props {
   colIndex: number;
 }
 export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
-  const { preview, updateCell } = useBuilderContext();
+  const { preview, updateCell, FileExplorer } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [formats, setFormats] = useState(
-    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote link | forecolor"
+    "h1 h2 | fontfamily fontsize alignleft alignjustify aligncenter alignright | blockquote link | forecolor"
   );
   const item = row?.data[colIndex];
   const isText = item?.type === "text";
@@ -37,10 +38,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const [editorOpen, setEditorOpen] = useState(isText || columns === 1);
   return (
     <div
-      className={classNames(
-        "relative flex w-full justify-center align-middle",
-        "row-" + rowIndex
-      )}
+      className={classNames("relative flex w-full justify-center align-middle")}
       style={{ backgroundColor: item?.bgColor }}
       onClick={() => setEditorOpen(isText || columns === 1)}
     >
@@ -48,7 +46,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         <LazyContentToolbar
           setEditorOpen={(visible) => {
             setFormats(
-              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor"
+              "h1 h2 | fontsize fontfamily alignjustify alignleft aligncenter alignright | blockquote | link | forecolor"
             );
             setEditorOpen(visible);
           }}
@@ -69,7 +67,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           }
         />
       )}
-      <div className="w-full text-center">
+      <div className="h-full w-full text-center">
         {isText && !isFirstRow && (
           <SectionText
             columns={columns}
@@ -77,7 +75,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             editable={!isFirstRow}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor"
+                "h1 h2 | fontsize fontfamily alignjustify alignleft aligncenter alignright | blockquote | link | forecolor"
               );
               setEditorOpen(true);
             }}
@@ -95,7 +93,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             cover={row?.cover}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | link | forecolor"
+                "h1 h2 | fontsize_formats fontfamily alignjustify alignleft aligncenter alignright | blockquote | link | forecolor"
               );
               setEditorOpen(true);
             }}
@@ -105,8 +103,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           <SectionMasonry item={item} position={[rowIndex, colIndex]} />
         )}
       </div>
-      {/* TODO - DO NOT MERGE UNTILL THIS IS DONE: Abhi to take care of file explorer in creatives package */}
-      {/* <FileExplorer
+      <FileExplorer
         multi={true}
         isVisible={!!fileExplorerOpen}
         handleCancel={() => setFileExplorerOpen(false)}
@@ -140,7 +137,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             );
           }
         }}
-      /> */}
+      />
     </div>
   );
 };

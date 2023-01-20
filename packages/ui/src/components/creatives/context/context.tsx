@@ -11,10 +11,19 @@ import {
 import { Block, BlockItem } from "../types";
 import { createId } from "../utils";
 
+type FileExplorerType = ({
+  isVisible,
+  handleCancel,
+  multi,
+  onInsert,
+}: any) => JSX.Element | null;
+
 interface Props {
   children: ReactNode;
   data: Block[];
   onSave: (page_data: Block[]) => void;
+  FileExplorer: FileExplorerType;
+  previewMode?: boolean;
 }
 
 interface ContextType {
@@ -31,6 +40,7 @@ interface ContextType {
   swapColumns: (rowIndex: number) => void;
   getColumns: (rowIndex: number) => BlockItem[];
   addTextRow: (rowIndex: number) => void;
+  FileExplorer: FileExplorerType;
 }
 
 const Context = createContext<ContextType>({} as ContextType);
@@ -48,9 +58,14 @@ function createDefaultItem(): Block {
   };
 }
 
-export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
-  const [preview, setPreview] = useState(false);
-
+export const BuilderContext: FC<Props> = ({
+  children,
+  data,
+  onSave,
+  FileExplorer,
+  previewMode = false,
+}) => {
+  const [preview, setPreview] = useState(previewMode);
   const [grid, setGrid] = useState(data);
 
   const removeCell = (index: number, col?: number) => {
@@ -196,7 +211,9 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     addMasonry,
     getColumns: (rowIndex: number) => grid[rowIndex].data,
     addTextRow,
+    FileExplorer,
   };
+
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 

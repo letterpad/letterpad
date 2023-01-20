@@ -104,7 +104,7 @@ export const Container = ({
     <NoSsr>
       <FileExplorer
         isVisible={isVisible}
-        handleCancel={handleCancel}
+        handleCancel={closeWindow}
         provider={mediaProvider}
         setProvider={setMediaProvider}
         onInsert={onInsert}
@@ -117,6 +117,8 @@ export const Container = ({
           );
         }}
         insertMedia={insertMedia}
+        selectedUrls={selectedUrls}
+        resetSelection={() => setSelection({})}
       />
       <style jsx global>{`
         .file-explorer {

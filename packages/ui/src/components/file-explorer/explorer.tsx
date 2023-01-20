@@ -17,6 +17,8 @@ interface IProps<T> {
   setProvider: (current: any) => void;
   renderProvider: (provider: T) => ReactChild;
   insertMedia: () => void;
+  resetSelection: () => void;
+  selectedUrls: TypeMediaInsert;
 }
 export const FileExplorer = <T extends any>({
   isVisible,
@@ -28,19 +30,12 @@ export const FileExplorer = <T extends any>({
   setProvider,
   renderProvider,
   insertMedia,
+  selectedUrls,
+  resetSelection,
 }: IProps<T>) => {
   const [uploading, setUploading] = useState(false);
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
-
-  const [selectedUrls, setSelection] = useState<{
-    [urls: string]: TypeMediaInsert;
-  }>({});
-
-  const closeWindow = () => {
-    setSelection({});
-    handleCancel();
-  };
 
   const hasSelectedImages = Object.keys(selectedUrls).length > 0;
   if (!isVisible) return null;
@@ -57,10 +52,10 @@ export const FileExplorer = <T extends any>({
         </div>
       }
       show={isVisible}
-      toggle={closeWindow}
+      toggle={handleCancel}
       zIndex={1301} // 1300 is tinymce insert toolbar
       footer={[
-        <Button key="back" onClick={closeWindow} variant="ghost">
+        <Button key="back" onClick={handleCancel} variant="ghost">
           Cancel
         </Button>,
         hasSelectedImages ? (
@@ -81,7 +76,7 @@ export const FileExplorer = <T extends any>({
         <Button
           key="provider"
           onClick={() => {
-            setSelection({});
+            resetSelection();
             setProvider(provider === "internal" ? "unsplash" : "internal");
           }}
         >

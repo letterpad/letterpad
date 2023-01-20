@@ -25,12 +25,16 @@ export const MasonryGrid: FC<Props> = ({
         <img
           src={item.src as string}
           alt={item.caption}
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover", height: "100%" }}
           onClick={() => onSelect(i)}
         />
         {!preview && (
-          <Button onClick={() => onRemove(item.id)}>
-            <IoRemoveCircleOutline />
+          <Button
+            onClick={() => onRemove(item.id)}
+            className="absolute top-0 rounded-none px-1 py-1"
+            variant="danger"
+          >
+            <IoRemoveCircleOutline size={20} />
           </Button>
         )}
       </div>

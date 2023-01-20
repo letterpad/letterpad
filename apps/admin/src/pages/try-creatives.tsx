@@ -10,6 +10,7 @@ import {
   portfolioData,
   weddingData,
 } from "@/components/creatives-data";
+import { FileExplorer } from "@/components/file-explorer";
 import ThemeSwitcher from "@/components/theme-switcher";
 
 import { CreativesHead } from "@/creatives";
@@ -26,6 +27,7 @@ const TryCreatives = () => {
       onSave={(newData) => {
         localStorage.setItem("page_data", JSON.stringify(newData));
       }}
+      FileExplorer={FileExplorer}
     >
       <Builder />
     </BuilderContext>
@@ -121,17 +123,14 @@ const Builder = () => {
             onClick={() => {
               router.push("/register");
             }}
+            size="small"
           >
             Register
           </Button>
           <ThemeSwitcher />
         </div>
       </div>
-      <Layout
-        type={PageType["Story Builder"]}
-        editable={false}
-        head={<CreativesHead />}
-      />
+      <Layout editable={false} head={<CreativesHead />} />
     </>
   );
 };

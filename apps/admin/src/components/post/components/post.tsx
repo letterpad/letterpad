@@ -8,6 +8,7 @@ import { BuilderContext } from "ui";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import ErrorMessage from "@/components/ErrorMessage";
+import { FileExplorer } from "@/components/file-explorer";
 import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
@@ -113,8 +114,9 @@ export const Post = () => {
                 page_data: JSON.stringify({ rows: page_data }),
               })
             }
+            FileExplorer={FileExplorer}
           >
-            <LayoutBuilder type={post.page_type} head={<CreativesHead />} />
+            <LayoutBuilder head={<CreativesHead />} />
           </BuilderContext>
         </div>
       )}

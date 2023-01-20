@@ -44,7 +44,8 @@ export const MiniEditor: React.FC<Props> = ({
           width: "100%",
           placeholder: "....[ text ]....",
           menubar: false,
-          // content_css: basePath + "/css/editor-mini.css",
+          content_css:
+            "http://localhost:3000/admin/skins/ui/oxide-dark/skin.min.css",
           toolbar: false,
           quickbars_insert_toolbar: false,
           fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",

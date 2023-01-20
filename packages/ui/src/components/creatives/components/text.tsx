@@ -1,9 +1,12 @@
-import { FC, useEffect } from "react";
+import { FC, lazy, useEffect } from "react";
 
 import { getHeight, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../context/context";
-import { MiniEditor } from "../toolbar/mini-editor";
 import { BlockItem } from "../types";
+
+const LazyMiniEditor = lazy(() =>
+  import("../toolbar/mini-editor").then((m) => ({ default: m.MiniEditor }))
+);
 
 interface Props {
   columns: number;
@@ -25,11 +28,6 @@ export const SectionText: FC<Props> = ({
   const { updateCell, preview } = useBuilderContext();
   const [rowIndex, colIndex] = position;
 
-  useEffect(() => {
-    const div = document.querySelector(`.row-${rowIndex}`) as HTMLDivElement;
-    div?.style.setProperty("min-height", getHeight(cover) + "px");
-  }, [cover, rowIndex]);
-
   const update = (text: string) => {
     updateCell(
       {
@@ -41,13 +39,14 @@ export const SectionText: FC<Props> = ({
     );
   };
   if (item.type === "image") return null;
+  if (item.type !== "text") return null;
 
   return (
-    <Wrapper className={`row-${rowIndex}`}>
+    <Wrapper>
       {preview ? (
         <Text columns={columns} text={item.text ?? ""} />
       ) : (
-        <MiniEditor
+        <LazyMiniEditor
           onChange={update}
           formats={formats}
           text={decodeURIComponent(item?.text ?? "")}
@@ -57,7 +56,7 @@ export const SectionText: FC<Props> = ({
   );
 };
 
-const Text: FC<{ columns: number; text: string }> = ({
+export const Text: FC<{ columns: number; text: string }> = ({
   columns,
   text = "",
 }) => (

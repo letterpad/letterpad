@@ -1,6 +1,6 @@
 import classNames from "classnames";
 // import dynamic from "next/dynamic";
-import { FC, lazy, ReactNode, useCallback, useState } from "react";
+import { FC, lazy, ReactChild, ReactNode, useCallback, useState } from "react";
 
 import { ColorPicker } from "./color";
 import { ColorPickerGradient } from "./colorpicker";
@@ -144,8 +144,8 @@ export const ContentToolbar: FC<Props> = ({
 
   return (
     <Wrapper>
-      <div className="inline-flex items-center  justify-center gap-4">
-        <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
+      <div className="inline-flex items-center  justify-center gap-2">
+        <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor!} />
         {!isFirstRow && (
           <Button onClick={() => removeCell(rowIndex, colIndex)}>
             <IconDelete size={18} />
