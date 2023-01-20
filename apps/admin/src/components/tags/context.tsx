@@ -16,7 +16,11 @@ import {
   useDeleteTagsMutation,
   useUpdateTagsMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { useTagsQuery } from "@/__generated__/queries/queries.graphql";
+import {
+  usePostsQuery,
+  useStatsQuery,
+  useTagsQuery,
+} from "@/__generated__/queries/queries.graphql";
 
 import { getHeaders } from "./headers";
 
@@ -36,10 +40,14 @@ export const TagsProvider: React.FC<{
   const { loading, data } = useTagsQuery({
     fetchPolicy: "network-only",
   });
-  const [updateTagsMutation] = useUpdateTagsMutation();
-  const [deleteTagsMutation] = useDeleteTagsMutation();
   const [tags, setTags] = useState<TagRow[]>([]);
   const [editTagId, setEditTagId] = useState<React.Key | null>(null);
+  const postsQuery = usePostsQuery({ skip: true });
+  const statsQuery = useStatsQuery({ skip: true });
+
+  const [updateTagsMutation] = useUpdateTagsMutation();
+  const [deleteTagsMutation] = useDeleteTagsMutation();
+
   const computedTags = useMemo(
     () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
     [data]
@@ -62,11 +70,25 @@ export const TagsProvider: React.FC<{
     async (key: React.Key) => {
       const tagToDelete = [...tags].filter((item) => item.key === key);
       if (tagToDelete.length > 0) {
-        await deleteTagsMutation({ variables: { name: tagToDelete[0].name } });
+        await deleteTagsMutation({
+          updateQueries: {
+            Tags: (prev) => {
+              return {
+                ...prev,
+                tags: {
+                  ...prev.tags,
+                  rows: prev.tags.rows.filter((tag) => tag.name !== key),
+                },
+              };
+            },
+          },
+          variables: { name: tagToDelete[0].name },
+        });
+        postsQuery.refetch();
+        statsQuery.refetch();
       }
-      setTags([...tags].filter((item) => item.key !== key));
     },
-    [deleteTagsMutation, tags]
+    [deleteTagsMutation, postsQuery, statsQuery, tags]
   );
 
   const editTag = useCallback(async (key: React.Key) => {
