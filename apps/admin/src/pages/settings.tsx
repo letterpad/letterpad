@@ -1,5 +1,14 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import {
+  Accordion,
+  AccordionItem,
+  Button,
+  Content,
+  PageHeader,
+  PopConfirm,
+  TextArea,
+} from "ui";
 
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";
@@ -7,12 +16,6 @@ import General from "@/components/settings/general";
 import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
-import { Accordion } from "@/components_v2/accordion";
-import { Buttonv2 } from "@/components_v2/button";
-import { Content } from "@/components_v2/content";
-import { PageHeader } from "@/components_v2/page-header";
-import { PopConfirm } from "@/components_v2/popconfirm";
-import { TextArea } from "@/components_v2/textarea";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
@@ -46,29 +49,32 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
         </span>
       </PageHeader>
       <Content>
-        <Accordion onChange={onPanelClick} activeKey={router.query.selected}>
-          <Accordion.Item
+        <Accordion
+          onChange={onPanelClick}
+          activeKey={router.query.selected as string}
+        >
+          <AccordionItem
             label="General Settings"
             id="general"
             description="Basic details and metadata of your site"
           >
             <General settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Appearance"
             id="appearance"
             description="Customise the look and feel of your site"
           >
             <Appearance settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Pages"
             id="pages"
             description="Optional pages to add to your site"
           >
             <Pages settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Navigation"
             id="navigation"
             description="Configure the navigation menu of your site"
@@ -78,8 +84,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               blog.
             </div>
             <Navigation settings={settings} />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Integrations"
             id="integrations"
             description="Integrations and code injections"
@@ -88,8 +94,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               settings={settings}
               cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
             />
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Keys"
             id="keys"
             description="Custom token to access letterpad API"
@@ -104,8 +110,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               />
               <CopyToClipboard elementId="client_token" />
             </div>
-          </Accordion.Item>
-          <Accordion.Item
+          </AccordionItem>
+          <AccordionItem
             label="Delete your account"
             id="account"
             description="Danger Zone"
@@ -121,9 +127,9 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               okText="Yes"
               cancelText="No"
             >
-              <Buttonv2 variant="danger">Delete your account</Buttonv2>
+              <Button variant="danger">Delete your account</Button>
             </PopConfirm>
-          </Accordion.Item>
+          </AccordionItem>
         </Accordion>
       </Content>
     </>

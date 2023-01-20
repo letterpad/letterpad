@@ -1,0 +1,78 @@
+import { FC, useEffect, useState } from "react";
+
+import { MasonryGrid } from "./masonry/grid";
+import { isLastImage } from "./masonry/selectors";
+import { Wrapper } from "./wrapper";
+import { useBuilderContext } from "../context/context";
+import { BlockItem, BlockMasonry } from "../types";
+import { GalleryModal } from "../../gallery";
+import { Portal } from "../../portal";
+import { disableScroll } from "../../../utils";
+
+interface Props {
+  item: BlockItem;
+  position: [number, number];
+}
+
+export const SectionMasonry: FC<Props> = ({ item, position }) => {
+  const { updateCell, preview } = useBuilderContext();
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [rowIndex, colIndex] = position;
+
+  useEffect(() => {
+    disableScroll(selectedIndex > 0);
+  }, [selectedIndex]);
+
+  const onImageChange = (index: number) => {
+    if (isLastImage(item.masonry || [], index)) {
+      return setSelectedIndex(0);
+    }
+    if (index < 0) {
+      return setSelectedIndex((item.masonry ?? []).length - 1);
+    }
+    setSelectedIndex(index);
+  };
+
+  const update = (data: BlockMasonry[]) => {
+    updateCell(
+      {
+        type: "masonry",
+        masonry: data,
+      },
+      rowIndex,
+      colIndex
+    );
+  };
+
+  const onSelect = (idx: number) => {
+    setSelectedIndex(idx);
+  };
+
+  const onRemove = (id: string) => {
+    const newData = item.masonry?.filter((item) => item.id !== id);
+    if (newData) update(newData);
+  };
+
+  if (item.type !== "masonry" || !item.masonry) return null;
+
+  return (
+    <Wrapper className={`row-${rowIndex}`}>
+      <MasonryGrid
+        items={item.masonry ?? []}
+        onSelect={onSelect}
+        onRemove={onRemove}
+        preview={preview}
+      />
+      <div className="modal">
+        <Portal id="modal-root">
+          <GalleryModal
+            items={item.masonry ?? []}
+            onSelect={onImageChange}
+            index={selectedIndex}
+            onClose={() => setSelectedIndex(-1)}
+          />
+        </Portal>
+      </div>
+    </Wrapper>
+  );
+};

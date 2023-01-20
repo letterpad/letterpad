@@ -1,4 +1,4 @@
-import { Block } from "../builder/types";
+import { Block } from "ui";
 
 export const paintingData: Block[] = [
   {

@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
+import { Input, Label, TextArea } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
-import { Input, Label } from "@/components_v2/input";
-import { TextArea } from "@/components_v2/textarea";
-import { Upload } from "@/components_v2/upload";
+import { Upload } from "@/components/upload";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";

@@ -1,11 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-
-import { SearchInput } from "@/components_v2/input";
+import { InfiniteScrollList, SearchInput } from "ui";
 
 import { Media } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
-
-import InfiniteScrollList from "../InfiniteScrollList";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];

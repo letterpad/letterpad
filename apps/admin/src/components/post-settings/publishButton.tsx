@@ -1,6 +1,6 @@
-import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { Button } from "ui";
 
-import { Buttonv2 } from "@/components_v2/button";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import {
   Navigation,
@@ -77,7 +77,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
           <>
             <label>Ready to publish your {post.type} ?</label>
 
-            <Buttonv2
+            <Button
               variant="success"
               size="normal"
               onClick={() => publish(true)}
@@ -85,7 +85,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
               className="button btn-success"
             >
               Publish
-            </Buttonv2>
+            </Button>
           </>
         )}
         {published && (
@@ -95,13 +95,13 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
               <span className="help-text mb-4 block">
                 Your {post.type} will no longer be visible to users.
               </span>
-              <Buttonv2
+              <Button
                 variant="dark"
                 onClick={() => publish(false)}
                 data-testid="unPublishBtn"
               >
                 Un-Publish
-              </Buttonv2>
+              </Button>
             </label>
           </>
         )}

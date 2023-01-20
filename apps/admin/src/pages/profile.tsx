@@ -1,9 +1,8 @@
 import Head from "next/head";
+import { Content, PageHeader } from "ui";
 
 import Loading from "@/components/loading";
 import { Content as ProfileContent } from "@/components/profile/content";
-import { Content } from "@/components_v2/content";
-import { PageHeader } from "@/components_v2/page-header";
 
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 

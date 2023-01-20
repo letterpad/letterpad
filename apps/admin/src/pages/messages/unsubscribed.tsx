@@ -1,6 +1,5 @@
 import Head from "next/head";
-
-import { Result } from "@/components_v2/result";
+import { Result } from "ui";
 const Unsubscribed = () => {
   if (typeof document === "undefined") {
     return null;

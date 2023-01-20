@@ -1,16 +1,20 @@
 import { report } from "@/components/error";
 
-import { MutationResolvers } from "@/__generated__/__types__";
-import { PostResolvers, QueryResolvers } from "@/__generated__/__types__";
+import {
+  MutationResolvers,
+  PostResolvers,
+  QueryResolvers,
+} from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { createPathWithPrefix } from "@/utils/slug";
 
-import { createPost, updatePost } from "../services/post";
 import {
+  createPost,
   getAuthorFromPost,
   getPost,
   getPosts,
   getTagsFromPost,
+  updatePost,
 } from "../services/post";
 import { getLetterpadLatestPost } from "../services/post/getLetterpadLatestPost";
 import { getLetterpadLatestPosts } from "../services/post/getLetterpadLatestPosts";

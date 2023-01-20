@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { Message } from "ui";
 
 import { Logo } from "@/components/login/views/Logo";
 import NoSsr from "@/components/NoSsr";
-import { Message } from "@/components_v2/message";
 
 import {
   ResetPasswordDocument,

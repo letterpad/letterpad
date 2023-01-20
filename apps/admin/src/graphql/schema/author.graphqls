@@ -7,9 +7,9 @@ type Social {
 }
 
 enum RegisterStep {
-   ProfileInfo
-   SiteInfo
-   Registered
+  ProfileInfo
+  SiteInfo
+  Registered
 }
 
 type Author {
@@ -26,8 +26,10 @@ type Author {
   avatar: String
   verified: Boolean
   accessToken: String @maskIfUnauth
-  analytics_id: Int @deprecated(reason: "Use google_analytics instead from settings")
-  analytics_uuid: String @deprecated(reason: "Umami is no longer supported for performance reasons")
+  analytics_id: Int
+    @deprecated(reason: "Use google_analytics instead from settings")
+  analytics_uuid: String
+    @deprecated(reason: "Umami is no longer supported for performance reasons")
   first_post_published: Boolean
   settings_updated: Boolean
   profile_updated: Boolean

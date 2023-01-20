@@ -1,13 +1,11 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { Input, Label, Message, TextArea } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { Logo } from "@/components/login/views/Logo";
-import { Input, Label } from "@/components_v2/input";
-import { Message } from "@/components_v2/message";
-import { TextArea } from "@/components_v2/textarea";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { removeTypenames } from "@/shared/utils";

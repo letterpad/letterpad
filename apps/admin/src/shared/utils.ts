@@ -108,20 +108,3 @@ const expr = /^[a-z0-9_]*$/;
 export const sanitizeUsername = (username: string) => {
   return expr.test(username);
 };
-
-export const createId = () => {
-  const s4 = () => {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  };
-  return s4() + s4();
-};
-
-export const disableScroll = (flag: boolean) => {
-  if (flag) {
-    document.body.style.overflowY = "hidden";
-  } else {
-    document.body.style.overflowY = "scroll";
-  }
-};

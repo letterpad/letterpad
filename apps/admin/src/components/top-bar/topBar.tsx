@@ -1,10 +1,8 @@
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
+import { Button, useResponsiveLayout } from "ui";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
-
-import { Buttonv2 } from "@/components_v2/button";
-import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
 
 import FeedbackForm from "../feedback-form";
 import ThemeSwitcher from "../theme-switcher";
@@ -17,17 +15,17 @@ export const TopBar = () => {
     <div className="flex flex-row items-center justify-between py-4">
       <div>
         {isMobileOrTablet && (
-          <Buttonv2
+          <Button
             className="menu"
             onClick={() => setSidebarVisible(!sidebarVisible)}
           >
             {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}
-          </Buttonv2>
+          </Button>
         )}
       </div>
       {SavingIndicator}
       <div className="flex flex-row gap-2">
-        <Buttonv2 size="small" variant="ghost">
+        <Button size="small" variant="ghost">
           <a
             href="https://docs.letterpad.app/"
             target="_blank"
@@ -35,7 +33,7 @@ export const TopBar = () => {
           >
             Help
           </a>
-        </Buttonv2>
+        </Button>
         <FeedbackForm />
         <ThemeSwitcher />
       </div>

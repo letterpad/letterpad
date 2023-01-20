@@ -9,6 +9,7 @@ const classes = {
     small: "px-2 py-1 text-sm",
     normal: "px-4 py-2",
     large: "px-8 py-3 text-lg",
+    none: "",
   },
   variant: {
     primary:
@@ -29,7 +30,7 @@ const classes = {
 interface Props {
   children: ReactNode;
   pill?: boolean;
-  size?: "small" | "normal" | "large";
+  size?: "small" | "normal" | "large" | "none";
   variant?:
     | "primary"
     | "secondary"
@@ -60,12 +61,12 @@ export const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>(
         ref={ref}
         disabled={disabled}
         className={classNames(
+          className,
           classes.base,
           classes.size[size],
           classes.variant[variant],
           pill && classes.pill,
-          disabled && classes.disabled,
-          className
+          disabled && classes.disabled
         )}
         {...rest}
       >

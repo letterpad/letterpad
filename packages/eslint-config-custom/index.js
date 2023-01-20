@@ -20,6 +20,7 @@ module.exports = {
         aspects: ["invalidHref", "preferButton"],
       },
     ],
+    "import/no-duplicates": ["error", {"considerQueryString": true}],
     "react/prop-types": 0,
     "no-unused-vars": "off",
     // "no-unused-vars": ["error", { "vars": "local",'argsIgnorePattern': '^_' }],

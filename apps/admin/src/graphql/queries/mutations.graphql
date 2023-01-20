@@ -55,7 +55,7 @@ mutation createAuthor($data: InputCreateAuthor!) {
       name
       id
       register_step
-      verified,
+      verified
       username
     }
     ... on Failed {

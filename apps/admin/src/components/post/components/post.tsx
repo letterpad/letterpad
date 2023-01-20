@@ -1,20 +1,24 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
+import {
+  BuilderContext,
+  Layout as LayoutBuilder,
+  PostTitlePlaceholder,
+} from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
-import { Layout as LayoutBuilder } from "@/components/builder";
-import { BuilderContext } from "@/components/builder/context";
 import ErrorMessage from "@/components/ErrorMessage";
+import { FileExplorer } from "@/components/file-explorer";
 import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
 import { Title } from "@/components/post/components/title";
-import { PostTitlePlaceholder } from "@/components_v2/placeholders";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import { CreativesHead } from "@/creatives";
 import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
@@ -112,8 +116,9 @@ export const Post = () => {
                 page_data: JSON.stringify({ rows: page_data }),
               })
             }
+            FileExplorer={FileExplorer}
           >
-            <LayoutBuilder type={post.page_type} />
+            <LayoutBuilder head={<CreativesHead />} />
           </BuilderContext>
         </div>
       )}

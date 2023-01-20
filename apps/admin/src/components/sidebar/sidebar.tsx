@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { FC } from "react";
@@ -8,9 +9,7 @@ import { HiOutlineUsers } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 import { VscDebugDisconnect } from "react-icons/vsc";
-
-import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
-import { Menu } from "@/components_v2/menu";
+import { Menu, useResponsiveLayout } from "ui";
 
 import { HomeQueryQuery } from "@/__generated__/queries/queries.graphql";
 
@@ -39,6 +38,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
           style={{ height: "calc(100vh - 152px)" }}
         >
           <Menu
+            Link={Link}
             onSelect={(key) => {
               if (key === "/logout") {
                 signOut({

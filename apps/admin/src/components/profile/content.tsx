@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-
-import { Accordion } from "@/components_v2/accordion";
+import { Accordion, AccordionItem } from "ui";
 
 import { MeFragmentFragment } from "@/__generated__/queries/partial.graphql";
 
@@ -18,35 +17,38 @@ export const Content: React.VFC<Props> = ({ data }) => {
     router.replace({ query: { selected: key } });
   };
   return (
-    <Accordion onChange={onPanelClick} activeKey={router.query.selected}>
-      <Accordion.Item
+    <Accordion
+      onChange={onPanelClick}
+      activeKey={router.query.selected as string}
+    >
+      <AccordionItem
         label="Basic Information"
         id="basic"
         description="Author information and details"
       >
         <Basic data={data} />
-      </Accordion.Item>
-      <Accordion.Item
+      </AccordionItem>
+      <AccordionItem
         label="Change Email and Username"
         id="email"
         description="Credentials related information"
       >
         <EmailAndUsername data={data} />
-      </Accordion.Item>
-      <Accordion.Item
+      </AccordionItem>
+      <AccordionItem
         label="Social Information"
         id="social"
         description="Change links to social networks"
       >
         <Social social={data.social} id={data.id} />
-      </Accordion.Item>
-      <Accordion.Item
+      </AccordionItem>
+      <AccordionItem
         label="Change Password"
         id="changePassword"
         description="Change your password"
       >
         <ChangePassword id={data.id} />
-      </Accordion.Item>
+      </AccordionItem>
     </Accordion>
   );
 };

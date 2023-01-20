@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-
-import { Buttonv2 } from "@/components_v2/button";
-import { Message } from "@/components_v2/message";
-import { Modal } from "@/components_v2/modal";
-import { TextArea } from "@/components_v2/textarea";
+import { Button, Message, Modal, TextArea } from "ui";
 
 import { basePath } from "@/constants";
 
@@ -47,25 +43,25 @@ const FeedbackForm = () => {
 
   return (
     <>
-      <Buttonv2 size="small" onClick={showModal} variant="ghost">
+      <Button size="small" onClick={showModal} variant="ghost">
         Report
-      </Buttonv2>
+      </Button>
       <Modal
         header="Report an issue"
         show={isModalVisible}
         toggle={handleCancel}
         footer={[
-          <Buttonv2 key="back" onClick={handleCancel} variant="ghost">
+          <Button key="back" onClick={handleCancel} variant="ghost">
             Cancel
-          </Buttonv2>,
-          <Buttonv2
+          </Button>,
+          <Button
             key="submit"
             variant="primary"
             onClick={handleOk}
             disabled={processing}
           >
             Submit
-          </Buttonv2>,
+          </Button>,
         ]}
       >
         <p>

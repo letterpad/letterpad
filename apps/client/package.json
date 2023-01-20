@@ -1,5 +1,6 @@
 {
   "name": "letterpad-client",
+  "author": "Abhishek Saha",
   "version": "1.5.1",
   "private": true,
   "scripts": {
@@ -49,7 +50,6 @@
     "inquirer": "^8.1.1",
     "lint-staged": "^11.0.0",
     "next-remote-watch": "^1.0.0",
-    "react-parallax": "^3.5.1",
     "config": "*",
     "typescript": "^4.6.1-rc"
   },

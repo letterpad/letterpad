@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Button, Content, Table } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -10,9 +11,6 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
 import { creativesColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
-import { Buttonv2 } from "@/components_v2/button";
-import { Content } from "@/components_v2/content";
-import { Table } from "@/components_v2/table";
 
 import {
   PostsFilters,
@@ -51,7 +49,7 @@ function Pages() {
             Creatives add more customisation to your site. Create portfolios,
             photo stories, write a picture book etc.
           </span>
-          <Buttonv2 size="small" variant="ghost">
+          <Button size="small" variant="ghost">
             <a
               href="https://letterpad.app/admin/try-creatives"
               target="_blank"
@@ -59,7 +57,7 @@ function Pages() {
             >
               Demo
             </a>
-          </Buttonv2>
+          </Button>
         </div>
       </Header>
       <Content>

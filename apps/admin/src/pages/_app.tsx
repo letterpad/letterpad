@@ -2,6 +2,7 @@ import { ApolloProvider } from "@apollo/client";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
+import { ResponsiveProvider } from "ui";
 
 import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
@@ -10,7 +11,6 @@ import "ui/css/editor.css";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
 import Main from "@/components/main";
-import { ResponsiveProvider } from "@/components_v2/layouts/responsiveProvider";
 
 import { basePath } from "@/constants";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";

@@ -1,9 +1,7 @@
 import clipboard from "clipboard";
 import { useEffect, useRef, VFC } from "react";
 import { MdContentCopy } from "react-icons/md";
-
-import { Buttonv2 } from "@/components_v2/button";
-import { Message } from "@/components_v2/message";
+import { Button, Message } from "ui";
 
 interface Props {
   elementId: string;
@@ -23,7 +21,7 @@ export const CopyToClipboard: VFC<Props> = ({ elementId }) => {
 
   return (
     <>
-      <Buttonv2
+      <Button
         ref={buttonRef}
         variant="ghost"
         onClick={() => Message().success({ content: "Copied" })}
@@ -31,7 +29,7 @@ export const CopyToClipboard: VFC<Props> = ({ elementId }) => {
         <MdContentCopy size={16} />
         &nbsp;
         <span>Copy</span>
-      </Buttonv2>
+      </Button>
     </>
   );
 };

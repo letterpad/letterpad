@@ -1,14 +1,9 @@
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { Button, Content, Input, PageHeader, Table, Tabs } from "ui";
 
 import Editor from "@/components/post/components/editor";
-import { Buttonv2 } from "@/components_v2/button";
-import { Content } from "@/components_v2/content";
-import { Input } from "@/components_v2/input";
-import { PageHeader } from "@/components_v2/page-header";
-import { Table } from "@/components_v2/table";
-import { Tabs } from "@/components_v2/tabs";
 
 import { ROLES } from "@/graphql/types";
 
@@ -104,12 +99,12 @@ const Members = () => {
                 />
               </div>
               <div className="flex justify-end gap-2">
-                <Buttonv2 disabled={loading} onClick={() => sendMail(false)}>
+                <Button disabled={loading} onClick={() => sendMail(false)}>
                   Send
-                </Buttonv2>
-                <Buttonv2 disabled={loading} onClick={() => sendMail(true)}>
+                </Button>
+                <Button disabled={loading} onClick={() => sendMail(true)}>
                   Send Test Mail
-                </Buttonv2>
+                </Button>
               </div>
               <div className="mt-10">
                 <pre>{result}</pre>

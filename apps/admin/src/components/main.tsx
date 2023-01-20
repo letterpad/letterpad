@@ -2,11 +2,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
+import { TwoColumnLayout } from "ui";
 
 import { useTracking } from "@/hooks/usetracking";
 
 import ThemeSwitcher from "@/components/theme-switcher";
-import { TwoColumnLayout } from "@/components_v2/layouts";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath, registrationPaths } from "@/constants";
@@ -16,6 +16,7 @@ import { Page } from "@/page";
 import { initPageProgress } from "./../shared/utils";
 import LoginLayout from "./layouts/LoginLayout";
 import MessageLayout from "./layouts/MessageLayout";
+import { SiteFooter } from "./layouts/site-footer";
 import { LoadingScreen } from "./loading-screen";
 import { Sidebar } from "./sidebar";
 import { TopBar } from "./top-bar/topBar";
@@ -123,10 +124,11 @@ const Main = ({ Component, props }: IProps) => {
           />
         }
         right={
-          <>
+          <div className="px-6">
             <TopBar />
             <Component {...props} settings={data?.settings} me={data?.me} />
-          </>
+            <SiteFooter />
+          </div>
         }
       />
     );

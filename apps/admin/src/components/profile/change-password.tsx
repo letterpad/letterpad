@@ -1,9 +1,7 @@
 import { useState } from "react";
+import { Button, Input } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
-
-import { Buttonv2 } from "@/components_v2/button";
-import { Input } from "@/components_v2/input";
 
 interface Props {
   id: number;
@@ -33,14 +31,14 @@ export const ChangePassword: React.VFC<Props> = ({ id }) => {
             type="password"
           />
         </div>
-        <Buttonv2
+        <Button
           variant="primary"
           onClick={(_) => updateAuthor({ password })}
           disabled={error.length > 0}
           className="col-span-2 lg:col-span-1"
         >
           Save
-        </Buttonv2>
+        </Button>
       </div>
       <span className="-mt-4 text-sm text-red-500">{error}</span>
     </>
@@ -54,9 +52,9 @@ export const ChangePassword: React.VFC<Props> = ({ id }) => {
         onChange={(e) => setPassword(e.target.value)}
         minLength={8}
       />
-      <Buttonv2 variant="primary" onClick={(_) => updateAuthor({ password })}>
+      <Button variant="primary" onClick={(_) => updateAuthor({ password })}>
         Save
-      </Buttonv2>
+      </Button>
     </>
   );
 };

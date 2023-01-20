@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
-import { Message } from "@/components_v2/message";
+import { Message } from "ui";
 
 import { basePath } from "@/constants";
 import { EventAction, track } from "@/track";

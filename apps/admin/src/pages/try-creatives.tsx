@@ -1,22 +1,24 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-
-import { Layout } from "@/components/builder";
 import {
   BuilderContext,
+  Button,
+  EditSwitch,
+  Layout,
   useBuilderContext,
-} from "@/components/builder/context";
-import { EditSwitch } from "@/components/builder/toolbar/editSwitch";
+} from "ui";
+
 import {
   introData,
   paintingData,
   portfolioData,
   weddingData,
 } from "@/components/creatives-data";
+import { FileExplorer } from "@/components/file-explorer";
 import ThemeSwitcher from "@/components/theme-switcher";
-import { Buttonv2 } from "@/components_v2/button";
 
+import { CreativesHead } from "@/creatives";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
@@ -30,6 +32,7 @@ const TryCreatives = () => {
       onSave={(newData) => {
         localStorage.setItem("page_data", JSON.stringify(newData));
       }}
+      FileExplorer={FileExplorer}
     >
       <Builder />
     </BuilderContext>
@@ -121,17 +124,18 @@ const Builder = () => {
             </option>
           </select>
           <EditSwitch />
-          <Buttonv2
+          <Button
             onClick={() => {
               router.push("/register");
             }}
+            size="small"
           >
             Register
-          </Buttonv2>
+          </Button>
           <ThemeSwitcher />
         </div>
       </div>
-      <Layout type={PageType["Story Builder"]} editable={false} />
+      <Layout editable={false} head={<CreativesHead />} />
     </>
   );
 };

@@ -14,12 +14,10 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup index.tsx --dts --format cjs,esm --external react,react-dom --sourcemap --splitting --tsconfig ./tsconfig.json",
-    "dev": "tsup index.tsx --watch --dts --format cjs,esm --external react,react-dom --sourcemap --splitting --tsconfig ./tsconfig.json",
+    "dev": "rm -rf ./dist && tsup index.tsx --watch --dts --format cjs,esm --external react,react-dom --sourcemap --splitting --tsconfig ./tsconfig.json",
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "devDependencies": {
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "react": "^18.2.0",
