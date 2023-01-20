@@ -1,6 +1,7 @@
 import classNames from "classnames";
+import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
-import { Drawer, SearchInput, Switch, TextArea } from "ui";
+import { Button, Drawer, Input, Switch, TextArea } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -121,16 +122,24 @@ const Actions = ({ post }: IProps) => {
             />
           </div>
           <div>
-            <Heading
-              heading="Path"
-              subheading={`The URL of your post. Should contain only letters, numbers, - and
-              should start with /${post.type}/.`}
-            />
-            <SearchInput
+            <Heading heading="Path" subheading={""} />
+            <Input
               onChange={(e) => setSlug(e.target.value)}
-              value={slug}
-              enterButton="Validate"
-              onSearch={formatSlug}
+              value={getLastPartFromPath(slug)}
+              addonBefore={`/${post.type}/`}
+              addonAfter={
+                <a
+                  className="cursor-pointer text-blue-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    formatSlug(slug);
+                  }}
+                >
+                  Validate
+                </a>
+              }
+              label="The URL of your post. Should contain only letters, numbers or hyphen (-) "
+              onEnter={() => formatSlug(slug)}
               data-testid="slugInp"
             />
           </div>

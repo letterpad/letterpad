@@ -1,5 +1,11 @@
 import classNames from "classnames";
-import { ChangeEvent, forwardRef, HTMLProps, KeyboardEvent } from "react";
+import {
+  ChangeEvent,
+  forwardRef,
+  HTMLProps,
+  KeyboardEvent,
+  ReactNode,
+} from "react";
 
 import { Label } from "./label";
 
@@ -32,8 +38,8 @@ interface Props extends HTMLProps<HTMLInputElement> {
   type?: HTMLInputElement["type"];
   error?: boolean;
   label?: string;
-  addonBefore?: string;
-  addonAfter?: string;
+  addonBefore?: ReactNode;
+  addonAfter?: ReactNode;
   help?: string;
   limit?: number;
   onEnter?: (event: KeyboardEvent<HTMLInputElement>) => void;
