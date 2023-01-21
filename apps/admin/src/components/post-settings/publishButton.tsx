@@ -131,6 +131,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             key="back"
             onClick={() => setError(undefined)}
             variant="ghost"
+            data-testid="cancelModalBtn"
           >
             Cancel
           </Button>,
