@@ -75,10 +75,10 @@ export const updatePost = async (
       };
     }
 
-    if (args.data.title?.trim()) {
+    if (args.data.title?.trim() || args.data.title === "") {
       newPostArgs.data.title = args.data.title.trim();
     }
-    if (args.data.excerpt?.trim()) {
+    if (args.data.excerpt?.trim() || args.data.excerpt === "") {
       newPostArgs.data.excerpt = args.data.excerpt.trim();
     }
     if (args.data.status) {
@@ -122,13 +122,13 @@ export const updatePost = async (
       );
     }
 
-    if (args.data.html) {
+    if (args.data.html || args.data.html === "") {
       newPostArgs.data.html = await formatHtml(args.data.html);
       newPostArgs.data.reading_time = getReadingTimeFromHtml(
         newPostArgs.data.html
       );
     }
-    if (args.data.html_draft) {
+    if (args.data.html_draft || args.data.html_draft === "") {
       newPostArgs.data.html_draft = await formatHtml(args.data.html_draft);
     }
 

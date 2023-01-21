@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { TextArea } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
@@ -28,6 +29,13 @@ const defaults = {
 };
 export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
   const { updatePost, updateLocalState } = useUpdatePost();
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (ref.current && title.length === 0) {
+      ref.current.focus();
+    }
+  }, [title]);
 
   return (
     <>
@@ -50,6 +58,7 @@ export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
         className="title resize-none"
         data-testid="postTitleInput"
         autoGrow={true}
+        ref={ref}
       />
       <style jsx global>{`
         textarea.title {

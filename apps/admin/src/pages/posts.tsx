@@ -112,9 +112,9 @@ export default Posts;
 
 const Badge = ({ label, count }) => {
   return (
-    <span className="flex items-center gap-2 bg-slate-100 px-2 py-1 text-slate-500  dark:bg-slate-700 dark:text-slate-400">
+    <span className="flex items-center gap-2 rounded-md bg-slate-100 px-2 py-1  text-slate-500 dark:bg-slate-800 dark:text-slate-400">
       {label}
-      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 text-xs dark:bg-slate-800">
+      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 text-xs dark:bg-slate-900">
         {count}
       </span>
     </span>
