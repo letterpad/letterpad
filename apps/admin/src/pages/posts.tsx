@@ -23,7 +23,10 @@ import {
   PostTypes,
   SortBy,
 } from "@/__generated__/__types__";
-import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
+import {
+  usePostsQuery,
+  useStatsQuery,
+} from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 
 function Posts() {
@@ -31,12 +34,17 @@ function Posts() {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { sortBy: SortBy.Desc } },
   });
+  const stats = useStatsQuery();
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
   const [filters, setFilters] = useState<PostsFilters>({
     sortBy: SortBy["Desc"],
   });
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
+  const statsData =
+    stats.data?.stats?.__typename === "Stats"
+      ? stats.data.stats.posts
+      : { published: 0, drafts: 0, trashed: 0 };
 
   const changeStatus = (id: number, status: PostStatusOptions) => {
     updatePost({ id, status });
@@ -70,15 +78,24 @@ function Posts() {
         </span>
       </Header>
       <Content>
-        <TagsProvider>
-          <Filters
-            onChange={(filters) => {
-              refetch({ filters: { ...filters, type: PostTypes.Post } });
-            }}
-            filters={filters}
-            setFilters={setFilters}
-          />
-        </TagsProvider>
+        <div className="flex flex-row items-center justify-between">
+          <div className="hidden flex-row gap-2 text-sm lg:flex">
+            <Badge label="Published" count={statsData.published} />
+            <Badge label="Drafts" count={statsData.drafts} />
+            <Badge label="Trashed" count={2} />
+          </div>
+          <div className="grid grid-cols-3 items-center gap-2">
+            <TagsProvider>
+              <Filters
+                onChange={(filters) => {
+                  refetch({ filters: { ...filters, type: PostTypes.Post } });
+                }}
+                filters={filters}
+                setFilters={setFilters}
+              />
+            </TagsProvider>
+          </div>
+        </div>
         <Table
           columns={postsColumns({ changeStatus })}
           dataSource={source.map((item) => ({ ...item, key: item.id }))}
@@ -92,3 +109,14 @@ function Posts() {
 }
 
 export default Posts;
+
+const Badge = ({ label, count }) => {
+  return (
+    <span className="flex items-center gap-2 bg-slate-100 px-2 py-1 text-slate-500  dark:bg-slate-700 dark:text-slate-400">
+      {label}
+      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 text-xs dark:bg-slate-800">
+        {count}
+      </span>
+    </span>
+  );
+};

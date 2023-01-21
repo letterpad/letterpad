@@ -56,7 +56,10 @@ export const PopConfirm: FC<Props> = ({
               <div className="mt-5 flex justify-center gap-2">
                 <Button
                   variant="danger"
-                  onClick={() => onConfirm()}
+                  onClick={() => {
+                    onConfirm();
+                    setDisplay(false);
+                  }}
                   className="okModalBtn"
                 >
                   {okText}

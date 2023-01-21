@@ -48,4 +48,5 @@ export const apolloBrowserClient = new ApolloClient({
   ssrMode: false,
   link: ApolloLink.from([saveMiddleware, errorLink, httpLink]),
   cache: new InMemoryCache(),
+  connectToDevTools: true,
 });

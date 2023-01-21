@@ -16,7 +16,11 @@ import {
   useDeleteTagsMutation,
   useUpdateTagsMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { useTagsQuery } from "@/__generated__/queries/queries.graphql";
+import {
+  usePostsQuery,
+  useStatsQuery,
+  useTagsQuery,
+} from "@/__generated__/queries/queries.graphql";
 
 import { getHeaders } from "./headers";
 
@@ -36,10 +40,14 @@ export const TagsProvider: React.FC<{
   const { loading, data } = useTagsQuery({
     fetchPolicy: "network-only",
   });
-  const [updateTagsMutation] = useUpdateTagsMutation();
-  const [deleteTagsMutation] = useDeleteTagsMutation();
   const [tags, setTags] = useState<TagRow[]>([]);
   const [editTagId, setEditTagId] = useState<React.Key | null>(null);
+  const postsQuery = usePostsQuery({ skip: true });
+  const statsQuery = useStatsQuery({ skip: true });
+
+  const [updateTagsMutation] = useUpdateTagsMutation();
+  const [deleteTagsMutation] = useDeleteTagsMutation();
+
   const computedTags = useMemo(
     () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
     [data]
@@ -62,11 +70,25 @@ export const TagsProvider: React.FC<{
     async (key: React.Key) => {
       const tagToDelete = [...tags].filter((item) => item.key === key);
       if (tagToDelete.length > 0) {
-        await deleteTagsMutation({ variables: { name: tagToDelete[0].name } });
+        await deleteTagsMutation({
+          updateQueries: {
+            Tags: (prev) => {
+              return {
+                ...prev,
+                tags: {
+                  ...prev.tags,
+                  rows: prev.tags.rows.filter((tag) => tag.name !== key),
+                },
+              };
+            },
+          },
+          variables: { name: tagToDelete[0].name },
+        });
+        postsQuery.refetch();
+        statsQuery.refetch();
       }
-      setTags([...tags].filter((item) => item.key !== key));
     },
-    [deleteTagsMutation, tags]
+    [deleteTagsMutation, postsQuery, statsQuery, tags]
   );
 
   const editTag = useCallback(async (key: React.Key) => {
@@ -96,11 +118,22 @@ export const TagsProvider: React.FC<{
         variables: {
           data: { name, slug, old_name: item.name },
         },
+        updateQueries: {
+          Tags: (prev) => {
+            return {
+              ...prev,
+              tags: {
+                ...prev.tags,
+                rows: newData,
+              },
+            };
+          },
+        },
       });
-      if (newData) setTags(newData);
+      postsQuery.refetch();
       setEditTagId(null);
     },
-    [tags, updateTagsMutation]
+    [tags, updateTagsMutation, postsQuery]
   );
 
   const addTag = useCallback(() => {
@@ -127,11 +160,15 @@ export const TagsProvider: React.FC<{
       [addTag, deleteTag, editTag, loading, saveTag, tags, updateTagsMutation]
     );
 
+  const onSave = () => {
+    if (tagToBeEdited)
+      saveTag({ ...tagToBeEdited, name: inputRef.current?.value ?? "" });
+  };
+
   const tagToBeEdited = tags.filter((item) => item.key === editTagId).pop();
   return (
     <TagsContext.Provider value={context}>
       {children}
-
       <Modal
         toggle={() => setEditTagId(null)}
         show={!!editTagId}
@@ -145,15 +182,7 @@ export const TagsProvider: React.FC<{
           >
             Cancel
           </Button>,
-          <Button
-            key="save"
-            variant="primary"
-            onClick={() =>
-              tagToBeEdited &&
-              saveTag({ ...tagToBeEdited, name: inputRef.current?.value ?? "" })
-            }
-            size="normal"
-          >
+          <Button key="save" variant="primary" onClick={onSave} size="normal">
             Save
           </Button>,
         ]}
@@ -162,6 +191,7 @@ export const TagsProvider: React.FC<{
           label="Rename Tag"
           defaultValue={tagToBeEdited?.name}
           ref={inputRef}
+          onEnter={onSave}
         />
       </Modal>
     </TagsContext.Provider>

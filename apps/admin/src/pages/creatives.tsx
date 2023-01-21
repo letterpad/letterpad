@@ -61,15 +61,21 @@ function Pages() {
         </div>
       </Header>
       <Content>
-        <Filters
-          showTags={false}
-          showPageTypes={true}
-          onChange={(filters) => {
-            refetch({ filters: { ...filters, type: PostTypes.Page } });
-          }}
-          filters={filters}
-          setFilters={setFilters}
-        />
+        <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row gap-2 text-sm"></div>
+          <div className="grid grid-cols-3 items-center gap-2">
+            <Filters
+              showTags={false}
+              showPageTypes={true}
+              onChange={(filters) => {
+                refetch({ filters: { ...filters, type: PostTypes.Page } });
+              }}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          </div>
+        </div>
+
         <Table
           columns={creativesColumns({ changeStatus })}
           dataSource={source}

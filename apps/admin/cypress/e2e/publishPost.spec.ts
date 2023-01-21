@@ -1,6 +1,6 @@
 describe("Publishing", () => {
   const title = "Once upon a time in mexico " + +new Date();
-  const slug = "/post/" + title.toLocaleLowerCase().replace(/ /g, "-");
+  const slug = title.toLocaleLowerCase().replace(/ /g, "-");
 
   it("can publish new post", () => {
     cy.getTestId("createPostBtn").click();
@@ -43,15 +43,15 @@ describe("Publishing", () => {
 
     cy.get(".react-tags__selected-tag").click();
     cy.getTestId("publishBtn").click();
-    cy.get(".no-tags-modal").should("exist");
-    cy.get(".okModalBtn").click();
+    cy.get(".NoTags").should("exist");
+    cy.getTestId("cancelModalBtn").click();
 
     cy.enterTags(["new-tag"]);
     cy.wait(1000);
     cy.getTestId("publishBtn").click();
     cy.wait("@updatePostMutation");
-    cy.get(".tags-notlinked-modal").should("exist");
-    cy.get(".okModalBtn").click();
+    cy.get(".TagsNotLinkedWithNav").should("exist");
+    cy.getTestId("cancelModalBtn").click();
 
     cy.enterTags(["first-post"]);
     cy.getTestId("publishBtn").click();

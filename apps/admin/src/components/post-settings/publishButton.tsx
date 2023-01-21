@@ -1,4 +1,5 @@
-import { Button } from "ui";
+import { useState } from "react";
+import { Button, Modal } from "ui";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -12,9 +13,9 @@ import { usePostQuery } from "@/__generated__/queries/queries.graphql";
 import { EventAction, track } from "@/track";
 
 import {
-  pageNotLinkedWithNavigation,
-  tagNotLinkedWithNavigation,
-  warnNoTags,
+  PageNotLinkedWithNavigation,
+  TagNotLinkedWithNavigation,
+  WarnNoTags,
 } from "./warnings";
 
 interface Props {
@@ -22,7 +23,15 @@ interface Props {
   menu: Navigation[];
 }
 
+enum NotPublished {
+  NoTags = "NoTags",
+  TagsNotLinkedWithNav = "TagsNotLinkedWithNav",
+  PageNotLinkedWithNav = "PageNotLinkedWithNav",
+}
+
 const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
+  const [error, setError] = useState<NotPublished>();
+
   const { data, loading } = usePostQuery({
     variables: { filters: { id: postId } },
   });
@@ -34,7 +43,9 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
 
   const { post } = data;
 
-  const publish = (active: boolean) => {
+  const validateAndPublish = () => {
+    const isPost = post.type === PostTypes.Post;
+
     const navigationTags = getTagsFromMenu(menu);
     const navigationPages = getPagesFromMenu(menu);
     const postTags = post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
@@ -46,18 +57,22 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
       (page) => page === post.slug?.replace("/page/", "").toLowerCase()
     );
 
-    if (active) {
-      if (post.type === PostTypes.Post) {
-        if (postTags.length === 0) return warnNoTags();
-        if (!navLinkedWithTags)
-          return tagNotLinkedWithNavigation(navigationTags);
-      } else {
-        if (!navLinkedWithPages) return pageNotLinkedWithNavigation();
-      }
+    if (postTags.length === 0 && isPost) {
+      setError(NotPublished.NoTags);
+    } else if (!navLinkedWithTags && isPost) {
+      setError(NotPublished.TagsNotLinkedWithNav);
+    } else if (!navLinkedWithPages && !isPost) {
+      setError(NotPublished.PageNotLinkedWithNav);
+    } else {
+      publishOrUnpublish(true);
     }
+  };
+
+  const publishOrUnpublish = (active: boolean) => {
     const status = active
       ? PostStatusOptions.Published
       : PostStatusOptions.Draft;
+
     if (active) {
       track({
         eventAction: EventAction.Click,
@@ -80,7 +95,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             <Button
               variant="success"
               size="normal"
-              onClick={() => publish(true)}
+              onClick={validateAndPublish}
               data-testid="publishBtn"
               className="button btn-success"
             >
@@ -97,7 +112,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
               </span>
               <Button
                 variant="dark"
-                onClick={() => publish(false)}
+                onClick={() => publishOrUnpublish(false)}
                 data-testid="unPublishBtn"
               >
                 Un-Publish
@@ -106,6 +121,41 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
           </>
         )}
       </div>
+      <Modal
+        className={error}
+        header="Post not published"
+        show={!!error}
+        toggle={() => setError(undefined)}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => setError(undefined)}
+            variant="ghost"
+            data-testid="cancelModalBtn"
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            variant="primary"
+            onClick={() => {
+              setError(undefined);
+              publishOrUnpublish(true);
+            }}
+            disabled={false}
+          >
+            Publish Anyway
+          </Button>,
+        ]}
+      >
+        {error === NotPublished.NoTags && <WarnNoTags />}
+        {error === NotPublished.TagsNotLinkedWithNav && (
+          <TagNotLinkedWithNavigation tags={getTagsFromMenu(menu)} />
+        )}
+        {error === NotPublished.PageNotLinkedWithNav && (
+          <PageNotLinkedWithNavigation />
+        )}
+      </Modal>
     </>
   );
 };
@@ -117,6 +167,7 @@ function getTagsFromMenu(menu: Navigation[]) {
     .filter((a) => a.type === NavigationType.Tag)
     .map((a) => a.slug.replace("/tag/", "").toLowerCase());
 }
+
 function getPagesFromMenu(menu: Navigation[]) {
   return menu
     .filter((a) => a.type === NavigationType.Page)
