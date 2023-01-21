@@ -12,8 +12,8 @@ export const getStats = async (
 ): Promise<ResolversTypes["StatsResponse"]> => {
   logger.debug("Reached resolver: stats");
   const result = {
-    posts: { published: 0, drafts: 0 },
-    pages: { published: 0, drafts: 0 },
+    posts: { published: 0, drafts: 0, trashed: 0 },
+    pages: { published: 0, drafts: 0, trashed: 0 },
     tags: 0,
     media: 0,
   };
@@ -57,6 +57,16 @@ export const getStats = async (
     },
   });
 
+  result.posts.trashed = await prisma.post.count({
+    where: {
+      status: PostStatusOptions.Trashed,
+      type: PostTypes.Post,
+      author: {
+        id: client_author_id,
+      },
+    },
+  });
+
   result.pages.published = await prisma.post.count({
     where: {
       status: PostStatusOptions.Published,
@@ -70,6 +80,16 @@ export const getStats = async (
   result.pages.drafts = await prisma.post.count({
     where: {
       status: PostStatusOptions.Draft,
+      type: PostTypes.Page,
+      author: {
+        id: client_author_id,
+      },
+    },
+  });
+
+  result.pages.drafts = await prisma.post.count({
+    where: {
+      status: PostStatusOptions.Trashed,
       type: PostTypes.Page,
       author: {
         id: client_author_id,

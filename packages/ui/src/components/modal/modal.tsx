@@ -91,5 +91,6 @@ export const Modal = ({
         />
       </Portal>
     );
-  } else return <div />;
+  }
+  return null;
 };

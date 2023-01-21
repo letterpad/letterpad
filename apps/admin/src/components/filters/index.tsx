@@ -48,9 +48,8 @@ const Filters = ({
   }, [filters, loading, onChange, showPageTypes, showTags, tags]);
 
   if (loading && showTags) return <Loading />;
-
   return (
-    <div className="flex w-full flex-row items-center justify-end gap-2 ">
+    <>
       <Select
         id="filters-status"
         onChange={(value) => {
@@ -165,9 +164,7 @@ const Filters = ({
           ]}
         />
       )}
-      <br />
-      <br />
-    </div>
+    </>
   );
 };
 

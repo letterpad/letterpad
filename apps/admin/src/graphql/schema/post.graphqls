@@ -121,6 +121,7 @@ type PostsNode {
 type PostCountsByStatus {
   published: Int!
   drafts: Int!
+  trashed: Int!
 }
 
 type Stats {

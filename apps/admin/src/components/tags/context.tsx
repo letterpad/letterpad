@@ -169,7 +169,6 @@ export const TagsProvider: React.FC<{
   return (
     <TagsContext.Provider value={context}>
       {children}
-
       <Modal
         toggle={() => setEditTagId(null)}
         show={!!editTagId}
