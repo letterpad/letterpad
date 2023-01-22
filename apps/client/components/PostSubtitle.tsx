@@ -1,4 +1,4 @@
-import classNames from 'classNames';
+import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 interface Props {
