@@ -27,7 +27,7 @@ export default function ListLayout({ posts }: Props) {
                   />
                   <div className="md:space-y-3 xl:col-span-3">
                     <div>
-                      <h3 className="text-2xl font-bold leading-8 tracking-tight">
+                      <h3 className="text-xl font-bold leading-8 tracking-tight md:text-2xl">
                         <Link
                           href={`${slug}`}
                           className="text-gray-900 dark:text-gray-100"
