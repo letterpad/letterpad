@@ -25,13 +25,13 @@ export const SubTitle: React.FC<Props> = memo(({ postId, sub_title }) => {
     <Editor
       id={subTitleId}
       initialValue={text}
-      onEditorChange={(sub_title) => {
+      onEditorChange={(_, editor) => {
         if (postId) {
+          const sub_title = editor.getContent({ format: "text" });
           debounceUpdatePostAPI({ id: postId, sub_title });
           updateLocalState({ id: postId, sub_title });
         }
       }}
-      data-testid="postTitleInput"
       init={subTitleEditorConfig}
     />
   );

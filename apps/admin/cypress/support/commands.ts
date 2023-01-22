@@ -50,15 +50,22 @@ function setContent({ title, content }: { title?: string; content?: string }) {
   if (!title && !content) return;
   cy.window().should("have.property", "tinymce");
   if (title) {
-    cy.getTestId("postTitleInput").type(`${title}{enter}`).tab();
+    cy.get("#title-editor").type(`${title}{enter}`).tab();
+    cy.window().then((win) => {
+      //@ts-ignore
+      win.tinymce.get("title-editor").setContent("ignore");
+      //@ts-ignore
+      win.tinymce.get("title-editor").setContent(title);
+    });
+
     cy.wait("@updatePostMutation");
   }
   if (content) {
     cy.window().then((win) => {
       //@ts-ignore
-      win.tinymce.activeEditor.setContent("ignore");
+      win.tinymce.get("main-editor").setContent("ignore");
       //@ts-ignore
-      win.tinymce.activeEditor.setContent(content);
+      win.tinymce.get("main-editor").setContent(content);
     });
     cy.wait("@updatePostMutation");
   }

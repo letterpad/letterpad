@@ -32,13 +32,13 @@ export const Title: React.FC<Props> = memo(({ postId, title }) => {
     <Editor
       id={titleId}
       initialValue={text}
-      onEditorChange={(title) => {
+      onEditorChange={(_, editor) => {
         if (postId) {
+          const title = editor.getContent({ format: "text" });
           debounceUpdatePostAPI({ id: postId, title });
           updateLocalState({ id: postId, title: title });
         }
       }}
-      data-testid="postTitleInput"
       init={titleEditorConfig}
     />
   );
