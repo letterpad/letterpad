@@ -1,11 +1,23 @@
 # Letterpad
 Letterpad is a blog publishing platform.
 
-![demo](https://user-images.githubusercontent.com/1502352/213929848-293a0de7-d935-4744-859e-c6572dd97d10.png)
+## Screenshots
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/1502352/213929848-293a0de7-d935-4744-859e-c6572dd97d10.png" width="600" align="center">
+  <p align="center">Admin Dashboard</p>
+</p>
+
+---
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/1502352/213930321-c6bec8c1-0e22-4545-ae51-c336211453d0.png" width="600">
+  <p align="center">Website</p>
+</p>
 
 ## Features
 
-- Open Source
+- Fully developed Admin Dashboard and Website
 - Domain Mapping
 - Inline Editing
 - Grid and List Layout
@@ -70,3 +82,4 @@ Letterpad Admin provides a client key which can be found in settings. If you wan
 ## Contribute
 
 You are welcome to contribute to the project. If you find any bugs, please create an issue or a pull request. Also if you would like to have a feature, feel free to inform us with an issue.
+
