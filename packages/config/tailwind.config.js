@@ -38,7 +38,7 @@ module.exports = {
         base: '.9rem',
         'base-1': '0.95rem',
         md: '1rem',
-        lg: '1.3rem',
+        lg: '1.24rem',
         prose: '1.2rem'
       },
       colors: {
@@ -134,7 +134,7 @@ module.exports = {
         },
         dark: {
           css: {
-            color: theme('colors.gray.400'),
+            color: theme('colors.slate.300'),
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {

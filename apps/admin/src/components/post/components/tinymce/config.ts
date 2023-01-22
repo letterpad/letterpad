@@ -13,7 +13,7 @@ export const subTitleEditorConfig: IProps["init"] = {
   toolbar: false,
   placeholder: "Optional sub-title of your post...",
   inline: true,
-  content_style: `#${subTitleId} { font-size: 1.1rem; line-height: 1.1rem; font-weight: 500; color: rgba(var(--color), 0.5) }; `,
+  content_style: `#${subTitleId} { font-size: 1.1rem; line-height: 1.3rem; font-weight: 500; color: rgba(var(--color), 0.5) }; `,
   setup: function (ed) {
     ed.on("keydown", function (e) {
       if (e.key === "Enter") {
@@ -21,6 +21,8 @@ export const subTitleEditorConfig: IProps["init"] = {
         const main: HTMLDivElement | null = document.querySelector(`#${id}`);
         main?.focus();
       }
+    });
+    ed.on("keypress", function (e) {
       const length = ed.getContent({ format: "text" }).length;
       if (length > 140) return false;
     });
