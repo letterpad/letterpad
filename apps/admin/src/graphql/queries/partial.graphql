@@ -1,6 +1,7 @@
 fragment Partial on Post {
   id
   title
+  sub_title
   html
   excerpt
   featured

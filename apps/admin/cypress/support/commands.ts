@@ -50,17 +50,23 @@ function setContent({ title, content }: { title?: string; content?: string }) {
   if (!title && !content) return;
   cy.window().should("have.property", "tinymce");
   if (title) {
-    cy.getTestId("postTitleInput").type(`${title}{enter}`).tab();
-    cy.wait("@updatePostMutation");
-  }
-  if (content) {
+    cy.get("#title-editor").should("exist");
+    cy.wait(1000);
     cy.window().then((win) => {
       //@ts-ignore
-      win.tinymce.activeEditor.setContent("ignore");
-      //@ts-ignore
-      win.tinymce.activeEditor.setContent(content);
+      win.tinymce.get("title-editor").setContent(title);
+      cy.wait("@updatePostMutation");
     });
-    cy.wait("@updatePostMutation");
+  }
+  if (content) {
+    cy.get("#main-editor").should("exist");
+    cy.window().then((win) => {
+      //@ts-ignore
+      win.tinymce.get("main-editor").setContent("ignore");
+      //@ts-ignore
+      win.tinymce.get("main-editor").setContent(content);
+      cy.wait("@updatePostMutation");
+    });
   }
 }
 Cypress.Commands.add("setContent", setContent);

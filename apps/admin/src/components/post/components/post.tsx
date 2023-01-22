@@ -1,10 +1,6 @@
-import classNames from "classnames";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
-import { HiPlus } from "react-icons/hi";
-import { RiUnsplashFill } from "react-icons/ri";
 import {
   BuilderContext,
   Layout as LayoutBuilder,
@@ -19,7 +15,6 @@ import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
 import { Title } from "@/components/post/components/title";
-import { Upload } from "@/components/upload";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
@@ -27,6 +22,8 @@ import { CreativesHead } from "@/creatives";
 import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
+import { FeaturedImage } from "./featured-image";
+import { SubTitle } from "./subtitle";
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
 
@@ -80,7 +77,7 @@ export const Post = () => {
   return (
     <div style={{ minHeight: "100vh" }}>
       <Head>
-        <title>Editing - {post?.title}</title>
+        <title>Editing - {post?.title.replace(/(<([^>]+)>)/g, "")}</title>
       </Head>
       {post && <Header post={post} />}
 
@@ -91,39 +88,12 @@ export const Post = () => {
               {loading ? (
                 <PostTitlePlaceholder />
               ) : (
-                <Title
-                  onEnter={() => helpers?.focus()}
-                  title={post?.title || ""}
-                  postId={post?.id}
-                />
+                <Title title={post?.title || ""} postId={post?.id} />
               )}
-              <div
-                className={classNames("relative", {
-                  "my-10 mb-10": post.cover_image.src,
-                })}
-              >
-                <Upload
-                  className="bg-transparent text-slate-300 hover:text-slate-400 dark:bg-transparent dark:hover:text-slate-500"
-                  url={post.cover_image.src || ""}
-                  emptyIcon={
-                    <>
-                      <HiPlus size={18} />
-                      <Link href="#aa">Add a cover image</Link>
-                      <RiUnsplashFill size={18} />
-                    </>
-                  }
-                  onSuccess={([res]) => {
-                    updatePost({
-                      id: post.id,
-                      cover_image: {
-                        src: res?.src,
-                        width: res.size?.width,
-                        height: res.size?.height,
-                      },
-                    });
-                  }}
-                />
+              <div className="mt-8">
+                <SubTitle postId={post?.id} sub_title={post?.sub_title || ""} />
               </div>
+              <FeaturedImage id={post.id} cover_image={post.cover_image} />
               <Editor
                 loading={loading}
                 text={content ?? ""}
@@ -138,11 +108,7 @@ export const Post = () => {
 
       {!loading && post?.page_type === PageType["Story Builder"] && (
         <div className="my-10">
-          <Title
-            onEnter={() => helpers?.focus()}
-            title={post?.title || ""}
-            postId={post?.id}
-          />
+          <Title title={post?.title || ""} postId={post?.id} />
           <BuilderContext
             data={JSON.parse(post.page_data as string).rows}
             onSave={(page_data) =>

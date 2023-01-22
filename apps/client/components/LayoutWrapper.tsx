@@ -139,7 +139,7 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
 const BrandText = ({ title, tagline, description }) => {
   return (
     <>
-      <PageTitle>{title}</PageTitle>
+      <PageTitle className="text-center">{title}</PageTitle>
       <p className="pb-4 text-center text-md font-bold leading-10 md:text-lg">
         {tagline}
       </p>

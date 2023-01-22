@@ -41,6 +41,9 @@ export const createPost = async (
   if (args.data.title) {
     dataToUpdate.title = args.data.title.trim();
   }
+  if (args.data.sub_title) {
+    dataToUpdate.title = args.data.sub_title.trim();
+  }
   if (args.data.cover_image?.src) {
     dataToUpdate.cover_image = args.data.cover_image.src;
   }

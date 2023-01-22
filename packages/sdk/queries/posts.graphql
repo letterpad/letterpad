@@ -13,6 +13,7 @@ fragment postsFragment on PostsNode {
   rows {
     id
     title
+    sub_title
     slug
     cover_image {
       src

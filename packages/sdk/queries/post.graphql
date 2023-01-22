@@ -12,6 +12,7 @@ fragment pageFragment on Post {
   id
   slug
   title
+  sub_title
   reading_time
   stats{
     words
@@ -55,5 +56,7 @@ fragment pageFragment on Post {
   }
   cover_image {
     src
+    width
+    height
   }
 }

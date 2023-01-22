@@ -6,41 +6,34 @@ import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { debounce } from "@/shared/utils";
 
-import { titleEditorConfig, titleId } from "./tinymce/config";
+import { subTitleEditorConfig, subTitleId } from "./tinymce/config";
 
 interface Props {
   postId?: number;
-  title: string;
+  sub_title: string;
 }
 
-export const Title: React.FC<Props> = memo(({ postId, title }) => {
+export const SubTitle: React.FC<Props> = memo(({ postId, sub_title }) => {
   const { updateLocalState, updatePostAPI } = useUpdatePost();
-  const ref = useRef<HTMLTextAreaElement>(null);
-  const [text] = useState(title);
+  const [text] = useState(sub_title);
   const debounceUpdatePostAPI = useMemo(
     () => debounce((data) => updatePostAPI(data), 500),
     [updatePostAPI]
   );
 
-  useEffect(() => {
-    if (ref.current && title.length === 0) {
-      ref.current.focus();
-    }
-  }, [title]);
-
   return (
     <Editor
-      id={titleId}
+      id={subTitleId}
       initialValue={text}
       onEditorChange={(_, editor) => {
         if (postId) {
-          const title = editor.getContent({ format: "text" });
-          debounceUpdatePostAPI({ id: postId, title });
-          updateLocalState({ id: postId, title: title });
+          const sub_title = editor.getContent({ format: "text" });
+          debounceUpdatePostAPI({ id: postId, sub_title });
+          updateLocalState({ id: postId, sub_title });
         }
       }}
-      init={titleEditorConfig}
+      init={subTitleEditorConfig}
     />
   );
 });
-Title.displayName = "Title";
+SubTitle.displayName = "Title";

@@ -12,6 +12,7 @@ import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
+import PostSubTitle from '@/components/PostSubtitle';
 import ScrollTop from '@/components/ScrollTop';
 import SectionContainer from '@/components/SectionContainer';
 import { BlogSEO } from '@/components/SEO';
@@ -62,6 +63,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
     tags,
     author,
     type,
+    sub_title,
   } = post;
   if (author?.__typename !== 'Author') return null;
   const authorDetails = [
@@ -103,7 +105,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
       <ScrollTop />
       <div className="mx-auto flex w-full  max-w-4xl justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
-          <header className={'mb-4 lg:mb-6'}>
+          <header className={'mb-4 lg:mb-4'}>
             <address
               className={
                 'mb-6 flex items-center not-italic ' + (isPage && ' hidden')
@@ -154,24 +156,33 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               </div>
             </address>
             <PageTitle>{title}</PageTitle>
-            <div className="text-center">
-              {tags?.__typename === 'TagsNode' &&
-                tags.rows.map(({ name }) => (
-                  <Link
-                    href={`/tag/${kebabCase(name)}`}
-                    key={name}
-                    className="mr-1  inline-block  text-sm font-medium opacity-60 hover:text-accent-50 hover:opacity-100"
-                  >
-                    #{name.split(' ').join('-')}
-                  </Link>
-                ))}
-            </div>
+            <PostSubTitle text={sub_title} />
+            {post.cover_image.src && (
+              <img
+                src={post.cover_image.src}
+                loading="lazy"
+                alt={post.title}
+                className="py-4"
+                style={{ minHeight: 400 }}
+              />
+            )}
             {/* <div className="flex items-center justify-center gap-2 py-2 text-center">
               Listen <Speak html={post.html ?? ''} />
             </div> */}
           </header>
-          <div className="prose pb-8 pt-4 dark:prose-dark">{children}</div>
-
+          <div className="prose pb-4 pt-4 dark:prose-dark">{children}</div>
+          <div className="pb-4">
+            {tags?.__typename === 'TagsNode' &&
+              tags.rows.map(({ name }) => (
+                <Link
+                  href={`/tag/${kebabCase(name)}`}
+                  key={name}
+                  className="mr-1  inline-block  text-sm font-medium opacity-60 hover:text-accent-50 hover:opacity-100"
+                >
+                  #{name.split(' ').join('-')}
+                </Link>
+              ))}
+          </div>
           {settings.display_author_info && !isPage && author.bio && (
             <div
               className={
