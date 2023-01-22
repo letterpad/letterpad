@@ -1,21 +1,35 @@
 # Letterpad
 Letterpad is a blog publishing platform.
 
-<img src="./apps/admin/demo.png" >
+## Screenshots
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/1502352/213929848-293a0de7-d935-4744-859e-c6572dd97d10.png" width="600" align="center">
+  <p align="center">Admin Dashboard</p>
+</p>
+
+---
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/1502352/213930321-c6bec8c1-0e22-4545-ae51-c336211453d0.png" width="600">
+  <p align="center">Website</p>
+</p>
 
 ## Features
 
-- High performant GraphQL API.
-- Uses Graphql, React Apollo, NextJS and Prisma
-- Uses TinyMCE editor, specially composed for Letterpad
-- Theme customisation (css) from Dashboard.
-- Use Grammarly to check grammar.
-- CDN Powered images (Uses cloudinary and Unsplash)
-- Connects to multiple databases. Default is sqlite3
-- Can be used as a multi-user service
-- Minimalistic Dashboard
+- Fully developed Admin Dashboard and Website
 - Domain Mapping
-- Creatives - (Coming soon) - With creatives you will get page builder with which you can create your homepage.
+- Inline Editing
+- Grid and List Layout
+- Customisable Brand Color
+- Use mysql or sqlite3
+- Integrations with Cloudinary and Unsplash
+- Multi User Install by default
+- Creatives - Page Builder for creating photostories ( portfolio, photoblog, showcasing art/design, etc).
+- Grammar Checker with Grammarly
+- Drag and Drop support for image uploads.
+- SEO covered
+
 
 ## Demo:
 https://demo.letterpad.app
@@ -68,3 +82,4 @@ Letterpad Admin provides a client key which can be found in settings. If you wan
 ## Contribute
 
 You are welcome to contribute to the project. If you find any bugs, please create an issue or a pull request. Also if you would like to have a feature, feel free to inform us with an issue.
+
