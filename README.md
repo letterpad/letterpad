@@ -1,21 +1,23 @@
 # Letterpad
 Letterpad is a blog publishing platform.
 
-<img src="./apps/admin/demo.png" >
+![demo](https://user-images.githubusercontent.com/1502352/213929848-293a0de7-d935-4744-859e-c6572dd97d10.png)
 
 ## Features
 
-- High performant GraphQL API.
-- Uses Graphql, React Apollo, NextJS and Prisma
-- Uses TinyMCE editor, specially composed for Letterpad
-- Theme customisation (css) from Dashboard.
-- Use Grammarly to check grammar.
-- CDN Powered images (Uses cloudinary and Unsplash)
-- Connects to multiple databases. Default is sqlite3
-- Can be used as a multi-user service
-- Minimalistic Dashboard
+- Open Source
 - Domain Mapping
-- Creatives - (Coming soon) - With creatives you will get page builder with which you can create your homepage.
+- Inline Editing
+- Grid and List Layout
+- Customisable Brand Color
+- Use mysql or sqlite3
+- Integrations with Cloudinary and Unsplash
+- Multi User Install by default
+- Creatives - Page Builder for creating photostories ( portfolio, photoblog, showcasing art/design, etc).
+- Grammar Checker with Grammarly
+- Drag and Drop support for image uploads.
+- SEO covered
+
 
 ## Demo:
 https://demo.letterpad.app
