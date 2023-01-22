@@ -24,7 +24,7 @@ const defaults = {
     background: "transparent",
   },
   rows: 1,
-  placeholder: "Enter a title",
+  placeholder: "Title",
   maxLength: 140,
 };
 export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
@@ -54,8 +54,7 @@ export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
         onBlur={(e) =>
           postId && updatePost({ title: e.target.value.trim(), id: postId })
         }
-        placeholder="Enter a title"
-        className="title resize-none"
+        className="title resize-none font-serif"
         data-testid="postTitleInput"
         autoGrow={true}
         ref={ref}

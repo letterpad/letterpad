@@ -30,7 +30,7 @@ module.exports = {
       },
       fontFamily: {
         serif: [...defaultTheme.fontFamily.serif,'Source Serif Pro'],
-        // serif: ['sans-serif', ...defaultTheme.fontFamily.sans],
+        sans: ['sans-serif', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
         xs: '.7rem',
