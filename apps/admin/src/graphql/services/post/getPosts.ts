@@ -30,7 +30,7 @@ export const getPosts = async (
 
   // if there is no session, do not show draft or deleted items.
   if (!session_author_id) {
-    args.filters.status = PostStatusOptions.Published;
+    args.filters.status = [PostStatusOptions.Published];
   }
 
   // First verify if posts are requested from client and not admin dashboard.
@@ -54,8 +54,11 @@ export const getPosts = async (
       author_id: authorId,
       // id: args.filters?.id,
       featured: args.filters?.featured,
-      status: args.filters?.status ?? {
-        in: [PostStatusOptions.Published, PostStatusOptions.Draft],
+      status: {
+        in: args.filters?.status ?? [
+          PostStatusOptions.Published,
+          PostStatusOptions.Draft,
+        ],
       },
       //@todo - remove slug
       slug: args.filters?.slug,

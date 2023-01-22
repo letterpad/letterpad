@@ -100,7 +100,7 @@ input PostsFilters {
   slug: String
   featured: Boolean
   previewHash: String
-  status: PostStatusOptions
+  status: [PostStatusOptions]
   # name of author. entering  this field will ignore tagSlug and tag
   author: String
   # url of a tag. entering this field will ignore tag
