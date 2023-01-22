@@ -2,11 +2,12 @@ import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 interface Props {
-  children: ReactNode;
+  text?: string | null;
   className?: string;
 }
 
-export default function PostSubTitle({ children, className }: Props) {
+export default function PostSubTitle({ text, className }: Props) {
+  if (!text) return null;
   const textColor = className ?? 'text-gray-400 dark:text-slate-400';
   return (
     <h1
@@ -16,7 +17,7 @@ export default function PostSubTitle({ children, className }: Props) {
         textColor
       )}
     >
-      {children}
+      {text}
     </h1>
   );
 }

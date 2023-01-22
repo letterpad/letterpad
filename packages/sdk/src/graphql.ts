@@ -1038,7 +1038,12 @@ export type PostQuery = {
           | { __typename: "NotFound"; message: string }
           | { __typename: "UnAuthorized"; message: string }
           | null;
-        cover_image: { __typename?: "Image"; src?: string | null };
+        cover_image: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        };
       }
     | { __typename: "UnAuthorized"; message: string };
 };
@@ -1086,7 +1091,12 @@ export type PageFragmentFragment = {
     | { __typename: "NotFound"; message: string }
     | { __typename: "UnAuthorized"; message: string }
     | null;
-  cover_image: { __typename?: "Image"; src?: string | null };
+  cover_image: {
+    __typename?: "Image";
+    src?: string | null;
+    width?: number | null;
+    height?: number | null;
+  };
 };
 
 export type PostsQueryVariables = Exact<{
@@ -1409,6 +1419,8 @@ export const PageFragmentFragmentDoc = `
   }
   cover_image {
     src
+    width
+    height
   }
 }
     `;

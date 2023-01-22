@@ -154,7 +154,6 @@ export const updatePost = async (
         }),
       };
     }
-
     const updatedPost = await prisma.post.update(newPostArgs);
 
     const nowPublished = args.data.status === PostStatusOptions.Published;

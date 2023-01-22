@@ -156,7 +156,16 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               </div>
             </address>
             <PageTitle>{title}</PageTitle>
-            <PostSubTitle>{sub_title}</PostSubTitle>
+            <PostSubTitle text={sub_title} />
+            {post.cover_image.src && (
+              <img
+                src={post.cover_image.src}
+                loading="lazy"
+                alt={post.title}
+                className="py-4"
+                style={{ minHeight: 400 }}
+              />
+            )}
             {/* <div className="flex items-center justify-center gap-2 py-2 text-center">
               Listen <Speak html={post.html ?? ''} />
             </div> */}
