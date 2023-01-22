@@ -3,6 +3,8 @@ type Post {
   id: Int!
   # Title of the post
   title: String!
+  # Sub Title of the post
+  sub_title: String
   # Html content of the post
   html: String
   # Draft for republishing content
@@ -144,6 +146,7 @@ input TagsInputType {
 
 input InputCreatePost {
   title: String
+  sub_title: String
   html: String
   excerpt: String
   cover_image: InputImage
@@ -159,6 +162,7 @@ input InputCreatePost {
 input InputUpdatePost {
   id: Int!
   title: String
+  sub_title: String
   html: String
   html_draft: String
   featured: Boolean

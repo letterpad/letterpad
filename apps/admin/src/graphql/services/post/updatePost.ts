@@ -78,6 +78,9 @@ export const updatePost = async (
     if (args.data.title?.trim() || args.data.title === "") {
       newPostArgs.data.title = args.data.title.trim();
     }
+    if (args.data.sub_title?.trim() || args.data.sub_title === "") {
+      newPostArgs.data.sub_title = args.data.sub_title.trim();
+    }
     if (args.data.excerpt?.trim() || args.data.excerpt === "") {
       newPostArgs.data.excerpt = args.data.excerpt.trim();
     }

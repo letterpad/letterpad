@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { FC, Suspense } from "react";
 import { TextBlockPlaceholder } from "ui";
 
 const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"), {
@@ -11,12 +11,7 @@ interface Props {
   style?: string;
   loading?: boolean;
 }
-const Editor: React.VFC<Props> = ({
-  text,
-  onChange,
-  style,
-  loading = false,
-}) => {
+const Editor: FC<Props> = ({ text, onChange, style, loading = false }) => {
   if (loading)
     return (
       <div className="mt-4">

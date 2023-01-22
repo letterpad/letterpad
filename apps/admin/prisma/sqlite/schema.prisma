@@ -73,6 +73,7 @@ model Permission {
 model Post {
   id                 Int       @id @default(autoincrement())
   title              String    @default("")
+  sub_title          String    @default("")
   html               String    @default("")
   html_draft         String    @default("")
   excerpt            String    @default("")
