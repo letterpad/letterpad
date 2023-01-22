@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import {
   AiOutlineDelete,
   AiOutlineEye,
@@ -19,6 +19,7 @@ interface Props {
   loading?: boolean;
   openImage?: () => void;
   openFileExplorer?: () => void;
+  emptyIcon?: ReactNode;
 }
 
 export const Preview: FC<Props> = ({
@@ -26,11 +27,12 @@ export const Preview: FC<Props> = ({
   onRemove,
   loading,
   openFileExplorer,
+  emptyIcon,
 }) => {
   const [show, setShow] = useState<boolean>(false);
   return (
     <div
-      className="group relative h-full w-full rounded-md bg-gray-200 p-2 text-gray-800 dark:bg-gray-700 dark:text-gray-600"
+      className="group relative h-full w-full rounded-md p-2"
       style={{ minHeight: 80 }}
     >
       {loading ? (
@@ -42,7 +44,11 @@ export const Preview: FC<Props> = ({
             onRemove={onRemove}
             openImage={() => setShow(true)}
           />
-          <AddImage url={url} openFileExplorer={openFileExplorer} />
+          <AddImage
+            url={url}
+            openFileExplorer={openFileExplorer}
+            emptyIcon={emptyIcon}
+          />
         </>
       )}
       {url && (
@@ -52,6 +58,7 @@ export const Preview: FC<Props> = ({
         toggle={setShow}
         show={show}
         header="Preview"
+        size="lg"
         footer={[
           <Button
             key="close"
@@ -64,7 +71,7 @@ export const Preview: FC<Props> = ({
         ]}
       >
         <div className="flex justify-center">
-          <img src={url} style={{ maxHeight: "60vh" }} alt="Profile Image" />
+          <img src={url} style={{ maxHeight: "70vh" }} alt="Profile Image" />
         </div>
       </Modal>
     </div>
@@ -87,7 +94,7 @@ const Loading = () => {
   );
 };
 
-const AddImage: FC<Props> = ({ url, openFileExplorer }) => {
+const AddImage: FC<Props> = ({ url, openFileExplorer, emptyIcon }) => {
   return (
     <div
       className={classNames(
@@ -98,7 +105,7 @@ const AddImage: FC<Props> = ({ url, openFileExplorer }) => {
       )}
       onClick={openFileExplorer}
     >
-      <AiOutlinePlus size={24} />
+      {emptyIcon ?? <AiOutlinePlus size={24} />}
     </div>
   );
 };

@@ -123,6 +123,7 @@ export const Container = ({
       <style jsx global>{`
         .file-explorer {
           width: 90vw !important;
+          margin: auto;
         }
         @media (min-width: 991px) {
           .file-explorer {

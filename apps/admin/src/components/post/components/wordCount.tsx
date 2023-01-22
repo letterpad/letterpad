@@ -28,28 +28,30 @@ export const WordCount = () => {
     setActive(true);
   }, [active, editor]);
 
-  if (!editor) return <LinePlaceholder />;
-
   return (
-    <div className="sticky top-0 z-10 mt-4 flex h-8 items-center justify-center rounded-md bg-white dark:bg-gray-800">
-      <a
-        className="flex justify-center gap-4 text-sm  text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-300"
-        onClick={(e) => {
-          e.preventDefault();
-          setVisible(!visible);
-        }}
-      >
-        <span>{words} words</span>
-        <span>{readingTime} min read</span>
-        {visible && (
-          <>
-            <span>{characters} characters</span>
-            <span className="hidden md:block">
-              {spacelessCharacters} chars. without space
-            </span>
-          </>
-        )}
-      </a>
+    <div className="fixed bottom-0 z-10 flex h-8 w-full cursor-pointer items-center justify-center rounded-md bg-white dark:bg-gray-800">
+      {!editor ? (
+        <LinePlaceholder />
+      ) : (
+        <a
+          className="flex justify-center gap-4 text-sm  text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-300"
+          onClick={(e) => {
+            e.preventDefault();
+            setVisible(!visible);
+          }}
+        >
+          <span>{words} words</span>
+          <span>{readingTime} min read</span>
+          {visible && (
+            <>
+              <span>{characters} characters</span>
+              <span className="hidden md:block">
+                {spacelessCharacters} chars. without space
+              </span>
+            </>
+          )}
+        </a>
+      )}
     </div>
   );
 };

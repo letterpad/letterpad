@@ -1,13 +1,16 @@
 import axios from "axios";
+import classNames from "classnames";
 import { basePath } from "next.config";
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Label } from "ui";
 
 import { FileExplorer } from "@/components/file-explorer";
 
 import { IMediaUploadResult } from "@/graphql/types";
+import { mapFileListToArray } from "@/shared/utils";
 
 import { Preview } from "./preview";
+import { DropZone } from "../post/components/dragdrop";
 
 interface Props {
   progress?: (percentCompleted: number) => void;
@@ -16,6 +19,7 @@ interface Props {
   url: string;
   className?: string;
   label?: string;
+  emptyIcon?: ReactNode;
 }
 
 const noop = () => {};
@@ -30,10 +34,13 @@ export const Upload: FC<Props> = ({
   url,
   label,
   className,
+  emptyIcon,
 }) => {
   const [fileList, setFileList] = useState<UploadFileList[]>([]);
   const [explorerVisible, setExplorerVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [isDropActive, setIsDropActive] = useState(false);
+
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -42,8 +49,8 @@ export const Upload: FC<Props> = ({
     }
   }, [url]);
 
-  const uploadImage = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return null;
+  const uploadImage = (files: File[]) => {
+    if (!files) return null;
     const config = {
       onUploadProgress: function (progressEvent) {
         const percentCompleted = Math.round(
@@ -54,7 +61,7 @@ export const Upload: FC<Props> = ({
     };
 
     let data = new FormData();
-    data.append("file", event.target.files[0]);
+    data.append("file", files[0]);
     setUploading(true);
     axios
       .put(basePath + "/api/uploadApi", data, config)
@@ -70,15 +77,31 @@ export const Upload: FC<Props> = ({
     setFileList(data);
   };
 
+  const onDragStateChange = useCallback((dragActive: boolean) => {
+    setIsDropActive(dragActive);
+  }, []);
+
   return (
-    <div>
+    <DropZone
+      onDragStateChange={onDragStateChange}
+      onFilesDrop={uploadImage}
+      className={classNames("relative border-2", {
+        "rounded-md  border-green-500": isDropActive,
+        "border-transparent": !isDropActive,
+      })}
+    >
       {label && (
         <>
           <br />
           <Label label={label} className="mb-3" />
         </>
       )}
-      <div className={className}>
+      <div
+        className={classNames(
+          "bg-gray-200  text-gray-800 dark:bg-gray-700 dark:text-gray-600",
+          className
+        )}
+      >
         <div
           onClick={() => {
             if (fileList.length > 0) return;
@@ -89,7 +112,10 @@ export const Upload: FC<Props> = ({
           <input
             type="file"
             className="hidden"
-            onChange={uploadImage}
+            onChange={(event) =>
+              event.target.files &&
+              uploadImage(mapFileListToArray(event.target.files))
+            }
             ref={ref}
           />
           <Preview
@@ -97,6 +123,7 @@ export const Upload: FC<Props> = ({
             onRemove={handleSuccess}
             loading={uploading}
             openFileExplorer={() => setExplorerVisible(true)}
+            emptyIcon={emptyIcon}
           />
         </div>
         <FileExplorer
@@ -124,6 +151,6 @@ export const Upload: FC<Props> = ({
           }}
         />
       </div>
-    </div>
+    </DropZone>
   );
 };

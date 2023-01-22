@@ -85,3 +85,6 @@
     margin-top: 1.4rem !important;
   }
 }
+.dark .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+  color: #526278;
+}

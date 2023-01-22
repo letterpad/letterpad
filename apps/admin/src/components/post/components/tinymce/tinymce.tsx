@@ -68,6 +68,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             }
           }}
           init={{
+            placeholder: "Write your story here...",
             inline: true,
             image_caption: true,
             paste_preprocess: function (pl, o) {

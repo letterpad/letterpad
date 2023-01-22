@@ -163,26 +163,6 @@ const Actions = ({ post }: IProps) => {
               }
             />
           )}
-          <div>
-            <Heading
-              heading="Cover Image"
-              subheading="Add a cover image to your blog. This image might be used in your
-              feed, newsletters, recent posts, sharing in social platform, etc."
-            />
-            <Upload
-              url={post.cover_image.src || ""}
-              onSuccess={([res]) => {
-                updatePost({
-                  id: post.id,
-                  cover_image: {
-                    src: res?.src,
-                    width: res.size?.width,
-                    height: res.size?.height,
-                  },
-                });
-              }}
-            />
-          </div>
         </div>
       </Drawer>
     </>
