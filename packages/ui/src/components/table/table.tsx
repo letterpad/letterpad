@@ -12,14 +12,15 @@ interface Props {
 }
 
 export const Table: FC<Props> = ({ columns, dataSource = [], onRowClick }) => {
+  const cleanColumns = columns.filter((column) => column);
   return (
     <div className="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
       <div className="inline-block min-w-full overflow-hidden rounded-lg shadow-md">
         <table className="min-w-full leading-normal">
-          <Header columns={columns} />
+          <Header columns={cleanColumns} />
           <Rows
             dataSource={dataSource}
-            columns={columns}
+            columns={cleanColumns}
             onRowClick={onRowClick}
           />
         </table>

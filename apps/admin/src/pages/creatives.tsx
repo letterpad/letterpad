@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Button, Content, Table } from "ui";
+import { Button, Content, Table, useResponsiveLayout } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -24,6 +24,7 @@ function Pages() {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { type: PostTypes.Page, sortBy: SortBy.Desc } },
   });
+  const { isDesktop } = useResponsiveLayout();
   const [filters, setFilters] = useState<PostsFilters>({
     sortBy: SortBy["Desc"],
     type: PostTypes.Page,
@@ -72,7 +73,7 @@ function Pages() {
         />
 
         <Table
-          columns={creativesColumns({ changeStatus })}
+          columns={creativesColumns({ changeStatus, isDesktop })}
           dataSource={source}
           loading={loading}
           onRowClick={(row) => router.push("/post/" + row.id)}

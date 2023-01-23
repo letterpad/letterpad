@@ -124,7 +124,7 @@ const Main = ({ Component, props }: IProps) => {
           />
         }
         right={
-          <div className="px-6">
+          <div className="px-4 md:px-6">
             <TopBar />
             <Component {...props} settings={data?.settings} me={data?.me} />
             <SiteFooter />

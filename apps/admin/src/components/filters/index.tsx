@@ -67,7 +67,7 @@ const Filters = ({
 
   return (
     <div className="flex flex-row items-center justify-between">
-      <div className="hidden flex-row gap-2 text-sm lg:flex">
+      <div className="flex flex-row gap-2 text-sm">
         <Badge
           label="Published"
           count={statsData.published}
@@ -87,7 +87,7 @@ const Filters = ({
           onClick={() => onBadgeClick(PostStatusOptions.Trashed)}
         />
       </div>
-      <div className="grid grid-cols-2 items-center gap-2">
+      <div className="hidden grid-cols-2 items-center gap-2 md:grid ">
         <Select
           id="filters-sort"
           onChange={(key) => {

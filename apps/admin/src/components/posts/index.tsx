@@ -2,40 +2,40 @@ import classNames from "classnames";
 
 import { PostStatusOptions, TagsNode } from "@/__generated__/__types__";
 
-const columns = [
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-    width: "45%",
-    render: (title: string) => <span>{title || "(Draft)"}</span>,
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (status: PostStatusOptions) => (
-      <span className={`post-status post-status-${status}`} />
-    ),
-  },
-  {
-    title: "Updated",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    render: (date: string) => {
-      const d = new Date(date);
-      const ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
-      const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
-      const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+const titleColumn = {
+  title: "Title",
+  dataIndex: "title",
+  key: "title",
+  width: "45%",
+  render: (title: string) => <span>{title || "(Draft)"}</span>,
+};
 
-      return (
-        <span>
-          {da} {mo}, {ye}
-        </span>
-      );
-    },
+const statusColumn = {
+  title: "Status",
+  dataIndex: "status",
+  key: "status",
+  render: (status: PostStatusOptions) => (
+    <span className={`post-status post-status-${status}`} />
+  ),
+};
+const updatedAtColumn = {
+  title: "Updated",
+  dataIndex: "updatedAt",
+  key: "updatedAt",
+  render: (date: string) => {
+    const d = new Date(date);
+    const ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
+    const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
+    const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+
+    return (
+      <span>
+        {da} {mo}, {ye}
+      </span>
+    );
   },
-];
+};
+
 const Actions = ({ changeStatus, id, status }) => {
   return (
     <div className="flex items-center justify-center gap-2">
@@ -69,8 +69,10 @@ const Actions = ({ changeStatus, id, status }) => {
     </div>
   );
 };
-export const creativesColumns = ({ changeStatus }) => [
-  ...columns,
+export const creativesColumns = ({ changeStatus, isDesktop }) => [
+  { ...titleColumn },
+  isDesktop ? { ...statusColumn } : null,
+  isDesktop ? { ...updatedAtColumn } : null,
   {
     title: "Actions",
     dataIndex: "actions",
@@ -81,16 +83,20 @@ export const creativesColumns = ({ changeStatus }) => [
   },
 ];
 
-export const postsColumns = ({ changeStatus }) => [
-  ...columns,
-  {
-    title: "Tags",
-    dataIndex: "tags",
-    key: "tags",
-    render: (tags: TagsNode) => {
-      return tags.rows.map((tag) => tag.name).join(", ");
-    },
-  },
+export const postsColumns = ({ changeStatus, isDesktop }) => [
+  { ...titleColumn },
+  statusColumn,
+  isDesktop ? { ...updatedAtColumn } : null,
+  isDesktop
+    ? {
+        title: "Tags",
+        dataIndex: "tags",
+        key: "tags",
+        render: (tags: TagsNode) => {
+          return tags.rows.map((tag) => tag.name).join(", ");
+        },
+      }
+    : null,
   {
     title: "Actions",
     dataIndex: "actions",

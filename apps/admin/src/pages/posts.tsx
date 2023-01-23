@@ -2,7 +2,7 @@ import classNames from "classnames";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
-import { Content, Table } from "ui";
+import { Content, Table, useResponsiveLayout } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -35,6 +35,7 @@ function Posts() {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { sortBy: SortBy.Desc } },
   });
+  const { isDesktop } = useResponsiveLayout();
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
   const [filters, setFilters] = useState<PostsFilters>({
@@ -86,7 +87,7 @@ function Posts() {
           />
         </TagsProvider>
         <Table
-          columns={postsColumns({ changeStatus })}
+          columns={postsColumns({ changeStatus, isDesktop })}
           dataSource={source.map((item) => ({ ...item, key: item.id }))}
           loading={loading}
           onRowClick={(row) => router.push("/post/" + row.id)}
