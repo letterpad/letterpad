@@ -14,7 +14,7 @@ const classes = {
 };
 
 export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
-  const fields = columns.map((item) => item?.dataIndex);
+  const fields = columns.map((item) => item?.dataIndex) as string[];
   return (
     <tbody>
       {dataSource.map((item, index) => {
