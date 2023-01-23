@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Button, Content, Table } from "ui";
+import { Button, Content, Table, useResponsiveLayout } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -24,9 +24,11 @@ function Pages() {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { type: PostTypes.Page, sortBy: SortBy.Desc } },
   });
+  const { isDesktop } = useResponsiveLayout();
   const [filters, setFilters] = useState<PostsFilters>({
     sortBy: SortBy["Desc"],
     type: PostTypes.Page,
+    status: [PostStatusOptions.Published, PostStatusOptions.Draft],
   });
   const router = useRouter();
   const { updatePost } = useUpdatePost();
@@ -49,35 +51,29 @@ function Pages() {
             Creatives add more customisation to your site. Create portfolios,
             photo stories, write a picture book etc.
           </span>
-          <Button size="small" variant="ghost">
-            <a
-              href="https://letterpad.app/admin/try-creatives"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Demo
-            </a>
-          </Button>
+          <a
+            href="https://letterpad.app/admin/try-creatives"
+            target="_blank"
+            rel="noreferrer"
+            className="ml-2 text-blue-500"
+          >
+            Demo
+          </a>
         </div>
       </Header>
       <Content>
-        <div className="flex flex-row items-center justify-between">
-          <div className="flex flex-row gap-2 text-sm"></div>
-          <div className="grid grid-cols-3 items-center gap-2">
-            <Filters
-              showTags={false}
-              showPageTypes={true}
-              onChange={(filters) => {
-                refetch({ filters: { ...filters, type: PostTypes.Page } });
-              }}
-              filters={filters}
-              setFilters={setFilters}
-            />
-          </div>
-        </div>
+        <Filters
+          showTags={false}
+          showPageTypes={true}
+          onChange={(filters) => {
+            refetch({ filters: { ...filters, type: PostTypes.Page } });
+          }}
+          filters={filters}
+          setFilters={setFilters}
+        />
 
         <Table
-          columns={creativesColumns({ changeStatus })}
+          columns={creativesColumns({ changeStatus, isDesktop })}
           dataSource={source}
           loading={loading}
           onRowClick={(row) => router.push("/post/" + row.id)}

@@ -1,7 +1,8 @@
+import classNames from "classnames";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
-import { Content, Table } from "ui";
+import { Content, Table, useResponsiveLayout } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -34,17 +35,14 @@ function Posts() {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { sortBy: SortBy.Desc } },
   });
-  const stats = useStatsQuery();
+  const { isDesktop } = useResponsiveLayout();
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
   const [filters, setFilters] = useState<PostsFilters>({
     sortBy: SortBy["Desc"],
+    status: [PostStatusOptions.Published, PostStatusOptions.Draft],
   });
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
-  const statsData =
-    stats.data?.stats?.__typename === "Stats"
-      ? stats.data.stats.posts
-      : { published: 0, drafts: 0, trashed: 0 };
 
   const changeStatus = (id: number, status: PostStatusOptions) => {
     updatePost({ id, status });
@@ -66,6 +64,7 @@ function Posts() {
         title="Could not load posts. Refresh the page to try again"
       />
     );
+
   if (typeof window === "undefined") return null;
   return (
     <>
@@ -78,26 +77,17 @@ function Posts() {
         </span>
       </Header>
       <Content>
-        <div className="flex flex-row items-center justify-between">
-          <div className="hidden flex-row gap-2 text-sm lg:flex">
-            <Badge label="Published" count={statsData.published} />
-            <Badge label="Drafts" count={statsData.drafts} />
-            <Badge label="Trashed" count={2} />
-          </div>
-          <div className="grid grid-cols-3 items-center gap-2">
-            <TagsProvider>
-              <Filters
-                onChange={(filters) => {
-                  refetch({ filters: { ...filters, type: PostTypes.Post } });
-                }}
-                filters={filters}
-                setFilters={setFilters}
-              />
-            </TagsProvider>
-          </div>
-        </div>
+        <TagsProvider>
+          <Filters
+            onChange={(filters) => {
+              refetch({ filters: { ...filters, type: PostTypes.Post } });
+            }}
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </TagsProvider>
         <Table
-          columns={postsColumns({ changeStatus })}
+          columns={postsColumns({ changeStatus, isDesktop })}
           dataSource={source.map((item) => ({ ...item, key: item.id }))}
           loading={loading}
           onRowClick={(row) => router.push("/post/" + row.id)}
@@ -109,14 +99,3 @@ function Posts() {
 }
 
 export default Posts;
-
-const Badge = ({ label, count }) => {
-  return (
-    <span className="flex items-center gap-2 rounded-md bg-slate-100 px-2 py-1  text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-      {label}
-      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 text-xs dark:bg-slate-900">
-        {count}
-      </span>
-    </span>
-  );
-};

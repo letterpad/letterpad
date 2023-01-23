@@ -170,10 +170,12 @@ query Stats {
       posts {
         published
         drafts
+        trashed
       }
       pages {
         published
         drafts
+        trashed
       }
       tags
       media

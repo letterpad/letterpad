@@ -14,7 +14,7 @@ const classes = {
 };
 
 export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
-  const fields = columns.map((item) => item.dataIndex);
+  const fields = columns.map((item) => item?.dataIndex) as string[];
   return (
     <tbody>
       {dataSource.map((item, index) => {
@@ -31,7 +31,7 @@ export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
                   <div className="flex items-center">
                     <div className="space-y-2">
                       <div className="whitespace-no-wrap">
-                        {props.render
+                        {props?.render
                           ? props.render(item[key], item)
                           : item[key]}
                       </div>
@@ -40,7 +40,6 @@ export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
                 </td>
               );
             })}
-            <td className={classes.cell}></td>
           </tr>
         );
       })}
