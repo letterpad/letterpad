@@ -4,12 +4,11 @@ class SSL {
   private greenlock;
   private webroot: string;
 
-  constructor({ webroot, email, production = false }) {
+  constructor({ webroot, email, production = false, configDir }) {
     const Greenlock = require("@root/greenlock");
     this.webroot = webroot;
     this.greenlock = Greenlock.create({
-      packageRoot: __dirname,
-      configDir: "/etc/letsencrypt",
+      configDir,
       packageAgent: "letterpad",
       maintainerEmail: email,
       staging: !production,
@@ -118,4 +117,5 @@ export const ssl = new SSL({
   webroot: "/var/www/letsencrypt",
   email: "admin@letterpad.app",
   production: false,
+  configDir: "/etc/letsencrypt",
 });
