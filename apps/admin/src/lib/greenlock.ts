@@ -1,3 +1,4 @@
+const Greenlock = require("@root/greenlock");
 import fs from "fs";
 
 const config = {
@@ -11,23 +12,24 @@ export class SSL {
   private greenlock;
   private webroot: string;
   constructor({ webroot, email, production = false, configDir } = config) {
-    const Greenlock = require("@root/greenlock");
     this.webroot = webroot;
-    this.greenlock = Greenlock.create({
-      configDir,
-      packageAgent: "letterpad",
-      maintainerEmail: email,
-      staging: !production,
-      notify: function (event, details) {
-        if ("error" === event) {
-          // `details` is an error object in this case
-          throw new Error(details);
-        }
-      },
-    });
-
-    // eslint-disable-next-line no-console
-    console.log(this.greenlock);
+    try {
+      this.greenlock = Greenlock.create({
+        // packageRoot: __dirname,
+        configDir,
+        packageAgent: "letterpad",
+        maintainerEmail: email,
+        staging: !production,
+        notify: function (event, details) {
+          if ("error" === event) {
+            // `details` is an error object in this case
+            throw new Error(details);
+          }
+        },
+      });
+    } catch (e) {
+      throw e;
+    }
 
     this.greenlock.manager.defaults({
       // The "Let's Encrypt Subscriber" (often the same as the maintainer)
@@ -65,7 +67,6 @@ export class SSL {
       fs.unlinkSync(`/etc/nginx/sites-available/${domain}.enabled`);
       return data;
     } catch (e) {
-      fs.unlinkSync(`/etc/nginx/sites-available/${domain}.enabled`);
       throw e;
     }
   }
