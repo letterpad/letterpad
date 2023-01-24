@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "master"
+      - "test-greenlock"
 
 jobs:
   job_one:
