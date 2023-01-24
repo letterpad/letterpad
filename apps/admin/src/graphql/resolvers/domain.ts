@@ -23,25 +23,25 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
     return removeDomain(_args, context);
   },
   createOrUpdateDomain: async (_, args, context) => {
-    try {
-      const ssl = new SSL();
-      const res = await ssl.delete(args.data.name?.trim()!);
-      logger.info("delete", res);
-      const result = await ssl.add(args.data.name?.trim()!);
-      logger.info("result", result);
+    // try {
+    //   const ssl = new SSL();
+    //   const res = await ssl.delete(args.data.name?.trim()!);
+    //   logger.info("delete", res);
+    //   const result = await ssl.add(args.data.name?.trim()!);
+    //   logger.info("result", result);
 
-      return {
-        ok: true,
-      };
-    } catch (e) {
-      logger.error("error", e);
-      return {
-        ok: false,
-        message: e.message,
-      };
-    }
+    //   return {
+    //     ok: true,
+    //   };
+    // } catch (e) {
+    //   logger.error("error", e);
+    //   return {
+    //     ok: false,
+    //     message: e.message,
+    //   };
+    // }
 
-    // return createOrUpdateDomain(args, context);
+    return createOrUpdateDomain(args, context);
   },
 };
 
