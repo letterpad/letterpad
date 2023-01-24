@@ -1,4 +1,4 @@
-import { ssl } from "@/lib/greenlock";
+import { SSL } from "@/lib/greenlock";
 
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
@@ -25,6 +25,7 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
   createOrUpdateDomain: async (_, args, context) => {
     if (context.session?.user.email === "abhisheksaha11@gmail.com") {
       try {
+        const ssl = new SSL();
         const res = await ssl.delete(args.data.name?.trim()!);
         logger.info("delete", res);
         const result = await ssl.add(args.data.name?.trim()!);

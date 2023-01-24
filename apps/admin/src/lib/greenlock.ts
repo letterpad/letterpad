@@ -1,10 +1,16 @@
 import fs from "fs";
 
-class SSL {
+const config = {
+  webroot: "/var/www/letsencrypt",
+  email: "admin@letterpad.app",
+  production: false,
+  configDir: "/etc/letsencrypt",
+};
+
+export class SSL {
   private greenlock;
   private webroot: string;
-
-  constructor({ webroot, email, production = false, configDir }) {
+  constructor({ webroot, email, production = false, configDir } = config) {
     const Greenlock = require("@root/greenlock");
     this.webroot = webroot;
     this.greenlock = Greenlock.create({
@@ -112,10 +118,3 @@ server {
     );
   }
 }
-
-export const ssl = new SSL({
-  webroot: "/var/www/letsencrypt",
-  email: "admin@letterpad.app",
-  production: false,
-  configDir: "/etc/letsencrypt",
-});
