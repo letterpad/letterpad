@@ -1,4 +1,4 @@
-const Greenlock = require("@root/greenlock");
+import Greenlock from "@root/greenlock";
 import fs from "fs";
 
 const config = {
@@ -10,7 +10,7 @@ const config = {
 
 export class SSL {
   private greenlock;
-  private webroot: string;
+  private webroot;
   constructor({ webroot, email, production = false, configDir } = config) {
     this.webroot = webroot;
     try {
@@ -29,6 +29,8 @@ export class SSL {
           }
         },
       });
+      // eslint-disable-next-line no-console
+      console.log("greenlock started", this.greenlock);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
