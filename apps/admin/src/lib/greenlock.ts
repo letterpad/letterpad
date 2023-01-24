@@ -14,6 +14,8 @@ export class SSL {
   constructor({ webroot, email, production = false, configDir } = config) {
     this.webroot = webroot;
     try {
+      // eslint-disable-next-line no-console
+      console.log("starting greenlock");
       this.greenlock = Greenlock.create({
         // packageRoot: __dirname,
         configDir,
@@ -28,9 +30,13 @@ export class SSL {
         },
       });
     } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
       throw e;
     }
 
+    // eslint-disable-next-line no-console
+    console.log(this.greenlock);
     this.greenlock.manager.defaults({
       // The "Let's Encrypt Subscriber" (often the same as the maintainer)
       // NOT the end customer (except where that is also the maintainer)
