@@ -15,11 +15,11 @@ import { sanitizeUsername } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 export const UpdateProfile = ({ session, me }) => {
-  const [name, setName] = useState(session.name);
+  const [name, setName] = useState(session.name ?? "");
   const [username, setUsername] = useState(
-    isInteger(session.username) ? "" : session.username
+    isInteger(session.username) ? "" : session.username ?? ""
   );
-  const [bio, setBio] = useState(me.bio);
+  const [bio, setBio] = useState(me.bio ?? "");
   const [error, setError] = useState<null | Record<string, string>>(null);
   const [updateAuthor] = useUpdateAuthorMutation();
 
