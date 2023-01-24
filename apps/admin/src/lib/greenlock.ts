@@ -25,6 +25,10 @@ export class SSL {
         }
       },
     });
+
+    // eslint-disable-next-line no-console
+    console.log(this.greenlock);
+
     this.greenlock.manager.defaults({
       // The "Let's Encrypt Subscriber" (often the same as the maintainer)
       // NOT the end customer (except where that is also the maintainer)
