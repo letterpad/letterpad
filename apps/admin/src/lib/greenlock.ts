@@ -1,4 +1,4 @@
-import Greenlock from "@root/greenlock";
+const Greenlock = require("@root/greenlock");
 import fs from "fs";
 
 const config = {
