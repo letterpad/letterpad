@@ -15,7 +15,7 @@ export class SSL {
     this.webroot = webroot;
     try {
       this.greenlock = Greenlock.create({
-        // packageRoot: __dirname,
+        packageRoot: __dirname,
         configDir,
         packageAgent: "letterpad",
         maintainerEmail: email,

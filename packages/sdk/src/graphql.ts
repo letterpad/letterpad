@@ -569,7 +569,7 @@ export type PostsFilters = {
   previewHash?: InputMaybe<Scalars["String"]>;
   slug?: InputMaybe<Scalars["String"]>;
   sortBy?: InputMaybe<SortBy>;
-  status?: InputMaybe<PostStatusOptions>;
+  status?: InputMaybe<Array<InputMaybe<PostStatusOptions>>>;
   tag?: InputMaybe<Scalars["String"]>;
   tagSlug?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<PostTypes>;
