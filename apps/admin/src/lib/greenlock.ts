@@ -14,8 +14,6 @@ export class SSL {
   constructor({ webroot, email, production = false, configDir } = config) {
     this.webroot = webroot;
     try {
-      // eslint-disable-next-line no-console
-      console.log("starting greenlock");
       this.greenlock = Greenlock.create({
         // packageRoot: __dirname,
         configDir,
@@ -29,16 +27,11 @@ export class SSL {
           }
         },
       });
-      // eslint-disable-next-line no-console
-      console.log("greenlock started", this.greenlock);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
       throw e;
     }
-
-    // eslint-disable-next-line no-console
-    console.log(this.greenlock);
     this.greenlock.manager.defaults({
       // The "Let's Encrypt Subscriber" (often the same as the maintainer)
       // NOT the end customer (except where that is also the maintainer)
@@ -72,7 +65,9 @@ export class SSL {
       const data = await this.greenlock.remove({
         subject: domain,
       });
-      fs.unlinkSync(`/etc/nginx/sites-available/${domain}.enabled`);
+      if (fs.existsSync(this.getNginxConfigPath(domain))) {
+        fs.unlinkSync(this.getNginxConfigPath(domain));
+      }
       return data;
     } catch (e) {
       throw e;
@@ -81,7 +76,7 @@ export class SSL {
 
   private createNginx_80(domain: string) {
     fs.writeFileSync(
-      `/etc/nginx/sites-available/${domain}.enabled`,
+      this.getNginxConfigPath(domain),
       `server {
     listen	 80;
     server_name ${domain};
@@ -97,7 +92,7 @@ export class SSL {
 
   private createNginx_443(domain: string) {
     fs.writeFileSync(
-      `/etc/nginx/sites-available/${domain}.enabled`,
+      this.getNginxConfigPath(domain),
       `server {
    listen	 80;
    server_name ${domain};
@@ -129,5 +124,9 @@ server {
     }
 }`
     );
+  }
+
+  getNginxConfigPath(domain: string) {
+    return `/etc/nginx/sites-enabled/${domain}.enabled`;
   }
 }
