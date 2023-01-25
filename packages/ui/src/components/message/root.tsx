@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 
 function getRoot() {
@@ -16,7 +17,7 @@ const createRootForClient = () => {
   }
 
   return {
-    show: (node) => {
+    show: (node: ReactNode) => {
       root.render(node);
     },
   };

@@ -33,19 +33,38 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
         };
       }
       const ssl = new SSL();
-      const result = await ssl.add(args.data.name.trim());
-      await context.prisma.domain.create({
-        data: {
-          name: args.data.name.trim(),
-          ssl: true,
-          mapped: true,
+      await ssl.add(args.data.name.trim());
+      const domainExist = await context.prisma.domain.findFirst({
+        where: {
           author: {
-            connect: {
-              id: context.session.user.id,
-            },
+            id: context.session.user.id,
           },
         },
       });
+      if (!domainExist) {
+        await context.prisma.domain.create({
+          data: {
+            name: args.data.name.trim(),
+            ssl: true,
+            mapped: true,
+            author: {
+              connect: {
+                id: context.session.user.id,
+              },
+            },
+          },
+        });
+      } else {
+        await context.prisma.domain.update({
+          data: {
+            ssl: true,
+            mapped: true,
+          },
+          where: {
+            author_id: context.session.user.id,
+          },
+        });
+      }
       await enqueueEmailAndSend({
         author_id: context.session.user.id,
         template_id: EmailTemplates.DomainMapSuccess,

@@ -18,18 +18,35 @@ export const NewDomain: React.FC<{
   const { updateLocalState, createUpdateDomain } = useDomainMutation();
 
   const mapDomain = async () => {
+    if (!domain?.trim()) {
+      return Message().error({ content: "Domain name is required" });
+    }
+    Message().loading({
+      content: "Please wait, while we map your domain",
+    });
     const result = await createUpdateDomain({ name: domain });
     if (result.data?.createOrUpdateDomain.ok) {
       if (result.data?.createOrUpdateDomain.message)
         Message().success({
           content: result.data?.createOrUpdateDomain.message,
+          duration: 3,
         });
+
+      updateLocalState({ mapped: true });
+    } else {
+      Message().error({
+        content: result.data?.createOrUpdateDomain.message!,
+      });
     }
   };
 
   const removeMapping = async () => {
-    await removeDomain();
+    const result = await removeDomain();
     updateLocalState({ mapped: false, ssl: false });
+    Message().success({
+      content: result.data?.removeDomain.message!,
+    });
+    setDomain("");
   };
 
   const changeDomainName = (e: ChangeEvent<HTMLInputElement>) => {

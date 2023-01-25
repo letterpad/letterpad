@@ -4,7 +4,7 @@ import fs from "fs";
 const config = {
   webroot: "/var/www/letsencrypt",
   email: "admin@letterpad.app",
-  production: false,
+  production: process.env.NODE_ENV === "production",
   configDir: "/etc/letsencrypt",
 };
 
