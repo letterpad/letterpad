@@ -1,8 +1,7 @@
 import { portal } from "./root";
 
-let timeout;
-export const clearText = (DELAY) => {
-  clearTimeout(timeout);
+let timeout: NodeJS.Timeout;
+export const clearText = (DELAY = 3) => {
   if (DELAY === 0) {
     return portal.show(<span />);
   }

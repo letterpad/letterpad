@@ -10,7 +10,7 @@ export const useSavingIndicator = () => {
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     subscribe("save", (msg) => {
-      Message().destroy();
+      // Message().destroy();
       clearTimeout(timeout);
       setMsg(msg);
       timeout = setTimeout(() => {

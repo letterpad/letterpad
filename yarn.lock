@@ -2162,6 +2162,13 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
   integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
 
+"@greenlock/manager@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@greenlock/manager/-/manager-3.1.0.tgz#0f540fe94d2ab023fe5aea135fb02c025ab47c9e"
+  integrity sha512-PBy5CMK+j4oD7sj7hF5qE+xKEOSiiuL2hHd5X5ttEbtnTSDKjNeqbrR5k2ZddwVNdjOVeBIeuqlm81IFZ+Ftew==
+  dependencies:
+    greenlock-manager-fs "^3.1.0"
+
 "@hapi/accept@^5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-5.0.2.tgz#ab7043b037e68b722f93f376afb05e85c0699523"
@@ -2729,6 +2736,87 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
+
+"@root/acme@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@root/acme/-/acme-3.1.0.tgz#e40efbdd18efa6471fa1546d5ee26474ec2bfe27"
+  integrity sha512-GAyaW63cpSYd2KvVp5lHLbCWeEhJPKZK9nsJvZJOKsD9Uv88KEttn4FpDZEJ+2q3Jsey0DWpuQ2I4ft0JV9p2w==
+  dependencies:
+    "@root/csr" "^0.8.1"
+    "@root/encoding" "^1.0.1"
+    "@root/keypairs" "^0.10.0"
+    "@root/pem" "^1.0.4"
+    "@root/request" "^1.6.1"
+    "@root/x509" "^0.7.2"
+
+"@root/asn1@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@root/asn1/-/asn1-1.0.0.tgz#8748cf7b4497324de91a154b606ca1ddfe97c5d7"
+  integrity sha512-0lfZNuOULKJDJmdIkP8V9RnbV3XaK6PAHD3swnFy4tZwtlMDzLKoM/dfNad7ut8Hu3r91wy9uK0WA/9zym5mig==
+  dependencies:
+    "@root/encoding" "^1.0.1"
+
+"@root/csr@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@root/csr/-/csr-0.8.1.tgz#97a1b821331a4ed5895eee33bedb6ad49cdef74e"
+  integrity sha512-hKl0VuE549TK6SnS2Yn9nRvKbFZXn/oAg+dZJU/tlKl/f/0yRXeuUzf8akg3JjtJq+9E592zDqeXZ7yyrg8fSQ==
+  dependencies:
+    "@root/asn1" "^1.0.0"
+    "@root/pem" "^1.0.4"
+    "@root/x509" "^0.7.2"
+
+"@root/encoding@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@root/encoding/-/encoding-1.0.1.tgz#60cf3ccb9e2239226b30e8394c7a4a258a161c3e"
+  integrity sha512-OaEub02ufoU038gy6bsNHQOjIn8nUjGiLcaRmJ40IUykneJkIW5fxDqKxQx48cszuNflYldsJLPPXCrGfHs8yQ==
+
+"@root/greenlock@v4":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@root/greenlock/-/greenlock-4.0.5.tgz#b960a143b9595d2086be886a01914c9e2b68e0c4"
+  integrity sha512-KR9w3mYE9aH33FCibI8oSYBQV+f7lc3MVPdZ9nxY2tqRLmJp05cMOMz340mtG14VnWDuznLj4TbBj3sHIuoQPQ==
+  dependencies:
+    "@greenlock/manager" "^3.1.0"
+    "@root/acme" "^3.1.0"
+    "@root/csr" "^0.8.1"
+    "@root/keypairs" "^0.10.0"
+    "@root/mkdirp" "^1.0.0"
+    "@root/request" "^1.6.1"
+    acme-http-01-standalone "^3.0.5"
+    cert-info "^1.5.1"
+    greenlock-store-fs "^3.2.2"
+    safe-replace "^1.1.0"
+
+"@root/keypairs@^0.10.0":
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/@root/keypairs/-/keypairs-0.10.3.tgz#dc89c6996bbfcc085e11bc2dd70c35a164e17466"
+  integrity sha512-hbmjVbk/G99Z1XlUzJM4VOAaR8jm4vMnfwpZL301FA24ubJ/bOjj6enCrz9gKsQvBO6RY4/R4MgUuWpXeqeZZQ==
+  dependencies:
+    "@root/encoding" "^1.0.1"
+    "@root/pem" "^1.0.4"
+    "@root/x509" "^0.7.2"
+
+"@root/mkdirp@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@root/mkdirp/-/mkdirp-1.0.0.tgz#f200e29568d711d3357151af0d2648e7eaf21b6f"
+  integrity sha512-hxGAYUx5029VggfG+U9naAhQkoMSXtOeXtbql97m3Hi6/sQSRL/4khKZPyOF6w11glyCOU38WCNLu9nUcSjOfA==
+
+"@root/pem@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@root/pem/-/pem-1.0.4.tgz#9ecc3419c0a05c92b8ecbfe0a41f474970f8c72f"
+  integrity sha512-rEUDiUsHtild8GfIjFE9wXtcVxeS+ehCJQBwbQQ3IVfORKHK93CFnRtkr69R75lZFjcmKYVc+AXDB+AeRFOULA==
+
+"@root/request@^1.6.1":
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/@root/request/-/request-1.9.2.tgz#3b561b3f3b61d3a6264cdb25cfef7c473749e7d5"
+  integrity sha512-wVaL9yVV9oDR9UNbPZa20qgY+4Ch6YN8JUkaE4el/uuS5dmhD8Lusm/ku8qJVNtmQA56XLzEDCRS6/vfpiHK2A==
+
+"@root/x509@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@root/x509/-/x509-0.7.2.tgz#422ca7e46c09f5ddf3af86306383778eb004ace1"
+  integrity sha512-ENq3LGYORK5NiMFHEVeNMt+fTXaC7DTS6sQXoqV+dFdfT0vmiL5cDLjaXQhaklJQq0NiwicZegzJRl1ZOTp3WQ==
+  dependencies:
+    "@root/asn1" "^1.0.0"
+    "@root/encoding" "^1.0.1"
 
 "@rushstack/eslint-patch@^1.1.3":
   version "1.2.0"
@@ -3528,6 +3616,18 @@ accepts@^1.3.5, accepts@~1.3.8:
   dependencies:
     mime-types "~2.1.34"
     negotiator "0.6.3"
+
+acme-http-01-standalone@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/acme-http-01-standalone/-/acme-http-01-standalone-3.0.5.tgz#385a53e2da60cafc679fe7d9cf37f6625d442d03"
+  integrity sha512-W4GfK+39GZ+u0mvxRVUcVFCG6gposfzEnSBF20T/NUwWAKG59wQT1dUbS1NixRIAsRuhpGc4Jx659cErFQH0Pg==
+
+acme-http-01-webroot@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/acme-http-01-webroot/-/acme-http-01-webroot-3.0.0.tgz#ec3a0e3c6edd275f189492feb8c2f9f18255ff0a"
+  integrity sha512-K63egONklWEOYz0rgl9w2a24eIZ+KkDxCJdxgjN4a0l5vVUys7lUIcwj8MtVjBcGvMBwXfWDwOshLDH+UrNscA==
+  dependencies:
+    "@root/mkdirp" "^1.0.0"
 
 acorn-globals@^6.0.0:
   version "6.0.0"
@@ -4564,6 +4664,11 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==
+
+cert-info@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/cert-info/-/cert-info-1.5.1.tgz#90078c9ea2d18abaa8a4ed9068a46320ecf0d519"
+  integrity sha512-eoQC/yAgW3gKTKxjzyClvi+UzuY97YCjcl+lSqbsGIy7HeGaWxCPOQFivhUYm27hgsBMhsJJFya3kGvK6PMIcQ==
 
 chalk@^2.0.0:
   version "2.4.2"
@@ -7336,6 +7441,22 @@ gray-matter@^4.0.2:
     kind-of "^6.0.2"
     section-matter "^1.0.0"
     strip-bom-string "^1.0.0"
+
+greenlock-manager-fs@^3.1.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/greenlock-manager-fs/-/greenlock-manager-fs-3.1.1.tgz#88477dab8fcd1a6455032cc557c81e8cd462ec0c"
+  integrity sha512-np6qdnPIOZx40PAcSQcqK1eMPWjTKxsxcgRd/OVg0ai49WC1Ds74CTrwmB84pq2n53ikbnDBQFmKEQ4AC0DK8w==
+  dependencies:
+    "@root/mkdirp" "^1.0.0"
+    safe-replace "^1.1.0"
+
+greenlock-store-fs@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/greenlock-store-fs/-/greenlock-store-fs-3.2.2.tgz#e404d3cc1fbaf88dec6914ea2c10d4b31256faa2"
+  integrity sha512-92ejLB4DyV4qv/2b6VLGF2nKfYQeIfg3o+e/1cIoYLjlIaUFdbBXkzLTRozFlHsQPZt2ALi5qYrpC9IwH7GK8A==
+  dependencies:
+    "@root/mkdirp" "^1.0.0"
+    safe-replace "^1.1.0"
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -11088,6 +11209,11 @@ safe-regex-test@^1.0.0:
     call-bind "^1.0.2"
     get-intrinsic "^1.1.3"
     is-regex "^1.1.4"
+
+safe-replace@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/safe-replace/-/safe-replace-1.1.0.tgz#432821b5a8139a38b534678d712f0850fe3e5235"
+  integrity sha512-9/V2E0CDsKs9DWOOwJH7jYpSl9S3N05uyevNjvsnDauBqRowBPOyot1fIvV5N2IuZAbYyvrTXrYFVG0RZInfFw==
 
 "safer-buffer@>= 2.1.2 < 3", "safer-buffer@>= 2.1.2 < 3.0.0", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"

@@ -3,20 +3,21 @@ import { portal } from "./root";
 import { DisplayProps, Props } from "./types";
 import { Wrapper } from "./wrapper";
 
+const duration = 3;
 export const Message = () => {
   clearText(0);
   return {
     success: (props: Props) => {
-      Display({ ...props, success: true });
+      Display({ duration, ...props, success: true });
     },
     error: (props: Props) => {
-      Display({ ...props, error: true });
+      Display({ duration, ...props, error: true });
     },
     warn: (props: Props) => {
-      Display({ ...props, warn: true });
+      Display({ duration, ...props, warn: true });
     },
     loading: (props: Props) => {
-      Display({ ...props, loading: true });
+      Display({ duration, ...props, loading: true });
     },
     destroy: () => {
       portal.show(<span />);
@@ -27,7 +28,7 @@ export const Message = () => {
 const Display = (
   props: DisplayProps & { displayType?: "modal" | "message" }
 ) => {
-  const { displayType, duration, title, ...rest } = props;
+  const { displayType, title, ...rest } = props;
 
   portal.show(
     <Wrapper
