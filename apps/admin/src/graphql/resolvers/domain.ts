@@ -74,14 +74,8 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
         message: "Congratulations! Your domain has been mapped with Letterpad",
       };
     } catch (e) {
-      logger.error("error", e);
-      return {
-        ok: false,
-        message: e.message,
-      };
+      return createOrUpdateDomain(args, context);
     }
-
-    return createOrUpdateDomain(args, context);
   },
 };
 
