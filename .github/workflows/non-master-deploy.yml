@@ -3,7 +3,6 @@ on:
   push:
     branches-ignore:
       - "master"
-      - "test-greenlock"
 env:
   CYPRESS_CACHE_FOLDER: /home/runner/work/letterpad/letterpad/apps/admin/cypress/cache
 
