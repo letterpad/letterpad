@@ -1,8 +1,8 @@
-FROM node:16.13-alpine AS builder
+FROM node:19-bullseye-slim AS builder
 
-RUN apk add --no-cache libc6-compat
-RUN apk update 
-RUN apk add bash
+# RUN apk add --no-cache libc6-compat
+# RUN apk update 
+# RUN apk add bash
 # Set working directory
 WORKDIR /app
 RUN yarn global add turbo
@@ -10,7 +10,7 @@ COPY . .
 RUN turbo prune --scope=admin --docker
 
 # Add lockfile and package.json's of isolated subworkspace
-FROM node:16.13 AS installer
+FROM node:19-bullseye-slim AS installer
 # RUN apk add --no-cache libc6-compat
 # RUN apk update
 WORKDIR /app
@@ -20,7 +20,7 @@ ENV CYPRESS_INSTALL_BINARY 0
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
-RUN yarn install
+RUN yarn install --ignore-engines
 
 # Build the project
 COPY --from=builder /app/out/full/ .
@@ -32,10 +32,10 @@ RUN yarn prisma:generate
 
 WORKDIR /app
 RUN yarn turbo run build --filter=admin...
-RUN yarn install --production
+RUN yarn install --production 
 # COPY --from=builder /app/out/full/ .
 
-FROM node:16.13 AS runner
+FROM node:19-bullseye-slim AS runner
 WORKDIR /app
 
 # Don't run production as root

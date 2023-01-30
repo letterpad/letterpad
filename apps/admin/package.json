@@ -12,15 +12,14 @@
     ]
   },
   "scripts": {
-    "seedIfNotSeeded": "node dist/seedIfNoSeed.js",
+    "preinstall": "yarn config set ignore-engines true",
+    "seedIfNotSeeded": "node ./src/graphql/db/dist/seedIfNoSeed.js",
     "codegen": "graphql-let",
     "prepare": "yarn prisma:generate && yarn prisma:migrate:run && yarn seedIfNotSeeded",
     "client": "concurrently -k 'yarn dev'",
     "dev": "next",
-    "postbuild": "tsup ./src/graphql/db/seed/seedIfNoSeed.ts ./src/graphql/db/seed/index.ts --format cjs --tsconfig ./tsconfig.json",
+    "postbuild": "tsup ./src/graphql/db/seed/seedIfNoSeed.ts ./src/graphql/db/seed/index.ts --format cjs --outDir ./src/graphql/db/dist",
     "prestart": "yarn prepare",
-    "predev": "yarn prepare",
-    "prebuild": "yarn codegen",
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
@@ -103,7 +102,7 @@
     "showdown": "^2.0.0",
     "sqlite3": "^5.0.11",
     "stripe": "^10.15.0",
-    "swr": "^1.3.0",
+    "swr": "^2.0.3",
     "tinymce": "^6.3.1",
     "twig": "^1.15.4",
     "ui": "*"

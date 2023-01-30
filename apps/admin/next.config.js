@@ -1,5 +1,6 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
 
+const path = require('path');
 const basePath = "/admin";
 const nextConfig = {
   eslint: {
