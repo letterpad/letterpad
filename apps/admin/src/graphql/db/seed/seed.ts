@@ -1,4 +1,6 @@
+require("dotenv/config");
 /* eslint-disable no-console */
+import { PrismaPromise } from "@prisma/client";
 import copydir from "copy-dir";
 import fs from "fs";
 import path from "path";
@@ -308,7 +310,7 @@ export async function insertPost(postData, author_id) {
   });
 }
 
-export const cleanupDatabase = () => {
+export const cleanupDatabase = async () => {
   const modelNames = Object.keys(prisma).filter((key) => {
     return key.startsWith("_") ? false : true;
   });

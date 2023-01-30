@@ -36,8 +36,7 @@
     "react-dom": "^18.2.0",
     "react-parallax": "^3.5.1",
     "tailwindcss": "^3.2.4",
-    "ts-prune": "^0.10.3",
-    "turbo": "latest"
+    "ts-prune": "^0.10.3"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -48,6 +47,7 @@
   "packageManager": "yarn@1.22.19",
   "dependencies": {
     "axios": "^1.2.0",
-    "react-icons": "^4.6.0"
+    "react-icons": "^4.6.0",
+    "turbo": "latest"
   }
 }
