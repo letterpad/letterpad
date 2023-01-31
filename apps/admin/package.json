@@ -4,7 +4,7 @@
   "author": "Abhishek Saha",
   "license": "MIT",
   "prisma": {
-    "seed": "node dist/index.js"
+    "seed": "node ./src/graphql/db/dist/index.js"
   },
   "eslint": {
     "dirs": [
