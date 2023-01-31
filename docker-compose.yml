@@ -14,7 +14,7 @@ services:
       dockerfile: ./apps/admin/Dockerfile
     restart: always
     volumes:
-      - ./data/sqlite:/app/apps/admin/prisma/sqlite/data
+      - sqlite-db:/app/apps/admin/prisma/sqlite/data
       - ./apps/admin/.env:/app/apps/admin/.env
     expose:
       - 3000
@@ -31,7 +31,7 @@ services:
     expose:
       - 3306
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - mysql-db:/var/lib/mysql
     restart: always
     healthcheck:
       test: "mysql $$MYSQL_DATABASE -u root -proot -e 'SELECT 1;'"
@@ -43,5 +43,5 @@ services:
       MYSQL_DATABASE: letterpad
     
 volumes:
-  mysql:
-    driver: local
+  - sqlite-db
+  - mysql-db
