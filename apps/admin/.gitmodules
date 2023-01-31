@@ -1,3 +1,0 @@
-[submodule "client"]
-	path = client
-	url = git@github.com:letterpad/letterpad-client.git
