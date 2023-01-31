@@ -43,5 +43,5 @@ services:
       MYSQL_DATABASE: letterpad
     
 volumes:
-  - sqlite-db
-  - mysql-db
+  sqlite-db:
+  mysql-db:
