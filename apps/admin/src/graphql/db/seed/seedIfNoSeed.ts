@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { seed } from "./seed";
 
 hasSeed().then((seeded) => {
+  if (process.env.NODE_ENV === "production") return;
   if (!seeded) {
     seed()
       .catch((e) => {
@@ -21,8 +22,6 @@ hasSeed().then((seeded) => {
 
 async function hasSeed() {
   try {
-    // eslint-disable-next-line no-console
-    console.log(process.env.DATABASE_URL);
     const author = await prisma.author.findFirst();
     return author;
   } catch (e) {
