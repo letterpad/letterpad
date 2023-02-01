@@ -8,8 +8,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build --cache-dir=.turbo",
     "dev": "turbo run dev --parallel",
+    "build": "turbo run build --cache-dir=.turbo",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -28,7 +28,7 @@
     "@tailwindcss/typography": "^0.5.8",
     "autoprefixer": "^10.4.13",
     "eslint-config-custom": "*",
-    "husky": "^8.0.2",
+    "husky": "^8.0.3",
     "postcss": "^8.4.20",
     "postcss-import": "^15.1.0",
     "prettier": "latest",
