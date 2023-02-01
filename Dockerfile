@@ -1,5 +1,5 @@
 # Builder
-FROM node:19-bullseye-slim AS builder
+FROM node:19-bullseye-slim:sha256:8886b323f04105798b3e5aac31ab7cc9ee35ae71099fbd7cd6645e1d165dbf94 AS builder
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
@@ -19,7 +19,7 @@ RUN yarn install --production
 
 
 # Runner
-FROM node:19-bullseye-slim AS runner
+FROM node:19-bullseye-slim:sha256:8886b323f04105798b3e5aac31ab7cc9ee35ae71099fbd7cd6645e1d165dbf94 AS runner
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
