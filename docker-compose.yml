@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  admin:
-    container_name: admin
-    image: admin
+  letterpad:
+    container_name: letterpad
+    image: letterpad
     depends_on:
       db:
         condition: service_healthy
@@ -11,7 +11,7 @@ services:
       - NODE_ENV=production
     build:
       context: .
-      dockerfile: ./apps/admin/Dockerfile
+      dockerfile: ./Dockerfile
     restart: always
     volumes:
       - sqlite-db:/app/apps/admin/prisma/sqlite/data
@@ -20,6 +20,7 @@ services:
       - 3000
     ports:
       - 3000:3000
+      - 3001:3001
   db:
     image: mysql:8
     container_name: db

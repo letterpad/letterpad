@@ -1,6 +1,6 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
+// const withBundleAnalyzer = require('@next/bundle-analyzer')({
+//   enabled: process.env.ANALYZE === 'true',
+// });
 
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
@@ -55,7 +55,7 @@ const securityHeaders = [
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
-module.exports = withBundleAnalyzer({
+module.exports = {
   reactStrictMode: true,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   eslint: {
@@ -114,4 +114,4 @@ module.exports = withBundleAnalyzer({
     CLIENT_ID: process.env.CLIENT_ID,
     NEXT_PUBLIC_UTTERANCES_REPO: process.env.NEXT_PUBLIC_UTTERANCES_REPO,
   },
-});
+};

@@ -4,13 +4,11 @@ import {
   ResolversTypes,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
-import logger from "@/shared/logger";
 
 export const getStats = async (
   _,
   { client_author_id, session, prisma }: ResolverContext
 ): Promise<ResolversTypes["StatsResponse"]> => {
-  logger.debug("Reached resolver: stats");
   const result = {
     posts: { published: 0, drafts: 0, trashed: 0 },
     pages: { published: 0, drafts: 0, trashed: 0 },

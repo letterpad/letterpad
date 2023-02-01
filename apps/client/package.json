@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start -p 3001",
     "serve": "next start",
-    "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky install",
     "prettier": "prettier --ignore-path .gitignore --write ."
