@@ -12,8 +12,8 @@
     ]
   },
   "scripts": {
-    "preinstall": "yarn config set ignore-engines true",
     "seedIfNotSeeded": "node ./src/graphql/db/dist/seedIfNoSeed.js",
+    "preinstall": "yarn config set ignore-engines true",
     "codegen": "graphql-let",
     "prepare": "yarn prisma:generate && yarn prisma:migrate:run && yarn seedIfNotSeeded",
     "client": "concurrently -k 'yarn dev'",

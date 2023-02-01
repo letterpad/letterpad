@@ -8,8 +8,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build --cache-dir=.turbo",
     "dev": "turbo run dev --parallel",
+    "build": "turbo run build --cache-dir=.turbo",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
