@@ -7,7 +7,7 @@ RUN turbo prune --scope=admin --docker
 
 
 # Installer
-FROM node:19-bullseye-slim AS installer
+FROM node:19-bullseye-slim@sha256:8886b323f04105798b3e5aac31ab7cc9ee35ae71099fbd7cd6645e1d165dbf94 AS installer
 WORKDIR /app
 
 ENV CYPRESS_INSTALL_BINARY 0
