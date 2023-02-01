@@ -51,6 +51,9 @@ jobs:
       - name: Remove cache
         run: rm -rf .turbo
 
+      - name: Install only production dependencies
+        run: yarn install --production
+
       - name: Deploy to Digital Ocean
         uses: appleboy/scp-action@master
         with:

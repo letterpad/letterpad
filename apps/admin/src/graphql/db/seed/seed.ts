@@ -1,3 +1,4 @@
+require("dotenv/config");
 /* eslint-disable no-console */
 import copydir from "copy-dir";
 import fs from "fs";
@@ -20,13 +21,11 @@ import { postsList } from "./posts";
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
 
-const ROOT_DIR = process.env.ROOT || path.join(__dirname, "../../../../");
+const ROOT_DIR = path.join(__dirname, "../../../");
 
 // All paths are relative to this file
-const dataDir = path.join(ROOT_DIR, "/data");
-const publicUploadsDir = path.join(ROOT_DIR, "/public/uploads");
-const uploadsSourceDir = path.join(ROOT_DIR, "/src/graphql/db/seed/uploads");
-
+const publicUploadsDir = path.join(ROOT_DIR, "public/uploads");
+const uploadsSourceDir = path.join(ROOT_DIR, "graphql/db/seed/uploads");
 function absPath(p) {
   return p;
 }
@@ -54,17 +53,28 @@ export async function seed(folderCheck = true) {
       console.timeEnd("delete all recoreds from all tables");
 
       console.time("ensure data directories");
-      await Promise.all([
-        fs.promises.mkdir(absPath(dataDir), { recursive: true }),
-        fs.promises.mkdir(absPath(publicUploadsDir), { recursive: true }),
-      ]);
+      try {
+        await Promise.all([
+          // fs.promises.mkdir(absPath(dataDir), { recursive: true }),
+          fs.promises.mkdir(absPath(publicUploadsDir), { recursive: true }),
+        ]);
+      } catch (e) {
+        logger.error(e);
+      }
       console.timeEnd("ensure data directories");
     }
     if (folderCheck) {
       console.time("sync uploads");
-      //@ts-ignore
-      await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
-      await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
+      try {
+        //@ts-ignore
+        await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
+        await copydirAsync(
+          absPath(uploadsSourceDir),
+          absPath(publicUploadsDir)
+        );
+      } catch (e) {
+        logger.error(e);
+      }
       console.timeEnd("sync uploads");
     }
     console.time("insert roles and permissions");
@@ -308,7 +318,7 @@ export async function insertPost(postData, author_id) {
   });
 }
 
-export const cleanupDatabase = () => {
+export const cleanupDatabase = async () => {
   const modelNames = Object.keys(prisma).filter((key) => {
     return key.startsWith("_") ? false : true;
   });

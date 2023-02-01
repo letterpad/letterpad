@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  admin:
+    container_name: admin
+    image: admin
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+    build:
+      context: .
+      dockerfile: ./apps/admin/Dockerfile
+    restart: always
+    volumes:
+      - sqlite-db:/app/apps/admin/prisma/sqlite/data
+      - ./apps/admin/.env:/app/apps/admin/.env
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+  db:
+    image: mysql:8
+    container_name: db
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    volumes:
+      - mysql-db:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test: "mysql $$MYSQL_DATABASE -u root -proot -e 'SELECT 1;'"
+      interval: 20s
+      timeout: 10s
+      retries: 5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: letterpad
+    
+volumes:
+  sqlite-db:
+  mysql-db:
