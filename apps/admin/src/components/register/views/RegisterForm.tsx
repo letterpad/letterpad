@@ -14,9 +14,9 @@ import {
   CreateAuthorDocument,
   useCreateAuthorMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { registrationPaths } from "@/constants";
 import { EventAction, track } from "@/track";
 
+const hasCaptchaKey = process.env.RECAPTCHA_KEY_CLIENT ?? null;
 export const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,7 +40,7 @@ export const RegisterForm = () => {
     });
     let errors = {};
     if (executeRecaptcha) {
-      const token = await executeRecaptcha("register");
+      const token = hasCaptchaKey ? await executeRecaptcha("register") : "";
       const formWithToken = { email, token, password };
       if (email.length === 0) {
         errors = {

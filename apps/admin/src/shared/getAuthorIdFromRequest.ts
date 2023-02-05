@@ -41,6 +41,13 @@ const getAuthorIdFromRequest = async (context: Context) => {
         );
       }
     }
+    if (process.env.DOCKER === "true" && process.env.EMAIL) {
+      const author = await prisma.author.findFirst({
+        where: { email: process.env.EMAIL },
+        select: { id: true },
+      });
+      if (author) author_id = author.id;
+    }
   } catch (e: any) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2021") {
@@ -87,7 +94,5 @@ async function getAuthorFromCustomDomain(context) {
 function getAuthorFromAuthHeader(authHeader: string) {
   const token = authHeader.split(/\s+/).pop() || "";
   const tokenData = decryptEmail(token);
-  logger.debug("Authorisation Header to tokenData  - ", tokenData);
-  //@ts-ignore
   return tokenData;
 }

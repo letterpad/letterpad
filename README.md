@@ -58,8 +58,76 @@ yarn seed
 yarn build
 yarn start
 ```
+### Using Docker
+```sh
+ docker run 
+  -v 'data:/app/apps/admin/prisma/sqlite/data' 
+  -p 3001:3001 
+  -p 3000:3000 
+  -e DATABASE_URL='file:data/letterpad.sqlite' 
+  -e SECRET_KEY='provide-a-secret-key' 
+  -e EMAIL="xxx@xxx.com" 
+  -e PASSWORD='xxxxxxxxxxx' 
+  abhisheksaha11/letterpad
+```
+### Options:
+Letterpad can be configured using environemt variables. The below are all possible options.
+
+Create your first user. You should run the container the first time using this. 
+> When you restart the container only Email is required.
+```
+EMAIL
+PASSWORD
+```
+
+Provide a secret key which will be used for encryting passwords and emails.
+```
+SECRET_KEY
+```
+
+Provide a database url string. If you want to use `mysql`, then you should either have the credentials ready or use `docker-compose.yml` file to add the db. If you dont wnat to create additional setup, then you can use `sqlite`.
+```sh
+DATABASE_URL
+
+# eg.
+# DATABASE_URL="file:data/letterpad.sqlite"
+# DATABASE_URL="mysql://user:pwd@172.17.0.1:3306/db_name?connect_timeout=5" 
+```
+> 172.17.0.1 is the docker default docker ip. Prisma does not work if you use the container name as host. 
+
+
+If you want to add spam protection for registration page, then you should configure google recaptcha keys.
+You can create the keys here - https://www.google.com/recaptcha/admin/create
+```
+RECAPTCHA_KEY_CLIENT
+RECAPTCHA_KEY_SERVER
+```
+
+It is also highly advisable to configure emails. Currently Letterpad supports gmail.
+```
+GMAIL_USER
+GMAIL_PASSWORD
+SENDER_EMAIL
+```
+
+If you want to upload your images to CDN, then you should configure the cloudinary keys here - https://cloudinary.com/.
+```
+CLOUDINARY_KEY
+CLOUDINARY_NAME
+CLOUDINARY_SECRET
+```
+
+If you want to enable Unsplash which is a repository for quality images, then you should configure unsplash here - https://unsplash.com/oauth/applications.
+```
+UNSPLASH_CLIENT_ID
+```
+Enable debugging
+```
+DEBUG
+```
 
 ## Development
+
 ```sh
 yarn dev
 ```
