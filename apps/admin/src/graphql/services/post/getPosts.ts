@@ -74,7 +74,7 @@ export const getPosts = async (
         : undefined,
       page_type: args.filters.page_type,
     },
-    take: args.filters?.limit || 10,
+    take: args.filters?.limit || 100,
     skip,
     orderBy: {
       updatedAt: args?.filters?.sortBy || "desc",
