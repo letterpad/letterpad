@@ -12,7 +12,7 @@ const query = gql`
 `;
 
 const doSubscribe = async (req: NextApiRequest, res: NextApiResponse) => {
-  const resp = await fetch(process.env.GRAPHQL_URL as string, {
+  const resp = await fetch(process.env.API_URL as string, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

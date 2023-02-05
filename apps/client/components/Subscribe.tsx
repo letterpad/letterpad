@@ -4,8 +4,10 @@ const Subscribe = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const doSubscribe = async () => {
+    setLoading(true);
     setSuccess('');
     setError('');
     if (email.length === 0) {
@@ -26,6 +28,7 @@ const Subscribe = () => {
       setEmail('');
       setSuccess(a.data.addSubscriber.message);
     }
+    setLoading(false);
   };
 
   return (
@@ -42,10 +45,16 @@ const Subscribe = () => {
               className="flex-1 rounded-l-md border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-900 dark:bg-gray-900  dark:text-gray-200 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 md:w-64"
               onChange={(e) => setEmail(e.target.value.trim())}
               value={email}
+              onKeyUp={(e) => {
+                if (e.key === 'Enter') {
+                  doSubscribe();
+                }
+              }}
             />
             <button
               className="button-primary bg-accent-50 text-white hover:bg-accent-50 hover:opacity-80"
               onClick={doSubscribe}
+              disabled={loading}
             >
               Subscribe
             </button>
@@ -53,30 +62,6 @@ const Subscribe = () => {
         </div>
         <small>{error || success}</small>
       </div>
-      {/* <div className="">
-        <div className="md:flex">
-          <div className="flex w-full flex-row items-center p-3">
-            <h2 className="mb-4 text-center font-semibold">Subscribe!</h2>
-            <div className="relative">
-              <input
-                type="text"
-                className="h-14 w-full rounded-md bg-white px-4 pr-20 hover:cursor-pointer focus:outline-none dark:bg-neutral-800"
-                placeholder="Enter your email id"
-                name=""
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button
-                onClick={doSubscribe}
-                className="absolute top-2 right-2 h-10 rounded bg-black px-3 text-sm text-white hover:bg-gray-900 dark:bg-slate-900 "
-              >
-                Subscribe Now
-              </button>
-            </div>
-            <small>{error || success}</small>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
