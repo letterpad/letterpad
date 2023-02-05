@@ -37,7 +37,11 @@ export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
 export const TagsProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { loading, data } = useTagsQuery({
+  const {
+    loading,
+    data,
+    refetch: tagsQueryRefetch,
+  } = useTagsQuery({
     fetchPolicy: "network-only",
   });
   const [tags, setTags] = useState<TagRow[]>([]);
@@ -104,19 +108,19 @@ export const TagsProvider: React.FC<{
       if (isDuplicate) {
         return Message().error({ content: "Tag name already exists!" });
       }
-
-      const newData = [...tags];
-      const index = newData.findIndex((item) => row.key === item.key);
-      const item = newData[index];
-      newData.splice(index, 1, {
-        ...item,
-        ...row,
+      let old_name = "";
+      const newData = tags.map((item) => {
+        if (item.key === row.key) {
+          old_name = item.name;
+          return row;
+        }
+        return item;
       });
 
       const { name, slug } = row;
       await updateTagsMutation({
         variables: {
-          data: { name, slug, old_name: item.name },
+          data: { name, slug, old_name },
         },
         updateQueries: {
           Tags: (prev) => {
@@ -131,9 +135,10 @@ export const TagsProvider: React.FC<{
         },
       });
       postsQuery.refetch();
+      tagsQueryRefetch();
       setEditTagId(null);
     },
-    [tags, updateTagsMutation, postsQuery]
+    [tags, updateTagsMutation, postsQuery, tagsQueryRefetch]
   );
 
   const addTag = useCallback(() => {

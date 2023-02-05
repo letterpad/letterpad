@@ -24,10 +24,7 @@ import {
   PostTypes,
   SortBy,
 } from "@/__generated__/__types__";
-import {
-  usePostsQuery,
-  useStatsQuery,
-} from "@/__generated__/queries/queries.graphql";
+import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 
 function Posts() {
