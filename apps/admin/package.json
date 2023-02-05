@@ -31,7 +31,7 @@
     "prisma:generate": "dotenv scripts/generatePrisma.sh",
     "prisma:migrate:create": "dotenv scripts/createMigration.sh",
     "prisma:migrate:run": "dotenv scripts/runMigration.sh",
-    "prisma:seed": "dotenv scripts/seed.sh",
+    "prisma:seed": "node ./src/graphql/db/dist/index.js",
     "prisma:studio": "dotenv scripts/studio.sh",
     "cy:open": "cypress open --env SECRET_KEY='some-secret' --browser chrome",
     "cy:run": "cypress run --record --key e2c7bae0-47ed-49e5-8ea8-b0c26c3493f7 --browser chrome",

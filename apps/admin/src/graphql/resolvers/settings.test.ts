@@ -9,7 +9,7 @@ describe("Test Settings Graphql API", () => {
   it("get sitename and title", async () => {
     const result = await API({ query: SettingsDocument, variables: {} });
 
-    const settings = await prisma.setting.findFirst({ where: { id: 2 } });
+    const settings = await prisma.setting.findFirst({ where: { id: 1 } });
     expect(result.settings).toEqual(
       expect.objectContaining({
         site_title: settings?.site_title,

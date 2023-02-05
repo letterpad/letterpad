@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
-const envLoaded = dotenv.config({ path: "./.env.test.local", debug: true });
+import path from "path";
+const envPath = path.join(__dirname, "..", ".env.test.local");
+const envLoaded = dotenv.config({ path: envPath, debug: true });
 if (envLoaded.error) {
   throw new Error("`.env.test.local` not found.");
 }
@@ -19,7 +21,7 @@ const session = {
     role: "AUTHOR",
     avatar: "",
     permissions: [],
-    id: 2,
+    id: 1,
     username: "",
     __typename: "SessionData",
   },

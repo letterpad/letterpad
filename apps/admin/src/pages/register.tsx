@@ -21,6 +21,7 @@ interface Props {
   recaptchaKey: string;
 }
 const Provider: React.VFC<Props> = ({ recaptchaKey }) => {
+  if (!recaptchaKey) return <Register />;
   return (
     <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
       <Register />
@@ -34,7 +35,7 @@ export default Provider;
 export const getServerSideProps = async () => {
   return {
     props: {
-      recaptchaKey: process.env.RECAPTCHA_KEY_CLIENT,
+      recaptchaKey: process.env.RECAPTCHA_KEY_CLIENT || null,
     },
   };
 };

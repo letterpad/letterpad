@@ -53,8 +53,8 @@ describe("Email templates", () => {
     if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
         Object {
-          "html": "Hello Letterpad User, <br><br>A new post has been published in <strong>Demo Account</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong>new-post-test</strong><br><br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
-          "subject": "Demo Account - New Post",
+          "html": "Hello Letterpad User, <br><br>A new post has been published in <strong>My new blog</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong>new-post-test</strong><br><br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
+          "subject": "My new blog - New Post",
           "to": Array [
             "subscriber@test.com",
           ],
@@ -79,13 +79,7 @@ describe("Email templates", () => {
     );
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
-      expect(data.content).toMatchInlineSnapshot(`
-        Object {
-          "html": "Hello There, <br><br>You have subscribed to <strong>Demo Account</strong> using this email address. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verifySubscriber?token=&subscriber=1\\"><br>        Verify Email<br>      </a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
-          "subject": "Demo Account - Verify your email",
-          "to": "subscriber@test.com",
-        }
-      `);
+      expect(data.content).toMatchInlineSnapshot();
     }
   });
 
@@ -109,13 +103,7 @@ describe("Email templates", () => {
       prisma
     );
     if (data?.ok) {
-      expect(data.content).toMatchInlineSnapshot(`
-        Object {
-          "html": "Hello There, <br><br>All set! You have been subscribed to <strong>Demo Account</strong>.<br><br><a target=\\"_blank\\" href=\\"http://demo.localhost\\"><br>        Visit Demo Account<br>      </a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
-          "subject": "You are subscribed to Demo Account",
-          "to": "subscriber@test.com",
-        }
-      `);
+      expect(data.content).toMatchInlineSnapshot();
     }
   });
 
@@ -226,9 +214,9 @@ describe("Email templates", () => {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
         Object {
-          "html": "Hello Demo Author,<br><br>We have received a request to change the password for your <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong> account. Please click the below button to change your password.<br><br><a target=\\"_blank\\"  href=\\"http://localhost:3000/admin/resetPassword?token=",
+          "html": "Hello foo,<br><br>We have received a request to change the password for your <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong> account. Please click the below button to change your password.<br><br><a target=\\"_blank\\"  href=\\"http://localhost:3000/admin/resetPassword?token=",
           "subject": "Letterpad - Reset your password",
-          "to": "demo@demo.com",
+          "to": "newuser@test.com",
         }
       `);
     }

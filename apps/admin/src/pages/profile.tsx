@@ -6,11 +6,7 @@ import { Content as ProfileContent } from "@/components/profile/content";
 
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 
-function Profile() {
-  const { data, loading } = useMeQuery({
-    variables: {},
-  });
-
+function Profile({ me }) {
   return (
     <>
       <Head>
@@ -23,8 +19,7 @@ function Profile() {
         </span>
       </PageHeader>
       <Content>
-        {loading && <Loading />}
-        {data?.me?.__typename === "Author" && <ProfileContent data={data.me} />}
+        {me?.__typename === "Author" && <ProfileContent data={me} />}
       </Content>
     </>
   );
