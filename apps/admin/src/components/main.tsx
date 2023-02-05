@@ -30,7 +30,7 @@ const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
 
 const Main = ({ Component, props }: IProps) => {
   const router = useRouter();
-  const { data, loading } = useHomeQueryQuery();
+  const { data, loading, refetch } = useHomeQueryQuery();
   const session = useSession();
   useTracking(session?.data?.user?.id);
   const isPublic =
@@ -48,6 +48,10 @@ const Main = ({ Component, props }: IProps) => {
       return;
     }
     if (isPublic) return;
+    // sometimes homeQuery returns unauthorized user in sqlite db.
+    if (data?.me?.__typename !== "Author") {
+      refetch();
+    }
     switch (register_step) {
       case ProfileInfo:
         if (router.pathname !== registrationPaths[ProfileInfo]) {

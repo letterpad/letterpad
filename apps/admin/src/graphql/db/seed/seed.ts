@@ -17,6 +17,7 @@ import { textToSlug } from "@/utils/slug";
 
 import generatePost from "./contentGenerator";
 import { postsList } from "./posts";
+import { encryptEmail } from "../../../shared/clientToken";
 
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
@@ -87,11 +88,13 @@ export async function seed(folderCheck = true) {
 
     console.time("Insert post and page and tags");
     const author = await prisma.author.findFirst({
-      where: { email: "demo@demo.com" },
+      where: { email: process.env.EMAIL || "demo@demo.com" },
     });
     await insertPost(postsList[0], author?.id);
-    await insertPost(postsList[1], author?.id);
-    await insertPost(postsList[2], author?.id);
+    if (!process.env.EMAIL) {
+      await insertPost(postsList[1], author?.id);
+      await insertPost(postsList[2], author?.id);
+    }
     console.timeEnd("Insert post and page and tags");
   } catch (e: any) {
     console.log(e);
@@ -214,34 +217,17 @@ export async function insertRolePermData() {
 }
 
 async function insertAuthors() {
-  const adminAuthor = await createAuthorWithSettings(
-    {
-      name: "Admin",
-      email: "admin@admin.com",
-      username: "admin",
-      password: "admin",
-      register_step: RegisterStep.Registered,
-      token: "",
-    },
-    { site_title: "Admin Account", site_url: "http://localhost:3000" },
-    ROLES.ADMIN
-  );
-  await prisma.author.update({
-    where: { id: adminAuthor?.id },
-    data: { verified: true },
-  });
-
   const demoAuthor = await createAuthorWithSettings(
     {
-      name: "Demo Author",
-      email: "demo@demo.com",
+      name: "{Author Name}",
+      email: process.env.EMAIL || "demo@demo.com",
       username: "demo",
-      password: "demo",
+      password: process.env.PASSWORD || "demo",
       register_step: RegisterStep.Registered,
       token: "",
     },
     {
-      site_title: "Demo Account",
+      site_title: "My new blog",
       site_tagline: "Easily create and publish your blog on Letterpad",
       site_url: "http://localhost:3000",
     }
@@ -258,7 +244,7 @@ async function insertAuthors() {
         instagram: "",
         linkedin: "",
       }),
-      occupation: "Principal Engineer @ Ajaxtown",
+      occupation: "{Your Occupation}",
       company_name: "Letterpad",
       bio: "You can write some information about yourself for the world to know you a little better.",
       avatar:
