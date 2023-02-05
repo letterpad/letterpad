@@ -8,6 +8,10 @@
   .mce-content-body {
     outline: none;
   }
+  ::selection {
+    background: yellow;
+    color: #000;
+  }
   @media only screen and (max-width: 600px) {
     h1 {
       font-size: 2rem;
