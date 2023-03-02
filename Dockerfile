@@ -22,7 +22,7 @@ RUN yarn install --production
 
 
 # Runner
-FROM node:19-bullseye-slim AS runner
+FROM node:19-bullseye-slim@sha256:424dd181b3be2a7aec23f6ba3b69e732745bad42e9b8a473efcb1399e76f12de AS runner
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
