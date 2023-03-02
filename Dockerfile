@@ -1,5 +1,5 @@
 # Builder
-FROM node:19-bullseye-slim AS builder
+FROM node:19-bullseye-slim@sha256:424dd181b3be2a7aec23f6ba3b69e732745bad42e9b8a473efcb1399e76f12de AS builder
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
