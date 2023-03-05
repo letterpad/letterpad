@@ -1,15 +1,15 @@
 import { PostsFragmentFragment } from 'letterpad-sdk';
+import { FC } from 'react';
 
 import Link from '@/components/Link';
+import { PublishedAt } from '@/components/PublishedAt';
 import SectionContainer from '@/components/SectionContainer';
-import Tag from '@/components/Tag';
 
-import { PublishedAt } from '../components/PublishedAt';
-interface Props {
+export interface Props {
   posts: PostsFragmentFragment;
 }
 
-export default function ListLayout({ posts }: Props) {
+export const HomePosts: FC<Props> = ({ posts }) => {
   return (
     <SectionContainer>
       <div className="content w-full divide-y divide-gray-200 py-12 dark:divide-gray-700">
@@ -53,4 +53,4 @@ export default function ListLayout({ posts }: Props) {
       </div>
     </SectionContainer>
   );
-}
+};

@@ -3,7 +3,7 @@ import { AuthorFrontMatter } from 'types/AuthorFrontMatter';
 
 import PageTitle from '@/components/PageTitle';
 import SectionContainer from '@/components/SectionContainer';
-import { PageSEO } from '@/components/SEO';
+import { BaseSEO } from '@/components/SEO';
 import SocialIcon from '@/components/social-icons';
 
 interface Props {
@@ -33,7 +33,7 @@ export default function AuthorLayout({
 
   return (
     <SectionContainer>
-      <PageSEO
+      <BaseSEO
         title={`About - ${name}`}
         description={`About me - ${name}`}
         site_banner={banner}

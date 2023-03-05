@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { FC } from 'react';
 import { AuthorFrontMatter } from 'types/AuthorFrontMatter';
 import { PostFrontMatter } from 'types/PostFrontMatter';
 
@@ -66,7 +67,59 @@ interface PageSEOProps {
   twSite?: string | null;
 }
 
-export const PageSEO = ({
+interface Props {
+  data: any;
+  me: any;
+  settings: any;
+  children: any;
+}
+export const withPageSEO = ({ Component }) => {
+  const Child: FC<Props> = ({ data, me, settings, children }) => {
+    const authorDetails = [
+      {
+        name: data.author.name,
+        avatar: data.author.avatar,
+        occupation: me.occupation,
+        company: me.company_name,
+        email: settings.site_email,
+        twitter: me.social?.twitter,
+        linkedin: me.social?.linkedin,
+        github: me.social?.github,
+        banner: settings.banner?.src,
+        logo: settings.site_logo?.src,
+      },
+    ];
+    return (
+      <>
+        <BlogSEO
+          url={`${settings.site_url}${data.slug}`}
+          date={data.publishedAt}
+          title={data.title}
+          summary={data.excerpt ?? ''}
+          lastmod={data.updatedAt}
+          images={data.cover_image.src ? [data.cover_image.src] : []}
+          slug={data.slug ?? ''}
+          tags={
+            data.tags?.__typename === 'TagsNode'
+              ? data.tags.rows.map((t) => t.name)
+              : []
+          }
+          fileName={data.title}
+          site_name={settings.site_title}
+          authorDetails={authorDetails}
+        />
+        <Component data={data} me={me} settings={settings}>
+          {children}
+        </Component>
+      </>
+    );
+  };
+  Child.displayName = 'HomePage';
+
+  return Child;
+};
+
+export const BaseSEO = ({
   title,
   description,
   site_banner,

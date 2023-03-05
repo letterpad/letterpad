@@ -1,29 +1,25 @@
-import {
-  Author,
-  Navigation,
-  NavigationType,
-  SettingsFragmentFragment,
-} from 'letterpad-sdk';
+import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
 import { ReactNode, useEffect, useRef } from 'react';
 
-import Footer from './Footer';
-import Link from './Link';
-import { LogoWithTitle } from './Logo';
-import { MobileNav } from './MobileNav';
-import PageTitle from './PageTitle';
-import SectionContainer from './SectionContainer';
-import ThemeSwitch from './ThemeSwitch';
+import Footer from '@/components/Footer';
+import Link from '@/components/Link';
+import { LogoWithTitle } from '@/components/Logo';
+import { MobileNav } from '@/components/MobileNav';
+import PageTitle from '@/components/PageTitle';
+import SectionContainer from '@/components/SectionContainer';
+import ThemeSwitch from '@/components/ThemeSwitch';
 
-interface Props {
+export interface Props {
   children: ReactNode;
+  pageName: string;
+  isCollection: boolean;
   props: {
     settings: SettingsFragmentFragment;
     me: Author;
-    showBrand?: boolean;
   };
 }
 
-const LayoutWrapper = ({ children, props }: Props) => {
+export const Layout = ({ children, props, pageName, isCollection }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,25 +38,7 @@ const LayoutWrapper = ({ children, props }: Props) => {
   )
     return <div>Setting not found</div>;
 
-  const { show_about_page, show_tags_page } = props.settings;
-
   const routes = [...props.settings.menu];
-  if (show_tags_page) {
-    routes.push({
-      slug: '/tags',
-      label: 'Tags',
-      type: NavigationType.Page,
-      original_name: 'Tags',
-    });
-  }
-  if (show_about_page) {
-    routes.push({
-      slug: '/about',
-      label: 'About',
-      type: NavigationType.Page,
-      original_name: 'About',
-    });
-  }
 
   const menu = getMenu(routes);
   return (
@@ -74,17 +52,22 @@ const LayoutWrapper = ({ children, props }: Props) => {
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
-                title={props.showBrand ? '' : props.settings.site_title}
+                title={
+                  isCollection && pageName === 'Home'
+                    ? ''
+                    : props.settings.site_title
+                }
               />
             </Link>
           </div>
           <div className="flex items-center text-base leading-5">
             <div className="hidden sm:block">{menu}</div>
             <ThemeSwitch />
+            {/* <Subscribe /> */}
             <MobileNav routes={routes} />
           </div>
         </header>
-        {props.showBrand && (
+        {isCollection && pageName === 'Home' && (
           <div className="py:10 space-y-2 md:space-y-3 md:py-32">
             <SectionContainer>
               <div className="py-10">
@@ -110,8 +93,6 @@ const LayoutWrapper = ({ children, props }: Props) => {
     </>
   );
 };
-
-export default LayoutWrapper;
 
 function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
   return menu.map((item, i) => {
@@ -140,7 +121,7 @@ const BrandText = ({ title, tagline, description }) => {
   return (
     <>
       <PageTitle className="text-center">{title}</PageTitle>
-      <p className="pb-4 text-center text-md font-bold leading-10 md:text-lg">
+      <p className="pb-4 text-center text-md font-bold leading-6 md:text-md">
         {tagline}
       </p>
       <p className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md">

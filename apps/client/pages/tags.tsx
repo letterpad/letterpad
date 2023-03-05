@@ -6,7 +6,7 @@ import kebabCase from '@/lib/utils/kebabCase';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 import SectionContainer from '@/components/SectionContainer';
-import { PageSEO } from '@/components/SEO';
+import { BaseSEO } from '@/components/SEO';
 import Tag from '@/components/Tag';
 
 export default function Tags({
@@ -23,7 +23,7 @@ export default function Tags({
 
   return (
     <>
-      <PageSEO
+      <BaseSEO
         title={`Tags - ${me.name}`}
         description="Things I blog about"
         site_banner={settings.banner?.src}
