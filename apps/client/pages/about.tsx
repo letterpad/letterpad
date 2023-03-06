@@ -1,41 +1,31 @@
 import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
 
-import AuthorLayout from '@/layouts/AuthorLayout';
+import { BaseSEO } from '../components/SEO';
+import { useTheme } from '../themes';
 
 export default function About({
   settings,
   me,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const {
-    name,
-    social,
-    avatar = '/static/images/avatar.png',
-    bio,
-    occupation,
-    company_name,
-  } = me;
-  const { site_email, site_description } = settings;
+  const { name, social } = me;
+
+  const { About } = useTheme({
+    theme: settings.theme === 'minimal' ? 'list' : 'grid',
+  });
+
   return (
-    <AuthorLayout
-      site_title={settings.site_title}
-      site_url={settings.site_url + 'page/about'}
-      data={{
-        avatar: avatar || '/static/images/avatar.png',
-        name,
-        github: social?.github,
-        twitter: social?.twitter,
-        email: site_email,
-        company: company_name,
-        linkedin: social?.linkedin,
-        occupation,
-        banner: settings.banner?.src,
-      }}
-    >
-      <div dangerouslySetInnerHTML={{ __html: site_description ?? '' }} />
-      <br />
-      <div dangerouslySetInnerHTML={{ __html: bio ?? '' }} />
-    </AuthorLayout>
+    <>
+      <BaseSEO
+        title={`About - ${name}`}
+        description={`About me - ${name}`}
+        site_banner={settings.banner?.src}
+        site_title={settings.site_title}
+        url={settings.site_url + 'page/about'}
+        twSite={social?.twitter}
+      />
+      <About me={me} settings={settings} />
+    </>
   );
 }
 
