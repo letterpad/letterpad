@@ -7,8 +7,8 @@ import { FC, ReactNode } from 'react';
 
 import Link from '@/components/Link';
 import ScrollTop from '@/components/ScrollTop';
-import SectionContainer from '@/components/SectionContainer';
-import { BlogSEO } from '@/components/SEO';
+
+import { SectionContainer } from './commons/section';
 
 export interface Props {
   data: PageFragmentFragment;
@@ -19,21 +19,7 @@ export interface Props {
   settings: SettingsFragmentFragment;
   me: MeFragmentFragment;
 }
-export const HomePage: FC<Props> = ({
-  site_name,
-  data,
-  next,
-  prev,
-  children,
-  settings,
-  me,
-}) => {
-  const { slug, publishedAt, title, excerpt, updatedAt, cover_image, tags } =
-    data;
-  if (settings.__typename !== 'Setting') return null;
-  if (me?.__typename !== 'Author' || data.author?.__typename !== 'Author')
-    return null;
-
+export const HomePage: FC<Props> = ({ next, prev, children }) => {
   return (
     <SectionContainer>
       <ScrollTop />

@@ -1,12 +1,8 @@
-import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
 
-import PageTitle from '@/components/PageTitle';
-import SectionContainer from '@/components/SectionContainer';
-import { TagSEO } from '@/components/SEO';
-
-import ListLayout from '@/layouts/ListLayout';
-
+import { List } from './commons/list';
+import { SectionContainer } from './commons/section';
+import { PageTitle } from './commons/title';
 import { getServerSideProps } from '../../pages/tag/[tag]';
 export const Tag = ({
   posts,
@@ -21,7 +17,7 @@ export const Tag = ({
           <PageTitle>{tagName}</PageTitle>
         </div>
       </SectionContainer>
-      <ListLayout posts={posts} />
+      <List posts={posts} />
     </>
   );
 };

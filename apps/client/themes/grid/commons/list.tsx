@@ -1,15 +1,14 @@
 import { PostsFragmentFragment } from 'letterpad-sdk';
 
 import Link from '@/components/Link';
-import SectionContainer from '@/components/SectionContainer';
-import Tag from '@/components/Tag';
 
-import { PublishedAt } from '../themes/grid/commons/publishedAt';
+import { PublishedAt } from './publishedAt';
+import { SectionContainer } from './section';
 interface Props {
   posts: PostsFragmentFragment;
 }
 
-export default function ListLayout({ posts }: Props) {
+export function List({ posts }: Props) {
   return (
     <SectionContainer>
       <div className="content w-full divide-y divide-gray-200 py-12 dark:divide-gray-700">
@@ -34,12 +33,6 @@ export default function ListLayout({ posts }: Props) {
                           {title}
                         </Link>
                       </h3>
-                      {/* <div className="flex flex-wrap">
-                        {tags?.__typename === 'TagsNode' &&
-                          tags.rows.map((tag) => (
-                            <Tag key={tag.name} text={tag.name} />
-                          ))}
-                      </div> */}
                     </div>
                     <div className="max-w-none text-md leading-6 text-gray-500 dark:text-gray-300">
                       {excerpt}

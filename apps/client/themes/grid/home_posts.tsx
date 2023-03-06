@@ -5,8 +5,8 @@ import formatDate from '@/lib/utils/formatDate';
 
 import Image from '@/components/Image';
 import Link from '@/components/Link';
-import SectionContainer from '@/components/SectionContainer';
 
+import { SectionContainer } from './commons/section';
 import { IconBook } from '../../components/icons';
 
 export interface Props {

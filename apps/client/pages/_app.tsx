@@ -67,7 +67,7 @@ export default function App({ Component, pageProps }: AppProps<PageProps>) {
         <Layout
           props={pageProps}
           pageName={Component.name}
-          isCollection={isCollection}
+          isHomeCollection={isCollection}
         >
           <Component {...pageProps} />
         </Layout>

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { InferGetServerSidePropsType } from 'next';
 
 import kebabCase from '@/lib/utils/kebabCase';
@@ -6,12 +7,11 @@ import Comments from '@/components/comments';
 import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
-import PageTitle from '@/components/PageTitle';
-import PostSubTitle from '@/components/PostSubtitle';
 import ScrollTop from '@/components/ScrollTop';
-import SectionContainer from '@/components/SectionContainer';
 import { Share } from '@/components/share';
 
+import { SectionContainer } from './commons/section';
+import { PageTitle } from './commons/title';
 import { getServerSideProps } from '../../pages/post/[...slug]';
 
 export const getReadableDate = (timestamp: Date | number) => {
@@ -155,3 +155,24 @@ export const Post = ({
     </SectionContainer>
   );
 };
+
+interface Props {
+  text?: string | null;
+  className?: string;
+}
+
+export default function PostSubTitle({ text, className }: Props) {
+  if (!text) return null;
+  const textColor = className ?? 'text-gray-400 dark:text-slate-400';
+  return (
+    <h1
+      className={classNames(
+        'py-2 text-lg font-medium  leading-7',
+        className,
+        textColor
+      )}
+    >
+      {text}
+    </h1>
+  );
+}

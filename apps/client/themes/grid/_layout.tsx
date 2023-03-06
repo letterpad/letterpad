@@ -1,25 +1,31 @@
 import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
 import { ReactNode, useEffect, useRef } from 'react';
+import { MobileNav } from 'themes/grid/commons/mobile-nav';
 
-import Footer from '@/components/Footer';
 import Link from '@/components/Link';
-import { LogoWithTitle } from '@/components/Logo';
-import { MobileNav } from '@/components/MobileNav';
-import PageTitle from '@/components/PageTitle';
-import SectionContainer from '@/components/SectionContainer';
 import ThemeSwitch from '@/components/ThemeSwitch';
+
+import { Footer } from './commons/footer';
+import { SectionContainer } from './commons/section';
+import { LogoWithTitle } from './commons/site-logo';
+import { PageTitle } from './commons/title';
 
 export interface Props {
   children: ReactNode;
   pageName: string;
-  isCollection: boolean;
+  isHomeCollection: boolean;
   props: {
     settings: SettingsFragmentFragment;
     me: Author;
   };
 }
 
-export const Layout = ({ children, props, pageName, isCollection }: Props) => {
+export const Layout = ({
+  children,
+  props,
+  pageName,
+  isHomeCollection,
+}: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,13 +38,9 @@ export const Layout = ({ children, props, pageName, isCollection }: Props) => {
       contentRef.current.style.minHeight = extraHeight + contentHeight + 'px';
     }
   }, []);
-  if (
-    props.settings.__typename !== 'Setting' ||
-    props.me?.__typename !== 'Author'
-  )
-    return <div>Setting not found</div>;
 
   const routes = [...props.settings.menu];
+  const isCollection = isHomeCollection && pageName === 'Home';
 
   const menu = getMenu(routes);
   return (
@@ -52,33 +54,27 @@ export const Layout = ({ children, props, pageName, isCollection }: Props) => {
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
-                title={
-                  isCollection && pageName === 'Home'
-                    ? ''
-                    : props.settings.site_title
-                }
+                title={isCollection ? '' : props.settings.site_title}
               />
             </Link>
           </div>
           <div className="flex items-center text-base leading-5">
-            <div className="hidden sm:block">{menu}</div>
+            <div className="hidden md:block">{menu}</div>
             <ThemeSwitch />
             {/* <Subscribe /> */}
             <MobileNav routes={routes} />
           </div>
         </header>
-        {isCollection && pageName === 'Home' && (
-          <div className="py:10 space-y-2 md:space-y-3 md:py-32">
-            <SectionContainer>
-              <div className="py-10">
-                <BrandText
-                  tagline={props.settings.site_tagline}
-                  title={props.settings.site_title}
-                  description={props.settings.site_description}
-                />
-              </div>
-            </SectionContainer>
-          </div>
+        {isCollection && (
+          <SectionContainer className="py:10 space-y-2 md:space-y-3 md:py-32">
+            <div className="py-10">
+              <BrandText
+                tagline={props.settings.site_tagline}
+                title={props.settings.site_title}
+                description={props.settings.site_description}
+              />
+            </div>
+          </SectionContainer>
         )}
       </div>
       <main className="mb-auto" ref={contentRef}>
