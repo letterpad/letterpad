@@ -4,7 +4,7 @@ import Link from '@/components/Link';
 import SectionContainer from '@/components/SectionContainer';
 import Tag from '@/components/Tag';
 
-import { PublishedAt } from '../themes/grid/commons/publishedAt';
+import { PublishedAt } from '../themes/default/commons/publishedAt';
 interface Props {
   posts: PostsFragmentFragment;
 }

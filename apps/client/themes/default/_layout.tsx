@@ -1,6 +1,6 @@
 import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
 import { ReactNode, useEffect, useRef } from 'react';
-import { MobileNav } from 'themes/grid/commons/mobile-nav';
+import { MobileNav } from 'themes/default/commons/mobile-nav';
 
 import Link from '@/components/Link';
 import ThemeSwitch from '@/components/ThemeSwitch';

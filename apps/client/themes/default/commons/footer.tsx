@@ -1,4 +1,4 @@
-import { LogoWithTitle } from 'themes/grid/commons/site-logo';
+import { LogoWithTitle } from 'themes/default/commons/site-logo';
 
 import Link from '@/components/Link';
 import SocialIcon from '@/components/social-icons';

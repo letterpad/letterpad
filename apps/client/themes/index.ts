@@ -1,13 +1,11 @@
-import { FC } from 'react';
-
-import * as Grid from './grid';
+import * as DefaultGrid from './default';
 import * as List from './list';
 
 interface Props {
   theme: 'grid' | 'list';
 }
 
-export const useTheme = ({ theme = 'grid' }: Props) => {
-  if (theme === 'list') return { ...Grid, ...List };
-  return Grid;
+export const useTheme = ({ theme = 'list' }: Props) => {
+  if (theme === 'list') return { ...DefaultGrid, ...List };
+  return DefaultGrid;
 };
