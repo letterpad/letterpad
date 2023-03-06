@@ -28,13 +28,13 @@ interface PageProps {
 export default function App({ Component, pageProps }: AppProps<PageProps>) {
   const { srcs, contents } = getScripts(pageProps.settings?.scripts ?? '');
   const { Layout } = useTheme({
-    theme: pageProps.settings.theme === 'minimal' ? 'list' : 'grid',
+    theme: pageProps?.settings?.theme === 'minimal' ? 'list' : 'grid',
   });
 
   const isCollection = useMemo(() => {
     const [firstItemOfMenu] = pageProps?.settings?.menu ?? [];
-    return firstItemOfMenu.type === NavigationType.Tag;
-  }, [pageProps.settings.menu]);
+    return firstItemOfMenu?.type === NavigationType.Tag;
+  }, [pageProps?.settings?.menu]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system">
