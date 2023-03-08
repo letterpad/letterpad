@@ -1,11 +1,9 @@
-import * as Grid from './grid';
+import * as Air from './air';
+import * as GridDefaultTheme from './grid';
 import * as List from './list';
 
-interface Props {
-  theme: 'grid' | 'list';
-}
-
-export const useTheme = ({ theme = 'list' }: Props) => {
-  if (theme === 'list') return { ...Grid, ...List };
-  return Grid;
+export const useTheme = (theme?: string | null) => {
+  if (theme === 'minimal') return { ...GridDefaultTheme, ...List };
+  if (theme === 'air') return { ...GridDefaultTheme, ...Air };
+  return GridDefaultTheme;
 };

@@ -12,9 +12,7 @@ export default function Preview({
   settings,
   me,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { Post } = useTheme({
-    theme: settings.theme === 'minimal' ? 'list' : 'grid',
-  });
+  const { Post } = useTheme(settings?.theme);
 
   useEffect(() => {
     if (typeof window.Prism !== 'undefined') {

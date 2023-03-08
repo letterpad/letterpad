@@ -11,9 +11,7 @@ export default function Tag({
   tagName,
   settings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { Tag } = useTheme({
-    theme: settings.theme === 'minimal' ? 'list' : 'grid',
-  });
+  const { Tag } = useTheme(settings?.theme);
   if (
     posts.__typename !== 'PostsNode' ||
     settings.__typename !== 'Setting' ||
