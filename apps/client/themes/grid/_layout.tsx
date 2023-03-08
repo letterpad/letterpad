@@ -40,7 +40,7 @@ export const Layout = ({
   }, []);
 
   const routes = [...props.settings.menu];
-  const isCollection = isHomeCollection && pageName === 'Home';
+  const isCollection = isHomeCollection;
 
   const menu = getMenu(routes);
   return (
