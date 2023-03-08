@@ -5,7 +5,7 @@ import { FC } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { BsEnvelope, BsImages, BsTags } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
-import { HiOutlineUsers } from "react-icons/hi";
+import { HiOutlineUsers, HiTemplate } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 import { VscDebugDisconnect } from "react-icons/vsc";
@@ -82,6 +82,11 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
                 group: "Site",
                 label: "",
                 key: "site",
+              },
+              {
+                label: "Themes",
+                icon: <HiTemplate size={16} />,
+                key: "/themes",
               },
               {
                 label: "Domain Mapping",
