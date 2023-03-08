@@ -1,4 +1,4 @@
-import * as DefaultGrid from './default';
+import * as Grid from './grid';
 import * as List from './list';
 
 interface Props {
@@ -6,6 +6,6 @@ interface Props {
 }
 
 export const useTheme = ({ theme = 'list' }: Props) => {
-  if (theme === 'list') return { ...DefaultGrid, ...List };
-  return DefaultGrid;
+  if (theme === 'list') return { ...Grid, ...List };
+  return Grid;
 };
