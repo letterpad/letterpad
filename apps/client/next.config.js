@@ -110,7 +110,7 @@ module.exports = {
   },
   env: {
     API_URL: process.env.API_URL,
-    GRAPHQL_URL: process.env.API_URL + '/api/graphql',
+    GRAPHQL_URL: process.env.API_URL,
     CLIENT_ID: process.env.CLIENT_ID,
     NEXT_PUBLIC_UTTERANCES_REPO: process.env.NEXT_PUBLIC_UTTERANCES_REPO,
   },
