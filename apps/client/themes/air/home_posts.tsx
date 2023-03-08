@@ -53,7 +53,6 @@ export const HomePosts: FC<Props> = ({ posts }) => {
       </>
     );
   }
-  featuredPostsCount = 0;
   const hasLatestPosts = posts.count - featuredPostsCount;
 
   return (
@@ -109,7 +108,7 @@ const Card: FC<{
       </div>
       <h2
         className={classNames('mt-4 text-xl font-bold leading-snug', {
-          'sm:text-3xl': size === 'sm',
+          'sm:text-2xl': size === 'sm',
           'sm:text-4xl': size === 'md',
         })}
       >
@@ -119,7 +118,7 @@ const Card: FC<{
       </h2>
       <p
         className={classNames('mt-4', {
-          'sm:text-lg': size === 'sm',
+          'sm:text-md': size === 'sm',
           'sm:text-xl': size === 'md',
         })}
       >
