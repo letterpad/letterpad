@@ -1,29 +1,31 @@
-import {
-  Author,
-  Navigation,
-  NavigationType,
-  SettingsFragmentFragment,
-} from 'letterpad-sdk';
+import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
 import { ReactNode, useEffect, useRef } from 'react';
+import { MobileNav } from 'themes/default/commons/mobile-nav';
 
-import Footer from './Footer';
-import Link from './Link';
-import { LogoWithTitle } from './Logo';
-import { MobileNav } from './MobileNav';
-import PageTitle from './PageTitle';
-import SectionContainer from './SectionContainer';
-import ThemeSwitch from './ThemeSwitch';
+import Link from '@/components/Link';
+import ThemeSwitch from '@/components/ThemeSwitch';
 
-interface Props {
+import { Footer } from './commons/footer';
+import { SectionContainer } from './commons/section';
+import { LogoWithTitle } from './commons/site-logo';
+import { PageTitle } from './commons/title';
+
+export interface Props {
   children: ReactNode;
+  pageName: string;
+  isHomeCollection: boolean;
   props: {
     settings: SettingsFragmentFragment;
     me: Author;
-    showBrand?: boolean;
   };
 }
 
-const LayoutWrapper = ({ children, props }: Props) => {
+export const Layout = ({
+  children,
+  props,
+  pageName,
+  isHomeCollection,
+}: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,31 +38,9 @@ const LayoutWrapper = ({ children, props }: Props) => {
       contentRef.current.style.minHeight = extraHeight + contentHeight + 'px';
     }
   }, []);
-  if (
-    props.settings.__typename !== 'Setting' ||
-    props.me?.__typename !== 'Author'
-  )
-    return <div>Setting not found</div>;
-
-  const { show_about_page, show_tags_page } = props.settings;
 
   const routes = [...props.settings.menu];
-  if (show_tags_page) {
-    routes.push({
-      slug: '/tags',
-      label: 'Tags',
-      type: NavigationType.Page,
-      original_name: 'Tags',
-    });
-  }
-  if (show_about_page) {
-    routes.push({
-      slug: '/about',
-      label: 'About',
-      type: NavigationType.Page,
-      original_name: 'About',
-    });
-  }
+  const isCollection = isHomeCollection && pageName === 'Home';
 
   const menu = getMenu(routes);
   return (
@@ -74,28 +54,27 @@ const LayoutWrapper = ({ children, props }: Props) => {
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
-                title={props.showBrand ? '' : props.settings.site_title}
+                title={isCollection ? '' : props.settings.site_title}
               />
             </Link>
           </div>
           <div className="flex items-center text-base leading-5">
-            <div className="hidden sm:block">{menu}</div>
+            <div className="hidden md:block">{menu}</div>
             <ThemeSwitch />
+            {/* <Subscribe /> */}
             <MobileNav routes={routes} />
           </div>
         </header>
-        {props.showBrand && (
-          <div className="py:10 space-y-2 md:space-y-3 md:py-32">
-            <SectionContainer>
-              <div className="py-10">
-                <BrandText
-                  tagline={props.settings.site_tagline}
-                  title={props.settings.site_title}
-                  description={props.settings.site_description}
-                />
-              </div>
-            </SectionContainer>
-          </div>
+        {isCollection && (
+          <SectionContainer className="py:10 space-y-2 md:space-y-3 md:py-32">
+            <div className="py-10">
+              <BrandText
+                tagline={props.settings.site_tagline}
+                title={props.settings.site_title}
+                description={props.settings.site_description}
+              />
+            </div>
+          </SectionContainer>
         )}
       </div>
       <main className="mb-auto" ref={contentRef}>
@@ -110,8 +89,6 @@ const LayoutWrapper = ({ children, props }: Props) => {
     </>
   );
 };
-
-export default LayoutWrapper;
 
 function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
   return menu.map((item, i) => {
@@ -140,7 +117,7 @@ const BrandText = ({ title, tagline, description }) => {
   return (
     <>
       <PageTitle className="text-center">{title}</PageTitle>
-      <p className="pb-4 text-center text-md font-bold leading-10 md:text-lg">
+      <p className="pb-4 text-center text-md font-bold leading-6 md:text-md">
         {tagline}
       </p>
       <p className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md">

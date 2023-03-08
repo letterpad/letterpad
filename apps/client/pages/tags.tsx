@@ -1,29 +1,28 @@
 import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
 
-import kebabCase from '@/lib/utils/kebabCase';
+import { BaseSEO } from '@/components/SEO';
 
-import Link from '@/components/Link';
-import PageTitle from '@/components/PageTitle';
-import SectionContainer from '@/components/SectionContainer';
-import { PageSEO } from '@/components/SEO';
-import Tag from '@/components/Tag';
+import { useTheme } from '../themes';
 
 export default function Tags({
   tags,
   me,
   settings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { Tags } = useTheme({
+    theme: settings.theme === 'minimal' ? 'list' : 'grid',
+  });
+
   if (
     me?.__typename !== 'Author' ||
     tags.__typename !== 'TagsNode' ||
     settings.__typename !== 'Setting'
   )
     return null;
-
   return (
     <>
-      <PageSEO
+      <BaseSEO
         title={`Tags - ${me.name}`}
         description="Things I blog about"
         site_banner={settings.banner?.src}
@@ -31,31 +30,7 @@ export default function Tags({
         url={settings.site_url}
         twSite={me.social?.twitter}
       />
-      <div className="flex flex-col items-start justify-start divide-y divide-gray-200 dark:divide-gray-700 md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6 md:divide-y-0">
-        <div className="space-x-2 pt-6 pb-8 md:space-y-5">
-          <PageTitle>Tags</PageTitle>
-        </div>
-        <SectionContainer>
-          <div className="flex max-w-lg flex-wrap">
-            {Object.keys(tags).length === 0 && 'No tags found.'}
-            {tags.rows.map((t) => {
-              const count =
-                t.posts?.__typename === 'PostsNode' ? t.posts.count : 0;
-              return (
-                <div key={t.name} className="mt-2 mb-2 mr-5">
-                  <Tag text={t.name} />
-                  <Link
-                    href={`/tag/${kebabCase(t.name)}`}
-                    className="-ml-2 text-sm font-semibold uppercase text-gray-600 hover:text-accent-50 dark:text-gray-300"
-                  >
-                    {`(${count})`}
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
-        </SectionContainer>
-      </div>
+      <Tags me={me} settings={settings} tags={tags} />
     </>
   );
 }

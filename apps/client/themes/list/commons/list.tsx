@@ -1,19 +1,17 @@
 import { PostsFragmentFragment } from 'letterpad-sdk';
 
-import formatDate from '@/lib/utils/formatDate';
-
-import { IconBook } from '@/components/icons';
 import Link from '@/components/Link';
 import SectionContainer from '@/components/SectionContainer';
-import Tag from '@/components/Tag';
+
+import { PublishedAt } from './publishedAt';
 interface Props {
   posts: PostsFragmentFragment;
 }
 
-export default function ListLayout({ posts }: Props) {
+export function List({ posts }: Props) {
   return (
     <SectionContainer>
-      <div className="content divide-y divide-gray-200 py-12 dark:divide-gray-700">
+      <div className="content w-full divide-y divide-gray-200 py-12 dark:divide-gray-700">
         <ul>
           {posts.rows.map((post) => {
             const { slug, publishedAt, title, tags, excerpt, stats } = post;
@@ -35,12 +33,6 @@ export default function ListLayout({ posts }: Props) {
                           {title}
                         </Link>
                       </h3>
-                      {/* <div className="flex flex-wrap">
-                        {tags?.__typename === 'TagsNode' &&
-                          tags.rows.map((tag) => (
-                            <Tag key={tag.name} text={tag.name} />
-                          ))}
-                      </div> */}
                     </div>
                     <div className="max-w-none text-md leading-6 text-gray-500 dark:text-gray-300">
                       {excerpt}
@@ -55,16 +47,3 @@ export default function ListLayout({ posts }: Props) {
     </SectionContainer>
   );
 }
-
-const PublishedAt = ({ publishedAt, className, reading_time }) => (
-  <dl className={className + ' ' + 'text-gray-500 dark:text-gray-400'}>
-    <dt className="sr-only">Published on</dt>
-    <dd className=" font-medium leading-6 ">
-      <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
-    </dd>
-    <span className="flex items-center gap-1">
-      <IconBook />
-      {reading_time} min read
-    </span>
-  </dl>
-);

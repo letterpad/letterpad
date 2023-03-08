@@ -1,7 +1,7 @@
 import { Navigation } from 'letterpad-sdk';
 import React, { useState } from 'react';
 
-import Link from './Link';
+import Link from '../../../components/Link';
 
 interface Props {
   routes: Omit<Navigation, 'original_name'>[];

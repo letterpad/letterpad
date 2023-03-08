@@ -305,14 +305,16 @@ export async function insertPost(postData, author_id) {
 }
 
 export const cleanupDatabase = async () => {
-  const modelNames = Object.keys(prisma).filter((key) => {
-    return key.startsWith("_") ? false : true;
-  });
-  return Promise.all(
-    modelNames.map((modelName) => {
-      //@ts-ignore
-      const model = prisma[modelName];
-      return model && model?.deleteMany ? model.deleteMany() : null;
-    })
-  );
+  await prisma.permission.deleteMany();
+  await prisma.author.deleteMany();
+  await prisma.domain.deleteMany();
+  await prisma.email.deleteMany();
+  await prisma.emailDelivery.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.rolePermissions.deleteMany();
+  await prisma.setting.deleteMany();
+  await prisma.subscriber.deleteMany();
+  await prisma.role.deleteMany();
+  await prisma.tag.deleteMany();
+  await prisma.upload.deleteMany();
 };
