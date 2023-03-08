@@ -5,7 +5,7 @@ interface Props {
   className?: string;
 }
 
-export function PageTitle({ children, className }: Props) {
+export default function PageTitle({ children, className }: Props) {
   const textColor = className ?? 'text-gray-900 dark:text-gray-100';
   return (
     <h1

@@ -1,7 +1,6 @@
 import {
   MutationResolvers,
   Navigation,
-  NavigationType,
   QueryResolvers,
   SettingResolvers,
 } from "@/__generated__/__types__";
@@ -16,13 +15,7 @@ import {
 import { Optional } from "@/types";
 
 const Setting: SettingResolvers<ResolverContext> = {
-  menu: ({ menu, show_about_page, show_tags_page }, _, context) =>
-    getMenuWithSanitizedSlug(
-      parse(menu),
-      !!context.session?.user,
-      show_about_page,
-      show_tags_page
-    ),
+  menu: ({ menu }) => getMenuWithSanitizedSlug(parse(menu)),
   banner: ({ banner }) => resolveImageField(banner),
   site_logo: ({ site_logo }) => resolveImageField(site_logo),
   site_favicon: ({ site_favicon }) => resolveImageField(site_favicon),
@@ -37,13 +30,8 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
 
 export default { Query, Mutation, Setting };
 
-function getMenuWithSanitizedSlug(
-  menu: Navigation[],
-  loggedIn: boolean,
-  show_about_page?: boolean,
-  show_tags_page?: boolean
-) {
-  const cleanMenu = menu.map((item) => {
+function getMenuWithSanitizedSlug(menu: Navigation[]) {
+  return menu.map((item) => {
     switch (item.type) {
       case "tag":
       case "page":
@@ -52,26 +40,6 @@ function getMenuWithSanitizedSlug(
     }
     return item;
   });
-  if (loggedIn) return cleanMenu;
-
-  if (show_tags_page) {
-    cleanMenu.push({
-      slug: "/tags",
-      label: "Tags",
-      type: NavigationType.Page,
-      original_name: "Tags",
-    });
-  }
-  if (show_about_page) {
-    cleanMenu.push({
-      slug: "/about",
-      label: "About",
-      type: NavigationType.Page,
-      original_name: "About",
-    });
-  }
-
-  return cleanMenu;
 }
 
 const parse = (str: string | object) => {

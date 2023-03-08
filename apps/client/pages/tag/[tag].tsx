@@ -1,9 +1,11 @@
 import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
 
+import PageTitle from '@/components/PageTitle';
+import SectionContainer from '@/components/SectionContainer';
 import { TagSEO } from '@/components/SEO';
 
-import { useTheme } from '../../themes';
+import ListLayout from '@/layouts/ListLayout';
 
 export default function Tag({
   posts,
@@ -11,9 +13,6 @@ export default function Tag({
   tagName,
   settings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { Tag } = useTheme({
-    theme: settings.theme === 'minimal' ? 'list' : 'grid',
-  });
   if (
     posts.__typename !== 'PostsNode' ||
     settings.__typename !== 'Setting' ||
@@ -32,7 +31,12 @@ export default function Tag({
         url={settings.site_url + 'tags'}
         twSite={me.social?.twitter}
       />
-      <Tag posts={posts} settings={settings} me={me} tagName={tagName} />
+      <SectionContainer>
+        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+          <PageTitle>{tagName}</PageTitle>
+        </div>
+      </SectionContainer>
+      <ListLayout posts={posts} />
     </>
   );
 }

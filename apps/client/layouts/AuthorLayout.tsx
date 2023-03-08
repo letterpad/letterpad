@@ -1,25 +1,46 @@
-import { InferGetServerSidePropsType } from 'next';
+import { ReactNode } from 'react';
+import { AuthorFrontMatter } from 'types/AuthorFrontMatter';
 
+import PageTitle from '@/components/PageTitle';
+import SectionContainer from '@/components/SectionContainer';
+import { PageSEO } from '@/components/SEO';
 import SocialIcon from '@/components/social-icons';
 
-import { PageTitle } from './commons/title';
-import { getServerSideProps } from '../../pages/about';
+interface Props {
+  children: ReactNode;
+  data: AuthorFrontMatter;
+  site_title: string;
+  site_url: string;
+}
 
-export const About = ({
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+export default function AuthorLayout({
+  children,
+  data,
+  site_title,
+  site_url,
+}: Props) {
   const {
     name,
-    avatar = '/static/images/avatar.png',
-    bio,
+    avatar,
     occupation,
-    company_name,
-    social,
-  } = me;
-  const { site_description } = settings;
+    company,
+    email,
+    twitter,
+    linkedin,
+    github,
+    banner,
+  } = data;
+
   return (
-    <>
+    <SectionContainer>
+      <PageSEO
+        title={`About - ${name}`}
+        description={`About me - ${name}`}
+        site_banner={banner}
+        site_title={site_title}
+        url={site_url}
+        twSite={twitter}
+      />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <PageTitle>About</PageTitle>
@@ -40,23 +61,19 @@ export const About = ({
               {name}
             </h3>
             <div className="text-gray-500 dark:text-gray-300">{occupation}</div>
-            <div className="text-gray-500 dark:text-gray-300">
-              {company_name}
-            </div>
+            <div className="text-gray-500 dark:text-gray-300">{company}</div>
             <div className="flex space-x-3 pt-6">
-              <SocialIcon kind="mail" href={`mailto:${settings.site_email}`} />
-              <SocialIcon kind="github" href={social?.github} />
-              <SocialIcon kind="linkedin" href={social?.linkedin} />
-              <SocialIcon kind="twitter" href={social?.twitter} />
+              <SocialIcon kind="mail" href={`mailto:${email}`} />
+              <SocialIcon kind="github" href={github} />
+              <SocialIcon kind="linkedin" href={linkedin} />
+              <SocialIcon kind="twitter" href={twitter} />
             </div>
           </div>
           <div className="prose max-w-none pt-8 pb-8 dark:prose-dark xl:col-span-2">
-            <div dangerouslySetInnerHTML={{ __html: site_description ?? '' }} />
-            <br />
-            <div dangerouslySetInnerHTML={{ __html: bio ?? '' }} />
+            {children}
           </div>
         </div>
       </div>
-    </>
+    </SectionContainer>
   );
-};
+}
