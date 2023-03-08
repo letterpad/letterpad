@@ -120,7 +120,6 @@ export const Layout = ({
             hidden: pageName !== 'Home',
           }
         )}
-        style={{ backgroundImage: `url(${settings.banner?.src})` }}
       >
         <h1
           className={classNames(
