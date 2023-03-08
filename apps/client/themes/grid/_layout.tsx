@@ -1,11 +1,11 @@
 import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
 import { ReactNode, useEffect, useRef } from 'react';
-import { MobileNav } from 'themes/default/commons/mobile-nav';
 
 import Link from '@/components/Link';
 import ThemeSwitch from '@/components/ThemeSwitch';
 
 import { Footer } from './commons/footer';
+import { MobileNav } from './commons/mobile-nav';
 import { SectionContainer } from './commons/section';
 import { LogoWithTitle } from './commons/site-logo';
 import { PageTitle } from './commons/title';

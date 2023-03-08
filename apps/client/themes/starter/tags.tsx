@@ -2,7 +2,7 @@ import { InferGetServerSidePropsType } from 'next';
 
 import { getServerSideProps } from '../../pages/tags';
 
-export const Tag = ({
+export const Tags = ({
   tags,
   me,
   settings,

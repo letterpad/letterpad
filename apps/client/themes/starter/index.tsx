@@ -1,3 +1,5 @@
+// You do not have to edit this page
+
 import dynamic from 'next/dynamic';
 
 export const HomePage = dynamic(() =>
