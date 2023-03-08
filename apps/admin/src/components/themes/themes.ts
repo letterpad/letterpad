@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Air from "./screenshots/air.png";
 import Grid from "./screenshots/grid.png";
 import List from "./screenshots/list.png";
