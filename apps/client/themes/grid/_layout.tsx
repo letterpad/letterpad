@@ -40,7 +40,6 @@ export const Layout = ({
   }, []);
 
   const routes = [...props.settings.menu];
-  const isCollection = isHomeCollection;
 
   const menu = getMenu(routes);
   return (
@@ -54,7 +53,7 @@ export const Layout = ({
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
-                title={isCollection ? '' : props.settings.site_title}
+                title={isHomeCollection ? '' : props.settings.site_title}
               />
             </Link>
           </div>
@@ -65,7 +64,7 @@ export const Layout = ({
             <MobileNav routes={routes} />
           </div>
         </header>
-        {isCollection && (
+        {isHomeCollection && (
           <SectionContainer className="py:10 space-y-2 md:space-y-3 md:py-32">
             <div className="py-10">
               <BrandText
