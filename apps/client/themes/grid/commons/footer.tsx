@@ -1,8 +1,8 @@
-import { LogoWithTitle } from 'themes/default/commons/site-logo';
-
 import Link from '@/components/Link';
 import SocialIcon from '@/components/social-icons';
 import Subscribe from '@/components/Subscribe';
+
+import { LogoWithTitle } from '../commons/site-logo';
 
 export function Footer({ author, settings }) {
   const { social } = author;
