@@ -29,7 +29,7 @@ export const Layout = ({
   const menu = getMenu(settings.menu);
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const isCollection = isHomeCollection;
+
   return (
     <>
       <header
@@ -117,9 +117,10 @@ export const Layout = ({
         className={classNames(
           'mx-auto bg-cover bg-no-repeat px-5 py-20 sm:px-8',
           {
-            hidden: pageName !== 'Home',
+            hidden: !isHomeCollection,
           }
         )}
+        style={{ backgroundImage: `url(${settings.banner?.src})` }}
       >
         <h1
           className={classNames(
