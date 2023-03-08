@@ -6,7 +6,6 @@ export const HomePosts = dynamic(() =>
   import('./home_posts').then((mod) => mod.HomePosts)
 );
 
-export const About = dynamic(() => import('./about').then((mod) => mod.About));
 export const Layout = dynamic(() =>
   import('./_layout').then((mod) => mod.Layout)
 );
