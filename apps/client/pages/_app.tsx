@@ -5,6 +5,7 @@ import {
 } from 'letterpad-sdk';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { ThemeProvider } from 'next-themes';
 import { useMemo } from 'react';
@@ -28,11 +29,13 @@ interface PageProps {
 export default function App({ Component, pageProps }: AppProps<PageProps>) {
   const { srcs, contents } = getScripts(pageProps.settings?.scripts ?? '');
   const { Layout } = useTheme(pageProps?.settings?.theme);
-
+  const router = useRouter();
   const isCollection = useMemo(() => {
     const [firstItemOfMenu] = pageProps?.settings?.menu ?? [];
-    return firstItemOfMenu?.type === NavigationType.Tag;
-  }, [pageProps?.settings?.menu]);
+    return (
+      firstItemOfMenu?.type === NavigationType.Tag && router.pathname === '/'
+    );
+  }, [pageProps?.settings?.menu, router.pathname]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system">
