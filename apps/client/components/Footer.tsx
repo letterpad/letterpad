@@ -1,10 +1,10 @@
-import { LogoWithTitle } from 'themes/default/commons/site-logo';
-
-import Link from '@/components/Link';
 import SocialIcon from '@/components/social-icons';
-import Subscribe from '@/components/Subscribe';
 
-export function Footer({ author, settings }) {
+import Link from './Link';
+import { LogoWithTitle } from './Logo';
+import Subscribe from './Subscribe';
+
+export default function Footer({ author, settings }) {
   const { social } = author;
   return (
     <footer className="mx-auto max-w-7xl border-t border-gray-200 border-opacity-60 px-8 dark:border-gray-700 md:px-20">

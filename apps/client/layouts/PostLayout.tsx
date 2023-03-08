@@ -1,5 +1,9 @@
-import classNames from 'classnames';
-import { InferGetServerSidePropsType } from 'next';
+import {
+  MeFragmentFragment,
+  PageFragmentFragment,
+  SettingsFragmentFragment,
+} from 'letterpad-sdk';
+import { ReactNode, useEffect } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
@@ -7,12 +11,13 @@ import Comments from '@/components/comments';
 import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
+import PageTitle from '@/components/PageTitle';
+import PostSubTitle from '@/components/PostSubtitle';
 import ScrollTop from '@/components/ScrollTop';
+import SectionContainer from '@/components/SectionContainer';
+import { BlogSEO } from '@/components/SEO';
 import { Share } from '@/components/share';
-
-import { SectionContainer } from './commons/section';
-import { PageTitle } from './commons/title';
-import { getServerSideProps } from '../../pages/post/[...slug]';
+// import { Speak } from '@/components/speech/speech';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {
@@ -22,21 +27,81 @@ export const getReadableDate = (timestamp: Date | number) => {
   });
 };
 
-export const Post = ({
-  post,
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
-    post;
-  if (author?.__typename !== 'Author') return null;
+interface Props {
+  data: {
+    post: PageFragmentFragment;
+    settings: SettingsFragmentFragment;
+    me: MeFragmentFragment;
+  };
+  next?: { slug: string; title: string };
+  prev?: { slug: string; title: string };
+  children: ReactNode;
+}
 
+declare global {
+  interface Window {
+    Prism: Record<string, () => void>;
+  }
+}
+
+export default function PostLayout({ data, next, prev, children }: Props) {
+  const { post, settings, me } = data;
+
+  useEffect(() => {
+    if (typeof window.Prism !== 'undefined') {
+      window.Prism.highlightAll();
+    }
+  }, [data]);
+
+  const {
+    slug,
+    publishedAt,
+    title,
+    excerpt,
+    updatedAt,
+    cover_image,
+    tags,
+    author,
+    type,
+    sub_title,
+  } = post;
+  if (author?.__typename !== 'Author') return null;
+  const authorDetails = [
+    {
+      name: author.name,
+      avatar: author.avatar,
+      occupation: me.occupation,
+      company: me.company_name,
+      email: settings.site_email,
+      twitter: me.social?.twitter,
+      linkedin: me.social?.linkedin,
+      github: me.social?.github,
+      banner: settings.banner?.src,
+      logo: settings.site_logo?.src,
+    },
+  ];
   const postUrl = `${settings.site_url}${slug}`;
   const printPublishedAt = getReadableDate(publishedAt);
   const isPage = type === 'page';
 
   return (
     <SectionContainer>
+      <BlogSEO
+        url={postUrl}
+        authorDetails={authorDetails}
+        date={publishedAt}
+        title={title}
+        summary={excerpt ?? ''}
+        lastmod={updatedAt}
+        images={cover_image.src ? [cover_image.src] : []}
+        slug={slug ?? ''}
+        tags={
+          tags?.__typename === 'TagsNode' ? tags.rows.map((t) => t.name) : []
+        }
+        fileName={title}
+        canonicalUrl={postUrl}
+        site_name={settings.site_title}
+      />
       <ScrollTop />
       <div className="mx-auto flex w-full  max-w-4xl justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
@@ -101,10 +166,11 @@ export const Post = ({
                 style={{ minHeight: 400 }}
               />
             )}
+            {/* <div className="flex items-center justify-center gap-2 py-2 text-center">
+              Listen <Speak html={post.html ?? ''} />
+            </div> */}
           </header>
-          <div className="prose pb-4 pt-4 dark:prose-dark">
-            <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
-          </div>
+          <div className="prose pb-4 pt-4 dark:prose-dark">{children}</div>
           <div className="pb-4">
             {tags?.__typename === 'TagsNode' &&
               tags.rows.map(({ name }) => (
@@ -153,26 +219,5 @@ export const Post = ({
         </article>
       </div>
     </SectionContainer>
-  );
-};
-
-interface Props {
-  text?: string | null;
-  className?: string;
-}
-
-export default function PostSubTitle({ text, className }: Props) {
-  if (!text) return null;
-  const textColor = className ?? 'text-gray-400 dark:text-slate-400';
-  return (
-    <h1
-      className={classNames(
-        'py-2 text-lg font-medium  leading-7',
-        className,
-        textColor
-      )}
-    >
-      {text}
-    </h1>
   );
 }

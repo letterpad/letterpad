@@ -11,7 +11,6 @@ module.exports = {
   content: [
     './pages/**/*.tsx',
     './components/**/*.tsx',
-    './themes/**/*.tsx',
     './layouts/**/*.tsx',
     './lib/**/*.ts',
     './src/**/*.{js,ts,jsx,tsx}',

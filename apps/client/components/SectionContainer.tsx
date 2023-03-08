@@ -1,14 +1,12 @@
-import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
-  className?: string;
 }
 
-export default function SectionContainer({ children, className }: Props) {
+export default function SectionContainer({ children }: Props) {
   return (
-    <div className={classNames('content', className)}>
+    <div className="content">
       <div className="flex flex-col justify-between">{children}</div>
     </div>
   );
