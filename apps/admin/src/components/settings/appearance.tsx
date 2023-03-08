@@ -8,8 +8,6 @@ import { Upload } from "@/components/upload";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { debounce, removeTypenames } from "@/shared/utils";
 
-import { themes } from "./themes";
-
 interface Props {
   settings: SettingsFragmentFragment;
 }
@@ -88,12 +86,7 @@ const Appearance: React.FC<Props> = ({ settings }) => {
           }}
         />
       </div>
-      <RadioGroup
-        label="Layout Style"
-        items={themes()}
-        selected={settings.theme ?? "minimal"}
-        onChange={(item) => updateSettings({ theme: item.value })}
-      />
+
       <div>
         <TextArea
           label="CSS"

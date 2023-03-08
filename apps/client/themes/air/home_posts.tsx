@@ -117,7 +117,7 @@ const Card: FC<{
         </Link>
       </h2>
       <p
-        className={classNames('mt-4', {
+        className={classNames('mt-4 font-normal opacity-80', {
           'sm:text-md': size === 'sm',
           'sm:text-xl': size === 'md',
         })}
@@ -126,9 +126,9 @@ const Card: FC<{
       </p>
       <div className="mt-6 flex items-center gap-2">
         <div>
-          <a className="heading-color text-sm font-medium" href="/author/main">
+          <Link className="heading-color text-sm font-medium" href="/about">
             {post.author?.__typename === 'Author' ? post.author.name : ''}
-          </a>
+          </Link>
         </div>
       </div>
     </div>

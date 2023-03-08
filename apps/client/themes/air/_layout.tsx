@@ -33,7 +33,7 @@ export const Layout = ({
   return (
     <>
       <header
-        className="flex items-center bg-cover bg-no-repeat px-5 py-5 sm:px-8"
+        className="mx-auto flex max-w-[1480px] items-center bg-cover bg-no-repeat px-5 py-5  sm:px-8"
         style={{ backgroundImage: `url(${settings.banner?.src})` }}
       >
         <Link href="/" aria-label={props.settings.site_title}>
@@ -114,16 +114,13 @@ export const Layout = ({
         </div>
       </header>
       <div
-        className={classNames(
-          'mx-auto bg-cover bg-no-repeat px-5 py-20 sm:px-8',
-          {
-            hidden: !isHomeCollection,
-          }
-        )}
+        className={classNames('mx-auto max-w-[1480px] px-5 py-20 sm:px-8', {
+          hidden: !isHomeCollection,
+        })}
       >
         <h1
           className={classNames(
-            'max-w-screen-xl text-3xl  sm:text-6xl sm:leading-tight'
+            'max-w-screen-xl  text-3xl sm:text-6xl sm:leading-tight'
           )}
           dangerouslySetInnerHTML={{ __html: settings.site_description! }}
         ></h1>
