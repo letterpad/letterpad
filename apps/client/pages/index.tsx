@@ -21,10 +21,7 @@ export default function Home({
   page,
   posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { theme = 'minimal' } = settings;
-  const { HomePosts, HomePage } = useTheme({
-    theme: theme === 'minimal' ? 'list' : 'grid',
-  });
+  const { HomePosts, HomePage } = useTheme(settings?.theme);
 
   const _isPage = isPage && page?.__typename === 'Post';
   const isPosts = !isPage && posts?.__typename === 'PostsNode';

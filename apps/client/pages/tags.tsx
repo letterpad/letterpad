@@ -10,9 +10,7 @@ export default function Tags({
   me,
   settings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { Tags } = useTheme({
-    theme: settings.theme === 'minimal' ? 'list' : 'grid',
-  });
+  const { Tags } = useTheme(settings?.theme);
 
   if (
     me?.__typename !== 'Author' ||

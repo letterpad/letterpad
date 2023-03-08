@@ -10,9 +10,7 @@ export default function About({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { name, social } = me;
 
-  const { About } = useTheme({
-    theme: settings.theme === 'minimal' ? 'list' : 'grid',
-  });
+  const { About } = useTheme(settings?.theme);
 
   return (
     <>

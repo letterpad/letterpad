@@ -27,9 +27,7 @@ interface PageProps {
 }
 export default function App({ Component, pageProps }: AppProps<PageProps>) {
   const { srcs, contents } = getScripts(pageProps.settings?.scripts ?? '');
-  const { Layout } = useTheme({
-    theme: pageProps?.settings?.theme === 'minimal' ? 'list' : 'grid',
-  });
+  const { Layout } = useTheme(pageProps?.settings?.theme);
 
   const isCollection = useMemo(() => {
     const [firstItemOfMenu] = pageProps?.settings?.menu ?? [];

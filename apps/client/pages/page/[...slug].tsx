@@ -13,9 +13,7 @@ export default function Page({
   settings,
   me,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { Post } = useTheme({
-    theme: settings.theme === 'minimal' ? 'list' : 'grid',
-  });
+  const { Post } = useTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
 
