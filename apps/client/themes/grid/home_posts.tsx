@@ -1,33 +1,25 @@
 import { PostsFragmentFragment } from 'letterpad-sdk';
-import React from 'react';
+import { FC } from 'react';
 
 import formatDate from '@/lib/utils/formatDate';
-import kebabCase from '@/lib/utils/kebabCase';
 
 import Image from '@/components/Image';
 import Link from '@/components/Link';
-import SectionContainer from '@/components/SectionContainer';
 
-import { IconBook } from '../components/icons';
+import { SectionContainer } from './commons/section';
+import { IconBook } from '../../components/icons';
 
-interface Props {
+export interface Props {
   posts: PostsFragmentFragment;
 }
 
-const PostGrid: React.VFC<Props> = ({ posts }) => {
+export const HomePosts: FC<Props> = ({ posts }) => {
   return (
     <SectionContainer>
       <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-2 xl:grid-cols-3">
-        {posts.rows.map((post) => {
-          const {
-            slug,
-            publishedAt,
-            title,
-            tags,
-            excerpt,
-            cover_image,
-            stats,
-          } = post;
+        {posts?.rows.map((post) => {
+          const { slug, publishedAt, title, excerpt, cover_image, stats } =
+            post;
           return (
             <div
               key={slug}
@@ -65,18 +57,6 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                   </p>
                 </div>
               </Link>
-              {/* <div className="px-2 md:px-0">
-                {tags?.__typename === 'TagsNode' &&
-                  tags.rows.map(({ name }) => (
-                    <Link
-                      href={`/tag/${kebabCase(name)}`}
-                      key={name}
-                      className="mr-1 inline-block text-sm font-medium text-gray-400"
-                    >
-                      #{name.split(' ').join('-')}
-                    </Link>
-                  ))}
-              </div> */}
             </div>
           );
         })}
@@ -84,5 +64,3 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
     </SectionContainer>
   );
 };
-
-export default PostGrid;

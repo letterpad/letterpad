@@ -7,17 +7,12 @@ import {
 import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 
-import PageTitle from '@/components/PageTitle';
-// import PostList from '@/components/PostList';
 import SectionContainer from '@/components/SectionContainer';
-import { PageSEO } from '@/components/SEO';
+import { BaseSEO, withPageSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
-import GridLayout from '@/layouts/GridLayout';
-import ListLayout from '@/layouts/ListLayout';
-import PageHomeLayout from '@/layouts/PageHomeLayout';
 
-// const MAX_DISPLAY = 5;
+import { useTheme } from '../themes';
 
 export default function Home({
   settings,
@@ -27,7 +22,19 @@ export default function Home({
   posts,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { theme = 'minimal' } = settings;
-  const Component = theme === 'minimal' ? ListLayout : GridLayout;
+  const { HomePosts, HomePage } = useTheme({
+    theme: theme === 'minimal' ? 'list' : 'grid',
+  });
+
+  const _isPage = isPage && page?.__typename === 'Post';
+  const isPosts = !isPage && posts?.__typename === 'PostsNode';
+  const isSinglePage = _isPage && page.page_type === 'default';
+  const isCreative = _isPage && page.page_type !== 'default';
+  const isEmpty = posts?.__typename === 'PostsNode' && posts.rows.length === 0;
+
+  const HomePageWithSEO = withPageSEO({
+    Component: HomePage,
+  });
 
   return (
     <>
@@ -41,7 +48,7 @@ export default function Home({
           />
         )}
       </Head>
-      <PageSEO
+      <BaseSEO
         title={settings.site_title}
         description={settings.site_description ?? ''}
         site_banner={settings.banner?.src}
@@ -49,38 +56,28 @@ export default function Home({
         url={settings.site_url}
         twSite={me.social?.twitter}
       />
-      <div className="">
+      <div>
         <SectionContainer>
-          {posts?.__typename === 'PostsNode' && posts.rows.length === 0 && (
+          {isEmpty && (
             <span className="py-16 text-gray-400">
               Hi, my name is {me.name}!
             </span>
           )}
         </SectionContainer>
-        {!isPage && posts?.__typename === 'PostsNode' && (
-          <Component posts={posts} />
+        {isPosts && <HomePosts posts={posts} />}
+        {isSinglePage && (
+          <HomePageWithSEO data={page} settings={settings} me={me}>
+            <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
+          </HomePageWithSEO>
         )}
-        {isPage && page?.__typename === 'Post' && page.page_type === 'default' && (
-          <PageHomeLayout
+        {isCreative && (
+          <Creative
             data={page}
             site_name={settings.site_title}
             settings={settings}
             me={me}
-          >
-            <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
-          </PageHomeLayout>
+          />
         )}
-
-        {isPage &&
-          page?.__typename === 'Post' &&
-          page.page_type !== 'default' && (
-            <Creative
-              data={page}
-              site_name={settings.site_title}
-              settings={settings}
-              me={me}
-            />
-          )}
       </div>
     </>
   );
@@ -99,15 +96,6 @@ export async function getServerSideProps(context: any) {
 
   const { menu } = settings;
 
-  // if (menu?.length === 0) {
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: '/not-found',
-  //       status: 404,
-  //     },
-  //   };
-  // }
   const firstItemOfMenu = menu[0];
   const isHomePageACollectionOfPosts =
     firstItemOfMenu.type === NavigationType.Tag;
@@ -123,7 +111,6 @@ export async function getServerSideProps(context: any) {
       isPosts: isHomePageACollectionOfPosts,
       posts: null as unknown as PostsFragmentFragment,
       page: null as unknown as PageFragmentFragment,
-      showBrand: true,
     },
   };
 

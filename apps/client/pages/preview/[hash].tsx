@@ -1,15 +1,27 @@
 import gql from 'graphql-tag';
 import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
+import { useEffect } from 'react';
 
 import Creative from '@/layouts/Creative';
-import PostLayout from '@/layouts/PostLayout';
+
+import { useTheme } from '../../themes';
 
 export default function Preview({
   post,
   settings,
   me,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { Post } = useTheme({
+    theme: settings.theme === 'minimal' ? 'list' : 'grid',
+  });
+
+  useEffect(() => {
+    if (typeof window.Prism !== 'undefined') {
+      window.Prism.highlightAll();
+    }
+  }, [post]);
+
   if (post.__typename !== 'Post' || settings.__typename !== 'Setting') {
     return null;
   }
@@ -24,11 +36,7 @@ export default function Preview({
       />
     );
   }
-  return (
-    <PostLayout data={{ post, settings, me }}>
-      <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
-    </PostLayout>
-  );
+  return <Post post={post} settings={settings} me={me} />;
 }
 
 export async function getServerSideProps(context: any) {

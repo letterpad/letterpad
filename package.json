@@ -33,7 +33,6 @@
     "postcss-import": "^15.1.0",
     "prettier": "latest",
     "prettier-plugin-tailwindcss": "^0.1.7",
-    "react-dom": "^18.2.0",
     "react-parallax": "^3.5.1",
     "tailwindcss": "^3.2.4",
     "ts-prune": "^0.10.3"
@@ -48,6 +47,9 @@
   "dependencies": {
     "axios": "^1.2.0",
     "react-icons": "^4.6.0",
-    "turbo": "latest"
+    "turbo": "latest",
+    "next": "12.3.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }

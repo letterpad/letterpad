@@ -1,14 +1,25 @@
-import { Author, SettingsFragmentFragment } from 'letterpad-sdk';
+import {
+  Author,
+  NavigationType,
+  SettingsFragmentFragment,
+} from 'letterpad-sdk';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
 import { ThemeProvider } from 'next-themes';
+import { useMemo } from 'react';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 import '@fontsource/inter/variable-full.css';
 
-import LayoutWrapper from '@/components/LayoutWrapper';
+import { useTheme } from '../themes';
+
+declare global {
+  interface Window {
+    Prism: Record<string, () => void>;
+  }
+}
 
 interface PageProps {
   settings: SettingsFragmentFragment;
@@ -16,6 +27,15 @@ interface PageProps {
 }
 export default function App({ Component, pageProps }: AppProps<PageProps>) {
   const { srcs, contents } = getScripts(pageProps.settings?.scripts ?? '');
+  const { Layout } = useTheme({
+    theme: pageProps?.settings?.theme === 'minimal' ? 'list' : 'grid',
+  });
+
+  const isCollection = useMemo(() => {
+    const [firstItemOfMenu] = pageProps?.settings?.menu ?? [];
+    return firstItemOfMenu?.type === NavigationType.Tag;
+  }, [pageProps?.settings?.menu]);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system">
       <Head>
@@ -44,9 +64,13 @@ export default function App({ Component, pageProps }: AppProps<PageProps>) {
         />
       ))}
       {pageProps.settings ? (
-        <LayoutWrapper props={pageProps}>
+        <Layout
+          props={pageProps}
+          pageName={Component.name}
+          isHomeCollection={isCollection}
+        >
           <Component {...pageProps} />
-        </LayoutWrapper>
+        </Layout>
       ) : (
         <Component {...pageProps} />
       )}
