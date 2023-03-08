@@ -29,7 +29,7 @@ export const Layout = ({
   const menu = getMenu(settings.menu);
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const isCollection = isHomeCollection && pageName === 'Home';
+  const isCollection = isHomeCollection;
   return (
     <>
       <header
