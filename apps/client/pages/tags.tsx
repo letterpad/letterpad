@@ -5,11 +5,10 @@ import { BaseSEO } from '@/components/SEO';
 
 import { useTheme } from '../themes';
 
-export default function Tags({
-  tags,
-  me,
-  settings,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Tags(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  const { tags, me, settings } = props;
   const { Tags } = useTheme(settings?.theme);
 
   if (
@@ -28,7 +27,7 @@ export default function Tags({
         url={settings.site_url}
         twSite={me.social?.twitter}
       />
-      <Tags me={me} settings={settings} tags={tags} />
+      <Tags {...props} />
     </>
   );
 }

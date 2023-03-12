@@ -14,13 +14,10 @@ import Creative from '@/layouts/Creative';
 
 import { useTheme } from '../themes';
 
-export default function Home({
-  settings,
-  me,
-  isPage,
-  page,
-  posts,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  const { settings, me, isPage, page, posts } = props;
   const { HomePosts, HomePage } = useTheme(settings?.theme);
 
   const _isPage = isPage && page?.__typename === 'Post';
@@ -61,7 +58,7 @@ export default function Home({
             </span>
           )}
         </SectionContainer>
-        {isPosts && <HomePosts posts={posts} />}
+        {isPosts && <HomePosts {...props} />}
         {isSinglePage && (
           <HomePageWithSEO data={page} settings={settings} me={me}>
             <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
@@ -99,6 +96,7 @@ export async function getServerSideProps(context: any) {
   const isHomePageASinglePage = firstItemOfMenu.type === NavigationType.Page;
 
   const me = await letterpad.getAuthor();
+  const allTags = await letterpad.listTags();
 
   const result = {
     props: {
@@ -108,6 +106,7 @@ export async function getServerSideProps(context: any) {
       isPosts: isHomePageACollectionOfPosts,
       posts: null as unknown as PostsFragmentFragment,
       page: null as unknown as PageFragmentFragment,
+      allTags,
     },
   };
 

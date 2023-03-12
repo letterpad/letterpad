@@ -5,12 +5,10 @@ import { TagSEO } from '@/components/SEO';
 
 import { useTheme } from '../../themes';
 
-export default function Tag({
-  posts,
-  me,
-  tagName,
-  settings,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Tag(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  const { posts, me, tagName, settings } = props;
   const { Tag } = useTheme(settings?.theme);
   if (
     posts.__typename !== 'PostsNode' ||
@@ -30,7 +28,7 @@ export default function Tag({
         url={settings.site_url + 'tags'}
         twSite={me.social?.twitter}
       />
-      <Tag posts={posts} settings={settings} me={me} tagName={tagName} />
+      <Tag {...props} />
     </>
   );
 }
@@ -47,12 +45,14 @@ export async function getServerSideProps(context: any) {
   const posts = await letterpad.listPosts(context.params.tag);
   const settings = await letterpad.getSettings();
   const me = await letterpad.getAuthor();
+  const allTags = await letterpad.listTags();
 
   return {
     props: {
       posts,
       settings,
       me,
+      allTags,
       tagName: context.params.tag,
     },
   };

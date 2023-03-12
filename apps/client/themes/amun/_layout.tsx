@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Navigation } from 'letterpad-sdk';
-import { ReactNode, useState } from 'react';
+import { InferGetServerSidePropsType } from 'next';
+import { FC, ReactNode, useState } from 'react';
 
 import Link from '@/components/Link';
 
@@ -8,13 +9,13 @@ import { Footer } from './commons/footer';
 import { LogoWithTitle } from './commons/site-logo';
 import { Subscribe } from './commons/subscribe';
 import ThemeSwitch from '../../components/ThemeSwitch';
-import { PageProps } from '../../types/appType';
+import { getServerSideProps } from '../../pages';
 
 export interface Props {
   children: ReactNode;
   pageName: string;
   isHomeCollection: boolean;
-  props: PageProps;
+  props: InferGetServerSidePropsType<typeof getServerSideProps>;
 }
 
 export const Layout = ({
@@ -23,16 +24,15 @@ export const Layout = ({
   pageName,
   isHomeCollection,
 }: Props) => {
-  const { settings, me } = props;
+  const { settings } = props;
   const menu = getMenu(settings.menu);
-
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
       <header
         className="mx-auto flex max-w-[1480px] items-center bg-cover bg-no-repeat px-5 py-5  sm:px-8"
-        style={{ backgroundImage: `url(${settings.banner?.src})` }}
+        // style={{ backgroundImage: `url(${settings.banner?.src})` }}
       >
         <Link href="/" aria-label={props.settings.site_title}>
           <LogoWithTitle
@@ -112,22 +112,31 @@ export const Layout = ({
         </div>
       </header>
       <div
-        className={classNames('mx-auto max-w-[1480px] px-5 py-20 sm:px-8', {
-          hidden: !isHomeCollection,
+        style={{
+          backgroundImage: isHomeCollection
+            ? `url(${props.settings.banner?.src})`
+            : '',
+        }}
+        className={classNames('bg-cover bg-bottom bg-no-repeat', {
+          'py-32': isHomeCollection,
         })}
       >
-        <h1
-          className={classNames(
-            'max-w-screen-xl  text-3xl sm:text-6xl sm:leading-tight'
-          )}
-          dangerouslySetInnerHTML={{ __html: settings.site_description! }}
-        ></h1>
+        <Section className={!isHomeCollection ? 'hidden' : 'py-20'}>
+          <h1
+            className={
+              'max-w-screen-xl  text-xl font-bold sm:text-7xl sm:leading-tight'
+            }
+            dangerouslySetInnerHTML={{ __html: settings.site_title! }}
+          />
+          <h1
+            className={'max-w-screen-xl  text-xl sm:text-2xl sm:leading-tight'}
+            dangerouslySetInnerHTML={{ __html: settings.site_description! }}
+          />
+        </Section>
       </div>
-      <div className={classNames('mx-auto max-w-[1480px] px-5 sm:px-8')}>
-        {children}
-      </div>
+      <Section>{children}</Section>
       <Subscribe />
-      <Footer settings={settings} me={me} />
+      <Footer {...props} />
     </>
   );
 };
@@ -135,9 +144,8 @@ export const Layout = ({
 function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
   return menu.map((item, i) => {
     return (
-      <li>
+      <li key={item.slug}>
         <Link
-          key={item.slug}
           href={i === 0 ? '/' : item.slug}
           className="block text-md font-medium capitalize  sm:p-4"
         >
@@ -147,3 +155,16 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
     );
   });
 }
+
+const Section: FC<{ className?: string; children: ReactNode }> = ({
+  children,
+  className,
+}) => {
+  return (
+    <div
+      className={classNames('mx-auto max-w-[1480px] px-5 sm:px-8', className)}
+    >
+      {children}
+    </div>
+  );
+};

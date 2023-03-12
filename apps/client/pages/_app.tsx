@@ -15,6 +15,7 @@ import 'ui/css/editor.css';
 import '@fontsource/inter/variable-full.css';
 
 import { useTheme } from '../themes';
+import { PageProps } from '../types/appType';
 
 declare global {
   interface Window {
@@ -22,10 +23,6 @@ declare global {
   }
 }
 
-interface PageProps {
-  settings: SettingsFragmentFragment;
-  me: Author;
-}
 export default function App({ Component, pageProps }: AppProps<PageProps>) {
   const { srcs, contents } = getScripts(pageProps.settings?.scripts ?? '');
   const { Layout } = useTheme(pageProps?.settings?.theme);

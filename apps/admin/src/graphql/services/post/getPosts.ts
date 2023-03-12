@@ -11,6 +11,8 @@ import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getLastPartFromPath } from "@/utils/slug";
 
+import { tryToParseCategoryName } from "../../../utils/utils";
+
 export const getPosts = async (
   args: QueryPostsArgs,
   { prisma, session, client_author_id }: ResolverContext
@@ -38,13 +40,14 @@ export const getPosts = async (
   // displaying in homepage.
 
   // find the real slug of the tag
-
   if (args.filters?.tagSlug === "/") {
     // find the first menu item. If its a tag, then display its collection of posts.
     const slug = await getTagSlugOfFirstMenuItemIfPossible(prisma, authorId);
     if (slug) args.filters.tagSlug = slug;
   } else if (args.filters.tagSlug) {
-    args.filters.tagSlug = getLastPartFromPath(args.filters.tagSlug);
+    args.filters.tagSlug = tryToParseCategoryName(
+      getLastPartFromPath(args.filters.tagSlug)
+    );
   }
   const { page = 1, limit = 10 } = args.filters;
   const skip = page && limit ? (page - 1) * limit : 0;

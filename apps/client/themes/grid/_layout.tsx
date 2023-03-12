@@ -9,15 +9,13 @@ import { MobileNav } from './commons/mobile-nav';
 import { SectionContainer } from './commons/section';
 import { LogoWithTitle } from './commons/site-logo';
 import { PageTitle } from './commons/title';
+import { PageProps } from '../../types/appType';
 
 export interface Props {
   children: ReactNode;
   pageName: string;
   isHomeCollection: boolean;
-  props: {
-    settings: SettingsFragmentFragment;
-    me: Author;
-  };
+  props: PageProps;
 }
 
 export const Layout = ({

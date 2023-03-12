@@ -4,7 +4,7 @@ export function getHeaders({ tags, deleteTag, editTag }) {
   return [
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "raw_name",
       width: "30%",
     },
     {

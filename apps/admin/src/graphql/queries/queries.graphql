@@ -6,6 +6,8 @@ query Tag($slug: String!) {
       ... on Tag {
         name
         slug
+        type
+        raw_name
       }
       ... on Exception {
         message
@@ -148,6 +150,8 @@ query Tags($filters: TagsFilters) {
       rows {
         name
         slug
+        type
+        raw_name
         posts {
           ... on PostsNode {
             count

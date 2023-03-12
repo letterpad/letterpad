@@ -7,11 +7,10 @@ import Creative from '@/layouts/Creative';
 
 import { useTheme } from '../../themes';
 
-export default function Preview({
-  post,
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Preview(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  const { post, settings, me } = props;
   const { Post } = useTheme(settings?.theme);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ export default function Preview({
       />
     );
   }
-  return <Post post={post} settings={settings} me={me} />;
+  return <Post {...props} />;
 }
 
 export async function getServerSideProps(context: any) {
@@ -50,12 +49,14 @@ export async function getServerSideProps(context: any) {
   });
   const settings = await letterpad.getSettings();
   const me = await letterpad.getAuthor();
+  const allTags = await letterpad.listTags();
 
   return {
     props: {
       post,
       settings,
       me,
+      allTags,
     },
   };
 }

@@ -3,9 +3,11 @@ import {
   QueryTagsArgs,
   ResolversTypes,
   Tag,
+  TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
+import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 
 export const getTags = async (
   args: QueryTagsArgs,
@@ -21,7 +23,13 @@ export const getTags = async (
     });
     return {
       __typename: "TagsNode",
-      rows: tags as Tag[],
+      rows: tags.map((tag) => ({
+        ...tag,
+        slug: tag.slug!,
+        type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
+        name: tryToParseCategoryName(tag.name),
+        raw_name: tag.name,
+      })),
     };
   }
 
@@ -53,7 +61,13 @@ export const getTags = async (
 
     return {
       __typename: "TagsNode",
-      rows: tags as Tag[],
+      rows: tags.map((tag) => ({
+        ...tag,
+        slug: tag.slug!,
+        type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
+        name: tryToParseCategoryName(tag.name),
+        raw_name: tag.name,
+      })),
     };
   } catch (e: any) {
     logger.error(e);

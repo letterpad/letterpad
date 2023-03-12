@@ -8,11 +8,10 @@ import Creative from '@/layouts/Creative';
 
 import { useTheme } from '../../themes';
 
-export default function Page({
-  post,
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Page(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  const { post, settings, me } = props;
   const { Post } = useTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
@@ -65,7 +64,7 @@ export default function Page({
           me={me}
         />
       ) : (
-        <Post post={post} settings={settings} me={me} />
+        <Post {...props} />
       )}
     </>
   );
@@ -83,12 +82,14 @@ export async function getServerSideProps(context: any) {
   const post = await letterpad.getPost(context.params.slug.join('/'));
   const settings = await letterpad.getSettings();
   const me = await letterpad.getAuthor();
+  const allTags = await letterpad.listTags();
 
   return {
     props: {
       post,
       settings,
       me,
+      allTags,
     },
   };
 }

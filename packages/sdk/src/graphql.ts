@@ -835,7 +835,9 @@ export type Tag = {
   __typename?: "Tag";
   name: Scalars["String"];
   posts?: Maybe<PostsResponse>;
+  raw_name: Scalars["String"];
   slug: Scalars["String"];
+  type: TagType;
 };
 
 export type TagResponse = Exception | Tag;
@@ -844,6 +846,11 @@ export type TagResultError = LetterpadError & {
   __typename?: "TagResultError";
   message: Scalars["String"];
 };
+
+export enum TagType {
+  Category = "category",
+  Tag = "tag",
+}
 
 export type TagsError = LetterpadError & {
   __typename?: "TagsError";
@@ -1324,9 +1331,38 @@ export type TagsQuery = {
           __typename?: "Tag";
           name: string;
           slug: string;
+          type: TagType;
+          raw_name: string;
           posts?:
             | { __typename: "Exception" }
-            | { __typename: "PostsNode"; count: number }
+            | {
+                __typename: "PostsNode";
+                count: number;
+                rows: Array<{
+                  __typename?: "Post";
+                  id: number;
+                  title: string;
+                  slug?: string | null;
+                  excerpt?: string | null;
+                  publishedAt?: any | null;
+                  reading_time?: string | null;
+                  cover_image: { __typename?: "Image"; src?: string | null };
+                  author?:
+                    | {
+                        __typename: "Author";
+                        id: number;
+                        name: string;
+                        avatar?: string | null;
+                        occupation?: string | null;
+                        bio?: string | null;
+                      }
+                    | { __typename: "Exception"; message: string }
+                    | { __typename: "Failed"; message: string }
+                    | { __typename: "NotFound"; message: string }
+                    | { __typename: "UnAuthorized"; message: string }
+                    | null;
+                }>;
+              }
             | { __typename: "UnAuthorized" }
             | null;
         }>;
@@ -1594,10 +1630,36 @@ export const TagsDocument = `
       rows {
         name
         slug
+        type
+        raw_name
         posts {
           __typename
           ... on PostsNode {
             count
+            rows {
+              id
+              title
+              slug
+              excerpt
+              publishedAt
+              reading_time
+              cover_image {
+                src
+              }
+              author {
+                __typename
+                ... on LetterpadError {
+                  message
+                }
+                ... on Author {
+                  id
+                  name
+                  avatar
+                  occupation
+                  bio
+                }
+              }
+            }
           }
         }
       }

@@ -13,6 +13,7 @@ import {
   getTags,
   updateTags,
 } from "../services/tag";
+import { isCategory, tryToParseCategoryName } from "../../utils/utils";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, context) {
@@ -27,8 +28,8 @@ const Tag: TagResolvers<ResolverContext> = {
   async slug({ slug }) {
     return createPathWithPrefix(slug, "tag");
   },
-  async posts({ name }, _args, context) {
-    return getPostsFromTag(name, context);
+  async posts({ raw_name }, _args, context) {
+    return getPostsFromTag(raw_name, context);
   },
 };
 

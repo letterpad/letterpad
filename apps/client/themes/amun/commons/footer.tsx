@@ -1,15 +1,16 @@
 import { Author, SettingsFragmentFragment } from 'letterpad-sdk';
+import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
 
 import Link from '@/components/Link';
 import SocialIcon from '@/components/social-icons';
 
 import { LogoWithTitle } from './site-logo';
-import { PageProps } from '../../../types/appType';
+import { getServerSideProps } from '../../../pages';
 
 interface Props {
-  settings: PageProps['settings'];
-  me: PageProps['me'];
+  settings: InferGetServerSidePropsType<typeof getServerSideProps>['settings'];
+  me: InferGetServerSidePropsType<typeof getServerSideProps>['me'];
 }
 
 export const Footer: FC<Props> = ({ settings, me }) => {
