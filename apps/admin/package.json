@@ -97,7 +97,7 @@
     "reading-time": "^1.3.0",
     "rollbar": "^2.25.1",
     "showdown": "^2.0.0",
-    "sqlite3": "^5.0.11",
+    "sqlite3": "^5.1.5",
     "stripe": "^10.15.0",
     "swr": "1.3.0",
     "tinymce": "^6.3.1",
