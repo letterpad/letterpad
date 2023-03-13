@@ -83,7 +83,7 @@
     "micro": "^9.4.1",
     "multer": "^1.4.2",
     "mysql2": "^2.2.5",
-    "next-auth": "^4.19.0",
+    "next-auth": "^4.20.1",
     "nodemailer": "^6.7.3",
     "nprogress": "^0.2.0",
     "prisma": "4.9.0",
