@@ -34,9 +34,15 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         id: yarn-dep-cache
+        env:
+          cache-name: cache-node-modules
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       
       - name: Install Yarn
         run: npm install -g yarn
@@ -45,9 +51,6 @@ jobs:
         run: |
           yarn install --frozen-lockfile 
         if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
-
-      - run: |
-          node_modules/cypress/bin/cypress install
 
       - name: Create .env file
         run: mv apps/admin/.env.sample apps/admin/.env
@@ -93,9 +96,15 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         id: yarn-dep-cache
+        env:
+          cache-name: cache-node-modules
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       
       - name: Install Yarn
         run: npm install -g yarn
