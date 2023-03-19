@@ -153,8 +153,10 @@ jobs:
       - name: Cache Cypress Binary
         uses: cypress-io/github-action@v5.1.0
         with:
-          working-directory: "/home/runner/work/letterpad/letterpad"
+          working-directory: "/home/runner/work/letterpad/letterpad/apps/admin"
           # key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+        env:
+          DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Install Yarn
         run: npm install -g yarn
