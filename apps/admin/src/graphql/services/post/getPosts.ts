@@ -63,15 +63,11 @@ export const getPosts = async (
       //@todo - remove slug
       slug: args.filters?.slug,
       type: args.filters?.type ?? PostTypes.Post,
-      tags: isPage
-        ? { every: {} }
-        : !session_author_id || args.filters?.tagSlug
-        ? {
-            some: {
-              slug: args.filters?.tagSlug,
-            },
-          }
-        : undefined,
+      tags: getTags({
+        slug: args.filters.tagSlug,
+        isPage,
+        loggedIn: !!session,
+      }),
       page_type: args.filters.page_type,
     },
     take: args.filters?.limit || 100,
@@ -110,4 +106,25 @@ async function getTagSlugOfFirstMenuItemIfPossible(
       return getLastPartFromPath(menu[0].slug);
     }
   }
+}
+
+function getTags({
+  slug,
+  loggedIn,
+  isPage,
+}: {
+  isPage: boolean;
+  slug?: string;
+  loggedIn: boolean;
+}) {
+  if (isPage) return { every: {} };
+  if (!loggedIn && !slug) return undefined;
+  if (slug) {
+    return {
+      some: {
+        slug,
+      },
+    };
+  }
+  return undefined;
 }
