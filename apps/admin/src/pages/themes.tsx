@@ -18,13 +18,12 @@ const Themes = ({ settings }) => {
   return (
     <>
       <Head>
-        <title>Tags</title>
+        <title>Themes</title>
       </Head>
       <PageHeader className="site-page-header" title="Tags">
         <span className="help-text">
-          Tags are essentially categories. They allow you to group posts
-          together using whatever tag you want and then use these tags to setup
-          your navigation menu.
+          Select the theme you want to use for your site. Remember that few
+          themes might not have all the features that are available.
         </span>
       </PageHeader>
       <Content>

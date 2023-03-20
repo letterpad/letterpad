@@ -95,8 +95,8 @@ export async function getServerSideProps(context: any) {
 
   const firstItemOfMenu = menu[0];
   const isHomePageACollectionOfPosts =
-    firstItemOfMenu.type === NavigationType.Tag;
-  const isHomePageASinglePage = firstItemOfMenu.type === NavigationType.Page;
+    !firstItemOfMenu || firstItemOfMenu?.type === NavigationType.Tag;
+  const isHomePageASinglePage = firstItemOfMenu?.type === NavigationType.Page;
 
   const me = await letterpad.getAuthor();
 
@@ -112,7 +112,7 @@ export async function getServerSideProps(context: any) {
   };
 
   if (isHomePageACollectionOfPosts) {
-    const posts = await letterpad.listPosts(firstItemOfMenu.slug);
+    const posts = await letterpad.listPosts(firstItemOfMenu?.slug);
     result.props = {
       ...result.props,
       posts,

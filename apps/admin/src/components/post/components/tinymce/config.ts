@@ -103,13 +103,13 @@ export const blogEditorConfig = ({ isDark, editorRef }): IProps["init"] => ({
         editor.execCommand("HiliteColor", false, "");
       },
     });
-    editor.on("init", function () {
-      setTimeout(() => {
-        editor.dom.doc
-          ?.querySelectorAll("img")
-          .forEach((e) => e.removeAttribute("srcset"));
-      }, 1000);
-    });
+    // editor.on("init", function () {
+    //   setTimeout(() => {
+    //     editor.dom.doc
+    //       ?.querySelectorAll("img")
+    //       .forEach((e) => e.removeAttribute("srcset"));
+    //   }, 1000);
+    // });
   },
   entity_encoding: "raw",
   codesample_global_prismjs: true,

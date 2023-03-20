@@ -9,7 +9,7 @@ const StaticLayout = ({ children }) => {
         </div>
         <div className="flex flex-1 justify-center pt-20">{children}</div>
         <div className="p-6 text-center">
-          Letterpad ©2022, An Open Source Project
+          Letterpad ©2023, An Open Source Project
         </div>
       </div>
     </>
