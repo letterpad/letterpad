@@ -20,7 +20,7 @@ const Themes = ({ settings }) => {
       <Head>
         <title>Themes</title>
       </Head>
-      <PageHeader className="site-page-header" title="Tags">
+      <PageHeader className="site-page-header" title="Themes">
         <span className="help-text">
           Select the theme you want to use for your site. Remember that few
           themes might not have all the features that are available.
