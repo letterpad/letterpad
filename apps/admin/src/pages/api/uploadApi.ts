@@ -42,13 +42,6 @@ const uploadApi = async (
   const session = _session as unknown as { user: SessionData };
   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
 
-  // This operation expects a single file upload.
-  if (!req.files?.length || req.files.length > 1) {
-    res.statusCode = 400;
-    res.status(501).end("The request can contain only 1 file");
-    return;
-  }
-
   let files: BlobCorrected[] = req.files;
   if (!Array.isArray(files)) {
     files = [files];

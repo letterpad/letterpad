@@ -23,7 +23,7 @@ interface IProps<T> {
 export const FileExplorer = <T extends any>({
   isVisible,
   handleCancel,
-  multi = true,
+  multi = false,
   onInsert,
   uploadFile,
   provider,
@@ -63,16 +63,14 @@ export const FileExplorer = <T extends any>({
             Insert
           </Button>
         ) : null,
-        provider === "internal" ? (
-          <Button
-            key="upload"
-            onClick={() => {
-              hiddenInputRef.current?.click();
-            }}
-          >
-            Browse
-          </Button>
-        ) : null,
+        <Button
+          key="upload"
+          onClick={() => {
+            hiddenInputRef.current?.click();
+          }}
+        >
+          Browse
+        </Button>,
         <Button
           key="provider"
           onClick={() => {
@@ -89,6 +87,7 @@ export const FileExplorer = <T extends any>({
         type="file"
         ref={hiddenInputRef}
         style={{ display: "none" }}
+        multiple={multi}
         onChange={async (e) => {
           if (!e.target.files) return;
           const filesArr = Array.from(e.target.files);
@@ -100,17 +99,19 @@ export const FileExplorer = <T extends any>({
             return;
           }
           setUploading(true);
-          const [result] = await uploadFile({
+          const result = await uploadFile({
             files: e.target.files,
             type: "cover_image",
           });
           setUploading(false);
           const urls = { ...selectedUrls };
-          const {
-            src,
-            size: { width, height },
-          } = result;
-          urls[`${result.src}`] = { src, width, height, caption: "" };
+          result.forEach((r: any) => {
+            const {
+              src,
+              size: { width, height },
+            } = r;
+            urls[`${src}`] = { src, width, height, caption: "" };
+          });
           onInsert(Object.values(urls));
         }}
       />
