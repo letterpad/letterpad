@@ -22,7 +22,7 @@ interface IProps {
 export const Container = ({
   isVisible,
   handleCancel,
-  multi = true,
+  multi = false,
   onInsert,
 }: IProps) => {
   const [mediaProvider, setMediaProvider] = useState<MediaProvider>(
@@ -109,6 +109,7 @@ export const Container = ({
         setProvider={setMediaProvider}
         onInsert={onInsert}
         uploadFile={uploadFile}
+        multi={multi}
         renderProvider={(provider) => {
           return provider === MediaProvider.Letterpad ? (
             <InternalMedia renderer={renderer} />
