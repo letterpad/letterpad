@@ -53,9 +53,13 @@ export class SSL {
         subject: domain,
         altnames: [domain],
       });
+      // eslint-disable-next-line no-console
+      console.log(data);
       this.createNginx_443(domain);
       return data;
     } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log("Grenlock error", e);
       throw e;
     }
   }
