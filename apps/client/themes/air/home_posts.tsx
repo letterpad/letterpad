@@ -4,6 +4,7 @@ import { FC } from 'react';
 
 import Link from '@/components/Link';
 
+import { chunk } from './utils';
 import Image from '../../components/Image';
 import formatDate from '../../lib/utils/formatDate';
 export interface Props {
@@ -53,6 +54,7 @@ export const HomePosts: FC<Props> = ({ posts }) => {
       </>
     );
   }
+  const arr = chunk(posts.rows, featuredThreePosts);
   const hasLatestPosts = posts.count - featuredPostsCount;
 
   return (

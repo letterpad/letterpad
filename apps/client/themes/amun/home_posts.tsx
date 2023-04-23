@@ -5,6 +5,13 @@ import { FC, ReactNode } from 'react';
 import { Card, HorizontalCard } from './commons/card';
 import { getServerSideProps } from '../../pages';
 
+const pickThreePostsMax = (posts: PostsFragmentFragment['rows']) => {
+  if (posts.length >= 3) return posts.slice(0, 3);
+  if (posts.length >= 2) return posts.slice(0, 2);
+  if (posts.length >= 1) return posts.slice(0, 1);
+  return posts;
+};
+
 export const HomePosts: FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ posts, allTags }) => {
@@ -13,13 +20,6 @@ export const HomePosts: FC<
     .pop();
   const sidePosts =
     category?.posts?.__typename === 'PostsNode' ? category?.posts?.rows : [];
-
-  const pickThreePostsMax = (posts: PostsFragmentFragment['rows']) => {
-    if (posts.length >= 3) return posts.slice(0, 3);
-    if (posts.length >= 2) return posts.slice(0, 2);
-    if (posts.length >= 1) return posts.slice(0, 1);
-    return posts;
-  };
 
   const firstThreeMax = pickThreePostsMax(posts.rows);
   const olderPosts = posts.rows.slice(firstThreeMax.length);
