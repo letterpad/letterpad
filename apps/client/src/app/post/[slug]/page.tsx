@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { Metadata } from 'next';
 
-import { BlogSEO } from '@/components/SEO';
+import StructuredData from '@/components/StructuredData';
 
 import { useTheme } from '../../../../themes';
 import { getPostData } from '../../../data';
@@ -11,40 +11,78 @@ export default async function Post(props) {
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
 
-  const authorDetails = [
-    {
-      name,
-      avatar,
-      occupation: me.occupation,
-      company: me.company_name,
-      email: settings.site_email,
-      twitter: me.social?.twitter,
-      linkedin: me.social?.linkedin,
-      github: me.social?.github,
-      banner: settings.banner?.src,
-      logo: settings.site_logo?.src,
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.cover_image.src,
+    author: [
+      {
+        '@type': 'Person',
+        name: name,
+      },
+    ],
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    publisher: {
+      '@type': 'Organization',
+      name: settings.site_title,
+      logo: {
+        '@type': 'ImageObject',
+        url: avatar,
+      },
     },
-  ];
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${settings.site_url}${post.slug}`,
+    },
+  };
+
   return (
     <>
-      <BlogSEO
-        url={`${settings.site_url}${post.slug}`}
-        date={post.publishedAt}
-        title={post.title}
-        summary={post.excerpt ?? ''}
-        lastmod={post.updatedAt}
-        images={post.cover_image.src ? [post.cover_image.src] : []}
-        slug={post.slug ?? ''}
-        tags={
-          post.tags?.__typename === 'TagsNode'
-            ? post.tags.rows.map((t) => t.name)
-            : []
-        }
-        fileName={post.title}
-        site_name={settings.site_title}
-        authorDetails={authorDetails}
-      />
+      <StructuredData data={jsonLd} />
       <Post post={post} settings={settings} me={me} />
     </>
   );
+}
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}): Promise<Metadata> {
+  const { post, settings, me } = await getPostData(params.slug);
+  return {
+    title: post.title,
+    description: post.excerpt ?? '',
+    twitter: {
+      title: post.title,
+      images: [
+        {
+          url: post.cover_image?.src!,
+          width: post.cover_image?.width,
+          height: post.cover_image?.height,
+          alt: post.title,
+        },
+      ],
+      card: 'summary_large_image',
+      description: me.bio,
+    },
+    openGraph: {
+      url: `${settings.site_url}${post.slug}`,
+      title: post.title,
+      description: post.excerpt,
+      authors: [me.name],
+      firstName: me.name,
+      siteName: settings.site_title,
+      images: [
+        {
+          url: post.cover_image.src!,
+          width: post.cover_image.width,
+          height: post.cover_image.height,
+          alt: post.title,
+        },
+      ],
+    },
+  };
 }
