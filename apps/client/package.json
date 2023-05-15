@@ -22,6 +22,7 @@
     "github-slugger": "^1.3.0",
     "image-size": "1.0.0",
     "letterpad-sdk": "*",
+    "abort-controller": "*",
     "react-share": "^4.4.0",
     "next": "^13.4.2",
     "react-sticky": "^6.0.3",
