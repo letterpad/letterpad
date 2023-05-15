@@ -1,18 +1,16 @@
 import classNames from 'classnames';
-import { InferGetServerSidePropsType } from 'next';
+import Image from 'next/image';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
 import Comments from '@/components/comments';
 import { IconBook } from '@/components/icons';
-import Image from '@/components/Image';
 import Link from '@/components/Link';
 import ScrollTop from '@/components/ScrollTop';
 import { Share } from '@/components/share';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { getServerSideProps } from '../../pages/post/[...slug]';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {
@@ -22,11 +20,7 @@ export const getReadableDate = (timestamp: Date | number) => {
   });
 };
 
-export const Post = ({
-  post,
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+export const Post = ({ post, settings, me }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   if (author?.__typename !== 'Author') return null;
@@ -34,7 +28,6 @@ export const Post = ({
   const postUrl = `${settings.site_url}${slug}`;
   const printPublishedAt = getReadableDate(publishedAt);
   const isPage = type === 'page';
-
   return (
     <SectionContainer>
       <ScrollTop />
@@ -50,12 +43,11 @@ export const Post = ({
                 {author.avatar && (
                   <div className="mr-4">
                     <Image
-                      loader={({ src }) => src}
                       src={author.avatar}
-                      width="64px"
-                      height="64px"
+                      width={64}
+                      height={64}
                       alt={author.name}
-                      objectFit="cover"
+                      style={{ objectFit: 'cover' }}
                       className="mr-3  h-16 w-16 rounded-full "
                     />
                   </div>
@@ -126,10 +118,9 @@ export const Post = ({
               <div className="mr-4 hidden md:block">
                 {author.avatar && (
                   <Image
-                    loader={({ src }) => src}
                     src={author.avatar}
-                    width="94px"
-                    height="94px"
+                    width={94}
+                    height={94}
                     alt={author.name}
                     className="h-16 w-16 rounded-full"
                   />

@@ -1,4 +1,3 @@
-import { useTheme } from 'next-themes';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
@@ -9,10 +8,10 @@ interface Props {
 
 const Giscus = ({ mapping }: Props) => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true);
-  const { theme, resolvedTheme } = useTheme();
+  // const { theme, resolvedTheme } = useTheme();
   const commentsTheme =
     siteMetadata.comment.giscusConfig.themeURL === ''
-      ? theme === 'dark' || resolvedTheme === 'dark'
+      ? localStorage.theme === 'dark'
         ? siteMetadata.comment.giscusConfig.darkTheme
         : siteMetadata.comment.giscusConfig.theme
       : siteMetadata.comment.giscusConfig.themeURL;

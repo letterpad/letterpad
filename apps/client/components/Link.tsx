@@ -4,6 +4,7 @@ import { AnchorHTMLAttributes, DetailedHTMLProps } from 'react';
 
 const CustomLink = ({
   href,
+  ref,
   ...rest
 }: DetailedHTMLProps<
   AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -14,8 +15,8 @@ const CustomLink = ({
 
   if (isInternalLink) {
     return (
-      <Link href={href}>
-        <a {...rest} />
+      <Link href={href} {...rest}>
+        {/* <a {...rest} /> */}
       </Link>
     );
   }

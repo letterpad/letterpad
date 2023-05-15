@@ -39,8 +39,8 @@ export const ThumbnailList = <
                 : 'opacity-50 hover:opacity-100 ')
             }
             onClick={() => onSelect(i)}
-            objectFit="fill"
-            alt={item.description || item.caption}
+            style={{ objectFit: 'fill' }}
+            alt={item.description || item.caption || ''}
           />
         </div>
       ))}

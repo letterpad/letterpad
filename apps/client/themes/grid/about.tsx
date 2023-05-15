@@ -2,13 +2,16 @@ import { InferGetServerSidePropsType } from 'next';
 
 import SocialIcon from '@/components/social-icons';
 
+import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { getServerSideProps } from '../../pages/about';
+import { getAbout } from '../../src/data';
+
+type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 
 export const About = ({
   settings,
   me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: Awaited<ReturnType<typeof getAbout>>) => {
   const {
     name,
     avatar = '/static/images/avatar.png',
@@ -19,7 +22,7 @@ export const About = ({
   } = me;
   const { site_description } = settings;
   return (
-    <>
+    <SectionContainer>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <PageTitle>About</PageTitle>
@@ -44,10 +47,14 @@ export const About = ({
               {company_name}
             </div>
             <div className="flex space-x-3 pt-6">
-              <SocialIcon kind="mail" href={`mailto:${settings.site_email}`} />
-              <SocialIcon kind="github" href={social?.github} />
-              <SocialIcon kind="linkedin" href={social?.linkedin} />
-              <SocialIcon kind="twitter" href={social?.twitter} />
+              <SocialIcon
+                kind="mail"
+                href={`mailto:${settings.site_email}`}
+                size={5}
+              />
+              <SocialIcon kind="github" href={social?.github} size={5} />
+              <SocialIcon kind="linkedin" href={social?.linkedin} size={5} />
+              <SocialIcon kind="twitter" href={social?.twitter} size={5} />
             </div>
           </div>
           <div className="prose max-w-none pt-8 pb-8 dark:prose-dark xl:col-span-2">
@@ -57,6 +64,6 @@ export const About = ({
           </div>
         </div>
       </div>
-    </>
+    </SectionContainer>
   );
 };

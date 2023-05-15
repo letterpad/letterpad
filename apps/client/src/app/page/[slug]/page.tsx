@@ -1,27 +1,15 @@
-import { Letterpad } from 'letterpad-sdk';
-import { InferGetServerSidePropsType } from 'next';
-import { useEffect } from 'react';
-
 import { BlogSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
 
-import { useTheme } from '../../themes';
+import { useTheme } from '../../../../themes';
+import { getPostData } from '../../../data';
 
-export default function Page({
-  post,
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default async function Page(props) {
+  const { post, settings, me } = await getPostData(props.params.slug);
   const { Post } = useTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
-
-  useEffect(() => {
-    if (typeof window.Prism !== 'undefined') {
-      window.Prism.highlightAll();
-    }
-  }, [post]);
 
   const authorDetails = [
     {
@@ -69,26 +57,4 @@ export default function Page({
       )}
     </>
   );
-}
-
-export async function getServerSideProps(context: any) {
-  const letterpad = new Letterpad({
-    letterpadServer: {
-      url: process.env.API_URL!,
-      token: process.env.CLIENT_ID!,
-      host: context.req.headers.host,
-    },
-  });
-
-  const post = await letterpad.getPost(context.params.slug.join('/'));
-  const settings = await letterpad.getSettings();
-  const me = await letterpad.getAuthor();
-
-  return {
-    props: {
-      post,
-      settings,
-      me,
-    },
-  };
 }

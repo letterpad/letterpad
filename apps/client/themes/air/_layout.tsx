@@ -1,17 +1,16 @@
 import classNames from 'classnames';
 import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 import Link from '@/components/Link';
 
-import { Footer } from './commons/footer';
+// import { Footer } from './commons/footer';
 import { LogoWithTitle } from './commons/site-logo';
-import { Subscribe } from './commons/subscribe';
-import ThemeSwitch from '../../components/ThemeSwitch';
+// import { Subscribe } from './commons/subscribe';
+// import ThemeSwitch from '../../components/ThemeSwitch';
 
 export interface Props {
   children: ReactNode;
-  pageName: string;
   isHomeCollection: boolean;
   props: {
     settings: SettingsFragmentFragment;
@@ -19,21 +18,16 @@ export interface Props {
   };
 }
 
-export const Layout = ({
-  children,
-  props,
-  pageName,
-  isHomeCollection,
-}: Props) => {
+export const Layout = ({ children, props, isHomeCollection }: Props) => {
   const { settings, me } = props;
   const menu = getMenu(settings.menu);
-
-  const [menuOpen, setMenuOpen] = useState(false);
+  return <div>{children}</div>;
+  // const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
       <header
-        className="mx-auto flex max-w-[1480px] items-center bg-cover bg-no-repeat px-5 py-5  sm:px-8"
+        className="mx-auto flex items-center bg-cover bg-no-repeat px-5 py-5  sm:px-8"
         style={{ backgroundImage: `url(${settings.banner?.src})` }}
       >
         <Link href="/" aria-label={props.settings.site_title}>
@@ -47,16 +41,14 @@ export const Layout = ({
             <ul className="heading-color mr-1 flex gap-5 lg:flex">
               <div className="hidden items-center  md:flex">
                 {menu}
-                <li>
-                  <ThemeSwitch />
-                </li>
+                <li>{/* <ThemeSwitch /> */}</li>
               </div>
 
               <li className="relative z-20">
                 <ul
                   className={classNames(
-                    'absolute top-8 -left-36 w-[180px] flex-col gap-0.5 rounded-lg border border-gray-100  bg-white p-4 shadow-md dark:border-gray-600 dark:bg-black md:hidden',
-                    { hidden: !menuOpen }
+                    'absolute top-8 -left-36 w-[180px] flex-col gap-0.5 rounded-lg border border-gray-100  bg-white p-4 shadow-md dark:border-gray-600 dark:bg-black md:hidden'
+                    // { hidden: !menuOpen }
                   )}
                 >
                   {menu}
@@ -68,10 +60,10 @@ export const Layout = ({
           <nav className="relative lg:hidden">
             <button
               className={classNames('cursor-pointer p-1.5 ', {
-                hidden: menuOpen,
+                // hidden: menuOpen,
               })}
               aria-label="Nav"
-              onClick={() => setMenuOpen(true)}
+              // onClick={() => setMenuOpen(true)}
             >
               <svg
                 stroke="currentColor"
@@ -88,10 +80,10 @@ export const Layout = ({
             </button>
             <button
               className={classNames('cursor-pointer p-1.5', {
-                hidden: !menuOpen,
+                // hidden: !menuOpen,
               })}
               aria-label="Nav"
-              onClick={() => setMenuOpen(false)}
+              // onClick={() => setMenuOpen(false)}
             >
               <svg
                 stroke="currentColor"
@@ -128,8 +120,8 @@ export const Layout = ({
       <div className={classNames('mx-auto max-w-[1480px] px-5 sm:px-8')}>
         {children}
       </div>
-      <Subscribe />
-      <Footer settings={settings} me={me} />
+      {/* <Subscribe /> */}
+      {/* <Footer settings={settings} me={me} /> */}
     </>
   );
 };

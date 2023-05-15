@@ -6,13 +6,11 @@ import ThemeSwitch from '@/components/ThemeSwitch';
 
 import { Footer } from './commons/footer';
 import { MobileNav } from './commons/mobile-nav';
-import { SectionContainer } from './commons/section';
 import { LogoWithTitle } from './commons/site-logo';
 import { PageTitle } from './commons/title';
 
 export interface Props {
   children: ReactNode;
-  pageName: string;
   isHomeCollection: boolean;
   props: {
     settings: SettingsFragmentFragment;
@@ -20,25 +18,7 @@ export interface Props {
   };
 }
 
-export const Layout = ({
-  children,
-  props,
-  pageName,
-  isHomeCollection,
-}: Props) => {
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!contentRef.current) return;
-    const winHeight = window.innerHeight;
-    const bodyHeight = document.body.clientHeight;
-    const contentHeight = contentRef.current.clientHeight;
-    if (winHeight > bodyHeight) {
-      const extraHeight = winHeight - bodyHeight;
-      contentRef.current.style.minHeight = extraHeight + contentHeight + 'px';
-    }
-  }, []);
-
+export const Layout = ({ children, props, isHomeCollection }: Props) => {
   const routes = [...props.settings.menu];
 
   const menu = getMenu(routes);
@@ -46,7 +26,7 @@ export const Layout = ({
     <>
       <div
         className={'bg-accent-50  bg-cover text-white'}
-        style={{ backgroundImage: `url(${props.settings.banner?.src})` }}
+        // style={{ backgroundImage: `url(${props.settings.banner?.src})` }}
       >
         <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-4 md:px-20">
           <div>
@@ -60,25 +40,11 @@ export const Layout = ({
           <div className="flex items-center text-base leading-5">
             <div className="hidden md:block">{menu}</div>
             <ThemeSwitch />
-            {/* <Subscribe /> */}
             <MobileNav routes={routes} />
           </div>
         </header>
-        {isHomeCollection && (
-          <SectionContainer className="py:10 space-y-2 md:space-y-3 md:py-32">
-            <div className="py-10">
-              <BrandText
-                tagline={props.settings.site_tagline}
-                title={props.settings.site_title}
-                description={props.settings.site_description}
-              />
-            </div>
-          </SectionContainer>
-        )}
       </div>
-      <main className="mb-auto" ref={contentRef}>
-        {children}
-      </main>
+      <main className="mb-auto">{children}</main>
       <br />
       <br />
       <br />
@@ -111,17 +77,3 @@ function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
     );
   });
 }
-
-const BrandText = ({ title, tagline, description }) => {
-  return (
-    <>
-      <PageTitle className="text-center">{title}</PageTitle>
-      <p className="pb-4 text-center text-md font-bold leading-6 md:text-md">
-        {tagline}
-      </p>
-      <p className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md">
-        {description}
-      </p>
-    </>
-  );
-};

@@ -56,6 +56,10 @@ const securityHeaders = [
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
 module.exports = {
+  experimental: {
+    appDir: true,
+    // serverActions: true,
+  },
   reactStrictMode: true,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   eslint: {
