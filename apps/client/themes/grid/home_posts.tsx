@@ -7,13 +7,15 @@ import Image from '@/components/Image';
 import Link from '@/components/Link';
 
 import { SectionContainer } from './commons/section';
+import { PageTitle } from './commons/title';
 import { IconBook } from '../../components/icons';
 
 export interface Props {
   posts: PostsFragmentFragment;
+  settings: any;
 }
 
-export const HomePosts: FC<Props> = ({ posts }) => {
+export const HomePosts: FC<Props> = ({ posts, settings }) => {
   return (
     <SectionContainer>
       <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-2 xl:grid-cols-3">
@@ -62,5 +64,19 @@ export const HomePosts: FC<Props> = ({ posts }) => {
         })}
       </div>
     </SectionContainer>
+  );
+};
+
+const BrandText = ({ title, tagline, description }) => {
+  return (
+    <>
+      <PageTitle className="text-center">{title}</PageTitle>
+      <p className="pb-4 text-center text-md font-bold leading-6 md:text-md">
+        {tagline}
+      </p>
+      <p className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md">
+        {description}
+      </p>
+    </>
   );
 };

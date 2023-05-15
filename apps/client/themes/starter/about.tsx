@@ -1,6 +1,6 @@
 import { InferGetServerSidePropsType } from 'next';
 
-import { getServerSideProps } from '../../pages/about';
+import { getServerSideProps } from '../../src/app/about/page';
 
 export const About = ({
   settings,

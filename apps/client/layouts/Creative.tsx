@@ -1,3 +1,4 @@
+'use client';
 import {
   MeFragmentFragment,
   PageFragmentFragment,
@@ -53,7 +54,7 @@ export default function Creative({ site_name, data, settings, me }: Props) {
         //@ts-ignore
         authorDetails={authorDetails}
       />
-      <ScrollTop />
+      {/* <ScrollTop /> */}
       <article>
         <BuilderContext
           data={JSON.parse(data.page_data ?? '').rows}

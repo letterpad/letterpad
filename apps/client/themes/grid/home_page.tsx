@@ -22,7 +22,7 @@ export interface Props {
 export const HomePage: FC<Props> = ({ next, prev, children }) => {
   return (
     <SectionContainer>
-      <ScrollTop />
+      {/* <ScrollTop /> */}
       <article>
         <div
           className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0 "

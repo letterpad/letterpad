@@ -2,6 +2,7 @@ import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
 import { ReactNode, useEffect, useRef } from 'react';
 
 import Link from '@/components/Link';
+import Subscribe from '@/components/Subscribe';
 import ThemeSwitch from '@/components/ThemeSwitch';
 
 import { Footer } from './commons/footer';
@@ -12,7 +13,6 @@ import { PageTitle } from './commons/title';
 
 export interface Props {
   children: ReactNode;
-  pageName: string;
   isHomeCollection: boolean;
   props: {
     settings: SettingsFragmentFragment;
@@ -20,24 +20,19 @@ export interface Props {
   };
 }
 
-export const Layout = ({
-  children,
-  props,
-  pageName,
-  isHomeCollection,
-}: Props) => {
-  const contentRef = useRef<HTMLDivElement>(null);
+export const Layout = ({ children, props, isHomeCollection }: Props) => {
+  // const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!contentRef.current) return;
-    const winHeight = window.innerHeight;
-    const bodyHeight = document.body.clientHeight;
-    const contentHeight = contentRef.current.clientHeight;
-    if (winHeight > bodyHeight) {
-      const extraHeight = winHeight - bodyHeight;
-      contentRef.current.style.minHeight = extraHeight + contentHeight + 'px';
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!contentRef.current) return;
+  //   const winHeight = window.innerHeight;
+  //   const bodyHeight = document.body.clientHeight;
+  //   const contentHeight = contentRef.current.clientHeight;
+  //   if (winHeight > bodyHeight) {
+  //     const extraHeight = winHeight - bodyHeight;
+  //     contentRef.current.style.minHeight = extraHeight + contentHeight + 'px';
+  //   }
+  // }, []);
 
   const routes = [...props.settings.menu];
 
@@ -76,9 +71,7 @@ export const Layout = ({
           </SectionContainer>
         )}
       </div>
-      <main className="mb-auto" ref={contentRef}>
-        {children}
-      </main>
+      <main className="mb-auto">{children}</main>
       <br />
       <br />
       <br />
@@ -119,9 +112,10 @@ const BrandText = ({ title, tagline, description }) => {
       <p className="pb-4 text-center text-md font-bold leading-6 md:text-md">
         {tagline}
       </p>
-      <p className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md">
-        {description}
-      </p>
+      <p
+        className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md"
+        dangerouslySetInnerHTML={{ __html: description }}
+      />
     </>
   );
 };

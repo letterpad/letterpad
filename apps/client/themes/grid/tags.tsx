@@ -1,5 +1,3 @@
-import { InferGetServerSidePropsType } from 'next';
-
 import kebabCase from '@/lib/utils/kebabCase';
 
 import Link from '@/components/Link';
@@ -7,13 +5,8 @@ import Tag from '@/components/Tag';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { getServerSideProps } from '../../pages/tags';
 
-export const Tags = ({
-  tags,
-  me,
-  settings,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+export const Tags = ({ tags, me, settings }) => {
   return (
     <>
       <div className="flex flex-col items-start justify-start divide-y divide-gray-200 dark:divide-gray-700 md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6 md:divide-y-0">

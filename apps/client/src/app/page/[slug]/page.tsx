@@ -1,25 +1,23 @@
-import { Letterpad } from 'letterpad-sdk';
-import { InferGetServerSidePropsType } from 'next';
 import { useEffect } from 'react';
 
 import { BlogSEO } from '@/components/SEO';
 
-import { useTheme } from '../../themes';
+import Creative from '@/layouts/Creative';
 
-export default function Post({
-  post,
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+import { useTheme } from '../../../../themes';
+import { getPostData } from '../../../data';
+
+export default async function Page(props) {
+  const { post, settings, me } = await getPostData(props.params.slug);
   const { Post } = useTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
 
-  useEffect(() => {
-    if (typeof window.Prism !== 'undefined') {
-      window.Prism.highlightAll();
-    }
-  }, [post]);
+  // useEffect(() => {
+  //   if (typeof window.Prism !== 'undefined') {
+  //     window.Prism.highlightAll();
+  //   }
+  // }, [post]);
 
   const authorDetails = [
     {
@@ -35,6 +33,7 @@ export default function Post({
       logo: settings.site_logo?.src,
     },
   ];
+
   return (
     <>
       <BlogSEO
@@ -54,29 +53,16 @@ export default function Post({
         site_name={settings.site_title}
         authorDetails={authorDetails}
       />
-      <Post post={post} settings={settings} me={me} />
+      {post.page_type === 'story-builder' ? (
+        <Creative
+          data={post}
+          site_name={settings.site_title}
+          settings={settings}
+          me={me}
+        />
+      ) : (
+        <Post post={post} settings={settings} me={me} />
+      )}
     </>
   );
-}
-
-export async function getServerSideProps(context: any) {
-  const letterpad = new Letterpad({
-    letterpadServer: {
-      url: process.env.API_URL!,
-      token: process.env.CLIENT_ID!,
-      host: context.req.headers.host,
-    },
-  });
-
-  const post = await letterpad.getPost(context.params.slug.join('/'));
-  const settings = await letterpad.getSettings();
-  const me = await letterpad.getAuthor();
-
-  return {
-    props: {
-      post,
-      settings,
-      me,
-    },
-  };
 }

@@ -1,18 +1,16 @@
 import classNames from 'classnames';
-import { InferGetServerSidePropsType } from 'next';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
-import Comments from '@/components/comments';
+// import Comments from '@/components/comments';
 import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
-import ScrollTop from '@/components/ScrollTop';
-import { Share } from '@/components/share';
 
+// import ScrollTop from '@/components/ScrollTop';
+// import { Share } from '@/components/share';
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { getServerSideProps } from '../../pages/post/[...slug]';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {
@@ -22,11 +20,7 @@ export const getReadableDate = (timestamp: Date | number) => {
   });
 };
 
-export const Post = ({
-  post,
-  settings,
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+export const Post = ({ post, settings, me }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   if (author?.__typename !== 'Author') return null;
@@ -34,10 +28,9 @@ export const Post = ({
   const postUrl = `${settings.site_url}${slug}`;
   const printPublishedAt = getReadableDate(publishedAt);
   const isPage = type === 'page';
-
   return (
     <SectionContainer>
-      <ScrollTop />
+      {/* <ScrollTop /> */}
       <div className="mx-auto flex w-full  max-w-4xl justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-4'}>
@@ -49,15 +42,15 @@ export const Post = ({
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
                 {author.avatar && (
                   <div className="mr-4">
-                    <Image
+                    {/* <Image
                       loader={({ src }) => src}
                       src={author.avatar}
-                      width="64px"
-                      height="64px"
+                      width={64}
+                      height={64}
                       alt={author.name}
                       objectFit="cover"
                       className="mr-3  h-16 w-16 rounded-full "
-                    />
+                    /> */}
                   </div>
                 )}
                 <div className="w-full">
@@ -69,12 +62,12 @@ export const Post = ({
                     >
                       {author.name}
                     </a>
-                    <Share
+                    {/* <Share
                       title={title}
                       summary={excerpt}
                       url={postUrl}
                       className="hidden md:block"
-                    />
+                    /> */}
                   </div>
                   <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
                     {author.occupation}
@@ -124,16 +117,16 @@ export const Post = ({
               }
             >
               <div className="mr-4 hidden md:block">
-                {author.avatar && (
+                {/* {author.avatar && (
                   <Image
                     loader={({ src }) => src}
                     src={author.avatar}
-                    width="94px"
-                    height="94px"
+                    width={94}
+                    height={94}
                     alt={author.name}
                     className="h-16 w-16 rounded-full"
                   />
-                )}
+                )} */}
               </div>
               <div className="flex flex-col gap-2">
                 <a
@@ -149,7 +142,7 @@ export const Post = ({
               </div>
             </div>
           )}
-          {type === 'post' && <Comments provider="utterances" />}
+          {/* {type === 'post' && <Comments provider="utterances" />} */}
         </article>
       </div>
     </SectionContainer>
