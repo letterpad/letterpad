@@ -18,12 +18,12 @@ export const themes = () => {
         "A theme with Grid layout. Should have cover images for every post.",
       image: Grid,
     },
-    {
-      label: "Air",
-      value: "air",
-      description:
-        "The 2023 designers theme. Best for blogs with a lot of content.",
-      image: Air,
-    },
+    // {
+    //   label: "Air",
+    //   value: "air",
+    //   description:
+    //     "The 2023 designers theme. Best for blogs with a lot of content.",
+    //   image: Air,
+    // },
   ];
 };
