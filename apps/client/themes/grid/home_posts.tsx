@@ -50,9 +50,9 @@ export const HomePosts: FC<Props> = ({ posts, settings }) => {
                     <span>
                       <Image
                         src={cover_image.src ?? ''}
-                        layout="fill"
+                        fill={true}
                         alt={title}
-                        objectFit="cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </span>
                   </div>

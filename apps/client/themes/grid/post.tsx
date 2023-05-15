@@ -1,14 +1,14 @@
 import classNames from 'classnames';
+import Image from 'next/image';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
-// import Comments from '@/components/comments';
+import Comments from '@/components/comments';
 import { IconBook } from '@/components/icons';
-import Image from '@/components/Image';
 import Link from '@/components/Link';
+import ScrollTop from '@/components/ScrollTop';
+import { Share } from '@/components/share';
 
-// import ScrollTop from '@/components/ScrollTop';
-// import { Share } from '@/components/share';
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
 
@@ -30,7 +30,7 @@ export const Post = ({ post, settings, me }) => {
   const isPage = type === 'page';
   return (
     <SectionContainer>
-      {/* <ScrollTop /> */}
+      <ScrollTop />
       <div className="mx-auto flex w-full  max-w-4xl justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-4'}>
@@ -42,15 +42,14 @@ export const Post = ({ post, settings, me }) => {
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
                 {author.avatar && (
                   <div className="mr-4">
-                    {/* <Image
-                      loader={({ src }) => src}
+                    <Image
                       src={author.avatar}
                       width={64}
                       height={64}
                       alt={author.name}
-                      objectFit="cover"
+                      style={{ objectFit: 'cover' }}
                       className="mr-3  h-16 w-16 rounded-full "
-                    /> */}
+                    />
                   </div>
                 )}
                 <div className="w-full">
@@ -62,12 +61,12 @@ export const Post = ({ post, settings, me }) => {
                     >
                       {author.name}
                     </a>
-                    {/* <Share
+                    <Share
                       title={title}
                       summary={excerpt}
                       url={postUrl}
                       className="hidden md:block"
-                    /> */}
+                    />
                   </div>
                   <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
                     {author.occupation}
@@ -117,16 +116,15 @@ export const Post = ({ post, settings, me }) => {
               }
             >
               <div className="mr-4 hidden md:block">
-                {/* {author.avatar && (
+                {author.avatar && (
                   <Image
-                    loader={({ src }) => src}
                     src={author.avatar}
                     width={94}
                     height={94}
                     alt={author.name}
                     className="h-16 w-16 rounded-full"
                   />
-                )} */}
+                )}
               </div>
               <div className="flex flex-col gap-2">
                 <a
@@ -142,7 +140,7 @@ export const Post = ({ post, settings, me }) => {
               </div>
             </div>
           )}
-          {/* {type === 'post' && <Comments provider="utterances" />} */}
+          {type === 'post' && <Comments provider="utterances" />}
         </article>
       </div>
     </SectionContainer>

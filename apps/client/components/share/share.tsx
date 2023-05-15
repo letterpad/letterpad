@@ -1,3 +1,4 @@
+'use client';
 import { GrReddit } from 'react-icons/gr';
 import { ImLinkedin2, ImReddit, ImTwitter } from 'react-icons/im';
 import {
