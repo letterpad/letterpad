@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { BlogSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
@@ -12,12 +10,6 @@ export default async function Page(props) {
   const { Post } = useTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
-
-  // useEffect(() => {
-  //   if (typeof window.Prism !== 'undefined') {
-  //     window.Prism.highlightAll();
-  //   }
-  // }, [post]);
 
   const authorDetails = [
     {

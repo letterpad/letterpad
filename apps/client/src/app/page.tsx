@@ -1,5 +1,6 @@
 import Head from 'next/head';
 
+import { CodeBlock } from '@/components/codeblock';
 import SectionContainer from '@/components/SectionContainer';
 import { BaseSEO, withPageSEO } from '@/components/SEO';
 
@@ -43,6 +44,7 @@ export default async function Home() {
         twSite={me.social?.twitter}
       />
       <div>
+        <CodeBlock />
         <SectionContainer>
           {isEmpty && (
             <span className="py-16 text-gray-400">

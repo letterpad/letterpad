@@ -11,12 +11,6 @@ export default async function Post(props) {
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
 
-  // useEffect(() => {
-  //   if (typeof window.Prism !== 'undefined') {
-  //     window.Prism.highlightAll();
-  //   }
-  // }, [post]);
-
   const authorDetails = [
     {
       name,
