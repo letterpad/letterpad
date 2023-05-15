@@ -32,6 +32,7 @@ export async function POST(request: Request) {
     const data = await resp.json();
     return NextResponse.json(data);
   } catch (e) {
+    //@ts-ignore
     return NextResponse.error(e);
   }
 }
