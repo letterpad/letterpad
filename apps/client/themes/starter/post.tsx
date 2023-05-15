@@ -1,10 +1,12 @@
-import { InferGetServerSidePropsType } from 'next';
-
 import Comments from '@/components/comments';
 
-// import { getServerSideProps } from '../../src/app/post/[slug]/page';
+import { getPostData } from '../../src/data';
 
-export const Post = ({ post, settings, me }) => {
+export const Post = ({
+  post,
+  settings,
+  me,
+}: Awaited<ReturnType<typeof getPostData>>) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   const isPage = type === 'page';

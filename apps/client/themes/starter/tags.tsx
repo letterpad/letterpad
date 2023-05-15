@@ -1,7 +1,9 @@
-import { InferGetServerSidePropsType } from 'next';
+import { getTagsData } from '../../src/data';
 
-// import { getServerSideProps } from '../../src/app/tags/page';
-
-export const Tags = ({ tags, me, settings }) => {
+export const Tags = ({
+  tags,
+  me,
+  settings,
+}: Awaited<ReturnType<typeof getTagsData>>) => {
   return <div>Display a list of cliclable tags</div>;
 };

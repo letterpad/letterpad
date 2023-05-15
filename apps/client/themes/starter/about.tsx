@@ -1,10 +1,10 @@
 import { InferGetServerSidePropsType } from 'next';
 
-import { getServerSideProps } from '../../src/app/about/page';
+import { getAbout } from '../../src/data';
 
 export const About = ({
   settings,
   me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: Awaited<ReturnType<typeof getAbout>>) => {
   return <div />;
 };

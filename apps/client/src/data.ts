@@ -134,3 +134,18 @@ export async function getFeed() {
     settings,
   };
 }
+
+export async function getPreviewData(hash: string) {
+  const letterpad = getLetterpad();
+  const post = await letterpad.getPost({
+    previewHash: hash,
+  });
+  const settings = await letterpad.getSettings();
+  const me = await letterpad.getAuthor();
+
+  return {
+    post,
+    settings,
+    me,
+  };
+}

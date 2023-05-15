@@ -1,12 +1,10 @@
-import { InferGetServerSidePropsType } from 'next';
-
 import { Post } from './post';
-import { getServerSideProps } from '../../pages/preview/[hash]';
+import { getPreviewData } from '../../src/data';
 
 export const Preview = ({
   post,
   settings,
   me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: Awaited<ReturnType<typeof getPreviewData>>) => {
   return <Post post={post} settings={settings} me={me} />;
 };

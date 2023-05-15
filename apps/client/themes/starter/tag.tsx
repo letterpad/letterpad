@@ -1,12 +1,10 @@
-import { InferGetServerSidePropsType } from 'next';
-
-import { getServerSideProps } from '../../pages/tag/[tag]';
+import { getPostsByTag } from '../../src/data';
 
 export const Tag = ({
   posts,
   me,
   tagName,
   settings,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: Awaited<ReturnType<typeof getPostsByTag>>) => {
   return <div>Display a list of posts for the tag {tagName}</div>;
 };
