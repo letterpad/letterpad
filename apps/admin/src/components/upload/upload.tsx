@@ -127,7 +127,7 @@ export const Upload: FC<Props> = ({
           />
         </div>
         <FileExplorer
-          multi={true}
+          multi={false}
           isVisible={explorerVisible}
           handleCancel={() => setExplorerVisible(false)}
           onInsert={async (files) => {

@@ -3,13 +3,14 @@ import { InferGetServerSidePropsType } from 'next';
 import { List } from './commons/list';
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { getServerSideProps } from '../../pages/tag/[tag]';
+import { getPostsByTag } from '../../src/data';
+
 export const Tag = ({
   posts,
   me: _me,
   tagName,
   settings: _settings,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: Awaited<ReturnType<typeof getPostsByTag>>) => {
   return (
     <>
       <SectionContainer>

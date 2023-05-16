@@ -1,4 +1,5 @@
 import { LetterpadSdkOptions } from "./letterpad.js";
+import 'whatwg-fetch';
 
 export function createRequester(options: LetterpadSdkOptions) {
   return async function requester(query: string, variables: any) {

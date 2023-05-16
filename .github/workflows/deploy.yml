@@ -55,7 +55,7 @@ jobs:
         run: yarn install --production
 
       - name: Deploy to Digital Ocean
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: 138.68.127.224
           username: ${{ secrets.SSH_USERNAME }}
@@ -65,7 +65,7 @@ jobs:
           target: /var/www/html/letterpad-turbo
 
       - name: executing remote ssh commands
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: 138.68.127.224
           username: ${{ secrets.SSH_USERNAME }}

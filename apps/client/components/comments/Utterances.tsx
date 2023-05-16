@@ -1,4 +1,3 @@
-import { useTheme } from 'next-themes';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
@@ -9,9 +8,9 @@ interface Props {
 
 const Utterances = ({ issueTerm }: Props) => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true);
-  const { theme, resolvedTheme } = useTheme();
+
   const commentsTheme =
-    theme === 'dark' || resolvedTheme === 'dark'
+    localStorage.theme === 'dark'
       ? siteMetadata.comment.utterancesConfig.darkTheme
       : siteMetadata.comment.utterancesConfig.theme;
 

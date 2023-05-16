@@ -1,3 +1,4 @@
+'use client';
 import { Navigation } from 'letterpad-sdk';
 import React, { useState } from 'react';
 
