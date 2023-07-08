@@ -12,7 +12,7 @@
     ]
   },
   "scripts": {
-    "seedIfNotSeeded": "node ./src/graphql/db/dist/seedIfNoSeed.js",
+    "seedIfNotSeeded": "yarn postbuild && node ./src/graphql/db/dist/seedIfNoSeed.js",
     "preinstall": "yarn config set ignore-engines true",
     "codegen": "graphql-let",
     "prepare": "yarn prisma:generate && yarn prisma:migrate:run && yarn seedIfNotSeeded",
