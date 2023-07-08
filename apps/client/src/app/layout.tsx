@@ -23,10 +23,7 @@ const Layout = async ({ children }) => {
     <html lang="en" className="scroll-smooth">
       <HeadMeta settings={settings} />
       <body className="line-numbers flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20">
-        <Layout
-          props={{ settings, me: me as Author }}
-          isHomeCollection={isCollection}
-        >
+        <Layout props={{ settings, me }} isHomeCollection={isCollection}>
           {children}
         </Layout>
 

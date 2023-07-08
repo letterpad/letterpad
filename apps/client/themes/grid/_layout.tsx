@@ -8,12 +8,12 @@ import { Footer } from './commons/footer';
 import { MobileNav } from './commons/mobile-nav';
 import { LogoWithTitle } from './commons/site-logo';
 import { PageTitle } from './commons/title';
-import { PageProps } from '../../types/appType';
+import { getData } from '../../src/data';
 
 export interface Props {
   children: ReactNode;
   isHomeCollection: boolean;
-  props: PageProps;
+  props: Pick<Awaited<ReturnType<typeof getData>>, 'me' | 'settings'>;
 }
 
 export const Layout = ({ children, props, isHomeCollection }: Props) => {
@@ -22,10 +22,7 @@ export const Layout = ({ children, props, isHomeCollection }: Props) => {
   const menu = getMenu(routes);
   return (
     <>
-      <div
-        className={'bg-accent-50  bg-cover text-white'}
-        // style={{ backgroundImage: `url(${props.settings.banner?.src})` }}
-      >
+      <div className={'bg-accent-50  bg-cover text-white'}>
         <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-4 md:px-20">
           <div>
             <Link href="/" aria-label={props.settings.site_title}>
