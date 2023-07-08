@@ -1,6 +1,6 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
 
-const path = require('path');
+const path = require("path");
 const basePath = "/admin";
 const nextConfig = {
   eslint: {
@@ -59,6 +59,12 @@ const nextConfig = {
       test: /\.ya?ml$/,
       type: "json",
       use: "yaml-loader",
+    });
+
+    config.module.rules.push({
+      test: /\.graphqls$/,
+      exclude: /node_modules/,
+      use: ["webpack-graphql-loader"],
     });
 
     return config;
