@@ -1,5 +1,6 @@
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 
+// import { getSession } from "next-auth/react";
 import { prisma } from "@/lib/prisma";
 
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
@@ -11,9 +12,11 @@ const isTest = process.env.NODE_ENV === "test";
 export const getResolverContext = async (context) => {
   const session = isTest
     ? null
-    : ((await getSession(context)) as unknown as { user: SessionData });
+    : ((await getServerSession(context)) as unknown as { user: SessionData });
   let client_author_id: number | null = null;
 
+  // eslint-disable-next-line no-console
+  console.log("Resolver context session", session);
   if (!session?.user.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {
