@@ -18,7 +18,6 @@ export function createRequester(options: LetterpadSdkOptions) {
         }),
       });
       const body = await response.json();
-      console.log("Body Requester", body)
       return body.data;
     } catch (e) {
       console.log("Requester failed", e);

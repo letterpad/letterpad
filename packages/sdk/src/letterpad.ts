@@ -75,9 +75,7 @@ export class Letterpad {
   }
 
   async getSettings() {
-    console.log("this.sdk", this.sdk.settings);
     const settingsResponse = await this.sdk.settings();
-    console.log("settingsResponse", settingsResponse);
     handleSettingsErrors(settingsResponse.settings);
     return settingsResponse.settings;
   }
