@@ -8,13 +8,21 @@ import { basePath } from "../constants";
 const isTest = process.env.NODE_ENV === "test";
 
 export const getServerSession = async (context) => {
-  const sessionURL =
-    context.req.headers.origin + basePath + "/api/auth/session";
-  const res = await fetch(sessionURL, {
-    headers: { cookie: context.req.headers.cookie },
-  });
-  const session = await res.json();
-  return session;
+  try {
+    const sessionURL =
+      context.req.headers.origin + basePath + "/api/auth/session";
+    const res = await fetch(sessionURL, {
+      headers: { cookie: context.req.headers.cookie },
+    });
+    const session = await res.json();
+    return session;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log("Error in getServerSession");
+    // this means the session is not set. This request is probably coming from client and not admin.
+    // client will never have a session.
+    // It will use authorization header to get the author id or subdmomain name to // get the authorID
+  }
 };
 
 export const getResolverContext = async (context) => {
