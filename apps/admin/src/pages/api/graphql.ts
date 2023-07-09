@@ -1,4 +1,5 @@
 import { ApolloServer } from "apollo-server-micro";
+import { getSession } from "next-auth/react";
 
 import { basePath } from "@/constants";
 // import { formatError } from "graphql";
@@ -8,6 +9,12 @@ import { schema } from "@/graphql/schema";
 export const apolloServer = new ApolloServer({
   schema,
   context: async (context) => {
+    // eslint-disable-next-line no-console
+    console.log("req", context.req);
+    const c = await getSession(context);
+
+    // eslint-disable-next-line no-console
+    console.log(c);
     const resolverContext = await getResolverContext(context);
     return resolverContext;
   },
