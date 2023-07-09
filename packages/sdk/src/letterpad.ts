@@ -54,7 +54,7 @@ export class Letterpad {
       typeof slugOrOptions === 'string'
         ? { slug: slugOrOptions }
         : slugOrOptions;
-    const postResponse = await this.sdk.post({filters:options});
+    const postResponse = await this.sdk.post({ filters: options });
     handlePostErrors(postResponse.post);
     handleTagsErrors(postResponse.post.tags);
     handleAuthorErrors(postResponse.post.author);
@@ -75,7 +75,9 @@ export class Letterpad {
   }
 
   async getSettings() {
+    console.log("this.sdk", this.sdk.settings);
     const settingsResponse = await this.sdk.settings();
+    console.log("settingsResponse", settingsResponse);
     handleSettingsErrors(settingsResponse.settings);
     return settingsResponse.settings;
   }

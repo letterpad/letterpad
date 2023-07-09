@@ -11,6 +11,8 @@ import { getData } from '../data';
 import StructuredData from '../../components/StructuredData';
 import { useTheme } from '../../themes';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const { settings, me, isPage, page, posts } = await getData();
   const { HomePosts, HomePage } = useTheme(settings?.theme);
