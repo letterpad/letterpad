@@ -14,8 +14,6 @@ export const getServerSession = async (context) => {
     headers: { cookie: context.req.headers.cookie },
   });
   const session = await res.json();
-  // eslint-disable-next-line no-console
-  console.log("session", session);
   return session;
 };
 
