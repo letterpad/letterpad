@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 
 import { SessionData } from "./types";
-import logger from "../shared/logger";
 
 const isTest = process.env.NODE_ENV === "test";
 
@@ -15,7 +14,6 @@ export const getResolverContext = async (context) => {
     : ((await getSession(context)) as unknown as { user: SessionData });
   let client_author_id: number | null = null;
 
-  logger.debug(session);
   if (!session?.user.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {

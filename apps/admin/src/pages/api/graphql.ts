@@ -10,11 +10,8 @@ export const apolloServer = new ApolloServer({
   schema,
   context: async (context) => {
     // eslint-disable-next-line no-console
-    console.log("req", context.req);
-    const c = await getSession(context);
+    console.log("req", context.req.cookies);
 
-    // eslint-disable-next-line no-console
-    console.log(c);
     const resolverContext = await getResolverContext(context);
     return resolverContext;
   },
