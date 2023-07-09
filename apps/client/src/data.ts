@@ -28,6 +28,8 @@ export async function getData() {
   const letterpad = getLetterpad();
   // eslint-disable-next-line no-console
   console.log('Letterpad Instance', letterpad);
+  // eslint-disable-next-line no-console
+  console.log('Settings', await letterpad.sdk.settings());
   const settings = await letterpad.getSettings();
 
   const { menu } = settings;
