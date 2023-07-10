@@ -36,7 +36,8 @@ const Query: Optional<QueryResolvers<ResolverContext>> = {
         });
     });
     try {
-      return await validate;
+      await validate;
+      return true;
     } catch (_e) {
       return false;
     }
@@ -86,7 +87,6 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
       create: {
         name: domain.trim(),
         ssl: false,
-        mapped: data.verified,
         author: {
           connect: {
             id: context.session.user.id,
@@ -94,8 +94,6 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
         },
       },
       update: {
-        ssl: false,
-        mapped: data.verified,
         name: domain.trim(),
       },
       where: {

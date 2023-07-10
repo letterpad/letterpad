@@ -1,21 +1,21 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
-import { Button, Content, PageHeader } from "ui";
+import { Button, Content, Message, PageHeader } from "ui";
 
 import { NewDomain } from "@/components/domain/new-domain";
 import Loading from "@/components/loading";
 
+import { Domain, DomainVerification } from "@/__generated__/__types__";
 import {
   DomainQuery,
   useDomainCertsQuery,
   useDomainQuery,
 } from "@/__generated__/queries/queries.graphql";
+import { useRemoveDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
 import { MapDomain } from "../components/domain/map-domain";
 import { MappedDomain } from "../components/domain/mapped-domain";
 import { VerifyDomain } from "../components/domain/verify-domain";
-import { Domain, DomainVerification } from "../../__generated__/__types__";
 
 interface Props {
   readOnly: boolean;
@@ -24,7 +24,21 @@ interface Props {
 const DomainMapping: React.FC<Props> = () => {
   const { data, loading, refetch } = useDomainQuery();
   // const certs = useDomainCertsQuery({ pollInterval: 10000 });
+  const [removeDomain] = useRemoveDomainMutation();
 
+  const removeMapping = async () => {
+    const result = await removeDomain();
+    Message().success({
+      content: result.data?.removeDomain.message!,
+    });
+    refetch();
+  };
+
+  const validate = (
+    <Button className="mt-4" onClick={() => refetch()} variant="primary">
+      Validate this change
+    </Button>
+  );
   return (
     <>
       <Head>
@@ -38,24 +52,32 @@ const DomainMapping: React.FC<Props> = () => {
 
       <Content>
         {loading && <Loading />}
-        <div className="flex max-w-4xl flex-auto flex-col gap-4">
-          {!hasDomain(data) && <NewDomain />}
+        <div className="flex max-w-4xl flex-auto flex-col gap-1">
+          {!hasDomain(data) && <NewDomain refetch={refetch} />}
 
+          {hasDomain(data) && (
+            <div className="flex justify-end">
+              <Button variant="danger" size="small" onClick={removeMapping}>
+                Remove
+              </Button>
+            </div>
+          )}
           {data?.domain.__typename === "Domain" && data.domain.verification && (
             <VerifyDomain
               verification={getVerificaionData(data.domain.verification)}
+              validate={validate}
             />
           )}
 
           {isVerified(data) && !isMapped(data) && (
-            <MapDomain domain={getDomainData(data).name} />
+            <MapDomain domain={getDomainData(data).name} validate={validate} />
           )}
 
           {isVerified(data) && isMapped(data) && (
             <MappedDomain {...getDomainData(data)} />
           )}
 
-          <div className="flex gap-8">
+          <div className="mt-4 flex gap-8">
             {isVerified(data) && (
               <div className="flex items-center gap-2">
                 <AiFillCheckCircle className="text-green-500" size={20} />

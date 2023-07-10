@@ -2,7 +2,8 @@ import { CopyToClipboard } from "../clipboard";
 
 export const MapDomain: React.FC<{
   domain: string;
-}> = ({ domain }) => {
+  validate: JSX.Element;
+}> = ({ domain, validate }) => {
   return (
     <div>
       Please add the below CNAME record in your Domain under DNS configuration
@@ -29,6 +30,7 @@ export const MapDomain: React.FC<{
         </div>
         <CopyToClipboard elementId="txt" />
       </div>
+      {validate}
     </div>
   );
 };

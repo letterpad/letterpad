@@ -4,7 +4,8 @@ import { CopyToClipboard } from "../clipboard";
 
 export const VerifyDomain: React.FC<{
   verification?: DomainVerification;
-}> = ({ verification }) => {
+  validate: JSX.Element;
+}> = ({ verification, validate }) => {
   if (!verification) return null;
   return (
     <div>
@@ -29,6 +30,7 @@ export const VerifyDomain: React.FC<{
         </div>
         <CopyToClipboard elementId="txt" />
       </div>
+      {validate}
     </div>
   );
 };

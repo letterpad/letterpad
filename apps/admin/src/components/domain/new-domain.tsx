@@ -1,40 +1,18 @@
 import { ChangeEvent, useState } from "react";
 import { Button, Input, Message } from "ui";
 
-import { DomainVerification } from "@/__generated__/__types__";
 import {
   useAddDomainMutation,
   useRemoveDomainMutation,
 } from "@/__generated__/queries/mutations.graphql";
 
-import { CopyToClipboard } from "../clipboard";
+export const NewDomain = ({ refetch }) => {
+  const [domain, setDomain] = useState("");
 
-export const NewDomain: React.FC<{
-  name?: string;
-  mapped?: boolean;
-  ssl?: boolean;
-  verification?: DomainVerification[];
-  configured?: boolean;
-}> = ({ name, mapped = false, verification, configured }) => {
-  const [domain, setDomain] = useState(name);
-
-  const [removeDomain] = useRemoveDomainMutation();
   const [addDomainMutation, { data, loading, error }] = useAddDomainMutation();
-
-  const removeMapping = async () => {
-    const result = await removeDomain();
-    Message().success({
-      content: result.data?.removeDomain.message!,
-    });
-    setDomain("");
-  };
 
   const changeDomainName = (e: ChangeEvent<HTMLInputElement>) => {
     setDomain(e.target.value);
-  };
-
-  const checkDomainVerification = async () => {
-    //
   };
 
   const addDomain = async () => {
@@ -52,10 +30,9 @@ export const NewDomain: React.FC<{
           duration: 3,
         });
       }
+      refetch();
     }
   };
-
-  const txtVerification = verification?.filter((v) => v.type === "TXT").pop();
 
   return (
     <>
@@ -68,7 +45,6 @@ export const NewDomain: React.FC<{
             value={domain}
             placeholder="e.g. example.com, blog.example.com"
             onChange={changeDomainName}
-            disabled={mapped}
           />
           <Button
             variant="primary"
@@ -79,74 +55,6 @@ export const NewDomain: React.FC<{
             Add
           </Button>
         </div>
-        {txtVerification && (
-          <div>
-            Please add the below TXT record in your Domain under DNS
-            configuration
-            <div
-              className="mt-4 flex items-center gap-4 rounded-md bg-gray-200 p-4 font-medium text-gray-800 shadow-sm
-             dark:bg-gray-800 dark:text-gray-400"
-            >
-              <div className="flex flex-col gap-4">
-                <span className="font-bold text-black dark:text-white">
-                  Type
-                </span>
-                <code className="text-sm">TXT</code>
-              </div>
-              <div className="flex flex-col gap-4">
-                <span className="font-bold text-black dark:text-white">
-                  Name
-                </span>
-                <code className="text-sm">
-                  {txtVerification.domain.split(".")[0]}
-                </code>
-              </div>
-              <div className="flex flex-col gap-4">
-                <span className="font-bold text-black dark:text-white">
-                  Value
-                </span>
-                <code className="text-sm" id="txt">
-                  {txtVerification.value}
-                </code>
-              </div>
-              <CopyToClipboard elementId="txt" />
-            </div>
-          </div>
-        )}
-        {!configured && (
-          <div>
-            Please add the below CNAME record in your Domain under DNS
-            configuration to map your domain with Letterpad
-            <div
-              className="mt-4 flex items-center justify-between gap-4 rounded-md bg-gray-200 p-4 font-medium text-gray-800
-             shadow-sm dark:bg-gray-800  dark:text-gray-400"
-            >
-              <div className="flex items-center gap-8">
-                <div className="flex flex-col gap-4">
-                  <span className="font-bold text-black dark:text-white">
-                    Type
-                  </span>
-                  <code className="text-sm">CNAME</code>
-                </div>
-                <div className="flex flex-col gap-4">
-                  <span className="font-bold text-black dark:text-white">
-                    Name
-                  </span>
-                  <code className="text-sm">{domain?.split(".")[0]}</code>
-                </div>
-                <div className="flex flex-col gap-4">
-                  <span className="font-bold text-black dark:text-white">
-                    Value
-                  </span>
-                  <code className="text-sm" id="txt">
-                    cname.vercel-dns.com
-                  </code>
-                </div>
-              </div>
-              <CopyToClipboard elementId="txt" />
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
