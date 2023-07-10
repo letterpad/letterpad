@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { Content, PageHeader } from "ui";
+import { useEffect, useState } from "react";
+import { Button, Content, PageHeader } from "ui";
 
 import { NewDomain } from "@/components/domain/new-domain";
 import Loading from "@/components/loading";
@@ -11,7 +12,26 @@ interface Props {
 }
 
 const DomainMapping: React.FC<Props> = () => {
-  const { data, loading } = useDomainQuery();
+  const { data, loading, refetch } = useDomainQuery();
+  const [domain, setDomain] = useState("");
+  const [domainList, setDomainList] = useState([]);
+
+  const [disabled, setDisabled] = useState(true);
+  const [adding, setAdding] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (domain.length == 0) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [domain]);
+
+  useEffect(() => {
+    if (adding) setDisabled(true);
+  }, [adding]);
+
   return (
     <>
       <Head>
@@ -25,6 +45,9 @@ const DomainMapping: React.FC<Props> = () => {
 
       <Content>
         {loading && <Loading />}
+        <Button variant="primary" onClick={() => refetch()}>
+          Refresh
+        </Button>
         {data?.domain.__typename === "DomainNotFound" && <NewDomain />}
         {data?.domain.__typename === "Domain" && <NewDomain {...data.domain} />}
       </Content>

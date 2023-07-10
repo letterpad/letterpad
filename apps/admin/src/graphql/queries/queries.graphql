@@ -223,6 +223,13 @@ query domain {
       name
       mapped
       ssl
+      verification {
+        type
+        domain
+        value
+        reason
+      }
+      configured
     }
     ... on DomainNotFound {
       message

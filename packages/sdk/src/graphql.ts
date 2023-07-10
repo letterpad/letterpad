@@ -19,6 +19,8 @@ export type Scalars = {
   Date: any;
 };
 
+export type AddDomainResponse = Domain | DomainError;
+
 export type Author = {
   __typename?: "Author";
   accessToken?: Maybe<Scalars["String"]>;
@@ -53,8 +55,6 @@ export type AuthorResponse =
   | NotFound
   | UnAuthorized;
 
-export type CreateDomainResponse = Domain | DomainError;
-
 export type CreatePostResponse = Post | PostError;
 
 export type CreateSubscriptionResponse = {
@@ -83,10 +83,12 @@ export type Design = {
 
 export type Domain = {
   __typename?: "Domain";
+  configured?: Maybe<Scalars["Boolean"]>;
   id: Scalars["Int"];
   mapped?: Maybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   ssl?: Maybe<Scalars["Boolean"]>;
+  verification?: Maybe<Array<Maybe<DomainVerification>>>;
 };
 
 export type DomainError = LetterpadError & {
@@ -100,6 +102,14 @@ export type DomainNotFound = LetterpadError & {
 };
 
 export type DomainResponse = Domain | DomainNotFound;
+
+export type DomainVerification = {
+  __typename?: "DomainVerification";
+  domain: Scalars["String"];
+  reason: Scalars["String"];
+  type: Scalars["String"];
+  value: Scalars["String"];
+};
 
 export type EditTaxResponse = {
   __typename?: "EditTaxResponse";
@@ -372,9 +382,9 @@ export type MediaUpdateResult = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  addDomain: AddDomainResponse;
   addSubscriber?: Maybe<SubscribersAddResult>;
   createAuthor?: Maybe<AuthorResponse>;
-  createOrUpdateDomain: UpdateDomainResponse;
   createPost: CreatePostResponse;
   deleteAuthor?: Maybe<DeleteAuthorResponse>;
   deleteMedia?: Maybe<MediaDeleteResponse>;
@@ -391,16 +401,16 @@ export type Mutation = {
   updateTags: UpdateTagsResponse;
 };
 
+export type MutationAddDomainArgs = {
+  domain?: InputMaybe<Scalars["String"]>;
+};
+
 export type MutationAddSubscriberArgs = {
   email: Scalars["String"];
 };
 
 export type MutationCreateAuthorArgs = {
   data: InputCreateAuthor;
-};
-
-export type MutationCreateOrUpdateDomainArgs = {
-  data: InputDomain;
 };
 
 export type MutationCreatePostArgs = {
