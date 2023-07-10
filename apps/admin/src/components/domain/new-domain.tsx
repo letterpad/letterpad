@@ -59,19 +59,23 @@ export const NewDomain: React.FC<{
 
   return (
     <>
-      <div className="m-auto flex max-w-4xl flex-auto flex-col gap-8 px-4">
+      <div className="flex max-w-4xl flex-auto flex-col gap-8">
         Domain mapping is a two step process. First you need to verify your
         domain using a TXT record and then map it with a CNAME record.
-        <div className="flex flex-1 items-center gap-2">
+        <div className="flex flex-1 items-end gap-2">
           <Input
             label="Add Domain"
             value={domain}
             placeholder="e.g. example.com, blog.example.com"
-            help="(without http://, https:// and www)"
             onChange={changeDomainName}
             disabled={mapped}
           />
-          <Button variant="primary" onClick={addDomain} disabled={loading}>
+          <Button
+            variant="primary"
+            onClick={addDomain}
+            disabled={loading}
+            className="h-10"
+          >
             Add
           </Button>
         </div>

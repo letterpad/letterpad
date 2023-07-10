@@ -8,7 +8,7 @@ type DomainVerification {
 type Domain {
   id: Int!
   name: String!
-  mapped: Boolean
+  mapped: Boolean @deprecated(reason: "Use `configured` instead")
   ssl: Boolean
   verification: [DomainVerification]
   configured: Boolean
@@ -43,6 +43,7 @@ union DomainResponse = Domain | DomainNotFound
 
 type Query {
   domain: DomainResponse!
+  certs: Boolean!
 }
 
 type Mutation {

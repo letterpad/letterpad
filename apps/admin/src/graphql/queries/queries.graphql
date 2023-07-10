@@ -237,6 +237,10 @@ query domain {
   }
 }
 
+query domainCerts {
+  certs 
+}
+
 query homeQuery {
   me {
     ... on Author {
