@@ -6,6 +6,7 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Author {
@@ -40,6 +41,8 @@ model Author {
   profile_updated      Boolean      @default(false)
   stripe_customer_id  String?
   stripe_subscription_id String?
+
+  @@index([role_id])
 }
 
 model EmailDelivery {
@@ -95,6 +98,8 @@ model Post {
   page_type          String    @default("default")
   page_data          String    @default("")
   stats              String    @default("{}")
+
+  @@index([author_id])
 }
 
 model RolePermissions {
@@ -105,6 +110,9 @@ model RolePermissions {
   permission_id Int
   permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
   role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+  @@index([role_id])
+  @@index([permission_id])
 }
 
 model Role {
@@ -159,6 +167,7 @@ model Subscriber {
 
   author Author? @relation(fields: [author_id], references: [id], onDelete: Cascade)
   @@unique([email, author_id])
+  @@index([author_id])
 }
 
 model Tag {
@@ -181,6 +190,8 @@ model Upload {
   createdAt   DateTime? @default(now())
   author_id   Int
   author      Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+
+  @@index([author_id])
 }
 
 model Domain {
