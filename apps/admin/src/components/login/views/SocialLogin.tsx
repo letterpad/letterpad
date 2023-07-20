@@ -3,6 +3,8 @@ import { signIn } from "next-auth/react";
 
 import { EventAction, track } from "@/track";
 
+import { getRootUrl } from "../../../shared/utils";
+
 interface Props {
   mode: "login" | "register";
 }
@@ -18,7 +20,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
     const callback =
       typeof router.query.callbackUrl === "string"
         ? router.query.callbackUrl
-        : "/admin/posts";
+        : getRootUrl() + "/posts";
     await signIn(type, { callbackUrl: callback });
   };
   return (
