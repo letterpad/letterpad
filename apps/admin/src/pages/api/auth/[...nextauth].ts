@@ -82,6 +82,12 @@ const options = (): NextAuthOptions => ({
       if (url.startsWith(baseUrl)) {
         return url;
       }
+      // eslint-disable-next-line no-console
+      console.log("VERCEL_BRANCH_URL", process.env.VERCEL_BRANCH_URL);
+      // eslint-disable-next-line no-console
+      console.log("VERCEL_URL", process.env.VERCEL_URL);
+      // eslint-disable-next-line no-console
+      console.log("VERCEL_ENV", process.env.VERCEL_ENV);
       return process.env.ROOT_URL + "/posts";
     },
     jwt: async ({ token }) => {
