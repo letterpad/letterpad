@@ -119,3 +119,15 @@ export const mapFileListToArray = (files: FileList) => {
 
   return array;
 };
+
+export const getRootUrl = () => {
+  if (!process.env.VERCEL) {
+    return process.env.ROOT_URL;
+  }
+
+  if (process.env.VERCEL_ENV === "preview") {
+    return process.env.VERCEL_BRANCH_URL + basePath;
+  }
+
+  return process.env.VERCEL_URL + basePath;
+};

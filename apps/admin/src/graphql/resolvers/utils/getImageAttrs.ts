@@ -1,4 +1,5 @@
 import logger from "@/shared/logger";
+import { getRootUrl } from "@/shared/utils";
 
 import { getImageDimensions } from "../helpers";
 
@@ -10,7 +11,7 @@ export async function getCoverImageAttrs(cover_image): Promise<{
   if (!cover_image)
     return { cover_image: "", cover_image_width: 0, cover_image_height: 0 };
   const { width, height } = cover_image;
-  const src = cover_image.src?.replace(process.env.ROOT_URL || "", "");
+  const src = cover_image.src?.replace(getRootUrl() || "", "");
 
   const data = {
     cover_image: src,

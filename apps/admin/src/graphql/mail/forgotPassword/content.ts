@@ -6,6 +6,7 @@ import {
   EmailTemplateResponse,
 } from "@/graphql/types";
 import { getForgotPasswordToken } from "@/shared/token";
+import { getRootUrl } from "@/shared/utils";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
@@ -43,7 +44,7 @@ export async function getForgotPasswordContent(
   const token = getForgotPasswordToken({
     email: author.email,
   });
-  const href = `${process.env.ROOT_URL}/resetPassword?token=${token}`;
+  const href = `${getRootUrl()}/resetPassword?token=${token}`;
 
   const body = bodyTemplate.render({
     blog_name: author.setting?.site_title,

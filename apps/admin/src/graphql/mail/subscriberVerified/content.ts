@@ -5,6 +5,7 @@ import {
   EmailSubscriberVerifiedProps,
   EmailTemplateResponse,
 } from "@/graphql/types";
+import { getRootUrl } from "@/shared/utils";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
@@ -51,7 +52,7 @@ export async function getSubscriberVerifiedEmailContent(
     data: template.body.toString(),
   });
 
-  const myURL = new URL(process.env.ROOT_URL);
+  const myURL = new URL(getRootUrl());
 
   const href = `${myURL.protocol}//${author.username}.${myURL.hostname}`;
 

@@ -15,6 +15,7 @@ import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 
 import { isBlackListed } from "./blacklist";
+import { getRootUrl } from "../../../shared/utils";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -82,13 +83,7 @@ const options = (): NextAuthOptions => ({
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      // eslint-disable-next-line no-console
-      console.log("VERCEL_BRANCH_URL", process.env.VERCEL_BRANCH_URL);
-      // eslint-disable-next-line no-console
-      console.log("VERCEL_URL", process.env.VERCEL_URL);
-      // eslint-disable-next-line no-console
-      console.log("VERCEL_ENV", process.env.VERCEL_ENV);
-      return process.env.ROOT_URL + "/posts";
+      return getRootUrl() + "/posts";
     },
     jwt: async ({ token }) => {
       return token;
