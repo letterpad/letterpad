@@ -80,9 +80,17 @@ const options = (): NextAuthOptions => ({
   providers: providers(),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
+      // eslint-disable-next-line no-console
+      console.log("url", url);
+      // eslint-disable-next-line no-console
+      console.log("baseUrl", baseUrl);
       if (url.startsWith(baseUrl)) {
+        // eslint-disable-next-line no-console
+        console.log("returning url", url);
         return url;
       }
+      // eslint-disable-next-line no-console
+      console.log("root url", getRootUrl());
       return getRootUrl() + "/posts";
     },
     jwt: async ({ token }) => {

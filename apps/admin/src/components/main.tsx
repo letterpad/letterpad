@@ -30,8 +30,10 @@ const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
 
 const Main = ({ Component, props }: IProps) => {
   const router = useRouter();
-  const { data, loading, refetch } = useHomeQueryQuery();
   const session = useSession();
+  const { data, loading, refetch } = useHomeQueryQuery({
+    skip: !session?.data?.user?.id,
+  });
   useTracking(session?.data?.user?.id);
   const isPublic =
     Component.isLogin || Component.isPublic || Component.isMessage;

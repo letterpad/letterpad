@@ -21,12 +21,7 @@ export const LoginForm = ({
   const [password, setPassword] = useState("");
 
   const router = useRouter();
-  // eslint-disable-next-line no-console
-  console.log("VERCEL_BRANCH_URL", process.env.VERCEL_BRANCH_URL);
-  // eslint-disable-next-line no-console
-  console.log("VERCEL_URL", process.env.VERCEL_URL);
-  // eslint-disable-next-line no-console
-  console.log("VERCEL_ENV", process.env.VERCEL_ENV);
+
   const loginAction = async () => {
     const result = await doLogin({ email, password });
     track({
