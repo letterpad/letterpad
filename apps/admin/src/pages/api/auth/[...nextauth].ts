@@ -83,8 +83,6 @@ const options = (): NextAuthOptions => ({
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      // eslint-disable-next-line no-console
-      console.log("root url", getRootUrl());
       return getRootUrl(baseUrl) + "/posts";
     },
     jwt: async ({ token }) => {
