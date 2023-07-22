@@ -12,8 +12,8 @@ function Client() {
             <h2 className="h2 mb-4 font-uncut-sans" data-aos="zoom-out">
               A light weight website
             </h2>
-            <div class="mx-auto max-w-2xl">
-              <p class="text-xl text-gray-400">
+            <div className="mx-auto max-w-2xl">
+              <p className="text-xl text-gray-400">
                 We have also designed the website to be lightweight and is
                 powered by GraphQL. By using modern web technologies and best
                 practices, we are able to deliver a fast and responsive website

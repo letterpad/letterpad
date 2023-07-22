@@ -1,55 +1,22 @@
-import AOS from "aos";
+import { is } from "cheerio/lib/api/traversing";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-// import { BrowserRouter } from "react-router-dom";
-import Client from "../components/website/Client";
-import Cta from "../components/website/Cta";
-import Features from "../components/website/Features";
-import Features02 from "../components/website/Features02";
-import Footer from "../components/website/Footer";
-import Header from "../components/website/Header";
-import Hero from "../components/website/Hero";
-import PressLogos from "../components/website/PressLogos";
+import { Website } from "../components/website";
 
+const isPlatform = process.env.NEXT_PUBLIC_IS_PLATFORM;
 const NoPage = () => {
   const router = useRouter();
   useEffect(() => {
-    document.body.classList.remove("light");
-  }, []);
+    if (!isPlatform) {
+      router.push("/login");
+    }
+  }, [router]);
 
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      disable: "phone",
-      duration: 500,
-      easing: "ease-out-cubic",
-    });
-  });
-
-  useEffect(() => {
-    const $ = document?.querySelector("html");
-    if (!$) return;
-    $.style.scrollBehavior = "auto";
-    window.scroll({ top: 0 });
-    $.style.scrollBehavior = "";
-  }, [router.pathname]); // triggered on route change
-
-  return (
-    <div className="flex min-h-screen flex-col overflow-hidden">
-      <Header />
-      <main className="grow">
-        <Hero />
-        <Features />
-        <Features02 />
-        <Client />
-        <Cta />
-        <PressLogos />
-      </main>
-
-      <Footer />
-    </div>
-  );
+  if (isPlatform) {
+    return <Website />;
+  }
+  return null;
 };
 
 NoPage.isPublic = true;
