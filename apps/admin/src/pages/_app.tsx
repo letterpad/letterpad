@@ -7,6 +7,7 @@ import { ResponsiveProvider } from "ui";
 import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
 import "ui/css/editor.css";
+import "../../public/website/css/style.css";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 

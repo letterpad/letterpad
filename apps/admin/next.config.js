@@ -1,7 +1,5 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
-
-const path = require("path");
-const basePath = "/admin";
+const basePath = "/";
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -27,21 +25,8 @@ const nextConfig = {
     ],
   },
   experimental: { images: { allowFutureImage: true } },
-  basePath,
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: `/posts`,
-        permanent: true,
-      },
-      {
-        source: basePath,
-        destination: `/posts`,
-        permanent: true,
-      },
-    ];
-  },
+  // basePath,
+
   webpack(config, options) {
     config.module.rules.push({
       test: /\.graphql$/,

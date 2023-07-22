@@ -31,7 +31,7 @@ export const getResolverContext = async (context) => {
     : ((await getServerSession(context)) as unknown as { user: SessionData });
   let client_author_id: number | null = null;
 
-  if (!session?.user.id) {
+  if (!session?.user?.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {
       client_author_id = authorIdFound;

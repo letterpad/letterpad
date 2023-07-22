@@ -1,8 +1,8 @@
 type DomainVerification {
-    type: String!,
-    domain: String!,
-    value: String!,
-    reason: String!
+  type: String!
+  domain: String!
+  value: String!
+  reason: String!
 }
 
 type Domain {

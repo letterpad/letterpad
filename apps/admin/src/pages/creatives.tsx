@@ -52,7 +52,7 @@ function Pages() {
             photo stories, write a picture book etc.
           </span>
           <a
-            href="https://letterpad.app/admin/try-creatives"
+            href="/try-creatives"
             target="_blank"
             rel="noreferrer"
             className="ml-2 text-blue-500"

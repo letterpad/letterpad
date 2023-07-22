@@ -11,6 +11,7 @@ module.exports = {
   content: [
     './pages/**/*.tsx',
     './components/**/*.tsx',
+    './partials/**/*.tsx',
     './themes/**/*.tsx',
     './layouts/**/*.tsx',
     './lib/**/*.ts',
@@ -33,6 +34,8 @@ module.exports = {
       fontFamily: {
         serif: [...defaultTheme.fontFamily.serif,'Source Serif Pro'],
         sans: ['sans-serif', ...defaultTheme.fontFamily.sans],
+        inter: ["Inter", "sans-serif"],
+        "uncut-sans": ["Uncut Sans", "sans-serif"],
       },
       fontSize: {
         xs: '.7rem',
@@ -42,6 +45,14 @@ module.exports = {
         md: '1rem',
         lg: '1.24rem',
         prose: '1.2rem'
+      },
+      letterSpacing: {
+        tighter: "-0.02em",
+        tight: "-0.01em",
+        normal: "0",
+        wide: "0.01em",
+        wider: "0.02em",
+        widest: "0.4em",
       },
       colors: {
         primary: colors.green,

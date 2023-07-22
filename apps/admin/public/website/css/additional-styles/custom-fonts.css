@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'Uncut Sans';
+    font-weight: 700;
+    font-style: normal;
+    font-display: fallback;
+    src: url('../../fonts/Uncut-Sans-Bold.woff2') format('woff2'),
+        url('../../fonts/Uncut-Sans-Bold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Uncut Sans';
+    font-weight: 700;
+    font-style: italic;
+    font-display: fallback;
+    src: url('../../fonts/Uncut-Sans-BoldOblique.woff2') format('woff2'),
+        url('../../fonts/Uncut-Sans-BoldOblique.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Uncut Sans';
+    font-weight: 600;
+    font-style: normal;
+    font-display: fallback;
+    src: url('../../fonts/Uncut-Sans-Semibold.woff2') format('woff2'),
+        url('../../fonts/Uncut-Sans-Semibold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Uncut Sans';
+    font-weight: 500;
+    font-style: normal;
+    font-display: fallback;
+    src: url('../../fonts/Uncut-Sans-Medium.woff2') format('woff2'),
+        url('../../fonts/Uncut-Sans-Medium.woff') format('woff');
+}

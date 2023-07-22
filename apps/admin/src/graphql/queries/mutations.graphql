@@ -252,7 +252,6 @@ mutation ResetPassword($password: String!, $token: String!) {
   }
 }
 
-
 mutation AddDomain($domain: String!) {
   addDomain(domain: $domain) {
     ... on Domain {
