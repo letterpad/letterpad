@@ -10,7 +10,7 @@ const nextConfig = {
     RAYGUN_API_KEY: process.env.RAYGUN_API_KEY,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXT_PUBLIC_BASE_PATH: process.env.BASE_PATH,
-    NEXT_PUBLIC_IS_PLATFORM: process.env.IS_PLATFORM == "true",
+    NEXT_PUBLIC_LETTERPAD_PLATFORM: process.env.LETTERPAD_PLATFORM == "true",
   },
   swcMinify: true,
   typescript: {
