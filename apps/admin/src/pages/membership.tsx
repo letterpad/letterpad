@@ -26,7 +26,7 @@ interface Props {
 }
 const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
   const handleClick = async (event) => {
-    const res = await fetch("/admin/api/checkout_session", {
+    const res = await fetch("/api/checkout_session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     }).then((res) => res.json());

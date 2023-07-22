@@ -63,7 +63,6 @@ export class Letterpad {
 
   async listTags() {
     const tagsResponse = await this.sdk.tags();
-    console.log(tagsResponse)
     handleTagsErrors(tagsResponse.tags);
     return tagsResponse.tags;
   }

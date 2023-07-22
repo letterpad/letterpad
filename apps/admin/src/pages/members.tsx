@@ -25,7 +25,7 @@ const Members = () => {
   const sendMail = async (isTest = false) => {
     localStorage.mailHtml = html;
     setLoading(true);
-    const result = await fetch("/admin/api/users", {
+    const result = await fetch("/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const Members = () => {
 
   const fetchData = async (type: AdminUsersType) => {
     if (!Object.values(AdminUsersType).includes(type)) return;
-    const result = await fetch("/admin/api/users?type=" + type, {
+    const result = await fetch("/api/users?type=" + type, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
