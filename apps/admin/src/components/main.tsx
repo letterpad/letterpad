@@ -84,10 +84,6 @@ const Main = ({ Component, props }: IProps) => {
     }
   }, [isPublic, router, register_step, session.status]);
 
-  if (loading || session.status === "loading") {
-    return <LoadingScreen />;
-  }
-
   let node: JSX.Element | null = null;
   if (Component.isPublic) {
     node = <Component {...props} />;
@@ -145,6 +141,9 @@ const Main = ({ Component, props }: IProps) => {
     );
   }
 
+  if (!Component.isPublic && (loading || session.status === "loading")) {
+    return <LoadingScreen />;
+  }
   return (
     <>
       <Head>

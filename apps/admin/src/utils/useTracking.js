@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 // import { useLocation } from "react-router";
 
@@ -20,7 +21,7 @@ export const track = (info) => {
 const trackingId = "UA-120251616-1";
 
 export const useTracking = () => {
-  // const router = useLocation();
+  const router = useRouter();
   // Initialize ga
   useEffect(() => {
     if (window.ga) return;
@@ -56,11 +57,11 @@ export const useTracking = () => {
     if (process.env.NODE_ENV !== "production") return;
     setTimeout(() => {
       if (typeof window.ga === "undefined") return;
-      const page = location.pathname;
+      const page = router?.pathname;
       window.ga("send", "pageview", page);
     }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [router.pathname]);
 
   const track = (info) => {
     if (typeof window === "undefined") return;
