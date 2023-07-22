@@ -10,6 +10,12 @@ const NoPage = () => {
     if (!isPlatform) {
       router.push("/login");
     }
+    document.body.classList.add("home");
+    document.documentElement.classList.add("home");
+    () => {
+      document.body.classList.remove("home");
+      document.documentElement.classList.remove("home");
+    };
   }, [router]);
 
   if (isPlatform) {

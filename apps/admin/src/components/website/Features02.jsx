@@ -52,7 +52,7 @@ function Features02() {
                   Streamline your blogging process with Letterpad's powerful and
                   convenient features.
                 </p>
-                <ul className="inline-flex flex-col space-y-3 text-lg text-gray-400">
+                <ul className="inline-flex flex-col space-y-3 text-md text-gray-400">
                   <li className="flex items-center">
                     <svg
                       className="mr-3 h-3 w-3 shrink-0 fill-current text-emerald-500"

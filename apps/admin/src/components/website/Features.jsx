@@ -57,7 +57,7 @@ function Features() {
               <h4 className="h4 mb-2 text-center text-gray-200">
                 Customization
               </h4>
-              <p className="text-center text-lg text-gray-400">
+              <p className="text-center text-md text-gray-400">
                 Easily customize the appearance of your blog to match your
                 personal style and branding.
               </p>
@@ -105,7 +105,7 @@ function Features() {
               <h4 className="h4 mb-2 text-center text-gray-200">
                 Easy-to-use editor
               </h4>
-              <p className="text-center text-lg text-gray-400">
+              <p className="text-center text-md text-gray-400">
                 Our content editor is intuitive and user-friendly, allowing you
                 to easily create and publish content.
               </p>
@@ -154,7 +154,7 @@ function Features() {
               <h4 className="h4 mb-2 text-center text-gray-200">
                 Custom domains
               </h4>
-              <p className="text-center text-lg text-gray-400">
+              <p className="text-center text-md text-gray-400">
                 Use your own custom domain name for your blog, rather than a
                 subdomain on the blogging platform's domain.
               </p>

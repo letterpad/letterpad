@@ -45,9 +45,11 @@ const Main = ({ Component, props }: IProps) => {
     }
   }, [router, session?.data?.user?.id, isPublic]);
   useEffect(() => {
-    ThemeSwitcher.switch(localStorage.theme);
-    initPageProgress();
-  }, []);
+    if (router.pathname !== "/") {
+      ThemeSwitcher.switch(localStorage.theme);
+      initPageProgress();
+    }
+  }, [router.pathname]);
 
   useEffect(() => {
     if (!isPublic && session.status === "unauthenticated") {
