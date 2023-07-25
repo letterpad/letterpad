@@ -41,6 +41,7 @@
     "migrations/**/*",
     "config/*",
     "src/types.d.ts",
+    "src/graphqls.d.ts",
     "public/website/css",
     "src/graphql/schema/index.ts"
   ]

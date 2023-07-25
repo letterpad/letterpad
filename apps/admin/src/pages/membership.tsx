@@ -1,7 +1,6 @@
 import { loadStripe } from "@stripe/stripe-js";
 import classNames from "classnames";
 import { InferGetServerSidePropsType } from "next";
-import { basePath } from "next.config";
 import Head from "next/head";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
@@ -13,6 +12,7 @@ import { stripe } from "@/lib/stripe";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
 
+import { basePath } from "@/constants";
 import { SessionData } from "@/graphql/types";
 import { getReadableDate } from "@/shared/utils";
 
