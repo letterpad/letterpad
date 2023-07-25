@@ -48,6 +48,7 @@
     "@dnd-kit/utilities": "^3.2.0",
     "@floating-ui/react-dom-interactions": "^0.10.2",
     "@grammarly/editor-sdk-react": "^2.3.2",
+    "@graphql-tools/jest-transform": "^2.0.0",
     "@graphql-tools/load-files": "6.5.3",
     "@graphql-tools/merge": "8.2.6",
     "@graphql-tools/schema": "8.3.5",
