@@ -208,8 +208,8 @@ jobs:
           yarn e2e:ci
         env:
           DATABASE_URL: "file:../data/test_3.sqlite"
-          ROOT_URL: "http://localhost:3000/admin"
-          NEXTAUTH_URL: "http://localhost:3000/admin/api/auth"
+          ROOT_URL: "http://localhost:3000"
+          NEXTAUTH_URL: "http://localhost:3000/api/auth"
           SECRET_KEY: "some-secret"
           NODE_ENV: "test"
           RECAPTCHA_KEY_CLIENT: "6Lf3a9QjAAAAALIzxbDw5MX9-Mu_ZjH8NLzRxAAc" # test key
