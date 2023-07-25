@@ -33,6 +33,7 @@ yarn-error.log*
 
 *.d.ts
 !src/page.d.ts
+!src/graphqls.d.ts
 
 __generated__/*
 data/*
