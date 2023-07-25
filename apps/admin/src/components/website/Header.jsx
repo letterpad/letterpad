@@ -32,15 +32,18 @@ function Header() {
                 <Link
                   className="flex items-center px-3 py-2 font-medium text-gray-400 transition duration-150 ease-in-out hover:text-blue-500 lg:px-5"
                   href="/login"
-                  onClick={() => {
-                    track({
-                      eventAction: EventAction.Click,
-                      eventCategory: "navbar",
-                      eventLabel: `login`,
-                    });
-                  }}
                 >
-                  Sign in
+                  <span
+                    onClick={() => {
+                      track({
+                        eventAction: EventAction.Click,
+                        eventCategory: "navbar",
+                        eventLabel: `login`,
+                      });
+                    }}
+                  >
+                    Sign in
+                  </span>
                 </Link>
               </li>
               <li>

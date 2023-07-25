@@ -52,10 +52,10 @@ describe("Email templates", () => {
     );
     if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
-        Object {
-          "html": "Hello Letterpad User, <br><br>A new post has been published in <strong>My new blog</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong>new-post-test</strong><br><br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
+        {
+          "html": "Hello Letterpad User, <br><br>A new post has been published in <strong>My new blog</strong>.<br><br><img src="https://a.com/image.jpg" width="100%"><br><strong>new-post-test</strong><br><br><br><a target="_blank" href="http://localhost:3000/post/new-post-test">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
           "subject": "My new blog - New Post",
-          "to": Array [
+          "to": [
             "subscriber@test.com",
           ],
         }
@@ -136,8 +136,8 @@ describe("Email templates", () => {
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
-        Object {
-          "html": "Hello foo, <br><br>You have used this email address while registering in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
+        {
+          "html": "Hello foo, <br><br>You have used this email address while registering in <strong><a href="https://letterpad.app">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target="_blank" href="http://localhost:3000/api/verify?token=",
           "subject": "Letterpad - Verify Email",
           "to": "newuser@test.com",
         }
@@ -186,8 +186,8 @@ describe("Email templates", () => {
       data.content.html = removeToken(data.content.html);
       // The to email is wrong below, because when the email changed, the session was changed, so the update query failed. Leaving it as a bug.
       expect(data.content).toMatchInlineSnapshot(`
-        Object {
-          "html": "Hello foo, <br><br>You have requested to change your email address to this email address in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
+        {
+          "html": "Hello foo, <br><br>You have requested to change your email address to this email address in <strong><a href="https://letterpad.app">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target="_blank" href="http://localhost:3000/api/verify?token=",
           "subject": "Letterpad - Email Change Verification",
           "to": "newUserEmail@email.com",
         }
@@ -213,8 +213,8 @@ describe("Email templates", () => {
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
-        Object {
-          "html": "Hello foo,<br><br>We have received a request to change the password for your <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong> account. Please click the below button to change your password.<br><br><a target=\\"_blank\\"  href=\\"http://localhost:3000/admin/resetPassword?token=",
+        {
+          "html": "Hello foo,<br><br>We have received a request to change the password for your <strong><a href="https://letterpad.app">Letterpad</a></strong> account. Please click the below button to change your password.<br><br><a target="_blank"  href="http://localhost:3000/resetPassword?token=",
           "subject": "Letterpad - Reset your password",
           "to": "newuser@test.com",
         }
