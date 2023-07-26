@@ -149,10 +149,9 @@ jobs:
             turbo-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 16.15.1
-          cache: 'yarn'
+          node-version: 16
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -197,7 +196,7 @@ jobs:
         working-directory: apps/admin
         run: npx prisma generate --schema prisma/sqlite/schema.prisma
         env:
-          DATABASE_URL: "file:./data/test_3.sqlite"
+          DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Run Build
         run: yarn run build
@@ -207,7 +206,7 @@ jobs:
           node_modules/cypress/bin/cypress install
           yarn e2e:ci
         env:
-          DATABASE_URL: "file:./data/test_3.sqlite"
+          DATABASE_URL: "file:data/test_3.sqlite"
           ROOT_URL: "http://localhost:3000"
           NEXTAUTH_URL: "http://localhost:3000/api/auth"
           SECRET_KEY: "some-secret"

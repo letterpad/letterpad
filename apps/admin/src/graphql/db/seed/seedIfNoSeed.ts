@@ -5,6 +5,8 @@ import { seed } from "./seed";
 
 hasSeed().then((seeded) => {
   if (process.env.NODE_ENV === "production") return;
+  // eslint-disable-next-line no-console
+  console.log("DB URL", process.env.DATABASE_URL);
   if (!seeded) {
     seed()
       .catch((e) => {
