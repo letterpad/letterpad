@@ -10,7 +10,10 @@ const isTest = process.env.NODE_ENV === "test";
 export const getServerSession = async (context) => {
   try {
     const sessionURL =
-      context.req.headers.origin + basePath + "/api/auth/session";
+      (context.req.headers.origin ?? `http://${context.req.headers.host}`) +
+      basePath +
+      "/api/auth/session";
+
     const res = await fetch(sessionURL, {
       headers: { cookie: context.req.headers.cookie },
     });

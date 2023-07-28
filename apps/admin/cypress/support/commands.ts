@@ -15,6 +15,7 @@ declare global {
       visitProfile: () => void;
       visitRegister: () => void;
       visitSettings: () => void;
+      logout: () => void;
     }
   }
 }
@@ -93,6 +94,7 @@ Cypress.Commands.add("visitPages", () => cy.visit("/creatives"));
 Cypress.Commands.add("visitProfile", () => cy.visit("/profile"));
 Cypress.Commands.add("visitRegister", () => cy.visit("/register"));
 Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
+Cypress.Commands.add("logout", () => cy.visit("/logout"));
 
 //-----
 function addNavItem(label, slug) {

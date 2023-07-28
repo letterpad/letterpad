@@ -2,6 +2,7 @@ describe("Profile", () => {
   it("can register and login", () => {
     const email = `test@test.com`;
     cy.visitRegister();
+    cy.getTestId("registerBtn").should("exist");
     cy.getTestId("email").type(email);
     cy.getTestId("password").type("testing@123");
     cy.wait(1000);
