@@ -7,6 +7,7 @@ interface Item {
   group?: string;
   key: string;
   badge?: string;
+  testid?: string;
 }
 interface Props {
   items: Item[];
@@ -48,6 +49,7 @@ export const Menu: FC<Props> = ({
           <li className="my-px" key={item.key}>
             <Link href={item.key}>
               <a
+                data-testid={item.testid}
                 className={classNames(
                   classes.base,
                   classes.hover,

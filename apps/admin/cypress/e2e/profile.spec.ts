@@ -1,10 +1,13 @@
 describe("Profile", () => {
-  it("can register and login", () => {
+  it.only("can register and login", () => {
     const email = `test@test.com`;
     cy.url().should("contain", "/posts");
+    cy.getTestId("logout").click();
+    cy.url().should("contain", "/login");
     cy.visitRegister();
-    cy.getTestId("registerBtn").should("exist");
+    cy.url().should("contain", "/register");
     cy.getTestId("email").type(email);
+    // cy.wait(1000);
     cy.getTestId("password").type("testing@123");
     cy.wait(1000);
     cy.getTestId("registerBtn").click();

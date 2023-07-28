@@ -112,6 +112,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
                 label: "Logout",
                 icon: <BiLogOut size={16} />,
                 key: "/logout",
+                testid: "logout",
               },
             ]}
           />
