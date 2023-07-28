@@ -325,10 +325,7 @@ export const cleanupDatabase = async () => {
     "Folder Contents",
     await walk(path.join(__dirname, "../../../../prisma"))
   );
-  console.log(
-    "Folder Contents",
-    await walk(path.join(__dirname, "../../../../data"))
-  );
+
   await prisma.permission.deleteMany();
   await prisma.author.deleteMany();
   await prisma.domain.deleteMany();
