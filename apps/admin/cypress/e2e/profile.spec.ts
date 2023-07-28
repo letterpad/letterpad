@@ -1,6 +1,7 @@
 describe("Profile", () => {
   it("can register and login", () => {
     const email = `test@test.com`;
+    cy.url().should("contain", "/posts");
     cy.visitRegister();
     cy.getTestId("registerBtn").should("exist");
     cy.getTestId("email").type(email);
