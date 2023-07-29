@@ -13,7 +13,8 @@ export const getServerSession = async (context) => {
       (context.req.headers.origin ?? `http://${context.req.headers.host}`) +
       basePath +
       "/api/auth/session";
-
+    // eslint-disable-next-line no-console
+    console.log("sessionURL", sessionURL);
     const res = await fetch(sessionURL, {
       headers: { cookie: context.req.headers.cookie },
     });
