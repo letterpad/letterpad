@@ -12,7 +12,7 @@ interface Item {
 interface Props {
   items: Item[];
   selectedKey: string;
-  onSelect: (key: string) => void;
+  onSelect: (e: React.MouseEvent, key: string) => void;
   Link: any;
 }
 
@@ -55,8 +55,8 @@ export const Menu: FC<Props> = ({
                   classes.hover,
                   item.key === selectedKey && classes.selected
                 )}
-                onClick={() => {
-                  onSelect(item.key);
+                onClick={(e) => {
+                  onSelect(e, item.key);
                 }}
               >
                 <span className="flex items-center justify-center text-lg text-gray-400">
