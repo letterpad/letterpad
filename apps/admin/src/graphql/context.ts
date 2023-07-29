@@ -19,9 +19,7 @@ export const getServerSession = async (context) => {
       headers: { cookie: context.req.headers.cookie },
     });
     const session = await res.json();
-    // eslint-disable-next-line no-console
-    console.log("server session", session);
-    return session;
+    return session.user ? session : null;
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log("Error in getServerSession");
@@ -37,8 +35,6 @@ export const getResolverContext = async (context) => {
     : ((await getServerSession(context)) as unknown as { user: SessionData });
   let client_author_id: number | null = null;
 
-  // eslint-disable-next-line no-console
-  console.log("session", session);
   if (!session?.user?.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {
