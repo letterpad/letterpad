@@ -9,8 +9,6 @@ const isTest = process.env.NODE_ENV === "test";
 
 export const getServerSession = async (context) => {
   try {
-    // eslint-disable-next-line no-console
-    console.log("sessionURL", context.req.headers);
     const sessionURL =
       (context.req.headers.origin ?? `http://${context.req.headers.host}`) +
       basePath +
