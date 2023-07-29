@@ -9,16 +9,18 @@ const isTest = process.env.NODE_ENV === "test";
 
 export const getServerSession = async (context) => {
   try {
+    // eslint-disable-next-line no-console
+    console.log("sessionURL", context.req.headers);
     const sessionURL =
       (context.req.headers.origin ?? `http://${context.req.headers.host}`) +
       basePath +
       "/api/auth/session";
-    // eslint-disable-next-line no-console
-    console.log("sessionURL", sessionURL);
     const res = await fetch(sessionURL, {
       headers: { cookie: context.req.headers.cookie },
     });
     const session = await res.json();
+    // eslint-disable-next-line no-console
+    console.log("server session", session);
     return session;
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -35,6 +37,8 @@ export const getResolverContext = async (context) => {
     : ((await getServerSession(context)) as unknown as { user: SessionData });
   let client_author_id: number | null = null;
 
+  // eslint-disable-next-line no-console
+  console.log("session", session);
   if (!session?.user?.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {
