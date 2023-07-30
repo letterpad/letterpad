@@ -15,6 +15,7 @@ import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 
 import { isBlackListed } from "./blacklist";
+import { getRootUrl } from "../../../shared/utils";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -82,7 +83,7 @@ const options = (): NextAuthOptions => ({
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      return process.env.ROOT_URL + "/posts";
+      return getRootUrl(baseUrl) + "/posts";
     },
     jwt: async ({ token }) => {
       return token;

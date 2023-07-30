@@ -1,3 +1,4 @@
+const { withAxiom } = require('next-axiom');
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',
 // });
@@ -55,7 +56,7 @@ const securityHeaders = [
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
-module.exports = {
+module.exports = withAxiom({
   experimental: {
     appDir: true,
     // serverActions: true,
@@ -118,4 +119,4 @@ module.exports = {
     CLIENT_ID: process.env.CLIENT_ID,
     NEXT_PUBLIC_UTTERANCES_REPO: process.env.NEXT_PUBLIC_UTTERANCES_REPO,
   },
-};
+});

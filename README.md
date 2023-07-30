@@ -133,7 +133,7 @@ yarn dev
 ```
 
 ## URL and Port
-By default the admin panel runs on port 3000 and client runs on port 3001
+By default the admin panel runs on port 3000 and client runs on port 3001.
 - Admin  - http://localhost:3000/admin
 - Client - http://localhost:3001
 

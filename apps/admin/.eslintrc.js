@@ -7,4 +7,5 @@ module.exports = {
     node: true,
     es6: true,
   },
+  ignorePatterns: ["**/dist/**/*.js"],
 };

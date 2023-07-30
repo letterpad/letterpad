@@ -252,10 +252,22 @@ mutation ResetPassword($password: String!, $token: String!) {
   }
 }
 
-mutation CreateOrUpdateDomain($data: InputDomain!) {
-  createOrUpdateDomain(data: $data) {
-    ok
-    message
+mutation AddDomain($domain: String!) {
+  addDomain(domain: $domain) {
+    ... on Domain {
+      mapped
+      ssl
+      id
+      verification {
+        type
+        domain
+        value
+        reason
+      }
+    }
+    ... on DomainError {
+      message
+    }
   }
 }
 

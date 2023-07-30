@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Author {
@@ -40,7 +41,7 @@ model Author {
   stripe_customer_id  String?
   stripe_subscription_id String?
 
-  @@index([role_id], map: "Author_role_id_fkey")
+  @@index([role_id])
 }
 
 model EmailDelivery {
@@ -96,7 +97,7 @@ model Post {
   page_type          String    @default("default")
   page_data          String    @db.Text
   stats              String    @default("{}")
-  @@index([author_id], map: "Post_author_id_fkey")
+  @@index([author_id])
 }
 
 model RolePermissions {
@@ -108,8 +109,8 @@ model RolePermissions {
   permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
   role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
 
-  @@index([permission_id], map: "RolePermissions_permission_id_fkey")
-  @@index([role_id], map: "RolePermissions_role_id_fkey")
+  @@index([permission_id])
+  @@index([role_id])
 }
 
 model Role {
@@ -151,6 +152,8 @@ model Setting {
   scripts             String?   @db.Text
   author_id           Int       @unique
   author              Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
+
+  @@index([author_id])
 }
 
 model Subscriber {
@@ -164,7 +167,7 @@ model Subscriber {
   author              Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 
   @@unique([email, author_id])
-  @@index([author_id], map: "Subscriber_author_id_fkey")
+  @@index([author_id])
 }
 
 model Tag {
@@ -188,7 +191,7 @@ model Upload {
   author_id   Int
   author      Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
 
-  @@index([author_id], map: "Upload_author_id_fkey")
+  @@index([author_id])
 }
 
 model Domain {

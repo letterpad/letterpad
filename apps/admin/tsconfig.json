@@ -4,23 +4,45 @@
     "baseUrl": ".",
     "module": "commonjs",
     "paths": {
-      "@/components/*": ["src/components/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
-      "@/config/*": ["config/*"],
-      "@/graphql/db/models": ["src/graphql/db/models"],
-      "@/graphql/schema": ["src/graphql/schema"],
-      "@/graphql/*": ["src/graphql/*"],
-      "@/*": ["src/*"]
+      "@/components/*": [
+        "src/components/*"
+      ],
+      "@/pages/*": [
+        "src/pages/*"
+      ],
+      "@/__generated__/*": [
+        "__generated__/src/graphql/*",
+        "__generated__/*"
+      ],
+      "@/config/*": [
+        "config/*"
+      ],
+      "@/graphql/db/models": [
+        "src/graphql/db/models"
+      ],
+      "@/graphql/schema": [
+        "src/graphql/schema"
+      ],
+      "@/graphql/*": [
+        "src/graphql/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["__generated__/**/*"],
+  "exclude": [
+    "__generated__/**/*"
+  ],
   "include": [
     "src/**/*",
     "postcss.config.js",
     "tests/**/*",
     "migrations/**/*",
     "config/*",
-    "src/types.d.ts"
+    "src/types.d.ts",
+    "src/graphqls.d.ts",
+    "public/website/css",
+    "src/graphql/schema/index.ts"
   ]
 }

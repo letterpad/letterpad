@@ -1,1 +1,3 @@
-Letterpad Client
+## Letterpad Client
+
+The face of your blog for visitors.

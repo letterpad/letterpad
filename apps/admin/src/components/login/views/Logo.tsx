@@ -10,15 +10,13 @@ export const Logo: FC<Props> = ({ width = 50, isDarkBg }) => {
     (typeof localStorage !== "undefined" && localStorage?.theme) ?? "light";
 
   let logo =
-    theme === "light"
-      ? "/admin/logo/lp_logo_black.svg"
-      : "/admin/logo/lp_logo_white.svg";
+    theme === "light" ? "/logo/lp_logo_black.svg" : "/logo/lp_logo_white.svg";
 
   if (isDarkBg) {
-    logo = "/admin/logo/lp_logo_white.svg";
+    logo = "/logo/lp_logo_white.svg";
   }
 
-  logo = "/admin/logo/logo.png";
+  logo = "/logo/logo.png";
 
   return <Image src={logo} width={width} height={width} alt="Letterpad" />;
 };

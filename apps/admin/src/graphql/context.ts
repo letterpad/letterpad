@@ -1,20 +1,39 @@
-import { getSession } from "next-auth/react";
-
 import { prisma } from "@/lib/prisma";
 
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 
 import { SessionData } from "./types";
+import { basePath } from "../constants";
 
 const isTest = process.env.NODE_ENV === "test";
+
+export const getServerSession = async (context) => {
+  try {
+    const sessionURL =
+      (context.req.headers.origin ?? `http://${context.req.headers.host}`) +
+      basePath +
+      "/api/auth/session";
+    const res = await fetch(sessionURL, {
+      headers: { cookie: context.req.headers.cookie },
+    });
+    const session = await res.json();
+    return session.user ? session : null;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log("Error in getServerSession");
+    // this means the session is not set. This request is probably coming from client and not admin.
+    // client will never have a session.
+    // It will use authorization header to get the author id or subdmomain name to // get the authorID
+  }
+};
 
 export const getResolverContext = async (context) => {
   const session = isTest
     ? null
-    : ((await getSession(context)) as unknown as { user: SessionData });
+    : ((await getServerSession(context)) as unknown as { user: SessionData });
   let client_author_id: number | null = null;
 
-  if (!session?.user.id) {
+  if (!session?.user?.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {
       client_author_id = authorIdFound;

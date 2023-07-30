@@ -1,7 +1,5 @@
 import { ApolloServer } from "apollo-server-micro";
 
-import { basePath } from "@/constants";
-// import { formatError } from "graphql";
 import { getResolverContext } from "@/graphql/context";
 import { schema } from "@/graphql/schema";
 

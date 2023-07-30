@@ -1,6 +1,7 @@
 import { mail } from "@/lib/mail";
 
 import { bodyDecorator } from "@/graphql/mail/decorator";
+import { getRootUrl } from "@/shared/utils";
 
 interface Props {
   name: string;
@@ -18,7 +19,7 @@ export const triggerMail = async ({
   subject,
   author_id,
 }: Props) => {
-  const hostname = new URL(process.env.ROOT_URL).hostname;
+  const hostname = new URL(getRootUrl()).hostname;
   let _html = html.replace(/@name/g, name);
   _html = _html.replace(/@username/g, username);
   _html = _html.replace(/@email/g, to);

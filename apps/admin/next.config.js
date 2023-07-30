@@ -1,7 +1,5 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
-
-const path = require('path');
-const basePath = "/admin";
+const basePath = "/";
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -12,6 +10,7 @@ const nextConfig = {
     RAYGUN_API_KEY: process.env.RAYGUN_API_KEY,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXT_PUBLIC_BASE_PATH: process.env.BASE_PATH,
+    NEXT_PUBLIC_LETTERPAD_PLATFORM: process.env.LETTERPAD_PLATFORM == "true",
   },
   swcMinify: true,
   typescript: {
@@ -27,21 +26,8 @@ const nextConfig = {
     ],
   },
   experimental: { images: { allowFutureImage: true } },
-  basePath,
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: `/posts`,
-        permanent: true,
-      },
-      {
-        source: basePath,
-        destination: `/posts`,
-        permanent: true,
-      },
-    ];
-  },
+  // basePath,
+
   webpack(config, options) {
     config.module.rules.push({
       test: /\.graphql$/,
@@ -59,6 +45,12 @@ const nextConfig = {
       test: /\.ya?ml$/,
       type: "json",
       use: "yaml-loader",
+    });
+
+    config.module.rules.push({
+      test: /\.graphqls$/,
+      exclude: /node_modules/,
+      use: ["webpack-graphql-loader"],
     });
 
     return config;

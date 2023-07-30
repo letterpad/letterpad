@@ -30,7 +30,9 @@ export const getPost = async (
 
   const { previewHash, id, slug } = args.filters;
 
-  const postId = previewHash ? Number(decrypt(previewHash)) : id;
+  const postId = previewHash
+    ? Number(decrypt(previewHash?.replace(/%3D/g, "=")))
+    : id;
 
   if (postId) {
     const post = await prisma.post.findUnique({

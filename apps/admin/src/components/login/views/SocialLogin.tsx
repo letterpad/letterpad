@@ -3,6 +3,8 @@ import { signIn } from "next-auth/react";
 
 import { EventAction, track } from "@/track";
 
+import { getRootUrl } from "../../../shared/utils";
+
 interface Props {
   mode: "login" | "register";
 }
@@ -18,7 +20,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
     const callback =
       typeof router.query.callbackUrl === "string"
         ? router.query.callbackUrl
-        : "/admin/posts";
+        : getRootUrl() + "/posts";
     await signIn(type, { callbackUrl: callback });
   };
   return (
@@ -55,7 +57,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
       &nbsp;
       <a
         href="#"
-        onClick={(e) => onClick(e, "google")}
+        onClick={(e) => onClick(e, "github")}
         className="flex items-center justify-center rounded-md border border-gray-200 bg-white text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
       >
         <div className="px-4 py-2">

@@ -6,8 +6,8 @@
 [data-color-scheme="light"] {
   color-scheme: light;
 }
-html:not(.prose),
-body:not(.prose) {
+html:not(.prose):not(.home),
+body:not(.prose):not(.home) {
   padding: 0;
   margin: 0;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,

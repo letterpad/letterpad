@@ -1,6 +1,7 @@
 import { RegisterStep, ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { getSocialLink } from "@/graphql/resolvers/helpers";
+import { getRootUrl } from "@/shared/utils";
 
 export const getAuthor = async (
   _: any,
@@ -22,7 +23,7 @@ export const getAuthor = async (
   if (author) {
     let avatar = author.avatar as string;
     if (avatar && avatar.startsWith("/")) {
-      avatar = new URL(avatar, process.env.ROOT_URL).href;
+      avatar = new URL(avatar, getRootUrl()).href;
     }
 
     return {

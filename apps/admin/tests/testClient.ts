@@ -13,7 +13,7 @@ interface IArgs {
 const demoToken = encryptEmail("demo@demo.com");
 
 const client = (token = demoToken, sessionId) =>
-  new GraphQLClient("http://localhost:3000/graphql", {
+  new GraphQLClient("http://localhost:3000/api/graphql", {
     headers: {
       Authorization: `Bearer ${token}`,
       sessionId,

@@ -6,11 +6,12 @@ import { join } from "path";
 import { isAuthDirective } from "./directives/isAuth";
 import { maskIfUnauth } from "./directives/maskIfUnauth";
 import { resolversArr } from "./resolvers";
+import { typeDefsList } from "./schema/index";
 
-const loadedFiles = loadFilesSync(
-  join(process.cwd(), "src/graphql/schema/**/*.graphqls")
-);
-const typeDefs = mergeTypeDefs(loadedFiles);
+// const loadedFiles = loadFilesSync(
+//   join(process.cwd(), "src/graphql/schema/**/*.graphqls")
+// );
+const typeDefs = mergeTypeDefs(typeDefsList);
 
 const resolvers = mergeResolvers(resolversArr);
 
@@ -22,3 +23,4 @@ const executableSchema = makeExecutableSchema({
 export const schema = maskIfUnauth("maskIfUnauth")(
   isAuthDirective("isAuth")(executableSchema)
 );
+export { typeDefsList };

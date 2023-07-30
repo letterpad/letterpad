@@ -1,4 +1,3 @@
-import { basePath } from "next.config";
 import { useCallback, useState } from "react";
 import { FileExplorer } from "ui";
 
@@ -9,6 +8,7 @@ import MediaItem from "./MediaItem";
 import InternalMedia from "./providers/Internal";
 import Unsplash from "./providers/Unsplash";
 import NoSsr from "../NoSsr";
+import { basePath } from "../../constants";
 
 import { MediaProvider, TypeMediaInsert } from "@/types";
 

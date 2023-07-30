@@ -1,9 +1,9 @@
 import { NextApiResponse } from "next";
-import { basePath } from "next.config";
 import Stripe from "stripe";
 
 import { stripe } from "@/lib/stripe";
 
+import { basePath } from "@/constants";
 import { NextApiRequestWithFormData } from "@/graphql/types";
 
 const Create = async (

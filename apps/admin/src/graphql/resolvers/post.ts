@@ -6,6 +6,7 @@ import {
   QueryResolvers,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
+import { getRootUrl } from "@/shared/utils";
 import { createPathWithPrefix } from "@/utils/slug";
 
 import {
@@ -32,7 +33,7 @@ const Post: PostResolvers<ResolverContext> = {
     cover_image_width,
     cover_image_height,
   }: PostAttributes) => {
-    const baseUrl = cover_image.startsWith("/") ? process.env.ROOT_URL : "";
+    const baseUrl = cover_image.startsWith("/") ? getRootUrl() : "";
     return {
       src: baseUrl + cover_image,
       width: cover_image_width,

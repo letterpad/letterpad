@@ -304,7 +304,28 @@ export async function insertPost(postData, author_id) {
   });
 }
 
+// const fs = require("fs").promises;
+
+async function walk(dir) {
+  let files: any = await fs.promises.readdir(dir);
+  files = await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(dir, file);
+      const stats = await fs.promises.stat(filePath);
+      if (stats.isDirectory()) return walk(filePath);
+      else if (stats.isFile()) return filePath;
+    })
+  );
+
+  return files.reduce((all, folderContents) => all.concat(folderContents), []);
+}
+
 export const cleanupDatabase = async () => {
+  console.log(
+    "Folder Contents",
+    await walk(path.join(__dirname, "../../../../prisma"))
+  );
+
   await prisma.permission.deleteMany();
   await prisma.author.deleteMany();
   await prisma.domain.deleteMany();

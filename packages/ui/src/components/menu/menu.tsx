@@ -7,11 +7,12 @@ interface Item {
   group?: string;
   key: string;
   badge?: string;
+  testid?: string;
 }
 interface Props {
   items: Item[];
   selectedKey: string;
-  onSelect: (key: string) => void;
+  onSelect: (e: React.MouseEvent, key: string) => void;
   Link: any;
 }
 
@@ -48,13 +49,14 @@ export const Menu: FC<Props> = ({
           <li className="my-px" key={item.key}>
             <Link href={item.key}>
               <a
+                data-testid={item.testid}
                 className={classNames(
                   classes.base,
                   classes.hover,
                   item.key === selectedKey && classes.selected
                 )}
-                onClick={() => {
-                  onSelect(item.key);
+                onClick={(e) => {
+                  onSelect(e, item.key);
                 }}
               >
                 <span className="flex items-center justify-center text-lg text-gray-400">

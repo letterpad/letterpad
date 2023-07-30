@@ -39,8 +39,9 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
         >
           <Menu
             Link={Link}
-            onSelect={(key) => {
+            onSelect={(e, key) => {
               if (key === "/logout") {
+                e.preventDefault();
                 signOut({
                   redirect: true,
                 });
@@ -112,6 +113,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
                 label: "Logout",
                 icon: <BiLogOut size={16} />,
                 key: "/logout",
+                testid: "logout",
               },
             ]}
           />

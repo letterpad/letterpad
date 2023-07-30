@@ -1,6 +1,5 @@
 import axios from "axios";
 import classNames from "classnames";
-import { basePath } from "next.config";
 import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Label } from "ui";
 
@@ -11,6 +10,7 @@ import { mapFileListToArray } from "@/shared/utils";
 
 import { Preview } from "./preview";
 import { DropZone } from "../post/components/dragdrop";
+import { basePath } from "../../constants";
 
 interface Props {
   progress?: (percentCompleted: number) => void;

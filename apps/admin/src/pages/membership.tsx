@@ -1,10 +1,8 @@
 import { loadStripe } from "@stripe/stripe-js";
 import classNames from "classnames";
 import { InferGetServerSidePropsType } from "next";
-import { basePath } from "next.config";
 import Head from "next/head";
 import Link from "next/link";
-import { getSession } from "next-auth/react";
 import { FC } from "react";
 import { Button, Content, PageHeader, Table } from "ui";
 
@@ -13,8 +11,11 @@ import { stripe } from "@/lib/stripe";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
 
+import { basePath } from "@/constants";
 import { SessionData } from "@/graphql/types";
 import { getReadableDate } from "@/shared/utils";
+
+import { getServerSession } from "../graphql/context";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -26,7 +27,7 @@ interface Props {
 }
 const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
   const handleClick = async (event) => {
-    const res = await fetch("/admin/api/checkout_session", {
+    const res = await fetch("/api/checkout_session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     }).then((res) => res.json());
@@ -130,7 +131,7 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
 export default Payments;
 
 export async function getServerSideProps({ req, res }) {
-  const _session = await getSession({ req: req });
+  const _session = await getServerSession({ req: req });
   const session = _session as unknown as { user: SessionData };
   //   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
   const author = await prisma.author.findFirst({

@@ -73,7 +73,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
   if (label) {
     return (
-      <div>
+      <div className="w-full">
         <Label label={label} className={"mb-2 " + labelClassName} />
         <div className="relative flex items-center">
           {addonBefore && (

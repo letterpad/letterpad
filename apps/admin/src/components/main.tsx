@@ -30,17 +30,26 @@ const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
 
 const Main = ({ Component, props }: IProps) => {
   const router = useRouter();
-  const { data, loading, refetch } = useHomeQueryQuery();
   const session = useSession();
+  const { data, loading, refetch } = useHomeQueryQuery({
+    skip: !session?.data?.user?.id,
+  });
   useTracking(session?.data?.user?.id);
   const isPublic =
     Component.isLogin || Component.isPublic || Component.isMessage;
   const { register_step } = session.data?.user || {};
 
   useEffect(() => {
-    ThemeSwitcher.switch(localStorage.theme);
-    initPageProgress();
-  }, []);
+    if (session?.data?.user?.id && isPublic && router.pathname !== "/") {
+      router.push("/posts");
+    }
+  }, [router, session?.data?.user?.id, isPublic]);
+  useEffect(() => {
+    if (router.pathname !== "/") {
+      ThemeSwitcher.switch(localStorage.theme);
+      initPageProgress();
+    }
+  }, [router.pathname]);
 
   useEffect(() => {
     if (!isPublic && session.status === "unauthenticated") {
@@ -76,10 +85,6 @@ const Main = ({ Component, props }: IProps) => {
         break;
     }
   }, [isPublic, router, register_step, session.status]);
-
-  if (loading || session.status === "loading") {
-    return <LoadingScreen />;
-  }
 
   let node: JSX.Element | null = null;
   if (Component.isPublic) {
@@ -138,6 +143,9 @@ const Main = ({ Component, props }: IProps) => {
     );
   }
 
+  if (!Component.isPublic && (loading || session.status === "loading")) {
+    return <LoadingScreen />;
+  }
   return (
     <>
       <Head>

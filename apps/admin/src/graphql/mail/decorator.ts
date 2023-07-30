@@ -2,6 +2,7 @@ import path from "path";
 import Twig from "twig";
 
 import { getUnsubscribeToken } from "@/shared/token";
+import { getRootUrl } from "@/shared/utils";
 
 export const bodyDecorator = (
   html: string,
@@ -14,7 +15,7 @@ export const bodyDecorator = (
     author_id: author_id,
     subscriber_id: subcriber_id,
   });
-  const unsubscribeUrl = `${process.env.ROOT_URL}/api/unsubscribe?token=${token}`;
+  const unsubscribeUrl = `${getRootUrl()}/api/unsubscribe?token=${token}`;
 
   const baseTemplate = path.resolve(
     process.cwd(),

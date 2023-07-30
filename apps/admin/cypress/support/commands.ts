@@ -15,6 +15,7 @@ declare global {
       visitProfile: () => void;
       visitRegister: () => void;
       visitSettings: () => void;
+      logout: () => void;
     }
   }
 }
@@ -93,6 +94,7 @@ Cypress.Commands.add("visitPages", () => cy.visit("/creatives"));
 Cypress.Commands.add("visitProfile", () => cy.visit("/profile"));
 Cypress.Commands.add("visitRegister", () => cy.visit("/register"));
 Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
+Cypress.Commands.add("logout", () => cy.visit("/logout"));
 
 //-----
 function addNavItem(label, slug) {
@@ -105,14 +107,14 @@ Cypress.Commands.add("addNavItem", addNavItem);
 
 beforeEach(function () {
   cy.visitLogin();
-  cy.intercept("POST", "http://localhost:3000/admin/api/graphql", (req) => {
+  cy.intercept("POST", "http://localhost:3000/api/graphql", (req) => {
     aliasMutation(req, "updatePost");
     aliasMutation(req, "UpdateOptions");
     aliasMutation(req, "UpdateAuthor");
     aliasMutation(req, "createAuthor");
   });
-  cy.intercept("/admin/api/auth/session").as("getSession");
-  cy.intercept("/admin/api/auth/callback/credentials?").as("getCredentials");
+  cy.intercept("/api/auth/session").as("getSession");
+  cy.intercept("/api/auth/callback/credentials?").as("getCredentials");
   window.localStorage.setItem("intro_dismissed", "true");
   cy.login({ email: "demo@demo.com", password: "demo" });
 });

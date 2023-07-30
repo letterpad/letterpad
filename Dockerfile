@@ -46,9 +46,9 @@ ARG EMAIL
 ARG PASSWORD
 ARG DEBUG
 
-ENV ROOT_URL="http://localhost:3000/admin"
-ENV NEXTAUTH_URL="http://localhost:3000/admin/api/auth"
-ENV API_URL="http://localhost:3000/admin/api/graphql"
+ENV ROOT_URL="http://localhost:3000"
+ENV NEXTAUTH_URL="http://localhost:3000/api/auth"
+ENV API_URL="http://localhost:3000/api/graphql"
 ENV DEBUG=$DEBUG
 ENV DOCKER=true
 
