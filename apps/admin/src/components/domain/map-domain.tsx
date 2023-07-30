@@ -24,7 +24,7 @@ export const MapDomain: React.FC<{
           <div className="flex flex-col gap-4">
             <span className="font-bold text-black dark:text-white">Value</span>
             <code className="text-sm" id="txt">
-              cname.vercel-dns.com
+              cname.letterpad.network
             </code>
           </div>
         </div>
