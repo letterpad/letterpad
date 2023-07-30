@@ -3,9 +3,9 @@ import Creative from '@/layouts/Creative';
 import { useTheme } from '../../../../themes';
 import { getPreviewData } from '../../../data';
 
-export default async function Preview() {
-  const { post, settings, me } = await getPreviewData('');
-  const { Post } = useTheme(settings?.theme);
+export default async function Preview({ params, searchParams }) {
+  const { post, settings, me } = await getPreviewData(params.hash);
+  const { Preview } = useTheme(settings?.theme);
 
   if (post.__typename !== 'Post' || settings.__typename !== 'Setting') {
     return null;
@@ -21,5 +21,5 @@ export default async function Preview() {
       />
     );
   }
-  return <Post post={post} settings={settings} me={me} />;
+  return <Preview post={post} settings={settings} me={me} />;
 }

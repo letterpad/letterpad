@@ -9,12 +9,6 @@ import { headers } from 'next/headers';
 function getLetterpad() {
   const headersList = headers();
   const host = headersList.get('host')!;
-  // eslint-disable-next-line no-console
-  console.log('SDK Params', {
-    url: process.env.API_URL!,
-    token: process.env.CLIENT_ID!,
-    host,
-  });
   return new Letterpad({
     letterpadServer: {
       url: process.env.API_URL!,
