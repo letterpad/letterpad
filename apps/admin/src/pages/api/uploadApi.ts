@@ -1,7 +1,6 @@
 import crypto from "crypto";
 import multer from "multer";
 import { NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 import path from "path";
 
 import { prisma } from "@/lib/prisma";
@@ -18,6 +17,7 @@ import logger from "./../../shared/logger";
 import initMiddleware from "./middleware";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
+import { getServerSession } from "../../graphql/context";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
@@ -38,7 +38,7 @@ const uploadApi = async (
   res: NextApiResponse
 ) => {
   await multerAny(req, res);
-  const _session = await getSession({ req });
+  const _session = await getServerSession({ req });
   const session = _session as unknown as { user: SessionData };
   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
 

@@ -1,14 +1,15 @@
 import { NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 
 import { NextApiRequestWithFormData } from "@/graphql/types";
 import { encrypt } from "@/graphql/utils/crypto";
+
+import { getServerSession } from "../../graphql/context";
 
 const getHashFromPostId = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse
 ) => {
-  const _session = await getSession({ req });
+  const _session = await getServerSession({ req });
 
   if (!_session || !_session.user?.email)
     return res.status(401).send("Unauthorized");

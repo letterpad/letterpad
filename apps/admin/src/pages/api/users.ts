@@ -1,14 +1,14 @@
 import { NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 
 import { prisma } from "@/lib/prisma";
 
+import { getServerSession } from "../../graphql/context";
 import { NextApiRequestWithFormData } from "../../graphql/types";
 
 import { AdminUsersType } from "@/types";
 
 const Users = async (req: NextApiRequestWithFormData, res: NextApiResponse) => {
-  const session = await getSession({ req });
+  const session = await getServerSession({ req });
   if (!session || session.user?.role !== "ADMIN") {
     return res.status(401).send("Unauthorized");
   }

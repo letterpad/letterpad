@@ -1,11 +1,12 @@
 import Head from "next/head";
-import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button, Content, Input, PageHeader, Table, Tabs } from "ui";
 
 import Editor from "@/components/post/components/editor";
 
 import { ROLES } from "@/graphql/types";
+
+import { getServerSession } from "../graphql/context";
 
 import { AdminUsersType } from "@/types";
 
@@ -191,7 +192,7 @@ const Members = () => {
 export default Members;
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
+  const session = await getServerSession(context);
 
   const isAdmin = session?.user?.role === ROLES.ADMIN;
   if (!isAdmin) {
