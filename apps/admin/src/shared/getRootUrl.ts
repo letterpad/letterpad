@@ -11,6 +11,6 @@ export const getRootUrl = (baseUrl?: string) => {
   }
 
   // eslint-disable-next-line no-console
-  console.log("process.env.ROOT_URL - utils", process.env.ROOT_URL);
-  return (process.env.ROOT_URL ?? "https://letterpad.app") + basePath;
+  //   console.log("process.env.ROOT_URL - utils", process.env.ROOT_URL);
+  return "https://letterpad.app" + basePath;
 };
