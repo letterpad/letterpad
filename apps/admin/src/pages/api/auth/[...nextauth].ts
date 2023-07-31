@@ -13,8 +13,8 @@ import { report } from "@/components/error";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
+import { getRootUrl } from "@/shared/getRootUrl";
 
-// import { getRootUrl } from "@/shared/getRootUrl";
 import { isBlackListed } from "./blacklist";
 
 const providers = (): NextAuthOptions["providers"] => [
@@ -83,9 +83,7 @@ const options = (): NextAuthOptions => ({
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      // eslint-disable-next-line no-console
-      // console.log("redirect root_url", process.env.ROOT_URL);
-      return "https://letterpad.app" + "/posts";
+      return getRootUrl(baseUrl) + "/posts";
     },
     jwt: async ({ token }) => {
       return token;
