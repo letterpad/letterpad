@@ -130,5 +130,7 @@ export const getRootUrl = (baseUrl?: string) => {
     return protocol + process.env.VERCEL_BRANCH_URL + basePath;
   }
 
+  // eslint-disable-next-line no-console
+  console.log("process.env.ROOT_URL - utils", process.env.ROOT_URL);
   return process.env.ROOT_URL + basePath;
 };

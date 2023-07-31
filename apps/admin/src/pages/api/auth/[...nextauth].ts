@@ -83,7 +83,9 @@ const options = (): NextAuthOptions => ({
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      return getRootUrl(baseUrl) + "/posts";
+      // eslint-disable-next-line no-console
+      console.log("redirect root_url", process.env.ROOT_URL);
+      return process.env.ROOT_URL + "/posts";
     },
     jwt: async ({ token }) => {
       return token;
