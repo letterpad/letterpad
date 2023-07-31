@@ -13,9 +13,9 @@ import { report } from "@/components/error";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
-import { getRootUrl } from "@/shared/getRootUrl";
 
 import { isBlackListed } from "./blacklist";
+// import { getRootUrl } from "@/shared/getRootUrl";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -80,12 +80,16 @@ const options = (): NextAuthOptions => ({
   providers: providers(),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
+      // eslint-disable-next-line no-console
+      console.log("url", url);
+      // eslint-disable-next-line no-console
+      console.log("baseUrl", baseUrl);
+      // if (url.startsWith(baseUrl)) {
+      //   return url;
+      // }
       // eslint-disable-next-line no-console
       console.log("redirect root_url", process.env.ROOT_URL);
-      return getRootUrl() + "/posts";
+      return "https://letterpad.app/posts";
     },
     jwt: async ({ token }) => {
       return token;
