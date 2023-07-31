@@ -6,7 +6,7 @@ import {
   QueryResolvers,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
-import { getRootUrl } from "@/shared/utils";
+import { getRootUrl } from "@/shared/getRootUrl";
 import { createPathWithPrefix } from "@/utils/slug";
 
 import {

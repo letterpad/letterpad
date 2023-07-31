@@ -1,5 +1,5 @@
+import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
-import { getRootUrl } from "@/shared/utils";
 
 import { getImageDimensions } from "../helpers";
 

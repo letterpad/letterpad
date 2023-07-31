@@ -13,9 +13,9 @@ import { report } from "@/components/error";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 import { isBlackListed } from "./blacklist";
-import { getRootUrl } from "../../../shared/utils";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -85,7 +85,7 @@ const options = (): NextAuthOptions => ({
       }
       // eslint-disable-next-line no-console
       console.log("redirect root_url", process.env.ROOT_URL);
-      return process.env.ROOT_URL + "/posts";
+      return getRootUrl() + "/posts";
     },
     jwt: async ({ token }) => {
       return token;

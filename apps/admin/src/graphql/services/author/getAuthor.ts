@@ -1,7 +1,7 @@
 import { RegisterStep, ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { getSocialLink } from "@/graphql/resolvers/helpers";
-import { getRootUrl } from "@/shared/utils";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 export const getAuthor = async (
   _: any,

@@ -1,6 +1,6 @@
 import { Image, ResolversParentTypes } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
-import { getRootUrl } from "@/shared/utils";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 export const resolveImageField = async (
   image: Image | undefined

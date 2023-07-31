@@ -1,8 +1,8 @@
 import path from "path";
 import Twig from "twig";
 
+import { getRootUrl } from "@/shared/getRootUrl";
 import { getUnsubscribeToken } from "@/shared/token";
-import { getRootUrl } from "@/shared/utils";
 
 export const bodyDecorator = (
   html: string,

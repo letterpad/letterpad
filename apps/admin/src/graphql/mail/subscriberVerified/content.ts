@@ -5,7 +5,7 @@ import {
   EmailSubscriberVerifiedProps,
   EmailTemplateResponse,
 } from "@/graphql/types";
-import { getRootUrl } from "@/shared/utils";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";

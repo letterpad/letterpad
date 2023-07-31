@@ -6,8 +6,8 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 import { ValueOf } from "@/graphql/types";
+import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
-import { getRootUrl } from "@/shared/utils";
 
 export const updateSetting = async (
   args: MutationUpdateOptionsArgs,

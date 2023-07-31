@@ -5,8 +5,8 @@ import {
   EmailForgotPasswordProps,
   EmailTemplateResponse,
 } from "@/graphql/types";
+import { getRootUrl } from "@/shared/getRootUrl";
 import { getForgotPasswordToken } from "@/shared/token";
-import { getRootUrl } from "@/shared/utils";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";

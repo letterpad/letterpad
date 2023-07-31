@@ -1,7 +1,7 @@
 import { mail } from "@/lib/mail";
 
 import { bodyDecorator } from "@/graphql/mail/decorator";
-import { getRootUrl } from "@/shared/utils";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 interface Props {
   name: string;
