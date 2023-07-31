@@ -130,5 +130,5 @@ export const getRootUrl = (baseUrl?: string) => {
     return protocol + process.env.VERCEL_BRANCH_URL + basePath;
   }
 
-  return protocol + process.env.VERCEL_URL + basePath;
+  return process.env.ROOT_URL + basePath;
 };
