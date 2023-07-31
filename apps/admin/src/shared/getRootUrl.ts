@@ -1,6 +1,7 @@
 import { basePath } from "../constants";
 
 export const getRootUrl = (baseUrl?: string) => {
+  return "https://letterpad.app" + basePath;
   if (!process.env.VERCEL) {
     return process.env.ROOT_URL;
   }
