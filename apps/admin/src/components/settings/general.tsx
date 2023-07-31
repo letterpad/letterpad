@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { Button, Input, TextArea } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
@@ -19,9 +20,9 @@ const General: React.FC<Props> = ({ settings }) => {
     site_url: settings.site_url,
     site_footer: settings.site_footer,
   });
-
+  const data = useFormContext();
   const { updateSettingsAPI } = useUpdateSettings();
-
+  // console.log(data.formState.errors);
   const onChange = (e, field: keyof SettingInputType) => {
     setFields({ ...fields, [field]: e.target.value });
   };
@@ -30,8 +31,12 @@ const General: React.FC<Props> = ({ settings }) => {
       <div className="mb-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
         <Input
           label="Site Title"
-          onChange={(e) => onChange(e, "site_title")}
-          value={fields.site_title}
+          // onChange={(e) => onChange(e, "site_title")}
+          {...data.register("site_title", {
+            required: true,
+            maxLength: 30,
+          })}
+          // value={fields.site_title}
           placeholder="Name of your blog"
           data-testid="siteTitle"
           limit={30}
@@ -39,8 +44,9 @@ const General: React.FC<Props> = ({ settings }) => {
 
         <Input
           label="Site Tagline"
-          onChange={(e) => onChange(e, "site_tagline")}
-          value={fields.site_tagline}
+          // onChange={(e) => onChange(e, "site_tagline")}
+          {...data.register("site_tagline", { required: true, maxLength: 60 })}
+          // value={fields.site_tagline}
           placeholder="A short phrase for your blog"
           data-testid="siteTagline"
           limit={60}
@@ -48,23 +54,29 @@ const General: React.FC<Props> = ({ settings }) => {
 
         <Input
           label="Site Email (public)"
-          onChange={(e) => onChange(e, "site_email")}
-          value={fields.site_email}
+          // onChange={(e) => onChange(e, "site_email")}
+          {...data.register("site_email")}
+          // value={fields.site_email}
           placeholder="e.g. foo@letterpad.app"
           data-testid="siteEmail"
         />
 
         <Input
           label="Site Url"
-          onChange={(e) => onChange(e, "site_url")}
-          value={fields.site_url}
+          // onChange={(e) => onChange(e, "site_url")}
+          {...data.register("site_url", { required: true })}
+          // value={fields.site_url}
           placeholder="URL of your site"
         />
 
         <TextArea
           label="Short Description"
-          onChange={(e) => onChange(e, "site_description")}
-          value={fields.site_description}
+          // onChange={(e) => onChange(e, "site_description")}
+          {...data.register("site_description", {
+            required: true,
+            maxLength: 190,
+          })}
+          // value={fields.site_description}
           placeholder="Write something about your site. Will be used in SEO and other pages"
           autoGrow={true}
           data-testid="shortDescription"
@@ -73,8 +85,9 @@ const General: React.FC<Props> = ({ settings }) => {
 
         <TextArea
           label="Footer Description"
-          onChange={(e) => onChange(e, "site_footer")}
-          value={fields.site_footer}
+          // onChange={(e) => onChange(e, "site_footer")}
+          // value={fields.site_footer}
+          {...data.register("site_footer", { maxLength: 200 })}
           placeholder="Anything that you want display in footer. html is allowed."
           autoGrow={true}
           maxLength={200}
@@ -82,8 +95,9 @@ const General: React.FC<Props> = ({ settings }) => {
         />
       </div>
       <Button
-        onClick={() => updateSettingsAPI(fields)}
+        // onClick={() => updateSettingsAPI(fields)}
         data-testid="save-general"
+        type="submit"
       >
         Save
       </Button>
