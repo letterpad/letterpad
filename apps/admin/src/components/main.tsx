@@ -40,7 +40,12 @@ const Main = ({ Component, props }: IProps) => {
   const { register_step } = session.data?.user || {};
 
   useEffect(() => {
-    if (session?.data?.user?.id && isPublic && router.pathname !== "/") {
+    if (
+      session?.data?.user?.id &&
+      isPublic &&
+      router.pathname !== "/" &&
+      router.pathname !== "/creatives"
+    ) {
       router.push("/posts");
     }
   }, [router, session?.data?.user?.id, isPublic]);
