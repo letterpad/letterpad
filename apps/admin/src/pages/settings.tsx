@@ -21,6 +21,9 @@ import Pages from "@/components/settings/pages";
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
+import { useUpdateSettings } from "../hooks/useUpdateSettings";
+import { getDirtyFields } from "../lib/react-form";
+
 import { PageProps } from "@/types";
 
 interface Props extends PageProps {
@@ -35,7 +38,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
   const [deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({ defaultValues: settings });
   const { register, handleSubmit, formState } = methods;
-
+  const { updateSettingsAPI } = useUpdateSettings();
   const confirm = async () => {
     await deleteAuthor();
     router.push("/login?deleted=true");
@@ -53,7 +56,12 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
       </PageHeader>
       <Content>
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit((data) => null)}>
+          <form
+            onSubmit={handleSubmit((data) => {
+              // updateSettingsAPI(getDirtyFields(data, formState.dirtyFields));
+              // console.log(getDirtyFields(data, formState.dirtyFields));
+            })}
+          >
             <Accordion
               onChange={onPanelClick}
               activeKey={router.query.selected as string}
@@ -63,7 +71,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                 id="general"
                 description="Basic details and metadata of your site"
               >
-                <General settings={settings} />
+                <General />
               </AccordionItem>
               <AccordionItem
                 label="Appearance"
@@ -96,7 +104,6 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                 description="Integrations and code injections"
               >
                 <Integrations
-                  settings={settings}
                   cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
                 />
               </AccordionItem>

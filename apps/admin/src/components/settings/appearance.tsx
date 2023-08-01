@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useFormContext } from "react-hook-form";
 import { Button, Label, RadioGroup, TextArea } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
@@ -7,14 +8,13 @@ import { Upload } from "@/components/upload";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { debounce, removeTypenames } from "@/shared/utils";
-
 interface Props {
   settings: SettingsFragmentFragment;
 }
 const Appearance: React.FC<Props> = ({ settings }) => {
+  const data = useFormContext();
   const { updateSettings, updateLocalState, updateSettingsAPI } =
     useUpdateSettings();
-
   const debounceUpdateSettingsAPI = useMemo(
     () => debounce((data) => updateSettingsAPI(data), 500),
     [updateSettingsAPI]
@@ -27,15 +27,16 @@ const Appearance: React.FC<Props> = ({ settings }) => {
           <input
             type="color"
             className="h-20 w-32"
-            value={settings?.design?.brand_color ?? "#d93097"}
-            onChange={(e) =>
-              updateSettings({
-                design: {
-                  ...removeTypenames(settings.design),
-                  brand_color: e.target.value,
-                },
-              })
-            }
+            // value={settings?.design?.brand_color ?? "#d93097"}
+            {...data.register("design.brand_color")}
+            // onChange={(e) =>
+            //   // updateSettings({
+            //   //   design: {
+            //   //     ...removeTypenames(settings.design),
+            //   //     brand_color: e.target.value,
+            //   //   },
+            //   // })
+            // }
           />
           <Button onClick={() => window.open(settings.site_url, "_blank")}>
             Preview
@@ -62,27 +63,44 @@ const Appearance: React.FC<Props> = ({ settings }) => {
           className="h-28 w-28"
           url={settings?.site_favicon?.src ?? ""}
           onSuccess={([res]) => {
-            updateSettings({
-              site_favicon: {
-                src: res.src,
-                width: res.size?.width,
-                height: res.size?.height,
-              },
+            data.setValue("site_favicon", {
+              src: res.src,
+              width: res.size?.width,
+              height: res.size?.height,
             });
+            // updateSettings({
+            //   site_favicon: {
+            //     src: res.src,
+            //     width: res.size?.width,
+            //     height: res.size?.height,
+            //   },
+            // });
           }}
         />
         <Upload
           label="Banner"
           className="h-28 w-28"
-          url={settings?.banner?.src ?? ""}
+          url={data.watch("banner.src") ?? ""}
           onSuccess={([res]) => {
-            updateSettings({
-              banner: {
+            data.setValue(
+              "banner",
+              {
                 src: res.src,
                 width: res.size?.width,
                 height: res.size?.height,
               },
-            });
+              {
+                shouldValidate: true,
+                shouldDirty: true,
+              }
+            );
+            // updateSettings({
+            //   banner: {
+            //     src: res.src,
+            //     width: res.size?.width,
+            //     height: res.size?.height,
+            //   },
+            // });
           }}
         />
       </div>
@@ -90,11 +108,12 @@ const Appearance: React.FC<Props> = ({ settings }) => {
       <div>
         <TextArea
           label="CSS"
-          defaultValue={settings.css ?? ""}
-          onBlur={(e) => {
-            debounceUpdateSettingsAPI({ css: e.target.value });
-            updateLocalState({ css: e.target.value });
-          }}
+          // defaultValue={settings.css ?? ""}
+          // onBlur={(e) => {
+          //   debounceUpdateSettingsAPI({ css: e.target.value });
+          //   updateLocalState({ css: e.target.value });
+          // }}
+          {...data.register("css")}
           placeholder="Add css to customise your website"
           style={{
             fontFamily: '"Fira code", "Fira Mono", monospace',
@@ -103,7 +122,7 @@ const Appearance: React.FC<Props> = ({ settings }) => {
           }}
         />
         <br />
-        <Button onClick={() => debounceUpdateSettingsAPI({})}>Save</Button>
+        <Button type="submit">Save</Button>
       </div>
     </div>
   );
