@@ -84,5 +84,5 @@ function Pages() {
     </>
   );
 }
-
+Pages.isPublic = true;
 export default Pages;
