@@ -44,11 +44,11 @@ const Main = ({ Component, props }: IProps) => {
       session?.data?.user?.id &&
       isPublic &&
       router.pathname !== "/" &&
-      router.pathname !== "/creatives"
+      !Component.isPublic
     ) {
       router.push("/posts");
     }
-  }, [router, session?.data?.user?.id, isPublic]);
+  }, [router, session?.data?.user?.id, isPublic, Component]);
   useEffect(() => {
     if (router.pathname !== "/") {
       ThemeSwitcher.switch(localStorage.theme);
