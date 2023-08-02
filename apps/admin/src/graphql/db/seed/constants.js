@@ -34,7 +34,7 @@ module.exports.defaultSettings = {
     height: 200,
   }),
   site_favicon: JSON.stringify({
-    src: "https://letterpad.app/admin/uploads/logo.png",
+    src: "https://letterpad.app/uploads/logo.png",
     width: 200,
     height: 200,
   }),
