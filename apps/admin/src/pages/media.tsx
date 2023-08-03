@@ -61,7 +61,7 @@ const Media = () => {
           {images.rows.map((image) => {
             return (
               <div
-                className="flex flex-col gap-2 rounded-md bg-slate-200 p-4 align-middle"
+                className="flex cursor-pointer flex-col gap-2 rounded-md bg-slate-200 p-4 align-middle dark:bg-slate-800"
                 key={image.url}
               >
                 <div className="flex  flex-1 items-center justify-center">
@@ -75,7 +75,7 @@ const Media = () => {
                 </div>
                 <Button
                   size="small"
-                  variant="danger"
+                  variant="ghost"
                   onClick={() => deleteImage(image)}
                 >
                   Delete

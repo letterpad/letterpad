@@ -108,7 +108,9 @@ export const Post = () => {
 
       {!loading && post?.page_type === PageType["Story Builder"] && (
         <div className="my-10">
-          <Title title={post?.title || ""} postId={post?.id} />
+          <div className="mx-4">
+            <Title title={post?.title || ""} postId={post?.id} />
+          </div>
           <BuilderContext
             data={JSON.parse(post.page_data as string).rows}
             onSave={(page_data) =>

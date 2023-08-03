@@ -1,30 +1,12 @@
-import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import { Button, Input, Label, TextArea } from "ui";
 
-import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-
-import { SettingInputType } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-
 interface Props {
-  settings: SettingsFragmentFragment;
   cloudinaryEnabledByAdmin: boolean;
 }
-const Integrations: React.FC<Props> = ({
-  settings,
-  cloudinaryEnabledByAdmin,
-}) => {
-  const [fields, setFields] = useState<SettingInputType>({
-    cloudinary_name: settings.cloudinary_name,
-    cloudinary_key: settings.cloudinary_key,
-    cloudinary_secret: settings.cloudinary_secret,
-    scripts: settings.scripts,
-  });
-  const { updateSettingsAPI } = useUpdateSettings();
-
-  const onChange = (e, field: keyof SettingInputType) => {
-    setFields({ ...fields, [field]: e.target.value });
-  };
+const Integrations: React.FC<Props> = ({ cloudinaryEnabledByAdmin }) => {
+  const data = useFormContext();
   return (
     <>
       <div className="mb-4">
@@ -47,10 +29,7 @@ const Integrations: React.FC<Props> = ({
             placeholder="Enter cloudinary name"
             data-testid="cName"
             disabled={cloudinaryEnabledByAdmin}
-            value={fields.cloudinary_name}
-            onChange={(e) => {
-              onChange(e, "cloudinary_name");
-            }}
+            {...data.register("cloudinary_name")}
           />
 
           <Input
@@ -58,10 +37,7 @@ const Integrations: React.FC<Props> = ({
             placeholder="Enter cloudinary key"
             disabled={cloudinaryEnabledByAdmin}
             data-testid="cKey"
-            value={fields.cloudinary_key}
-            onChange={(e) => {
-              onChange(e, "cloudinary_key");
-            }}
+            {...data.register("cloudinary_key")}
           />
 
           <Input
@@ -69,10 +45,7 @@ const Integrations: React.FC<Props> = ({
             placeholder="Enter cloudinary secret"
             disabled={cloudinaryEnabledByAdmin}
             data-testid="cSecret"
-            value={fields.cloudinary_secret}
-            onChange={(e) => {
-              onChange(e, "cloudinary_secret");
-            }}
+            {...data.register("cloudinary_secret")}
           />
         </div>
         <div>
@@ -83,16 +56,20 @@ const Integrations: React.FC<Props> = ({
               analytics, monitoring, alerts, etc.
             </span>
           </p>
-          <TextArea
-            value={fields.scripts}
-            onChange={(e) => onChange(e, "scripts")}
+
+          <Controller
+            name="scripts"
+            control={data.control}
+            render={({ field: { onChange } }) => (
+              <TextArea
+                onChange={onChange}
+                value={data?.watch("scripts") ?? ""}
+              />
+            )}
           />
         </div>
       </div>
-      <Button
-        onClick={() => updateSettingsAPI(fields)}
-        data-testid="save-integrations"
-      >
+      <Button type="submit" data-testid="save-integrations">
         Save
       </Button>
     </>

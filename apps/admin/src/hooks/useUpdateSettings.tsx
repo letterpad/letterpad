@@ -68,6 +68,7 @@ export const useUpdateSettings = () => {
           options: { ...data },
         },
       });
+      updateLocalState(data);
     },
     [updateOption]
   );

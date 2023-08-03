@@ -1,7 +1,6 @@
 import React, { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { Button, Input } from "ui";
-
-import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
@@ -12,21 +11,19 @@ interface Props {
 }
 
 export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
-  const [email, setEmail] = React.useState(data.email);
   const [emailError, setEmailError] = useState("");
-  const { updateAuthor } = useUpdateAuthor(data.id);
-
+  const { register, watch, getFieldState } = useFormContext();
   const onEmailChange = (email: string) => {
-    setEmail(email);
     if (
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         email
       )
     ) {
       setEmailError("");
-    } else {
-      setEmailError("Invalid email address");
+      return true;
     }
+    setEmailError("Invalid email address");
+    return false;
   };
   return (
     <>
@@ -35,15 +32,14 @@ export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
           <div className="col-span-10 lg:col-span-6">
             <Input
               label="Email (private)"
-              value={email}
-              onChange={(e) => onEmailChange(e.target.value)}
+              {...register("email", { validate: onEmailChange })}
               data-id="email-input"
             />
           </div>
           <Button
             variant="primary"
-            onClick={(_) => updateAuthor({ email })}
-            disabled={email === data.email}
+            type="submit"
+            disabled={!getFieldState("email").isDirty}
             className="col-span-2 lg:col-span-1"
             data-id="email-save-button"
           >

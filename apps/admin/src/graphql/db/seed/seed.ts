@@ -321,11 +321,6 @@ async function walk(dir) {
 }
 
 export const cleanupDatabase = async () => {
-  console.log(
-    "Folder Contents",
-    await walk(path.join(__dirname, "../../../../prisma"))
-  );
-
   await prisma.permission.deleteMany();
   await prisma.author.deleteMany();
   await prisma.domain.deleteMany();

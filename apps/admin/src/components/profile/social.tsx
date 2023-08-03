@@ -1,34 +1,15 @@
-import { useMemo } from "react";
-import { Input } from "ui";
+import { Controller, useFormContext } from "react-hook-form";
+import { Button, Input } from "ui";
 
-import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
+import { removeTypenames } from "@/shared/utils";
 
-import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { debounce, removeTypenames } from "@/shared/utils";
-
-interface Props {
-  social: MeFragmentFragment["social"];
-  id: number;
-}
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 const getUsernamefromUrl = (str: string | undefined) =>
   str ? str.split("/").pop() : "";
 
-export const Social: React.VFC<Props> = ({ social, id }) => {
-  const { updateAuthorAPI, updateLocalState } = useUpdateAuthor(id);
-
-  const updateSocial = useMemo(
-    () =>
-      debounce(
-        (inp) =>
-          updateAuthorAPI({
-            social: { ...removeTypenames(social), ...inp },
-          }),
-        500
-      ),
-    [social, updateAuthorAPI]
-  );
+export const Social = () => {
+  const { watch, control } = useFormContext();
 
   const verify = (e: ChangeEvent) => {
     if (e.target.value === "") return true;
@@ -40,81 +21,106 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
   return (
     <>
       <div className="mb-8 grid w-full grid-cols-1 gap-6 lg:grid-cols-2">
-        <Input
-          label="Twitter"
-          addonBefore="@"
-          placeholder="username"
-          value={getUsernamefromUrl(social?.twitter)}
-          onChange={(e) => {
-            if (!verify(e)) return;
-            updateSocial({ twitter: e.target.value });
-            const data = {
-              social: { ...removeTypenames(social), twitter: e.target.value },
-            };
-            updateLocalState(data);
-          }}
+        <Controller
+          name="social"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <Input
+              label="Twitter"
+              addonBefore="@"
+              placeholder="username"
+              value={getUsernamefromUrl(watch("social.twitter"))}
+              onChange={(e) => {
+                if (!verify(e)) return;
+                onChange({
+                  ...removeTypenames(watch("social")),
+                  twitter: e.target.value,
+                });
+              }}
+            />
+          )}
+        />
+        <Controller
+          name="social"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <Input
+              label="Facebook"
+              addonBefore="@"
+              placeholder="username"
+              value={getUsernamefromUrl(watch("social.facebook"))}
+              onChange={(e) => {
+                if (!verify(e)) return;
+                onChange({
+                  ...removeTypenames(watch("social")),
+                  facebook: e.target.value,
+                });
+              }}
+            />
+          )}
         />
 
-        <Input
-          label="Facebook"
-          addonBefore="@"
-          placeholder="username"
-          value={getUsernamefromUrl(social?.facebook)}
-          onChange={(e: ChangeEvent) => {
-            if (!verify(e)) return;
-            updateSocial({ facebook: e.target.value });
-            const data = {
-              social: { ...removeTypenames(social), facebook: e.target.value },
-            };
-            updateLocalState(data);
-          }}
+        <Controller
+          name="social"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <Input
+              label="Instagram"
+              addonBefore="@"
+              placeholder="username"
+              value={getUsernamefromUrl(watch("social.instagram"))}
+              onChange={(e) => {
+                if (!verify(e)) return;
+                onChange({
+                  ...removeTypenames(watch("social")),
+                  instagram: e.target.value,
+                });
+              }}
+            />
+          )}
         />
 
-        <Input
-          label="Instagram"
-          addonBefore="@"
-          placeholder="username"
-          value={getUsernamefromUrl(social?.instagram)}
-          onChange={(e: ChangeEvent) => {
-            if (!verify(e)) return;
-            updateSocial({ instagram: e.target.value });
-            const data = {
-              social: { ...removeTypenames(social), instagram: e.target.value },
-            };
-            updateLocalState(data);
-          }}
+        <Controller
+          name="social"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <Input
+              label="Github"
+              addonBefore="@"
+              placeholder="username"
+              value={getUsernamefromUrl(watch("social.github"))}
+              onChange={(e) => {
+                if (!verify(e)) return;
+                onChange({
+                  ...removeTypenames(watch("social")),
+                  github: e.target.value,
+                });
+              }}
+            />
+          )}
         />
 
-        <Input
-          label="Github"
-          addonBefore="@"
-          placeholder="username"
-          value={getUsernamefromUrl(social?.github)}
-          onChange={(e: ChangeEvent) => {
-            if (!verify(e)) return;
-            updateSocial({ github: e.target.value });
-            const data = {
-              social: { ...removeTypenames(social), github: e.target.value },
-            };
-            updateLocalState(data);
-          }}
-        />
-
-        <Input
-          label="LinkedIn"
-          addonBefore="@"
-          placeholder="username/"
-          value={getUsernamefromUrl(social?.linkedin)}
-          onChange={(e: ChangeEvent) => {
-            if (!verify(e)) return;
-            updateSocial({ linkedin: e.target.value });
-            const data = {
-              social: { ...removeTypenames(social), linkedin: e.target.value },
-            };
-            updateLocalState(data);
-          }}
+        <Controller
+          name="social"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <Input
+              label="LinkedIn"
+              addonBefore="@"
+              placeholder="username"
+              value={getUsernamefromUrl(watch("social.linkedin"))}
+              onChange={(e) => {
+                if (!verify(e)) return;
+                onChange({
+                  ...removeTypenames(watch("social")),
+                  linkedin: e.target.value,
+                });
+              }}
+            />
+          )}
         />
       </div>
+      <Button type="submit">Save</Button>
     </>
   );
 };
