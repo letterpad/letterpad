@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { Button, Input, Label, TextArea } from "ui";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
@@ -56,7 +56,17 @@ const Integrations: React.FC<Props> = ({ cloudinaryEnabledByAdmin }) => {
               analytics, monitoring, alerts, etc.
             </span>
           </p>
-          <TextArea {...data.register("scripts")} />
+
+          <Controller
+            name="scripts"
+            control={data.control}
+            render={({ field: { onChange } }) => (
+              <TextArea
+                onChange={onChange}
+                value={data?.watch("scripts") ?? ""}
+              />
+            )}
+          />
         </div>
       </div>
       <Button type="submit" data-testid="save-integrations">

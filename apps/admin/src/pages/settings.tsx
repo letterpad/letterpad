@@ -37,7 +37,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
   };
   const [deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({ defaultValues: settings });
-  const { register, handleSubmit, formState } = methods;
+  const { handleSubmit, formState } = methods;
   const { updateSettingsAPI } = useUpdateSettings();
   const confirm = async () => {
     await deleteAuthor();
@@ -58,8 +58,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit((data) => {
-              // updateSettingsAPI(getDirtyFields(data, formState.dirtyFields));
-              // console.log(getDirtyFields(data, formState.dirtyFields));
+              updateSettingsAPI(getDirtyFields(data, formState.dirtyFields));
             })}
           >
             <Accordion
@@ -78,7 +77,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                 id="appearance"
                 description="Customise the look and feel of your site"
               >
-                <Appearance settings={settings} />
+                <Appearance />
               </AccordionItem>
               <AccordionItem
                 label="Pages"
@@ -96,7 +95,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                   The first item in the navigation menu will be the homepage of
                   your blog.
                 </div>
-                <Navigation settings={settings} />
+                <Navigation />
               </AccordionItem>
               <AccordionItem
                 label="Integrations"
