@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   Accordion,
   AccordionItem,
@@ -58,7 +58,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit((data) => {
-              updateSettingsAPI(getDirtyFields(data, formState.dirtyFields));
+              const change = getDirtyFields(data, formState.dirtyFields);
+              updateSettingsAPI(change).then(() => methods.reset(change));
             })}
           >
             <Accordion

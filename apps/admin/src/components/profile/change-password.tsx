@@ -1,24 +1,16 @@
-import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { Button, Input } from "ui";
 
-import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
+import { ResetPasswordMutationVariables } from "../../graphql/queries/mutations.graphql";
 
 interface Props {
   id: number;
 }
-export const ChangePassword: React.VFC<Props> = ({ id }) => {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { updateAuthor } = useUpdateAuthor(id);
-
-  const onPasswordChange = (password: string) => {
-    setPassword(password);
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long");
-    } else {
-      setError("");
-    }
-  };
+export const ChangePassword: React.FC<Props> = ({ id }) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<ResetPasswordMutationVariables>();
 
   return (
     <>
@@ -26,35 +18,23 @@ export const ChangePassword: React.VFC<Props> = ({ id }) => {
         <div className="col-span-10 lg:col-span-6">
           <Input
             label="Password"
-            value={password}
-            onChange={(e) => onPasswordChange(e.target.value)}
+            {...register("password", { required: true, minLength: 8 })}
             type="password"
           />
         </div>
         <Button
           variant="primary"
-          onClick={(_) => updateAuthor({ password })}
-          disabled={error.length > 0}
+          type="submit"
+          disabled={!!errors.password}
           className="col-span-2 lg:col-span-1"
         >
           Save
         </Button>
       </div>
-      <span className="-mt-4 text-sm text-red-500">{error}</span>
-    </>
-  );
-
-  return (
-    <>
-      <Input
-        label="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        minLength={8}
-      />
-      <Button variant="primary" onClick={(_) => updateAuthor({ password })}>
-        Save
-      </Button>
+      <span className="-mt-4 text-sm text-red-500">
+        {errors.password?.type === "minLength" &&
+          "Should be minimum 8 characters long"}
+      </span>
     </>
   );
 };

@@ -33,6 +33,7 @@ export const useUpdateAuthor = (id: number, withTracking = true) => {
         author: { ...data, id },
       },
     });
+    updateLocalState(data);
     setLoading(false);
     return result;
   }
