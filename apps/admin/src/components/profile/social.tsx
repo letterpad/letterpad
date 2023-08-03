@@ -1,13 +1,8 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Button, Input } from "ui";
 
-import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { removeTypenames } from "@/shared/utils";
 
-interface Props {
-  social: MeFragmentFragment["social"];
-  id: number;
-}
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 const getUsernamefromUrl = (str: string | undefined) =>

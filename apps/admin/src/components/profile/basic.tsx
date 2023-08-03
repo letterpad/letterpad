@@ -62,7 +62,9 @@ export const Basic = () => {
           data-testid="company"
         />
       </div>
-      <Button type="submit">Save</Button>
+      <Button type="submit" data-testid="basic-submit">
+        Save
+      </Button>
     </>
   );
 };

@@ -41,16 +41,14 @@ describe("Profile", () => {
     cy.getTestId("basic").click();
 
     cy.getTestId("name").type("name");
-    cy.wait("@UpdateAuthorMutation");
 
     cy.getTestId("about").type("about");
-    cy.wait("@UpdateAuthorMutation");
 
     cy.getTestId("occupation").type("occupation");
-    cy.wait("@UpdateAuthorMutation");
 
     cy.getTestId("company").type("company");
-    cy.wait("@UpdateAuthorMutation");
+
+    cy.getTestId("basic-submit").click();
 
     // cy.addUnplsashImage("avatar");
   });

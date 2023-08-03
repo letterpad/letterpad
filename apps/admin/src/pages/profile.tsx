@@ -3,13 +3,10 @@ import { useRouter } from "next/router";
 import { FormProvider, useForm } from "react-hook-form";
 import { Accordion, AccordionItem, Content, PageHeader } from "ui";
 
-import Loading from "@/components/loading";
 import { Basic } from "@/components/profile/basic";
 import { ChangePassword } from "@/components/profile/change-password";
 import { EmailAndUsername } from "@/components/profile/emailAndUsername";
 import { Social } from "@/components/profile/social";
-
-import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 
 import { useUpdateAuthor } from "../hooks/useUpdateAuthor";
 import { getDirtyFields } from "../lib/react-form";
