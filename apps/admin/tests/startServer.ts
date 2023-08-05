@@ -1,5 +1,5 @@
-import { startStandaloneServer } from "@apollo/server/standalone";
 import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
 import { getResolverContext } from "@/graphql/context";
 
@@ -41,14 +41,13 @@ export const createApolloTestServer = async () => {
     }
   );
   return apolloServer;
-
+};
 
 let server;
 beforeAll(async () => {
   global.console = require("console");
   await seed();
   server = await createApolloTestServer();
-  const { url } = await server.listen({ port: 3000 });
 });
 
 afterAll(async () => {
