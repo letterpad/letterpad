@@ -101,7 +101,7 @@ export const UpdateProfile = ({ session, me }) => {
           <div className="mx-auto flex w-full items-center px-6 lg:w-3/5">
             <div className="flex-1">
               <div className="pb-12 text-center">
-                <h2 className="mb-8 text-center text-4xl font-bold text-gray-700 dark:text-white">
+                <h2 className="flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
                   <Logo />
                 </h2>
                 <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">

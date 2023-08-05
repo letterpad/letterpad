@@ -55,7 +55,7 @@ export const Menu: FC<Props> = ({
                 classes.hover,
                 item.key === selectedKey && classes.selected
               )}
-              onClick={(e) => {
+              onClick={(e: any) => {
                 onSelect(e, item.key);
               }}
             >
