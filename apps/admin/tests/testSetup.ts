@@ -5,8 +5,9 @@ const envLoaded = dotenv.config({ path: envPath, debug: true });
 if (envLoaded.error) {
   throw new Error("`.env.test.local` not found.");
 }
-import { ApolloServer } from "apollo-server";
+import { ApolloServer } from "@apollo/server";
 const { exec } = require("child_process");
+import { startStandaloneServer } from "@apollo/server/standalone";
 import React from "react";
 
 import { getResolverContext } from "@/graphql/context";
@@ -28,20 +29,26 @@ const session = {
 };
 
 export const createApolloTestServer = async () => {
-  return new ApolloServer({
-    schema,
-    debug: true,
-    introspection: true,
-    // playground: true,
-    context: async (context) => {
-      const resolverContext = await getResolverContext(context);
-      return {
-        ...context,
-        ...resolverContext,
-        session,
-      };
-    },
-  });
+  const apolloServer = startStandaloneServer(
+    new ApolloServer({
+      schema,
+      introspection: true,
+    }),
+    {
+      context: async (context) => {
+        const resolverContext = await getResolverContext(context);
+        return {
+          ...context,
+          ...resolverContext,
+          session,
+        };
+      },
+      listen: {
+        port: 3000,
+      },
+    }
+  );
+  return apolloServer;
 };
 
 let server;
@@ -60,12 +67,12 @@ beforeAll(async () => {
   try {
     await seed();
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
     process.exit(1);
   }
   server = await createApolloTestServer();
-  const { url } = await server.listen({ port: 3000 });
-  logger.info("server listening at " + url);
+  logger.info("server listening at " + server.url);
 }, 60000);
 
 afterAll(async () => {
