@@ -1,4 +1,5 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
 import { getResolverContext } from "@/graphql/context";
 
@@ -17,23 +18,29 @@ const session = {
 };
 
 export const createApolloTestServer = async () => {
-  return new ApolloServer({
-    schema,
-    debug: true,
-    introspection: true,
-    // playground: true,
-    context: async ({ req, res }) => {
-      const resolverContext = getResolverContext({ req });
-      if (req.headers.sessionid != "undefined") {
-        session.user = {
-          ...session.user,
-          id: req.headers.sessionid as unknown as number,
-        };
-      }
+  const apolloServer = startStandaloneServer(
+    new ApolloServer({
+      schema,
+      introspection: true,
+    }),
+    {
+      context: async ({ req, res }) => {
+        const resolverContext = getResolverContext({ req });
+        if (req.headers.sessionid != "undefined") {
+          session.user = {
+            ...session.user,
+            id: req.headers.sessionid as unknown as number,
+          };
+        }
 
-      return { req, res, ...resolverContext };
-    },
-  });
+        return { req, res, ...resolverContext };
+      },
+      listen: {
+        port: 3000,
+      },
+    }
+  );
+  return apolloServer;
 };
 
 let server;
@@ -41,7 +48,6 @@ beforeAll(async () => {
   global.console = require("console");
   await seed();
   server = await createApolloTestServer();
-  const { url } = await server.listen({ port: 3000 });
 });
 
 afterAll(async () => {
