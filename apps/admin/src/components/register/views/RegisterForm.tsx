@@ -196,7 +196,7 @@ export const RegisterForm = () => {
                     href="/login"
                     className="text-blue-500 hover:underline focus:underline focus:outline-none"
                   >
-                    <a>Sign in</a>
+                    Sign in
                   </Link>
                   .
                 </p>

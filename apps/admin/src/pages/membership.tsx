@@ -101,10 +101,8 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
                 dataIndex: "receipt_url",
                 render: (url) => {
                   return (
-                    <Link href={url}>
-                      <a target="_blank" className="text-blue-600">
-                        Receipt
-                      </a>
+                    <Link href={url} target="_blank" className="text-blue-600">
+                      Receipt
                     </Link>
                   );
                 },

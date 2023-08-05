@@ -1,3 +1,4 @@
+"use client";
 import { ApolloProvider } from "@apollo/client";
 import { AppProps } from "next/app";
 import Script from "next/script";

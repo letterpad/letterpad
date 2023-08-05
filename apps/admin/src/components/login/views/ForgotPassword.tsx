@@ -98,16 +98,13 @@ export const ForgotPassword = ({
                   Rememebered your password ?{" "}
                   <Link
                     href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      hideSelf();
+                    }}
                     className="text-blue-500 hover:underline focus:underline focus:outline-none"
                   >
-                    <a
-                      onClick={(e) => {
-                        e.preventDefault();
-                        hideSelf();
-                      }}
-                    >
-                      Login
-                    </a>
+                    Login
                   </Link>
                   .
                 </p>
