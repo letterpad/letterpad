@@ -140,7 +140,7 @@
     "tsconfig": "*",
     "tsconfig-paths": "^3.9.0",
     "tsup": "^6.5.0",
-    "typescript": "4.6.4",
+    "typescript": "5.1.6",
     "webpack-graphql-loader": "1.0.2",
     "yaml-loader": "0.6.0"
   },

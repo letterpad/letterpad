@@ -29,11 +29,13 @@ const session = {
 };
 
 export const createApolloTestServer = async () => {
-  const apolloServer = startStandaloneServer(
-    new ApolloServer({
-      schema,
-      introspection: true,
-    }),
+  const apolloServer = new ApolloServer({
+    schema,
+    stopOnTerminationSignals: true,
+  });
+
+  const server = startStandaloneServer(
+    apolloServer,
     {
       context: async (context) => {
         const resolverContext = await getResolverContext(context);
@@ -45,10 +47,11 @@ export const createApolloTestServer = async () => {
       },
       listen: {
         port: 3000,
+
       },
     }
   );
-  return apolloServer;
+  return {server, apolloServer};
 };
 
 let server;
@@ -72,11 +75,12 @@ beforeAll(async () => {
     process.exit(1);
   }
   server = await createApolloTestServer();
-  logger.info("server listening at " + server.url);
+  logger.info("server listening at " + server.server.url);
 }, 60000);
 
 afterAll(async () => {
-  server?.stop();
+  server?.apolloServer?.stop();
+  // console.log(server)
 });
 
 const execShellCommand = (command) => {
