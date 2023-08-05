@@ -8,12 +8,12 @@ import Loading from "@/components/loading";
 import { Domain, DomainVerification } from "@/__generated__/__types__";
 import {
   DomainQuery,
-  useDomainCertsQuery,
   useDomainQuery,
 } from "@/__generated__/queries/queries.graphql";
 import { useRemoveDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
 import { MapDomain } from "../components/domain/map-domain";
+import { MapSubDomain } from "../components/domain/map-subdomain";
 import { MappedDomain } from "../components/domain/mapped-domain";
 import { VerifyDomain } from "../components/domain/verify-domain";
 
@@ -39,6 +39,7 @@ const DomainMapping: React.FC<Props> = () => {
       Validate this change
     </Button>
   );
+
   return (
     <>
       <Head>
@@ -69,9 +70,23 @@ const DomainMapping: React.FC<Props> = () => {
             />
           )}
 
-          {isVerified(data) && !isMapped(data) && (
-            <MapDomain domain={getDomainData(data).name} validate={validate} />
-          )}
+          {isVerified(data) &&
+            !isMapped(data) &&
+            isSubdomain(getDomainData(data).name) && (
+              <MapSubDomain
+                domain={getDomainData(data).name}
+                validate={validate}
+              />
+            )}
+
+          {isVerified(data) &&
+            !isMapped(data) &&
+            !isSubdomain(getDomainData(data).name) && (
+              <MapDomain
+                domain={getDomainData(data).name}
+                validate={validate}
+              />
+            )}
 
           {isVerified(data) && isMapped(data) && (
             <MappedDomain {...getDomainData(data)} />
@@ -116,4 +131,16 @@ function getVerificaionData(verification?: DomainVerification[]) {
 }
 function getDomainData(data?: DomainQuery) {
   return (data?.domain.__typename === "Domain" && data.domain) as Domain;
+}
+
+function isSubdomain(input: string): boolean {
+  // Regular expression to match valid subdomain names
+  // Test examples
+  // console.log(isSubdomain("example.com")); // false (domain)
+  // console.log(isSubdomain("subdomain.example.com")); // true (subdomain)
+  // console.log(isSubdomain("subdomain.example.co.in")); // true (subdomain)
+  // console.log(isSubdomain("invalid..subdomain")); // false (invalid)
+  // console.log(isSubdomain("not.a.subdomain.")); // false (invalid)
+  const subdomainPattern = /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i;
+  return subdomainPattern.test(input);
 }
