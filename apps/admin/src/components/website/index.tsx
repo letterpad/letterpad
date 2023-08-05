@@ -74,7 +74,7 @@ export const Website = () => {
         />
         <meta name="twitter:image" content="/website/theme-1.png" />
       </Head>
-      <div className="flex min-h-screen flex-col overflow-hidden">
+      <div className="flex min-h-screen flex-col overflow-hidden bg-gray-900">
         <Header />
         <main className="grow">
           <Hero />
