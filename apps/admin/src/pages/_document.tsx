@@ -11,7 +11,7 @@ class MyDocument extends Document {
           <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
           <script src={basePath + `/prism/prism.js`} async />
         </Head>
-        <body className="bg-gray-900 font-inter text-base tracking-tight text-gray-100 antialiased">
+        <body className="font-inter text-base tracking-tight text-gray-100 antialiased dark:bg-gray-900">
           <Main />
           <NextScript />
         </body>
