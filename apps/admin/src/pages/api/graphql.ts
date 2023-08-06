@@ -1,27 +1,20 @@
-import { ApolloServer } from "apollo-server-micro";
+import { ApolloServer } from "@apollo/server";
+import { startServerAndCreateNextHandler } from "@as-integrations/next";
 
 import { getResolverContext } from "@/graphql/context";
 import { schema } from "@/graphql/schema";
 
-export const apolloServer = new ApolloServer({
-  schema,
-  context: async (context) => {
-    const resolverContext = await getResolverContext(context);
-    return resolverContext;
-  },
-  introspection: true,
-});
-const startServer = apolloServer.start();
+const apolloServer = startServerAndCreateNextHandler(
+  new ApolloServer({
+    schema,
+    introspection: true,
+  }),
+  {
+    context: async (req, res) => {
+      const resolverContext = await getResolverContext({ req, res });
+      return resolverContext;
+    },
+  }
+);
 
-export default async function handler(req, res) {
-  await startServer;
-  await apolloServer.createHandler({
-    path: "/api/graphql",
-  })(req, res);
-}
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export default apolloServer;

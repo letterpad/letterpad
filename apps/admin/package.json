@@ -43,6 +43,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
+    "@apollo/server": "^4.9.1",
+    "@as-integrations/next": "^2.0.1",
     "@dnd-kit/core": "^6.0.5",
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.0",
@@ -58,8 +60,6 @@
     "@tinymce/tinymce-react": "^4.3.0",
     "@types/bcryptjs": "^2.4.2",
     "aos": "^3.0.0-beta.6",
-    "apollo-server": "^3.6.3",
-    "apollo-server-micro": "3.11.1",
     "axios": "^1.2.0",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.10",
@@ -140,7 +140,7 @@
     "tsconfig": "*",
     "tsconfig-paths": "^3.9.0",
     "tsup": "^6.5.0",
-    "typescript": "4.6.4",
+    "typescript": "5.1.6",
     "webpack-graphql-loader": "1.0.2",
     "yaml-loader": "0.6.0"
   },
