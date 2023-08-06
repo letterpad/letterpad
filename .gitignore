@@ -33,6 +33,7 @@ yarn-error.log*
 
 # turbo
 .turbo
+.turbo-cookie
 
 .git_root
 
