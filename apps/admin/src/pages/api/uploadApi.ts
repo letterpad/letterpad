@@ -69,7 +69,7 @@ const uploadApi = async (
       try {
         let result: IMediaUploadResult;
         if (cloudinary_key && cloudinary_name && cloudinary_secret) {
-          result = await uploadToCloudinary(file, uploadPath, {
+          result = await uploadToCloudinary(file, {
             api_key: cloudinary_key,
             cloud_name: cloudinary_name,
             api_secret: cloudinary_secret,
