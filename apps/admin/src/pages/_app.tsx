@@ -46,7 +46,8 @@ function LetterpadApp({
         {Indicator}
         <ResponsiveProvider>
           <div id="message" />
-          <Main Component={Component} props={{ ...pageProps }} />
+
+          {/* <Main Component={Component} props={{ ...pageProps }} /> */}
           <div id="modal-root" />
         </ResponsiveProvider>
       </ApolloProvider>

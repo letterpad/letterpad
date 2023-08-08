@@ -1,3 +1,4 @@
+"use client";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
@@ -6,10 +7,11 @@ import { Button, Content, Message, PageHeader } from "ui";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
 
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
-import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
+
+import { useDataProvider } from "../../context/DataProvider";
 
 const Media = () => {
-  const { loading, data } = useMediaQuery({ variables: { filters: {} } });
+  const { media } = useDataProvider();
   const [preview, setPreview] = useState<IMedia | undefined>();
   const [images, setImages] = useState<MediaNode>({
     count: 0,
@@ -17,10 +19,11 @@ const Media = () => {
   });
 
   useEffect(() => {
-    if (data?.media.__typename === "MediaNode") {
-      setImages(data.media);
+    if (media?.data?.media.__typename === "MediaNode") {
+      setImages(media?.data?.media);
     }
-  }, [loading, data?.media]);
+  }, [media?.loading, media?.data]);
+
   const deleteImage = async (img: IMedia) => {
     const res = await deleteImageAPI(img);
     if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {

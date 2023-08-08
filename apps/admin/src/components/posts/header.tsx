@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { MouseEvent, ReactNode, useState } from "react";
 import { Button, Modal, PageHeader } from "ui";
 

@@ -9,19 +9,16 @@ import ThemeSwitcher from "../theme-switcher";
 
 export const TopBar = () => {
   const SavingIndicator = useSavingIndicator();
-  const { sidebarVisible, setSidebarVisible, isMobileOrTablet } =
-    useResponsiveLayout();
+  const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
   return (
     <div className="flex flex-row items-center justify-between py-4">
       <div>
-        {isMobileOrTablet && (
-          <Button
-            className="menu"
-            onClick={() => setSidebarVisible(!sidebarVisible)}
-          >
-            {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}
-          </Button>
-        )}
+        <Button
+          className="menu sm:hidden"
+          onClick={() => setSidebarVisible(!sidebarVisible)}
+        >
+          {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}
+        </Button>
       </div>
       {SavingIndicator}
       <div className="flex flex-row gap-2">

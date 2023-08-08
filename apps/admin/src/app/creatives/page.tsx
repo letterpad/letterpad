@@ -1,5 +1,6 @@
+"use client";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, Content, Table, useResponsiveLayout } from "ui";
 

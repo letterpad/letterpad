@@ -1,3 +1,4 @@
+"use client";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Button, Content, Input, PageHeader, Table, Tabs } from "ui";
@@ -6,7 +7,7 @@ import Editor from "@/components/post/components/editor";
 
 import { ROLES } from "@/graphql/types";
 
-import { getServerSession } from "../graphql/context";
+import { getServerSession } from "../../graphql/context";
 
 import { AdminUsersType } from "@/types";
 

@@ -1,3 +1,4 @@
+"use client";
 import { loadStripe } from "@stripe/stripe-js";
 import classNames from "classnames";
 import { InferGetServerSidePropsType } from "next";
@@ -15,7 +16,7 @@ import { basePath } from "@/constants";
 import { SessionData } from "@/graphql/types";
 import { getReadableDate } from "@/shared/utils";
 
-import { getServerSession } from "../graphql/context";
+import { getServerSession } from "../../graphql/context";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!

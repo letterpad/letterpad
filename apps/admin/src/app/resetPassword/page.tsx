@@ -1,10 +1,10 @@
+"use client";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { Message } from "ui";
 
 import { Logo } from "@/components/login/views/Logo";
-import NoSsr from "@/components/NoSsr";
 
 import {
   ResetPasswordDocument,
@@ -16,7 +16,9 @@ import { EventAction, track } from "@/track";
 
 const ResetPassword = () => {
   const router = useRouter();
+  const params = useSearchParams();
   const [newPassword, setNewPassword] = useState("");
+  const token = params.get("token");
 
   const resetPassword = async () => {
     if (newPassword.length === 0) {
@@ -27,7 +29,7 @@ const ResetPassword = () => {
       return;
     }
 
-    if (!router.query.token) {
+    if (!token) {
       Message().error({
         content: "Token is missing",
         duration: 5,
@@ -47,7 +49,7 @@ const ResetPassword = () => {
     >({
       mutation: ResetPasswordDocument,
       variables: {
-        token: router.query.token as string,
+        token: token as string,
         password: newPassword,
       },
     });
@@ -72,7 +74,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <NoSsr>
+    <>
       <Head>
         <title>Login</title>
       </Head>
@@ -144,8 +146,7 @@ const ResetPassword = () => {
           </div>
         </div>
       </div>
-    </NoSsr>
+    </>
   );
 };
-ResetPassword.isLogin = true;
 export default ResetPassword;

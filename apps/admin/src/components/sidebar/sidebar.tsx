@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { FC } from "react";
 import { BiLogOut } from "react-icons/bi";
@@ -24,6 +24,7 @@ interface Props {
 
 export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const { setSidebarVisible, isMobileOrTablet } = useResponsiveLayout();
   const s = settings?.__typename === "Setting" ? settings : null;
   const _me = me?.__typename === "Author" ? me : null;
@@ -48,7 +49,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
               }
               isMobileOrTablet && setSidebarVisible(false);
             }}
-            selectedKey={router.pathname}
+            selectedKey={pathname}
             items={[
               {
                 label: "Posts",

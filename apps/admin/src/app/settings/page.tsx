@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   Accordion,
@@ -19,24 +19,28 @@ import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { useDataProvider } from "@/context/DataProvider";
 
-import { useUpdateSettings } from "../hooks/useUpdateSettings";
-import { getDirtyFields } from "../lib/react-form";
+import { useUpdateSettings } from "../../hooks/useUpdateSettings";
+import { getDirtyFields } from "../../lib/react-form";
 
 import { PageProps } from "@/types";
 
 interface Props extends PageProps {
-  settings: SettingsFragmentFragment;
   cloudinaryEnabledByAdmin: boolean;
 }
-function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
+function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const dp = useDataProvider();
   const onPanelClick = (key) => {
-    router.replace({ query: { selected: key } });
+    const params = new URLSearchParams(searchParams);
+    params.set("selected", key);
+    router.replace(`${pathname}?${params}`);
   };
   const [deleteAuthor] = useDeleteAuthorMutation();
-  const methods = useForm({ defaultValues: settings });
+  const methods = useForm({ values: dp.settings });
   const { handleSubmit, formState } = methods;
   const { updateSettingsAPI } = useUpdateSettings();
   const confirm = async () => {
@@ -64,7 +68,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
           >
             <Accordion
               onChange={onPanelClick}
-              activeKey={router.query.selected as string}
+              activeKey={searchParams.get("selected")!}
             >
               <AccordionItem
                 label="General Settings"
@@ -85,7 +89,9 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                 id="pages"
                 description="Optional pages to add to your site"
               >
-                <Pages settings={settings} />
+                {dp.settings?.__typename === "Setting" && (
+                  <Pages settings={dp.settings} />
+                )}
               </AccordionItem>
               <AccordionItem
                 label="Navigation"
@@ -113,13 +119,15 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                 description="Custom token to access letterpad API"
               >
                 <div className="mb-8 flex flex-1 items-center">
-                  <TextArea
-                    label="Client Key"
-                    value={settings.client_token}
-                    id="client_token"
-                    rows={3}
-                    className="w-96"
-                  />
+                  {dp.settings?.__typename === "Setting" && (
+                    <TextArea
+                      label="Client Key"
+                      value={dp.settings.client_token}
+                      id="client_token"
+                      rows={3}
+                      className="w-96"
+                    />
+                  )}
                   <CopyToClipboard elementId="client_token" />
                 </div>
               </AccordionItem>
@@ -153,7 +161,7 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
 
 export default Settings;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   return {
     props: {
       cloudinaryEnabledByAdmin: !!(

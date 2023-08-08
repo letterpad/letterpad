@@ -6,8 +6,8 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import fetch from "cross-fetch";
 
+// import fetch from "cross-fetch";
 import { basePath } from "@/constants";
 import { publish } from "@/shared/eventBus";
 import logger from "@/shared/logger";
@@ -28,7 +28,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const httpLink = new HttpLink({
   uri: basePath + "/api/graphql",
   credentials: "same-origin",
-  fetch,
+  // fetch,
 });
 
 const saveMiddleware = new ApolloLink((operation, forward) => {

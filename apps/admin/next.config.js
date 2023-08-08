@@ -25,9 +25,9 @@ const nextConfig = {
       "picsum.photos",
     ],
   },
-  experimental: { images: { allowFutureImage: true } },
-  // basePath,
-
+  experimental: {
+    appDir: true,
+  },
   webpack(config, options) {
     config.module.rules.push({
       test: /\.graphql$/,

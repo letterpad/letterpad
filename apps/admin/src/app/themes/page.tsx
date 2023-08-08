@@ -1,3 +1,4 @@
+"use client";
 import classNames from "classnames";
 import Head from "next/head";
 import Image from "next/image";
@@ -5,16 +6,12 @@ import { Button, Content, PageHeader, RadioGroup } from "ui";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
-import { SettingsFragmentFragment } from "@/__generated__/src/graphql/queries/queries.graphql";
+import { themes as themesList } from "../../components/themes/themes";
+import { useDataProvider } from "../../context/DataProvider";
 
-import { themes as themesList } from "../components/themes/themes";
-
-interface Props {
-  settings: SettingsFragmentFragment;
-}
-
-const Themes = ({ settings }) => {
+const Themes = () => {
   const { updateSettings } = useUpdateSettings();
+  const { settings } = useDataProvider();
   return (
     <>
       <Head>
@@ -29,7 +26,8 @@ const Themes = ({ settings }) => {
       <Content>
         <div className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {themesList().map((theme) => {
-            const selected = settings.theme ?? "minimal";
+            const selected =
+              settings?.__typename === "Setting" ? settings.theme : "minimal";
             return (
               <div
                 className={classNames(

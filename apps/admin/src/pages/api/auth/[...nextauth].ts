@@ -76,7 +76,7 @@ const providers = (): NextAuthOptions["providers"] => [
   }),
 ];
 
-const options = (): NextAuthOptions => ({
+export const options = (): NextAuthOptions => ({
   providers: providers(),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {

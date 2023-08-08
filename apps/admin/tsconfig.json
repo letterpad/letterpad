@@ -29,7 +29,13 @@
       "@/*": [
         "src/*"
       ]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "exclude": [
     "__generated__/**/*"
@@ -43,6 +49,7 @@
     "src/types.d.ts",
     "src/graphqls.d.ts",
     "public/website/css",
-    "src/graphql/schema/index.ts"
+    "src/graphql/schema/index.ts",
+    ".next/types/**/*.ts"
   ]
 }

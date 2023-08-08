@@ -1,24 +1,39 @@
+"use client";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { Accordion, AccordionItem, Content, PageHeader } from "ui";
+
+import { getDirtyFields } from "@/lib/react-form";
+import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
 import { Basic } from "@/components/profile/basic";
 import { ChangePassword } from "@/components/profile/change-password";
 import { EmailAndUsername } from "@/components/profile/emailAndUsername";
 import { Social } from "@/components/profile/social";
 
-import { useUpdateAuthor } from "../hooks/useUpdateAuthor";
-import { getDirtyFields } from "../lib/react-form";
+import { useDataProvider } from "@/context/DataProvider";
 
-function Profile({ me }) {
+function Profile() {
   const router = useRouter();
-  const methods = useForm({ defaultValues: me });
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const dp = useDataProvider();
+  const me = dp?.me?.__typename === "Author" && dp?.me;
+
+  const methods = useForm({
+    values: me || {},
+  });
+
   const { handleSubmit, formState } = methods;
   const onPanelClick = (key) => {
-    router.replace({ query: { selected: key } });
+    const params = new URLSearchParams(searchParams);
+    params.set("selected", key);
+    router.replace(`${pathname}?${params}`);
   };
-  const { updateAuthorAPI } = useUpdateAuthor(me.id);
+
+  const { updateAuthorAPI } = useUpdateAuthor(me?.id);
   return (
     <>
       <Head>
@@ -31,7 +46,7 @@ function Profile({ me }) {
         </span>
       </PageHeader>
       <Content>
-        {me?.__typename === "Author" && (
+        {me && me?.id && (
           <FormProvider {...methods}>
             <form
               onSubmit={handleSubmit((data) => {
@@ -41,7 +56,7 @@ function Profile({ me }) {
             >
               <Accordion
                 onChange={onPanelClick}
-                activeKey={router.query.selected as string}
+                activeKey={searchParams.get("selected")!}
               >
                 <AccordionItem
                   label="Basic Information"

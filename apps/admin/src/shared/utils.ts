@@ -1,4 +1,4 @@
-import Router from "next/router";
+import Router from "next/navigation";
 import NProgress from "nprogress";
 
 import { basePath } from "@/constants";
@@ -97,11 +97,11 @@ export function removeTypenames<T>(data: T = {} as T): Omit<T, "__typename"> {
 
 export function initPageProgress() {
   NProgress.configure({ showSpinner: true });
-  Router.events.on("routeChangeStart", () => {
-    NProgress.start();
-  });
-  Router.events.on("routeChangeComplete", () => NProgress.done());
-  Router.events.on("routeChangeError", () => NProgress.done());
+  // Router.events.on("routeChangeStart", () => {
+  //   NProgress.start();
+  // });
+  // Router.events.on("routeChangeComplete", () => NProgress.done());
+  // Router.events.on("routeChangeError", () => NProgress.done());
 }
 
 const expr = /^[a-z0-9_]*$/;

@@ -1,15 +1,15 @@
+"use client";
 import Head from "next/head";
 import React, { useState } from "react";
 
 import { ForgotPassword } from "@/components/login/views/ForgotPassword";
 import { LoginForm } from "@/components/login/views/LoginForm";
-import NoSsr from "@/components/NoSsr";
 
 const Login = () => {
   const [loginView, setLoginView] = useState(true);
 
   return (
-    <NoSsr>
+    <>
       <Head>
         <title>Login</title>
       </Head>
@@ -21,8 +21,7 @@ const Login = () => {
           isVisible={!loginView}
         />
       </div>
-    </NoSsr>
+    </>
   );
 };
-Login.isLogin = true;
 export default Login;

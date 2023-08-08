@@ -1,6 +1,6 @@
-import classNames from "classnames";
+"use client";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { Content, Table, useResponsiveLayout } from "ui";
 
@@ -27,19 +27,21 @@ import {
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 
-function Posts() {
+import { useDataProvider } from "../../context/DataProvider";
+
+function Posts({ searchParams, params }) {
   const router = useRouter();
-  const { loading, data, error, refetch } = usePostsQuery({
-    variables: { filters: { sortBy: SortBy.Desc } },
-  });
-  const { isDesktop } = useResponsiveLayout();
+  const { posts } = useDataProvider();
+  const isDesktop = searchParams.viewport === "desktop";
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
   const [filters, setFilters] = useState<PostsFilters>({
     sortBy: SortBy["Desc"],
     status: [PostStatusOptions.Published, PostStatusOptions.Draft],
   });
-  const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
+
+  const postsData =
+    posts?.data?.posts.__typename === "PostsNode" ? posts?.data.posts.rows : [];
 
   const changeStatus = (id: number, status: PostStatusOptions) => {
     updatePost({ id, status });
@@ -54,15 +56,14 @@ function Posts() {
     }
   }, [router, setting?.intro_dismissed]);
 
-  if (error)
+  if (posts?.error)
     return (
       <ErrorMessage
-        description={error}
+        description={posts?.error}
         title="Could not load posts. Refresh the page to try again"
       />
     );
 
-  if (typeof window === "undefined") return null;
   return (
     <>
       <Head>
@@ -77,7 +78,7 @@ function Posts() {
         <TagsProvider>
           <Filters
             onChange={(filters) => {
-              refetch({ filters: { ...filters, type: PostTypes.Post } });
+              posts?.refetch({ filters: { ...filters, type: PostTypes.Post } });
             }}
             filters={filters}
             setFilters={setFilters}
@@ -85,8 +86,8 @@ function Posts() {
         </TagsProvider>
         <Table
           columns={postsColumns({ changeStatus, isDesktop })}
-          dataSource={source.map((item) => ({ ...item, key: item.id }))}
-          loading={loading}
+          dataSource={postsData?.map((item) => ({ ...item, key: item.id }))}
+          loading={posts?.loading}
           onRowClick={(row) => router.push("/post/" + row.id)}
         />
         <style jsx>{postsStyles}</style>

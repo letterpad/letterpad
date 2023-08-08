@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Message } from "ui";
 
@@ -20,6 +20,7 @@ export const LoginForm = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const params = useSearchParams();
   const router = useRouter();
 
   const loginAction = async () => {
@@ -31,7 +32,7 @@ export const LoginForm = ({
     });
     if (result.success && result.redirectUrl) {
       Message().success({ content: result.message, duration: 3 });
-      const { callbackUrl } = router.query;
+      const callbackUrl = params.get("callbackUrl");
       let redirectPath = "/posts";
       if (callbackUrl && typeof callbackUrl === "string") {
         redirectPath = new URL(callbackUrl).pathname;
@@ -149,7 +150,7 @@ export const LoginForm = ({
                     href="/register"
                     className="text-blue-500 hover:underline focus:underline focus:outline-none"
                   >
-                    <a>Sign up</a>
+                    Sign up
                   </Link>
                   .
                 </p>

@@ -1,3 +1,4 @@
+"use client";
 import Head from "next/head";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { Button, Content, Message, PageHeader } from "ui";
@@ -12,10 +13,10 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import { useRemoveDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
-import { MapDomain } from "../components/domain/map-domain";
-import { MapSubDomain } from "../components/domain/map-subdomain";
-import { MappedDomain } from "../components/domain/mapped-domain";
-import { VerifyDomain } from "../components/domain/verify-domain";
+import { MapDomain } from "../../components/domain/map-domain";
+import { MapSubDomain } from "../../components/domain/map-subdomain";
+import { MappedDomain } from "../../components/domain/mapped-domain";
+import { VerifyDomain } from "../../components/domain/verify-domain";
 
 interface Props {
   readOnly: boolean;

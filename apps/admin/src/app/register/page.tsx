@@ -20,7 +20,7 @@ const Register = () => {
 interface Props {
   recaptchaKey: string;
 }
-const Provider: React.VFC<Props> = ({ recaptchaKey }) => {
+const Provider: React.FC<Props> = ({ recaptchaKey }) => {
   if (!recaptchaKey) return <Register />;
   return (
     <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
@@ -28,8 +28,6 @@ const Provider: React.VFC<Props> = ({ recaptchaKey }) => {
     </GoogleReCaptchaProvider>
   );
 };
-//@ts-ignore
-Provider.isLogin = true;
 export default Provider;
 
 export const getServerSideProps = async () => {
