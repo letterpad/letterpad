@@ -1,6 +1,6 @@
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
-import { Button, useResponsiveLayout } from "ui";
+import { Button, useResponsive, useResponsiveLayout } from "ui";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 

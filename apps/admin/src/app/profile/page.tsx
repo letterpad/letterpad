@@ -12,15 +12,16 @@ import { ChangePassword } from "@/components/profile/change-password";
 import { EmailAndUsername } from "@/components/profile/emailAndUsername";
 import { Social } from "@/components/profile/social";
 
-import { useDataProvider } from "@/context/DataProvider";
+import { useMeAndSettingsContext } from "../../components/providers/settings";
+import { isAuthor } from "../../utils/type-guards";
 
 function Profile() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const dp = useDataProvider();
-  const me = dp?.me?.__typename === "Author" && dp?.me;
+  const data = useMeAndSettingsContext();
+  const me = isAuthor(data.me) ? data.me : undefined;
 
   const methods = useForm({
     values: me || {},
@@ -32,8 +33,8 @@ function Profile() {
     params.set("selected", key);
     router.replace(`${pathname}?${params}`);
   };
+  const { updateAuthorAPI } = useUpdateAuthor(me?.id ?? 0);
 
-  const { updateAuthorAPI } = useUpdateAuthor(me?.id);
   return (
     <>
       <Head>

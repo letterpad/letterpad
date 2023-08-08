@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import {
   BuilderContext,
@@ -28,9 +28,9 @@ import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
 
 export const Post = () => {
-  const router = useRouter();
+  const params = useParams();
   const { updatePostAPI, updateLocalState, updatePost } = useUpdatePost();
-  const { postId } = router.query;
+  const postId = params.postId;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
   });

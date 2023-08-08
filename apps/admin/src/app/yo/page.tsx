@@ -1,5 +1,4 @@
-const A = async () => {
-  console.log(123);
+const A = async (p) => {
   return <div>hello</div>;
 };
 export default A;

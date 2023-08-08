@@ -1,62 +1,32 @@
+"use client";
 import { useCallback, useEffect, useState } from "react";
 
-interface ResponsiveConfig {
-  [key: string]: number;
-}
-interface ResponsiveInfo {
-  [key: string]: boolean;
-}
-
-let responsiveConfig: ResponsiveConfig = {
-  xs: 0,
-  sm: 576,
-  md: 768,
-  lg: 992,
-  xl: 1200,
-};
-
-export function configResponsive(config: ResponsiveConfig) {
-  responsiveConfig = config;
-  calculate();
-}
-
-let info: ResponsiveInfo = {};
-
-function calculate() {
-  if (typeof window === "undefined") return;
-
-  const width = window.innerWidth;
-  const newInfo = {} as ResponsiveInfo;
-  let shouldUpdate = false;
-  for (const key of Object.keys(responsiveConfig)) {
-    newInfo[key] = width >= responsiveConfig[key];
-    if (newInfo[key] !== info[key]) {
-      shouldUpdate = true;
-    }
-  }
-  if (shouldUpdate) {
-    info = newInfo;
-  }
-}
-calculate();
-
 export const useResponsive = () => {
-  const [state, setState] = useState<ResponsiveInfo>({ ...info });
+  const initialWidth = typeof window !== "undefined" ? window.innerWidth : 0;
+  const [width, setWidth] = useState(initialWidth);
 
-  const doResize = useCallback(() => {
-    const oldInfo = state;
-    calculate();
-    if (str(oldInfo) === str(info)) return;
-    setState({ ...info });
-  }, [state]);
+  const handleWindowSizeChange = useCallback(() => {
+    setWidth(typeof window !== "undefined" ? window.innerWidth : 0);
+  }, []);
 
   useEffect(() => {
-    doResize();
-    window.addEventListener("resize", doResize);
-    return () => window.removeEventListener("resize", doResize);
-  }, [doResize]);
+    handleWindowSizeChange();
+    window.addEventListener("resize", handleWindowSizeChange);
 
-  return state;
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, [handleWindowSizeChange]);
+
+  const isMobile = width <= 768;
+  const isTablet = width <= 1024;
+  const isDesktop = width > 1024 || typeof window === "undefined";
+
+  return {
+    isDesktop,
+    isMobile,
+    isTablet,
+    isMobileOrTablet:
+      typeof window === "undefined" ? false : isMobile || isTablet,
+  };
 };
-
-const str = (obj: Record<any, any>) => JSON.stringify(obj);

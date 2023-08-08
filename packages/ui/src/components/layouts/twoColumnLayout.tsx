@@ -1,7 +1,9 @@
+"use client";
 import classNames from "classnames";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 
 import { useResponsiveLayout } from "./responsiveProvider";
+import { useResponsive } from "./useResponsive";
 
 interface Props {
   left: ReactNode;
@@ -9,7 +11,7 @@ interface Props {
 }
 
 export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
-  const { sidebarVisible, setSidebarVisible, isMobileOrTablet, isDesktop } =
+  const { isMobileOrTablet, isDesktop, sidebarVisible, setSidebarVisible } =
     useResponsiveLayout();
 
   return (
@@ -28,7 +30,7 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
             "main  flex flex-grow flex-col transition-all duration-150 ease-in md:ml-0",
             {
               "-ml-[250px]": !sidebarVisible,
-              "translate-x-0 blur-lg": sidebarVisible && isMobileOrTablet,
+              "translate-x-0": sidebarVisible && isMobileOrTablet,
               "min-w-full": !!isMobileOrTablet,
             }
           )}

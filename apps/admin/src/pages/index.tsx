@@ -20,6 +20,7 @@ const NoPage = () => {
       document.documentElement.classList.remove("home");
     };
   }, []);
+
   if (isPlatform) {
     return <Website />;
   }

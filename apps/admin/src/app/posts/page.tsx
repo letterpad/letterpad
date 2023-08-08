@@ -1,8 +1,9 @@
 "use client";
+import { is } from "cheerio/lib/api/traversing";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
-import { Content, Table, useResponsiveLayout } from "ui";
+import { Content, Table, useResponsive, useResponsiveLayout } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -28,20 +29,21 @@ import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 
 import { useDataProvider } from "../../context/DataProvider";
+import { isPostsNode } from "../../utils/type-guards";
 
-function Posts({ searchParams, params }) {
+function Posts() {
   const router = useRouter();
-  const { posts } = useDataProvider();
-  const isDesktop = searchParams.viewport === "desktop";
+  const { data, loading, refetch, error } = usePostsQuery({
+    variables: { filters: { sortBy: SortBy.Desc } },
+  });
+  const postsNode = isPostsNode(data?.posts) ? data?.posts.rows : [];
+  const { isDesktop } = useResponsive();
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
   const [filters, setFilters] = useState<PostsFilters>({
     sortBy: SortBy["Desc"],
     status: [PostStatusOptions.Published, PostStatusOptions.Draft],
   });
-
-  const postsData =
-    posts?.data?.posts.__typename === "PostsNode" ? posts?.data.posts.rows : [];
 
   const changeStatus = (id: number, status: PostStatusOptions) => {
     updatePost({ id, status });
@@ -56,10 +58,10 @@ function Posts({ searchParams, params }) {
     }
   }, [router, setting?.intro_dismissed]);
 
-  if (posts?.error)
+  if (!loading && error)
     return (
       <ErrorMessage
-        description={posts?.error}
+        description={error.message}
         title="Could not load posts. Refresh the page to try again"
       />
     );
@@ -78,7 +80,7 @@ function Posts({ searchParams, params }) {
         <TagsProvider>
           <Filters
             onChange={(filters) => {
-              posts?.refetch({ filters: { ...filters, type: PostTypes.Post } });
+              refetch({ filters: { ...filters, type: PostTypes.Post } });
             }}
             filters={filters}
             setFilters={setFilters}
@@ -86,8 +88,8 @@ function Posts({ searchParams, params }) {
         </TagsProvider>
         <Table
           columns={postsColumns({ changeStatus, isDesktop })}
-          dataSource={postsData?.map((item) => ({ ...item, key: item.id }))}
-          loading={posts?.loading}
+          dataSource={postsNode?.map((item) => ({ ...item, key: item.id }))}
+          loading={loading}
           onRowClick={(row) => router.push("/post/" + row.id)}
         />
         <style jsx>{postsStyles}</style>

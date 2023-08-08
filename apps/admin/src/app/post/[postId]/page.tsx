@@ -1,8 +1,12 @@
+"use client";
 import { Post, PostProvider } from "@/components/post";
 
 import { Setting } from "@/__generated__/__types__";
 
-function EditPost({ settings }: { readOnly: boolean; settings: Setting }) {
+import { useDataProvider } from "../../../context/DataProvider";
+
+function EditPost() {
+  const { settings } = useDataProvider();
   return (
     <PostProvider settings={settings}>
       <Post />

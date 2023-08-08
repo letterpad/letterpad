@@ -39,7 +39,7 @@ const saveMiddleware = new ApolloLink((operation, forward) => {
 export async function createApolloServerClient(context) {
   const schemaLinkMiddleware = await graphqlSchemaLink(context);
   return new ApolloClient({
-    ssrMode: false,
+    ssrMode: true,
     link: concat(saveMiddleware, schemaLinkMiddleware),
     cache: new InMemoryCache(),
   });
