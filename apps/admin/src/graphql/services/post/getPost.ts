@@ -40,6 +40,16 @@ export const getPost = async (
         id: postId,
       },
     });
+    if (
+      !previewHash &&
+      session_author_id &&
+      post?.author_id !== session_author_id
+    ) {
+      return {
+        __typename: "UnAuthorized",
+        message: "You dont have access to view this post.",
+      };
+    }
     if (post) {
       const html =
         post.status === PostStatusOptions.Published
