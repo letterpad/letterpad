@@ -192,21 +192,21 @@ const Members = () => {
 
 export default Members;
 
-export async function getServerSideProps(context) {
-  const session = await getServerSession(context);
+// export async function getServerSideProps(context) {
+//   const session = await getServerSession(context);
 
-  const isAdmin = session?.user?.role === ROLES.ADMIN;
-  if (!isAdmin) {
-    return {
-      redirect: {
-        destination: "/posts",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {
-      isAdmin,
-    },
-  };
-}
+//   const isAdmin = session?.user?.role === ROLES.ADMIN;
+//   if (!isAdmin) {
+//     return {
+//       redirect: {
+//         destination: "/posts",
+//         permanent: false,
+//       },
+//     };
+//   }
+//   return {
+//     props: {
+//       isAdmin,
+//     },
+//   };
+// }

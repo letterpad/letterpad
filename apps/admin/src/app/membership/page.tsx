@@ -22,7 +22,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
-type P = InferGetServerSidePropsType<typeof getServerSideProps>;
+type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
@@ -131,38 +131,38 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
 
 export default Payments;
 
-export async function getServerSideProps({ req, res }) {
-  const _session = await getServerSession({ req: req });
-  const session = _session as unknown as { user: SessionData };
-  //   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
-  const author = await prisma.author.findFirst({
-    where: { id: session.user.id },
-  });
-  if (!author || !author.stripe_customer_id) {
-    return {
-      props: {
-        active: false,
-      },
-    };
-  }
+// export async function getServerSideProps({ req, res }) {
+//   const _session = await getServerSession({ req: req });
+//   const session = _session as unknown as { user: SessionData };
+//   //   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
+//   const author = await prisma.author.findFirst({
+//     where: { id: session.user.id },
+//   });
+//   if (!author || !author.stripe_customer_id) {
+//     return {
+//       props: {
+//         active: false,
+//       },
+//     };
+//   }
 
-  const details = async () => {
-    const customer = await stripe.customers.retrieve(
-      author?.stripe_customer_id!,
-      {
-        expand: ["subscriptions"], // 2
-      }
-    );
-    if (!customer.deleted) {
-      const charges = await stripe.charges.list({
-        customer: author?.stripe_customer_id!,
-        limit: 3,
-      });
-      return { customer, charges };
-    }
-    return { customer: null, charges: null };
-  };
-  const { customer, charges } = await details();
-  const active = customer?.subscriptions?.data[0]?.status === "active";
-  return { props: { customer, charges, active } };
-}
+//   const details = async () => {
+//     const customer = await stripe.customers.retrieve(
+//       author?.stripe_customer_id!,
+//       {
+//         expand: ["subscriptions"], // 2
+//       }
+//     );
+//     if (!customer.deleted) {
+//       const charges = await stripe.charges.list({
+//         customer: author?.stripe_customer_id!,
+//         limit: 3,
+//       });
+//       return { customer, charges };
+//     }
+//     return { customer: null, charges: null };
+//   };
+//   const { customer, charges } = await details();
+//   const active = customer?.subscriptions?.data[0]?.status === "active";
+//   return { props: { customer, charges, active } };
+// }
