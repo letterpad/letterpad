@@ -1,6 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { Button, Input } from "ui";
 
+import { SaveButton } from "../save-button";
 import { ResetPasswordMutationVariables } from "../../graphql/queries/mutations.graphql";
 
 interface Props {
@@ -22,14 +23,11 @@ export const ChangePassword: React.FC<Props> = ({ id }) => {
             type="password"
           />
         </div>
-        <Button
-          variant="primary"
-          type="submit"
+        <SaveButton
+          testId="basic-submit"
           disabled={!!errors.password}
           className="col-span-2 lg:col-span-1"
-        >
-          Save
-        </Button>
+        />
       </div>
       <span className="-mt-4 text-sm text-red-500">
         {errors.password?.type === "minLength" &&

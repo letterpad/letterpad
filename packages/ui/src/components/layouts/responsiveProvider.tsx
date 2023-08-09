@@ -8,21 +8,22 @@ interface Props {
   setSidebarVisible: (flag: boolean) => void;
   isMobileOrTablet: boolean;
   isDesktop: boolean;
+  isMobile: boolean;
 }
 const Responsive = createContext<Props>({} as Props);
 
 export const ResponsiveProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { isDesktop, isMobileOrTablet } = useResponsive();
+  const { isDesktop, isMobileOrTablet, isMobile } = useResponsive();
   const [sidebarVisible, setSidebarVisible] = useState(!isMobileOrTablet);
   const value = {
     sidebarVisible,
     setSidebarVisible,
     isMobileOrTablet,
     isDesktop,
+    isMobile,
   };
-
   return <Responsive.Provider value={value}>{children}</Responsive.Provider>;
 };
 

@@ -1,6 +1,7 @@
 import { useFormContext } from "react-hook-form";
-import { Button, Input, TextArea } from "ui";
+import { Input, TextArea } from "ui";
 
+import { SaveButton } from "../save-button";
 import { Setting } from "../../../__generated__/__types__";
 
 interface Props {}
@@ -77,9 +78,7 @@ const General: React.FC<Props> = () => {
           data-testid="footerDescription"
         />
       </div>
-      <Button data-testid="save-general" type="submit">
-        Save
-      </Button>
+      <SaveButton testId="save-general" />
     </>
   );
 };

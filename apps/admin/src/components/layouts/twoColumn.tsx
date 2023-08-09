@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import { TwoColumnLayout as Layout } from "ui";
 

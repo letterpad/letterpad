@@ -14,7 +14,7 @@ export const TopBar = () => {
     <div className="flex flex-row items-center justify-between py-4">
       <div>
         <Button
-          className="menu sm:hidden"
+          className="menu md:hidden"
           onClick={() => setSidebarVisible(!sidebarVisible)}
         >
           {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}

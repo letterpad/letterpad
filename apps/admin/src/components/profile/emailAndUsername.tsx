@@ -5,6 +5,7 @@ import { Button, Input } from "ui";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 import { ChangeUsername } from "./change-username";
+import { SaveButton } from "../save-button";
 
 interface Props {
   data: MeFragmentFragment;
@@ -36,15 +37,11 @@ export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
               data-id="email-input"
             />
           </div>
-          <Button
-            variant="primary"
-            type="submit"
+          <SaveButton
+            testId="email-save-button"
             disabled={!getFieldState("email").isDirty}
             className="col-span-2 lg:col-span-1"
-            data-id="email-save-button"
-          >
-            Save
-          </Button>
+          />
         </div>
         {emailError && (
           <span className="-mt-4 text-sm text-red-500">{emailError}</span>

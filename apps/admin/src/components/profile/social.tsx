@@ -1,7 +1,9 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Button, Input } from "ui";
+import { Input } from "ui";
 
 import { removeTypenames } from "@/shared/utils";
+
+import { SaveButton } from "../save-button";
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
@@ -120,7 +122,7 @@ export const Social = () => {
           )}
         />
       </div>
-      <Button type="submit">Save</Button>
+      <SaveButton />
     </>
   );
 };

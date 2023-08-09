@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { MouseEvent, ReactNode, useState } from "react";
+import { BiPlus } from "react-icons/bi";
 import { Button, Modal, PageHeader } from "ui";
 
 import { PostTypes } from "@/__generated__/__types__";
@@ -45,7 +46,9 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             key="1"
             data-testid="createPostBtn"
             onClick={() => onNewClick()}
+            className="flex items-center gap-1"
           >
+            <BiPlus size={16} />
             {buttonLabel}
           </Button>,
         ]}
