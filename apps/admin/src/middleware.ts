@@ -1,8 +1,9 @@
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 import { NextRequest, NextResponse, userAgent } from "next/server";
 
-import { basePath } from "./constants";
+import { basePath, registrationPaths } from "./constants";
 import { Session } from "./graphql/types";
+import { RegisterStep } from "../__generated__/__types__";
 
 export const config = {
   /*
@@ -22,6 +23,7 @@ export const config = {
    *                        we do this to make sure "demo.vercel.pub/_sites/steven" is not matched and throws a 404.
    */
   matcher: [
+    "/update/:path*",
     "/post/:path*",
     "/posts",
     "/creatives",
@@ -36,6 +38,8 @@ export const config = {
   ],
 };
 
+const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
+
 export async function middleware(request: NextRequest) {
   const { device } = userAgent(request);
   const session = await getServerSession(request.headers);
@@ -46,8 +50,42 @@ export async function middleware(request: NextRequest) {
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
 
-  if (!session?.user.id)
+  if (!session?.user.id) {
     return NextResponse.redirect(proto + "://" + host + "/login");
+  } else if (session?.user?.register_step) {
+    const { register_step } = session?.user;
+    const { pathname } = request.nextUrl;
+    switch (register_step) {
+      case ProfileInfo:
+        if (pathname !== registrationPaths[ProfileInfo]) {
+          return NextResponse.redirect(
+            proto + "://" + host + registrationPaths[ProfileInfo]
+          );
+        }
+        break;
+
+      case SiteInfo:
+        if (pathname !== registrationPaths[SiteInfo]) {
+          return NextResponse.redirect(
+            proto + "://" + host + registrationPaths[SiteInfo]
+          );
+        }
+        break;
+      case Registered:
+        if (
+          pathname === registrationPaths[SiteInfo] ||
+          pathname === registrationPaths[ProfileInfo]
+        ) {
+          return NextResponse.redirect(
+            proto + "://" + host + registrationPaths[Registered]
+          );
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
   return NextResponse.rewrite(nextUrl);
 }
 

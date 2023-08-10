@@ -1,4 +1,5 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { Input, Label, Message, TextArea } from "ui";
 
@@ -11,16 +12,20 @@ import { RegisterStep } from "@/__generated__/__types__";
 import { removeTypenames } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
-export const SiteInfo = ({ session, settings }) => {
-  const [site_title, setSiteTitle] = useState(settings.site_title ?? "");
-  const [site_tagline, setSiteTagline] = useState(settings.site_tagline ?? "");
-  const [design, setDesign] = useState(removeTypenames(settings.design));
+import { useMeAndSettingsContext } from "../../../components/providers/settings";
+
+export const SiteInfo = () => {
+  const { settings } = useMeAndSettingsContext();
+  const session = useSession();
+  const [site_title, setSiteTitle] = useState(settings?.site_title ?? "");
+  const [site_tagline, setSiteTagline] = useState(settings?.site_tagline ?? "");
+  const [design, setDesign] = useState(removeTypenames(settings?.design));
   const [site_description, setSiteDescription] = useState(
-    settings.site_description ?? ""
+    settings?.site_description ?? ""
   );
   const [error, setError] = useState<null | Record<string, string>>(null);
   const { updateSettings } = useUpdateSettings();
-  const { updateAuthor } = useUpdateAuthor(session.id, false);
+  const { updateAuthor } = useUpdateAuthor(session.data?.user?.id ?? 0, false);
   const [_, setProcessing] = useState(false);
 
   const router = useRouter();

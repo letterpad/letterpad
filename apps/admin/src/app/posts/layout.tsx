@@ -4,7 +4,7 @@ import { TwoColumnLayout } from "@/components/layouts/twoColumn";
 
 export const dynamic = "force-dynamic";
 
-const Layout = ({ children, ...rest }) => {
+const Layout = ({ children }) => {
   return <TwoColumnLayout>{children}</TwoColumnLayout>;
 };
 

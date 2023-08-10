@@ -1,5 +1,7 @@
-import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { Input, Message, TextArea } from "ui";
 
@@ -14,12 +16,16 @@ import { registrationPaths } from "@/constants";
 import { sanitizeUsername } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
-export const UpdateProfile = ({ session, me }) => {
-  const [name, setName] = useState(session.name ?? "");
+import { useMeAndSettingsContext } from "../../../components/providers/settings";
+
+export const UpdateProfile = () => {
+  const { me } = useMeAndSettingsContext();
+  const session = useSession();
+  const [name, setName] = useState(me?.name ?? "");
   const [username, setUsername] = useState(
-    isInteger(session.username) ? "" : session.username ?? ""
+    isInteger(me?.username) ? "" : me?.username ?? ""
   );
-  const [bio, setBio] = useState(me.bio ?? "");
+  const [bio, setBio] = useState(me?.bio ?? "");
   const [error, setError] = useState<null | Record<string, string>>(null);
   const [updateAuthor] = useUpdateAuthorMutation();
 
@@ -28,7 +34,7 @@ export const UpdateProfile = ({ session, me }) => {
   const router = useRouter();
 
   const updateProfile = async () => {
-    if (!session.id) return router.push("/login");
+    if (!session.data?.user?.id) return router.push("/login");
     setProcessing(true);
     setError(null);
     Message().loading({
@@ -64,7 +70,7 @@ export const UpdateProfile = ({ session, me }) => {
           name,
           bio,
           register_step: RegisterStep.SiteInfo,
-          id: session.id,
+          id: session.data.user.id,
         },
       },
     });

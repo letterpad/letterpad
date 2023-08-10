@@ -1,7 +1,7 @@
 "use client";
 
 import { ApolloProvider } from "@apollo/client";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { ResponsiveProvider } from "ui";
 
