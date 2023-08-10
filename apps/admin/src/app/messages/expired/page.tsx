@@ -1,3 +1,5 @@
+"use client";
+
 import Head from "next/head";
 import { Result } from "ui";
 
@@ -15,5 +17,5 @@ const Expired = () => {
     </>
   );
 };
-Expired.isMessage = true;
+
 export default Expired;

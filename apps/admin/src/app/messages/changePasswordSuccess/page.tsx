@@ -1,8 +1,9 @@
+"use client";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { Button, Result } from "ui";
 
-const Registered = () => {
+const ChangePasswordSuccess = () => {
   const router = useRouter();
 
   const doLogin = () => {
@@ -11,12 +12,12 @@ const Registered = () => {
   return (
     <>
       <Head>
-        <title>Registered Successfully</title>
+        <title>Success - Password Changed</title>
       </Head>
       <Result
         status="success"
-        title="Registration successful"
-        subTitle="Congrats! You have successfully registered with Letterpad. You will receive an email shortly from us to verify your identity."
+        title="Password Changed"
+        subTitle="Your password has been changed successfully"
         extra={[
           <Button key="login" onClick={doLogin}>
             Login
@@ -26,5 +27,5 @@ const Registered = () => {
     </>
   );
 };
-Registered.isMessage = true;
-export default Registered;
+
+export default ChangePasswordSuccess;

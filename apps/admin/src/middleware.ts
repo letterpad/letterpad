@@ -23,7 +23,8 @@ export const config = {
    *                        we do this to make sure "demo.vercel.pub/_sites/steven" is not matched and throws a 404.
    */
   matcher: [
-    "/update/:path*",
+    "/messages/:path",
+    "/update/:path",
     "/post/:path*",
     "/posts",
     "/creatives",

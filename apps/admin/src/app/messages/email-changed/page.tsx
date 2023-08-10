@@ -1,15 +1,13 @@
+"use client";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Button, Result } from "ui";
 
-const Verified = () => {
+const EmailChanged = () => {
   const router = useRouter();
   const doLogin = () => {
     router.push("/api/auth/signin");
   };
-  if (typeof document === "undefined") {
-    return null;
-  }
   const queryParams = new URLSearchParams(document.location.search);
 
   if (queryParams.get("msg")) {
@@ -22,7 +20,7 @@ const Verified = () => {
       </Head>
       <Result
         status="success"
-        title="Email Verified"
+        title="Email Changed"
         subTitle={`Your email has been successfully changed to ${queryParams.get(
           "newEmail"
         )}. Click the below button to login`}
@@ -35,5 +33,5 @@ const Verified = () => {
     </>
   );
 };
-Verified.isMessage = true;
-export default Verified;
+
+export default EmailChanged;

@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FC, useCallback, useEffect } from "react";
 
 import { GettingStarted } from "@/components/home/getting-started";

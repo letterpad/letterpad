@@ -1,3 +1,4 @@
+"use client";
 import Head from "next/head";
 import { Result } from "ui";
 
@@ -15,5 +16,4 @@ const VerifiedSubscriber = () => {
     </>
   );
 };
-VerifiedSubscriber.isMessage = true;
 export default VerifiedSubscriber;
