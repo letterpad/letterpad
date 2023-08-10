@@ -27,7 +27,7 @@ export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
             {fields.map((key, idx) => {
               const props = columns[idx];
               return (
-                <td className={classes.cell} key={idx}>
+                <td className={classes.cell + " " + props?.className} key={idx}>
                   <div className="flex items-center">
                     <div className="space-y-2">
                       <div className="whitespace-no-wrap">

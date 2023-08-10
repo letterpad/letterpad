@@ -17,6 +17,7 @@ import { getServerSession } from "../middleware";
 const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme")?.value ?? "light";
   const session = await getServerSession(headers());
+
   return (
     <html lang="en" data-color-scheme={theme}>
       <Head>

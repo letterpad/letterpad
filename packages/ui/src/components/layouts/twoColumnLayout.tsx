@@ -11,39 +11,29 @@ interface Props {
 }
 
 export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
-  const {
-    isMobileOrTablet,
-    isMobile,
-    isDesktop,
-    sidebarVisible,
-    setSidebarVisible,
-  } = useResponsiveLayout();
-
-  useEffect(() => {
-    setSidebarVisible(!isMobile);
-  }, [setSidebarVisible, isMobile]);
+  const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
 
   return (
     <>
       <div className="fixed flex min-h-screen w-full flex-row bg-white dark:bg-zinc-900">
         <aside
           className={classNames(
-            "top-0  h-screen min-w-[250px] -translate-x-full transform bg-zinc-800 transition-transform duration-150 ease-in md:sticky  md:shadow",
-            { "translate-x-0": sidebarVisible || isDesktop }
+            "top-0  h-screen min-w-[250px] -translate-x-full transform bg-zinc-800 transition-transform duration-150 ease-in md:sticky  md:translate-x-0 md:shadow",
+            {
+              "translate-x-0": sidebarVisible,
+            }
           )}
         >
           {left}
         </aside>
         <div
           className={classNames(
-            "main  flex flex-grow flex-col transition-all duration-150 ease-in md:ml-0",
+            "main flex min-w-full flex-grow -translate-x-[250px] flex-col transition-all duration-150 ease-in md:ml-0 md:min-w-fit md:translate-x-0",
             {
-              "-ml-[250px]": !sidebarVisible,
-              "translate-x-0": sidebarVisible && isMobileOrTablet,
-              "min-w-full": !!isMobileOrTablet,
+              "translate-x-0": sidebarVisible,
             }
           )}
-          onClick={() => sidebarVisible && setSidebarVisible(!isMobileOrTablet)}
+          onClick={() => sidebarVisible && setSidebarVisible(false)}
         >
           {right}
         </div>

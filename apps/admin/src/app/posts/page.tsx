@@ -1,5 +1,5 @@
 "use client";
-import { is } from "cheerio/lib/api/traversing";
+
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
@@ -28,7 +28,6 @@ import {
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 
-import { useDataProvider } from "../../context/DataProvider";
 import { isPostsNode } from "../../utils/type-guards";
 
 function Posts() {
@@ -37,7 +36,6 @@ function Posts() {
     variables: { filters: { sortBy: SortBy.Desc } },
   });
   const postsNode = isPostsNode(data?.posts) ? data?.posts.rows : [];
-  const { isDesktop } = useResponsive();
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
   const [filters, setFilters] = useState<PostsFilters>({
@@ -87,7 +85,7 @@ function Posts() {
           />
         </TagsProvider>
         <Table
-          columns={postsColumns({ changeStatus, isDesktop })}
+          columns={postsColumns({ changeStatus })}
           dataSource={postsNode?.map((item) => ({ ...item, key: item.id }))}
           loading={loading}
           onRowClick={(row) => router.push("/post/" + row.id)}
