@@ -64,12 +64,16 @@ export const useUpdateSettings = () => {
         eventLabel: Object.keys({ ...data }).join("-"),
       });
       try {
-        await updateOption({
+        const result = await updateOption({
           variables: {
             options: { ...data },
           },
         });
-        updateLocalState(data);
+        if (result.data?.updateOptions?.__typename === "Setting") {
+          updateLocalState(data);
+        } else {
+          throw new Error(`Error: ${result.data?.updateOptions?.__typename}`);
+        }
       } catch (e) {
         throw new Error(e.message);
       }
@@ -78,20 +82,25 @@ export const useUpdateSettings = () => {
   );
 
   const updateLocalState = (data: SettingInputType) => {
-    const settingsData = apolloBrowserClient.readQuery({
-      query: SettingsDocument,
-    });
+    try {
+      const settingsData =
+        apolloBrowserClient.readQuery({
+          query: SettingsDocument,
+        }) ?? {};
 
-    apolloBrowserClient.writeQuery({
-      query: SettingsDocument,
-      data: {
-        settings: {
-          ...settingsData.settings,
-          ...data,
+      apolloBrowserClient.writeQuery({
+        query: SettingsDocument,
+        data: {
+          settings: {
+            ...settingsData?.settings,
+            ...data,
+          },
         },
-      },
-    });
-    return settingsData;
+      });
+      return settingsData;
+    } catch (e: any) {
+      throw new Error(e.message);
+    }
   };
 
   return {
