@@ -3,7 +3,7 @@
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
-import { Content, Table, useResponsive, useResponsiveLayout } from "ui";
+import { Content, Table } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 

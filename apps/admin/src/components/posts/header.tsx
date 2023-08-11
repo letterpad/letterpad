@@ -17,13 +17,19 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  const onClick = (type, pageType: PageType) => {
+  const onClick = async (type, pageType: PageType) => {
     track({
       eventAction: EventAction.Click,
       eventCategory: "New",
       eventLabel: `${type} - ${pageType}`,
     });
-    router.push(`/api/create?type=${type}&page_type=${pageType}`);
+    const createdPost = await fetch(
+      `/api/create?type=${type}&page_type=${pageType}`
+    );
+    const post = await createdPost.json();
+    if (post?.id) {
+      router.replace(`/${type}/${post.id}`);
+    }
   };
 
   const onNewClick = () => {

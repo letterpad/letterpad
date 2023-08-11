@@ -1,7 +1,7 @@
 "use client";
 import Head from "next/head";
-import { useParams, useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
+import { useParams } from "next/navigation";
+import { useCallback, useMemo } from "react";
 import {
   BuilderContext,
   Layout as LayoutBuilder,
@@ -31,19 +31,12 @@ import { isPost } from "../../../utils/type-guards";
 
 export const Post = () => {
   const params = useParams();
-  const router = useRouter();
   const { updatePostAPI, updateLocalState, updatePost } = useUpdatePost();
   const postId = params.postId;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
     skip: !postId,
   });
-
-  useEffect(() => {
-    router.refresh();
-  }, [router]);
-
-  // console.log(data);
 
   const debounceUpdatePostAPI = useMemo(
     () => debounce((data) => updatePostAPI(data), 500),
