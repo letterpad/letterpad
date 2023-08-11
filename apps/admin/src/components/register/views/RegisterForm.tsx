@@ -84,7 +84,10 @@ export const RegisterForm = () => {
           out.register_step !== RegisterStep.Registered &&
           out.verified
         ) {
-          return doLogin({ email, password });
+          const success = await doLogin({ email, password });
+          if (success.redirectUrl) {
+            return router.push(success.redirectUrl);
+          }
         }
 
         track({

@@ -26,7 +26,7 @@ export const SiteInfo = () => {
     settings?.site_description ?? ""
   );
   const [error, setError] = useState<null | Record<string, string>>(null);
-  const { updateSettings } = useUpdateSettings();
+  const { updateSettingsAPI } = useUpdateSettings();
   const { updateAuthor } = useUpdateAuthor(session.data?.user?.id ?? 0, false);
   const [_, setProcessing] = useState(false);
 
@@ -65,15 +65,14 @@ export const SiteInfo = () => {
   const updateSite = async () => {
     const processed = processData();
     if (!processed) return;
-
-    const optionsResult = await updateSettings({
-      site_title,
-      site_description,
-      site_tagline,
-      design,
-    });
-
-    if (optionsResult.data?.updateOptions?.__typename !== "Setting") {
+    try {
+      await updateSettingsAPI({
+        site_title,
+        site_description,
+        site_tagline,
+        design,
+      });
+    } catch (e) {
       Message().error({
         content: "Site information update failed",
         duration: 5,
@@ -81,6 +80,7 @@ export const SiteInfo = () => {
       setProcessing(false);
       return;
     }
+
     const result = await updateAuthor({
       register_step: RegisterStep.Registered,
     });

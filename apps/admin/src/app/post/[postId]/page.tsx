@@ -1,13 +1,14 @@
 "use client";
+
 import { Post, PostProvider } from "@/components/post";
 
 import { useMeAndSettingsContext } from "../../../components/providers/settings";
 
 function EditPost() {
   const { settings } = useMeAndSettingsContext();
-  if (!settings) return <></>;
+
   return (
-    <PostProvider settings={settings}>
+    <PostProvider settings={settings!}>
       <Post />
       <br />
       <br />

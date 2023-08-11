@@ -87,6 +87,7 @@ export const useUpdateSettings = () => {
         },
       },
     });
+    return settingsData;
   };
 
   return {
