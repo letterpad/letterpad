@@ -71,7 +71,10 @@ export const SiteInfo = () => {
         site_title,
         site_description,
         site_tagline,
-        design,
+        design: {
+          ...design,
+          brand_color: design.brand_color ?? "#d93097",
+        },
       });
     } catch (e) {
       // eslint-disable-next-line no-console
