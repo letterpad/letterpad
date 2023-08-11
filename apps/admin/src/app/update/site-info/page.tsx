@@ -22,7 +22,9 @@ export const SiteInfo = () => {
   const session = useSession();
   const [site_title, setSiteTitle] = useState(settings?.site_title ?? "");
   const [site_tagline, setSiteTagline] = useState(settings?.site_tagline ?? "");
-  const [design, setDesign] = useState(removeTypenames(settings?.design));
+  const [design, setDesign] = useState(
+    removeTypenames({ ...settings?.design, brand_color: "#d93097" })
+  );
   const [site_description, setSiteDescription] = useState(
     settings?.site_description ?? ""
   );
@@ -71,16 +73,13 @@ export const SiteInfo = () => {
         site_title,
         site_description,
         site_tagline,
-        design: {
-          ...design,
-          brand_color: design.brand_color ?? "#d93097",
-        },
+        design,
       });
-    } catch (e) {
+    } catch (e: any) {
       // eslint-disable-next-line no-console
       console.log(e);
       Message().error({
-        content: "Site information update failed",
+        content: "Site information update failed - " + e.message,
         duration: 5,
       });
       setProcessing(false);
@@ -141,7 +140,7 @@ export const SiteInfo = () => {
                     />
                     <input
                       type="color"
-                      value={design.brand_color ?? "#d93097"}
+                      value={design.brand_color}
                       onChange={(e) =>
                         setDesign({ ...design, brand_color: e.target.value })
                       }
