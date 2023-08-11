@@ -1,6 +1,7 @@
+"use client";
 import Head from "next/head";
 import { useParams, useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   BuilderContext,
   Layout as LayoutBuilder,
@@ -26,14 +27,23 @@ import { FeaturedImage } from "./featured-image";
 import { SubTitle } from "./subtitle";
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
+import { isPost } from "../../../utils/type-guards";
 
 export const Post = () => {
   const params = useParams();
+  const router = useRouter();
   const { updatePostAPI, updateLocalState, updatePost } = useUpdatePost();
   const postId = params.postId;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
+    skip: !postId,
   });
+
+  useEffect(() => {
+    router.refresh();
+  }, [router]);
+
+  // console.log(data);
 
   const debounceUpdatePostAPI = useMemo(
     () => debounce((data) => updatePostAPI(data), 500),
@@ -42,8 +52,8 @@ export const Post = () => {
 
   const { helpers } = usePostContext() as PostContextType;
 
-  const post = data?.post.__typename === "Post" ? data.post : undefined;
-
+  const post = data && isPost(data.post) ? data.post : undefined;
+  // console.log(post);
   let content = post?.html;
   const id = post?.id;
   const status = post?.status;
@@ -73,7 +83,7 @@ export const Post = () => {
   ) {
     content = post?.html_draft;
   }
-
+  if (loading) return <div></div>;
   return (
     <div style={{ minHeight: "100vh" }}>
       <Head>

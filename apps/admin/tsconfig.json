@@ -26,6 +26,9 @@
       "@/graphql/*": [
         "src/graphql/*"
       ],
+      "@/utils": [
+        "src/utils/*"
+      ],
       "@/*": [
         "src/*"
       ]

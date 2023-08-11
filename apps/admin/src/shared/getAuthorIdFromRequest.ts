@@ -5,12 +5,13 @@ import { report } from "@/components/error";
 
 import { decryptEmail } from "./clientToken";
 import logger from "./logger";
+import { getHeader } from "../utils/headers";
 
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();
 
 const getAuthorIdFromRequest = async (context: Context) => {
-  const authHeader = context.req?.headers?.authorization || "";
+  const authHeader = getHeader(context.req.headers, "authorization");
 
   let author_id: number | null = null;
 
@@ -66,8 +67,10 @@ export default getAuthorIdFromRequest;
 async function getAuthorFromLetterpadSubdomain(context) {
   if (!context.req.headers) {
     logger.debug("No identifier found - Internal admin request - OK");
-  } else if (context.req.headers?.identifier?.includes("letterpad.app")) {
-    const { identifier } = context.req.headers;
+  } else if (
+    getHeader(context.req.headers, "identifier")?.includes("letterpad.app")
+  ) {
+    const identifier = getHeader(context.req.headers, "identifier");
     logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
     const author = await prisma.author.findUnique({
@@ -79,7 +82,7 @@ async function getAuthorFromLetterpadSubdomain(context) {
 }
 
 async function getAuthorFromCustomDomain(context) {
-  if (!context.req.headers?.identifier) return null;
+  if (!getHeader(context.req.headers, "identifier")) return null;
 
   const domain = context.req.headers.identifier;
   const record = await prisma.domain.findFirst({

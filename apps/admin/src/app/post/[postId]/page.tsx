@@ -1,13 +1,11 @@
 "use client";
 import { Post, PostProvider } from "@/components/post";
 
-import { Setting } from "@/__generated__/__types__";
-
 import { useMeAndSettingsContext } from "../../../components/providers/settings";
 
 function EditPost() {
   const { settings } = useMeAndSettingsContext();
-  if (!settings) return null;
+  if (!settings) return <></>;
   return (
     <PostProvider settings={settings}>
       <Post />
@@ -25,5 +23,4 @@ function EditPost() {
   );
 }
 
-EditPost.noLayout = true;
 export default EditPost;

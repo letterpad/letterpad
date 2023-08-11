@@ -1,5 +1,6 @@
 import {
   Author,
+  Post,
   PostsNode,
   Setting,
   Stats,
@@ -7,6 +8,9 @@ import {
 
 export function isPostsNode(data: any): data is PostsNode {
   return data?.__typename === "PostsNode";
+}
+export function isPost(data: any): data is Post {
+  return data?.__typename === "Post";
 }
 
 export function isAuthor(data: any): data is Author {

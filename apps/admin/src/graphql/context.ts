@@ -4,17 +4,20 @@ import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 
 import { SessionData } from "./types";
 import { basePath } from "../constants";
+import { getHeader } from "../utils/headers";
 
 const isTest = process.env.NODE_ENV === "test";
 
 export const getServerSession = async (context) => {
   try {
+    const headers = context.req.headers;
     const sessionURL =
-      (context.req.headers.origin ?? `http://${context.req.headers.host}`) +
+      (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
       basePath +
       "/api/auth/session";
+
     const res = await fetch(sessionURL, {
-      headers: { cookie: context.req.headers.cookie },
+      headers: { cookie: getHeader(headers, "cookie") },
     });
     const session = await res.json();
     return session.user ? session : null;
