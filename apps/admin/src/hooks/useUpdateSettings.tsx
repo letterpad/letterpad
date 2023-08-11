@@ -63,12 +63,16 @@ export const useUpdateSettings = () => {
         eventCategory: "settings",
         eventLabel: Object.keys({ ...data }).join("-"),
       });
-      await updateOption({
-        variables: {
-          options: { ...data },
-        },
-      });
-      updateLocalState(data);
+      try {
+        await updateOption({
+          variables: {
+            options: { ...data },
+          },
+        });
+        updateLocalState(data);
+      } catch (e) {
+        throw new Error(e.message);
+      }
     },
     [updateOption]
   );
