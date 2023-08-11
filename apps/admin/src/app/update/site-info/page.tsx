@@ -15,6 +15,7 @@ import { removeTypenames } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 import { useMeAndSettingsContext } from "../../../components/providers/settings";
+import { isAuthor } from "../../../utils/type-guards";
 
 export const SiteInfo = () => {
   const { settings } = useMeAndSettingsContext();
@@ -73,6 +74,8 @@ export const SiteInfo = () => {
         design,
       });
     } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
       Message().error({
         content: "Site information update failed",
         duration: 5,
@@ -84,8 +87,8 @@ export const SiteInfo = () => {
     const result = await updateAuthor({
       register_step: RegisterStep.Registered,
     });
-    const out = result.data?.updateAuthor;
-    if (out?.__typename === "Author") {
+    if (result.data?.updateAuthor && isAuthor(result.data?.updateAuthor)) {
+      const out = result.data.updateAuthor;
       // hack to update session
       const event = new Event("visibilitychange");
       document.dispatchEvent(event);
@@ -98,14 +101,15 @@ export const SiteInfo = () => {
         eventCategory: "register",
         eventLabel: out.register_step!,
       });
+      setProcessing(false);
       router.push("/posts");
-    } else if (out?.__typename === "Failed") {
+    } else if (result.data?.updateAuthor?.__typename === "Failed") {
+      setProcessing(false);
       Message().error({
-        content: out?.message,
+        content: result.data?.updateAuthor?.message,
         duration: 5,
       });
     }
-    setProcessing(false);
   };
 
   return (
