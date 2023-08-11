@@ -116,7 +116,7 @@ export const Item: FC<Props> = ({
           <Button
             variant="danger"
             onClick={() => onRemove(library)}
-            className="py-0 px-0"
+            className="px-0 py-0"
           >
             <AiOutlineDelete
               size={38}

@@ -4,34 +4,15 @@
     "baseUrl": ".",
     "module": "commonjs",
     "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/pages/*": [
-        "src/pages/*"
-      ],
-      "@/__generated__/*": [
-        "__generated__/src/graphql/*",
-        "__generated__/*"
-      ],
-      "@/config/*": [
-        "config/*"
-      ],
-      "@/graphql/db/models": [
-        "src/graphql/db/models"
-      ],
-      "@/graphql/schema": [
-        "src/graphql/schema"
-      ],
-      "@/graphql/*": [
-        "src/graphql/*"
-      ],
-      "@/utils": [
-        "src/utils/*"
-      ],
-      "@/*": [
-        "src/*"
-      ]
+      "@/components/*": ["src/components/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
+      "@/config/*": ["config/*"],
+      "@/graphql/db/models": ["src/graphql/db/models"],
+      "@/graphql/schema": ["src/graphql/schema"],
+      "@/graphql/*": ["src/graphql/*"],
+      "@/utils": ["src/utils/*"],
+      "@/*": ["src/*"]
     },
     "plugins": [
       {
@@ -40,9 +21,7 @@
     ],
     "strictNullChecks": true
   },
-  "exclude": [
-    "__generated__/**/*"
-  ],
+  "exclude": ["__generated__/**/*"],
   "include": [
     "src/**/*",
     "postcss.config.js",

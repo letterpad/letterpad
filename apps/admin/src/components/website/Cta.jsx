@@ -10,7 +10,7 @@ function Cta() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {/* CTA box */}
         <div
-          className="relative overflow-hidden rounded bg-gradient-to-tr from-blue-600 to-purple-500 py-10 px-8 md:py-16 md:px-12"
+          className="relative overflow-hidden rounded bg-gradient-to-tr from-blue-600 to-purple-500 px-8 py-10 md:px-12 md:py-16"
           data-aos="zoom-out"
         >
           {/* Bg illustration */}
@@ -28,7 +28,7 @@ function Cta() {
           </div>
           <div className="flex flex-col items-center justify-between lg:flex-row">
             {/* CTA content */}
-            <div className="mb-6 text-center lg:mr-16 lg:mb-0 lg:text-left">
+            <div className="mb-6 text-center lg:mb-0 lg:mr-16 lg:text-left">
               <h3 className="mb-2 font-uncut-sans text-4xl font-bold">
                 Get started with Letterpad
               </h3>

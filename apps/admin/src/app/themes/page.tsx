@@ -44,7 +44,7 @@ const Themes = () => {
                 />
                 <div
                   className={classNames(
-                    "absolute top-0 left-0 rounded-sm bg-green-700 p-1 px-2 text-xs font-bold uppercase leading-3 text-white",
+                    "absolute left-0 top-0 rounded-sm bg-green-700 p-1 px-2 text-xs font-bold uppercase leading-3 text-white",
                     {
                       hidden: !(selected === theme.value),
                     }
