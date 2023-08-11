@@ -9,6 +9,8 @@ import { getData } from '../data';
 import { HeadMeta } from '../../components/HeadMeta';
 import { useTheme } from '../../themes';
 
+export const dynamic = 'force-dynamic';
+
 const Layout = async ({ children }) => {
   const { settings, me } = await getData();
 
