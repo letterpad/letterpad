@@ -30,17 +30,19 @@ export const LoginForm = ({
       eventCategory: "login",
       eventLabel: `User logged in`,
     });
-    if (result.success && result.redirectUrl) {
+    if (result.success) {
       Message().success({ content: result.message, duration: 3 });
       const callbackUrl = params.get("callbackUrl");
-      let redirectPath = "/posts";
+      let redirectUrl = result.redirectUrl;
       if (callbackUrl && typeof callbackUrl === "string") {
-        redirectPath = new URL(callbackUrl).pathname;
+        redirectUrl = new URL(callbackUrl).pathname;
       }
-      if (redirectPath.includes("login")) {
-        redirectPath = redirectPath.replace("login", "posts");
+      if (redirectUrl?.includes("login")) {
+        redirectUrl = redirectUrl.replace("login", "posts");
       }
-      router.push(redirectPath.replace(basePath, ""));
+      if (redirectUrl) {
+        router.push(new URL(redirectUrl).pathname);
+      }
       return;
     }
     Message().error({ content: result.message, duration: 5 });

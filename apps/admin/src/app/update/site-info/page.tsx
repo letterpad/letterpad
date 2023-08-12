@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { Input, Label, Message, TextArea } from "ui";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
@@ -11,69 +12,32 @@ import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 import { Logo } from "@/components/login/views/Logo";
 import { useMeAndSettingsContext } from "@/components/providers/settings";
 
-import { RegisterStep } from "@/__generated__/__types__";
-import { basePath, registrationPaths } from "@/constants";
-import { removeTypenames } from "@/shared/utils";
+import { RegisterStep, SettingInputType } from "@/__generated__/__types__";
+import { registrationPaths } from "@/constants";
 import { EventAction, track } from "@/track";
-import { isAuthor } from "@/utils/type-guards";
+import { isAuthor, isSettings } from "@/utils/type-guards";
+
+import { getDirtyFields } from "../../../lib/react-form";
 
 export const SiteInfo = () => {
   const { settings } = useMeAndSettingsContext();
   const session = useSession();
-  const [site_title, setSiteTitle] = useState(settings?.site_title ?? "");
-  const [site_tagline, setSiteTagline] = useState(settings?.site_tagline ?? "");
-  const [design, setDesign] = useState(
-    removeTypenames({ ...settings?.design, brand_color: "#d93097" })
-  );
-  const [site_description, setSiteDescription] = useState(
-    settings?.site_description ?? ""
-  );
-  const [error, setError] = useState<null | Record<string, string>>(null);
+  const methods = useForm({
+    values: isSettings(settings) ? settings : undefined,
+  });
+  const { handleSubmit, formState, register } = methods;
+
   const { updateSettingsAPI } = useUpdateSettings();
   const { updateAuthor } = useUpdateAuthor(session.data?.user?.id ?? 0, false);
   const [_, setProcessing] = useState(false);
 
   const router = useRouter();
 
-  const processData = () => {
+  const updateSite = async (change: SettingInputType) => {
     setProcessing(true);
-    setError(null);
-    Message().loading({
-      content: "Please wait",
-      duration: 5,
-    });
-    let errors = {};
-
-    if (site_title.length < 3) {
-      errors = {
-        ...errors,
-        site_title: "Should be atleast 3 characters long",
-      };
-    }
-
-    if (site_description.length < 2) {
-      errors = {
-        ...errors,
-        site_description: "Should be atleast 20 characters long",
-      };
-    }
-    if (Object.keys(errors).length > 0) {
-      setProcessing(false);
-      setError(errors);
-      Message().destroy();
-      return false;
-    }
-    return true;
-  };
-  const updateSite = async () => {
-    const processed = processData();
-    if (!processed) return;
     try {
       await updateSettingsAPI({
-        site_title,
-        site_description,
-        site_tagline,
-        design,
+        ...change,
       });
     } catch (e: any) {
       // eslint-disable-next-line no-console
@@ -90,18 +54,15 @@ export const SiteInfo = () => {
       register_step: RegisterStep.Registered,
     });
     if (result.data?.updateAuthor && isAuthor(result.data?.updateAuthor)) {
-      const out = result.data.updateAuthor;
-      // hack to update session
-      const event = new Event("visibilitychange");
-      document.dispatchEvent(event);
+      const updatedAuthor = result.data.updateAuthor;
       Message().success({
         content: "Site information updated successfully",
-        duration: 5,
+        duration: 3,
       });
       track({
         eventAction: EventAction.Click,
         eventCategory: "register",
-        eventLabel: out.register_step!,
+        eventLabel: updatedAuthor.register_step!,
       });
       setProcessing(false);
 
@@ -120,104 +81,145 @@ export const SiteInfo = () => {
   };
 
   return (
-    <>
-      <div className="bg-white dark:bg-gray-900">
-        <div className="flex h-screen justify-center">
-          <div className="mx-auto flex w-full items-center px-6 lg:w-3/5">
-            <div className="flex-1">
-              <div className="pb-12 text-center">
-                <h2 className="mb-8 text-center text-4xl font-bold text-gray-700 dark:text-white">
-                  <Logo />
-                </h2>
-                <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
-                  We need a few more details to update your dashboard
-                </h2>
-                <p className="mt-3 font-semibold uppercase text-gray-500 dark:text-gray-300">
-                  Site Information (2/2)
-                </p>
-              </div>
-              <div className="md:px-40">
-                <div className="mt-4">
-                  <div>
-                    <Label
-                      label="Choose a brand color"
-                      className="mb-2 text-md"
-                    />
-                    <input
-                      type="color"
-                      value={design.brand_color}
-                      onChange={(e) =>
-                        setDesign({ ...design, brand_color: e.target.value })
-                      }
-                    />
-                  </div>
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          const change = getDirtyFields(data, formState.dirtyFields);
+          if (change) {
+            updateSite(change as any);
+          }
+
+          // updateSettingsAPI(change).then(() => methods.reset(change));
+        })}
+      >
+        <div className="bg-white dark:bg-gray-900">
+          <div className="flex h-screen justify-center">
+            <div className="mx-auto flex w-full items-center px-6 lg:w-3/5">
+              <div className="flex-1">
+                <div className="pb-12 text-center">
+                  <h2 className="mb-8 text-center text-4xl font-bold text-gray-700 dark:text-white">
+                    <Logo />
+                  </h2>
+                  <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
+                    We need a few more details to update your dashboard
+                  </h2>
+                  <p className="mt-3 font-semibold uppercase text-gray-500 dark:text-gray-300">
+                    Site Information (2/2)
+                  </p>
                 </div>
-                <div className="mt-4">
-                  <div>
-                    <Input
-                      label="Name of your site"
-                      className="text-md"
-                      labelClassName="text-md"
-                      value={site_title}
-                      onChange={(e) => setSiteTitle(e.target.value)}
-                      name="email"
-                      id="siteName"
-                      data-testid="siteName"
-                      placeholder="Give your website a title"
-                      required
-                    />
-                    <p className="text-rose-500">{error?.site_title}</p>
+                <div className="md:px-40">
+                  <div className="mt-4">
+                    <div>
+                      <Label
+                        label="Choose a brand color"
+                        className="mb-2 text-md"
+                      />
+                      <input
+                        type="color"
+                        {...register("design.brand_color", {
+                          required: {
+                            value: true,
+                            message: "Name is required",
+                          },
+                        })}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="mt-8">
-                  <div>
-                    <Input
-                      label="Site Tagline"
-                      className="text-md"
-                      labelClassName="text-md"
-                      value={site_tagline}
-                      onChange={(e) => setSiteTagline(e.target.value)}
-                      name="site_tagline"
-                      id="site_tagline"
-                      data-testid="siteTagline"
-                      placeholder="A short description about your site"
-                      limit={60}
-                    />
-                    <p className="text-rose-500">{error?.site_tagline}</p>
+                  <div className="mt-4">
+                    <div>
+                      <Input
+                        label="Name of your site"
+                        className="text-md"
+                        labelClassName="text-md"
+                        {...register("site_title", {
+                          required: {
+                            value: true,
+                            message: "Site Title is required",
+                          },
+                          maxLength: {
+                            value: 30,
+                            message: "Should be maximum 30 character long",
+                          },
+                          minLength: {
+                            value: 3,
+                            message: "Should be minimum 3 character long",
+                          },
+                        })}
+                        id="siteName"
+                        data-testid="siteName"
+                        placeholder="Give your website a title"
+                        required
+                      />
+                      <p className="text-rose-500">
+                        {formState.errors?.site_title?.message}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="mt-8">
-                  <div>
-                    <TextArea
-                      label="Site Description"
-                      className="text-md"
-                      labelClassName="text-md"
-                      value={site_description}
-                      data-testid="siteDescription"
-                      onChange={(e) => setSiteDescription(e.target.value)}
-                      name="site_description"
-                      id="site_description"
-                      placeholder="A short description about your site"
-                      limit={190}
-                    />
-                    <p className="text-rose-500">{error?.site_description}</p>
+                  <div className="mt-8">
+                    <div>
+                      <Input
+                        label="Site Tagline"
+                        className="text-md"
+                        labelClassName="text-md"
+                        {...register("site_tagline", {
+                          maxLength: {
+                            value: 60,
+                            message: "Should be maximum 60 character long",
+                          },
+                          minLength: {
+                            value: 3,
+                            message: "Should be minimum 3 character long",
+                          },
+                        })}
+                        id="site_tagline"
+                        data-testid="siteTagline"
+                        placeholder="A short description about your site"
+                      />
+                      <p className="text-rose-500">
+                        {formState.errors?.site_tagline?.message}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="mt-6">
-                  <button
-                    className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                    data-testid="updateSiteBtn"
-                    onClick={updateSite}
-                  >
-                    Update Site
-                  </button>
+                  <div className="mt-8">
+                    <div>
+                      <TextArea
+                        label="Site Description"
+                        className="text-md"
+                        labelClassName="text-md"
+                        {...register("site_description", {
+                          maxLength: {
+                            value: 190,
+                            message: "Should be maximum 30 character long",
+                          },
+                          minLength: {
+                            value: 3,
+                            message: "Should be minimum 3 character long",
+                          },
+                        })}
+                        data-testid="siteDescription"
+                        id="site_description"
+                        placeholder="A short description about your site"
+                      />
+                      <p className="text-rose-500">
+                        {formState.errors?.site_description?.message}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <button
+                      className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                      data-testid="updateSiteBtn"
+                    >
+                      Update Site
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </form>
+    </FormProvider>
   );
 };
 

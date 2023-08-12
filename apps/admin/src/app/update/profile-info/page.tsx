@@ -3,91 +3,68 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { Input, Message, TextArea } from "ui";
 
 import { Logo } from "@/components/login/views/Logo";
 
-import { RegisterStep } from "@/__generated__/__types__";
+import { Author, RegisterStep } from "@/__generated__/__types__";
 import {
   UpdateAuthorDocument,
   useUpdateAuthorMutation,
 } from "@/__generated__/queries/mutations.graphql";
 import { registrationPaths } from "@/constants";
-import { sanitizeUsername } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 import { useMeAndSettingsContext } from "../../../components/providers/settings";
+import { getDirtyFields } from "../../../lib/react-form";
+import { isAuthor } from "../../../utils/type-guards";
 
 export const UpdateProfile = () => {
   const { me } = useMeAndSettingsContext();
   const session = useSession();
-  const [name, setName] = useState(me?.name ?? "");
-  const [username, setUsername] = useState(
-    isInteger(me?.username) ? "" : me?.username ?? ""
-  );
-  const [bio, setBio] = useState(me?.bio ?? "");
-  const [error, setError] = useState<null | Record<string, string>>(null);
   const [updateAuthor] = useUpdateAuthorMutation();
 
   const [_, setProcessing] = useState(false);
 
   const router = useRouter();
+  const methods = useForm({
+    values: isAuthor(me) ? me : undefined,
+  });
+  const { handleSubmit, formState, register } = methods;
 
-  const updateProfile = async () => {
+  const updateProfile = async (author: Author) => {
     if (!session.data?.user?.id) return router.push("/login");
     setProcessing(true);
-    setError(null);
     Message().loading({
       content: "Please wait",
       duration: 5,
     });
-    let errors = {};
 
-    if (!username || !sanitizeUsername(username)) {
-      errors = {
-        ...errors,
-        username: "Only letters, numbers, underscore and hyphen are allowed",
-      };
-    }
-
-    if (name.length < 3 || name.search(/^([ \u00c0-\u01ffa-zA-Z'-])+$/) < 0) {
-      errors = {
-        ...errors,
-        name: "Should be 3 character long and may contain specific special characters",
-      };
-    }
-    if (Object.keys(errors).length > 0) {
-      setProcessing(false);
-      setError(errors);
-      Message().destroy();
-      return;
-    }
     const result = await updateAuthor({
       mutation: UpdateAuthorDocument,
       variables: {
         author: {
-          username,
-          name,
-          bio,
+          ...author,
           register_step: RegisterStep.SiteInfo,
           id: session.data.user.id,
         },
       },
     });
-    const out = result.data?.updateAuthor;
-    if (out?.__typename === "Author") {
+    const updatedAuthor = result.data?.updateAuthor;
+    if (isAuthor(updatedAuthor)) {
       // hack to update session
       const event = new Event("visibilitychange");
       document.dispatchEvent(event);
       if (
-        out.register_step &&
-        out.register_step !== RegisterStep.Registered &&
-        RegisterStep[out.register_step]
+        updatedAuthor.register_step &&
+        updatedAuthor.register_step !== RegisterStep.Registered &&
+        RegisterStep[updatedAuthor.register_step]
       ) {
         track({
           eventAction: EventAction.Click,
           eventCategory: "register",
-          eventLabel: out.register_step,
+          eventLabel: updatedAuthor.register_step,
         });
         await session.update({
           ...session.data,
@@ -96,11 +73,11 @@ export const UpdateProfile = () => {
             register_step: RegisterStep.Registered,
           },
         });
-        router.push(registrationPaths[out.register_step]);
+        router.push(registrationPaths[updatedAuthor.register_step]);
       }
-    } else if (out?.__typename === "Failed") {
+    } else if (updatedAuthor?.__typename === "Failed") {
       Message().error({
-        content: out?.message,
+        content: updatedAuthor?.message,
         duration: 5,
       });
     }
@@ -108,89 +85,143 @@ export const UpdateProfile = () => {
   };
 
   return (
-    <>
-      <div className="bg-white dark:bg-gray-900">
-        <div className="flex h-screen justify-center">
-          <div className="mx-auto flex w-full items-center px-6 lg:w-3/5">
-            <div className="flex-1">
-              <div className="pb-12 text-center">
-                <h2 className="mb-8 text-center text-4xl font-bold text-gray-700 dark:text-white">
-                  <Logo />
-                </h2>
-                <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
-                  We need a few more details to update your dashboard
-                </h2>
-                <p className="mt-3 font-semibold uppercase text-gray-500 dark:text-gray-300">
-                  Author Information (1/2)
-                </p>
-              </div>
-              <div className="md:px-40">
-                <div className="mt-4">
-                  <div>
-                    <Input
-                      label="Full Name"
-                      className="text-md"
-                      labelClassName="text-md"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      name="email"
-                      id="name"
-                      placeholder="John Doe"
-                      data-testid="name"
-                      required
-                    />
-                    <p className="text-rose-500">{error?.name}</p>
-                  </div>
-                </div>
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          const change = getDirtyFields(data, formState.dirtyFields);
+          if (change) {
+            updateProfile(change);
+          }
 
-                <div className="mt-8">
-                  <div>
-                    <Input
-                      addonBefore="https://"
-                      addonAfter=".letterpad.app"
-                      label="Username"
-                      className="text-md"
-                      labelClassName="text-md"
-                      data-testid="username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value.trim())}
-                      name="username"
-                      id="username"
-                      placeholder="jacksparrow"
-                    />
-                    <p className="text-rose-500">{error?.username}</p>
-                  </div>
+          // updateSettingsAPI(change).then(() => methods.reset(change));
+        })}
+      >
+        <div className="bg-white dark:bg-gray-900">
+          <div className="flex h-screen justify-center">
+            <div className="mx-auto flex w-full items-center px-6 lg:w-3/5">
+              <div className="flex-1">
+                <div className="pb-12 text-center">
+                  <h2 className="mb-8 text-center text-4xl font-bold text-gray-700 dark:text-white">
+                    <Logo />
+                  </h2>
+                  <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
+                    We need a few more details to update your dashboard
+                  </h2>
+                  <p className="mt-3 font-semibold uppercase text-gray-500 dark:text-gray-300">
+                    Author Information (1/2)
+                  </p>
                 </div>
-                <div className="mt-8">
-                  <div>
-                    <TextArea
-                      label="About you"
-                      className="text-md"
-                      labelClassName="text-md"
-                      value={bio}
-                      onChange={(e) => setBio(e.target.value)}
-                      data-testid="bio"
-                      name="bio"
-                      id="about-me"
-                      placeholder="Hi, I am Jack. I am a software engineer. I love to write about tech."
-                    />
+                <div className="md:px-40">
+                  <div className="mt-4">
+                    <div>
+                      <Input
+                        label="Full Name"
+                        className="text-md"
+                        labelClassName="text-md"
+                        id="name"
+                        placeholder="John Doe"
+                        data-testid="name"
+                        {...register("name", {
+                          required: {
+                            value: true,
+                            message: "Name is required",
+                          },
+                          maxLength: {
+                            value: 30,
+                            message: "Should be maximum 30 character long",
+                          },
+                          minLength: {
+                            value: 3,
+                            message: "Should be minimum 3 character long",
+                          },
+                          validate: (value) => {
+                            debugger;
+                            const regex = /^([\u00c0-\u01ffa-zA-Z'-])+$/;
+                            if (!regex.test(value)) {
+                              return "Should be alpha neumeric with specific special characters";
+                            }
+                            return true;
+                          },
+                        })}
+                      />
+                      <p className="text-rose-500">
+                        {formState.errors.name?.message}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="mt-6">
-                  <button
-                    className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                    data-testid="updateProfile"
-                    onClick={updateProfile}
-                  >
-                    Update Profile
-                  </button>
+
+                  <div className="mt-8">
+                    <div>
+                      <Input
+                        addonBefore="https://"
+                        addonAfter=".letterpad.app"
+                        label="Username"
+                        className="text-md"
+                        labelClassName="text-md"
+                        data-testid="username"
+                        {...register("username", {
+                          required: {
+                            value: true,
+                            message: "Name is required",
+                          },
+                          maxLength: {
+                            value: 30,
+                            message: "Should be maximum 30 character long",
+                          },
+                          validate: (value) => {
+                            // regex to contain alphabets or numbers or both
+                            const regex = /^[0-9a-z]+$/;
+                            if (!regex.test(value)) {
+                              return "Should be alphaneumeric";
+                            }
+                            return true;
+                          },
+                        })}
+                        id="username"
+                        placeholder="jacksparrow"
+                      />
+                      <p className="text-rose-500">
+                        {formState.errors.username?.message}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <div>
+                      <TextArea
+                        label="About you"
+                        className="text-md"
+                        labelClassName="text-md"
+                        {...register("bio", {
+                          maxLength: {
+                            value: 250,
+                            message: "Should be maximum 250 character long",
+                          },
+                        })}
+                        data-testid="bio"
+                        name="bio"
+                        id="about-me"
+                        placeholder="Hi, I am Jack. I am a software engineer. I love to write about tech."
+                      />
+                      <p className="text-rose-500">
+                        {formState.errors.bio?.message}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <button
+                      className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                      data-testid="updateProfile"
+                    >
+                      Update Profile
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </form>
+    </FormProvider>
   );
 };
 

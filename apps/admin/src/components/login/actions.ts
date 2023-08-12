@@ -39,8 +39,7 @@ export const doLogin = async ({
     return {
       success: true,
       message: "Verified",
-      redirectUrl:
-        result && result["url"] ? result["url"] : basePath + "/posts",
+      redirectUrl: result.url ?? "",
     };
   }
   return {
