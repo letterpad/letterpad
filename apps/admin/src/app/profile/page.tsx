@@ -14,6 +14,7 @@ import { Social } from "@/components/profile/social";
 
 import { useMeAndSettingsContext } from "../../components/providers/settings";
 import { isAuthor } from "../../utils/type-guards";
+import { InputAuthor, InputUpdatePost } from "../../../__generated__/__types__";
 
 function Profile() {
   const router = useRouter();
@@ -29,9 +30,16 @@ function Profile() {
 
   const { handleSubmit, formState } = methods;
   const onPanelClick = (key) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("selected", key);
-    router.replace(`${pathname}?${params}`);
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    if (key) {
+      params.set("selected", key);
+    } else {
+      params.delete("selected");
+    }
+    // cast to string
+    const search = params.toString();
+    const query = search ? `?${search}` : "?";
+    history.replaceState(null, "", query);
   };
   const { updateAuthorAPI } = useUpdateAuthor(me?.id ?? 0);
 
@@ -51,7 +59,10 @@ function Profile() {
           <FormProvider {...methods}>
             <form
               onSubmit={handleSubmit((data) => {
-                const change = getDirtyFields(data, formState.dirtyFields);
+                const change = getDirtyFields<InputAuthor>(
+                  data,
+                  formState.dirtyFields
+                );
                 updateAuthorAPI(change).then(() => methods.reset(change));
               })}
             >

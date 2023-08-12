@@ -47,9 +47,16 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const { handleSubmit, formState } = methods;
 
   const onPanelClick = (key) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("selected", key);
-    router.push(`${pathname}?${params}`);
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    if (key) {
+      params.set("selected", key);
+    } else {
+      params.delete("selected");
+    }
+    // cast to string
+    const search = params.toString();
+    const query = search ? `?${search}` : "?";
+    history.replaceState(null, "", query);
   };
 
   const confirm = async () => {

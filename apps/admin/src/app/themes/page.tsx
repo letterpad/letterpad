@@ -9,6 +9,7 @@ import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { themes as themesList } from "../../components/themes/themes";
 import { useDataProvider } from "../../context/DataProvider";
+import { isSettings } from "../../utils/type-guards";
 
 const Themes = () => {
   const { updateSettings } = useUpdateSettings();
@@ -27,13 +28,13 @@ const Themes = () => {
       <Content>
         <div className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {themesList().map((theme) => {
-            const selected =
-              settings?.__typename === "Setting" ? settings.theme : "minimal";
+            const selected = isSettings(settings) ? settings.theme : "minimal";
             return (
               <div
                 className={classNames(
                   "relative max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
                 )}
+                key={theme.label}
               >
                 <Image
                   className="rounded-t-lg"
