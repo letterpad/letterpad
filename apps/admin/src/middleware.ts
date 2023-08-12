@@ -23,9 +23,9 @@ export const config = {
    *                        we do this to make sure "demo.vercel.pub/_sites/steven" is not matched and throws a 404.
    */
   matcher: [
-    "/messages/:path",
-    "/update/:path",
+    "/update/:path*",
     "/post/:path*",
+    "/home",
     "/posts",
     "/creatives",
     "/media",
@@ -56,6 +56,7 @@ export async function middleware(request: NextRequest) {
   } else if (session?.user?.register_step) {
     const { register_step } = session?.user;
     const { pathname } = request.nextUrl;
+
     switch (register_step) {
       case ProfileInfo:
         if (pathname !== registrationPaths[ProfileInfo]) {
@@ -81,7 +82,6 @@ export async function middleware(request: NextRequest) {
             proto + "://" + host + registrationPaths[Registered]
           );
         }
-        break;
       default:
         break;
     }
@@ -106,7 +106,6 @@ export const getServerSession = async (
     const session = await res.json();
     return session.user ? session : null;
   } catch (e) {
-    // eslint-disable-next-line no-console
     return null;
     // this means the session is not set. This request is probably coming from client and not admin.
     // client will never have a session.

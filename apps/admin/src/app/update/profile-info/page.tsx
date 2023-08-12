@@ -89,6 +89,13 @@ export const UpdateProfile = () => {
           eventCategory: "register",
           eventLabel: out.register_step,
         });
+        await session.update({
+          ...session.data,
+          user: {
+            ...session.data?.user,
+            register_step: RegisterStep.Registered,
+          },
+        });
         router.push(registrationPaths[out.register_step]);
       }
     } else if (out?.__typename === "Failed") {

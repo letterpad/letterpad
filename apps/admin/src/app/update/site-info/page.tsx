@@ -9,13 +9,13 @@ import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { Logo } from "@/components/login/views/Logo";
+import { useMeAndSettingsContext } from "@/components/providers/settings";
 
 import { RegisterStep } from "@/__generated__/__types__";
+import { basePath, registrationPaths } from "@/constants";
 import { removeTypenames } from "@/shared/utils";
 import { EventAction, track } from "@/track";
-
-import { useMeAndSettingsContext } from "../../../components/providers/settings";
-import { isAuthor } from "../../../utils/type-guards";
+import { isAuthor } from "@/utils/type-guards";
 
 export const SiteInfo = () => {
   const { settings } = useMeAndSettingsContext();
@@ -104,7 +104,12 @@ export const SiteInfo = () => {
         eventLabel: out.register_step!,
       });
       setProcessing(false);
-      router.push("/posts");
+
+      await session.update({
+        ...session.data,
+        user: { ...session.data?.user, register_step: RegisterStep.Registered },
+      });
+      router.push(registrationPaths[RegisterStep.Registered]);
     } else if (result.data?.updateAuthor?.__typename === "Failed") {
       setProcessing(false);
       Message().error({

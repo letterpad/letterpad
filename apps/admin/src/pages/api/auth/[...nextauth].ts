@@ -85,7 +85,10 @@ export const options = (): NextAuthOptions => ({
       }
       return getRootUrl(baseUrl) + "/posts";
     },
-    jwt: async ({ token }) => {
+    jwt: async ({ token, trigger, session, user }) => {
+      if (trigger === "update") {
+        return { ...token, user: { ...session.user } };
+      }
       return token;
     },
     session: async ({ session, token }) => {

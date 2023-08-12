@@ -72,22 +72,20 @@ export const RegisterForm = () => {
           },
         },
       });
-      const out = result.data?.createAuthor ?? {};
-      if (out.__typename === "Failed") {
+      const createdAuthor = result.data?.createAuthor ?? {};
+      if (createdAuthor.__typename === "Failed") {
         Message().error({
-          content: out.message,
+          content: createdAuthor.message,
           duration: 5,
         });
-      } else if (out.__typename === "Author") {
+      } else if (createdAuthor.__typename === "Author") {
         if (
-          out.register_step &&
-          out.register_step !== RegisterStep.Registered &&
-          out.verified
+          createdAuthor.register_step &&
+          createdAuthor.register_step !== RegisterStep.Registered &&
+          createdAuthor.verified
         ) {
-          const success = await doLogin({ email, password });
-          if (success.redirectUrl) {
-            return router.push(success.redirectUrl);
-          }
+          // aquire session
+          // return doLogin({ email, password });
         }
 
         track({
