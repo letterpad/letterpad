@@ -8,6 +8,8 @@ import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.grap
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 import { EventAction, track } from "@/track";
 
+import { isAuthor } from "../../utils/type-guards";
+
 import { PageProps } from "@/types";
 
 const Home: FC<PageProps> = ({ settings }) => {
@@ -25,7 +27,7 @@ const Home: FC<PageProps> = ({ settings }) => {
     router.push("/posts");
   }, [settingsMutation, router]);
 
-  const author = me.data?.me?.__typename === "Author" ? me.data.me : null;
+  const author = me.data?.me && isAuthor(me.data.me) ? me.data.me : null;
   const username = author?.username || "";
   const changeUsername =
     parseInt(username).toString() == username && username.match(/^[0-9]+$/);
@@ -40,7 +42,7 @@ const Home: FC<PageProps> = ({ settings }) => {
     if (!showGettingStarted) onDismiss();
   }, [showGettingStarted, onDismiss]);
 
-  if (author?.__typename !== "Author") return null;
+  if (!isAuthor(author)) return null;
 
   if (showGettingStarted) {
     return withDismiss(

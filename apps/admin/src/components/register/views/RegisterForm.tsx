@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { Message } from "ui";
 
-import { doLogin } from "@/components/login/actions";
 import { Logo } from "@/components/login/views/Logo";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
 
@@ -128,7 +127,7 @@ export const RegisterForm = () => {
           <div className="mx-auto flex w-full max-w-md items-center px-6 lg:w-2/6">
             <div className="flex-1">
               <div className="text-center">
-                <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
+                <h2 className="flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
                   <Logo />
                 </h2>
 

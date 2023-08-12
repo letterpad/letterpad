@@ -1,6 +1,6 @@
 import AOS from "aos";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import Client from "./Client";
