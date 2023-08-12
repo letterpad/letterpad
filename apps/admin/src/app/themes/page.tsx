@@ -25,7 +25,7 @@ const Themes = () => {
         </span>
       </PageHeader>
       <Content>
-        <div className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {themesList().map((theme) => {
             const selected =
               settings?.__typename === "Setting" ? settings.theme : "minimal";

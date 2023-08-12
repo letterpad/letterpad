@@ -3,6 +3,6 @@ export const getDirtyFields = <K>(data: any, dirtyFields: any) => {
     acc[key] = data[key];
 
     return acc;
-  }, {});
-  return result as K;
+  }, {} as K);
+  return result;
 };

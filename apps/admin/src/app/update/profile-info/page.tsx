@@ -8,7 +8,7 @@ import { Input, Message, TextArea } from "ui";
 
 import { Logo } from "@/components/login/views/Logo";
 
-import { Author, RegisterStep } from "@/__generated__/__types__";
+import { Author, InputAuthor, RegisterStep } from "@/__generated__/__types__";
 import {
   UpdateAuthorDocument,
   useUpdateAuthorMutation,
@@ -33,7 +33,7 @@ export const UpdateProfile = () => {
   });
   const { handleSubmit, formState, register } = methods;
 
-  const updateProfile = async (author: Author) => {
+  const updateProfile = async (author: InputAuthor) => {
     if (!session.data?.user?.id) return router.push("/login");
     setProcessing(true);
     Message().loading({
@@ -88,7 +88,10 @@ export const UpdateProfile = () => {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit((data) => {
-          const change = getDirtyFields(data, formState.dirtyFields);
+          const change = getDirtyFields<InputAuthor>(
+            data,
+            formState.dirtyFields
+          );
           if (change) {
             updateProfile(change);
           }
