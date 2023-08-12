@@ -27,6 +27,8 @@ import Pages from "@/components/settings/pages";
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { isSettings } from "@/utils/type-guards";
 
+import { SettingInputType } from "../../../__generated__/__types__";
+
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
 }
@@ -47,7 +49,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const onPanelClick = (key) => {
     const params = new URLSearchParams(searchParams);
     params.set("selected", key);
-    router.replace(`${pathname}?${params}`);
+    router.push(`${pathname}?${params}`);
   };
 
   const confirm = async () => {
@@ -69,7 +71,10 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit((data) => {
-              const change = getDirtyFields(data, formState.dirtyFields);
+              const change = getDirtyFields<SettingInputType>(
+                data,
+                formState.dirtyFields
+              );
               updateSettingsAPI(change).then(() => methods.reset(change));
             })}
           >

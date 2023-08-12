@@ -1,13 +1,8 @@
-import { DeepMap } from "react-hook-form";
-
-export const getDirtyFields = <T>(
-  data: T,
-  dirtyFields: Partial<DeepMap<T, boolean>> | any
-) => {
-  const result = Object.entries(dirtyFields).reduce((acc, [key]) => {
+export const getDirtyFields = <K>(data: any, dirtyFields: any) => {
+  const result = Object.entries(dirtyFields as any).reduce((acc, [key]) => {
     acc[key] = data[key];
 
     return acc;
   }, {});
-  return result as T;
+  return result as K;
 };
