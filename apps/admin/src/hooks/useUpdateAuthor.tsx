@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { Message } from "ui";
@@ -101,14 +101,14 @@ export const useUpdateAuthor = (id: number, withTracking = true) => {
       }
 
       if (data.email) {
-        router
-          .replace("/messages/email-changed?newEmail=" + data.email)
-          .then(() => {
-            signOut({
-              redirect: false,
-              callbackUrl: "/posts",
-            });
-          });
+        // router
+        //   .replace("/messages/email-changed?newEmail=" + data.email)
+        //   .then(() => {
+        //     signOut({
+        //       redirect: false,
+        //       callbackUrl: "/posts",
+        //     });
+        //   });
       }
     }
     return res;

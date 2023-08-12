@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import { useRouter } from "next/router";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { BsArrowLeft } from "react-icons/bs";
 
 import Actions from "@/components/post-settings";
@@ -16,21 +17,16 @@ const Header: React.VFC<Props> = ({ post }) => {
 
   if (post.__typename === "Post") {
     const isPost = post.type === PostTypes.Post;
-
-    const goBack = (e) => {
-      e.preventDefault();
-      router.push(isPost ? "/posts" : "/creatives");
-    };
     return (
       <div className="flex flex-row justify-between px-4 py-4">
         <div className="left flex flex-row items-center gap-4">
-          <a
-            onClick={goBack}
+          <Link
+            href={isPost ? "/posts" : "/creatives"}
             data-testid="back-button"
             className="cursor-pointer"
           >
             <BsArrowLeft size={24} />
-          </a>
+          </Link>
           <span
             className={classNames(
               "rounded-md p-1.5 px-2 text-xs  font-semibold uppercase tracking-wide",

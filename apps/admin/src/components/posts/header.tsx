@@ -1,5 +1,6 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { MouseEvent, ReactNode, useState } from "react";
+import { BiPlus } from "react-icons/bi";
 import { Button, Modal, PageHeader } from "ui";
 
 import { PostTypes } from "@/__generated__/__types__";
@@ -16,13 +17,19 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  const onClick = (type, pageType: PageType) => {
+  const onClick = async (type, pageType: PageType) => {
     track({
       eventAction: EventAction.Click,
       eventCategory: "New",
       eventLabel: `${type} - ${pageType}`,
     });
-    router.push(`/api/create?type=${type}&page_type=${pageType}`);
+    const createdPost = await fetch(
+      `/api/create?type=${type}&page_type=${pageType}`
+    );
+    const post = await createdPost.json();
+    if (post?.id) {
+      router.replace(`/${type}/${post.id}`);
+    }
   };
 
   const onNewClick = () => {
@@ -45,7 +52,9 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             key="1"
             data-testid="createPostBtn"
             onClick={() => onNewClick()}
+            className="flex items-center gap-1"
           >
+            <BiPlus size={16} />
             {buttonLabel}
           </Button>,
         ]}

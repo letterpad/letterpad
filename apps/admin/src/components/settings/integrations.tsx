@@ -1,7 +1,8 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Button, Input, Label, TextArea } from "ui";
+import { Input, Label, TextArea } from "ui";
 
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { SaveButton } from "../save-button";
+
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
 }
@@ -69,9 +70,7 @@ const Integrations: React.FC<Props> = ({ cloudinaryEnabledByAdmin }) => {
           />
         </div>
       </div>
-      <Button type="submit" data-testid="save-integrations">
-        Save
-      </Button>
+      <SaveButton testId="save-integrations" />
     </>
   );
 };

@@ -1,5 +1,6 @@
+"use client";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 import {
   BuilderContext,
@@ -26,13 +27,15 @@ import { FeaturedImage } from "./featured-image";
 import { SubTitle } from "./subtitle";
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
+import { isPost } from "../../../utils/type-guards";
 
 export const Post = () => {
-  const router = useRouter();
+  const params = useParams();
   const { updatePostAPI, updateLocalState, updatePost } = useUpdatePost();
-  const { postId } = router.query;
+  const postId = params.postId;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
+    skip: !postId,
   });
 
   const debounceUpdatePostAPI = useMemo(
@@ -42,8 +45,8 @@ export const Post = () => {
 
   const { helpers } = usePostContext() as PostContextType;
 
-  const post = data?.post.__typename === "Post" ? data.post : undefined;
-
+  const post = data && isPost(data.post) ? data.post : undefined;
+  // console.log(post);
   let content = post?.html;
   const id = post?.id;
   const status = post?.status;
@@ -73,7 +76,7 @@ export const Post = () => {
   ) {
     content = post?.html_draft;
   }
-
+  if (loading) return <div></div>;
   return (
     <div style={{ minHeight: "100vh" }}>
       <Head>

@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { Message } from "ui";
 
-import { doLogin } from "@/components/login/actions";
 import { Logo } from "@/components/login/views/Logo";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
 
@@ -72,19 +71,20 @@ export const RegisterForm = () => {
           },
         },
       });
-      const out = result.data?.createAuthor ?? {};
-      if (out.__typename === "Failed") {
+      const createdAuthor = result.data?.createAuthor ?? {};
+      if (createdAuthor.__typename === "Failed") {
         Message().error({
-          content: out.message,
+          content: createdAuthor.message,
           duration: 5,
         });
-      } else if (out.__typename === "Author") {
+      } else if (createdAuthor.__typename === "Author") {
         if (
-          out.register_step &&
-          out.register_step !== RegisterStep.Registered &&
-          out.verified
+          createdAuthor.register_step &&
+          createdAuthor.register_step !== RegisterStep.Registered &&
+          createdAuthor.verified
         ) {
-          return doLogin({ email, password });
+          // aquire session
+          // return doLogin({ email, password });
         }
 
         track({
@@ -127,7 +127,7 @@ export const RegisterForm = () => {
           <div className="mx-auto flex w-full max-w-md items-center px-6 lg:w-2/6">
             <div className="flex-1">
               <div className="text-center">
-                <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
+                <h2 className="flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
                   <Logo />
                 </h2>
 
@@ -196,7 +196,7 @@ export const RegisterForm = () => {
                     href="/login"
                     className="text-blue-500 hover:underline focus:underline focus:outline-none"
                   >
-                    <a>Sign in</a>
+                    Sign in
                   </Link>
                   .
                 </p>

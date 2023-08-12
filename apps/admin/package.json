@@ -42,7 +42,8 @@
     "find-deadcode": "ts-prune | grep -Ev \"\\.d\\.ts|__generated__|seed\" | cat"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.1",
+    "@apollo/client": "^3.8.0-rc.2",
+    "@apollo/experimental-nextjs-app-support": "^0.4.1",
     "@apollo/server": "^4.9.1",
     "@as-integrations/next": "^2.0.1",
     "@dnd-kit/core": "^6.0.5",
@@ -81,10 +82,9 @@
     "micro": "^9.4.1",
     "multer": "^1.4.2",
     "mysql2": "^2.2.5",
-    "next": "12.3.1",
     "next-auth": "^4.22.1",
+    "next-nprogress-bar": "^2.1.0",
     "nodemailer": "^6.7.3",
-    "nprogress": "^0.2.0",
     "prisma": "4.9.0",
     "raygun": "^0.13.1",
     "react-colorful": "^5.6.1",

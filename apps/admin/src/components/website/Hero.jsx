@@ -25,7 +25,7 @@ function Hero() {
         />
       </div>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="pt-32 pb-12 md:pt-40 md:pb-20">
+        <div className="pb-12 pt-32 md:pb-20 md:pt-40">
           {/* Hero content */}
           <div className="mx-auto max-w-xl text-center md:mx-0 md:max-w-[640px] md:text-left">
             <div data-aos="zoom-out">
@@ -62,7 +62,7 @@ function Hero() {
               expression.
             </p>
             <div
-              className="mx-auto max-w-xs space-y-4 sm:flex sm:max-w-none sm:justify-center sm:space-y-0 sm:space-x-4 md:justify-start"
+              className="mx-auto max-w-xs space-y-4 sm:flex sm:max-w-none sm:justify-center sm:space-x-4 sm:space-y-0 md:justify-start"
               data-aos="zoom-out"
               data-aos-delay="300"
             >

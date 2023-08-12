@@ -5,6 +5,7 @@ interface ColumnItem {
   // responsive: Breakpoint[];
   width?: string;
   render?: (data: any, item: any) => any;
+  className?: string;
 }
 
 export type Columns = ColumnItem | null;

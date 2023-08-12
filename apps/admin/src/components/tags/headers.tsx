@@ -1,3 +1,4 @@
+import { BiRename, BiUnlink } from "react-icons/bi";
 import { Button, PopConfirm } from "ui";
 
 export function getHeaders({ tags, deleteTag, editTag }) {
@@ -21,7 +22,9 @@ export function getHeaders({ tags, deleteTag, editTag }) {
               variant="primary"
               size="small"
               onClick={() => editTag(record.key)}
+              className="items-center gap-1"
             >
+              <BiRename size={16} />
               Rename
             </Button>
             <PopConfirm
@@ -29,7 +32,12 @@ export function getHeaders({ tags, deleteTag, editTag }) {
               description="This action will remove this tag from all the posts. Are you sure you want to continue ?"
               onConfirm={() => deleteTag(record.key)}
             >
-              <Button variant="danger" size="small">
+              <Button
+                variant="danger"
+                size="small"
+                className="items-center gap-1"
+              >
+                <BiUnlink size={16} />
                 Unlink
               </Button>
             </PopConfirm>

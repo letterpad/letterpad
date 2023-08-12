@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 import { EventAction, track } from "@/track";
@@ -7,7 +7,7 @@ interface Props {
   mode: "login" | "register";
 }
 export const SocialLogin: React.VFC<Props> = ({ mode }) => {
-  const router = useRouter();
+  const params = useSearchParams();
   const onClick = async (e: React.MouseEvent, type: "google" | "github") => {
     e.preventDefault();
     track({
@@ -15,10 +15,8 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
       eventCategory: `social-${mode}`,
       eventLabel: type,
     });
-    const callback =
-      typeof router.query.callbackUrl === "string"
-        ? router.query.callbackUrl
-        : "/posts";
+    const cbUrl = params.get("callbackUrl");
+    const callback = typeof cbUrl === "string" ? cbUrl : "/posts";
     await signIn(type, { callbackUrl: callback });
   };
   return (

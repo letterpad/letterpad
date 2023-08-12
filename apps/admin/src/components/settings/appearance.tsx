@@ -5,6 +5,8 @@ import { Upload } from "@/components/upload";
 
 import { removeTypenames } from "@/shared/utils";
 
+import { SaveButton } from "../save-button";
+
 const Appearance = () => {
   const data = useFormContext();
   return (
@@ -114,7 +116,7 @@ const Appearance = () => {
         />
 
         <br />
-        <Button type="submit">Save</Button>
+        <SaveButton />
       </div>
     </div>
   );

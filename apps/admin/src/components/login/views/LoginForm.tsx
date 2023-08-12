@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Message } from "ui";
 
@@ -20,6 +20,7 @@ export const LoginForm = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const params = useSearchParams();
   const router = useRouter();
 
   const loginAction = async () => {
@@ -29,17 +30,19 @@ export const LoginForm = ({
       eventCategory: "login",
       eventLabel: `User logged in`,
     });
-    if (result.success && result.redirectUrl) {
+    if (result.success) {
       Message().success({ content: result.message, duration: 3 });
-      const { callbackUrl } = router.query;
-      let redirectPath = "/posts";
+      const callbackUrl = params.get("callbackUrl");
+      let redirectUrl = result.redirectUrl;
       if (callbackUrl && typeof callbackUrl === "string") {
-        redirectPath = new URL(callbackUrl).pathname;
+        redirectUrl = new URL(callbackUrl).pathname;
       }
-      if (redirectPath.includes("login")) {
-        redirectPath = redirectPath.replace("login", "posts");
+      if (redirectUrl?.includes("login")) {
+        redirectUrl = redirectUrl.replace("login", "posts");
       }
-      router.push(redirectPath.replace(basePath, ""));
+      if (redirectUrl) {
+        router.push(new URL(redirectUrl).pathname);
+      }
       return;
     }
     Message().error({ content: result.message, duration: 5 });
@@ -74,7 +77,7 @@ export const LoginForm = ({
           <div className="mx-auto flex w-full max-w-md items-center px-6 lg:w-2/6">
             <div className="flex-1">
               <div className="text-center">
-                <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
+                <h2 className="flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
                   <Logo />
                 </h2>
 
@@ -149,7 +152,7 @@ export const LoginForm = ({
                     href="/register"
                     className="text-blue-500 hover:underline focus:underline focus:outline-none"
                   >
-                    <a>Sign up</a>
+                    Sign up
                   </Link>
                   .
                 </p>

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Button, Message, Modal, TextArea } from "ui";
 

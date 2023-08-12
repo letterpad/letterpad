@@ -1,6 +1,6 @@
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
-import { Button, useResponsiveLayout } from "ui";
+import { Button, useResponsive, useResponsiveLayout } from "ui";
 
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
@@ -9,19 +9,16 @@ import ThemeSwitcher from "../theme-switcher";
 
 export const TopBar = () => {
   const SavingIndicator = useSavingIndicator();
-  const { sidebarVisible, setSidebarVisible, isMobileOrTablet } =
-    useResponsiveLayout();
+  const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
   return (
     <div className="flex flex-row items-center justify-between py-4">
       <div>
-        {isMobileOrTablet && (
-          <Button
-            className="menu"
-            onClick={() => setSidebarVisible(!sidebarVisible)}
-          >
-            {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}
-          </Button>
-        )}
+        <Button
+          className="menu md:hidden"
+          onClick={() => setSidebarVisible(!sidebarVisible)}
+        >
+          {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}
+        </Button>
       </div>
       {SavingIndicator}
       <div className="flex flex-row gap-2">

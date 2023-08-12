@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import className from "classnames";
 
 import { PostStatusOptions, TagsNode } from "@/__generated__/__types__";
 
@@ -22,6 +22,7 @@ const updatedAtColumn = {
   title: "Updated",
   dataIndex: "updatedAt",
   key: "updatedAt",
+  className: "hidden lg:table-cell",
   render: (date: string) => {
     const d = new Date(date);
     const ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
@@ -49,7 +50,7 @@ const Actions = ({ changeStatus, id, status }) => {
         Delete
       </button>
       <span
-        className={classNames({
+        className={className({
           hidden: status !== PostStatusOptions.Trashed,
         })}
       >
@@ -60,7 +61,7 @@ const Actions = ({ changeStatus, id, status }) => {
           e.stopPropagation();
           changeStatus(id, PostStatusOptions.Draft);
         }}
-        className={classNames("text-blue-600", {
+        className={className("text-blue-600", {
           hidden: status !== PostStatusOptions.Trashed,
         })}
       >
@@ -69,10 +70,10 @@ const Actions = ({ changeStatus, id, status }) => {
     </div>
   );
 };
-export const creativesColumns = ({ changeStatus, isDesktop }) => [
+export const creativesColumns = ({ changeStatus }) => [
   { ...titleColumn },
-  isDesktop ? { ...statusColumn } : null,
-  isDesktop ? { ...updatedAtColumn } : null,
+  { ...statusColumn },
+  { ...updatedAtColumn },
   {
     title: "Actions",
     dataIndex: "actions",
@@ -83,20 +84,19 @@ export const creativesColumns = ({ changeStatus, isDesktop }) => [
   },
 ];
 
-export const postsColumns = ({ changeStatus, isDesktop }) => [
+export const postsColumns = ({ changeStatus }) => [
   { ...titleColumn },
   statusColumn,
-  isDesktop ? { ...updatedAtColumn } : null,
-  isDesktop
-    ? {
-        title: "Tags",
-        dataIndex: "tags",
-        key: "tags",
-        render: (tags: TagsNode) => {
-          return tags.rows.map((tag) => tag.name).join(", ");
-        },
-      }
-    : null,
+  { ...updatedAtColumn },
+  {
+    title: "Tags",
+    dataIndex: "tags",
+    key: "tags",
+    className: "hidden lg:table-cell",
+    render: (tags: TagsNode) => {
+      return tags.rows.map((tag) => tag.name).join(", ");
+    },
+  },
   {
     title: "Actions",
     dataIndex: "actions",

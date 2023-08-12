@@ -14,9 +14,11 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { FC, useState } from "react";
+import { BiPlus, BiSave } from "react-icons/bi";
 import { Button } from "ui";
 
 import { Collection } from "@/components/navigation-builder/types";
+import { SaveButton } from "@/components/save-button";
 
 import { NavigationType } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
@@ -148,10 +150,17 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
           />
         ))}
       </SortableContext>
-      <div className="flex items-center justify-center">
-        <Button onClick={addNewRow} data-testid="newMenuBtn">
+      <div className="flex items-end justify-center gap-2">
+        <Button
+          onClick={addNewRow}
+          data-testid="newMenuBtn"
+          variant="dark"
+          className="flex items-center justify-center gap-1"
+        >
+          <BiPlus size={18} />
           Add New
         </Button>
+        <SaveButton />
       </div>
       <SuggestionModal
         isOpen={showModal}

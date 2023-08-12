@@ -24,12 +24,11 @@ const NavigationPanel = () => {
         control={control}
         render={() => (
           <NavigationBuilder
-            menuData={watch("menu")}
+            menuData={watch("menu") ?? []}
             updateOption={updateMenu}
           />
         )}
       />
-      <Button type="submit">Save</Button>
     </>
   );
 };

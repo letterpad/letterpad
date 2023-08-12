@@ -8,67 +8,6 @@ env:
 
 jobs:
   job_one:
-    name: Build Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-     
-      - name: Turbo Cache
-        id: turbo-cache
-        uses: actions/cache@v2
-        with:
-          path: .turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        id: yarn-dep-cache
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      
-      - name: Install Yarn
-        run: npm install -g yarn
-
-      - name: Yarn install deps
-        run: |
-          yarn install --frozen-lockfile 
-        if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
-
-      - name: Create .env file
-        run: mv apps/admin/.env.sample apps/admin/.env
-
-      - name: Graphql Codegen
-        run: yarn codegen
-
-      - name: Generate Prisma Client
-        working-directory: apps/admin
-        run: npx prisma generate --schema prisma/sqlite/schema.prisma
-        env:
-          DATABASE_URL: "file:data/test_1.sqlite"
-
-      - name: Type check
-        run: yarn typecheck
-
-      - name: Run Build
-        run: yarn run build
-  job_two:
     name: API Test
     runs-on: ubuntu-latest
     steps:
@@ -89,7 +28,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -128,7 +67,7 @@ jobs:
         run: yarn run test
         env:
           NODE_ENV: test
-  job_three:
+  job_two:
     name: Cypress Test
     runs-on: ubuntu-latest
     steps:
@@ -149,7 +88,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -197,7 +136,7 @@ jobs:
           DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Run Build
-        run: yarn run build
+        run: yarn run build --filter=admin
 
       - name: Run Cypress
         run: |

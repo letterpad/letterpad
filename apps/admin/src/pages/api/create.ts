@@ -1,7 +1,6 @@
 import { NextApiResponse } from "next";
 
 import { PostTypes } from "@/__generated__/__types__";
-import { basePath } from "@/constants";
 import { getResolverContext } from "@/graphql/context";
 import { createPost } from "@/graphql/services/post";
 
@@ -14,18 +13,11 @@ const Create = async (
   try {
     const type = req.query.type as PostTypes;
     const page_type = req.query.page_type as string;
-
-    const context = await getResolverContext({ req, res });
-
+    const context = await getResolverContext({ req });
     const result = await createPost({ data: { type, page_type } }, context);
-
-    if (result.__typename === "Post") {
-      res.redirect(basePath + "/post/" + result.id);
-      return;
-    }
-    res.send("Post creation failed");
+    return res.json(result);
   } catch (e: any) {
-    res.send(e.message);
+    throw new Error(e.message);
   }
 };
 

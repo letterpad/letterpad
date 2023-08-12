@@ -4,6 +4,8 @@ import { Button, Input, Label, TextArea } from "ui";
 
 import { Upload } from "@/components/upload";
 
+import { SaveButton } from "../save-button";
+
 export const Basic = () => {
   const { register, watch, control } = useFormContext();
 
@@ -62,9 +64,7 @@ export const Basic = () => {
           data-testid="company"
         />
       </div>
-      <Button type="submit" data-testid="basic-submit">
-        Save
-      </Button>
+      <SaveButton testId="basic-submit" />
     </>
   );
 };

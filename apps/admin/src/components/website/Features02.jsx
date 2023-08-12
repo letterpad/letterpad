@@ -7,12 +7,12 @@ function Features02() {
     <section className="relative">
       {/* Bg gradient */}
       <div
-        className="pointer-events-none absolute top-0 left-0 right-0 -z-10 h-[10rem] bg-gradient-to-b from-gray-800 to-gray-900 opacity-60"
+        className="pointer-events-none absolute left-0 right-0 top-0 -z-10 h-[10rem] bg-gradient-to-b from-gray-800 to-gray-900 opacity-60"
         aria-hidden="true"
       />
       {/* Bg illustration */}
       <div
-        className="absolute top-0 left-1/2 -z-10 ml-[390px]"
+        className="absolute left-1/2 top-0 -z-10 ml-[390px]"
         aria-hidden="true"
       >
         <img

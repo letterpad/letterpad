@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { EventAction, track } from "@/track";
@@ -56,7 +56,7 @@ export const ForgotPassword = ({
           <div className="mx-auto flex w-full max-w-md items-center px-6 lg:w-2/6">
             <div className="flex-1">
               <div className="text-center">
-                <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
+                <h2 className="flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
                   <Logo />
                 </h2>
 

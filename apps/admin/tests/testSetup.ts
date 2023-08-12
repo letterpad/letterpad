@@ -34,24 +34,20 @@ export const createApolloTestServer = async () => {
     stopOnTerminationSignals: true,
   });
 
-  const server = startStandaloneServer(
-    apolloServer,
-    {
-      context: async (context) => {
-        const resolverContext = await getResolverContext(context);
-        return {
-          ...context,
-          ...resolverContext,
-          session,
-        };
-      },
-      listen: {
-        port: 3000,
-
-      },
-    }
-  );
-  return {server, apolloServer};
+  const server = startStandaloneServer(apolloServer, {
+    context: async (context) => {
+      const resolverContext = await getResolverContext(context);
+      return {
+        ...context,
+        ...resolverContext,
+        session,
+      };
+    },
+    listen: {
+      port: 3000,
+    },
+  });
+  return { server, apolloServer };
 };
 
 let server;

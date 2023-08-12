@@ -26,8 +26,9 @@ const VerifyTestUser = async (
     } catch (e: any) {
       res.send(e.message);
     }
+  } else {
+    return res.status(401).send("Not Authorized");
   }
-  return res.status(401).send("Not Authorized");
 };
 
 export default VerifyTestUser;
