@@ -1,18 +1,23 @@
 "use client";
-import Head from "next/head";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 
 import { ForgotPassword } from "@/components/login/views/ForgotPassword";
 import { LoginForm } from "@/components/login/views/LoginForm";
 
+import ThemeSwitcher from "../../components/theme-switcher";
+
 const Login = () => {
   const [loginView, setLoginView] = useState(true);
-
+  useEffect(() => {
+    if (typeof localStorage !== "undefined") {
+      if (localStorage.theme === "dark") {
+        ThemeSwitcher.switch("dark");
+      }
+    }
+  }, []);
   return (
     <>
-      <Head>
-        <title>Login</title>
-      </Head>
       <div className="login" style={{ height: "100%", flex: 1 }}>
         <LoginForm isVisible={loginView} hideSelf={() => setLoginView(false)} />
 
