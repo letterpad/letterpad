@@ -1,5 +1,7 @@
 "use client";
 
+import { Metadata } from "next";
+import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -25,7 +27,11 @@ const Home = () => {
   }, []);
 
   if (isPlatform) {
-    return <Website />;
+    return (
+      <>
+        <Website />
+      </>
+    );
   }
   return null;
 };

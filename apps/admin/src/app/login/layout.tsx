@@ -1,16 +1,14 @@
-"use client";
-import React, { useEffect } from "react";
+import { Metadata } from "next";
+import React from "react";
 
-import ThemeSwitcher from "@/components/theme-switcher";
+export const metadata: Metadata = {
+  title: "Login | Letterpad",
+  description: "Login to Letterpad",
+  viewport: "width=device-width",
+  robots: "follow, index",
+};
 
 const LoginLayout = ({ children }) => {
-  useEffect(() => {
-    if (typeof localStorage !== "undefined") {
-      if (localStorage.theme === "dark") {
-        ThemeSwitcher.switch("dark");
-      }
-    }
-  }, []);
   return (
     <>
       <div className="">{children}</div>

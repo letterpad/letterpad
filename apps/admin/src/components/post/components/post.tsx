@@ -30,9 +30,8 @@ import { PostContextType } from "../types";
 import { isPost } from "../../../utils/type-guards";
 
 export const Post = () => {
-  const params = useParams();
+  const { postId } = useParams();
   const { updatePostAPI, updateLocalState, updatePost } = useUpdatePost();
-  const postId = params.postId;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
     skip: !postId,
@@ -42,8 +41,6 @@ export const Post = () => {
     () => debounce((data) => updatePostAPI(data), 500),
     [updatePostAPI]
   );
-
-  const { helpers } = usePostContext() as PostContextType;
 
   const post = data && isPost(data.post) ? data.post : undefined;
   // console.log(post);
@@ -76,14 +73,13 @@ export const Post = () => {
   ) {
     content = post?.html_draft;
   }
-  if (loading) return <div></div>;
+  // if (loading) return <div></div>;
   return (
     <div style={{ minHeight: "100vh" }}>
       <Head>
         <title>Editing - {post?.title.replace(/(<([^>]+)>)/g, "")}</title>
       </Head>
       {post && <Header post={post} />}
-
       {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
           <>
@@ -108,7 +104,6 @@ export const Post = () => {
             <WordCount />
           </>
         )}
-
       {!loading && post?.page_type === PageType["Story Builder"] && (
         <div className="my-10">
           <div className="mx-4">
