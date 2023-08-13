@@ -9,9 +9,10 @@ import MediaUpdateModal from "@/components/modals/media-update-modal";
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
 
 import { useDataProvider } from "../../context/DataProvider";
+import { useMediaQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
 
 const Media = () => {
-  const { media } = useDataProvider();
+  const { data } = useMediaQuery();
   const [preview, setPreview] = useState<IMedia | undefined>();
   const [images, setImages] = useState<MediaNode>({
     count: 0,
@@ -19,10 +20,10 @@ const Media = () => {
   });
 
   useEffect(() => {
-    if (media?.data?.media.__typename === "MediaNode") {
-      setImages(media?.data?.media);
+    if (data?.media.__typename === "MediaNode") {
+      setImages(data?.media);
     }
-  }, [media?.loading, media?.data]);
+  }, [data?.media]);
 
   const deleteImage = async (img: IMedia) => {
     const res = await deleteImageAPI(img);
@@ -50,9 +51,6 @@ const Media = () => {
 
   return (
     <>
-      <Head>
-        <title>Media</title>
-      </Head>
       <PageHeader className="site-page-header" title="Media">
         <span className="help-text">
           Here you will find the collection of images that you uploaded from
