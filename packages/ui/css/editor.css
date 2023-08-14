@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap');
+
 @import './creatives.css';
 @import './prism.css';
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@300;400;600;700&display=swap');
 
 .prose {
   word-break: break-word;
+  font-family: inherit;
   .mce-content-body {
     outline: none;
   }
@@ -31,7 +31,7 @@
   }
   pre {
     font-size: 0.7em;
-    font-family: 'Roboto Mono', monospace !important;
+    font-family: var(--font-roboto-mono), monospace !important;
     padding: 0.8rem !important;
     opacity: 0.9;
   }

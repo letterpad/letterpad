@@ -1,7 +1,8 @@
+import { getPreviewData } from '@/data';
+
 import Creative from '@/layouts/Creative';
 
 import { useTheme } from '../../../../themes';
-import { getPreviewData } from '../../../data';
 
 export default async function Preview({ params, searchParams }) {
   const { post, settings, me } = await getPreviewData(params.hash);

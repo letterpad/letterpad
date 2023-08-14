@@ -152,6 +152,8 @@ model Setting {
   design              String    @default("{}")
   scripts             String    @default("")
   author_id           Int       @unique
+  primary_font        String    @default("Inter")
+  secondary_font      String    @default("Roboto")
   author              Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 

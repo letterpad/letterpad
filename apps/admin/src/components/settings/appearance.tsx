@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Button, Label, TextArea } from "ui";
+import { Button, Input, Label, Select, TextArea } from "ui";
 
 import { Upload } from "@/components/upload";
 
@@ -7,10 +7,89 @@ import { removeTypenames } from "@/shared/utils";
 
 import { SaveButton } from "../save-button";
 
+const fontItemsSans = [
+  "Inter",
+  "Roboto",
+  "PT_Sans",
+  "Oswald",
+  "Noto_Sans",
+  "Assistant",
+  "Poppins",
+  "Source_Serif_4",
+  "Roboto_Mono",
+  "Merriweather",
+  "Lora",
+  "Nunito_Sans",
+  "Open_Sans",
+].map((key) => ({ key, label: key }));
+
+const fontItemsSerif = [
+  "Lora",
+  "PT_Serif",
+  "Nanum_Myeongjo",
+  "Marcellus",
+  "Unna",
+  "Literata",
+  "Adamina",
+  "Source_Serif_4",
+  "Roboto_Mono",
+  "Merriweather",
+  "Spectral",
+].map((key) => ({ key, label: key }));
+
 const Appearance = () => {
   const data = useFormContext();
   return (
     <div className="grid gap-8">
+      <div className="mb-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
+        <div>
+          <Label label="Primary Font" className="mb-2" />
+          <p className="mb-2 dark:text-gray-400">
+            Applies this font globally. Good for long texts.
+          </p>
+          <Controller
+            name="design"
+            control={data.control}
+            render={({ field: { onChange } }) => (
+              <Select
+                items={fontItemsSans}
+                onChange={(key) => {
+                  onChange({
+                    ...removeTypenames(data?.watch("design")),
+                    primary_font: key,
+                  });
+                }}
+                selected={data?.watch("design.primary_font") ?? "Inter"}
+                id="design.primary_font"
+              />
+            )}
+          />
+        </div>
+        <div>
+          <Label label="Secondary Font" className="mb-2" />
+          <p className="mb-2 dark:text-gray-400">
+            Applies this font to all headings across your site.
+          </p>
+          <Controller
+            name="design"
+            control={data.control}
+            render={({ field: { onChange } }) => (
+              <Select
+                items={fontItemsSerif}
+                onChange={(key) => {
+                  onChange({
+                    ...removeTypenames(data?.watch("design")),
+                    secondary_font: key,
+                  });
+                }}
+                selected={data?.watch("design.secondary_font") ?? "Inter"}
+                id="design.secondary_font"
+              />
+            )}
+          />
+        </div>
+      </div>
+
       <div className="flex flex-col gap-4">
         <Label label="Brand Color - Choose a color that reflects your brand." />
         <div className="flex flex-row items-center gap-2">

@@ -1,18 +1,20 @@
-import { PostsFragmentFragment } from 'letterpad-sdk';
+import classNames from 'classnames';
+import { PostsFragmentFragment, SettingsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 
 import formatDate from '@/lib/utils/formatDate';
 
+import { fonts } from '@/components/fonts';
+import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { IconBook } from '../../components/icons';
 
 export interface Props {
   posts: PostsFragmentFragment;
-  settings: any;
+  settings: SettingsFragmentFragment;
 }
 
 export const HomePosts: FC<Props> = ({ posts, settings }) => {
@@ -56,7 +58,7 @@ export const HomePosts: FC<Props> = ({ posts, settings }) => {
                       />
                     </span>
                   </div>
-                  <div className="h-44 py-4 px-2 md:px-0">
+                  <div className="h-44 px-2 py-4 md:px-0">
                     <span className="inline-flex w-full items-center justify-between">
                       <span className="flex items-center gap-1 text-sm">
                         <IconBook />
@@ -68,7 +70,15 @@ export const HomePosts: FC<Props> = ({ posts, settings }) => {
                       </time>
                     </span>
 
-                    <h2 className="mt-2 mb-2 font-bold leading-5">{title}</h2>
+                    <h2
+                      className={classNames(
+                        'mb-2 mt-2 font-bold leading-5',
+                        fonts[settings.design?.primary_font ?? 'Inter']
+                          .className
+                      )}
+                    >
+                      {title}
+                    </h2>
                     <p className="text-base tracking-tight text-gray-600 dark:text-gray-300">
                       {excerpt}
                     </p>

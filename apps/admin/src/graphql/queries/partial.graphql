@@ -77,6 +77,8 @@ fragment SettingsFragment on Setting {
   show_tags_page
   design {
     brand_color
+    primary_font
+    secondary_font
   }
   menu {
     label

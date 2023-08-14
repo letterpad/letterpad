@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
-import { getAbout } from '../../data';
+import { getAbout } from '@/data';
+
 import StructuredData from '../../../components/StructuredData';
 import { useTheme } from '../../../themes';
 

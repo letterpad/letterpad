@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 
+import { getPostData } from '@/data';
+
 import StructuredData from '@/components/StructuredData';
 
-import { useTheme } from '../../../../themes';
-import { getPostData } from '../../../data';
+import { useTheme } from '@/themes';
 
 export default async function Post(props) {
   const { post, settings, me } = await getPostData(props.params.slug);
