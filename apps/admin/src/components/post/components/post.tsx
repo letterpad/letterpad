@@ -92,8 +92,10 @@ export const Post = () => {
       {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
           <FontPageWrapper
-            primary_font={settings?.design?.primary_font as any}
-            secondary_font={settings?.design?.secondary_font as any}
+            primary_font={(settings?.design?.primary_font as any) ?? "Inter"}
+            secondary_font={
+              (settings?.design?.secondary_font as any) ?? "PT_Serif"
+            }
             className="prose dark:prose-dark"
           >
             <div className="content">

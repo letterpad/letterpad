@@ -37,7 +37,7 @@ const Appearance = () => {
           />
           <p
             className={`${
-              fonts[data?.watch("design.primary_font")].className
+              fonts[data?.watch("design.primary_font") ?? "Inter"].className
             } pt-2`}
           >
             A quick brown fox jumps over the lazy dog.
@@ -67,7 +67,7 @@ const Appearance = () => {
           />
           <p
             className={`${
-              fonts[data?.watch("design.secondary_font")].className
+              fonts[data?.watch("design.secondary_font") ?? "Inter"].className
             } pt-2`}
           >
             A quick brown fox jumps over the lazy dog.
