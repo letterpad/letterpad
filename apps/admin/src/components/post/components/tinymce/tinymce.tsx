@@ -1,6 +1,5 @@
 import { GrammarlyEditorPlugin } from "@grammarly/editor-sdk-react";
 import { Editor } from "@tinymce/tinymce-react";
-import classNames from "classnames";
 import { memo, useEffect, useRef, useState } from "react";
 import "./core";
 
@@ -9,7 +8,6 @@ import { FileExplorer } from "@/components/file-explorer";
 import { blogEditorConfig, id } from "./config";
 import { insertImageInEditor } from "../commands";
 import { usePostContext } from "../..";
-import { merriweather, robotoMono, sourceSerif4 } from "../../../fonts";
 
 interface Props {
   text: string;
@@ -49,14 +47,7 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
   }, [html, text]);
 
   return (
-    <div
-      className={classNames(
-        "prose dark:prose-dark",
-        robotoMono.variable,
-        merriweather.variable,
-        sourceSerif4.variable
-      )}
-    >
+    <div>
       <GrammarlyEditorPlugin clientId="client_BuJhZ29Gc2ovQLpvEUvjJ8">
         <Editor
           id={id}

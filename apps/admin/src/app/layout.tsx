@@ -10,7 +10,7 @@ import "../../public/css/theme-variables.css";
 import "ui/css/editor.css";
 import "../../public/website/css/style.css";
 
-import { fonts } from "@/components/fonts";
+import { FontPageWrapper, fonts } from "@/components/fonts";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
@@ -83,7 +83,7 @@ const RootLayout = async ({ children }) => {
         <script src={basePath + `/prism/prism.js`} async />
       </Head>
       <body
-        className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 ${theme} ${fonts.inter.variable}`}
+        className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 ${theme}`}
       >
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
@@ -93,11 +93,13 @@ const RootLayout = async ({ children }) => {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
- 
+          
           gtag('config', '${gaTrackingId}');
-        `}
+          `}
         </Script>
-        <Providers loggedIn={session?.user?.id}>{children}</Providers>
+        <FontPageWrapper primary_font={"Inter"} secondary_font="Roboto">
+          <Providers loggedIn={session?.user?.id}>{children}</Providers>
+        </FontPageWrapper>
       </body>
     </html>
   );

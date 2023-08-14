@@ -5,37 +5,8 @@ import { Upload } from "@/components/upload";
 
 import { removeTypenames } from "@/shared/utils";
 
+import { fontItemsSans, fontItemsSerif, fonts } from "../fonts";
 import { SaveButton } from "../save-button";
-
-const fontItemsSans = [
-  "Inter",
-  "Roboto",
-  "PT_Sans",
-  "Oswald",
-  "Noto_Sans",
-  "Assistant",
-  "Poppins",
-  "Source_Serif_4",
-  "Roboto_Mono",
-  "Merriweather",
-  "Lora",
-  "Nunito_Sans",
-  "Open_Sans",
-].map((key) => ({ key, label: key }));
-
-const fontItemsSerif = [
-  "Lora",
-  "PT_Serif",
-  "Nanum_Myeongjo",
-  "Marcellus",
-  "Unna",
-  "Literata",
-  "Adamina",
-  "Source_Serif_4",
-  "Roboto_Mono",
-  "Merriweather",
-  "Spectral",
-].map((key) => ({ key, label: key }));
 
 const Appearance = () => {
   const data = useFormContext();
@@ -64,6 +35,13 @@ const Appearance = () => {
               />
             )}
           />
+          <p
+            className={`${
+              fonts[data?.watch("design.primary_font")].className
+            } pt-2`}
+          >
+            A quick brown fox jumps over the lazy dog.
+          </p>
         </div>
         <div>
           <Label label="Secondary Font" className="mb-2" />
@@ -87,6 +65,13 @@ const Appearance = () => {
               />
             )}
           />
+          <p
+            className={`${
+              fonts[data?.watch("design.secondary_font")].className
+            } pt-2`}
+          >
+            A quick brown fox jumps over the lazy dog.
+          </p>
         </div>
       </div>
 
