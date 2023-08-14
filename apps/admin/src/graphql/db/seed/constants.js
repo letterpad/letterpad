@@ -41,7 +41,11 @@ module.exports.defaultSettings = {
   css: "",
   theme: "minimal",
   menu: JSON.stringify(menu),
-  design: JSON.stringify({ brand_color: "#d93097" }),
+  design: JSON.stringify({
+    brand_color: "#d93097",
+    primary_font: "Inter",
+    secondary_font: "Lora",
+  }),
   cloudinary_key: "",
   cloudinary_name: "",
   cloudinary_secret: "",
