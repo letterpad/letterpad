@@ -6,8 +6,8 @@ export const resolveDesignField = async (
   design = parse(design ?? "{}") as Design;
   return {
     ...design,
-    primary_font: design.primary_font ?? "Inter",
-    secondary_font: design.secondary_font ?? "Lora",
+    primary_font: design?.primary_font ?? "Inter",
+    secondary_font: design?.secondary_font ?? "Lora",
   };
 };
 
