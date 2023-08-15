@@ -2943,11 +2943,6 @@
   dependencies:
     "@floating-ui/dom" "^1.0.0"
 
-"@fontsource/inter@4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.5.2.tgz#f21a1b39e9fc40fd7f315f37687ad6f6f040528a"
-  integrity sha512-4LLfZYr5dRsobtC9JNkATL5OwOqrxs2tF29eNljjogxWXm4tlHxRo4dgOFTlWxQOxcj5Zv7dM8IMiSoOqMGy3g==
-
 "@gar/promisify@^1.0.1":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
