@@ -5,9 +5,9 @@ export const resolveDesignField = async (
 ): Promise<ResolversParentTypes["Design"]> => {
   design = parse(design ?? "{}") as Design;
   return {
-    primary_font: "Inter",
-    secondary_font: "Lato",
     ...design,
+    primary_font: design.primary_font ?? "Inter",
+    secondary_font: design.secondary_font ?? "Lora",
   };
 };
 
