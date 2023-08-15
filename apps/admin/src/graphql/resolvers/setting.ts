@@ -12,6 +12,7 @@ import {
   resolveImageField,
   updateSetting,
 } from "../services/setting";
+import { resolveDesignField } from "../services/setting/resolveDesignField";
 
 import { Optional } from "@/types";
 
@@ -26,6 +27,7 @@ const Setting: SettingResolvers<ResolverContext> = {
   banner: ({ banner }) => resolveImageField(banner),
   site_logo: ({ site_logo }) => resolveImageField(site_logo),
   site_favicon: ({ site_favicon }) => resolveImageField(site_favicon),
+  design: ({ design }) => resolveDesignField(design),
 };
 
 const Query: QueryResolvers<ResolverContext> = {
