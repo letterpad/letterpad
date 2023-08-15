@@ -18,6 +18,10 @@ export function createRequester(options: LetterpadSdkOptions) {
         }),
       });
       const body = await response.json();
+      if(body.errors) {
+        console.log("Requester failed", body.errors);
+        throw new Error("There was a graphql error while contacting the server.");
+      }
       return body.data;
     } catch (e) {
       console.log("Requester failed", e);
