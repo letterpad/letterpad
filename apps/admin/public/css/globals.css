@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 [data-color-scheme="dark"] {
   color-scheme: dark;
 }
@@ -10,8 +9,7 @@ html:not(.prose):not(.home),
 body:not(.prose):not(.home) {
   padding: 0;
   margin: 0;
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: var(--font-inter);
   color: rgba(var(--color), 0.8);
   min-height: 100vh;
   padding: 0px;
@@ -113,14 +111,6 @@ a {
 
 table tr {
   cursor: pointer;
-}
-
-.lp-editor * {
-  font-size: 100%;
-}
-
-.lp-editor .code-block pre {
-  font-family: "Fira Code";
 }
 
 body .editor {

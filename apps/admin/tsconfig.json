@@ -32,6 +32,6 @@
     "src/graphqls.d.ts",
     "public/website/css",
     "src/graphql/schema/index.ts",
-    ".next/types/**/*.ts"
-  ]
+    ".next/types/**/*.ts", 
+    "src/components/fonts"  ]
 }

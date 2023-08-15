@@ -1,10 +1,11 @@
 import { Letterpad } from 'letterpad-sdk';
 import { InferGetServerSidePropsType } from 'next';
 
+import { getPostsByTag } from '@/data';
+
 import { TagSEO } from '@/components/SEO';
 
 import { useTheme } from '../../../../themes';
-import { getPostsByTag } from '../../../data';
 
 export default async function Tag(props) {
   const { posts, me, tagName, settings } = await getPostsByTag(

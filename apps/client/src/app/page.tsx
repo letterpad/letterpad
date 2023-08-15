@@ -1,13 +1,14 @@
 import { Metadata } from 'next';
 import Head from 'next/head';
 
+import { getData } from '@/data';
+
 import { CodeBlock } from '@/components/codeblock';
 import SectionContainer from '@/components/SectionContainer';
 import { withPageSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
 
-import { getData } from '../data';
 import StructuredData from '../../components/StructuredData';
 import { useTheme } from '../../themes';
 

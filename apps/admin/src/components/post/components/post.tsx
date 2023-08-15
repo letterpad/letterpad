@@ -18,7 +18,10 @@ import Header from "@/components/post/components/header";
 import { Title } from "@/components/post/components/title";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
-import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import {
+  usePostQuery,
+  useSettingsQuery,
+} from "@/__generated__/queries/queries.graphql";
 import { CreativesHead } from "@/creatives";
 import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
@@ -27,11 +30,13 @@ import { FeaturedImage } from "./featured-image";
 import { SubTitle } from "./subtitle";
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
-import { isPost } from "../../../utils/type-guards";
+import { FontPageWrapper } from "../../fonts";
+import { isPost, isSettings } from "../../../utils/type-guards";
 
 export const Post = () => {
   const { postId } = useParams();
-  const { updatePostAPI, updateLocalState, updatePost } = useUpdatePost();
+  const { updatePostAPI, updateLocalState } = useUpdatePost();
+  const { data: settingsData } = useSettingsQuery();
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
     skip: !postId,
@@ -43,6 +48,10 @@ export const Post = () => {
   );
 
   const post = data && isPost(data.post) ? data.post : undefined;
+  const settings =
+    settingsData && isSettings(settingsData.settings)
+      ? settingsData.settings
+      : undefined;
   // console.log(post);
   let content = post?.html;
   const id = post?.id;
@@ -82,7 +91,13 @@ export const Post = () => {
       {post && <Header post={post} />}
       {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
-          <>
+          <FontPageWrapper
+            primary_font={(settings?.design?.primary_font as any) ?? "Inter"}
+            secondary_font={
+              (settings?.design?.secondary_font as any) ?? "PT_Serif"
+            }
+            className="prose dark:prose-dark"
+          >
             <div className="content">
               {loading ? (
                 <PostTitlePlaceholder />
@@ -102,7 +117,7 @@ export const Post = () => {
               />
             </div>
             <WordCount />
-          </>
+          </FontPageWrapper>
         )}
       {!loading && post?.page_type === PageType["Story Builder"] && (
         <div className="my-10">

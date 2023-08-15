@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
 
-import Creative from '@/layouts/Creative';
+import { getPostData } from '@/data';
 
-import StructuredData from '../../../../components/StructuredData';
-import { useTheme } from '../../../../themes';
-import { getPostData } from '../../../data';
+import StructuredData from '@/components/StructuredData';
+
+import Creative from '@/layouts/Creative';
+import { useTheme } from '@/themes';
 
 export default async function Page(props) {
   const { post, settings, me } = await getPostData(props.params.slug);

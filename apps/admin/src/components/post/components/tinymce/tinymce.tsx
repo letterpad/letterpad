@@ -47,7 +47,7 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
   }, [html, text]);
 
   return (
-    <div className="serif prose dark:prose-dark">
+    <div>
       <GrammarlyEditorPlugin clientId="client_BuJhZ29Gc2ovQLpvEUvjJ8">
         <Editor
           id={id}

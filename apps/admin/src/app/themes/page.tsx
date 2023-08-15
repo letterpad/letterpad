@@ -8,12 +8,12 @@ import { Button, Content, PageHeader, RadioGroup } from "ui";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { themes as themesList } from "../../components/themes/themes";
-import { useDataProvider } from "../../context/DataProvider";
+import { useSettingsQuery } from "../../graphql/queries/queries.graphql";
 import { isSettings } from "../../utils/type-guards";
 
 const Themes = () => {
   const { updateSettings } = useUpdateSettings();
-  const { settings } = useDataProvider();
+  const { data } = useSettingsQuery();
   return (
     <>
       <Head>
@@ -28,7 +28,9 @@ const Themes = () => {
       <Content>
         <div className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {themesList().map((theme) => {
-            const selected = isSettings(settings) ? settings.theme : "minimal";
+            const selected = isSettings(data?.settings)
+              ? data?.settings.theme
+              : "minimal";
             return (
               <div
                 className={classNames(

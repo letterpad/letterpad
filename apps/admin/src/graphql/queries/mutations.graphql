@@ -80,6 +80,8 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
       cloudinary_secret
       design {
         brand_color
+        primary_font
+        secondary_font
       }
       scripts
       intro_dismissed
