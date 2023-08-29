@@ -15,19 +15,11 @@ import { Settings } from "@/features/settings/feature";
 import { isSettings } from "../../utils/type-guards";
 
 const Page = async () => {
-  const { data, error } = await getClient().query<HomeQueryQueryResult["data"]>(
-    HomeQueryDocument,
-    {}
-  );
-  const settings = isSettings(data?.settings) ? data?.settings : undefined;
-
   const cloudinaryEnabledByAdmin = !!(
     process.env.CLOUDINARY_KEY &&
     process.env.CLOUDINARY_NAME &&
     process.env.CLOUDINARY_SECRET
   );
-
-  if (!settings) return <>Please wait...</>;
 
   return (
     <>
@@ -40,11 +32,7 @@ const Page = async () => {
         </span>
       </PageHeader>
       <Content>
-        <Settings
-          cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
-          settings={settings}
-        />
-        ;
+        <Settings cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin} />
       </Content>
     </>
   );

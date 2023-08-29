@@ -12,8 +12,6 @@ import {
   isIntroDismissed,
   setIntroDimissed,
 } from "@/components/home/visibility";
-import { postsColumns } from "@/components/posts";
-import { TagsProvider } from "@/components/tags/context";
 
 import {
   PostsFilters,
@@ -21,6 +19,7 @@ import {
   SortBy,
 } from "@/__generated__/__types__";
 import { LetterpadContext } from "@/context/LetterpadProvider";
+import { postsColumns } from "@/features/posts/header";
 
 import { useGetPosts } from "./api.client";
 import Filters from "./filters";

@@ -2,9 +2,9 @@ import Head from "next/head";
 import React from "react";
 
 import { Content } from "@/components/client-wrapper";
-import { Header } from "@/components/posts/header";
 
 import { PostTypes } from "@/__generated__/__types__";
+import { Header } from "@/features/posts/header/header";
 
 import { Feature } from "../../features/posts/feature";
 

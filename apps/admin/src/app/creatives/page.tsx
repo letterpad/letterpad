@@ -9,8 +9,6 @@ import { postsStyles } from "@/components/posts.css";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import ErrorMessage from "@/components/ErrorMessage";
-import { creativesColumns } from "@/components/posts";
-import { Header } from "@/components/posts/header";
 
 import {
   PostsFilters,
@@ -20,6 +18,8 @@ import {
 } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import Filters from "@/features/posts/filters";
+import { creativesColumns } from "@/features/posts/header";
+import { Header } from "@/features/posts/header/header";
 
 function Pages() {
   const { loading, data, error, refetch } = usePostsQuery({

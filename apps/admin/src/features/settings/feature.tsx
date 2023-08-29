@@ -13,22 +13,21 @@ import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
 
-import { Setting, SettingInputType } from "@/__generated__/__types__";
-import { isSettings } from "@/utils/type-guards";
+import { SettingInputType } from "@/__generated__/__types__";
 
-import { deleteAuthor, updateSetting } from "./api.client";
+import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
-  settings: Setting;
 }
 
-export function Settings({ cloudinaryEnabledByAdmin, settings }: Props) {
+export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { data } = useGetSettings();
   // const [deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
-    values: isSettings(settings) ? settings : undefined,
+    values: data,
   });
   const { handleSubmit, formState } = methods;
 
@@ -49,6 +48,7 @@ export function Settings({ cloudinaryEnabledByAdmin, settings }: Props) {
     await deleteAuthor();
     router.push("/login?deleted=true");
   };
+  if (!data) return null;
 
   return (
     <>
@@ -85,7 +85,7 @@ export function Settings({ cloudinaryEnabledByAdmin, settings }: Props) {
               id="pages"
               description="Optional pages to add to your site"
             >
-              <Pages settings={settings} />
+              <Pages settings={data} />
             </AccordionItem>
             <AccordionItem
               label="Navigation"
@@ -113,15 +113,14 @@ export function Settings({ cloudinaryEnabledByAdmin, settings }: Props) {
               description="Custom token to access letterpad API"
             >
               <div className="mb-8 flex flex-1 items-center">
-                {settings?.__typename === "Setting" && (
-                  <TextArea
-                    label="Client Key"
-                    value={settings.client_token}
-                    id="client_token"
-                    rows={3}
-                    className="w-96"
-                  />
-                )}
+                <TextArea
+                  label="Client Key"
+                  value={data.client_token}
+                  id="client_token"
+                  rows={3}
+                  className="w-96"
+                />
+
                 <CopyToClipboard elementId="client_token" />
               </div>
             </AccordionItem>

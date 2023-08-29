@@ -222,6 +222,7 @@ query Sitemaps {
 
 query settings {
   settings {
+    __typename
     ... on Setting {
       ...SettingsFragment
     }
