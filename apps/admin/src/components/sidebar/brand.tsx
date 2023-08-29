@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Logo } from "../login/views/Logo";
+import { Logo } from "../../features/login";
 
 interface Props {
   site_name: string;

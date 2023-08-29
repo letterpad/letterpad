@@ -1,57 +1,107 @@
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { Message } from "ui";
 
-import { basePath } from "@/constants";
+import { RegisterStep } from "@/__generated__/__types__";
+import {
+  CreateAuthorDocument,
+  useCreateAuthorMutation,
+} from "@/__generated__/queries/mutations.graphql";
 import { EventAction, track } from "@/track";
 
-import { Logo } from "./Logo";
-import { SocialLogin } from "./SocialLogin";
-import { doLogin } from "../actions";
+import { Logo, SocialLogin } from "../login";
 
-export const LoginForm = ({
-  isVisible,
-  hideSelf,
-}: {
-  isVisible: boolean;
-  hideSelf: () => void;
-}) => {
+const hasCaptchaKey = process.env.RECAPTCHA_KEY_CLIENT ?? null;
+
+export const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<null | Record<string, string>>(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [createAuthor] = useCreateAuthorMutation();
 
-  const params = useSearchParams();
   const router = useRouter();
 
-  const loginAction = async () => {
-    const result = await doLogin({ email, password });
-    track({
-      eventAction: EventAction.Click,
-      eventCategory: "login",
-      eventLabel: `User logged in`,
+  useEffect(() => {
+    signOut({
+      redirect: false,
     });
-    if (result.success) {
-      Message().success({ content: result.message, duration: 3 });
-      const callbackUrl = params.get("callbackUrl");
-      let redirectUrl = result.redirectUrl;
-      if (callbackUrl && typeof callbackUrl === "string") {
-        redirectUrl = new URL(callbackUrl).pathname;
+  }, []);
+
+  const registerAction = async () => {
+    setError(null);
+    Message().loading({
+      content: "Please wait",
+      duration: 10,
+    });
+    let errors = {};
+    if (executeRecaptcha) {
+      const token = hasCaptchaKey ? await executeRecaptcha("register") : "";
+      const formWithToken = { email, token, password };
+      if (email.length === 0) {
+        errors = {
+          ...errors,
+          email: "Email cannot be empty",
+        };
       }
-      if (redirectUrl?.includes("login")) {
-        redirectUrl = redirectUrl.replace("login", "posts");
+      if (
+        password.length < 8 ||
+        password.search(/[a-z]/i) < 0 ||
+        password.search(/[0-9]/) < 0
+      ) {
+        errors = {
+          ...errors,
+          password:
+            "Should be 8 character long and should contain at least one number",
+        };
       }
-      if (redirectUrl) {
-        router.push(new URL(redirectUrl).pathname);
+      if (Object.keys(errors).length > 0) {
+        setError(errors);
+        Message().destroy();
+        return;
       }
-      return;
+      const result = await createAuthor({
+        mutation: CreateAuthorDocument,
+        variables: {
+          data: {
+            ...formWithToken,
+          },
+        },
+      });
+      const createdAuthor = result.data?.createAuthor ?? {};
+      if (createdAuthor.__typename === "Failed") {
+        Message().error({
+          content: createdAuthor.message,
+          duration: 5,
+        });
+      } else if (createdAuthor.__typename === "Author") {
+        if (
+          createdAuthor.register_step &&
+          createdAuthor.register_step !== RegisterStep.Registered &&
+          createdAuthor.verified
+        ) {
+          // aquire session
+          // return doLogin({ email, password });
+        }
+
+        track({
+          eventAction: EventAction.Click,
+          eventCategory: "register",
+          eventLabel: `success`,
+        });
+        Message().success({ content: "Succcess", duration: 5 });
+        router.push("/messages/registered");
+      }
+    } else {
+      Message().error({
+        content: "Please enable recaptcha",
+        duration: 10,
+      });
     }
-    Message().error({ content: result.message, duration: 5 });
   };
-
-  if (!isVisible) {
-    return null;
-  }
-
   return (
     <>
       <div className="bg-white dark:bg-gray-900">
@@ -60,7 +110,7 @@ export const LoginForm = ({
             className="hidden bg-cover lg:block lg:w-2/3"
             style={{
               backgroundImage:
-                "url(https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)",
+                "url(https://images.unsplash.com/photo-1606625058344-64612c845754?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)",
             }}
           >
             <div className="flex h-full items-center bg-gray-900 bg-opacity-10 px-20">
@@ -68,7 +118,7 @@ export const LoginForm = ({
                 <h2 className="text-4xl font-bold text-white">Letterpad</h2>
 
                 <p className="mt-3 max-w-xl text-gray-300">
-                  Another Day, Another Story
+                  Register to create your own blog. It&apos;s free.
                 </p>
               </div>
             </div>
@@ -82,7 +132,7 @@ export const LoginForm = ({
                 </h2>
 
                 <p className="mt-3 text-gray-500 dark:text-gray-300">
-                  Sign in to access your account
+                  Register your free account
                 </p>
               </div>
 
@@ -104,6 +154,7 @@ export const LoginForm = ({
                     placeholder="example@example.com"
                     className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
                   />
+                  <p className="text-rose-400">{error?.email}</p>
                 </div>
 
                 <div className="mt-6">
@@ -114,13 +165,6 @@ export const LoginForm = ({
                     >
                       Password
                     </label>
-                    <a
-                      onClick={hideSelf}
-                      href="#"
-                      className="text-sm text-gray-400 hover:text-blue-500 hover:underline focus:text-blue-500"
-                    >
-                      Forgot password?
-                    </a>
                   </div>
 
                   <input
@@ -129,30 +173,30 @@ export const LoginForm = ({
                     type="password"
                     name="password"
                     id="password"
-                    data-testid="password"
                     placeholder="Your Password"
+                    data-testid="password"
                     className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
                   />
+                  <p className="text-rose-400">{error?.password}</p>
                 </div>
-
                 <div className="mt-6">
                   <button
                     className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                    data-testid="loginBtn"
-                    onClick={loginAction}
+                    data-testid="registerBtn"
+                    onClick={registerAction}
                   >
-                    Sign in
+                    Register
                   </button>
                 </div>
                 <hr className="my-8 h-px border-0 bg-gray-200 dark:bg-gray-700" />
-                <SocialLogin mode={"login"} />
+                <SocialLogin mode="register" />
                 <p className="mt-6 text-center text-sm text-gray-400">
-                  Don&#x27;t have an account yet?{" "}
+                  Already have an account ?{" "}
                   <Link
-                    href="/register"
+                    href="/login"
                     className="text-blue-500 hover:underline focus:underline focus:outline-none"
                   >
-                    Sign up
+                    Sign in
                   </Link>
                   .
                 </p>
