@@ -11,7 +11,12 @@ interface Props {
   style?: string;
   loading?: boolean;
 }
-const Editor: FC<Props> = ({ text, onChange, style, loading = false }) => {
+export const Editor: FC<Props> = ({
+  text,
+  onChange,
+  style,
+  loading = false,
+}) => {
   if (loading)
     return (
       <div className="mt-4">
@@ -30,4 +35,3 @@ const Editor: FC<Props> = ({ text, onChange, style, loading = false }) => {
     </Suspense>
   );
 };
-export default Editor;
