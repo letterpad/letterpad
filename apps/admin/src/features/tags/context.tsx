@@ -10,19 +10,15 @@ import {
 } from "react";
 import { Button, Input, Message, Modal } from "ui";
 
-import { TagRow, TagsContextType } from "@/components/tags/types";
-
 import {
   useDeleteTagsMutation,
   useUpdateTagsMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import {
-  usePostsQuery,
-  useStatsQuery,
-  useTagsQuery,
-} from "@/__generated__/queries/queries.graphql";
 
-import { getHeaders } from "./headers";
+import { useGetTags } from "./api.client";
+import { getHeaders } from "./components/headers";
+import { TagRow, TagsContextType } from "./types";
+import { useGetPosts, useGetStats } from "../posts/api.client";
 
 export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
   loading: true,
@@ -37,25 +33,17 @@ export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
 export const TagsProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const {
-    loading,
-    data,
-    refetch: tagsQueryRefetch,
-  } = useTagsQuery({
-    fetchPolicy: "network-only",
-  });
+  const { data, fetching: loading, refetch: refetchTags } = useGetTags();
   const [tags, setTags] = useState<TagRow[]>([]);
   const [editTagId, setEditTagId] = useState<React.Key | null>(null);
-  const postsQuery = usePostsQuery({ skip: true });
-  const statsQuery = useStatsQuery({ skip: true });
+  const postsQuery = useGetPosts({}, { skip: true });
+  const statsQuery = useGetStats({}, { skip: true });
 
   const [updateTagsMutation] = useUpdateTagsMutation();
   const [deleteTagsMutation] = useDeleteTagsMutation();
 
-  const computedTags = useMemo(
-    () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
-    [data]
-  );
+  const computedTags = useMemo(() => data ?? [], [data]);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -135,10 +123,10 @@ export const TagsProvider: React.FC<{
         },
       });
       postsQuery.refetch();
-      tagsQueryRefetch();
+      refetchTags();
       setEditTagId(null);
     },
-    [tags, updateTagsMutation, postsQuery, tagsQueryRefetch]
+    [tags, updateTagsMutation, postsQuery, refetchTags]
   );
 
   const addTag = useCallback(() => {

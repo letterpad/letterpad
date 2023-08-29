@@ -39,12 +39,13 @@ export const useUpdateAuthor = () => {
   };
 };
 
-export const useGetPosts = (variables) => {
+export const useGetPosts = (variables = {}, options = { skip: false }) => {
   const [{ fetching, data, error }, refetch] = useQuery<PostsQuery>({
     query: PostsDocument,
     variables: {
       filters: variables,
     },
+    pause: options.skip,
   });
   const postsNode = isPostsNode(data?.posts) ? data?.posts.rows : [];
   return {
@@ -55,9 +56,10 @@ export const useGetPosts = (variables) => {
   };
 };
 
-export const useGetStats = () => {
+export const useGetStats = (variables = {}, options = { skip: false }) => {
   const [{ fetching, data, error }, refetch] = useQuery<StatsQuery>({
     query: StatsDocument,
+    pause: options.skip,
   });
 
   return {

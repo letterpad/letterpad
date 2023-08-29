@@ -7,7 +7,7 @@ import {
 import { isTagsNode } from "@/utils/type-guards";
 
 export const useGetTags = () => {
-  const [{ data, fetching, error }] = useQuery<TagsQuery>({
+  const [{ data, fetching, error }, refetch] = useQuery<TagsQuery>({
     query: TagsDocument,
   });
 
@@ -15,5 +15,6 @@ export const useGetTags = () => {
     fetching,
     error,
     data: isTagsNode(data?.tags) ? data?.tags.rows : undefined,
+    refetch,
   };
 };

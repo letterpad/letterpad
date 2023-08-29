@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { Content, Table } from "ui";
 
-import { TagRow } from "@/components/tags/types";
-
-import { useTagsContext } from "./context";
+import { useTagsContext } from "../context";
+import { TagRow } from "../types";
 
 type EditableTableProps = Parameters<typeof Table>[0];
 
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
-const EditableTable = () => {
+const TagsTable = () => {
   const [dataSource, setDataSource] = useState<TagRow[]>([]);
   const { loading, tags, saveTag, headers } = useTagsContext();
 
@@ -47,4 +46,4 @@ const EditableTable = () => {
   );
 };
 
-export default EditableTable;
+export default TagsTable;
