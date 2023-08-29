@@ -1,4 +1,4 @@
-import * as React from "react";
+// import * as React from "react";
 export * from "./src/components/accordion";
 export * from "./src/components/button";
 export * from "./src/components/content";

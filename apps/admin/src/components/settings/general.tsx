@@ -57,7 +57,7 @@ const General: React.FC<Props> = () => {
           <TextArea
             label="Short Description"
             {...data.register("site_description", {
-              required: true,
+              required: false,
               maxLength: 190,
             })}
             placeholder="Write something about your site. Will be used in SEO and other pages"

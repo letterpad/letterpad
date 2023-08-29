@@ -37,6 +37,7 @@ fragment PostWithAuthorAndTags on Post {
       name
       avatar
       social {
+        __typename
         github
         twitter
         instagram
@@ -113,6 +114,7 @@ fragment MeFragment on Author {
   analytics_uuid
   register_step
   social {
+    __typename
     github
     twitter
     instagram

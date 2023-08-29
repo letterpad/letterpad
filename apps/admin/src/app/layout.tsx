@@ -75,7 +75,6 @@ export const metadata: Metadata = {
 const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme")?.value ?? "light";
   const session = await getServerSession(headers());
-
   return (
     <html lang="en" data-color-scheme={theme}>
       <Head>
@@ -98,6 +97,7 @@ const RootLayout = async ({ children }) => {
           `}
         </Script>
         <FontPageWrapper primary_font={"Inter"} secondary_font="Roboto">
+          {/* {children} */}
           <Providers loggedIn={session?.user?.id}>{children}</Providers>
         </FontPageWrapper>
       </body>

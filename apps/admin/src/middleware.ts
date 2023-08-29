@@ -36,6 +36,7 @@ export const config = {
     "/settings",
     "/subscribers",
     "/logout",
+    "/yo",
   ],
 };
 
@@ -45,9 +46,11 @@ export async function middleware(request: NextRequest) {
   const { device } = userAgent(request);
   const session = await getServerSession(request.headers);
   const viewport = device.type === "mobile" ? "mobile" : "desktop";
+  const cookie = request.headers.get("cookie");
   const nextUrl = request.nextUrl;
   nextUrl.searchParams.set("viewport", viewport);
   nextUrl.searchParams.set("session", JSON.stringify(session));
+  // nextUrl.searchParams.set("cookie", JSON.stringify(session));
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
 

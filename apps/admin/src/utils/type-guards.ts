@@ -4,6 +4,7 @@ import {
   PostsNode,
   Setting,
   Stats,
+  TagsNode,
 } from "../../__generated__/__types__";
 
 export function isPostsNode(data: any): data is PostsNode {
@@ -23,4 +24,7 @@ export function isSettings(data: any): data is Setting {
 
 export function isStats(data: any): data is Stats {
   return data?.__typename === "Stats";
+}
+export function isTagsNode(data: any): data is TagsNode {
+  return data?.__typename === "TagsNode";
 }

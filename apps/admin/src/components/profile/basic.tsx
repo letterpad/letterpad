@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { Button, Input, Label, TextArea } from "ui";
+import { Input, Label, TextArea } from "ui";
 
 import { Upload } from "@/components/upload";
 
@@ -40,16 +40,15 @@ export const Basic = () => {
             />
           )}
         />
-
         <div>
           <Label label="Avatar" />
           <Controller
             name="avatar"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <Upload
                 className="h-28 w-28"
-                url={watch("avatar") ?? ""}
+                url={watch("avatar")}
                 onSuccess={([res]) => {
                   onChange(res.src);
                 }}
