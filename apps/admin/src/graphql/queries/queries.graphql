@@ -272,6 +272,7 @@ query homeQuery {
   settings {
     __typename
     ... on Setting {
+      id
       ...SettingsFragment
     }
     ... on NotFound {

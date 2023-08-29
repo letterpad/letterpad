@@ -1,11 +1,12 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
 
-import { useUpdatePost } from "@/hooks/useUpdatePost";
-
+// import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
-import { useTagsQuery } from "@/graphql/queries/queries.graphql";
 import { textToSlug } from "@/utils/slug";
+
+import { useUpdatePost } from "../../api.client";
+import { useGetTags } from "../../../tags/api.client";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -23,14 +24,9 @@ const Tags = ({ post, header }: IProps) => {
   const [tags, setTags] = useState<Tag[]>(addTagsWithId(initialTags));
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const { updatePost } = useUpdatePost();
-  const { loading, data } = useTagsQuery({
-    variables: { filters: { suggest: true } },
-  });
+  const { data, fetching: loading } = useGetTags({ suggest: true });
 
-  const computedTags = useMemo(
-    () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
-    [data]
-  );
+  const computedTags = useMemo(() => data ?? [], [data]);
 
   useEffect(() => {
     if (!loading) {

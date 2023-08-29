@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "urql";
 import {
   TagsDocument,
   TagsQuery,
+  TagsQueryVariables,
 } from "@/__generated__/src/graphql/queries/queries.graphql";
 import { isTagsNode } from "@/utils/type-guards";
 
@@ -14,9 +15,18 @@ import {
   useDeleteTagsMutation,
 } from "../../../__generated__/src/graphql/queries/mutations.graphql";
 
-export const useGetTags = (option = { skip: false }) => {
-  const [{ data, fetching, error }, refetch] = useQuery<TagsQuery>({
+export const useGetTags = (
+  variables: TagsQueryVariables["filters"] = {},
+  option = { skip: false }
+) => {
+  const [{ data, fetching, error }, refetch] = useQuery<
+    TagsQuery,
+    TagsQueryVariables
+  >({
     query: TagsDocument,
+    variables: {
+      filters: variables,
+    },
     pause: option.skip,
   });
 
@@ -31,7 +41,7 @@ export const useGetTags = (option = { skip: false }) => {
 export const useUpdateTags = () => {
   const [{ data, fetching, error }, updateTags] =
     useMutation<UpdateTagsMutation>(UpdateTagsDocument);
-  const { refetch } = useGetTags({ skip: true });
+  const { refetch } = useGetTags({}, { skip: true });
   return {
     fetching,
     error,
@@ -46,7 +56,7 @@ export const useUpdateTags = () => {
 export const useDeleteTags = () => {
   const [{ fetching, error }, deleteTags] =
     useMutation<DeleteTagsMutation>(DeleteTagsDocument);
-  const { refetch } = useGetTags({ skip: true });
+  const { refetch } = useGetTags({}, { skip: true });
 
   return {
     fetching,

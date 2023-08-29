@@ -2,17 +2,9 @@ import Head from "next/head";
 import React from "react";
 import { PageHeader } from "ui/isomorphic";
 
-import { getClient } from "@/lib/urql";
-
 import { Content } from "@/components/client-wrapper";
 
-import {
-  HomeQueryDocument,
-  HomeQueryQueryResult,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
 import { Settings } from "@/features/settings/feature";
-
-import { isSettings } from "../../utils/type-guards";
 
 const Page = async () => {
   const cloudinaryEnabledByAdmin = !!(

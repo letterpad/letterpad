@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BsArrowLeft } from "react-icons/bs";
 
-import Actions from "@/components/post-settings";
-
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
+
+import Actions from "./post-settings";
 
 interface Props {
   post: PostWithAuthorAndTagsFragment;

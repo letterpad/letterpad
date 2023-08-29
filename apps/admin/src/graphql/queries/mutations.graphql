@@ -1,4 +1,4 @@
-# import Partial from './partial.graphql'
+# import './partial.graphql'
 
 mutation Login($data: LoginData) {
   login(data: $data) {
@@ -67,49 +67,7 @@ mutation createAuthor($data: InputCreateAuthor!) {
 mutation UpdateOptions($options: [SettingInputType!]!) {
   updateOptions(options: $options) {
     ... on Setting {
-      site_title
-      site_tagline
-      site_email
-      site_url
-      site_footer
-      site_description
-      subscribe_embed
-      display_author_info
-      cloudinary_key
-      cloudinary_name
-      cloudinary_secret
-      design {
-        brand_color
-        primary_font
-        secondary_font
-      }
-      scripts
-      intro_dismissed
-      show_about_page
-      show_tags_page
-      menu {
-        label
-        original_name
-        slug
-        type
-      }
-      css
-      theme
-      banner {
-        src
-        width
-        height
-      }
-      site_logo {
-        src
-        width
-        height
-      }
-      site_favicon {
-        src
-        width
-        height
-      }
+      ...SettingsFragment
     }
     ... on UnAuthorized {
       message
@@ -120,6 +78,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
 mutation UpdateAuthor($author: InputAuthor!) {
   updateAuthor(author: $author) {
     ... on Author {
+      id
       name
       social {
         github

@@ -60,6 +60,7 @@ fragment PostWithAuthorAndTags on Post {
 }
 
 fragment SettingsFragment on Setting {
+  id
   site_title
   site_tagline
   site_email

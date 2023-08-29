@@ -4,7 +4,7 @@ import { Button } from "ui";
 
 import { EventAction, track } from "@/track";
 
-import ThemeSwitcher from "../theme-switcher";
+import ThemeSwitcher from "../../../../components/theme-switcher";
 
 interface Props {
   siteUrl: string;

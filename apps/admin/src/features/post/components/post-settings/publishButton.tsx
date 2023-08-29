@@ -9,7 +9,6 @@ import {
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
-import { usePostQuery } from "@/__generated__/queries/queries.graphql";
 import { EventAction, track } from "@/track";
 
 import {
@@ -17,6 +16,7 @@ import {
   TagNotLinkedWithNavigation,
   WarnNoTags,
 } from "./warnings";
+import { useGetPost } from "../../api.client";
 
 interface Props {
   postId: number;
@@ -32,16 +32,12 @@ enum NotPublished {
 const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
 
-  const { data, loading } = usePostQuery({
-    variables: { filters: { id: postId } },
-  });
+  const { data: post, fetching: loading } = useGetPost({ id: postId });
 
   const { updatePost } = useUpdatePost();
 
   if (loading) return <span>loading...</span>;
-  if (data?.post.__typename !== "Post") return null;
-
-  const { post } = data;
+  if (post?.__typename !== "Post") return null;
 
   const validateAndPublish = () => {
     const isPost = post.type === PostTypes.Post;

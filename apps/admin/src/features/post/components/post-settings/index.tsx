@@ -1,15 +1,10 @@
 import classNames from "classnames";
-import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
-import { Button, Drawer, Input, Switch, TextArea } from "ui";
-
-import { useUpdatePost } from "@/hooks/useUpdatePost";
-
-import { Upload } from "@/components/upload";
+import { Drawer, Input, Switch, TextArea } from "ui";
 
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
-import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import { useGetSettings } from "@/features/settings/api.client";
 import { PageType } from "@/graphql/types";
 import { subscribe } from "@/shared/eventBus";
 import { debounce } from "@/shared/utils";
@@ -23,6 +18,7 @@ import { getPostHash } from "./api";
 import PublishButton from "./publishButton";
 import { QuickMenu } from "./quickmenu";
 import Tags from "./tags";
+import { useUpdatePost } from "../../api.client";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -31,10 +27,13 @@ interface IProps {
 const Actions = ({ post }: IProps) => {
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
-  const settingsResponse = useSettingsQuery();
+  // const settingsResponse = useSettingsQuery();
+  const { data: settings } = useGetSettings();
   const [slug, setSlug] = useState(post.slug || "");
   const [saving, setSaving] = useState("");
+
   const { updatePost } = useUpdatePost();
+
   const debounceUpdatePost = useMemo(
     () => debounce((data) => updatePost(data), 500),
     [updatePost]
@@ -73,11 +72,6 @@ const Actions = ({ post }: IProps) => {
 
   const isPost = post.type === PostTypes.Post;
   const postVerb = isPost ? "Post" : "Page";
-
-  const settings =
-    settingsResponse.data?.settings.__typename === "Setting"
-      ? settingsResponse.data?.settings
-      : undefined;
 
   return (
     <>

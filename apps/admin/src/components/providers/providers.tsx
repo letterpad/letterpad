@@ -6,7 +6,7 @@ import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { ResponsiveProvider } from "ui";
 import { Provider as UrqlProvider } from "urql";
 
-import { SettingsAndMeProvider } from "./settings";
+// import { SettingsAndMeProvider } from "./settings";
 import { basePath } from "../../constants";
 import { apolloBrowserClient } from "../../graphql/apolloBrowserClient";
 import { useSavingIndicator } from "../../hooks/useSavingIndicator";
@@ -21,9 +21,9 @@ export const Providers = ({ children, loggedIn }) => {
           {Indicator}
           <ResponsiveProvider>
             <div id="message" />
-            <SettingsAndMeProvider loggedIn={loggedIn}>
-              {children}
-            </SettingsAndMeProvider>
+            {/* <SettingsAndMeProvider loggedIn={loggedIn}> */}
+            {children}
+            {/* </SettingsAndMeProvider> */}
             <ProgressBar
               height="3px"
               color="#2fb2fa"

@@ -5,7 +5,6 @@ import { useQuery } from "urql";
 import {
   HomeQueryDocument,
   HomeQueryQueryResult,
-  useHomeQueryQuery,
 } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
