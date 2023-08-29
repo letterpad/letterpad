@@ -7,7 +7,7 @@ import { FileExplorer } from "@/components/file-explorer";
 
 import { blogEditorConfig, id } from "./config";
 import { insertImageInEditor } from "../commands";
-import { usePostContext } from "../..";
+import { usePostContext } from "../../context";
 
 interface Props {
   text: string;

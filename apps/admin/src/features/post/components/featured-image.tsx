@@ -3,9 +3,9 @@ import Link from "next/link";
 import { HiPlus } from "react-icons/hi";
 import { RiUnsplashFill } from "react-icons/ri";
 
-import { useUpdatePost } from "@/hooks/useUpdatePost";
-
 import { Upload } from "@/components/upload";
+
+import { useUpdatePost } from "../api.client";
 
 export const FeaturedImage = ({ id, cover_image }) => {
   const { updatePost } = useUpdatePost();

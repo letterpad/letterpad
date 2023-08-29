@@ -1,17 +1,11 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
-import "../../../components/post/components/tinymce/core";
-
-import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { memo, useMemo, useState } from "react";
+import "./tinymce/core";
 
 import { debounce } from "@/shared/utils";
 
-import {
-  subTitleEditorConfig,
-  subTitleId,
-} from "../../../components/post/components/tinymce/config";
-
-// import { subTitleEditorConfig, subTitleId } from "./tinymce/config";
+import { subTitleEditorConfig, subTitleId } from "./tinymce/config";
+import { useUpdatePost } from "../api.client";
 
 interface Props {
   postId?: number;
@@ -19,11 +13,12 @@ interface Props {
 }
 
 export const SubTitle: React.FC<Props> = memo(({ postId, sub_title }) => {
-  const { updateLocalState, updatePostAPI } = useUpdatePost();
+  const { updatePost } = useUpdatePost();
   const [text] = useState(sub_title);
+
   const debounceUpdatePostAPI = useMemo(
-    () => debounce((data) => updatePostAPI(data), 500),
-    [updatePostAPI]
+    () => debounce((data) => updatePost(data), 500),
+    [updatePost]
   );
 
   return (
@@ -34,7 +29,6 @@ export const SubTitle: React.FC<Props> = memo(({ postId, sub_title }) => {
         if (postId) {
           const sub_title = editor.getContent({ format: "text" });
           debounceUpdatePostAPI({ id: postId, sub_title });
-          updateLocalState({ id: postId, sub_title });
         }
       }}
       init={subTitleEditorConfig}

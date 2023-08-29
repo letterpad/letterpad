@@ -8,18 +8,17 @@ import {
   useState,
 } from "react";
 
-import { PostContextType } from "@/components/post/types";
-
-import { Setting } from "@/__generated__/__types__";
+import { PostContextType } from "./types";
+import { useGetSettings } from "../settings/api.client";
 
 export const PostContext = createContext<PostContextType>(
   {} as PostContextType
 );
 
 export const PostProvider: React.FC<{
-  settings: Setting;
   children: ReactNode;
-}> = ({ children, settings }) => {
+}> = ({ children }) => {
+  const { data: settings } = useGetSettings();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [helpers, setHelpers] = useState<Editor["editor"]>();
 

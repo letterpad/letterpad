@@ -2,10 +2,10 @@ import { FC } from "react";
 import { PostTitlePlaceholder } from "ui";
 
 import { FontPageWrapper } from "@/components/fonts";
-import Editor from "@/components/post/components/editor";
 
 import { Post, PostStatusOptions, Setting } from "@/__generated__/__types__";
 
+import Editor from "../components/editor";
 import { FeaturedImage } from "../components/featured-image";
 import { SubTitle } from "../components/subtitle";
 import { Title } from "../components/title";

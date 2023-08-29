@@ -11,7 +11,8 @@ import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.g
 interface Props {
   post: PostWithAuthorAndTagsFragment;
 }
-const Header: React.VFC<Props> = ({ post }) => {
+
+export const Header: React.VFC<Props> = ({ post }) => {
   const router = useRouter();
   if (!post) return null;
 
@@ -49,5 +50,3 @@ const Header: React.VFC<Props> = ({ post }) => {
 
   return null;
 };
-
-export default Header;

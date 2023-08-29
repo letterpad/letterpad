@@ -1,14 +1,11 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
-import "../../../components/post/components/tinymce/core";
+import "./tinymce/core";
 
 import { debounce } from "@/shared/utils";
 
+import { titleEditorConfig, titleId } from "./tinymce/config";
 import { useUpdatePost } from "../api.client";
-import {
-  titleEditorConfig,
-  titleId,
-} from "../../../components/post/components/tinymce/config";
 
 interface Props {
   postId?: number;

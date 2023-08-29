@@ -3,13 +3,12 @@ import Head from "next/head";
 import { useParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
-import Header from "@/components/post/components/header";
-
 import { PostStatusOptions } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
 import { useGetPost, useUpdatePost } from "./api.client";
+import { Header } from "./components/header";
 import { WordCount } from "./components/wordCount";
 import { Creatives } from "./views/creatives";
 import { DefaultPost } from "./views/default";
