@@ -1,4 +1,4 @@
-import { CopyToClipboard } from "../clipboard";
+import { CopyToClipboard } from "@/components/clipboard";
 
 export const MapSubDomain: React.FC<{
   domain: string;

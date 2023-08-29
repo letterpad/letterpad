@@ -8,7 +8,7 @@ export interface TagRow {
 export interface TagsContextType<T, K> {
   tags: TagRow[];
   loading: boolean;
-  updateTagsMutation: T;
+  updateTags: T;
   deleteTag: K;
   addTag: any;
   saveTag: any;

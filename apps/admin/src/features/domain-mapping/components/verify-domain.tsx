@@ -1,6 +1,6 @@
-import { DomainVerification } from "@/__generated__/__types__";
+import { CopyToClipboard } from "@/components/clipboard";
 
-import { CopyToClipboard } from "../clipboard";
+import { DomainVerification } from "@/__generated__/__types__";
 
 export const VerifyDomain: React.FC<{
   verification?: DomainVerification;

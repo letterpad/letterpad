@@ -12,7 +12,7 @@ import {
   MediaQuery,
 } from "@/__generated__/src/graphql/queries/queries.graphql";
 
-import { deleteImage, updateImage } from "./api.server";
+import { deleteImage, updateImage } from "./api.client";
 
 export const Feature = () => {
   const [{ data }] = useQuery<MediaQuery>({ query: MediaDocument });

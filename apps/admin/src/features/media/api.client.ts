@@ -1,5 +1,3 @@
-import { getClient } from "@/lib/urql";
-
 import { Media } from "@/__generated__/__types__";
 import {
   DeleteMediaDocument,
@@ -8,8 +6,10 @@ import {
   UpdateMediaMutationResult,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
+import { client } from "../../lib/urqlClient";
+
 export const deleteImage = (id: number) => {
-  return getClient().mutation<DeleteMediaMutationResult["data"]>(
+  return client.mutation<DeleteMediaMutationResult["data"]>(
     DeleteMediaDocument,
     {
       ids: [id],
@@ -18,7 +18,7 @@ export const deleteImage = (id: number) => {
 };
 
 export const updateImage = (img: Media) => {
-  return getClient().mutation<UpdateMediaMutationResult["data"]>(
+  return client.mutation<UpdateMediaMutationResult["data"]>(
     UpdateMediaDocument,
     {
       data: {
