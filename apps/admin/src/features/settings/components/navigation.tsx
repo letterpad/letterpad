@@ -1,9 +1,8 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Button } from "ui";
+
+import NavigationBuilder from "@/components/navigation-builder";
 
 import { Navigation } from "@/__generated__/__types__";
-
-import NavigationBuilder from "../navigation-builder";
 
 const NavigationPanel = () => {
   const { control, setValue, watch } = useFormContext();

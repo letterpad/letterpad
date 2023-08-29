@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Input, Label, TextArea } from "ui";
 
-import { SaveButton } from "../save-button";
+import { SaveButton } from "@/components/save-button";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;

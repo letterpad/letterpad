@@ -1,8 +1,9 @@
 import { useFormContext } from "react-hook-form";
 import { Input, TextArea } from "ui";
 
-import { SaveButton } from "../save-button";
-import { Setting } from "../../../__generated__/__types__";
+import { SaveButton } from "@/components/save-button";
+
+import { Setting } from "@/__generated__/__types__";
 
 interface Props {}
 const General: React.FC<Props> = () => {

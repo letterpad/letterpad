@@ -12,7 +12,7 @@ import {
 import { Brand } from "./brand";
 import { items } from "./menuItems";
 import ProfileInfo from "../profile-info";
-import { isAuthor, isSettings } from "../../utils/type-guards";
+import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
 
 export const Sidebar = () => {
   const [{ data }] = useQuery<HomeQueryQueryResult["data"]>({
@@ -22,7 +22,7 @@ export const Sidebar = () => {
   const { isMobileOrTablet, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
   const me = isAuthor(data?.me) ? data?.me : null;
-  const stats = isAuthor(data?.stats) ? data?.stats : null;
+  const stats = isStats(data?.stats) ? data?.stats : null;
 
   return (
     <div className="h-full shadow-lg">

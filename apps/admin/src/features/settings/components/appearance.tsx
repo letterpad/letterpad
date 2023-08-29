@@ -5,8 +5,12 @@ import { Upload } from "@/components/upload";
 
 import { removeTypenames } from "@/shared/utils";
 
-import { fontItemsSans, fontItemsSerif, fonts } from "../fonts";
-import { SaveButton } from "../save-button";
+import {
+  fontItemsSans,
+  fontItemsSerif,
+  fonts,
+} from "../../../components/fonts";
+import { SaveButton } from "../../../components/save-button";
 
 const Appearance = () => {
   const data = useFormContext();

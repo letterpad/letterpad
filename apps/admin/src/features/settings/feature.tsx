@@ -7,15 +7,15 @@ import { Accordion, AccordionItem, Button, PopConfirm, TextArea } from "ui";
 import { getDirtyFields } from "@/lib/react-form";
 
 import { CopyToClipboard } from "@/components/clipboard";
-import Appearance from "@/components/settings/appearance";
-import General from "@/components/settings/general";
-import Integrations from "@/components/settings/integrations";
-import Navigation from "@/components/settings/navigation";
-import Pages from "@/components/settings/pages";
 
 import { SettingInputType } from "@/__generated__/__types__";
 
 import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
+import Appearance from "./components/appearance";
+import General from "./components/general";
+import Integrations from "./components/integrations";
+import Navigation from "./components/navigation";
+import Pages from "./components/pages";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
