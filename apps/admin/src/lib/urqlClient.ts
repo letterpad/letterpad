@@ -10,8 +10,8 @@ export const cache = cacheExchange({
   schema,
   formatDocument: true,
   keys: {
-    Tag: () => "name",
-    TagsNode: () => "name",
+    Tag: () => null,
+    TagsNode: () => null,
     Social: () => null,
     // Setting: () => null,
     Design: () => null,

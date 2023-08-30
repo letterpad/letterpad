@@ -56,7 +56,7 @@ function setContent({ title, content }: { title?: string; content?: string }) {
     cy.window().then((win) => {
       //@ts-ignore
       win.tinymce.get("title-editor").setContent(title);
-      cy.wait("@updatePostMutation");
+      cy.wait("@UpdatePostMutation");
     });
   }
   if (content) {
@@ -66,7 +66,7 @@ function setContent({ title, content }: { title?: string; content?: string }) {
       win.tinymce.get("main-editor").setContent("ignore");
       //@ts-ignore
       win.tinymce.get("main-editor").setContent(content);
-      cy.wait("@updatePostMutation");
+      cy.wait("@UpdatePostMutation");
     });
   }
 }
