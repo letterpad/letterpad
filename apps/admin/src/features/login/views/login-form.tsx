@@ -40,7 +40,7 @@ export const LoginForm = ({
         redirectUrl = redirectUrl.replace("login", "posts");
       }
       if (redirectUrl) {
-        router.push(new URL(redirectUrl).pathname);
+        router.push(redirectUrl);
       }
       return;
     }

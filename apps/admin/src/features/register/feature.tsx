@@ -65,13 +65,13 @@ export const RegisterForm = () => {
           ...formWithToken,
         },
       });
-      const createdAuthor = result.data?.createAuthor ?? {};
-      if (createdAuthor.__typename === "Failed") {
+      const createdAuthor = result.data?.createAuthor;
+      if (createdAuthor?.__typename === "Failed") {
         Message().error({
           content: createdAuthor.message,
           duration: 5,
         });
-      } else if (createdAuthor.__typename === "Author") {
+      } else if (createdAuthor?.__typename === "Author") {
         if (
           createdAuthor.register_step &&
           createdAuthor.register_step !== RegisterStep.Registered &&

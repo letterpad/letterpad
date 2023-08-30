@@ -51,6 +51,7 @@ mutation DeleteTags($name: String!) {
 
 mutation createAuthor($data: InputCreateAuthor!) {
   createAuthor(data: $data) {
+    __typename
     ... on Author {
       name
       id

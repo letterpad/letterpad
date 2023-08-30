@@ -37,6 +37,7 @@ query Post($filters: PostFilters) {
 
 query Posts($filters: PostsFilters) {
   posts(filters: $filters) {
+    __typename
     ... on PostsNode {
       count
       rows {

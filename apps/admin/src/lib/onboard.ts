@@ -107,14 +107,16 @@ export async function createAuthorWithSettings(
     avatar = "https://res.cloudinary.com/abhisheksaha/image/upload/v1672944041/blog-images/6611482_account_avatar_basic_person_user_icon_eisadm.png",
     ...authorData
   } = data;
+
   const role = await prisma.role.findFirst({ where: { name: rolename } });
   if (role) {
     const newAuthor = await prisma.author.create({
       data: {
         name: "",
-        username: "",
         register_step: RegisterStep.ProfileInfo,
         ...authorData,
+        username:
+          authorData.username ?? generateUsernameFromEmail(authorData.email),
         avatar,
         verified,
         bio: "",
@@ -145,4 +147,22 @@ export async function createAuthorWithSettings(
 
     return newAuthor;
   }
+}
+
+function generateUsernameFromEmail(email: string) {
+  const crypto = require("crypto");
+
+  // Create a hash instance using MD5 algorithm
+  const hash = crypto.createHash("md5");
+
+  // Update the hash with the email
+  hash.update(email);
+
+  // Get the hashed email in hexadecimal format
+  const hashedEmail = hash.digest("hex");
+
+  // Take the first 6 characters of the hash
+  const shortHash = hashedEmail.substring(0, 6);
+
+  return shortHash;
 }
