@@ -19,11 +19,11 @@ export const FeaturedImage = ({ id, cover_image }) => {
         className="bg-transparent text-slate-300 hover:text-slate-400 dark:bg-transparent dark:hover:text-slate-500"
         url={cover_image.src || ""}
         emptyIcon={
-          <>
+          <div className="flex items-center justify-center gap-2">
             <HiPlus size={18} />
-            <Link href="#aa">Add a cover image</Link>
+            <span className="mt-0 text-md">Add a cover image</span>
             <RiUnsplashFill size={18} />
-          </>
+          </div>
         }
         onSuccess={([res]) => {
           updatePost({

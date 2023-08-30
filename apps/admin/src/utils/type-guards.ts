@@ -1,4 +1,13 @@
 import {
+  DefinitionNode,
+  DocumentNode,
+  ExecutableDefinitionNode,
+  Kind,
+  OperationDefinitionNode,
+} from "graphql";
+import { Operation } from "urql";
+
+import {
   Author,
   Post,
   PostsNode,
@@ -27,4 +36,17 @@ export function isStats(data: any): data is Stats {
 }
 export function isTagsNode(data: any): data is TagsNode {
   return data?.__typename === "TagsNode";
+}
+
+export function isOperationDefinition(
+  doc: any
+): doc is OperationDefinitionNode {
+  if (
+    doc.definitions &&
+    doc.definitions[0] &&
+    doc.definitions[0].kind === Kind.OPERATION_DEFINITION
+  ) {
+    return true;
+  }
+  return false;
 }

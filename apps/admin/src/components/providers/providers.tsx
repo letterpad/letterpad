@@ -6,15 +6,11 @@ import { ResponsiveProvider } from "ui";
 import { Provider as UrqlProvider } from "urql";
 
 import { basePath } from "../../constants";
-import { useSavingIndicator } from "../../hooks/useSavingIndicator";
 import { client } from "../../lib/urqlClient";
 export const Providers = ({ children, loggedIn }) => {
-  const Indicator = useSavingIndicator();
-
   return (
     <SessionProvider basePath={basePath + "/api/auth"}>
       <UrqlProvider value={client}>
-        {Indicator}
         <ResponsiveProvider>
           <div id="message" />
           {children}

@@ -140,7 +140,7 @@ mutation createPost($data: InputCreatePost) {
   }
 }
 
-mutation updatePost($data: InputUpdatePost) {
+mutation UpdatePost($data: InputUpdatePost) {
   updatePost(data: $data) {
     __typename
     ... on Post {

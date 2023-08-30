@@ -6,7 +6,7 @@ import { TablePlaceholder } from "../placeholders";
 interface Props {
   dataSource: any;
   columns: Columns[];
-  onRowClick: any;
+  onRowClick?: any;
   loading: boolean;
 }
 
@@ -32,7 +32,7 @@ export const Rows: FC<Props> = ({
       </Row>
       {dataSource.map((item, index) => {
         return (
-          <Row onRowClick={() => onRowClick(item)}>
+          <Row onRowClick={() => onRowClick?.(item)}>
             {fields.map((key, idx) => {
               const props = columns[idx];
               return (
@@ -50,30 +50,6 @@ export const Rows: FC<Props> = ({
               );
             })}
           </Row>
-        );
-        return (
-          <tr
-            key={index}
-            onClick={() => onRowClick && onRowClick(item)}
-            className={classes.row}
-          >
-            {fields.map((key, idx) => {
-              const props = columns[idx];
-              return (
-                <td className={classes.cell + " " + props?.className} key={idx}>
-                  <div className="flex items-center">
-                    <div className="space-y-2">
-                      <div className="whitespace-no-wrap">
-                        {props?.render
-                          ? props.render(item[key], item)
-                          : item[key]}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              );
-            })}
-          </tr>
         );
       })}
     </tbody>

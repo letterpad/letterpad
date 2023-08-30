@@ -17,7 +17,6 @@ import General from "./components/general";
 import Integrations from "./components/integrations";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
-import { subscribe } from "../../shared/eventBus";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;

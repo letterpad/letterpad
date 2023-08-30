@@ -6,7 +6,6 @@ import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/features/settings/api.client";
 import { PageType } from "@/graphql/types";
-import { subscribe } from "@/shared/eventBus";
 import { debounce } from "@/shared/utils";
 import {
   createPathWithPrefix,
@@ -46,15 +45,6 @@ const Actions = ({ post }: IProps) => {
   useEffect(() => {
     if (post.slug) setSlug(post.slug);
   }, [post.slug]);
-
-  useEffect(() => {
-    subscribe("save", (msg) => {
-      setSaving(msg);
-      setTimeout(() => {
-        setSaving("");
-      }, 2000);
-    });
-  }, []);
 
   const showDrawer = () => setVisible(true);
   const onClose = () => setVisible(false);
