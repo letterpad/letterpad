@@ -3,10 +3,10 @@ import ReactTags from "react-tag-autocomplete";
 
 // import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
+import { useGetTags } from "@/features/tags/api.client";
 import { textToSlug } from "@/utils/slug";
 
 import { useUpdatePost } from "../../api.client";
-import { useGetTags } from "../../../tags/api.client";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;

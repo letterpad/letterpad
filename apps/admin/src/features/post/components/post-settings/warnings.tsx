@@ -6,10 +6,11 @@ export const WarnNoTags = () => {
     <div>
       You have not added tags to your post. Add a tag/tags and ensure its linked
       with Navigation Menu by visiting{" "}
-      <Link href="/settings?selected=navigation">
-        <a className="text-blue-500 hover:text-blue-700">
-          Settings → Navigation
-        </a>
+      <Link
+        href="/settings?selected=navigation"
+        className="text-blue-500 hover:text-blue-700"
+      >
+        Settings → Navigation
       </Link>
       . This is necessary for your post to be visible in your website.
       <br />
@@ -44,10 +45,11 @@ export const TagNotLinkedWithNavigation: FC<{ tags: string[] }> = ({
           - <strong className="italic">{tagsStr}</strong>. You need to link one
           of the tag from this Post to the Navigation Menu so that this post is
           visible in your website. You can do so by going to{" "}
-          <Link href="/settings?selected=navigation">
-            <a className="text-blue-500 hover:text-blue-700">
-              Settings → Navigation
-            </a>
+          <Link
+            href="/settings?selected=navigation"
+            className="text-blue-500 hover:text-blue-700"
+          >
+            Settings → Navigation
           </Link>{" "}
           → New. Then give a name and select a tag by clicking content.
         </p>
@@ -73,10 +75,11 @@ export const PageNotLinkedWithNavigation = () => {
       page wont be displayed in your blog.
       <br />
       You can link this page by going to{" "}
-      <Link href="/settings?selected=navigation">
-        <a className="text-blue-500 hover:text-blue-700">
-          Settings → Navigation
-        </a>
+      <Link
+        href="/settings?selected=navigation"
+        className="text-blue-500 hover:text-blue-700"
+      >
+        Settings → Navigation
       </Link>{" "}
       → New. Then give a name and select this page by clicking Content.
       <br />

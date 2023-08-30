@@ -8,4 +8,4 @@ plugins:
 cacheDir: __generated__
 config:
   avoidOptionals: false
-  maybeValue: T
+  # maybeValue: T

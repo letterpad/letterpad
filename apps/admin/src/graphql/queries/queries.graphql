@@ -61,6 +61,7 @@ query Posts($filters: PostsFilters) {
         tags {
           __typename
           ... on TagsNode {
+            __typename
             rows {
               name
               slug

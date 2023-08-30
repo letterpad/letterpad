@@ -32,6 +32,7 @@ fragment Partial on Post {
 fragment PostWithAuthorAndTags on Post {
   ...Partial
   author {
+    __typename
     ... on Author {
       id
       name
@@ -50,7 +51,9 @@ fragment PostWithAuthorAndTags on Post {
     }
   }
   tags {
+    __typename
     ... on TagsNode {
+    __typename
       rows {
         name
         slug
