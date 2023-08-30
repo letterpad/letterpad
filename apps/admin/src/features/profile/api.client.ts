@@ -14,13 +14,11 @@ export const useUpdateAuthor = () => {
     error,
     data: isAuthor(data) ? data : undefined,
     updateAuthor: async (change: InputAuthor) => {
-      Message().loading({ content: "Updating, Please wait..." });
       const result = await a({
         author: {
           ...change,
         },
       });
-      Message().success({ content: "Saved", duration: 100 });
       return result;
     },
   };

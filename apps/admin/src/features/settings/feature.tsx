@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Accordion, AccordionItem, Button, PopConfirm, TextArea } from "ui";
 
@@ -16,6 +17,7 @@ import General from "./components/general";
 import Integrations from "./components/integrations";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
+import { subscribe } from "../../shared/eventBus";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
@@ -48,6 +50,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
     await deleteAuthor();
     router.push("/login?deleted=true");
   };
+
   if (!data) return null;
 
   return (

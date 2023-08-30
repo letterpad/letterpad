@@ -35,7 +35,6 @@ export const useUpdateTags = () => {
     error,
     updateTags: async (data: Parameters<typeof updateTags>[0]) => {
       const result = await updateTags(data);
-      refetch({ requestPolicy: "network-only" });
       return result;
     },
   };

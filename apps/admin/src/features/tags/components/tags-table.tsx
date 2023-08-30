@@ -40,7 +40,7 @@ const TagsTable = () => {
       <Table
         dataSource={dataSource}
         columns={columns as ColumnTypes}
-        loading={loading}
+        loading={!!loading}
       />
     </Content>
   );

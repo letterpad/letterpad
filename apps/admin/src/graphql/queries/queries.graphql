@@ -155,11 +155,13 @@ query Me {
 
 query Tags($filters: TagsFilters) {
   tags(filters: $filters) {
+    __typename
     ... on TagsNode {
       rows {
         name
         slug
         posts {
+          __typename
           ... on PostsNode {
             count
             rows {

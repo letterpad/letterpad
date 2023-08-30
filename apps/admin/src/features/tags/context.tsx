@@ -28,7 +28,11 @@ export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
 export const TagsProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const { data, fetching: loading, refetch: refetchTags } = useGetTags();
+  const {
+    data,
+    fetching: loading,
+    refetch: refetchTags,
+  } = useGetTags({ active: true });
   const [tags, setTags] = useState<TagRow[]>([]);
   const [editTagId, setEditTagId] = useState<React.Key | null>(null);
   const postsQuery = useGetPosts({}, { skip: true });
