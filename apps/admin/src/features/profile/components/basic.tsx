@@ -4,7 +4,7 @@ import { Input, Label, TextArea } from "ui";
 
 import { Upload } from "@/components/upload";
 
-import { SaveButton } from "../save-button";
+import { SaveButton } from "../../../components/save-button";
 
 export const Basic = () => {
   const { register, watch, control } = useFormContext();

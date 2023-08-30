@@ -3,7 +3,7 @@ import { Input } from "ui";
 
 import { removeTypenames } from "@/shared/utils";
 
-import { SaveButton } from "../save-button";
+import { SaveButton } from "../../../components/save-button";
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 

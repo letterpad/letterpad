@@ -6,14 +6,13 @@ import { Accordion, AccordionItem } from "ui";
 
 import { getDirtyFields } from "@/lib/react-form";
 
-import { Basic } from "@/components/profile/basic";
-import { ChangePassword } from "@/components/profile/change-password";
-import { EmailAndUsername } from "@/components/profile/emailAndUsername";
-import { Social } from "@/components/profile/social";
-
 import { Author, InputAuthor } from "@/__generated__/__types__";
 
 import { useGetAuthor, useUpdateAuthor } from "./api.client";
+import { Basic } from "./components/basic";
+import { ChangePassword } from "./components/change-password";
+import { EmailAndUsername } from "./components/emailAndUsername";
+import { Social } from "./components/social";
 
 export const Feature = () => {
   const { data, fetching } = useGetAuthor();

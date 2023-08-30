@@ -1,8 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import { Button, Input } from "ui";
 
-import { SaveButton } from "../save-button";
-import { ResetPasswordMutationVariables } from "../../graphql/queries/mutations.graphql";
+import { SaveButton } from "../../../components/save-button";
+import { ResetPasswordMutationVariables } from "../../../graphql/queries/mutations.graphql";
 
 interface Props {
   id: number;

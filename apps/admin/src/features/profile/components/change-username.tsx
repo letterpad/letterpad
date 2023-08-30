@@ -3,7 +3,7 @@ import { Button, Input } from "ui";
 
 import { sanitizeUsername } from "@/shared/utils";
 
-import { useUpdateAuthor } from "../../features/posts/api.client";
+import { useUpdateAuthor } from "../../posts/api.client";
 
 interface Props {
   username: string;

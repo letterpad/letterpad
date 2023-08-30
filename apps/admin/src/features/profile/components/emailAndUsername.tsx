@@ -5,7 +5,7 @@ import { Button, Input } from "ui";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 import { ChangeUsername } from "./change-username";
-import { SaveButton } from "../save-button";
+import { SaveButton } from "../../../components/save-button";
 
 interface Props {
   data: MeFragmentFragment;

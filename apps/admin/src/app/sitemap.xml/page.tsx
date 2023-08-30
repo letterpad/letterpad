@@ -2,7 +2,6 @@ import {
   SitemapsDocument,
   SitemapsQuery,
 } from "@/__generated__/queries/queries.graphql";
-import { createApolloServerClient } from "@/graphql/apolloServerClient";
 
 const Sitemap = () => {
   return <div>Hello</div>;

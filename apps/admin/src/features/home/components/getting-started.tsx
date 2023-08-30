@@ -3,11 +3,10 @@ import Link from "next/link";
 import { FC, useEffect } from "react";
 import { Button, Content, PageHeader } from "ui";
 
-import { ChangeUsername } from "@/components/profile/change-username";
-
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { setIntroDimissed } from "@/features/home/components/visibility";
+import { ChangeUsername } from "@/features/profile/components/change-username";
 
 import { useUpdateAuthor } from "../../posts/api.client";
 
