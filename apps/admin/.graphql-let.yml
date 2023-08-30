@@ -12,5 +12,5 @@ config:
   maybeValue: T
   withComponent: false
   withHooks: true
-  skipTypename: false
+  # skipTypename: false
   content: '//@ts-nocheck'

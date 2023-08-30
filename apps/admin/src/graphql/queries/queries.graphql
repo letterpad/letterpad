@@ -37,13 +37,11 @@ query Post($filters: PostFilters) {
 
 query Posts($filters: PostsFilters) {
   posts(filters: $filters) {
-    __typename
     ... on PostsNode {
       count
       rows {
         ...Partial
         author {
-          __typename
           ... on Author {
             name
             social {
@@ -59,9 +57,7 @@ query Posts($filters: PostsFilters) {
           }
         }
         tags {
-          __typename
           ... on TagsNode {
-            __typename
             rows {
               name
               slug
@@ -159,12 +155,10 @@ query Me {
 query Tags($filters: TagsFilters) {
   tags(filters: $filters) {
     ... on TagsNode {
-      __typename
       rows {
         name
         slug
         posts {
-          __typename
           ... on PostsNode {
             count
             rows {
