@@ -5,8 +5,8 @@ import Image from "next/image";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Button } from "ui";
 
+import { themes as themesList } from "./components/themes";
 import { useGetSettings, useUpdateSettings } from "../settings/api.client";
-import { themes as themesList } from "../../components/themes/themes";
 
 export const Feature = () => {
   const { data } = useGetSettings();

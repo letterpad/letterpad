@@ -7,7 +7,7 @@ import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.g
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
-import ProfileInfo from "../profile-info";
+import ProfileInfo from "./profile-info";
 import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
 
 export const Sidebar = () => {

@@ -3,7 +3,7 @@ import { Button, Input, Modal, TextArea } from "ui";
 
 import { Media } from "@/__generated__/__types__";
 
-const MediaUpdateModal = ({
+export const MediaUpdateModal = ({
   img,
   onChange,
   onUpdate,
@@ -65,5 +65,3 @@ const MediaUpdateModal = ({
     </Modal>
   );
 };
-
-export default MediaUpdateModal;

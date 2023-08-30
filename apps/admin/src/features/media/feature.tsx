@@ -3,12 +3,11 @@
 import { useEffect, useState } from "react";
 import { Button, Message } from "ui";
 
-import MediaUpdateModal from "@/components/modals/media-update-modal";
-
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
 import { useMediaQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { useDeleteImage, useUpdateImage } from "./api.client";
+import { MediaUpdateModal } from "./components/mediaUpdateModal";
 
 export const Feature = () => {
   const [{ data }] = useMediaQuery();
