@@ -1,7 +1,9 @@
 "use client";
 
+import Profile from "./page";
+
 const Loader = () => {
-  return <h1 style={{ background: "red" }}>Loading....</h1>;
+  return <Profile />;
 };
 
 export default Loader;

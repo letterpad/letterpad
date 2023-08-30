@@ -25,11 +25,23 @@ export const Rows: FC<Props> = ({
 
   return (
     <tbody>
-      <Row onRowClick={() => {}}>
-        <td colSpan={columns.length}>
-          <TablePlaceholder loading={loading} className="mt-4" />
-        </td>
-      </Row>
+      {loading && (
+        <Row onRowClick={() => {}}>
+          <td colSpan={columns.length}>
+            <TablePlaceholder loading={loading} className="mt-4" />
+          </td>
+        </Row>
+      )}
+      {!loading && !dataSource.length && (
+        <Row onRowClick={() => {}}>
+          <td
+            colSpan={columns.length}
+            className="bg-slate-50 dark:bg-slate-800"
+          >
+            <div className="p-4 py-16 text-center">No records found</div>
+          </td>
+        </Row>
+      )}
       {dataSource.map((item, index) => {
         return (
           <Row onRowClick={() => onRowClick?.(item)}>

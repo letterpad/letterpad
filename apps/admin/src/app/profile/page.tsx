@@ -5,7 +5,7 @@ import { Content } from "@/components/client-wrapper";
 
 import { Feature } from "@/features/profile/feature";
 
-async function Profile() {
+function Profile() {
   return (
     <>
       <Head>

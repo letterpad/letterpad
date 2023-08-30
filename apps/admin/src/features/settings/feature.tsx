@@ -119,8 +119,10 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
                   label="Client Key"
                   value={data.client_token}
                   id="client_token"
-                  rows={3}
+                  rows={2}
+                  readOnly
                   className="w-96"
+                  cols={100}
                 />
 
                 <CopyToClipboard elementId="client_token" />

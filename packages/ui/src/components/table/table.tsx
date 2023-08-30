@@ -3,7 +3,6 @@ import { FC } from "react";
 import { Header } from "./header";
 import { Rows } from "./rows";
 import { Columns } from "./types";
-import { TablePlaceholder } from "../placeholders";
 
 interface Props {
   columns: Columns[];
