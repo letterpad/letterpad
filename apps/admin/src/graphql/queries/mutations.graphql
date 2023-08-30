@@ -2,6 +2,7 @@
 
 mutation Login($data: LoginData) {
   login(data: $data) {
+    __typename
     ... on Author {
       id
       name
@@ -22,6 +23,7 @@ mutation Login($data: LoginData) {
 
 mutation UpdateTags($data: InputTags) {
   updateTags(data: $data) {
+    __typename
     ... on EditTaxResponse {
       ok
     }
@@ -40,6 +42,7 @@ mutation addSubscriber($email: String!) {
 
 mutation DeleteTags($name: String!) {
   deleteTags(name: $name) {
+    __typename
     ... on DeleteTagsResult {
       ok
     }
@@ -67,6 +70,7 @@ mutation createAuthor($data: InputCreateAuthor!) {
 
 mutation UpdateOptions($options: [SettingInputType!]!) {
   updateOptions(options: $options) {
+    __typename
     ... on Setting {
       ...SettingsFragment
     }
@@ -78,6 +82,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
 
 mutation UpdateAuthor($author: InputAuthor!) {
   updateAuthor(author: $author) {
+    __typename
     ... on Author {
       id
       name
@@ -112,6 +117,7 @@ mutation UpdateAuthor($author: InputAuthor!) {
 
 mutation createPost($data: InputCreatePost) {
   createPost(data: $data) {
+    __typename
     ... on Post {
       ...Partial
       author {
@@ -136,6 +142,7 @@ mutation createPost($data: InputCreatePost) {
 
 mutation updatePost($data: InputUpdatePost) {
   updatePost(data: $data) {
+    __typename
     ... on Post {
       ...Partial
       author {
@@ -173,6 +180,7 @@ mutation updatePost($data: InputUpdatePost) {
 
 mutation UpdateMedia($data: InputUpdateMedia!) {
   updateMedia(data: $data) {
+    __typename
     ... on MediaUpdateResult {
       ok
     }
@@ -216,6 +224,7 @@ mutation ResetPassword($password: String!, $token: String!) {
 
 mutation AddDomain($domain: String!) {
   addDomain(domain: $domain) {
+    __typename
     ... on Domain {
       mapped
       ssl
