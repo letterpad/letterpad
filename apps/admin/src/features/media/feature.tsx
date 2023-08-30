@@ -2,21 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { Button, Message } from "ui";
-import { useQuery } from "urql";
 
 import MediaUpdateModal from "@/components/modals/media-update-modal";
 
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
-import {
-  MediaDocument,
-  MediaQuery,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
+import { useMediaQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
-import { deleteImage, updateImage } from "./api.client";
+import { useDeleteImage, useUpdateImage } from "./api.client";
 
 export const Feature = () => {
-  const [{ data }] = useQuery<MediaQuery>({ query: MediaDocument });
-
+  const [{ data }] = useMediaQuery();
+  const { updateMedia } = useUpdateImage();
+  const { deleteMedia } = useDeleteImage();
   const [preview, setPreview] = useState<IMedia | undefined>();
   const [images, setImages] = useState<MediaNode>({
     count: 0,
@@ -30,7 +27,7 @@ export const Feature = () => {
   }, [data?.media]);
 
   const tryDeleteImage = async (img: IMedia) => {
-    const res = await deleteImage(img.id);
+    const res = await deleteMedia(img.id);
     if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {
       const rows = images.rows.filter((item) => item.id !== img.id);
       setImages({ rows, count: images.count - 1 });
@@ -39,7 +36,7 @@ export const Feature = () => {
 
   const tryUpdateImage = async (img: IMedia) => {
     Message().loading({ content: "Updating, Please wait..." });
-    const { data } = await updateImage(img);
+    const { data } = await updateMedia({ data: img });
     if (data?.updateMedia?.__typename === "MediaUpdateResult") {
       Message().success({ content: "Updated", duration: 3 });
       const updateSrc = images.rows.map((item) =>

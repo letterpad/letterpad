@@ -1,17 +1,10 @@
-import { useMutation, useQuery } from "urql";
-
 import { PostFilters } from "@/__generated__/__types__";
-import { UpdatePostDocument } from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
-  PostDocument,
-  PostQuery,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
-import { UpdatePostMutation } from "@/graphql/queries/mutations.graphql";
+import { useUpdatePostMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
+import { usePostQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 import { isPost } from "@/utils/type-guards";
 
 export const useGetPost = (filters: PostFilters) => {
-  const [{ data, error, fetching }] = useQuery<PostQuery>({
-    query: PostDocument,
+  const [{ data, error, fetching }] = usePostQuery({
     variables: {
       filters,
     },
@@ -26,8 +19,7 @@ export const useGetPost = (filters: PostFilters) => {
 };
 
 export const useUpdatePost = () => {
-  const [{ fetching }, updatePost] =
-    useMutation<UpdatePostMutation>(UpdatePostDocument);
+  const [{ fetching }, updatePost] = useUpdatePostMutation();
   return {
     fetching,
     updatePost: (params) => {

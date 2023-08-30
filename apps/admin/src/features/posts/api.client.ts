@@ -1,34 +1,23 @@
-import { useState } from "react";
 import { Message } from "ui";
-import { useMutation, useQuery } from "urql";
 
 import { InputAuthor } from "@/__generated__/__types__";
+import { useUpdateAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import {
-  UpdateAuthorDocument,
-  UpdateAuthorMutation,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
-  MeDocument,
-  MeQuery,
-  PostsDocument,
-  PostsQuery,
-  StatsDocument,
-  StatsQuery,
+  usePostsQuery,
+  useStatsQuery,
 } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { isAuthor, isPostsNode, isStats } from "../../utils/type-guards";
 
 export const useUpdateAuthor = () => {
-  const [{ data, fetching, error }, a] =
-    useMutation<UpdateAuthorMutation["updateAuthor"]>(UpdateAuthorDocument);
-
+  const [{ data, fetching, error }, updateAuthor] = useUpdateAuthorMutation();
   return {
     fetching,
     error,
     data: isAuthor(data) ? data : undefined,
     updateAuthor: async (change: InputAuthor) => {
       Message().loading({ content: "Updating, Please wait..." });
-      const result = await a({
+      const result = await updateAuthor({
         author: {
           ...change,
         },
@@ -40,8 +29,7 @@ export const useUpdateAuthor = () => {
 };
 
 export const useGetPosts = (variables = {}, options = { skip: false }) => {
-  const [{ fetching, data, error }, refetch] = useQuery<PostsQuery>({
-    query: PostsDocument,
+  const [{ fetching, data, error }, refetch] = usePostsQuery({
     variables: {
       filters: variables,
     },
@@ -57,9 +45,9 @@ export const useGetPosts = (variables = {}, options = { skip: false }) => {
 };
 
 export const useGetStats = (variables = {}, options = { skip: false }) => {
-  const [{ fetching, data, error }, refetch] = useQuery<StatsQuery>({
-    query: StatsDocument,
+  const [{ fetching, data, error }, refetch] = useStatsQuery({
     pause: options.skip,
+    variables,
   });
 
   return {

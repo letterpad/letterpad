@@ -6,12 +6,9 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { Message } from "ui";
 
 import { RegisterStep } from "@/__generated__/__types__";
-import {
-  CreateAuthorDocument,
-  useCreateAuthorMutation,
-} from "@/__generated__/queries/mutations.graphql";
 import { EventAction, track } from "@/track";
 
+import { useCreateAuthor } from "./api.client";
 import { Logo, SocialLogin } from "../login";
 
 const hasCaptchaKey = process.env.RECAPTCHA_KEY_CLIENT ?? null;
@@ -21,7 +18,7 @@ export const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<null | Record<string, string>>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [createAuthor] = useCreateAuthorMutation();
+  const { createAuthor } = useCreateAuthor();
 
   const router = useRouter();
 
@@ -64,11 +61,8 @@ export const RegisterForm = () => {
         return;
       }
       const result = await createAuthor({
-        mutation: CreateAuthorDocument,
-        variables: {
-          data: {
-            ...formWithToken,
-          },
+        data: {
+          ...formWithToken,
         },
       });
       const createdAuthor = result.data?.createAuthor ?? {};

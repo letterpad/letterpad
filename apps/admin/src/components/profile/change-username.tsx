@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import { Button, Input } from "ui";
 
-import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
-
 import { sanitizeUsername } from "@/shared/utils";
+
+import { useUpdateAuthor } from "../../features/posts/api.client";
 
 interface Props {
   username: string;
@@ -15,11 +15,11 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
   const [error, setError] = useState<string | null>(null);
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(true);
 
-  const { updateAuthorAPI, loading } = useUpdateAuthor(author_id);
+  const { updateAuthor, fetching } = useUpdateAuthor();
 
-  const updateAuthor = async () => {
+  const tryUpdateAuthor = async () => {
     setError(null);
-    const result = await updateAuthorAPI({ username: _username });
+    const result = await updateAuthor({ username: _username, id: author_id });
     if (result.data?.updateAuthor?.__typename === "Failed") {
       setError(result.data.updateAuthor.message);
       setSaveButtonEnabled(false);
@@ -54,7 +54,7 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
         </div>
         <Button
           variant="primary"
-          onClick={updateAuthor}
+          onClick={tryUpdateAuthor}
           disabled={!saveButtonEnabled}
           className="col-span-2 lg:col-span-1"
         >

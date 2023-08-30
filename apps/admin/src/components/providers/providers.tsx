@@ -21,9 +21,7 @@ export const Providers = ({ children, loggedIn }) => {
           {Indicator}
           <ResponsiveProvider>
             <div id="message" />
-            {/* <SettingsAndMeProvider loggedIn={loggedIn}> */}
             {children}
-            {/* </SettingsAndMeProvider> */}
             <ProgressBar
               height="3px"
               color="#2fb2fa"

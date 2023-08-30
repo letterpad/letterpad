@@ -3,8 +3,8 @@ documents:
   - "src/graphql/**/*.graphql"
 plugins:
   - typescript-operations
-  - typescript-react-apollo
-  # - typescript-urql
+  # - typescript-react-apollo
+  - typescript-urql
 cacheDir: __generated__
 config:
   avoidOptionals: false

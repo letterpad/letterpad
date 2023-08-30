@@ -1,21 +1,13 @@
 import { Message } from "ui";
-import { useMutation, useQuery } from "urql";
 
 import { InputAuthor } from "@/__generated__/__types__";
-import {
-  UpdateAuthorDocument,
-  UpdateAuthorMutation,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
-  MeDocument,
-  MeQuery,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
+import { useUpdateAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
+import { useMeQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { isAuthor } from "../../utils/type-guards";
 
 export const useUpdateAuthor = () => {
-  const [{ data, fetching, error }, a] =
-    useMutation<UpdateAuthorMutation["updateAuthor"]>(UpdateAuthorDocument);
+  const [{ data, fetching, error }, a] = useUpdateAuthorMutation();
 
   return {
     fetching,
@@ -35,9 +27,7 @@ export const useUpdateAuthor = () => {
 };
 
 export const useGetAuthor = () => {
-  const [{ data, fetching, error }] = useQuery<MeQuery>({
-    query: MeDocument,
-  });
+  const [{ data, fetching, error }] = useMeQuery();
 
   return {
     fetching,

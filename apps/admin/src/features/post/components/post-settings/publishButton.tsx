@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Button, Modal } from "ui";
 
-import { useUpdatePost } from "@/hooks/useUpdatePost";
-
 import {
   Navigation,
   NavigationType,
@@ -16,7 +14,7 @@ import {
   TagNotLinkedWithNavigation,
   WarnNoTags,
 } from "./warnings";
-import { useGetPost } from "../../api.client";
+import { useGetPost, useUpdatePost } from "../../api.client";
 
 interface Props {
   postId: number;

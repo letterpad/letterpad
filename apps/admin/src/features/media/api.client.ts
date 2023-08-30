@@ -1,31 +1,23 @@
 import { Media } from "@/__generated__/__types__";
 import {
   DeleteMediaDocument,
-  DeleteMediaMutationResult,
   UpdateMediaDocument,
-  UpdateMediaMutationResult,
+  useDeleteMediaMutation,
+  useUpdateMediaMutation,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
-import { client } from "../../lib/urqlClient";
+export const useDeleteImage = () => {
+  const [, deleteMedia] = useDeleteMediaMutation();
 
-export const deleteImage = (id: number) => {
-  return client.mutation<DeleteMediaMutationResult["data"]>(
-    DeleteMediaDocument,
-    {
-      ids: [id],
-    }
-  );
+  return {
+    deleteMedia: (id: number) => deleteMedia({ ids: [id] }),
+  };
 };
 
-export const updateImage = (img: Media) => {
-  return client.mutation<UpdateMediaMutationResult["data"]>(
-    UpdateMediaDocument,
-    {
-      data: {
-        id: img.id,
-        description: img.description,
-        name: img.name,
-      },
-    }
-  );
+export const useUpdateImage = () => {
+  const [, updateMedia] = useUpdateMediaMutation();
+
+  return {
+    updateMedia,
+  };
 };

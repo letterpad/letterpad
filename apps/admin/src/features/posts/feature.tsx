@@ -6,23 +6,21 @@ import { Table } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
-import { useUpdatePost } from "@/hooks/useUpdatePost";
-
-import {
-  isIntroDismissed,
-  setIntroDimissed,
-} from "@/components/home/visibility";
-
 import {
   PostsFilters,
   PostStatusOptions,
   SortBy,
 } from "@/__generated__/__types__";
 import { LetterpadContext } from "@/context/LetterpadProvider";
+import {
+  isIntroDismissed,
+  setIntroDimissed,
+} from "@/features/home/components/visibility";
 import { postsColumns } from "@/features/posts/header";
 
 import { useGetPosts } from "./api.client";
 import Filters from "./filters";
+import { useUpdatePost } from "../post/api.client";
 
 export const Feature = () => {
   const router = useRouter();

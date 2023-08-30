@@ -6,8 +6,6 @@ import { Content, Table } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
-import { useUpdatePost } from "@/hooks/useUpdatePost";
-
 import ErrorMessage from "@/components/ErrorMessage";
 
 import {
@@ -21,8 +19,10 @@ import Filters from "@/features/posts/filters";
 import { creativesColumns } from "@/features/posts/header";
 import { Header } from "@/features/posts/header/header";
 
+import { useUpdatePost } from "../../features/post/api.client";
+
 function Pages() {
-  const { loading, data, error, refetch } = usePostsQuery({
+  const [{ data, fetching: loading, error }, refetch] = usePostsQuery({
     variables: { filters: { type: PostTypes.Page, sortBy: SortBy.Desc } },
   });
   const [filters, setFilters] = useState<PostsFilters>({

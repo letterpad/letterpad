@@ -1,7 +1,6 @@
 import AOS from "aos";
 import { Metadata } from "next";
-import Head from "next/head";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import Client from "./Client";
@@ -53,7 +52,7 @@ export const metadata: Metadata = {
 };
 
 export const Website = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
     document.body.classList.add("dark");
     document.body.classList.remove("light");
@@ -73,7 +72,7 @@ export const Website = () => {
     $.style.scrollBehavior = "auto";
     window.scroll({ top: 0 });
     $.style.scrollBehavior = "";
-  }, [router.pathname]); // triggered on route change
+  }, [pathname]); // triggered on route change
 
   return (
     <>

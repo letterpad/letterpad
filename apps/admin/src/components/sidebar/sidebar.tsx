@@ -2,12 +2,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Menu, useResponsiveLayout } from "ui";
-import { useQuery } from "urql";
 
-import {
-  HomeQueryDocument,
-  HomeQueryQueryResult,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
+import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
@@ -15,9 +11,7 @@ import ProfileInfo from "../profile-info";
 import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
 
 export const Sidebar = () => {
-  const [{ data }] = useQuery<HomeQueryQueryResult["data"]>({
-    query: HomeQueryDocument,
-  });
+  const [{ data }] = useHomeQueryQuery();
   const pathname = usePathname();
   const { isMobileOrTablet, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;

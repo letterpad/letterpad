@@ -1,23 +1,20 @@
 import { ChangeEvent, useState } from "react";
 import { Button, Input, Message } from "ui";
 
-import {
-  useAddDomainMutation,
-  useRemoveDomainMutation,
-} from "@/__generated__/queries/mutations.graphql";
+import { useAddDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
 export const NewDomain = ({ refetch }) => {
   const [domain, setDomain] = useState("");
 
-  const [addDomainMutation, { data, loading, error }] = useAddDomainMutation();
+  const [{ fetching: loading }, addDomain] = useAddDomainMutation();
 
   const changeDomainName = (e: ChangeEvent<HTMLInputElement>) => {
     setDomain(e.target.value);
   };
 
-  const addDomain = async () => {
+  const tryAddDomain = async () => {
     if (domain) {
-      const res = await addDomainMutation({ variables: { domain } });
+      const res = await addDomain({ domain });
       if (res?.data?.addDomain.__typename === "Domain") {
         setDomain("");
         Message().success({
@@ -48,7 +45,7 @@ export const NewDomain = ({ refetch }) => {
           />
           <Button
             variant="primary"
-            onClick={addDomain}
+            onClick={tryAddDomain}
             disabled={loading}
             className="h-10"
           >

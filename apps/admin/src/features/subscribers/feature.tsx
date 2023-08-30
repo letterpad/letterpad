@@ -1,7 +1,10 @@
-import Head from "next/head";
-import { PageHeader } from "ui/isomorphic";
+"use client";
 
-import { Content } from "@/components/client-wrapper";
+import { Table } from "ui";
+
+import ErrorMessage from "@/components/ErrorMessage";
+
+import { useGetSubscribers } from "./client.api";
 
 export const columns = [
   {
@@ -36,20 +39,18 @@ export const columns = [
   },
 ];
 
-function Subscribers() {
+export const Feature = () => {
+  const { data, error, fetching: loading } = useGetSubscribers();
+
+  if (error) return <ErrorMessage description={error} title="Error" />;
+
   return (
     <>
-      <Head>
-        <title>Subscribers</title>
-      </Head>
-      <PageHeader className="site-page-header" title="Subscribers">
-        <span className="help-text">
-          Here you will find all the users subscribed to your blog.
-        </span>
-      </PageHeader>
-      <Content></Content>
+      <Table
+        columns={columns}
+        dataSource={data?.subscribers.rows}
+        loading={loading}
+      />
     </>
   );
-}
-
-export default Subscribers;
+};

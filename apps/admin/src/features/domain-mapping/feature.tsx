@@ -4,11 +4,11 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { Button, Message } from "ui";
 
 import { Domain, DomainVerification } from "@/__generated__/__types__";
+import { useRemoveDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import {
   DomainQuery,
   useDomainQuery,
-} from "@/__generated__/queries/queries.graphql";
-import { useRemoveDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
+} from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { MapDomain } from "./components/map-domain";
 import { MapSubDomain } from "./components/map-subdomain";
@@ -17,11 +17,11 @@ import { NewDomain } from "./components/new-domain";
 import { VerifyDomain } from "./components/verify-domain";
 
 export const Feature = () => {
-  const { data, loading, refetch } = useDomainQuery();
-  const [removeDomain] = useRemoveDomainMutation();
+  const [{ data }, refetch] = useDomainQuery();
+  const [{}, removeDomain] = useRemoveDomainMutation();
 
   const removeMapping = async () => {
-    const result = await removeDomain();
+    const result = await removeDomain({});
     Message().success({
       content: result.data?.removeDomain.message!,
     });
