@@ -64,7 +64,7 @@ export const Filters = ({
     onChange({ ...changedFilters });
   };
 
-  if (fetching && showTags) return <Loading />;
+  // if (fetching && showTags) return <Loading />;
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -74,18 +74,21 @@ export const Filters = ({
           count={statsData.published}
           active={filters.status?.includes(PostStatusOptions.Published)}
           onClick={() => onBadgeClick(PostStatusOptions.Published)}
+          fetching={fetching}
         />
         <Badge
           label="Drafts"
           count={statsData.drafts}
           active={filters.status?.includes(PostStatusOptions.Draft)}
           onClick={() => onBadgeClick(PostStatusOptions.Draft)}
+          fetching={fetching}
         />
         <Badge
           label="Trashed"
           count={statsData.trashed}
           active={filters.status?.includes(PostStatusOptions.Trashed)}
           onClick={() => onBadgeClick(PostStatusOptions.Trashed)}
+          fetching={fetching}
         />
       </div>
       <div className="hidden grid-cols-2 items-center gap-2 md:grid ">

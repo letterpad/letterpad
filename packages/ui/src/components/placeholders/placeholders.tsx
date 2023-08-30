@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 export const TextBlockPlaceholder = () => {
   return (
     <div role="status" className="w-full animate-pulse space-y-2.5">
@@ -71,6 +73,23 @@ export const PostTitlePlaceholder = () => {
         <div className="h-8 w-24 rounded-full bg-gray-200 dark:bg-gray-700"></div>
       </div>
       <span className="sr-only">Loading...</span>
+    </div>
+  );
+};
+
+export const TablePlaceholder: FC<{
+  loading?: boolean;
+  className?: string;
+}> = ({ loading = false, className }) => {
+  return (
+    <div
+      className={`animate-pulse ${loading ? "block" : "hidden"} ${className}`}
+    >
+      <div className="mb-4 mt-3 h-6 rounded bg-gray-200 dark:bg-gray-700"></div>
+      <div className="mb-4 h-6 rounded bg-gray-200 dark:bg-gray-700"></div>
+      <div className="mb-4 h-6 rounded bg-gray-200 dark:bg-gray-700"></div>
+      <div className="mb-4 h-6 rounded bg-gray-200 dark:bg-gray-700"></div>
+      <div className="mb-4 h-6 rounded bg-gray-200 dark:bg-gray-700"></div>
     </div>
   );
 };

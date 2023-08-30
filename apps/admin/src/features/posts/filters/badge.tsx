@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-export const Badge = ({ label, count, active, onClick }) => {
+export const Badge = ({ label, count, active, onClick, fetching }) => {
   return (
     <span
       onClick={onClick}
@@ -14,7 +14,7 @@ export const Badge = ({ label, count, active, onClick }) => {
         }
       )}
     >
-      {label}
+      {fetching ? <span className="">{label}</span> : label}
       <span
         className={classNames(
           "flex h-5 w-5 items-center justify-center rounded-full text-xs",

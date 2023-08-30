@@ -12,9 +12,9 @@ export const TwoColumnLayout = ({ children }) => {
     <Layout
       left={<Sidebar />}
       right={
-        <div className="px-4 md:px-6">
+        <div className="flex h-screen flex-col justify-between px-4 md:px-6">
           <TopBar />
-          {children}
+          <div className="mb-auto">{children}</div>
           <SiteFooter />
         </div>
       }

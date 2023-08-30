@@ -57,6 +57,7 @@ export const Feature = () => {
       <Table
         columns={postsColumns({ changeStatus })}
         dataSource={data?.map((item) => ({ ...item, key: item.id }))}
+        // dataSource={data?.map((item) => ({ ...item, key: item.id }))}
         loading={fetching}
         onRowClick={(row) => router.push("/post/" + row.id)}
       />
