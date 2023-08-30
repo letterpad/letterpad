@@ -107,21 +107,27 @@ export const Item: FC<Props> = ({
             disabled
           />
           <Button
-            variant="dark"
-            onClick={() => openSuggestions(library.id)}
+            variant="primary"
+            onClick={(e) => {
+              e.preventDefault();
+              openSuggestions(library.id);
+            }}
             data-testid="content-modal-btn"
           >
             Select Content
           </Button>
           <Button
             variant="danger"
-            onClick={() => onRemove(library)}
+            onClick={(e) => {
+              e.preventDefault();
+              onRemove(library);
+            }}
             className="px-0 py-0"
           >
             <AiOutlineDelete
-              size={38}
+              size={20}
               data-testid="button-nav-delete"
-              className="menu-delete p-2"
+              className="menu-delete"
             />
           </Button>
         </div>

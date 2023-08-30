@@ -13,9 +13,9 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { BiPlus, BiSave } from "react-icons/bi";
-import { Button } from "ui";
+import { Button, Message } from "ui";
 
 import { Collection } from "@/components/navigation-builder/types";
 import { SaveButton } from "@/components/save-button";
@@ -25,6 +25,7 @@ import { EventAction, track } from "@/track";
 
 import { Item } from "./item";
 import { SuggestionModal } from "./suggestion-modal";
+import { createNewRow, mergeData } from "./utils";
 
 import { IMenuWithError } from "@/types";
 
@@ -83,25 +84,22 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
     });
   };
 
-  const addNewRow = () => {
-    const newItem = {
-      id: generareId(libraries),
-      label: "",
-      slug: "",
-      type: NavigationType.Custom,
-      original_name: "",
-    };
-    setLibraries([...libraries, newItem]);
+  const addNewRow = (e) => {
+    e.preventDefault();
+    setLibraries((libraries) => [...libraries, createNewRow(libraries)]);
   };
 
   const onItemChange = (change: IMenuWithError) => {
-    const modified = libraries.map((item) =>
-      item.id === change.id ? change : item
-    );
-    updateLibraries(modified);
+    updateLibraries(mergeData(libraries, change));
   };
 
   const onItemRemove = (change: IMenuWithError) => {
+    if (libraries.length <= 1) {
+      return Message().error({
+        content: "You cannot delete the last row",
+        duration: 2,
+      });
+    }
     const modified = libraries.filter((item) => item.id !== change.id);
     updateLibraries(modified);
     track({
@@ -137,7 +135,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={libraries.map((library) => ({ id: library.id }))}
+        items={libraries?.map((library) => ({ id: library.id }))}
         strategy={verticalListSortingStrategy}
       >
         {libraries.map((library) => (
@@ -154,7 +152,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
         <Button
           onClick={addNewRow}
           data-testid="newMenuBtn"
-          variant="dark"
+          variant="primary"
           className="flex items-center justify-center gap-1"
         >
           <BiPlus size={18} />
