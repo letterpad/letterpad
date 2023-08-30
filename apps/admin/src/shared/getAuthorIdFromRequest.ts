@@ -1,4 +1,3 @@
-import { Context } from "@apollo/client";
 import { Prisma, PrismaClient } from "@prisma/client";
 
 import { report } from "@/components/error";
@@ -10,7 +9,7 @@ import { getHeader } from "../utils/headers";
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();
 
-const getAuthorIdFromRequest = async (context: Context) => {
+const getAuthorIdFromRequest = async (context: any) => {
   const authHeader = getHeader(context.req.headers, "authorization");
 
   let author_id: number | null = null;
