@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { InfiniteScrollList } from "ui";
 
+import { client } from "@/lib/urqlClient";
+
 import { Media } from "@/__generated__/__types__";
-import { MediaDocument } from "@/__generated__/queries/queries.graphql";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import {
+  MediaDocument,
   MediaQuery,
   MediaQueryVariables,
-} from "@/graphql/queries/queries.graphql";
+} from "@/__generated__/src/graphql/queries/queries.graphql";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
@@ -64,22 +65,15 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
 export default InternalMedia;
 
 const fetchMedia = async (page: number) => {
-  const result = await apolloBrowserClient.query<
-    MediaQuery,
-    MediaQueryVariables
-  >({
-    query: MediaDocument,
-    variables: {
-      filters: {
-        page,
-      },
-    },
-    fetchPolicy: "network-only",
-  });
+  const { data } = await client.query<MediaQuery, MediaQueryVariables>(
+    MediaDocument,
+    { filters: { page } },
+    { requestPolicy: "network-only" }
+  );
 
   const images = {
-    rows: result.data.media.rows,
-    count: result.data.media.count,
+    rows: data?.media.rows ?? [],
+    count: data?.media.count ?? 0,
   };
   return images;
 };

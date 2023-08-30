@@ -1,6 +1,6 @@
 import { Message } from "ui";
 
-import { InputAuthor } from "@/__generated__/__types__";
+import { InputAuthor, PostsFilters } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import {
   usePostsQuery,
@@ -28,7 +28,10 @@ export const useUpdateAuthor = () => {
   };
 };
 
-export const useGetPosts = (variables = {}, options = { skip: false }) => {
+export const useGetPosts = (
+  variables: PostsFilters = {},
+  options = { skip: false }
+) => {
   const [{ fetching, data, error }, refetch] = usePostsQuery({
     variables: {
       filters: variables,

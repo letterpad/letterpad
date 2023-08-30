@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Message } from "ui";
 
 import { EventAction, track } from "@/track";
 
-import { forgotPasswordAction } from "../actions";
+import { useForgotPassword } from "../client.api";
 import { Logo } from "../logo";
 
 export const ForgotPassword = ({
@@ -16,16 +17,33 @@ export const ForgotPassword = ({
 }) => {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const forgotPassword = async () => {
-    if (email.trim() === "") return false;
+  const { forgotPassword } = useForgotPassword();
+
+  const tryForgotPassword = async () => {
     track({
       eventAction: EventAction.Click,
       eventCategory: "forgot-password",
       eventLabel: `before-request`,
     });
-    const result = await forgotPasswordAction(email);
-    if (result) {
-      router.push("/login");
+
+    const sanitisedLoginEmail = email.trim();
+    if (sanitisedLoginEmail.length > 0) {
+      const { data } = await forgotPassword({ email });
+
+      if (data?.forgotPassword.ok) {
+        Message().success({
+          content: "Check your email to reset your password!",
+        });
+        router.push("/login");
+      } else {
+        Message().warn({
+          content:
+            data?.forgotPassword.message ||
+            "Something wrong hapenned. Please try again.",
+        });
+      }
+    } else {
+      Message().warn({ content: "Email field is mandatory" });
     }
   };
 
@@ -84,7 +102,7 @@ export const ForgotPassword = ({
               <button
                 className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
                 data-testid="loginBtn"
-                onClick={forgotPassword}
+                onClick={tryForgotPassword}
               >
                 Reset Password
               </button>
