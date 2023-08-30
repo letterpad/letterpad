@@ -108,7 +108,7 @@ Cypress.Commands.add("addNavItem", addNavItem);
 beforeEach(function () {
   cy.visitLogin();
   cy.intercept("POST", "http://localhost:3000/api/graphql", (req) => {
-    aliasMutation(req, "updatePost");
+    aliasMutation(req, "UpdatePost");
     aliasMutation(req, "UpdateOptions");
     aliasMutation(req, "UpdateAuthor");
     aliasMutation(req, "createAuthor");
