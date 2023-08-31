@@ -1,5 +1,5 @@
 "use client";
 
-import { PagePlaceholder } from "ui";
+import { PageSkeleton } from "@/components/skeleton";
 
-export default PagePlaceholder;
+export default PageSkeleton;

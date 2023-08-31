@@ -9,9 +9,12 @@ import { Input, Message, TextArea } from "ui";
 import { getDirtyFields } from "@/lib/react-form";
 
 import { InputAuthor, RegisterStep } from "@/__generated__/__types__";
+import { Logo } from "@/app/(public)/login/_feature";
+import {
+  useGetAuthor,
+  useUpdateAuthor,
+} from "@/app/profile/_feature/api.client";
 import { registrationPaths } from "@/constants";
-import { Logo } from "@/features/login";
-import { useGetAuthor, useUpdateAuthor } from "@/features/profile/api.client";
 import { EventAction, track } from "@/track";
 import { isAuthor } from "@/utils/type-guards";
 

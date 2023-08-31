@@ -10,7 +10,7 @@ export const deleteMedia = async (
 ): Promise<ResolversTypes["MediaDeleteResponse"]> => {
   if (!session?.user) {
     return {
-      __typename: "MediaError",
+      __typename: "UnAuthorized",
       message: "No Auhentication",
     };
   }

@@ -3,7 +3,7 @@ import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
 
-import { Feature } from "@/features/domain-mapping";
+import { Feature } from "@/app/domain-mapping/_feature";
 
 interface Props {
   readOnly: boolean;

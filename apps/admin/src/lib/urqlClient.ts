@@ -72,6 +72,9 @@ const makeClient = () => {
     ],
     fetchOptions: {
       credentials: "same-origin",
+      headers: {
+        "Letterpad-Admin": "true",
+      },
     },
   });
 };

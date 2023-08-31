@@ -77,17 +77,19 @@ query Posts($filters: PostsFilters) {
 
 query Media($filters: MediaFilters) {
   media(filters: $filters) {
-    __typename
-    count
-    rows {
-      id
-      url
-      authorId
-      createdAt
-      name
-      description
-      width
-      height
+    ... on MediaNode {
+      __typename
+      count
+      rows {
+        id
+        url
+        authorId
+        createdAt
+        name
+        description
+        width
+        height
+      }
     }
   }
 }
@@ -171,7 +173,7 @@ query Tags($filters: TagsFilters) {
         }
       }
     }
-    ... on TagsError {
+    ... on UnAuthorized {
       __typename
       message
     }

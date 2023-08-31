@@ -10,7 +10,7 @@ export const deleteTags = async (
 ): Promise<ResolversTypes["DeleteTagsResponse"]> => {
   if (!args.name) {
     return {
-      __typename: "TagsError",
+      __typename: "UnAuthorized",
       message: "Incorrect arguments",
     };
   }

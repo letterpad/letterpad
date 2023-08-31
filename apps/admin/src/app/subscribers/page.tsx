@@ -3,7 +3,7 @@ import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
 
-import { Feature } from "../../features/subscribers";
+import { Feature } from "./_feature";
 
 function Subscribers() {
   return (

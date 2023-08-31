@@ -1,7 +1,7 @@
 "use client";
 
-import { PostProvider } from "@/features/post/context";
-import { Feature } from "@/features/post/feature";
+import { PostProvider } from "./_feature/context";
+import { Feature } from "./_feature/feature";
 
 function EditPost() {
   return (

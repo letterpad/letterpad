@@ -4,7 +4,7 @@ import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
 
-import { Settings } from "@/features/settings/feature";
+import { Settings } from "./_feature/feature";
 
 const Page = async () => {
   const cloudinaryEnabledByAdmin = !!(

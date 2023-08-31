@@ -9,13 +9,13 @@ import { Input, Label, Message, TextArea } from "ui";
 import { getDirtyFields } from "@/lib/react-form";
 
 import { RegisterStep, SettingInputType } from "@/__generated__/__types__";
-import { registrationPaths } from "@/constants";
-import { Logo } from "@/features/login";
-import { useUpdateAuthor } from "@/features/posts/api.client";
+import { Logo } from "@/app/(public)/login/_feature";
+import { useUpdateAuthor } from "@/app/posts/_feature/api.client";
 import {
   useGetSettings,
   useUpdateSettings,
-} from "@/features/settings/api.client";
+} from "@/app/settings/_feature/api.client";
+import { registrationPaths } from "@/constants";
 import { EventAction, track } from "@/track";
 import { isAuthor } from "@/utils/type-guards";
 

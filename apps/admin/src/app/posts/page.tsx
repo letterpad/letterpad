@@ -4,9 +4,9 @@ import React from "react";
 import { Content } from "@/components/client-wrapper";
 
 import { PostTypes } from "@/__generated__/__types__";
-import { Header } from "@/features/posts/header/header";
+import { Header } from "@/app/posts/_feature/header/header";
 
-import { Feature } from "../../features/posts/feature";
+import { Feature } from "./_feature/feature";
 
 async function Posts() {
   return (

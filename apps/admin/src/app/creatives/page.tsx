@@ -3,9 +3,9 @@ import Head from "next/head";
 import { Content } from "@/components/client-wrapper";
 
 import { PostTypes } from "@/__generated__/__types__";
-import { Header } from "@/features/posts/header/header";
+import { Header } from "@/app/posts/_feature/header/header";
 
-import { Feature } from "../../features/creatives";
+import { Feature } from "./_feature";
 
 function Pages() {
   return (

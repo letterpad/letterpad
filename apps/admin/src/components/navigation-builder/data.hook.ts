@@ -8,8 +8,8 @@ import {
 } from "@/__generated__/__types__";
 
 import { Collection } from "./types";
-import { useGetPosts } from "../../features/posts/api.client";
-import { useGetTags } from "../../features/tags/api.client";
+import { useGetPosts } from "../../app/posts/_feature/api.client";
+import { useGetTags } from "../../app/tags/_feature/api.client";
 
 interface IReturn {
   loading: boolean;

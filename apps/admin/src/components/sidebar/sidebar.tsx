@@ -33,6 +33,8 @@ export const Sidebar = () => {
                 e.preventDefault();
                 signOut({
                   redirect: true,
+                }).then(() => {
+                  window.location.href = "/login";
                 });
               }
               isMobileOrTablet && setSidebarVisible(false);

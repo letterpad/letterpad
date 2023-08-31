@@ -10,7 +10,7 @@ export const updateMedia = async (
 ): Promise<ResolversTypes["MediaUpdateResponse"]> => {
   if (!session?.user.id) {
     return {
-      __typename: "MediaError",
+      __typename: "UnAuthorized",
       message: "No Auhentication",
     };
   }

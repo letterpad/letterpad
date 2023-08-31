@@ -3,7 +3,7 @@ import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
 
-import { Feature } from "@/features/themes";
+import { Feature } from "./_feature";
 
 const Themes = () => {
   return (

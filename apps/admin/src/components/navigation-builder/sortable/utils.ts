@@ -11,16 +11,16 @@ export const createNewRow = (libraries: IMenuWithError[]) => {
   };
 };
 
-export const mergeData = (
-  libraries: IMenuWithError[],
-  change: IMenuWithError
-) => {
-  return libraries.map((item) => (item.id === change.id ? change : item));
-};
-
 const generareId = (menu: IMenuWithError[]) => {
   const ids = menu.map((item) => item.id) as number[];
   const id = Math.max.apply(null, ids);
 
   return id + 1;
+};
+
+export const mergeData = (
+  libraries: IMenuWithError[],
+  change: IMenuWithError
+) => {
+  return libraries.map((item) => (item.id === change.id ? change : item));
 };

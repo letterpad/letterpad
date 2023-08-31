@@ -5,12 +5,12 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getMedia = async (
   args: QueryMediaArgs,
-  { prisma, session }: ResolverContext
-): Promise<ResolversTypes["MediaNode"]> => {
+  { prisma, session, isLetterpadAdmin }: ResolverContext
+): Promise<ResolversTypes["MediaResponse"]> => {
   if (!session?.user.id) {
     return {
-      count: 0,
-      rows: [],
+      __typename: "UnAuthorized",
+      message: "",
     };
   }
 
@@ -34,6 +34,7 @@ export const getMedia = async (
   const result = await prisma.upload.findMany(condition);
 
   return {
+    __typename: "MediaNode",
     rows: result,
     count: await prisma.upload.count({
       where: { id, author: { id: session.user.id } },

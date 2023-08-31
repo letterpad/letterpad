@@ -4,7 +4,7 @@ import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
 
-import { Feature } from "@/features/home";
+import { Feature } from "@/app/home/_feature";
 
 import { PageProps } from "@/types";
 

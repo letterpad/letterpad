@@ -27,7 +27,7 @@ mutation UpdateTags($data: InputTags) {
     ... on EditTaxResponse {
       ok
     }
-    ... on TagsError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -46,7 +46,7 @@ mutation DeleteTags($name: String!) {
     ... on DeleteTagsResult {
       ok
     }
-    ... on TagsError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -184,7 +184,7 @@ mutation UpdateMedia($data: InputUpdateMedia!) {
     ... on MediaUpdateResult {
       ok
     }
-    ... on MediaError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -202,7 +202,7 @@ mutation DeleteMedia($ids: [Int!]!) {
     ... on MediaDeleteResult {
       ok
     }
-    ... on MediaError {
+    ... on UnAuthorized {
       message
     }
   }

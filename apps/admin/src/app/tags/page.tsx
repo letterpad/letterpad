@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { PageHeader } from "ui/isomorphic";
 
-import { Feature } from "@/features/tags";
+import { Feature } from "./_feature";
 
 const EditableTable = () => {
   return (

@@ -13,14 +13,13 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { FC, useEffect, useState } from "react";
-import { BiPlus, BiSave } from "react-icons/bi";
+import { FC, useState } from "react";
+import { BiPlus } from "react-icons/bi";
 import { Button, Message } from "ui";
 
 import { Collection } from "@/components/navigation-builder/types";
 import { SaveButton } from "@/components/save-button";
 
-import { NavigationType } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 
 import { Item } from "./item";

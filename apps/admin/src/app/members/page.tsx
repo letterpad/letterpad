@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Button, Content, Input, PageHeader, Table, Tabs } from "ui";
 
-import { Editor } from "@/features/post";
+import { Editor } from "@/app/post/[postId]/_feature";
 
 import { AdminUsersType } from "@/types";
 

@@ -3,7 +3,7 @@ import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
 
-import { Feature } from "@/features/profile/feature";
+import { Feature } from "./_feature/feature";
 
 function Profile() {
   return (
