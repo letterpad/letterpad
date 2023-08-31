@@ -1,4 +1,9 @@
+"use client";
+
 import { FC } from "react";
+
+import { Content } from "../content";
+import { PageHeader } from "../page-header";
 
 export const TextBlockPlaceholder = () => {
   return (
@@ -91,5 +96,28 @@ export const TablePlaceholder: FC<{
       <div className="mb-4 h-6 rounded bg-gray-200 dark:bg-gray-700"></div>
       <div className="mb-4 h-6 rounded bg-gray-200 dark:bg-gray-700"></div>
     </div>
+  );
+};
+
+export const PagePlaceholder = () => {
+  const TitlePlaceholder = (
+    <div className="help-text w-40 animate-pulse">
+      <div className="mb-4 mt-3 h-8 rounded bg-gray-200 dark:bg-gray-700" />
+    </div>
+  );
+
+  return (
+    <>
+      <PageHeader className="site-page-header" title={TitlePlaceholder}>
+        <div className="help-text w-96 animate-pulse">
+          <div className="mb-4 mt-3 h-4 rounded bg-gray-200 dark:bg-gray-700" />
+        </div>
+      </PageHeader>
+      <Content>
+        <div>
+          <TablePlaceholder loading={true} />
+        </div>
+      </Content>
+    </>
   );
 };

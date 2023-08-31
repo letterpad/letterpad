@@ -1,5 +1,6 @@
 export {
   LinePlaceholder,
+  PagePlaceholder,
   PostTitlePlaceholder,
   TablePlaceholder,
   TextBlockPlaceholder,

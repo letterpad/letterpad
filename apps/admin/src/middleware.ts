@@ -22,73 +22,58 @@ export const config = {
    * 5. "/_sites/:path*"  – for all custom hostnames under the `/_sites/[site]*` dynamic route (demo.vercel.pub, platformize.co)
    *                        we do this to make sure "demo.vercel.pub/_sites/steven" is not matched and throws a 404.
    */
-  matcher: [
-    "/update/(profile-info|site-info)",
-    "/post/:path*",
-    "/home",
-    "/posts",
-    "/creatives",
-    "/media",
-    "/tags",
-    "/profile",
-    "/themes",
-    "/domain-mapping",
-    "/settings",
-    "/subscribers",
-    "/logout",
-    "/yo",
-  ],
+  matcher: ["/api"],
 };
 
 const { ProfileInfo, SiteInfo, Registered } = RegisterStep;
 
 export async function middleware(request: NextRequest) {
   const { device } = userAgent(request);
-  const session = await getServerSession(request.headers);
+  // const session = await getServerSession(request.headers);
   const viewport = device.type === "mobile" ? "mobile" : "desktop";
   const cookie = request.headers.get("cookie");
   const nextUrl = request.nextUrl;
   nextUrl.searchParams.set("viewport", viewport);
-  nextUrl.searchParams.set("session", JSON.stringify(session));
+  // nextUrl.searchParams.set("session", JSON.stringify(session));
   // nextUrl.searchParams.set("cookie", JSON.stringify(session));
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
 
-  if (!session?.user.id) {
-    return NextResponse.redirect(proto + "://" + host + "/login");
-  } else if (session?.user?.register_step) {
-    const { register_step } = session?.user;
-    const { pathname } = request.nextUrl;
+  // if (!session?.user.id) {
+  //   return NextResponse.redirect(proto + "://" + host + "/login");
+  // } else if (session?.user?.register_step) {
+  //   const { register_step } = session?.user;
+  //   const { pathname } = request.nextUrl;
 
-    switch (register_step) {
-      case ProfileInfo:
-        if (pathname !== registrationPaths[ProfileInfo]) {
-          return NextResponse.redirect(
-            proto + "://" + host + registrationPaths[ProfileInfo]
-          );
-        }
-        break;
+  //   switch (register_step) {
+  //     case ProfileInfo:
+  //       if (pathname !== registrationPaths[ProfileInfo]) {
+  //         return NextResponse.redirect(
+  //           proto + "://" + host + registrationPaths[ProfileInfo]
+  //         );
+  //       }
+  //       break;
 
-      case SiteInfo:
-        if (pathname !== registrationPaths[SiteInfo]) {
-          return NextResponse.redirect(
-            proto + "://" + host + registrationPaths[SiteInfo]
-          );
-        }
-        break;
-      case Registered:
-        if (
-          pathname === registrationPaths[SiteInfo] ||
-          pathname === registrationPaths[ProfileInfo]
-        ) {
-          return NextResponse.redirect(
-            proto + "://" + host + registrationPaths[Registered]
-          );
-        }
-      default:
-        break;
-    }
-  }
+  //     case SiteInfo:
+  //       if (pathname !== registrationPaths[SiteInfo]) {
+  //         return NextResponse.redirect(
+  //           proto + "://" + host + registrationPaths[SiteInfo]
+  //         );
+  //       }
+  //       break;
+  //     case Registered:
+  //       if (
+  //         pathname === registrationPaths[SiteInfo] ||
+  //         pathname === registrationPaths[ProfileInfo]
+  //       ) {
+  //         return NextResponse.redirect(
+  //           proto + "://" + host + registrationPaths[Registered]
+  //         );
+  //       }
+  //     default:
+  //       break;
+  //   }
+  // }
 
   return NextResponse.rewrite(nextUrl);
 }

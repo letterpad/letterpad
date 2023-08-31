@@ -49,8 +49,20 @@ const makeClient = () => {
           }
         },
         onResult(result) {
+          const isAuthorized =
+            result?.data[Object.keys(result?.data)[0]]?.__typename !==
+            "UnAuthorized";
+
+          if (result.operation.kind === "mutation") {
+            Message().loading({ content: "Saved", duration: 0.5 });
+          }
+
+          if (!isAuthorized) {
+            window.location.replace(
+              `/login?callbackUrl=${window.location.href}`
+            );
+          }
           if (result.operation.kind === "query") return;
-          Message().loading({ content: "Saved", duration: 0.5 });
         },
         onError() {
           Message().destroy();
