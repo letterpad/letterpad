@@ -116,12 +116,7 @@ const Section = ({ children, title }) => {
       >
         {title}
       </h4>
-      <section
-        style={{
-          background: "rgb(var(--content-bg))",
-        }}
-        className="mb-10 p-6"
-      >
+      <section className="mb-10 rounded-md bg-gray-200 p-6 dark:bg-gray-800">
         {children}
       </section>
     </>
