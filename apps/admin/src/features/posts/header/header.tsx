@@ -5,9 +5,13 @@ import { MouseEvent, ReactNode, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { Button, Modal, PageHeader } from "ui";
 
-import { PostTypes } from "@/__generated__/__types__";
+import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
+
+import { useCreatePost, useGetPosts } from "../api.client";
+import { DEFAULT_FILTERS } from "../constants";
+import { isPost } from "../../../utils/type-guards";
 
 interface IProps {
   type: PostTypes;
@@ -18,19 +22,22 @@ interface IProps {
 export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-
+  const { createPost } = useCreatePost();
+  const { refetch } = useGetPosts({ ...DEFAULT_FILTERS, type }, { skip: true });
   const onClick = async (type, pageType: PageType) => {
     track({
       eventAction: EventAction.Click,
       eventCategory: "New",
       eventLabel: `${type} - ${pageType}`,
     });
-    const createdPost = await fetch(
-      `/api/create?type=${type}&page_type=${pageType}`
-    );
-    const post = await createdPost.json();
-    if (post?.id) {
-      router.replace(`/${type}/${post.id}`);
+    const { data: post } = await createPost({
+      type,
+      page_type: pageType,
+      status: PostStatusOptions.Draft,
+    });
+    refetch({ requestPolicy: "network-only" });
+    if (isPost(post?.createPost)) {
+      router.replace(`/${type}/${post?.createPost.id}`);
     }
   };
 

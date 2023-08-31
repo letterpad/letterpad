@@ -19,15 +19,13 @@ import {
 import { postsColumns } from "@/features/posts/header";
 
 import { useGetPosts } from "./api.client";
+import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../post/api.client";
 
 export const Feature = () => {
   const router = useRouter();
-  const [filters, setFilters] = useState<PostsFilters>({
-    sortBy: SortBy["Desc"],
-    status: [PostStatusOptions.Published, PostStatusOptions.Draft],
-  });
+  const [filters, setFilters] = useState<PostsFilters>(DEFAULT_FILTERS);
   const { data, refetch, fetching } = useGetPosts(filters);
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);

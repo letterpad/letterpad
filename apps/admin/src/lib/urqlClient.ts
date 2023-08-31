@@ -4,6 +4,11 @@ import { Message } from "ui";
 import { mapExchange } from "urql";
 
 import { isOperationDefinition } from "../utils/type-guards";
+import {
+  PartialFragmentDoc,
+  PostDocument,
+  PostsDocument,
+} from "../../__generated__/src/graphql/queries/queries.graphql";
 import schema from "../../schema.json";
 
 export const cache = cacheExchange({

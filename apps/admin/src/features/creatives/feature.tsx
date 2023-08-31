@@ -17,16 +17,14 @@ import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import Filters from "@/features/posts/filters";
 import { creativesColumns } from "@/features/posts/header";
 
+import { DEFAULT_FILTERS } from "../posts/constants";
 import { useUpdatePost } from "../../features/post/api.client";
 
-const initialFilterState = {
-  sortBy: SortBy["Desc"],
-  type: PostTypes.Page,
-  status: [PostStatusOptions.Published, PostStatusOptions.Draft],
-};
-
 export const Feature = () => {
-  const [filters, setFilters] = useState<PostsFilters>(initialFilterState);
+  const [filters, setFilters] = useState<PostsFilters>({
+    ...DEFAULT_FILTERS,
+    type: PostTypes.Page,
+  });
   const [{ data, fetching: loading, error }, refetch] = usePostsQuery({
     variables: { filters },
   });

@@ -1,7 +1,12 @@
-import { Message } from "ui";
-
-import { InputAuthor, PostsFilters } from "@/__generated__/__types__";
-import { useUpdateAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
+import {
+  InputAuthor,
+  InputCreatePost,
+  PostsFilters,
+} from "@/__generated__/__types__";
+import {
+  useCreatePostMutation,
+  useUpdateAuthorMutation,
+} from "@/__generated__/src/graphql/queries/mutations.graphql";
 import {
   usePostsQuery,
   useStatsQuery,
@@ -16,13 +21,24 @@ export const useUpdateAuthor = () => {
     error,
     data: isAuthor(data) ? data : undefined,
     updateAuthor: async (change: InputAuthor) => {
-      Message().loading({ content: "Updating, Please wait..." });
       const result = await updateAuthor({
         author: {
           ...change,
         },
       });
-      Message().success({ content: "Saved", duration: 100 });
+      return result;
+    },
+  };
+};
+export const useCreatePost = () => {
+  const [{ fetching, error }, createPost] = useCreatePostMutation();
+  return {
+    fetching,
+    error,
+    createPost: async (change: InputCreatePost) => {
+      const result = await createPost({
+        data: change,
+      });
       return result;
     },
   };
