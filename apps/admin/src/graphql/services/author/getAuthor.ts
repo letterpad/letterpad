@@ -7,9 +7,8 @@ export const getAuthor = async (
   _: any,
   { session, prisma, client_author_id }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
-  client_author_id = session?.user.id;
-  client_author_id;
-  if (!client_author_id) {
+  const authorId = client_author_id || session?.user.id;
+  if (!authorId) {
     return {
       __typename: "UnAuthorized",
       message: "Invalid Session or Token",
@@ -17,7 +16,7 @@ export const getAuthor = async (
   }
   const author = await prisma.author.findFirst({
     where: {
-      id: client_author_id,
+      id: authorId,
     },
   });
   if (author) {
