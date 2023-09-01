@@ -32,11 +32,13 @@ fragment Partial on Post {
 fragment PostWithAuthorAndTags on Post {
   ...Partial
   author {
+    __typename
     ... on Author {
       id
       name
       avatar
       social {
+        __typename
         github
         twitter
         instagram
@@ -49,7 +51,9 @@ fragment PostWithAuthorAndTags on Post {
     }
   }
   tags {
+    __typename
     ... on TagsNode {
+    __typename
       rows {
         name
         slug
@@ -59,6 +63,7 @@ fragment PostWithAuthorAndTags on Post {
 }
 
 fragment SettingsFragment on Setting {
+  id
   site_title
   site_tagline
   site_email
@@ -113,6 +118,7 @@ fragment MeFragment on Author {
   analytics_uuid
   register_step
   social {
+    __typename
     github
     twitter
     instagram

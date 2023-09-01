@@ -1,9 +1,7 @@
-"use client";
 import Head from "next/head";
-import { PageHeader } from "ui";
+import { PageHeader } from "ui/isomorphic";
 
-import { TagsProvider } from "@/components/tags/context";
-import TagsTable from "@/components/tags/tags-table";
+import { Feature } from "./_feature";
 
 const EditableTable = () => {
   return (
@@ -18,9 +16,7 @@ const EditableTable = () => {
           your navigation menu.
         </span>
       </PageHeader>
-      <TagsProvider>
-        <TagsTable />
-      </TagsProvider>
+      <Feature />
     </>
   );
 };

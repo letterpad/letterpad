@@ -8,8 +8,8 @@ import { FileExplorer } from "@/components/file-explorer";
 import { IMediaUploadResult } from "@/graphql/types";
 import { mapFileListToArray } from "@/shared/utils";
 
+import { DropZone } from "./dragdrop";
 import { Preview } from "./preview";
-import { DropZone } from "../post/components/dragdrop";
 import { basePath } from "../../constants";
 
 interface Props {

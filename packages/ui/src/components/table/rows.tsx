@@ -1,11 +1,13 @@
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import { Columns } from "./types";
+import { TablePlaceholder } from "../placeholders";
 
 interface Props {
   dataSource: any;
   columns: Columns[];
-  onRowClick: any;
+  onRowClick?: any;
+  loading: boolean;
 }
 
 const classes = {
@@ -13,17 +15,36 @@ const classes = {
   cell: "border-b border-gray-200 bg-white px-5 py-5 dark:bg-black/10 dark:text-gray-100 dark:border-gray-800 ",
 };
 
-export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
+export const Rows: FC<Props> = ({
+  dataSource,
+  columns,
+  onRowClick,
+  loading,
+}) => {
   const fields = columns.map((item) => item?.dataIndex) as string[];
+
   return (
     <tbody>
+      {loading && (
+        <Row onRowClick={() => {}}>
+          <td colSpan={columns.length}>
+            <TablePlaceholder loading={loading} className="mt-4" />
+          </td>
+        </Row>
+      )}
+      {!loading && !dataSource.length && (
+        <Row onRowClick={() => {}}>
+          <td
+            colSpan={columns.length}
+            className="bg-slate-50 dark:bg-slate-800"
+          >
+            <div className="p-4 py-16 text-center">No records found</div>
+          </td>
+        </Row>
+      )}
       {dataSource.map((item, index) => {
         return (
-          <tr
-            key={index}
-            onClick={() => onRowClick && onRowClick(item)}
-            className={classes.row}
-          >
+          <Row onRowClick={() => onRowClick?.(item)}>
             {fields.map((key, idx) => {
               const props = columns[idx];
               return (
@@ -40,9 +61,20 @@ export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
                 </td>
               );
             })}
-          </tr>
+          </Row>
         );
       })}
     </tbody>
+  );
+};
+
+const Row: FC<PropsWithChildren<{ onRowClick: any }>> = ({
+  onRowClick,
+  children,
+}) => {
+  return (
+    <tr onClick={onRowClick} className={classes.row}>
+      {children}
+    </tr>
   );
 };

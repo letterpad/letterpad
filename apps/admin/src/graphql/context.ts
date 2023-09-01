@@ -15,7 +15,6 @@ export const getServerSession = async (context) => {
       (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
       basePath +
       "/api/auth/session";
-
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });
@@ -35,7 +34,7 @@ export const getResolverContext = async (context) => {
     ? null
     : ((await getServerSession(context)) as unknown as { user: SessionData });
   let client_author_id: number | null = null;
-
+  const isLetterpadAdmin = context.req.headers["letterpad-admin"];
   if (!session?.user?.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {
@@ -56,6 +55,7 @@ export const getResolverContext = async (context) => {
   return {
     session,
     prisma,
+    isLetterpadAdmin,
   };
 };
 

@@ -9,7 +9,7 @@ import { Website } from "../components/website";
 
 const isPlatform = process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM;
 
-const Home = () => {
+const Home = (p) => {
   const router = useRouter();
   useEffect(() => {
     if (!isPlatform) {

@@ -7,7 +7,6 @@ import { uploadFile } from "@/shared/utils";
 import MediaItem from "./MediaItem";
 import InternalMedia from "./providers/Internal";
 import Unsplash from "./providers/Unsplash";
-import NoSsr from "../NoSsr";
 import { basePath } from "../../constants";
 
 import { MediaProvider, TypeMediaInsert } from "@/types";
@@ -101,7 +100,7 @@ export const Container = ({
   if (!isVisible) return null;
 
   return (
-    <NoSsr>
+    <>
       <FileExplorer
         isVisible={isVisible}
         handleCancel={closeWindow}
@@ -132,6 +131,6 @@ export const Container = ({
           }
         }
       `}</style>
-    </NoSsr>
+    </>
   );
 };

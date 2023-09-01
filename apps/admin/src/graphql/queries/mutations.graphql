@@ -1,7 +1,8 @@
-# import Partial from './partial.graphql'
+# import './partial.graphql'
 
 mutation Login($data: LoginData) {
   login(data: $data) {
+    __typename
     ... on Author {
       id
       name
@@ -22,10 +23,11 @@ mutation Login($data: LoginData) {
 
 mutation UpdateTags($data: InputTags) {
   updateTags(data: $data) {
+    __typename
     ... on EditTaxResponse {
       ok
     }
-    ... on TagsError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -40,10 +42,11 @@ mutation addSubscriber($email: String!) {
 
 mutation DeleteTags($name: String!) {
   deleteTags(name: $name) {
+    __typename
     ... on DeleteTagsResult {
       ok
     }
-    ... on TagsError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -51,6 +54,7 @@ mutation DeleteTags($name: String!) {
 
 mutation createAuthor($data: InputCreateAuthor!) {
   createAuthor(data: $data) {
+    __typename
     ... on Author {
       name
       id
@@ -66,50 +70,9 @@ mutation createAuthor($data: InputCreateAuthor!) {
 
 mutation UpdateOptions($options: [SettingInputType!]!) {
   updateOptions(options: $options) {
+    __typename
     ... on Setting {
-      site_title
-      site_tagline
-      site_email
-      site_url
-      site_footer
-      site_description
-      subscribe_embed
-      display_author_info
-      cloudinary_key
-      cloudinary_name
-      cloudinary_secret
-      design {
-        brand_color
-        primary_font
-        secondary_font
-      }
-      scripts
-      intro_dismissed
-      show_about_page
-      show_tags_page
-      menu {
-        label
-        original_name
-        slug
-        type
-      }
-      css
-      theme
-      banner {
-        src
-        width
-        height
-      }
-      site_logo {
-        src
-        width
-        height
-      }
-      site_favicon {
-        src
-        width
-        height
-      }
+      ...SettingsFragment
     }
     ... on UnAuthorized {
       message
@@ -119,7 +82,9 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
 
 mutation UpdateAuthor($author: InputAuthor!) {
   updateAuthor(author: $author) {
+    __typename
     ... on Author {
+      id
       name
       social {
         github
@@ -152,6 +117,7 @@ mutation UpdateAuthor($author: InputAuthor!) {
 
 mutation createPost($data: InputCreatePost) {
   createPost(data: $data) {
+    __typename
     ... on Post {
       ...Partial
       author {
@@ -174,8 +140,9 @@ mutation createPost($data: InputCreatePost) {
   }
 }
 
-mutation updatePost($data: InputUpdatePost) {
+mutation UpdatePost($data: InputUpdatePost) {
   updatePost(data: $data) {
+    __typename
     ... on Post {
       ...Partial
       author {
@@ -213,10 +180,11 @@ mutation updatePost($data: InputUpdatePost) {
 
 mutation UpdateMedia($data: InputUpdateMedia!) {
   updateMedia(data: $data) {
+    __typename
     ... on MediaUpdateResult {
       ok
     }
-    ... on MediaError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -234,7 +202,7 @@ mutation DeleteMedia($ids: [Int!]!) {
     ... on MediaDeleteResult {
       ok
     }
-    ... on MediaError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -256,6 +224,7 @@ mutation ResetPassword($password: String!, $token: String!) {
 
 mutation AddDomain($domain: String!) {
   addDomain(domain: $domain) {
+    __typename
     ... on Domain {
       mapped
       ssl

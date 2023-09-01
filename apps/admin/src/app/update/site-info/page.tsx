@@ -6,38 +6,41 @@ import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Input, Label, Message, TextArea } from "ui";
 
-import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
-import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-
-import { Logo } from "@/components/login/views/Logo";
-import { useMeAndSettingsContext } from "@/components/providers/settings";
+import { getDirtyFields } from "@/lib/react-form";
 
 import { RegisterStep, SettingInputType } from "@/__generated__/__types__";
+import { Logo } from "@/app/(public)/login/_feature";
+import { useUpdateAuthor } from "@/app/posts/_feature/api.client";
+import {
+  useGetSettings,
+  useUpdateSettings,
+} from "@/app/settings/_feature/api.client";
 import { registrationPaths } from "@/constants";
 import { EventAction, track } from "@/track";
-import { isAuthor, isSettings } from "@/utils/type-guards";
-
-import { getDirtyFields } from "../../../lib/react-form";
+import { isAuthor } from "@/utils/type-guards";
 
 export const SiteInfo = () => {
-  const { settings } = useMeAndSettingsContext();
+  const { data: settings } = useGetSettings();
   const session = useSession();
   const methods = useForm({
-    values: isSettings(settings) ? settings : undefined,
+    values: settings,
   });
   const { handleSubmit, formState, register } = methods;
 
-  const { updateSettingsAPI } = useUpdateSettings();
-  const { updateAuthor } = useUpdateAuthor(session.data?.user?.id ?? 0, false);
+  const { updateSettings } = useUpdateSettings();
+  const { updateAuthor } = useUpdateAuthor();
   const [_, setProcessing] = useState(false);
 
   const router = useRouter();
 
   const updateSite = async (change: SettingInputType) => {
+    if (!session.data?.user?.id) return null;
     setProcessing(true);
     try {
-      await updateSettingsAPI({
-        ...change,
+      await updateSettings({
+        options: {
+          ...change,
+        },
       });
     } catch (e: any) {
       // eslint-disable-next-line no-console
@@ -52,6 +55,7 @@ export const SiteInfo = () => {
 
     const result = await updateAuthor({
       register_step: RegisterStep.Registered,
+      id: session.data?.user?.id,
     });
     if (result.data?.updateAuthor && isAuthor(result.data?.updateAuthor)) {
       const updatedAuthor = result.data.updateAuthor;

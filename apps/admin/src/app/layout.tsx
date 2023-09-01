@@ -14,7 +14,10 @@ import { FontPageWrapper, fonts } from "@/components/fonts";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
-import { getServerSession } from "@/middleware";
+
+import { options } from "../pages/api/auth/[...nextauth]";
+import { getServerSession } from "../shared/serverSession";
+// import { getServerSession } from "@/middleware";
 
 export const metadata: Metadata = {
   title: "Letterpad - A blogging platform",
@@ -74,8 +77,6 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme")?.value ?? "light";
-  const session = await getServerSession(headers());
-
   return (
     <html lang="en" data-color-scheme={theme}>
       <Head>
@@ -98,7 +99,7 @@ const RootLayout = async ({ children }) => {
           `}
         </Script>
         <FontPageWrapper primary_font={"Inter"} secondary_font="Roboto">
-          <Providers loggedIn={session?.user?.id}>{children}</Providers>
+          <Providers loggedIn={false}>{children}</Providers>
         </FontPageWrapper>
       </body>
     </html>

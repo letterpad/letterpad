@@ -6,30 +6,28 @@ import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Input, Message, TextArea } from "ui";
 
-import { Logo } from "@/components/login/views/Logo";
+import { getDirtyFields } from "@/lib/react-form";
 
-import { Author, InputAuthor, RegisterStep } from "@/__generated__/__types__";
+import { InputAuthor, RegisterStep } from "@/__generated__/__types__";
+import { Logo } from "@/app/(public)/login/_feature";
 import {
-  UpdateAuthorDocument,
-  useUpdateAuthorMutation,
-} from "@/__generated__/queries/mutations.graphql";
+  useGetAuthor,
+  useUpdateAuthor,
+} from "@/app/profile/_feature/api.client";
 import { registrationPaths } from "@/constants";
 import { EventAction, track } from "@/track";
-
-import { useMeAndSettingsContext } from "../../../components/providers/settings";
-import { getDirtyFields } from "../../../lib/react-form";
-import { isAuthor } from "../../../utils/type-guards";
+import { isAuthor } from "@/utils/type-guards";
 
 export const UpdateProfile = () => {
-  const { me } = useMeAndSettingsContext();
+  const { data: me } = useGetAuthor();
   const session = useSession();
-  const [updateAuthor] = useUpdateAuthorMutation();
+  const { updateAuthor } = useUpdateAuthor();
 
   const [_, setProcessing] = useState(false);
 
   const router = useRouter();
   const methods = useForm({
-    values: isAuthor(me) ? me : undefined,
+    values: me,
   });
   const { handleSubmit, formState, register } = methods;
 
@@ -42,14 +40,9 @@ export const UpdateProfile = () => {
     });
 
     const result = await updateAuthor({
-      mutation: UpdateAuthorDocument,
-      variables: {
-        author: {
-          ...author,
-          register_step: RegisterStep.SiteInfo,
-          id: session.data.user.id,
-        },
-      },
+      ...author,
+      register_step: RegisterStep.SiteInfo,
+      id: session.data.user.id,
     });
     const updatedAuthor = result.data?.updateAuthor;
     if (isAuthor(updatedAuthor)) {
@@ -228,7 +221,6 @@ export const UpdateProfile = () => {
   );
 };
 
-UpdateProfile.noLayout = true;
 export default UpdateProfile;
 
 const isInteger = (num) => /^-?[0-9]+$/.test(num + "");

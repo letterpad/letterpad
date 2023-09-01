@@ -14,10 +14,6 @@ type EditTaxResponse {
   ok: Boolean!
 }
 
-type TagsError implements LetterpadError {
-  message: String!
-}
-
 type DeleteTagsResult {
   ok: Boolean!
 }
@@ -25,9 +21,10 @@ type DeleteTagsResult {
 type TagResultError implements LetterpadError {
   message: String!
 }
-union TagsResponse = TagsNode | Exception
-union UpdateTagsResponse = EditTaxResponse | TagsError
-union DeleteTagsResponse = DeleteTagsResult | TagsError
+union TagsResponse = TagsNode | Exception | UnAuthorized
+union TagResponse = Exception | Tag | UnAuthorized
+union UpdateTagsResponse = EditTaxResponse | UnAuthorized
+union DeleteTagsResponse = DeleteTagsResult | UnAuthorized
 
 input InputTags {
   name: String!
@@ -38,8 +35,7 @@ input InputTags {
 type TagsNode {
   rows: [Tag!]!
 }
-union TagsResponse = TagsNode | TagsError
-union TagResponse = Exception | Tag
+
 
 type Query {
   tags(filters: TagsFilters): TagsResponse!

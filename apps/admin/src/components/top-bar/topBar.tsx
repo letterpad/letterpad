@@ -2,7 +2,7 @@ import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
 import { Button, useResponsiveLayout } from "ui";
 
-import FeedbackForm from "../feedback-form";
+import FeedbackForm from "./feedback-form";
 import ThemeSwitcher from "../theme-switcher";
 
 export const TopBar = () => {

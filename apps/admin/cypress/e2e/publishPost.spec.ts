@@ -11,12 +11,12 @@ describe("Publishing", () => {
     cy.openSettings();
     cy.enterTags(["first-post"]);
     cy.wait(1000);
-    cy.wait("@updatePostMutation");
+    cy.wait("@UpdatePostMutation");
 
     cy.getTestId("slugInp").should("have.value", slug);
 
     cy.getTestId("publishBtn").click();
-    cy.wait("@updatePostMutation");
+    cy.wait("@UpdatePostMutation");
 
     cy.getTestId("postStatus").should("have.text", "published");
     cy.getTestId("close-drawer").click();
@@ -49,13 +49,13 @@ describe("Publishing", () => {
     cy.enterTags(["new-tag"]);
     cy.wait(1000);
     cy.getTestId("publishBtn").click();
-    cy.wait("@updatePostMutation");
+    cy.wait("@UpdatePostMutation");
     cy.get(".TagsNotLinkedWithNav").should("exist");
     cy.getTestId("cancelModalBtn").click();
 
     cy.enterTags(["first-post"]);
     cy.getTestId("publishBtn").click();
-    cy.wait("@updatePostMutation");
+    cy.wait("@UpdatePostMutation");
   });
 
   it("can publish and unpublish", () => {
@@ -74,12 +74,12 @@ describe("Publishing", () => {
     cy.setContent({
       content: "updated content",
     });
-    cy.wait("@updatePostMutation");
+    cy.wait("@UpdatePostMutation");
 
     cy.openSettings();
 
     cy.getTestId("unPublishBtn").click();
-    cy.wait("@updatePostMutation");
+    cy.wait("@UpdatePostMutation");
     cy.getTestId("postStatus").should("have.text", "draft");
   });
 });

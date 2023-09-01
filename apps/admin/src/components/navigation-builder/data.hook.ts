@@ -6,17 +6,10 @@ import {
   PostTypes,
   Tag,
 } from "@/__generated__/__types__";
-import {
-  PostsDocument,
-  PostsQuery,
-  PostsQueryVariables,
-  TagsDocument,
-  TagsQuery,
-  TagsQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 import { Collection } from "./types";
+import { useGetPosts } from "../../app/posts/_feature/api.client";
+import { useGetTags } from "../../app/tags/_feature/api.client";
 
 interface IReturn {
   loading: boolean;
@@ -26,53 +19,26 @@ interface IReturn {
 function useNavigationData(): IReturn {
   const [tags, setTags] = useState<Tag[]>([]);
   const [pages, setPages] = useState<Post[] | []>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
-  async function fetchData() {
-    const tagsData = await apolloBrowserClient.query<
-      TagsQuery,
-      TagsQueryVariables
-    >({
-      query: TagsDocument,
-    });
-
-    const pagesData = await apolloBrowserClient.query<
-      PostsQuery,
-      PostsQueryVariables
-    >({
-      query: PostsDocument,
-      variables: {
-        filters: {
-          type: PostTypes.Page,
-        },
-      },
-    });
-
-    return { tagsData, pagesData };
-  }
+  const { data: tagsData, fetching: tagsLoading } = useGetTags();
+  const { data: pagesData, fetching: pagesLoading } = useGetPosts({
+    type: PostTypes.Page,
+  });
+  const [loading] = useState<boolean>(tagsLoading || pagesLoading);
 
   useEffect(() => {
-    async function init() {
-      const { tagsData, pagesData } = await fetchData();
-      if (tagsData.data.tags?.__typename === "TagsNode") {
-        if (tagsData.data.tags.rows.length > 0) {
-          setTags(normalizeTags(tagsData.data.tags.rows));
-        }
-      }
-
-      if (pagesData.data.posts.__typename === "PostsNode") {
-        const { rows } = pagesData.data.posts;
-        if (pagesData.data && rows && rows.length > 0) {
-          setPages(normalizePages(pagesData.data.posts));
-        }
-      }
-
-      if (!tagsData.loading && !pagesData.loading) {
-        setLoading(false);
+    if (tagsData) {
+      if (tagsData.length > 0) {
+        setTags(normalizeTags(tagsData));
       }
     }
-    init();
-  }, []);
+
+    if (pagesData) {
+      if (pagesData.length > 0) {
+        setPages(normalizePages(pagesData));
+      }
+    }
+  }, [pagesData, tagsData]);
 
   const rss = {
     type: NavigationType.Custom,

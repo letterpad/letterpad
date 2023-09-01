@@ -10,7 +10,7 @@ export const updateTags = async (
 ): Promise<ResolversTypes["UpdateTagsResponse"]> => {
   if (!session?.user) {
     return {
-      __typename: "TagsError",
+      __typename: "UnAuthorized",
       message: "No session found",
     };
   }
@@ -21,7 +21,7 @@ export const updateTags = async (
 
   if (!args.data || !author) {
     return {
-      __typename: "TagsError",
+      __typename: "UnAuthorized",
       message: "Incorrect arguments",
     };
   }

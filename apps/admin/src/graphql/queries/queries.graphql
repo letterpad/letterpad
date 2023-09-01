@@ -2,6 +2,7 @@
 
 query Tag($slug: String!) {
   tag(slug: $slug) {
+    __typename
     ... on TagResponse {
       ... on Tag {
         name
@@ -16,15 +17,19 @@ query Tag($slug: String!) {
 
 query Post($filters: PostFilters) {
   post(filters: $filters) {
+    __typename
     ... on Post {
+      __typename
       ...PostWithAuthorAndTags
     }
 
     ... on UnAuthorized {
+      __typename
       message
     }
 
     ... on NotFound {
+      __typename
       message
     }
   }
@@ -32,6 +37,7 @@ query Post($filters: PostFilters) {
 
 query Posts($filters: PostsFilters) {
   posts(filters: $filters) {
+    __typename
     ... on PostsNode {
       count
       rows {
@@ -63,6 +69,7 @@ query Posts($filters: PostsFilters) {
     }
 
     ... on UnAuthorized {
+      __typename
       message
     }
   }
@@ -70,16 +77,19 @@ query Posts($filters: PostsFilters) {
 
 query Media($filters: MediaFilters) {
   media(filters: $filters) {
-    count
-    rows {
-      id
-      url
-      authorId
-      createdAt
-      name
-      description
-      width
-      height
+    ... on MediaNode {
+      __typename
+      count
+      rows {
+        id
+        url
+        authorId
+        createdAt
+        name
+        description
+        width
+        height
+      }
     }
   }
 }
@@ -133,22 +143,27 @@ query Emails {
 
 query Me {
   me {
+    __typename
     ... on Author {
       ...MeFragment
+      __typename
     }
     ... on NotFound {
       message
+      __typename
     }
   }
 }
 
 query Tags($filters: TagsFilters) {
   tags(filters: $filters) {
+    __typename
     ... on TagsNode {
       rows {
         name
         slug
         posts {
+          __typename
           ... on PostsNode {
             count
             rows {
@@ -158,7 +173,8 @@ query Tags($filters: TagsFilters) {
         }
       }
     }
-    ... on TagsError {
+    ... on UnAuthorized {
+      __typename
       message
     }
   }
@@ -166,6 +182,7 @@ query Tags($filters: TagsFilters) {
 
 query Stats {
   stats {
+    __typename
     ... on Stats {
       posts {
         published
@@ -205,6 +222,7 @@ query Sitemaps {
 
 query settings {
   settings {
+    __typename
     ... on Setting {
       ...SettingsFragment
     }
@@ -243,6 +261,7 @@ query domainCerts {
 
 query homeQuery {
   me {
+    __typename
     ... on Author {
       ...MeFragment
     }
@@ -251,7 +270,9 @@ query homeQuery {
     }
   }
   settings {
+    __typename
     ... on Setting {
+      id
       ...SettingsFragment
     }
     ... on NotFound {
@@ -262,6 +283,7 @@ query homeQuery {
     }
   }
   stats {
+    __typename
     ... on Stats {
       posts {
         published

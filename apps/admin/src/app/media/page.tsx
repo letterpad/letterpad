@@ -1,54 +1,10 @@
-"use client";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import { deleteImageAPI, updateImageAPI } from "src/helpers";
-import { Button, Content, Message, PageHeader } from "ui";
+import { PageHeader } from "ui/isomorphic";
 
-import MediaUpdateModal from "@/components/modals/media-update-modal";
+import { Content } from "@/components/client-wrapper";
 
-import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
-
-import { useDataProvider } from "../../context/DataProvider";
-import { useMediaQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
+import { Feature } from "./_feature/feature";
 
 const Media = () => {
-  const { data } = useMediaQuery();
-  const [preview, setPreview] = useState<IMedia | undefined>();
-  const [images, setImages] = useState<MediaNode>({
-    count: 0,
-    rows: [],
-  });
-
-  useEffect(() => {
-    if (data?.media.__typename === "MediaNode") {
-      setImages(data?.media);
-    }
-  }, [data?.media]);
-
-  const deleteImage = async (img: IMedia) => {
-    const res = await deleteImageAPI(img);
-    if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {
-      const rows = images.rows.filter((item) => item.id !== img.id);
-      setImages({ rows, count: images.count - 1 });
-    }
-  };
-
-  const updateImage = async (img: IMedia) => {
-    Message().loading({ content: "Updating, Please wait..." });
-    const res = await updateImageAPI(img);
-    if (res?.__typename === "MediaUpdateResult") {
-      Message().success({ content: "Updated", duration: 3 });
-      const updateSrc = images.rows.map((item) =>
-        item.id === img.id ? { ...img } : item
-      );
-      setImages({ ...images, rows: updateSrc });
-    }
-    if (res?.__typename === "MediaError") {
-      Message().error({ content: res.message, duration: 3 });
-    }
-    setPreview(undefined);
-  };
-
   return (
     <>
       <PageHeader className="site-page-header" title="Media">
@@ -58,41 +14,7 @@ const Media = () => {
         </span>
       </PageHeader>
       <Content>
-        <div className="mx-auto grid grid-cols-3 gap-8 md:grid-cols-4 lg:grid-cols-5 ">
-          {images.rows.map((image) => {
-            return (
-              <div
-                className="flex cursor-pointer flex-col gap-2 rounded-md bg-slate-200 p-4 align-middle dark:bg-slate-800"
-                key={image.url}
-              >
-                <div className="flex  flex-1 items-center justify-center">
-                  <img
-                    src={image.url}
-                    alt="kkkk"
-                    loading="lazy"
-                    className="max-h-[200px] object-cover"
-                    onClick={() => setPreview(image)}
-                  />
-                </div>
-                <Button
-                  size="small"
-                  variant="ghost"
-                  onClick={() => deleteImage(image)}
-                >
-                  Delete
-                </Button>
-              </div>
-            );
-          })}
-        </div>
-
-        {images.rows.length === 0 && <div className="p-4">0 Media found</div>}
-
-        <MediaUpdateModal
-          img={preview}
-          onChange={setPreview}
-          onUpdate={updateImage}
-        />
+        <Feature />
       </Content>
     </>
   );

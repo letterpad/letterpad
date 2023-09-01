@@ -1,13 +1,10 @@
 "use client";
+
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Button, Content, Input, PageHeader, Table, Tabs } from "ui";
 
-import Editor from "@/components/post/components/editor";
-
-import { ROLES } from "@/graphql/types";
-
-import { getServerSession } from "../../graphql/context";
+import { Editor } from "@/app/post/[postId]/_feature";
 
 import { AdminUsersType } from "@/types";
 
@@ -191,22 +188,3 @@ const Members = () => {
 };
 
 export default Members;
-
-// export async function getServerSideProps(context) {
-//   const session = await getServerSession(context);
-
-//   const isAdmin = session?.user?.role === ROLES.ADMIN;
-//   if (!isAdmin) {
-//     return {
-//       redirect: {
-//         destination: "/posts",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return {
-//     props: {
-//       isAdmin,
-//     },
-//   };
-// }

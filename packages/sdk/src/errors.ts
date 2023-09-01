@@ -48,8 +48,8 @@ export function handleTagsErrors(tagsNode?: {
   switch (tagsNode?.__typename) {
     case "Exception":
       throw new LetterpadException(tagsNode.message);
-    case "TagsError":
-      throw new LetterpadTagsError(tagsNode.message);
+    case "UnAuthorized":
+      throw new LetterpadUnauthorizedError(tagsNode.message);
   }
 }
 

@@ -1,45 +1,13 @@
-"use client";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Content, Table } from "ui";
 
-import { postsStyles } from "@/components/posts.css";
+import { Content } from "@/components/client-wrapper";
 
-import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { PostTypes } from "@/__generated__/__types__";
+import { Header } from "@/app/posts/_feature/header/header";
 
-import ErrorMessage from "@/components/ErrorMessage";
-import Filters from "@/components/filters";
-import { creativesColumns } from "@/components/posts";
-import { Header } from "@/components/posts/header";
-
-import {
-  PostsFilters,
-  PostStatusOptions,
-  PostTypes,
-  SortBy,
-} from "@/__generated__/__types__";
-import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
+import { Feature } from "./_feature";
 
 function Pages() {
-  const { loading, data, error, refetch } = usePostsQuery({
-    variables: { filters: { type: PostTypes.Page, sortBy: SortBy.Desc } },
-  });
-  const [filters, setFilters] = useState<PostsFilters>({
-    sortBy: SortBy["Desc"],
-    type: PostTypes.Page,
-    status: [PostStatusOptions.Published, PostStatusOptions.Draft],
-  });
-  const router = useRouter();
-  const { updatePost } = useUpdatePost();
-  if (error) {
-    return <ErrorMessage description={error} title="Error" />;
-  }
-  const changeStatus = (id: number, status: PostStatusOptions) => {
-    updatePost({ id, status });
-  };
-
-  const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
   return (
     <>
       <Head>
@@ -62,24 +30,7 @@ function Pages() {
         </div>
       </Header>
       <Content>
-        <Filters
-          showTags={false}
-          showPageTypes={true}
-          onChange={(filters) => {
-            refetch({ filters: { ...filters, type: PostTypes.Page } });
-          }}
-          filters={filters}
-          setFilters={setFilters}
-        />
-
-        <Table
-          columns={creativesColumns({ changeStatus })}
-          dataSource={source}
-          loading={loading}
-          onRowClick={(row) => router.push("/post/" + row.id)}
-        />
-
-        <style jsx>{postsStyles}</style>
+        <Feature />
       </Content>
     </>
   );

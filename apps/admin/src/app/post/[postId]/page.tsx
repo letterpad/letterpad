@@ -1,15 +1,12 @@
 "use client";
 
-import { Post, PostProvider } from "@/components/post";
-
-import { useMeAndSettingsContext } from "../../../components/providers/settings";
+import { PostProvider } from "./_feature/context";
+import { Feature } from "./_feature/feature";
 
 function EditPost() {
-  const { settings } = useMeAndSettingsContext();
-
   return (
-    <PostProvider settings={settings!}>
-      <Post />
+    <PostProvider>
+      <Feature />
       <br />
       <br />
       <br />
