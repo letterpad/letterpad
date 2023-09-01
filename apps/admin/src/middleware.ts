@@ -19,10 +19,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (request.nextUrl.pathname === "/api/auth/session") {
-    //
-  }
-
   const viewport = device.type === "mobile" ? "mobile" : "desktop";
   const nextUrl = request.nextUrl;
   nextUrl.searchParams.set("viewport", viewport);
