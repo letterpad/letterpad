@@ -35,6 +35,7 @@ fragment settingsFragment on Setting {
     original_name
     slug
   }
+  css
   site_logo {
     src
     width

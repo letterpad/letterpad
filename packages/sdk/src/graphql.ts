@@ -1218,6 +1218,7 @@ export type SettingsQuery = {
         show_about_page?: boolean | null;
         show_tags_page?: boolean | null;
         display_author_info: boolean;
+        css?: string | null;
         site_footer?: string | null;
         banner?: {
           __typename?: "Image";
@@ -1266,6 +1267,7 @@ export type SettingsFragmentFragment = {
   show_about_page?: boolean | null;
   show_tags_page?: boolean | null;
   display_author_info: boolean;
+  css?: string | null;
   site_footer?: string | null;
   banner?: {
     __typename?: "Image";
@@ -1552,6 +1554,7 @@ export const SettingsFragmentFragmentDoc = `
     original_name
     slug
   }
+  css
   site_logo {
     src
     width

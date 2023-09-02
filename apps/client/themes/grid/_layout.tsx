@@ -1,5 +1,4 @@
-import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
-import { ReactNode, useEffect, useRef } from 'react';
+import { Navigation } from 'letterpad-sdk';
 
 import Link from '@/components/Link';
 import ThemeSwitch from '@/components/ThemeSwitch';
@@ -7,16 +6,9 @@ import ThemeSwitch from '@/components/ThemeSwitch';
 import { Footer } from './commons/footer';
 import { MobileNav } from './commons/mobile-nav';
 import { LogoWithTitle } from './commons/site-logo';
-import { PageTitle } from './commons/title';
-import { getData } from '../../src/data';
+import { LayoutProps } from '../../types/pageTypes';
 
-export interface Props {
-  children: ReactNode;
-  isHomeCollection: boolean;
-  props: Pick<Awaited<ReturnType<typeof getData>>, 'me' | 'settings'>;
-}
-
-export const Layout = ({ children, props, isHomeCollection }: Props) => {
+export const Layout = ({ children, props, isHomeCollection }: LayoutProps) => {
   const routes = [...props.settings.menu];
 
   const menu = getMenu(routes);
@@ -32,8 +24,8 @@ export const Layout = ({ children, props, isHomeCollection }: Props) => {
               />
             </Link>
           </div>
-          <div className="flex items-center text-base leading-5">
-            <div className="hidden md:block">{menu}</div>
+          <div className="lp-header-right flex items-center text-base leading-5">
+            <div className="lp-menu hidden md:block">{menu}</div>
             <ThemeSwitch />
             <MobileNav routes={routes} />
           </div>
