@@ -6,10 +6,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
-import { createAuthorWithSettings } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
 
 import { report } from "@/components/error";
+import { createAuthorWithSettings } from "@/components/onboard";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";

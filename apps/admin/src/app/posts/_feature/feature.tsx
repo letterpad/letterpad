@@ -6,11 +6,9 @@ import { Table } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
-import {
-  PostsFilters,
-  PostStatusOptions,
-  SortBy,
-} from "@/__generated__/__types__";
+import { useRedirectToOnboard } from "@/components/onboard/useRedirectToOnboard";
+
+import { PostsFilters, PostStatusOptions } from "@/__generated__/__types__";
 import {
   isIntroDismissed,
   setIntroDimissed,
@@ -29,6 +27,7 @@ export const Feature = () => {
   const { data, refetch, fetching } = useGetPosts(filters);
   const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
+  useRedirectToOnboard();
 
   const changeStatus = (id: number, status: PostStatusOptions) => {
     updatePost({ id, status });

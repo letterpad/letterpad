@@ -6,8 +6,9 @@ import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";
 
-import { createAuthorWithSettings } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
+
+import { createAuthorWithSettings } from "@/components/onboard";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { ROLES } from "@/graphql/types";
