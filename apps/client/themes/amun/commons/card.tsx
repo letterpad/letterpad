@@ -42,18 +42,12 @@ export const Card: FC<{
       </Link>
       <div
         className={classNames('flex flex-col', {
-          'gap-6 py-6': size === 'md',
-          'gap-4 py-4': size === 'sm',
+          'gap-4 py-6': size === 'md',
+          'gap-2 py-4': size === 'sm',
           'gap-2 py-2': size === 'xs',
         })}
       >
-        <div
-          className={classNames('flex flex-wrap items-center gap-3', {
-            // 'mt-8': size === 'md',
-            // 'mt-4': size === 'sm',
-            // 'mt-2': size === 'xs',
-          })}
-        >
+        <div className={classNames('flex flex-wrap items-center gap-3', {})}>
           <div className="data-color flex items-center text-sm ">
             <span className="whitespace-nowrap ">
               {formatDate(post.publishedAt)}
@@ -90,9 +84,6 @@ export const Card: FC<{
         <div
           className={classNames('flex items-center', {
             hidden: size === 'xs' || size === 'sm',
-            // 'mt-6': size === 'md',
-            // 'mt-4': size === 'sm',
-            // 'mt-2': size === 'xs',
           })}
         >
           <div>

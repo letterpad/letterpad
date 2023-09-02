@@ -39,7 +39,7 @@ export const Layout = ({ children, props, isHomeCollection }: LayoutProps) => {
           'py-28': isHomeCollection,
         })}
       >
-        <Section className={!isHomeCollection ? 'hiddenn' : 'py-20'}>
+        <Section className={!isHomeCollection ? 'hidden' : 'py-20'}>
           <h1
             className={
               'max-w-screen-xl  text-xl font-bold sm:text-7xl sm:leading-tight'

@@ -1,7 +1,8 @@
-import { PostsFragmentFragment } from 'letterpad-sdk';
+import { NavigationType, PostsFragmentFragment } from 'letterpad-sdk';
 import { FC, ReactNode } from 'react';
 
 import { Card, HorizontalCard } from './commons/card';
+import { getPostsByTag, getTagsData } from '../../src/data';
 import { HomePostsProps } from '../../types/pageTypes';
 
 const pickThreePostsMax = (posts: PostsFragmentFragment['rows']) => {
@@ -11,18 +12,15 @@ const pickThreePostsMax = (posts: PostsFragmentFragment['rows']) => {
   return posts;
 };
 
-export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
-  // const category = []?.filter((tag) => tag.type == TagType.Category).pop();
-  // const sidePosts =
-  //   category?.posts?.__typename === 'PostsNode' ? category?.posts?.rows : [];
-
+export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   const firstThreeMax = pickThreePostsMax(posts.rows);
   const olderPosts = posts.rows.slice(firstThreeMax.length);
   return (
     <>
       <div className="flex flex-col gap-12 lg:flex-row">
         <LatestPosts posts={firstThreeMax} />
-        <SidePosts posts={firstThreeMax} name={'some name'} />
+        {/* @ts-expect-error Async Component - https://github.com/vercel/next.js/issues/42292 */}
+        <SidePosts />
       </div>
 
       <OlderPosts posts={olderPosts} />
@@ -96,24 +94,32 @@ const OlderPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
   );
 };
 
-const SidePosts = ({
-  posts,
-  name,
-}: {
-  posts: PostsFragmentFragment['rows'];
-  name: string;
-}) => {
-  if (posts.length === 0) return null;
+const SidePosts = async () => {
+  const { tags, settings } = await getTagsData();
+  const defaultHomeTag =
+    settings.menu[0].type === NavigationType.Tag ? settings.menu[0] : null;
+  const tagsWithoutHome = tags.rows.filter(
+    (item) => item.slug !== defaultHomeTag?.slug
+  );
+  const tag = getRandom(tagsWithoutHome);
+
+  const { posts: postsTag } = await getPostsByTag(tag.slug);
+
+  if (postsTag.rows.length === 0) return null;
   return (
     <div className="hidden flex-col dark:bg-opacity-30 lg:flex">
       <span className="font-system mb-4 mt-10 text-base font-medium uppercase tracking-wider">
-        Category: {name.toUpperCase()}
+        #Random: Posts on {tag.name.toUpperCase()}
       </span>
       <div className="space-y-8">
-        {posts.map((tag) => (
+        {postsTag.rows.slice(0, 3).map((tag) => (
           <HorizontalCard post={tag} key={tag.id} />
         ))}
       </div>
     </div>
   );
 };
+
+function getRandom<T>(list: T[]) {
+  return list[Math.floor(Math.random() * list.length)];
+}
