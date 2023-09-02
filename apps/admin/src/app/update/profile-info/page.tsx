@@ -130,14 +130,14 @@ export const UpdateProfile = () => {
                             value: 3,
                             message: "Should be minimum 3 character long",
                           },
-                          validate: (value) => {
-                            debugger;
-                            const regex = /^([\u00c0-\u01ffa-zA-Z'-])+$/;
-                            if (!regex.test(value)) {
-                              return "Should be alpha neumeric with specific special characters";
-                            }
-                            return true;
-                          },
+                          // validate: (value) => {
+                          //   debugger;
+                          //   const regex = /^([\u00c0-\u01ffa-zA-Z'-])+$/;
+                          //   if (!regex.test(value)) {
+                          //     return "Should be alpha neumeric with specific special characters";
+                          //   }
+                          //   return true;
+                          // },
                         })}
                       />
                       <p className="text-rose-500">

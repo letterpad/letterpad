@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { onBoardUser } from "@/lib/onboard";
+import { onBoardUser } from "@/components/onboard";
 
 import {
   InputAuthor,

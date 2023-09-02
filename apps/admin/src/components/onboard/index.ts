@@ -14,8 +14,8 @@ import { EmailTemplates, ROLES } from "@/graphql/types";
 import { encryptEmail } from "@/shared/clientToken";
 import { textToSlug } from "@/utils/slug";
 
-import { prisma } from "./prisma";
-import siteConfig from "../../config/site.config";
+import { prisma } from "../../lib/prisma";
+import siteConfig from "../../../config/site.config";
 
 export const onBoardUser = async (id: number) => {
   const newAuthor = await prisma.author.findUnique({ where: { id } });
