@@ -1,15 +1,19 @@
+"use client";
+
 import { useCallback, useEffect, useState } from "react";
 import { BiSun } from "react-icons/bi";
 import { BsMoonStars } from "react-icons/bs";
 
 import { EventAction, track } from "@/track";
 
-const ls =
-  typeof localStorage !== "undefined" ? localStorage : { theme: "dark" };
+import { getCookie, setCookie } from "../utils/cookies";
 
 const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState(ls.theme || "light");
+  const [theme, setTheme] = useState("light");
 
+  useEffect(() => {
+    setTheme(getCookie("theme") || "light");
+  }, []);
   const switchTheme = useCallback(
     (color: string) => {
       ThemeSwitcher.switch(color);
@@ -27,8 +31,9 @@ const ThemeSwitcher = () => {
   );
 
   useEffect(() => {
-    switchTheme(ls.theme || theme);
+    switchTheme(getCookie("theme") || theme);
   }, [switchTheme, theme]);
+
   return (
     <>
       <div
@@ -42,7 +47,7 @@ const ThemeSwitcher = () => {
         )}
       </div>
 
-      <style jsx>{`
+      <style jsx global>{`
         .wrapper {
           display: flex;
           align-items: center;
@@ -63,10 +68,10 @@ ThemeSwitcher.switch = (color = "light") => {
     $body.classList.remove("dark");
     $body.classList.add("light");
   }
-  document.getElementsByTagName("html")[0].classList.remove("no-transitions");
   // change scheme
   document.documentElement.setAttribute("data-color-scheme", color);
+  document.getElementsByTagName("html")[0].classList.remove("no-transitions");
 
-  localStorage.theme = color;
+  setCookie("theme", color);
 };
 export default ThemeSwitcher;

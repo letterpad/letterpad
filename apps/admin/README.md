@@ -16,11 +16,11 @@ Letterpad Admin is the dashboard for publishing blogs.
 
 ## Demo:
 
-https://letterpad.app/admin/login?demo
+https://letterpad.app/login?demo
 
 ## Without self hosting
 
-You can register in https://letterpad.app/admin/register and start writing posts, free of cost.
+You can register in https://letterpad.app/register and start writing posts, free of cost.
 
 ## With self hosting
 

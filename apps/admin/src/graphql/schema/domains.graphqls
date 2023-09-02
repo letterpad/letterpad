@@ -1,8 +1,17 @@
+type DomainVerification {
+  type: String!
+  domain: String!
+  value: String!
+  reason: String!
+}
+
 type Domain {
   id: Int!
   name: String!
-  mapped: Boolean
+  mapped: Boolean @deprecated(reason: "Use `configured` instead")
   ssl: Boolean
+  verification: [DomainVerification]
+  configured: Boolean
 }
 
 type DomainNotFound implements LetterpadError {
@@ -29,14 +38,15 @@ type RemoveDomainResponse {
   message: String
 }
 
-union CreateDomainResponse = Domain | DomainError
+union AddDomainResponse = Domain | DomainError
 union DomainResponse = Domain | DomainNotFound
 
 type Query {
   domain: DomainResponse!
+  certs: Boolean!
 }
 
 type Mutation {
-  createOrUpdateDomain(data: InputDomain!): UpdateDomainResponse!
   removeDomain: RemoveDomainResponse!
+  addDomain(domain: String): AddDomainResponse!
 }

@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { createAuthorWithSettings } from "@/lib/onboard";
+import { createAuthorWithSettings } from "@/components/onboard";
 
 import {
   MutationCreateAuthorArgs,

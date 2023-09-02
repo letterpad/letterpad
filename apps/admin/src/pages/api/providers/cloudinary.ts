@@ -1,5 +1,5 @@
 import Cloudinary from "cloudinary";
-import fs from "fs";
+import streamifier from "streamifier";
 
 import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
 
@@ -10,21 +10,16 @@ interface IOptions {
 }
 export async function uploadToCloudinary(
   file: BlobCorrected,
-  uploadPath: string,
   options: IOptions
 ): Promise<IMediaUploadResult> {
   Cloudinary.v2.config(options);
 
-  return new Promise((resolve, reject) => {
-    const fileExistsInternally = fs.existsSync(uploadPath);
-    if (!fileExistsInternally) fs.writeFileSync(uploadPath, file.buffer);
-    Cloudinary.v2.uploader.upload(
-      uploadPath,
-      { folder: "blog-images/" },
+  return new Promise(async (resolve, reject) => {
+    const stream = await Cloudinary.v2.uploader.upload_stream(
+      {
+        folder: "blog-images/",
+      },
       (error, result) => {
-        if (!fileExistsInternally) {
-          fs.unlinkSync(uploadPath);
-        }
         return result
           ? resolve({
               src: result.url.replace("http://", "https://"),
@@ -43,5 +38,6 @@ export async function uploadToCloudinary(
             });
       }
     );
+    streamifier.createReadStream(file.buffer).pipe(stream);
   });
 }

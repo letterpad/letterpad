@@ -30,12 +30,11 @@ input MediaFilters {
   authorId: Int
 }
 
-type Query {
-  media(filters: MediaFilters): MediaNode!
-}
 
-type MediaError implements LetterpadError {
-  message: String!
+union MediaResponse = MediaNode | UnAuthorized
+
+type Query {
+  media(filters: MediaFilters): MediaResponse!
 }
 
 input InputUpdateMedia {
@@ -44,8 +43,8 @@ input InputUpdateMedia {
   description: String
 }
 
-union MediaDeleteResponse = MediaDeleteResult | MediaError
-union MediaUpdateResponse = MediaUpdateResult | MediaError
+union MediaDeleteResponse = MediaDeleteResult | UnAuthorized
+union MediaUpdateResponse = MediaUpdateResult | UnAuthorized
 
 type Mutation {
   #   insertMedia(url: String): Media

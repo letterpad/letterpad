@@ -13,6 +13,8 @@ type Navigation {
 
 type Design {
   brand_color: String
+  primary_font: String
+  secondary_font: String
 }
 
 type Setting {
@@ -51,6 +53,8 @@ input InputNavigation {
 
 input InputDesign {
   brand_color: String
+  primary_font: String
+  secondary_font: String
 }
 
 input InputImage {

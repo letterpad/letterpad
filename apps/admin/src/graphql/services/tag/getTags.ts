@@ -11,9 +11,16 @@ import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 
 export const getTags = async (
   args: QueryTagsArgs,
-  { session, client_author_id, prisma }: ResolverContext
+  { session, client_author_id, prisma, isLetterpadAdmin }: ResolverContext
 ): Promise<ResolversTypes["TagsResponse"]> => {
   const authorId = session?.user.id || client_author_id;
+
+  if (!authorId) {
+    return {
+      __typename: "UnAuthorized",
+      message: "Missing or invalid token or session",
+    };
+  }
 
   if (args.filters?.suggest) {
     const tags = await prisma.tag.findMany({
@@ -33,12 +40,6 @@ export const getTags = async (
     };
   }
 
-  if (!authorId) {
-    return {
-      __typename: "TagsError",
-      message: "Missing or invalid token or session",
-    };
-  }
   try {
     const tags = await prisma.tag.findMany({
       where: {
@@ -73,7 +74,7 @@ export const getTags = async (
     logger.error(e);
   }
   return {
-    __typename: "TagsError",
+    __typename: "UnAuthorized",
     message: "Missing or invalid token or session",
   };
 };

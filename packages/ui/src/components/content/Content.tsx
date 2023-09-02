@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, ReactNode, useEffect, useRef } from "react";
 
 export const Content: FC<{ children?: ReactNode }> = ({ children }) => {

@@ -6,13 +6,14 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
-import { createAuthorWithSettings } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
 
 import { report } from "@/components/error";
+import { createAuthorWithSettings } from "@/components/onboard";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 import { isBlackListed } from "./blacklist";
 
@@ -75,16 +76,19 @@ const providers = (): NextAuthOptions["providers"] => [
   }),
 ];
 
-const options = (): NextAuthOptions => ({
+export const options = (): NextAuthOptions => ({
   providers: providers(),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      return process.env.ROOT_URL + "/posts";
+      return getRootUrl(baseUrl) + "/posts";
     },
-    jwt: async ({ token }) => {
+    jwt: async ({ token, trigger, session, user }) => {
+      if (trigger === "update") {
+        return { ...token, user: { ...session.user } };
+      }
       return token;
     },
     session: async ({ session, token }) => {

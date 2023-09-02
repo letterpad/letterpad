@@ -26,6 +26,8 @@ fragment settingsFragment on Setting {
   display_author_info
   design {
     brand_color
+    primary_font
+    secondary_font
   }
   menu {
     label

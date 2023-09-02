@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
 
-import { getAbout } from '../../data';
+import { getAbout } from '@/data';
+
 import StructuredData from '../../../components/StructuredData';
 import { useTheme } from '../../../themes';
+
+export const dynamic = 'force-dynamic';
 
 export default async function About() {
   const { settings, me } = await getAbout();

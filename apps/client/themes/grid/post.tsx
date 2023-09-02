@@ -94,7 +94,7 @@ export const Post = ({ post, settings, me }) => {
               />
             )}
           </header>
-          <div className="prose pb-4 pt-4 dark:prose-dark">
+          <div className={`prose pb-4 pt-4 dark:prose-dark`}>
             <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
           </div>
           <div className="pb-4">

@@ -6,8 +6,9 @@ import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";
 
-import { createAuthorWithSettings } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
+
+import { createAuthorWithSettings } from "@/components/onboard";
 
 import { RegisterStep } from "@/__generated__/__types__";
 import { ROLES } from "@/graphql/types";
@@ -302,6 +303,22 @@ export async function insertPost(postData, author_id) {
       },
     },
   });
+}
+
+// const fs = require("fs").promises;
+
+async function walk(dir) {
+  let files: any = await fs.promises.readdir(dir);
+  files = await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(dir, file);
+      const stats = await fs.promises.stat(filePath);
+      if (stats.isDirectory()) return walk(filePath);
+      else if (stats.isFile()) return filePath;
+    })
+  );
+
+  return files.reduce((all, folderContents) => all.concat(folderContents), []);
 }
 
 export const cleanupDatabase = async () => {

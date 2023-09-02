@@ -38,8 +38,8 @@ export const GalleryModal: FC<Props> = ({
 
   if (index < 0 || !item) return null;
   return (
-    <div className="fixed top-0 left-0 z-[60] flex min-h-screen w-screen flex-row items-stretch overflow-hidden bg-white dark:bg-black">
-      <div className="absolute top-0 right-0 z-[61] m-6">
+    <div className="fixed left-0 top-0 z-[60] flex min-h-screen w-screen flex-row items-stretch overflow-hidden bg-white dark:bg-black">
+      <div className="absolute right-0 top-0 z-[61] m-6">
         <button onClick={onClose} className="">
           <svg
             xmlns="http://www.w3.org/2000/svg"

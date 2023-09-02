@@ -1,6 +1,3 @@
-import Router from "next/router";
-import NProgress from "nprogress";
-
 import { basePath } from "@/constants";
 import { IMediaUploadResult } from "@/graphql/types";
 
@@ -93,15 +90,6 @@ export function removeTypenames<T>(data: T = {} as T): Omit<T, "__typename"> {
   };
 
   return JSON.parse(JSON.stringify(data), omitTypename);
-}
-
-export function initPageProgress() {
-  NProgress.configure({ showSpinner: true });
-  Router.events.on("routeChangeStart", () => {
-    NProgress.start();
-  });
-  Router.events.on("routeChangeComplete", () => NProgress.done());
-  Router.events.on("routeChangeError", () => NProgress.done());
 }
 
 const expr = /^[a-z0-9_]*$/;

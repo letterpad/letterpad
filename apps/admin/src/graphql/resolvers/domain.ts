@@ -1,15 +1,9 @@
-import { SSL } from "@/lib/greenlock";
-
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
-import {
-  createOrUpdateDomain,
-  getDomain,
-  removeDomain,
-} from "../services/domain";
+import { getDomain, removeDomain } from "../services/domain";
 import { EmailTemplates } from "../types";
 
 import { Optional } from "@/types";
@@ -18,64 +12,107 @@ const Query: Optional<QueryResolvers<ResolverContext>> = {
   domain: async (_root, _args, context) => {
     return getDomain(_args, context);
   },
+  certs: async (_root, _args, { session, prisma }) => {
+    if (!session?.user) {
+      return false;
+    }
+    const domain = await prisma.domain.findFirst({
+      where: { author_id: session.user.id },
+    });
+    if (!domain?.name) return false;
+
+    const https = require("https");
+    const validate = new Promise((resolve, reject) => {
+      https
+        .get(`https://${domain.name}`, (res) => {
+          if (res.headers.server === "Vercel") {
+            resolve(true);
+          } else {
+            reject(false);
+          }
+        })
+        .on("error", (_e) => {
+          reject(false);
+        });
+    });
+    try {
+      await validate;
+      return true;
+    } catch (_e) {
+      return false;
+    }
+  },
 };
 
 const Mutation: Optional<MutationResolvers<ResolverContext>> = {
-  removeDomain: async (_, _args, context) => {
-    return removeDomain(_args, context);
-  },
-  createOrUpdateDomain: async (_, args, context) => {
-    try {
-      if (!context.session?.user || !args.data.name) {
-        return {
-          ok: false,
-          message: "No session found",
-        };
+  addDomain: async (_, { domain }, context) => {
+    if (!context.session?.user || !domain) {
+      return {
+        ok: false,
+        message: "No session found",
+      };
+    }
+
+    const response = await fetch(
+      `https://api.vercel.com/v9/projects/${process.env.VERCEL_PROJECT_ID}/domains?teamId=${process.env.VERCEL_TEAM_ID}`,
+      {
+        body: `{"name": "${domain}"}`,
+        headers: {
+          Authorization: `Bearer ${process.env.VERCEL_AUTH_BEARER_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
       }
-      const ssl = new SSL();
-      await ssl.add(args.data.name.trim());
-      const domainExist = await context.prisma.domain.findFirst({
-        where: {
-          author: {
+    );
+
+    const data = await response.json();
+    if (data.error?.code == "forbidden") {
+      return {
+        __typename: "DomainError",
+        message: "Forbidden",
+      };
+    } else if (data.error?.code == "domain_taken") {
+      return {
+        __typename: "DomainError",
+        message: "Domain is taken",
+      };
+    } else if (data.error?.code == "domain_already_in_use") {
+      return {
+        __typename: "DomainError",
+        message: "Domain is already in use",
+      };
+    }
+
+    const dbResponse = await context.prisma.domain.upsert({
+      create: {
+        name: domain.trim(),
+        ssl: false,
+        author: {
+          connect: {
             id: context.session.user.id,
           },
         },
-      });
-      if (!domainExist) {
-        await context.prisma.domain.create({
-          data: {
-            name: args.data.name.trim(),
-            ssl: true,
-            mapped: true,
-            author: {
-              connect: {
-                id: context.session.user.id,
-              },
-            },
-          },
-        });
-      } else {
-        await context.prisma.domain.update({
-          data: {
-            ssl: true,
-            mapped: true,
-          },
-          where: {
-            author_id: context.session.user.id,
-          },
-        });
-      }
-      await enqueueEmailAndSend({
+      },
+      update: {
+        name: domain.trim(),
+      },
+      where: {
         author_id: context.session.user.id,
-        template_id: EmailTemplates.DomainMapSuccess,
-      });
-      return {
-        ok: true,
-        message: "Congratulations! Your domain has been mapped with Letterpad",
-      };
-    } catch (e) {
-      return createOrUpdateDomain(args, context);
-    }
+      },
+    });
+    // await enqueueEmailAndSend({
+    //   author_id: context.session.user.id,
+    //   template_id: EmailTemplates.DomainMapSuccess,
+    // });
+    return {
+      __typename: "Domain",
+      ...dbResponse,
+      verification: data.verification,
+      configured: !data.misconfigured,
+    };
+  },
+  removeDomain: async (_, _args, context) => {
+    return removeDomain(_args, context);
   },
 };
 

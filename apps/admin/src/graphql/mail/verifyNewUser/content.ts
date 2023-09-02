@@ -5,6 +5,7 @@ import {
   EmailTemplateResponse,
   EmailVerifyNewUserProps,
 } from "@/graphql/types";
+import { getRootUrl } from "@/shared/getRootUrl";
 import { getVerifyUserToken } from "@/shared/token";
 
 import { getTemplate } from "../template";
@@ -50,7 +51,7 @@ export async function getVerifyUserEmailContent(
     author_id: author.id,
     email: author.email,
   });
-  const href = `${process.env.ROOT_URL}/api/verify?token=${token}`;
+  const href = `${getRootUrl()}/api/verify?token=${token}`;
 
   const body = bodyTemplate.render({
     company_name: `<a href="https://letterpad.app">Letterpad</a>`,

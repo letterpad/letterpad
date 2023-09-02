@@ -8,7 +8,7 @@ const ResultPage = () => {
 
   const { data, error } = useSWR(
     router.query.session_id
-      ? `/admin/api/checkout_session/${router.query.session_id}`
+      ? `/api/checkout_session/${router.query.session_id}`
       : null,
     fetchGetJSON
   );

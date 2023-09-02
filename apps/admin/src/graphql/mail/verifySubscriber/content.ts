@@ -5,6 +5,7 @@ import {
   EmailTemplateResponse,
   EmailVerifySubscriberProps,
 } from "@/graphql/types";
+import { getRootUrl } from "@/shared/getRootUrl";
 import { getVerifySubscriberToken } from "@/shared/token";
 
 import { getTemplate } from "../template";
@@ -58,7 +59,7 @@ export async function getVerifySubscriberEmailContent(
     author_id: data.author_id,
   });
 
-  const href = `${process.env.ROOT_URL}/api/verifySubscriber?token=${token}&subscriber=1`;
+  const href = `${getRootUrl()}/api/verifySubscriber?token=${token}&subscriber=1`;
 
   const body = bodyTemplate.render({
     blog_name: author.setting?.site_title,

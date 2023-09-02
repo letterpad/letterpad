@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=fallback');
+/* @import './additional-styles/custom-fonts'; */
+
+/* Additional styles */
+@import './additional-styles/utility-patterns.css';
+@import './additional-styles/range-slider.css';
+@import './additional-styles/toggle-switch.css';
+@import './additional-styles/theme.css';

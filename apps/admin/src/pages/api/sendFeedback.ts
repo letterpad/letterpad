@@ -1,10 +1,11 @@
 import { NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 
 import { mail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
 
 import { NextApiRequestWithFormData } from "@/graphql/types";
+
+import { getServerSession } from "../../graphql/context";
 
 const sendFeedback = async (
   req: NextApiRequestWithFormData,
@@ -13,7 +14,7 @@ const sendFeedback = async (
   if (!req.body.feedback) {
     return res.status(403).send("Invalid input");
   }
-  const _session = await getSession({ req });
+  const _session = await getServerSession({ req });
 
   if (!_session || !_session.user?.email)
     return res.status(401).send("Unauthorized");

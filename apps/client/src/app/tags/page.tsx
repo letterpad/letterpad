@@ -1,6 +1,7 @@
+import { getTagsData } from '@/data';
+
 import { BaseSEO } from '@/components/SEO';
 
-import { getTagsData } from '../../data';
 import { useTheme } from '../../../themes';
 
 export default async function Tags() {

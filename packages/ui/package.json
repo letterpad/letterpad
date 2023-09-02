@@ -5,16 +5,20 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist",
+      "require": "./dist"
+    },
+    "./isomorphic": {
+      "import": "./dist/isomorphic.js",
+      "require": "./dist/isomorphic.js"
     },
     "./css/*": "./css/*"
   },
   "module": "./dist/index.mjs",
   "license": "MIT",
   "scripts": {
-    "build": "tsup index.tsx --dts --format cjs,esm --external react,react-dom --sourcemap --splitting --tsconfig ./tsconfig.json",
-    "dev": "rm -rf ./dist && tsup index.tsx --watch --dts --format cjs,esm --external react,react-dom --sourcemap --splitting --tsconfig ./tsconfig.json",
+    "build": "tsup index.tsx isomorphic.ts --dts --format cjs,esm --external react,react-dom --treeshake --sourcemap --splitting --tsconfig ./tsconfig.json",
+    "dev": "rm -rf ./dist && tsup index.tsx isomorphic.ts --watch --dts --format cjs,esm --external react,react-dom --treeshake --sourcemap --splitting --tsconfig ./tsconfig.json",
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "devDependencies": {
@@ -22,7 +26,7 @@
     "eslint-config-custom": "*",
     "react": "^18.2.0",
     "tsconfig": "*",
-    "tsup": "^6.5.0",
+    "tsup": "^7.2.0",
     "typescript": "^4.5.2",
     "config": "*"
   }

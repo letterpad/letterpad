@@ -34,7 +34,7 @@ describe("Settings", () => {
     cy.wait("@UpdateOptionsMutation");
   });
 
-  it.only("can can set integrations", () => {
+  it("can can set integrations", () => {
     cy.visitSettings();
     cy.getTestId("integrations").click();
 

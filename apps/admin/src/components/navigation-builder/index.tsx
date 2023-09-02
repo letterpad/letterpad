@@ -12,7 +12,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
   menuData,
   updateOption,
 }) => {
-  const { collection, loading } = useNavigationData();
+  const { collection } = useNavigationData();
 
   const menu = useMemo(() => {
     return [...addIds(menuData)];
@@ -25,7 +25,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
     [updateOption]
   );
 
-  if (loading) return null;
+  if (menu.length === 0) return null;
   return (
     <>
       <List items={menu} suggestions={collection} onChange={onChange} />

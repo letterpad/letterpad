@@ -24,7 +24,10 @@ export const CopyToClipboard: VFC<Props> = ({ elementId }) => {
       <Button
         ref={buttonRef}
         variant="ghost"
-        onClick={() => Message().success({ content: "Copied" })}
+        onClick={(e) => {
+          e.preventDefault();
+          Message().success({ content: "Copied" });
+        }}
       >
         <MdContentCopy size={16} />
         &nbsp;

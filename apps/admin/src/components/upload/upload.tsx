@@ -1,6 +1,5 @@
 import axios from "axios";
 import classNames from "classnames";
-import { basePath } from "next.config";
 import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Label } from "ui";
 
@@ -9,8 +8,9 @@ import { FileExplorer } from "@/components/file-explorer";
 import { IMediaUploadResult } from "@/graphql/types";
 import { mapFileListToArray } from "@/shared/utils";
 
+import { DropZone } from "./dragdrop";
 import { Preview } from "./preview";
-import { DropZone } from "../post/components/dragdrop";
+import { basePath } from "../../constants";
 
 interface Props {
   progress?: (percentCompleted: number) => void;

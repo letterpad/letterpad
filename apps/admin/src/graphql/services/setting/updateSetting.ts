@@ -6,6 +6,7 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 import { ValueOf } from "@/graphql/types";
+import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
 
 export const updateSetting = async (
@@ -46,12 +47,9 @@ export const updateSetting = async (
       const isImageOption =
         settings.banner || settings.site_logo || settings.site_favicon;
 
-      const internalImage = isImageOption?.src.startsWith(process.env.ROOT_URL);
+      const internalImage = isImageOption?.src.startsWith(getRootUrl());
       if (isImageOption && internalImage) {
-        isImageOption.src = isImageOption.src?.replace(
-          process.env.ROOT_URL,
-          ""
-        );
+        isImageOption.src = isImageOption.src?.replace(getRootUrl(), "");
 
         value = JSON.stringify(isImageOption);
       }

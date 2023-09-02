@@ -9,7 +9,6 @@ import { headers } from 'next/headers';
 function getLetterpad() {
   const headersList = headers();
   const host = headersList.get('host')!;
-
   return new Letterpad({
     letterpadServer: {
       url: process.env.API_URL!,

@@ -7,11 +7,12 @@ interface Item {
   group?: string;
   key: string;
   badge?: string;
+  testid?: string;
 }
 interface Props {
   items: Item[];
   selectedKey: string;
-  onSelect: (key: string) => void;
+  onSelect: (e: React.MouseEvent, key: string) => void;
   Link: any;
 }
 
@@ -46,25 +47,26 @@ export const Menu: FC<Props> = ({
 
         return (
           <li className="my-px" key={item.key}>
-            <Link href={item.key}>
-              <a
-                className={classNames(
-                  classes.base,
-                  classes.hover,
-                  item.key === selectedKey && classes.selected
-                )}
-                onClick={() => {
-                  onSelect(item.key);
-                }}
-              >
-                <span className="flex items-center justify-center text-lg text-gray-400">
-                  {item.icon}
-                </span>
-                <span className="ml-3">{item.label}</span>
-                {item.badge && (
-                  <span className={classes.badge}>{item.badge}</span>
-                )}
-              </a>
+            <Link
+              href={item.key}
+              data-testid={item.testid}
+              className={classNames(
+                classes.base,
+                classes.hover,
+                item.key === selectedKey && classes.selected
+              )}
+              onClick={(e: any) => {
+                onSelect(e, item.key);
+              }}
+              prefetch={true}
+            >
+              <span className="flex items-center justify-center text-lg text-gray-400">
+                {item.icon}
+              </span>
+              <span className="ml-3">{item.label}</span>
+              {item.badge && (
+                <span className={classes.badge}>{item.badge}</span>
+              )}
             </Link>
           </li>
         );

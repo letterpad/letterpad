@@ -7,7 +7,9 @@
       "@/data/*": ["data/*"],
       "@/layouts/*": ["layouts/*"],
       "@/lib/*": ["lib/*"],
-      "@/css/*": ["css/*"]
+      "@/css/*": ["css/*"],
+      "@/themes": ["themes"],
+      "@/*": ["src/*"]
     },
     "plugins": [
       {
