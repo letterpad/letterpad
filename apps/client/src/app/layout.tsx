@@ -11,6 +11,8 @@ import { HeadMeta } from '@/components/HeadMeta';
 
 import { useTheme } from '@/themes';
 
+import { Css } from './_css';
+
 export const dynamic = 'force-dynamic';
 
 const Layout = async ({ children }) => {
@@ -25,6 +27,7 @@ const Layout = async ({ children }) => {
 
   return (
     <html lang="en" className="scroll-smooth">
+      <Css css={settings.css} />
       <HeadMeta settings={settings} />
       <body className="line-numbers flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20">
         <FontPageWrapper

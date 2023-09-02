@@ -1,5 +1,5 @@
 import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode } from 'react';
 
 import Link from '@/components/Link';
 import ThemeSwitch from '@/components/ThemeSwitch';
@@ -7,7 +7,6 @@ import ThemeSwitch from '@/components/ThemeSwitch';
 import { Footer } from './commons/footer';
 import { MobileNav } from './commons/mobile-nav';
 import { LogoWithTitle } from './commons/site-logo';
-import { PageTitle } from './commons/title';
 
 export interface Props {
   children: ReactNode;
@@ -24,12 +23,12 @@ export const Layout = ({ children, props, isHomeCollection }: Props) => {
   const menu = getMenu(routes);
   return (
     <>
-      <div
-        className={'bg-accent-50  bg-cover text-white'}
+      <header
+        className={'lp-header bg-accent-50  bg-cover text-white'}
         // style={{ backgroundImage: `url(${props.settings.banner?.src})` }}
       >
-        <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-4 md:px-20">
-          <div>
+        <div className="lp-container mx-auto flex h-20 max-w-7xl items-center justify-between px-4 md:px-20">
+          <div className="lp-header-left py-2">
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
@@ -37,13 +36,13 @@ export const Layout = ({ children, props, isHomeCollection }: Props) => {
               />
             </Link>
           </div>
-          <div className="flex items-center text-base leading-5">
-            <div className="hidden md:block">{menu}</div>
+          <div className="lp-header-right flex items-center text-base leading-5">
+            <div className="lp-menu hidden md:block">{menu}</div>
             <ThemeSwitch />
             <MobileNav routes={routes} />
           </div>
-        </header>
-      </div>
+        </div>
+      </header>
       <main className="mb-auto">{children}</main>
       <br />
       <br />
