@@ -1,10 +1,5 @@
-import { InferGetServerSidePropsType } from 'next';
+import { AboutProps } from '../../types/pageTypes';
 
-import { getAbout } from '../../src/data';
-
-export const About = ({
-  settings,
-  me,
-}: Awaited<ReturnType<typeof getAbout>>) => {
+export const About = ({ settings, me }: AboutProps) => {
   return <div />;
 };

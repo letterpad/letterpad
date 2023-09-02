@@ -1,12 +1,8 @@
-import { PostsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 
 import { List } from './commons/list';
+import { HomePostsProps } from '../../types/pageTypes';
 
-export interface Props {
-  posts: PostsFragmentFragment;
-}
-
-export const HomePosts: FC<Props> = ({ posts }) => {
+export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   return <List posts={posts} />;
 };

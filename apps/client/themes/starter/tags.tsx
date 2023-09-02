@@ -1,9 +1,5 @@
-import { getTagsData } from '../../src/data';
+import { TagsProps } from '../../types/pageTypes';
 
-export const Tags = ({
-  tags,
-  me,
-  settings,
-}: Awaited<ReturnType<typeof getTagsData>>) => {
+export const Tags = ({ tags, me, settings }: TagsProps) => {
   return <div>Display a list of cliclable tags</div>;
 };

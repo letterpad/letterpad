@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import Image from 'next/image';
+import { FC } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
@@ -11,6 +12,7 @@ import { Share } from '@/components/share';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
+import { PostProps } from '../../types/pageTypes';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {
@@ -20,7 +22,7 @@ export const getReadableDate = (timestamp: Date | number) => {
   });
 };
 
-export const Post = ({ post, settings, me }) => {
+export const Post: FC<PostProps> = ({ post, settings, me }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   if (author?.__typename !== 'Author') return null;

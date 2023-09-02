@@ -19,7 +19,7 @@ export const LogoWithTitle = ({
   const hasTitle = typeof title === 'string';
   const logoExist = !!logo?.src;
   return (
-    <div className={'flex justify-between ' + className}>
+    <div className={'flex justify-start ' + className}>
       {logo?.src && (
         <span className="mr-2 flex">
           <Image alt={title} {...props} src={logo.src} />

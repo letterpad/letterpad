@@ -23,7 +23,7 @@ export const Layout = ({ children, props, isHomeCollection }: Props) => {
   return (
     <>
       <div className={'bg-accent-50  bg-cover text-white'}>
-        <header className="mx-auto flex max-w-7xl items-center justify-between py-4 px-4 md:px-20">
+        <header className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-20">
           <div>
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle

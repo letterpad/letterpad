@@ -11,11 +11,27 @@ import Link from '@/components/Link';
 export const Card: FC<{
   post: PostsFragmentFragment['rows'][0];
   size?: 'sm' | 'md' | 'xs';
-}> = ({ post, size = 'sm' }) => {
+  imageHeight?: 'lg' | 'md' | 'sm';
+}> = ({ post, size = 'sm', imageHeight = 'lg' }) => {
+  let imagePaddingTop = '75%';
+  switch (imageHeight) {
+    case 'lg':
+      imagePaddingTop = 'pt-[75%]';
+      break;
+    case 'md':
+      imagePaddingTop = 'pt-[70%]';
+      break;
+    case 'sm':
+      imagePaddingTop = 'pt-[50%]';
+      break;
+  }
+
   return (
-    <div className="shrink-0 basis-full xl:basis-[60%]">
+    <div className="shrink-0 basis-full xl:basis-[55%]">
       <Link className="block" href={post.slug!}>
-        <div className="relative block bg-black/5 pt-[75%] dark:bg-white/5 ">
+        <div
+          className={`relative block bg-black/5 ${imagePaddingTop} dark:bg-white/5`}
+        >
           <Image
             src={post.cover_image?.src ?? ''}
             layout="fill"
@@ -24,11 +40,18 @@ export const Card: FC<{
           />
         </div>
       </Link>
-      <div>
+      <div
+        className={classNames('flex flex-col', {
+          'gap-6 py-6': size === 'md',
+          'gap-4 py-4': size === 'sm',
+          'gap-2 py-2': size === 'xs',
+        })}
+      >
         <div
           className={classNames('flex flex-wrap items-center gap-3', {
-            'mt-8': size !== 'xs',
-            'mt-2': size === 'xs',
+            // 'mt-8': size === 'md',
+            // 'mt-4': size === 'sm',
+            // 'mt-2': size === 'xs',
           })}
         >
           <div className="data-color flex items-center text-sm ">
@@ -42,14 +65,14 @@ export const Card: FC<{
           </div>
         </div>
         <h2
-          className={classNames(' text-xl font-bold leading-snug', {
-            'sm:text-sm': size === 'xs',
-            'sm:text-2xl': size === 'sm',
-            'sm:text-4xl': size === 'md',
-
-            'mt-2': size === 'xs',
-            'mt-4': size !== 'xs',
-          })}
+          className={classNames(
+            'font-system hyphens-auto break-all text-xl font-bold leading-snug',
+            {
+              'sm:text-sm': size === 'xs',
+              'sm:text-[1.1rem]': size === 'sm',
+              'sm:text-4xl': size === 'md',
+            }
+          )}
         >
           <Link className="block" href={post.slug!}>
             {post.title}
@@ -60,15 +83,16 @@ export const Card: FC<{
             'sm:text-sm': size === 'xs',
             'sm:text-md': size === 'sm',
             'sm:text-xl': size === 'md',
-            'mt-2': size === 'xs',
-            'mt-4': size !== 'xs',
           })}
         >
           {post.excerpt}
         </p>
         <div
-          className={classNames('mt-6 flex items-center gap-2', {
-            hidden: size === 'xs',
+          className={classNames('flex items-center', {
+            hidden: size === 'xs' || size === 'sm',
+            // 'mt-6': size === 'md',
+            // 'mt-4': size === 'sm',
+            // 'mt-2': size === 'xs',
           })}
         >
           <div>

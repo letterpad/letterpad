@@ -1,25 +1,12 @@
-import {
-  MeFragmentFragment,
-  PageFragmentFragment,
-  SettingsFragmentFragment,
-} from 'letterpad-sdk';
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 
 import Link from '@/components/Link';
 import ScrollTop from '@/components/ScrollTop';
 
 import { SectionContainer } from './commons/section';
+import { HomePageProps } from '../../types/pageTypes';
 
-export interface Props {
-  data: PageFragmentFragment;
-  children: ReactNode;
-  next?: { slug: string; title: string };
-  prev?: { slug: string; title: string };
-  site_name: string;
-  settings: SettingsFragmentFragment;
-  me: MeFragmentFragment;
-}
-export const HomePage: FC<Props> = ({ next, prev, children }) => {
+export const HomePage: FC<HomePageProps> = ({ children }) => {
   return (
     <SectionContainer>
       <ScrollTop />
@@ -35,7 +22,7 @@ export const HomePage: FC<Props> = ({ next, prev, children }) => {
           </div>
           <footer>
             <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
-              {prev && (
+              {/* {prev && (
                 <div className="pt-4 xl:pt-8">
                   <Link href={`/blog/${prev.slug}`} className="link">
                     &larr; {prev.title}
@@ -48,7 +35,7 @@ export const HomePage: FC<Props> = ({ next, prev, children }) => {
                     {next.title} &rarr;
                   </Link>
                 </div>
-              )}
+              )} */}
             </div>
           </footer>
         </div>
