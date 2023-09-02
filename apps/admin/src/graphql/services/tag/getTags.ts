@@ -11,7 +11,7 @@ import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 
 export const getTags = async (
   args: QueryTagsArgs,
-  { session, client_author_id, prisma, isLetterpadAdmin }: ResolverContext
+  { session, client_author_id, prisma }: ResolverContext
 ): Promise<ResolversTypes["TagsResponse"]> => {
   const authorId = session?.user.id || client_author_id;
 

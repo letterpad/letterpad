@@ -5,7 +5,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getMedia = async (
   args: QueryMediaArgs,
-  { prisma, session, isLetterpadAdmin }: ResolverContext
+  { prisma, session }: ResolverContext
 ): Promise<ResolversTypes["MediaResponse"]> => {
   if (!session?.user.id) {
     return {
