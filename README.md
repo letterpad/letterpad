@@ -60,15 +60,15 @@ yarn start
 ```
 ### Using Docker
 ```sh
- docker run 
-  -v 'data:/app/apps/admin/prisma/sqlite/data' 
-  -p 3001:3001 
-  -p 3000:3000 
-  -e DATABASE_URL='file:data/letterpad.sqlite' 
-  -e SECRET_KEY='provide-a-secret-key' 
-  -e EMAIL="xxx@xxx.com" 
-  -e PASSWORD='xxxxxxxxxxx' 
-  abhisheksaha11/letterpad
+docker run \
+-v 'data:/app/apps/admin/prisma/sqlite/data' \
+-p 3001:3001 \
+-p 3000:3000 \
+-e DATABASE_URL='file:data/letterpad.sqlite' \
+-e SECRET_KEY='provide-a-secret-key' \
+-e EMAIL="xxx@xxx.com" \
+-e PASSWORD='xxxxxxxxxxx' \
+abhisheksaha11/letterpad
 ```
 ### Options:
 Letterpad can be configured using environemt variables. The below are all possible options.
