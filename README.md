@@ -83,6 +83,10 @@ docker run \
 -e PASSWORD='xxxxxxxxxxx' \
 abhisheksaha11/letterpad
 ```
+
+> **IMPORTANT!!!** - 
+> The client uses `apps/client/.env` to connect with the API. This file has the CLIENT_TOKEN which you can find by logging into your admin dashboard and navigating to Settings > Keys. If you have changed the SECRET_KEY, then you will have to update the CLIENT_ID.
+
 ### Options:
 Letterpad can be configured using environemt variables. The below are all possible options.
 
