@@ -8,6 +8,7 @@ import {
   PostTypes,
 } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
+import { isTagsNode } from "@/utils/type-guards";
 
 import {
   PageNotLinkedWithNavigation,
@@ -42,7 +43,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
 
     const navigationTags = getTagsFromMenu(menu);
     const navigationPages = getPagesFromMenu(menu);
-    const postTags = post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
+    const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
 
     const navLinkedWithTags = postTags.find((tag) =>
       navigationTags?.includes(tag.name.toLowerCase())

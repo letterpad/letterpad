@@ -12,6 +12,8 @@ const apolloServer = startServerAndCreateNextHandler(
   {
     context: async (req, res) => {
       const resolverContext = await getResolverContext({ req, res });
+      res.setHeader("access-control-allow-origin", "*");
+      res.setHeader("access-control-allow-methods", "*");
       return resolverContext;
     },
   }
