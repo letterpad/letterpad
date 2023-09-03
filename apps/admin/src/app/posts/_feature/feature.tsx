@@ -14,19 +14,19 @@ import {
   setIntroDimissed,
 } from "@/app/home/_feature/components/visibility";
 import { postsColumns } from "@/app/posts/_feature/header";
-import { LetterpadContext } from "@/context/LetterpadProvider";
 
 import { useGetPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
+import { useGetSettings } from "../../settings/_feature/api.client";
 
 export const Feature = () => {
   const router = useRouter();
   const [filters, setFilters] = useState<PostsFilters>(DEFAULT_FILTERS);
   const { data, refetch, fetching } = useGetPosts(filters);
+  const { data: settings } = useGetSettings();
   const { updatePost } = useUpdatePost();
-  const setting = useContext(LetterpadContext);
   useRedirectToOnboard();
 
   const changeStatus = (id: number, status: PostStatusOptions) => {
@@ -34,13 +34,13 @@ export const Feature = () => {
   };
 
   React.useEffect(() => {
-    if (!setting?.intro_dismissed) {
+    if (!settings) {
       if (!isIntroDismissed()) {
         setIntroDimissed(true);
         router.push("/home");
       }
     }
-  }, [router, setting?.intro_dismissed]);
+  }, [router, settings?.intro_dismissed]);
 
   return (
     <>

@@ -66,7 +66,7 @@ export const setResponsiveImages = (html: string, sizes?: number[]) => {
   return htmlWithResponsiveImages;
 };
 
-export function makeCloudinaryImage(src: string, width: number) {
+function makeCloudinaryImage(src: string, width: number) {
   return `${makeCloudinaryUrl(src, width)} ${width}w`;
 }
 

@@ -1,6 +1,5 @@
-import AOS from "aos";
 import { Metadata } from "next";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 import Client from "./Client";
@@ -57,14 +56,6 @@ export const Website = () => {
     document.body.classList.add("dark");
     document.body.classList.remove("light");
   }, []);
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      disable: "phone",
-      duration: 500,
-      easing: "ease-out-cubic",
-    });
-  });
 
   useEffect(() => {
     const $ = document?.querySelector("html");

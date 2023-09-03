@@ -38,10 +38,7 @@
     "ts-prune": "^0.10.3"
   },
   "engines": {
-    "node": ">=14.0.0"
-  },
-  "resolutions": {
-    "@types/fs-capacitor": "^2.0.0"
+    "node": ">=18.0.0"
   },
   "packageManager": "yarn@1.22.19",
   "dependencies": {
@@ -50,7 +47,6 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
     "turbo": "latest",
-    "vercel": "^31.0.1",
     "next": "13.4.12"
   }
 }

@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-// import { useLocation } from "react-router";
 
 export const EventAction = {
   Load: "load",
@@ -62,15 +61,6 @@ export const useTracking = () => {
     }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname]);
-
-  const track = (info) => {
-    if (typeof window === "undefined") return;
-    if (typeof window.ga === "undefined") return;
-    window.ga("send", {
-      hitType: "event",
-      ...info,
-    });
-  };
 
   return track;
 };

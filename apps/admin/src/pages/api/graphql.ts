@@ -1,6 +1,8 @@
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 
+import { prisma } from "@/lib/prisma";
+
 import { getResolverContext } from "@/graphql/context";
 import { schema } from "@/graphql/schema";
 
@@ -13,26 +15,12 @@ const apolloServer = startServerAndCreateNextHandler(
   }),
   {
     context: async (req, res) => {
-      if (req.method === "OPTIONS") {
-        res.setHeader("access-control-allow-methods", "POST");
-        res.end();
-        return false;
-      }
       const resolverContext = await getResolverContext({ req, res });
-      res.setHeader("access-control-allow-origin", "*");
-      res.setHeader("access-control-allow-methods", "*");
-      return resolverContext;
+      return { ...resolverContext, prisma };
     },
   }
 );
-
+// export default apolloServer;
 const cors = Cors();
 
-export default cors(async (req, res) => {
-  if (req.method === "OPTIONS") {
-    res.end();
-    return false;
-  }
-
-  apolloServer(req, res);
-});
+export default cors(apolloServer);

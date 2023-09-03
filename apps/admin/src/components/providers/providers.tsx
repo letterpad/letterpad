@@ -7,7 +7,9 @@ import { Provider as UrqlProvider } from "urql";
 
 import { basePath } from "../../constants";
 import { client } from "../../lib/urqlClient";
+import { useTracking } from "../../utils/useTracking";
 export const Providers = ({ children, loggedIn }) => {
+  useTracking();
   return (
     <SessionProvider basePath={basePath + "/api/auth"}>
       <UrqlProvider value={client}>
