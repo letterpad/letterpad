@@ -1,5 +1,11 @@
-import { QueryTagArgs, ResolversTypes, Tag } from "@/__generated__/__types__";
+import {
+  QueryTagArgs,
+  ResolversTypes,
+  Tag,
+  TagType,
+} from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
+import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 
 export const getTag = async (
   args: QueryTagArgs,
@@ -21,7 +27,11 @@ export const getTag = async (
   if (tag) {
     return {
       __typename: "Tag",
-      ...(tag as Tag),
+      ...tag!,
+      slug: tag.slug!,
+      type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
+      name: tryToParseCategoryName(tag.name),
+      id: tag.name,
     };
   }
   return {

@@ -25,5 +25,12 @@ export const themes = () => {
     //     "The 2023 designers theme. Best for blogs with a lot of content.",
     //   image: Air,
     // },
+    {
+      label: "Amun",
+      value: "amun",
+      description:
+        "The 2023 designers theme. Best for blogs with a lot of content.",
+      image: Grid,
+    },
   ];
 };

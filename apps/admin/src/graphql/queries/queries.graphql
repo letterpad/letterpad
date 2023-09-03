@@ -7,6 +7,8 @@ query Tag($slug: String!) {
       ... on Tag {
         name
         slug
+        type
+        id
       }
       ... on Exception {
         message
@@ -162,6 +164,8 @@ query Tags($filters: TagsFilters) {
       rows {
         name
         slug
+        type
+        id
         posts {
           __typename
           ... on PostsNode {

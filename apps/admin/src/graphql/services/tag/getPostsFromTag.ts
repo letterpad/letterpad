@@ -16,6 +16,7 @@ export const getPostsFromTag = async (
       message: "You must be logged in to view this page",
     };
   }
+
   const posts = await prisma.post.findMany({
     where: {
       status: session?.user.id ? undefined : PostStatusOptions.Published,
@@ -32,7 +33,6 @@ export const getPostsFromTag = async (
       createdAt: "desc",
     },
   });
-
   return {
     __typename: "PostsNode",
     count: posts?.length,

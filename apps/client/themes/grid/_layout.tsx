@@ -1,5 +1,4 @@
-import { Author, Navigation, SettingsFragmentFragment } from 'letterpad-sdk';
-import { ReactNode } from 'react';
+import { Navigation } from 'letterpad-sdk';
 
 import Link from '@/components/Link';
 import ThemeSwitch from '@/components/ThemeSwitch';
@@ -7,32 +6,21 @@ import ThemeSwitch from '@/components/ThemeSwitch';
 import { Footer } from './commons/footer';
 import { MobileNav } from './commons/mobile-nav';
 import { LogoWithTitle } from './commons/site-logo';
+import { LayoutProps } from '../../types/pageTypes';
 
-export interface Props {
-  children: ReactNode;
-  isHomeCollection: boolean;
-  props: {
-    settings: SettingsFragmentFragment;
-    me: Author;
-  };
-}
-
-export const Layout = ({ children, props, isHomeCollection }: Props) => {
+export const Layout = ({ children, props }: LayoutProps) => {
   const routes = [...props.settings.menu];
 
   const menu = getMenu(routes);
   return (
     <>
-      <header
-        className={'lp-header bg-accent-50  bg-cover text-white'}
-        // style={{ backgroundImage: `url(${props.settings.banner?.src})` }}
-      >
-        <div className="lp-container mx-auto flex h-20 max-w-7xl items-center justify-between px-4 md:px-20">
-          <div className="lp-header-left py-2">
+      <div className={'bg-accent-50  bg-cover text-white'}>
+        <header className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-20">
+          <div>
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
-                title={isHomeCollection ? '' : props.settings.site_title}
+                title={props.settings.site_title}
               />
             </Link>
           </div>
@@ -41,8 +29,8 @@ export const Layout = ({ children, props, isHomeCollection }: Props) => {
             <ThemeSwitch />
             <MobileNav routes={routes} />
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
       <main className="mb-auto">{children}</main>
       <br />
       <br />

@@ -93,7 +93,6 @@ export async function getPostsByTag(tag: string) {
   const posts = await letterpad.listPosts(tag);
   const settings = await letterpad.getSettings();
   const me = await letterpad.getAuthor();
-
   return {
     posts,
     settings,

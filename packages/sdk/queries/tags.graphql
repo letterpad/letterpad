@@ -8,10 +8,36 @@ query tags {
       rows {
         name
         slug
+        type
+        id
         posts {
           __typename
           ... on PostsNode {
             count
+            rows {
+              id
+              title
+              slug
+              excerpt
+              publishedAt
+              reading_time
+              cover_image {
+                src
+              }
+              author {
+                __typename
+                ... on LetterpadError {
+                  message
+                }
+                ... on Author {
+                  id
+                  name
+                  avatar
+                  occupation
+                  bio
+                }
+              }
+          }
           }
         }
       }

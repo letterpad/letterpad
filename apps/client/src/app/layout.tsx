@@ -1,6 +1,3 @@
-import { Author, NavigationType } from 'letterpad-sdk';
-import { headers } from 'next/headers';
-
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 
@@ -13,17 +10,10 @@ import { useTheme } from '@/themes';
 
 import { Css } from './_css';
 
-export const dynamic = 'force-dynamic';
-
 const Layout = async ({ children }) => {
   const { settings, me } = await getData();
 
   const { Layout } = useTheme(settings?.theme);
-  const headersList = headers();
-  const [firstItemOfMenu] = settings?.menu ?? [];
-  const isCollection =
-    firstItemOfMenu?.type === NavigationType.Tag &&
-    headersList.get('x-url') === '/';
 
   return (
     <html lang="en" className="scroll-smooth">
@@ -34,12 +24,7 @@ const Layout = async ({ children }) => {
           primary_font={settings.design?.primary_font}
           secondary_font={settings.design?.secondary_font}
         >
-          <Layout
-            props={{ settings, me: me as Author }}
-            isHomeCollection={isCollection}
-          >
-            {children}
-          </Layout>
+          <Layout props={{ settings, me }}>{children}</Layout>
         </FontPageWrapper>
         <div id="modal-creatives" />
       </body>

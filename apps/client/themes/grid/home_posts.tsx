@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { PostsFragmentFragment, SettingsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 
 import formatDate from '@/lib/utils/formatDate';
@@ -11,13 +10,9 @@ import Link from '@/components/Link';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
+import { HomePostsProps } from '../../types/pageTypes';
 
-export interface Props {
-  posts: PostsFragmentFragment;
-  settings: SettingsFragmentFragment;
-}
-
-export const HomePosts: FC<Props> = ({ posts, settings }) => {
+export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
   return (
     <>
       <div

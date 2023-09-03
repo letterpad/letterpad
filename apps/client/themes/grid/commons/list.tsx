@@ -13,7 +13,7 @@ export function List({ posts }: Props) {
     <SectionContainer>
       <div className="content w-full divide-y divide-gray-200 py-12 dark:divide-gray-700">
         <ul>
-          {posts.rows.map((post) => {
+          {posts?.rows.map((post) => {
             const { slug, publishedAt, title, tags, excerpt, stats } = post;
             return (
               <li key={slug} className="py-4">

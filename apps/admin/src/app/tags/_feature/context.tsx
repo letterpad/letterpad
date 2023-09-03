@@ -137,7 +137,7 @@ export const TagsProvider: React.FC<{
       <Modal
         toggle={() => setEditTagId(null)}
         show={!!editTagId}
-        header={`Editing tag: ${tagToBeEdited?.name}`}
+        header={`Editing tag: ${tagToBeEdited?.id}`}
         footer={[
           <Button
             key="close"
@@ -154,7 +154,7 @@ export const TagsProvider: React.FC<{
       >
         <Input
           label="Rename Tag"
-          defaultValue={tagToBeEdited?.name}
+          defaultValue={tagToBeEdited?.id}
           ref={inputRef}
           onEnter={onSave}
         />

@@ -3,13 +3,15 @@ import {
   QueryTagsArgs,
   ResolversTypes,
   Tag,
+  TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
+import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 
 export const getTags = async (
   args: QueryTagsArgs,
-  { session, client_author_id, prisma, isLetterpadAdmin }: ResolverContext
+  { session, client_author_id, prisma }: ResolverContext
 ): Promise<ResolversTypes["TagsResponse"]> => {
   const authorId = session?.user.id || client_author_id;
 
@@ -28,7 +30,13 @@ export const getTags = async (
     });
     return {
       __typename: "TagsNode",
-      rows: tags as Tag[],
+      rows: tags.map((tag) => ({
+        ...tag,
+        slug: tag.slug!,
+        type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
+        name: tryToParseCategoryName(tag.name),
+        id: tag.name,
+      })),
     };
   }
 
@@ -41,9 +49,10 @@ export const getTags = async (
             author: {
               id: authorId,
             },
-            status: args.filters?.active
-              ? PostStatusOptions.Published
-              : undefined,
+            status:
+              args.filters?.active || !session?.user.id
+                ? PostStatusOptions.Published
+                : undefined,
           },
         },
       },
@@ -54,7 +63,13 @@ export const getTags = async (
 
     return {
       __typename: "TagsNode",
-      rows: tags as Tag[],
+      rows: tags.map((tag) => ({
+        ...tag,
+        slug: tag.slug!,
+        type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
+        name: tryToParseCategoryName(tag.name),
+        id: tag.name,
+      })),
     };
   } catch (e: any) {
     logger.error(e);

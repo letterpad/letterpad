@@ -11,6 +11,8 @@ import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getLastPartFromPath } from "@/utils/slug";
 
+import { tryToParseCategoryName } from "../../../utils/utils";
+
 export const getPosts = async (
   args: QueryPostsArgs,
   { prisma, session, client_author_id }: ResolverContext
@@ -36,15 +38,15 @@ export const getPosts = async (
   // First verify if posts are requested from client and not admin dashboard.
   // If posts are requested by client, then verify if this a collection of posts for
   // displaying in homepage.
-
   // find the real slug of the tag
-
   if (args.filters?.tagSlug === "/") {
     // find the first menu item. If its a tag, then display its collection of posts.
     const slug = await getTagSlugOfFirstMenuItemIfPossible(prisma, authorId);
     if (slug) args.filters.tagSlug = slug;
   } else if (args.filters.tagSlug) {
-    args.filters.tagSlug = getLastPartFromPath(args.filters.tagSlug);
+    args.filters.tagSlug = tryToParseCategoryName(
+      getLastPartFromPath(args.filters.tagSlug)
+    );
   }
   const { page = 1, limit = 10 } = args.filters;
   const skip = page && limit ? (page - 1) * limit : 0;
@@ -55,10 +57,12 @@ export const getPosts = async (
       // id: args.filters?.id,
       featured: args.filters?.featured,
       status: {
-        in: args.filters?.status ?? [
-          PostStatusOptions.Published,
-          PostStatusOptions.Draft,
-        ],
+        in: client_author_id
+          ? [PostStatusOptions.Published]
+          : args.filters?.status ?? [
+              PostStatusOptions.Published,
+              PostStatusOptions.Draft,
+            ],
       },
       //@todo - remove slug
       slug: args.filters?.slug,
@@ -85,6 +89,8 @@ export const getPosts = async (
       count: await prisma.post.count({ where: condition.where }),
     };
   } catch (e: any) {
+    // eslint-disable-next-line no-console
+    console.log(e);
     return {
       __typename: "Exception",
       message: "Internal Server Error",

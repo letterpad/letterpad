@@ -1,7 +1,14 @@
+enum TagType {
+  tag
+  category
+}
+
 type Tag {
   name: String!
   slug: String!
   posts: PostsResponse
+  type: TagType!
+  id: String!
 }
 
 input TagsFilters {

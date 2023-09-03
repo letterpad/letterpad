@@ -42,6 +42,7 @@ describe("Publishing", () => {
     cy.openSettings();
 
     cy.get(".react-tags__selected-tag").click();
+    cy.wait("@UpdatePostMutation");
     cy.getTestId("publishBtn").click();
     cy.get(".NoTags").should("exist");
     cy.getTestId("cancelModalBtn").click();

@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import Image from 'next/image';
+import { FC } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
@@ -11,6 +12,7 @@ import { Share } from '@/components/share';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
+import { PostProps } from '../../types/pageTypes';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {
@@ -20,7 +22,7 @@ export const getReadableDate = (timestamp: Date | number) => {
   });
 };
 
-export const Post = ({ post, settings, me }) => {
+export const Post: FC<PostProps> = ({ post, settings, me }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   if (author?.__typename !== 'Author') return null;
@@ -112,17 +114,17 @@ export const Post = ({ post, settings, me }) => {
           {settings.display_author_info && !isPage && author.bio && (
             <div
               className={
-                'mb-10 mr-3 flex items-center rounded-md border p-8 text-sm text-gray-900 dark:border-gray-800 dark:text-white '
+                'mb-10 mr-3 flex items-center rounded-lg border bg-gray-100 p-8 text-sm text-gray-900 shadow-sm dark:border-gray-900 dark:bg-black dark:bg-opacity-20 dark:text-white'
               }
             >
               <div className="mr-4 hidden md:block">
                 {author.avatar && (
                   <Image
                     src={author.avatar}
-                    width={94}
-                    height={94}
+                    width={200}
+                    height={200}
                     alt={author.name}
-                    className="h-16 w-16 rounded-full"
+                    className="rounded-full"
                   />
                 )}
               </div>
@@ -134,7 +136,7 @@ export const Post = ({ post, settings, me }) => {
                 >
                   {author.name}
                 </a>
-                <p className="text-md font-normal leading-5 text-gray-500 dark:text-gray-300">
+                <p className="text-md font-medium leading-5 text-gray-500 dark:text-gray-300">
                   {author.bio}
                 </p>
               </div>

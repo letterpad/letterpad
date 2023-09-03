@@ -3,6 +3,7 @@ export interface TagRow {
   name: string;
   slug: string;
   posts: number;
+  id?: string;
 }
 
 export interface TagsContextType<T, K> {

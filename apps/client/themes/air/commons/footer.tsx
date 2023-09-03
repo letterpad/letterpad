@@ -1,21 +1,21 @@
-import { Author, SettingsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 
 import Link from '@/components/Link';
 import SocialIcon from '@/components/social-icons';
 
 import { LogoWithTitle } from './site-logo';
+import { PostProps } from '../../../types/pageTypes';
 
 interface Props {
-  settings: SettingsFragmentFragment;
-  me: Author;
+  settings: PostProps['settings'];
+  me: PostProps['me'];
 }
 
 export const Footer: FC<Props> = ({ settings, me }) => {
   const { social } = me;
   return (
-    <div className="mx-auto mt-28 max-w-[1480px] px-5 sm:px-8">
-      <div className="grid gap-12 border-t border-gray-100 pt-20 pb-24 dark:border-gray-900 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="mx-auto mt-28 w-full max-w-[1480px] px-5 sm:px-8">
+      <div className="grid gap-12 border-t border-gray-100 pb-24 pt-20 dark:border-gray-900 sm:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-4">
           <div>
             <div className="mb-4">
@@ -34,7 +34,7 @@ export const Footer: FC<Props> = ({ settings, me }) => {
           <div>
             <div className="flex flex-wrap gap-3">
               <a
-                className="whitespace-nowrap rounded-full border border-black py-1.5 px-2.5 text-xs font-medium uppercase tracking-wide text-black hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black"
+                className="whitespace-nowrap rounded-full border border-black px-2.5 py-1.5 text-xs font-medium uppercase tracking-wide text-black hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black"
                 href="/category/mind"
               >
                 mind

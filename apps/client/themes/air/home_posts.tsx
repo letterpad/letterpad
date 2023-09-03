@@ -53,6 +53,7 @@ export const HomePosts: FC<Props> = ({ posts }) => {
       </>
     );
   }
+  // const arr = chunk(posts.rows, featuredThreePosts);
   const hasLatestPosts = posts.count - featuredPostsCount;
 
   return (

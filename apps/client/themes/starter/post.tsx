@@ -1,12 +1,8 @@
 import Comments from '@/components/comments';
 
-import { getPostData } from '../../src/data';
+import { PostProps } from '../../types/pageTypes';
 
-export const Post = ({
-  post,
-  settings,
-  me,
-}: Awaited<ReturnType<typeof getPostData>>) => {
+export const Post = ({ post, settings, me }: PostProps) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   const isPage = type === 'page';

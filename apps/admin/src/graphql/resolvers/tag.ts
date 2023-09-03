@@ -27,8 +27,8 @@ const Tag: TagResolvers<ResolverContext> = {
   async slug({ slug }) {
     return createPathWithPrefix(slug, "tag");
   },
-  async posts({ name }, _args, context) {
-    return getPostsFromTag(name, context);
+  async posts({ id }, _args, context) {
+    return getPostsFromTag(id, context);
   },
 };
 

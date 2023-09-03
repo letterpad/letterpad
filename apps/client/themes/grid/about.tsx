@@ -1,17 +1,10 @@
-import { InferGetServerSidePropsType } from 'next';
-
 import SocialIcon from '@/components/social-icons';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { getAbout } from '../../src/data';
+import { AboutProps } from '../../types/pageTypes';
 
-type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
-
-export const About = ({
-  settings,
-  me,
-}: Awaited<ReturnType<typeof getAbout>>) => {
+export const About = ({ settings, me }: AboutProps) => {
   const {
     name,
     avatar = '/static/images/avatar.png',
@@ -24,7 +17,7 @@ export const About = ({
   return (
     <SectionContainer>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
           <PageTitle>About</PageTitle>
         </div>
         <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
@@ -39,7 +32,7 @@ export const About = ({
                 className="h-48 w-48 rounded-full object-cover"
               />
             )}
-            <h3 className="pt-4 pb-2 text-2xl font-bold leading-8 tracking-tight">
+            <h3 className="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight">
               {name}
             </h3>
             <div className="text-gray-500 dark:text-gray-300">{occupation}</div>
@@ -57,7 +50,7 @@ export const About = ({
               <SocialIcon kind="twitter" href={social?.twitter} size={5} />
             </div>
           </div>
-          <div className="prose max-w-none pt-8 pb-8 dark:prose-dark xl:col-span-2">
+          <div className="prose max-w-none pb-8 pt-8 dark:prose-dark xl:col-span-2">
             <div dangerouslySetInnerHTML={{ __html: site_description ?? '' }} />
             <br />
             <div dangerouslySetInnerHTML={{ __html: bio ?? '' }} />

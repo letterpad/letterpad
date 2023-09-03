@@ -17,7 +17,7 @@ export const FontPageWrapper = ({
       )}
     >
       {children}
-      <style jsx global>
+      {/* <style jsx global>
         {`
           h1,
           h2,
@@ -27,7 +27,7 @@ export const FontPageWrapper = ({
             ) !important;
           }
         `}
-      </style>
+      </style> */}
     </div>
   );
 };

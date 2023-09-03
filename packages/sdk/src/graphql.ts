@@ -846,9 +846,11 @@ export type Subscription = {
 
 export type Tag = {
   __typename?: "Tag";
+  id: Scalars["String"];
   name: Scalars["String"];
   posts?: Maybe<PostsResponse>;
   slug: Scalars["String"];
+  type: TagType;
 };
 
 export type TagResponse = Exception | Tag | UnAuthorized;
@@ -857,6 +859,11 @@ export type TagResultError = LetterpadError & {
   __typename?: "TagResultError";
   message: Scalars["String"];
 };
+
+export enum TagType {
+  Category = "category",
+  Tag = "tag",
+}
 
 export type TagsFilters = {
   active?: InputMaybe<Scalars["Boolean"]>;
@@ -1343,9 +1350,38 @@ export type TagsQuery = {
           __typename?: "Tag";
           name: string;
           slug: string;
+          type: TagType;
+          id: string;
           posts?:
             | { __typename: "Exception" }
-            | { __typename: "PostsNode"; count: number }
+            | {
+                __typename: "PostsNode";
+                count: number;
+                rows: Array<{
+                  __typename?: "Post";
+                  id: number;
+                  title: string;
+                  slug?: string | null;
+                  excerpt?: string | null;
+                  publishedAt?: any | null;
+                  reading_time?: string | null;
+                  cover_image: { __typename?: "Image"; src?: string | null };
+                  author?:
+                    | {
+                        __typename: "Author";
+                        id: number;
+                        name: string;
+                        avatar?: string | null;
+                        occupation?: string | null;
+                        bio?: string | null;
+                      }
+                    | { __typename: "Exception"; message: string }
+                    | { __typename: "Failed"; message: string }
+                    | { __typename: "NotFound"; message: string }
+                    | { __typename: "UnAuthorized"; message: string }
+                    | null;
+                }>;
+              }
             | { __typename: "UnAuthorized" }
             | null;
         }>;
@@ -1617,10 +1653,36 @@ export const TagsDocument = `
       rows {
         name
         slug
+        type
+        id
         posts {
           __typename
           ... on PostsNode {
             count
+            rows {
+              id
+              title
+              slug
+              excerpt
+              publishedAt
+              reading_time
+              cover_image {
+                src
+              }
+              author {
+                __typename
+                ... on LetterpadError {
+                  message
+                }
+                ... on Author {
+                  id
+                  name
+                  avatar
+                  occupation
+                  bio
+                }
+              }
+            }
           }
         }
       }

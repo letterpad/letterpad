@@ -19,8 +19,9 @@ describe("Profile", () => {
 
     cy.location("pathname").should("include", "/update/profile-info");
 
-    cy.getTestId("name").type("Test");
+    cy.getTestId("name").type("Testing User");
     cy.getTestId("username").type("test");
+    cy.getTestId("name").type("Testing User");
     cy.getTestId("bio").type(
       "This is a bio that has been written automatically by tests"
     );
