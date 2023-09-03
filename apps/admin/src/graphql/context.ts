@@ -1,5 +1,3 @@
-import { prisma } from "@/lib/prisma";
-
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 
 import { SessionData } from "./types";
@@ -47,13 +45,11 @@ export const getResolverContext = async (context) => {
     return {
       session,
       client_author_id,
-      prisma,
     };
   }
 
   return {
     session,
-    prisma,
   };
 };
 
