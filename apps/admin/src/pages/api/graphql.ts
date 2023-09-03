@@ -13,14 +13,7 @@ const apolloServer = startServerAndCreateNextHandler(
   }),
   {
     context: async (req, res) => {
-      if (req.method === "OPTIONS") {
-        res.setHeader("access-control-allow-methods", "POST");
-        res.end();
-        return false;
-      }
       const resolverContext = await getResolverContext({ req, res });
-      res.setHeader("access-control-allow-origin", "*");
-      res.setHeader("access-control-allow-methods", "*");
       return resolverContext;
     },
   }
@@ -33,6 +26,8 @@ export default cors(async (req, res) => {
     res.end();
     return false;
   }
+  res.setHeader("access-control-allow-origin", "*");
+  res.setHeader("access-control-allow-methods", "*");
 
   apolloServer(req, res);
 });

@@ -1,4 +1,3 @@
-import AOS from "aos";
 import { Metadata } from "next";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";

@@ -1,3 +1,5 @@
+import { track as doTrack } from "./utils/useTracking";
+
 export enum EventAction {
   Load = "load",
   View = "view",
@@ -12,10 +14,5 @@ export interface EventInfo {
 }
 
 export const track = (info: EventInfo) => {
-  if (typeof window === "undefined") return;
-  if (typeof window.ga === "undefined") return;
-  window.ga("send", {
-    hitType: "event",
-    ...info,
-  });
+  doTrack(info);
 };

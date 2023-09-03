@@ -27,8 +27,9 @@ Letterpad is a blog publishing platform.
 - Multi User Install by default
 - Creatives - Page Builder for creating photostories ( portfolio, photoblog, showcasing art/design, etc).
 - Grammar Checker with Grammarly
-- Drag and Drop support for image uploads.
-- SEO covered
+- SEO taken care of
+- Server Rendered Blog (Website)
+- 
 
 
 ## Demo:
@@ -46,16 +47,28 @@ Change directory
 cd letterpad
 ```
 
-## Install dependencies and generate database tables
+> Before you begin, you need to copy `apps/admin/.env.sample` to `apps/admin/.env`. 
+Set the `SECRET_KEY` to something different.
+
+## Development
 
 ```sh
 yarn install
+yarn build
+
+# Copy apps/admin/.env.sample to apps/admin/.env
+# Change the secret key in .env file.
 yarn seed
-```
+yarn dev
+``` 
 
 ## Production
 ```sh
+yarn install
 yarn build
+# Copy apps/admin/.env.sample to apps/admin/.env
+# Change the secret key in .env file.
+yarn seed
 yarn start
 ```
 ### Using Docker

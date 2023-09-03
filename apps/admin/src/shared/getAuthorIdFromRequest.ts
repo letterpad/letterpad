@@ -39,6 +39,10 @@ const getAuthorIdFromRequest = async (context: any) => {
           "Author from Authorization header after decrypting - ",
           author_id
         );
+      } else {
+        logger.error("Failed to find email in header token => ", authHeader, {
+          host: context.req.headers.host,
+        });
       }
     }
     if (process.env.DOCKER === "true" && process.env.EMAIL) {

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Head from "next/head";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import Script from "next/script";
 import React from "react";
 
@@ -10,14 +10,10 @@ import "../../public/css/theme-variables.css";
 import "ui/css/editor.css";
 import "../../public/website/css/style.css";
 
-import { FontPageWrapper, fonts } from "@/components/fonts";
+import { FontPageWrapper } from "@/components/fonts";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
-
-import { options } from "../pages/api/auth/[...nextauth]";
-import { getServerSession } from "../shared/serverSession";
-// import { getServerSession } from "@/middleware";
 
 export const metadata: Metadata = {
   title: "Letterpad - A blogging platform",

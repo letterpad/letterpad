@@ -40,14 +40,6 @@ export async function slugify(
   return recursiveFindUniqueSlug();
 }
 
-export const getReadableDate = (timestamp: Date) => {
-  return new Date(timestamp).toLocaleString("en-us", {
-    month: "long",
-    year: "numeric",
-    day: "numeric",
-  });
-};
-
 export async function getImageDimensions(
   url: string
 ): Promise<{ width: number; height: number; type: string }> {

@@ -57,11 +57,6 @@ export interface INavigationBuilderProps {
   updateOption: (menu: Navigation[]) => void;
 }
 
-export interface IAuthComponentProps {
-  session: SessionData;
-  settings: Setting;
-}
-
 export interface IUploadFileProps {
   files: File[] | FileList;
   type?: string;
