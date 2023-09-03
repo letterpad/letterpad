@@ -157,7 +157,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
           <BiPlus size={18} />
           Add New
         </Button>
-        <SaveButton />
+        <SaveButton testId="saveMenuBtn" />
       </div>
       <SuggestionModal
         isOpen={showModal}

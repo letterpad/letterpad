@@ -101,6 +101,7 @@ function addNavItem(label, slug) {
   cy.getTestId("empty-label-item").type(label);
   cy.getTestId("content-modal-btn").last().trigger("click");
   cy.getTestId(slug).click();
+  cy.getTestId("saveMenuBtn").click();
   cy.wait("@UpdateOptionsMutation");
 }
 Cypress.Commands.add("addNavItem", addNavItem);
