@@ -1,7 +1,9 @@
 import { Metadata } from "next";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import Head from "next/head";
 import { cookies } from "next/headers";
 import Script from "next/script";
+import { decode } from "next-auth/jwt";
 import React from "react";
 
 import "ui/css/tailwind.css";
@@ -73,6 +75,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme")?.value ?? "light";
+  const userId = await getUserFromCookie(cookies());
   return (
     <html lang="en" data-color-scheme={theme}>
       <Head>
@@ -82,16 +85,18 @@ const RootLayout = async ({ children }) => {
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 ${theme}`}
       >
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
-        />
+        {process.env.NODE_ENV !== "production" && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+          />
+        )}
         <Script id="google-analytics" async={true}>
           {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           
-          gtag('config', '${gaTrackingId}');
+          gtag('config', '${gaTrackingId}',{'user_id': '${userId}'});
           `}
         </Script>
         <FontPageWrapper primary_font={"Inter"} secondary_font="Roboto">
@@ -103,3 +108,19 @@ const RootLayout = async ({ children }) => {
 };
 
 export default RootLayout;
+
+async function getUserFromCookie(cookies: ReadonlyRequestCookies) {
+  const sessionCookie = cookies.get("next-auth.session-token");
+  if (!sessionCookie) return null;
+
+  try {
+    const decoded = await decode({
+      token: sessionCookie.value,
+      secret: process.env.SECRET_KEY,
+    });
+
+    return decoded?.sub;
+  } catch (e) {
+    return null;
+  }
+}

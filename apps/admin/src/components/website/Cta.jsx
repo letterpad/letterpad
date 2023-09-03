@@ -1,6 +1,6 @@
 import React from "react";
 
-import { EventAction, track } from "@/utils/useTracking";
+import { EventAction, track } from "@/track";
 
 import Illustration from "/public/website/cta-illustration.svg";
 
