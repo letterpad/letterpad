@@ -29,7 +29,7 @@ Letterpad is an end to end blog publishing engine.
 - Grammar Checker with Grammarly
 - SEO taken care of
 - Server Rendered Blog (Website)
-- 
+- 3 themes (looking for contributors)
 
 
 ## Demo:
