@@ -4,6 +4,8 @@ import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { getResolverContext } from "@/graphql/context";
 import { schema } from "@/graphql/schema";
 
+import { Cors } from "./_cors";
+
 const apolloServer = startServerAndCreateNextHandler(
   new ApolloServer({
     schema,
@@ -24,4 +26,13 @@ const apolloServer = startServerAndCreateNextHandler(
   }
 );
 
-export default apolloServer;
+const cors = Cors();
+
+export default cors(async (req, res) => {
+  if (req.method === "OPTIONS") {
+    res.end();
+    return false;
+  }
+
+  apolloServer(req, res);
+});

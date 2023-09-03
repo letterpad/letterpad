@@ -17,6 +17,7 @@ describe("Test Tags Graphql API", () => {
         {
           name: "home",
           posts: {
+            __typename: "PostsNode",
             count: 3,
             rows: result.tags.rows[0].posts.rows,
           },
@@ -24,6 +25,7 @@ describe("Test Tags Graphql API", () => {
         },
         {
           name: "first-post",
+          __typename: "PostsNode",
           posts: {
             count: 3,
             rows: result.tags.rows[1].posts.rows,
@@ -58,6 +60,8 @@ describe("Test Tags Graphql API", () => {
       __typename: "Tag",
       name: "new-tag",
       slug: "/tag/new-tag",
+      type: "tag",
+      id: "name-tag",
     });
   });
 

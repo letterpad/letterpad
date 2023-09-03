@@ -8,7 +8,7 @@ type Tag {
   slug: String!
   posts: PostsResponse
   type: TagType!
-  raw_name: String!
+  id: String!
 }
 
 input TagsFilters {

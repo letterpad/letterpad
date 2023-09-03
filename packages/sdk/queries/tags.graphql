@@ -9,7 +9,7 @@ query tags {
         name
         slug
         type
-        raw_name
+        id
         posts {
           __typename
           ... on PostsNode {

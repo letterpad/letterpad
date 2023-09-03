@@ -15,7 +15,7 @@ interface Props {
 export const Footer: FC<Props> = ({ settings, me }) => {
   const { social } = me;
   return (
-    <div className="mx-auto mt-28 max-w-[1480px] px-5 sm:px-8">
+    <div className="mx-auto max-w-[1480px] px-5 sm:px-8">
       <div className="grid gap-12 border-t border-gray-100 pb-24 pt-20 dark:border-gray-900 sm:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-4">
           <div>

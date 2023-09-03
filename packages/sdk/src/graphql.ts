@@ -846,9 +846,9 @@ export type Subscription = {
 
 export type Tag = {
   __typename?: "Tag";
+  id: Scalars["String"];
   name: Scalars["String"];
   posts?: Maybe<PostsResponse>;
-  raw_name: Scalars["String"];
   slug: Scalars["String"];
   type: TagType;
 };
@@ -1351,7 +1351,7 @@ export type TagsQuery = {
           name: string;
           slug: string;
           type: TagType;
-          raw_name: string;
+          id: string;
           posts?:
             | { __typename: "Exception" }
             | {
@@ -1654,7 +1654,7 @@ export const TagsDocument = `
         name
         slug
         type
-        raw_name
+        id
         posts {
           __typename
           ... on PostsNode {

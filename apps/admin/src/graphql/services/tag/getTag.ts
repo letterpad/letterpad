@@ -31,7 +31,7 @@ export const getTag = async (
       slug: tag.slug!,
       type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
       name: tryToParseCategoryName(tag.name),
-      raw_name: tag.name,
+      id: tag.name,
     };
   }
   return {

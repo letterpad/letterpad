@@ -35,7 +35,7 @@ export const getTags = async (
         slug: tag.slug!,
         type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
         name: tryToParseCategoryName(tag.name),
-        raw_name: tag.name,
+        id: tag.name,
       })),
     };
   }
@@ -49,9 +49,10 @@ export const getTags = async (
             author: {
               id: authorId,
             },
-            status: args.filters?.active
-              ? PostStatusOptions.Published
-              : undefined,
+            status:
+              args.filters?.active || !session?.user.id
+                ? PostStatusOptions.Published
+                : undefined,
           },
         },
       },
@@ -67,7 +68,7 @@ export const getTags = async (
         slug: tag.slug!,
         type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
         name: tryToParseCategoryName(tag.name),
-        raw_name: tag.name,
+        id: tag.name,
       })),
     };
   } catch (e: any) {

@@ -36,6 +36,8 @@ export const getLetterpadLatestPosts = async (
       count: await prisma.post.count({ where: condition.where }),
     };
   } catch (e: any) {
+    // eslint-disable-next-line no-console
+    console.log(e);
     return {
       __typename: "Exception",
       message: "Internal Server Error",

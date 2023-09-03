@@ -17,7 +17,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   const olderPosts = posts.rows.slice(firstThreeMax.length);
   return (
     <>
-      <div className="flex flex-col gap-12 lg:flex-row">
+      <div className="mb-10 flex flex-col gap-12 lg:flex-row">
         <LatestPosts posts={firstThreeMax} />
         {/* @ts-expect-error Async Component - https://github.com/vercel/next.js/issues/42292 */}
         <SidePosts />
@@ -68,9 +68,7 @@ const LatestPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
 
   return (
     <div className="flex flex-col">
-      <span className="font-system mb-4 mt-10 text-base font-medium uppercase tracking-wider">
-        Latest Posts
-      </span>
+      <SectionHeading>Latest Posts</SectionHeading>
       <div className="flex flex-wrap gap-10 xl:flex-nowrap ">
         {latestThreePosts}
       </div>
@@ -82,9 +80,7 @@ const OlderPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
   if (posts.length === 0) return null;
   return (
     <div className="flex flex-col">
-      <span className="font-system mb-4 mt-32 text-base font-medium uppercase tracking-wider">
-        Previous Posts
-      </span>
+      <SectionHeading>Previous Posts</SectionHeading>
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <Card post={post} />
@@ -108,9 +104,9 @@ const SidePosts = async () => {
   if (postsTag.rows.length === 0) return null;
   return (
     <div className="hidden flex-col dark:bg-opacity-30 lg:flex">
-      <span className="font-system mb-4 mt-10 text-base font-medium uppercase tracking-wider">
+      <SectionHeading>
         #Random: Posts on {tag.name.toUpperCase()}
-      </span>
+      </SectionHeading>
       <div className="space-y-8">
         {postsTag.rows.slice(0, 3).map((tag) => (
           <HorizontalCard post={tag} key={tag.id} />
@@ -123,3 +119,11 @@ const SidePosts = async () => {
 function getRandom<T>(list: T[]) {
   return list[Math.floor(Math.random() * list.length)];
 }
+
+const SectionHeading = ({ children }) => {
+  return (
+    <span className="font-system mb-4 mt-10 border-l-2 border-accent-50 pl-2 text-base font-bold uppercase tracking-wider text-accent-50">
+      {children}
+    </span>
+  );
+};

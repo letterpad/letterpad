@@ -49,7 +49,7 @@ export const Card: FC<{
       >
         <div className={classNames('flex flex-wrap items-center gap-3', {})}>
           <div className="data-color flex items-center text-sm ">
-            <span className="whitespace-nowrap ">
+            <span className="whitespace-nowrap">
               {formatDate(post.publishedAt)}
             </span>
             <span className="px-2.5">⋅</span>
@@ -121,8 +121,8 @@ export const HorizontalCard = ({ post }) => {
           {post.excerpt}
         </p>
 
-        <div className="data-color flex items-center text-xs  opacity-60">
-          <span className="whitespace-nowrap ">
+        <div className="data-color flex items-center text-xs  opacity-80">
+          <span className="whitespace-nowrap">
             {formatDate(post.publishedAt)}
           </span>
           <span className="px-2.5">⋅</span>

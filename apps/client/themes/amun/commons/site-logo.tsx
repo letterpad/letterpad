@@ -53,7 +53,7 @@ function getLogoWidthAndHeight({ width, height, src, title = '' }: Props2) {
     if (title.length <= 20) {
       className = ' flex-row items-center';
     }
-    return { width: 140, height: 140 / ratio, src, className };
+    return { width: 80, height: 80 / ratio, src, className };
   }
   if (ratio < 1) {
     const ratio = width / height;

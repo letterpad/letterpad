@@ -34,7 +34,7 @@ export const Subscribe = () => {
   };
 
   return (
-    <div className="mx-auto mt-36 max-w-[1480px] items-center px-5 text-center sm:px-8 lg:flex  lg:gap-20 lg:text-left xl:gap-36">
+    <div className="mx-auto mt-10 max-w-[1480px] items-center bg-slate-200 px-5 py-32 text-center dark:bg-black/30 sm:px-8  lg:flex lg:gap-20 lg:text-left xl:gap-36">
       <div className="mb-12 flex-grow lg:mb-0">
         <h2 className="mb-4 text-4xl font-bold">Subscribe to our newsletter</h2>
         <p className=" mb-8">
@@ -43,7 +43,7 @@ export const Subscribe = () => {
       </div>
       <div>
         <form
-          className="mx-auto flex max-w-[500px] flex-wrap gap-y-4 gap-x-2 bg-transparent sm:flex-nowrap sm:gap-x-0 sm:rounded-full sm:bg-gray-100 sm:dark:bg-white/10 lg:min-w-[450px]"
+          className="mx-auto flex max-w-[500px] flex-wrap gap-x-2 gap-y-4 bg-transparent sm:flex-nowrap sm:gap-x-0 sm:rounded-full sm:bg-gray-100 sm:dark:bg-white/10 lg:min-w-[450px]"
           onSubmit={doSubscribe}
         >
           <label className="sr-only" htmlFor="email">
