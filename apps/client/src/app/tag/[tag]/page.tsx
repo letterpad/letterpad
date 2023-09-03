@@ -8,6 +8,7 @@ export default async function Tag(props) {
   const { posts, me, tagName, settings } = await getPostsByTag(
     props.params.tag
   );
+
   const { Tag } = useTheme(settings?.theme);
   if (
     posts.__typename !== 'PostsNode' ||
@@ -16,7 +17,6 @@ export default async function Tag(props) {
   ) {
     return null;
   }
-
   return (
     <>
       <TagSEO
@@ -27,7 +27,7 @@ export default async function Tag(props) {
         url={settings.site_url + 'tags'}
         twSite={me.social?.twitter}
       />
-      <Tag {...props} />
+      <Tag posts={posts} settings={settings} me={me} tagName={tagName} />
     </>
   );
 }

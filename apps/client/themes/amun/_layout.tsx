@@ -10,14 +10,14 @@ import { Section } from './commons/section';
 import { Subscribe } from './commons/subscribe';
 import { LayoutProps } from '../../types/pageTypes';
 
-export const Layout = ({ children, props, isHomeCollection }: LayoutProps) => {
+export const forceDynamic = true;
+
+export const Layout = ({ children, props }: LayoutProps) => {
   const { settings } = props;
-  const menu = getMenu(settings.menu);
-  // const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
       <Header settings={props.settings} />
-      {isHomeCollection && <Banner settings={settings} />}
+      <Banner settings={settings} />
       <Section>{children}</Section>
       <Subscribe />
       <Footer {...props} />

@@ -38,7 +38,6 @@ export const getPosts = async (
   // First verify if posts are requested from client and not admin dashboard.
   // If posts are requested by client, then verify if this a collection of posts for
   // displaying in homepage.
-
   // find the real slug of the tag
   if (args.filters?.tagSlug === "/") {
     // find the first menu item. If its a tag, then display its collection of posts.
@@ -58,10 +57,12 @@ export const getPosts = async (
       // id: args.filters?.id,
       featured: args.filters?.featured,
       status: {
-        in: args.filters?.status ?? [
-          PostStatusOptions.Published,
-          PostStatusOptions.Draft,
-        ],
+        in: client_author_id
+          ? [PostStatusOptions.Published]
+          : args.filters?.status ?? [
+              PostStatusOptions.Published,
+              PostStatusOptions.Draft,
+            ],
       },
       //@todo - remove slug
       slug: args.filters?.slug,

@@ -43,7 +43,6 @@ export class Letterpad {
     type Row = RawRow & {
       tags?: RawRow['tags'] & { __typename: 'TagsNode' };
     } & { author?: RawRow['author'] & { __typename: 'Author' } };
-
     return posts as PostsQuery['posts'] & { __typename: 'PostsNode' } & {
       rows: Row[];
     };

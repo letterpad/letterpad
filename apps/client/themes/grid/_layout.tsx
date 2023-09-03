@@ -8,7 +8,7 @@ import { MobileNav } from './commons/mobile-nav';
 import { LogoWithTitle } from './commons/site-logo';
 import { LayoutProps } from '../../types/pageTypes';
 
-export const Layout = ({ children, props, isHomeCollection }: LayoutProps) => {
+export const Layout = ({ children, props }: LayoutProps) => {
   const routes = [...props.settings.menu];
 
   const menu = getMenu(routes);
@@ -20,7 +20,7 @@ export const Layout = ({ children, props, isHomeCollection }: LayoutProps) => {
             <Link href="/" aria-label={props.settings.site_title}>
               <LogoWithTitle
                 logo={props.settings.site_logo}
-                title={isHomeCollection ? '' : props.settings.site_title}
+                title={props.settings.site_title}
               />
             </Link>
           </div>

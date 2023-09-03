@@ -33,7 +33,6 @@ export const getPostsFromTag = async (
       createdAt: "desc",
     },
   });
-
   return {
     __typename: "PostsNode",
     count: posts?.length,

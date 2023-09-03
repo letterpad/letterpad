@@ -10,11 +10,10 @@ import { getData } from '../../src/data';
 
 export interface Props {
   children: ReactNode;
-  isHomeCollection: boolean;
   props: Pick<Awaited<ReturnType<typeof getData>>, 'me' | 'settings'>;
 }
 
-export const Layout = ({ children, props, isHomeCollection }: Props) => {
+export const Layout = ({ children, props }: Props) => {
   const { settings, me } = props;
 
   return (
@@ -29,9 +28,7 @@ export const Layout = ({ children, props, isHomeCollection }: Props) => {
         <Nav menu={settings.menu} />
       </header>
       <div
-        className={classNames('mx-auto max-w-[1480px] px-5 py-20 sm:px-8', {
-          hidden: !isHomeCollection,
-        })}
+        className={classNames('mx-auto max-w-[1480px] px-5 py-20 sm:px-8', {})}
       >
         <h1
           className={classNames(

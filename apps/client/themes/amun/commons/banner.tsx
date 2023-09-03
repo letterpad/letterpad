@@ -1,7 +1,8 @@
 'use client';
 
 import classNames from 'classnames';
-import { SettingsFragmentFragment } from 'letterpad-sdk';
+import { NavigationType, SettingsFragmentFragment } from 'letterpad-sdk';
+import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 
 import { Section } from './section';
@@ -9,6 +10,12 @@ import { Section } from './section';
 export const Banner: FC<{
   settings: SettingsFragmentFragment;
 }> = ({ settings }) => {
+  const pathname = usePathname();
+  const [firstItemOfMenu] = settings?.menu ?? [];
+  const isCollection =
+    firstItemOfMenu?.type === NavigationType.Tag && pathname === '/';
+
+  if (!isCollection) return null;
   return (
     <div
       style={{

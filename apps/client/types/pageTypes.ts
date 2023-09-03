@@ -17,7 +17,6 @@ import {
 
 export interface LayoutProps {
   children: ReactNode;
-  isHomeCollection: boolean;
   props: Pick<Awaited<ReturnType<typeof getData>>, 'me' | 'settings'>;
 }
 
