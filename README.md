@@ -113,36 +113,32 @@ abhisheksaha11/letterpad
 ### Configuration Options
 
 Letterpad can be configured using environment variables. Here are the available options:
+Here's the provided information converted into a table format:
 
-- **User Configuration**:
-  - `EMAIL`: The email of the first user.
-  - `PASSWORD`: The password of the first user.
-
-- **Security Configuration**:
-  - `SECRET_KEY`: A secret key used for encrypting passwords and emails.
-
-- **Database Configuration**:
-  - `DATABASE_URL`: Database connection URL. You can use either SQLite or MySQL.
-
-- **Spam Protection**:
-  - `RECAPTCHA_KEY_CLIENT`: Google reCAPTCHA client key.
-  - `RECAPTCHA_KEY_SERVER`: Google reCAPTCHA server key.
-
-- **Email Configuration**:
-  - `GMAIL_USER`: Gmail email address.
-  - `GMAIL_PASSWORD`: Gmail password.
-  - `SENDER_EMAIL`: Email address for sending emails.
-
-- **Media Management Configuration (Cloudinary)**:
-  - `CLOUDINARY_KEY`: Cloudinary API key.
-  - `CLOUDINARY_NAME`: Cloudinary cloud name.
-  - `CLOUDINARY_SECRET`: Cloudinary API secret.
-
-- **Unsplash Integration**:
-  - `UNSPLASH_CLIENT_ID`: Unsplash client ID.
-
-- **Debugging**:
-  - `DEBUG`: Enable debugging.
+| Configuration Options              | Description                                       |
+| ---------------------------------- | ------------------------------------------------- |
+| **User Configuration**             |                                                 |
+| EMAIL                              | The email of the first user. (Docker only)        |
+| PASSWORD                           | The password of the first user. (Docker only)      |
+| **Security Configuration**         |                                                 |
+| SECRET_KEY                         | A secret key used for encrypting passwords and emails. |
+| **Database Configuration**         |                                                 |
+| DATABASE_URL                       | Database connection URL. You can use either SQLite or MySQL. |
+| **Spam Protection**                |                                                 |
+| RECAPTCHA_KEY_CLIENT               | Google reCAPTCHA client key.                     |
+| RECAPTCHA_KEY_SERVER               | Google reCAPTCHA server key.                     |
+| **Email Configuration**            |                                                 |
+| GMAIL_USER                         | Gmail email address.                             |
+| GMAIL_PASSWORD                     | Gmail password.                                  |
+| SENDER_EMAIL                       | Email address for sending emails.                |
+| **Media Management Configuration (Cloudinary)** |                                         |
+| CLOUDINARY_KEY                     | Cloudinary API key.                              |
+| CLOUDINARY_NAME                    | Cloudinary cloud name.                           |
+| CLOUDINARY_SECRET                  | Cloudinary API secret.                           |
+| **Unsplash Integration**           |                                                 |
+| UNSPLASH_CLIENT_ID                 | Unsplash client ID.                              |
+| **Debugging**                      |                                                 |
+| DEBUG                              | Enable debugging.                                |
 
 ## URL and Port
 
