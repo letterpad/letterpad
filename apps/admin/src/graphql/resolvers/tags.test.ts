@@ -27,8 +27,8 @@ describe("Test Tags Graphql API", () => {
         },
         {
           name: "first-post",
-          __typename: "PostsNode",
           posts: {
+            __typename: "PostsNode",
             count: 3,
             rows: result.tags.rows[1].posts.rows,
           },
