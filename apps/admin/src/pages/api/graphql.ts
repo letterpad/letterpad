@@ -11,6 +11,11 @@ const apolloServer = startServerAndCreateNextHandler(
   }),
   {
     context: async (req, res) => {
+      if (req.method === "OPTIONS") {
+        res.setHeader("access-control-allow-methods", "POST");
+        res.end();
+        return false;
+      }
       const resolverContext = await getResolverContext({ req, res });
       res.setHeader("access-control-allow-origin", "*");
       res.setHeader("access-control-allow-methods", "*");
