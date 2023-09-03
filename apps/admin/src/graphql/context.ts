@@ -1,3 +1,5 @@
+import { Prisma, PrismaClient } from "@prisma/client";
+
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 
 import { SessionData } from "./types";
@@ -61,4 +63,6 @@ type Awaited<T> = T extends null | undefined
     : never // the argument to `then` was not callable
   : T; // non-object or non-thenable
 
-export type ResolverContext = Awaited<ReturnType<typeof getResolverContext>>;
+export type ResolverContext = Awaited<ReturnType<typeof getResolverContext>> & {
+  prisma: PrismaClient;
+};

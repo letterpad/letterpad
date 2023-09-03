@@ -1,5 +1,3 @@
-import { track as doTrack } from "./utils/useTracking";
-
 export enum EventAction {
   Load = "load",
   View = "view",
@@ -14,5 +12,8 @@ export interface EventInfo {
 }
 
 export const track = (info: EventInfo) => {
-  doTrack(info);
+  gtag("event", info.eventAction, {
+    event_category: info.eventCategory,
+    event_label: info.eventLabel,
+  });
 };

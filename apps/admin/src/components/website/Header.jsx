@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { EventAction, track } from "@/utils/useTracking";
+import { EventAction, track } from "@/track";
 
 import Logo from "/public/website/logo.png";
 

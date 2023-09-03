@@ -1,9 +1,8 @@
-import { EventAction, useTracking } from "@/utils/useTracking";
+import { EventAction, track } from "@/track";
 
 import Illustration from "/public/website/hero-illustration.svg";
 
 function Hero() {
-  const track = useTracking();
   return (
     <section className="relative overflow-hidden">
       {/* Bg gradient */}
