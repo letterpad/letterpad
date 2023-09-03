@@ -52,7 +52,7 @@ function useNavigationData(): IReturn {
 export { useNavigationData };
 
 function normalizePages(pages) {
-  return pages.rows
+  return pages
     .map((item) => {
       return {
         type: NavigationType.Page,
