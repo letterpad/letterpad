@@ -23,6 +23,7 @@ describe("Test Tags Graphql API", () => {
           },
           slug: "/tag/home",
           id: "home",
+          type: "tag",
         },
         {
           name: "first-post",
@@ -33,6 +34,7 @@ describe("Test Tags Graphql API", () => {
           },
           slug: "/tag/first-post",
           id: "first-post",
+          type: "tag",
         },
       ])
     );
