@@ -1,7 +1,21 @@
-# Letterpad
-Letterpad is an end to end blog publishing engine.
+## Table of Contents
 
-## Screenshots
+- [Letterpad](#letterpad)
+  - [Features](#features)
+  - [Demo](#demo)
+- [How to Install](#how-to-install)
+  - [Development](#development)
+  - [Production](#production)
+    - [Using Docker](#using-docker)
+    - [Configuration Options](#configuration-options)
+  - [URL and Port](#url-and-port)
+- [Letterpad Admin](#letterpad-admin)
+- [Letterpad Client](#letterpad-client)
+- [Contribute](#contribute)
+
+# Letterpad
+
+Letterpad is a comprehensive blog publishing engine that simplifies the process of managing and publishing content for your blog or website.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/1502352/213929848-293a0de7-d935-4744-859e-c6572dd97d10.png" width="600" align="center">
@@ -17,38 +31,41 @@ Letterpad is an end to end blog publishing engine.
 
 ## Features
 
-- Fully developed Admin Dashboard and Website
-- Domain Mapping
-- Inline Editing
-- Grid and List Layout
-- Customisable Brand Color
-- Use mysql or sqlite3
-- Integrations with Cloudinary and Unsplash
-- Multi User Install by default
-- Creatives - Page Builder for creating photostories ( portfolio, photoblog, showcasing art/design, etc).
-- Grammar Checker with Grammarly
-- SEO taken care of
-- Server Rendered Blog (Website)
-- 3 themes (looking for contributors)
+- **Fully Developed Admin Dashboard and Website**: Get started quickly with a ready-to-use admin dashboard and a customizable website.
+- **Domain Mapping**: Easily map your custom domain to your Letterpad blog.
+- **Inline Editing**: Edit your content directly on the website with inline editing capabilities.
+- **Grid and List Layout**: Choose between grid and list layouts for displaying your content.
+- **Customizable Brand Color**: Personalize your blog with a customizable brand color.
+- **Database Options**: Use either MySQL or SQLite3 for your database.
+- **Integrations**: Seamlessly integrate with Cloudinary and Unsplash for media management.
+- **Multi-User Install**: Letterpad supports multi-user installations by default.
+- **Creatives - Page Builder**: Create beautiful photostories, portfolios, photoblogs, and art/design showcases with the Creatives page builder.
+- **Grammar Checker**: Integration with Grammarly ensures your content is free of grammatical errors.
+- **SEO Optimization**: Built-in SEO features help boost your blog's visibility.
+- **Server Rendered Blog**: Enjoy the benefits of a server-rendered blog for optimal performance.
+- **Themes**: Choose from three themes and contribute your own designs.
 
+## Demo
 
-## Demo:
-https://demo.letterpad.app
+Explore Letterpad's capabilities in action by visiting the [demo](https://demo.letterpad.app).
 
-# How to install
+# How to Install
 
-Clone this project
+To set up Letterpad on your system, follow these steps:
 
-```sh
-git clone git@github.com:letterpad/letterpad.git
-```
-Change directory
-```sh
-cd letterpad
-```
+1. Clone this project:
 
-> Before you begin, you need to copy `apps/admin/.env.sample` to `apps/admin/.env`. 
-Set the `SECRET_KEY` to something different.
+   ```sh
+   git clone git@github.com:letterpad/letterpad.git
+   ```
+
+2. Change to the project directory:
+
+   ```sh
+   cd letterpad
+   ```
+
+Before you proceed, ensure you've copied `apps/admin/.env.sample` to `apps/admin/.env` and set the `SECRET_KEY` to a unique value.
 
 ## Development
 
@@ -60,18 +77,24 @@ yarn build
 # Change the secret key in .env file.
 yarn seed
 yarn dev
-``` 
+```
 
 ## Production
+
 ```sh
 yarn install
 yarn build
+
 # Copy apps/admin/.env.sample to apps/admin/.env
 # Change the secret key in .env file.
 yarn seed
 yarn start
 ```
+
 ### Using Docker
+
+If you prefer using Docker for deployment, you can run Letterpad with the following command:
+
 ```sh
 docker run \
 -v 'data:/app/apps/admin/prisma/sqlite/data' \
@@ -85,87 +108,61 @@ abhisheksaha11/letterpad
 ```
 
 > **IMPORTANT!!!** - 
-> The client uses `apps/client/.env` to connect with the API. This file has the CLIENT_TOKEN which you can find by logging into your admin dashboard and navigating to Settings > Keys. If you have changed the SECRET_KEY, then you will have to update the CLIENT_ID.
+> The client uses `apps/client/.env` to connect with the API. This file contains the CLIENT_TOKEN, which you can find by logging into your admin dashboard and navigating to Settings > Keys. If you've changed the SECRET_KEY, make sure to update the CLIENT_ID.
 
-### Options:
-Letterpad can be configured using environemt variables. The below are all possible options.
+### Configuration Options
 
-Create your first user. You should run the container the first time using this. 
-> When you restart the container only Email is required.
-```
-EMAIL
-PASSWORD
-```
+Letterpad can be configured using environment variables. Here are the available options:
 
-Provide a secret key which will be used for encryting passwords and emails.
-```
-SECRET_KEY
-```
+- **User Configuration**:
+  - `EMAIL`: The email of the first user.
+  - `PASSWORD`: The password of the first user.
 
-Provide a database url string. If you want to use `mysql`, then you should either have the credentials ready or use `docker-compose.yml` file to add the db. If you dont wnat to create additional setup, then you can use `sqlite`.
-```sh
-DATABASE_URL
+- **Security Configuration**:
+  - `SECRET_KEY`: A secret key used for encrypting passwords and emails.
 
-# eg.
-# DATABASE_URL="file:data/letterpad.sqlite"
-# DATABASE_URL="mysql://user:pwd@172.17.0.1:3306/db_name?connect_timeout=5" 
-```
-> 172.17.0.1 is the docker default docker ip. Prisma does not work if you use the container name as host. 
+- **Database Configuration**:
+  - `DATABASE_URL`: Database connection URL. You can use either SQLite or MySQL.
 
+- **Spam Protection**:
+  - `RECAPTCHA_KEY_CLIENT`: Google reCAPTCHA client key.
+  - `RECAPTCHA_KEY_SERVER`: Google reCAPTCHA server key.
 
-If you want to add spam protection for registration page, then you should configure google recaptcha keys.
-You can create the keys here - https://www.google.com/recaptcha/admin/create
-```
-RECAPTCHA_KEY_CLIENT
-RECAPTCHA_KEY_SERVER
-```
+- **Email Configuration**:
+  - `GMAIL_USER`: Gmail email address.
+  - `GMAIL_PASSWORD`: Gmail password.
+  - `SENDER_EMAIL`: Email address for sending emails.
 
-It is also highly advisable to configure emails. Currently Letterpad supports gmail.
-```
-GMAIL_USER
-GMAIL_PASSWORD
-SENDER_EMAIL
-```
+- **Media Management Configuration (Cloudinary)**:
+  - `CLOUDINARY_KEY`: Cloudinary API key.
+  - `CLOUDINARY_NAME`: Cloudinary cloud name.
+  - `CLOUDINARY_SECRET`: Cloudinary API secret.
 
-If you want to upload your images to CDN, then you should configure the cloudinary keys here - https://cloudinary.com/.
-```
-CLOUDINARY_KEY
-CLOUDINARY_NAME
-CLOUDINARY_SECRET
-```
+- **Unsplash Integration**:
+  - `UNSPLASH_CLIENT_ID`: Unsplash client ID.
 
-If you want to enable Unsplash which is a repository for quality images, then you should configure unsplash here - https://unsplash.com/oauth/applications.
-```
-UNSPLASH_CLIENT_ID
-```
-Enable debugging
-```
-DEBUG
-```
-
-## Development
-
-```sh
-yarn dev
-```
+- **Debugging**:
+  - `DEBUG`: Enable debugging.
 
 ## URL and Port
-By default the admin panel runs on port 3000 and client runs on port 3001.
-- Admin  - http://localhost:3000/admin
-- Client - http://localhost:3001
+
+By default, the admin panel runs on port 3000, and the client runs on port 3001.
+
+- Admin: [http://localhost:3000/admin](http://localhost:3000/admin)
+- Client: [http://localhost:3001](http://localhost:3001)
 
 ## Letterpad Admin
-You can find more information about configuration in this [folder](https://github.com/letterpad/letterpad/tree/master/apps/admin)
+
+For more information about configuring the admin panel, refer to this [folder](https://github.com/letterpad/letterpad/tree/master/apps/admin).
 
 ## Letterpad Client
 
-The letterpad client (public) app can be found inside `apps/client`.
-Demo: https://demo.letterpad.app
+The Letterpad client (public) app can be found inside `apps/client`.
 
-Letterpad Admin provides a client key which can be found in settings. If you want to host the client in a different domain, then you should set this client_key in `apps/client/next.config.js`.
+Demo: [https://demo.letterpad.app](https://demo.letterpad.app)
+
+Letterpad Admin provides a client key that can be found in settings. If you want to host the client on a different domain, set this client_key in `apps/client/next.config.js`.
 
 ## Contribute
 
-You are welcome to contribute to the project. If you find any bugs, please create an issue or a pull request. Also if you would like to have a feature, feel free to inform us with an issue.
-
-[JOIN DISCORD CHANNEL](https://discord.gg/n89rCNnzRw)
+You are welcome to contribute to the project. If you encounter any bugs or have feature requests, please create an issue or submit a pull request. Feel free to join our [Discord channel](https://discord.gg/n89rCNnzRw) to connect with the community and stay updated on the project's development.
