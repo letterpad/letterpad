@@ -1,5 +1,5 @@
 # Letterpad
-Letterpad is a blog publishing platform.
+Letterpad is an end to end blog publishing engine.
 
 ## Screenshots
 
@@ -168,3 +168,4 @@ Letterpad Admin provides a client key which can be found in settings. If you wan
 
 You are welcome to contribute to the project. If you find any bugs, please create an issue or a pull request. Also if you would like to have a feature, feel free to inform us with an issue.
 
+[JOIN DISCORD CHANNEL](https://discord.gg/n89rCNnzRw)
