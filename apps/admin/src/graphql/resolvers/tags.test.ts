@@ -22,6 +22,7 @@ describe("Test Tags Graphql API", () => {
             rows: result.tags.rows[0].posts.rows,
           },
           slug: "/tag/home",
+          id: "home",
         },
         {
           name: "first-post",
@@ -31,6 +32,7 @@ describe("Test Tags Graphql API", () => {
             rows: result.tags.rows[1].posts.rows,
           },
           slug: "/tag/first-post",
+          id: "first-post",
         },
       ])
     );
@@ -61,7 +63,7 @@ describe("Test Tags Graphql API", () => {
       name: "new-tag",
       slug: "/tag/new-tag",
       type: "tag",
-      id: "name-tag",
+      id: "new-tag",
     });
   });
 
