@@ -85,7 +85,7 @@ const RootLayout = async ({ children }) => {
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 ${theme}`}
       >
-        {process.env.NODE_ENV !== "production" && (
+        {process.env.NODE_ENV === "production" && (
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
           />
