@@ -27,7 +27,7 @@ export async function GET() {
       'Content-Type': 'application/xml',
     });
 
-    return new Response(xmlData, {
+    return new NextResponse(xmlData, {
       status: 200,
       headers,
     });

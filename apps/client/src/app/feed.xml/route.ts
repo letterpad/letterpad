@@ -1,5 +1,6 @@
-import { getFeed } from '../../data';
+import { NextResponse } from 'next/server';
 
+import { getFeed } from '../../data';
 export async function GET() {
   try {
     // Replace this with your actual data retrieval logic
@@ -15,7 +16,7 @@ export async function GET() {
       'Content-Type': 'application/xml',
     });
 
-    return new Response(xmlData, {
+    return new NextResponse(xmlData, {
       status: 200,
       headers,
     });
