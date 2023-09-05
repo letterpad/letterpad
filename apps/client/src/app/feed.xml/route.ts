@@ -2,27 +2,23 @@ import { NextResponse } from 'next/server';
 
 import { getFeed } from '../../data';
 export async function GET() {
-  try {
-    // Replace this with your actual data retrieval logic
-    const { feedResponse, settings, me } = await getFeed();
+  // Replace this with your actual data retrieval logic
+  const { feedResponse, settings, me } = await getFeed();
 
-    // Generate the XML feed
-    const xmlData = generateXmlFeed(feedResponse.rows, {
-      title: settings.site_title,
-      desciption: settings.site_description,
-    });
+  // Generate the XML feed
+  const xmlData = generateXmlFeed(feedResponse.rows, {
+    title: settings.site_title,
+    desciption: settings.site_description,
+  });
 
-    const headers = new Headers({
-      'Content-Type': 'application/xml',
-    });
+  const headers = new Headers({
+    'Content-Type': 'application/xml',
+  });
 
-    return new NextResponse(xmlData, {
-      status: 200,
-      headers,
-    });
-  } catch (error) {
-    throw error;
-  }
+  return new NextResponse(xmlData, {
+    status: 200,
+    headers,
+  });
 }
 
 function generateXmlFeed(rows, options) {
