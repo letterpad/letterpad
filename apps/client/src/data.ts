@@ -63,11 +63,11 @@ export async function getData() {
 
 export async function getPostData(slug: string) {
   const letterpad = getLetterpad();
-
-  const post = await letterpad.getPost(slug);
-  const settings = await letterpad.getSettings();
-  const me = await letterpad.getAuthor();
-
+  const [post, settings, me] = await Promise.all([
+    letterpad.getPost(slug),
+    letterpad.getSettings(),
+    letterpad.getAuthor(),
+  ]);
   return {
     post,
     settings,
@@ -77,9 +77,12 @@ export async function getPostData(slug: string) {
 
 export async function getTagsData() {
   const letterpad = getLetterpad();
-  const tags = await letterpad.listTags();
-  const settings = await letterpad.getSettings();
-  const me = await letterpad.getAuthor();
+
+  const [tags, settings, me] = await Promise.all([
+    letterpad.listTags(),
+    letterpad.getSettings(),
+    letterpad.getAuthor(),
+  ]);
 
   return {
     tags,
@@ -90,9 +93,12 @@ export async function getTagsData() {
 
 export async function getPostsByTag(tag: string) {
   const letterpad = getLetterpad();
-  const posts = await letterpad.listPosts(tag);
-  const settings = await letterpad.getSettings();
-  const me = await letterpad.getAuthor();
+  const [posts, settings, me] = await Promise.all([
+    letterpad.listPosts(tag),
+    letterpad.getSettings(),
+    letterpad.getAuthor(),
+  ]);
+
   return {
     posts,
     settings,
@@ -121,10 +127,11 @@ export async function getSiteMap() {
 
 export async function getFeed() {
   const letterpad = getLetterpad();
-
-  const feedResponse = await letterpad.getFeed();
-  const me = await letterpad.getAuthor();
-  const settings = await letterpad.getSettings();
+  const [feedResponse, settings, me] = await Promise.all([
+    letterpad.getFeed(),
+    letterpad.getSettings(),
+    letterpad.getAuthor(),
+  ]);
 
   return {
     feedResponse,
