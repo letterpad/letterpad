@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { getSiteMap } from '../../data';
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const { rows } = await getSiteMap();
     const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';

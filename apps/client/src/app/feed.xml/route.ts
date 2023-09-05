@@ -1,8 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
 import { getFeed } from '../../data';
 
-export async function GET(_req: NextApiRequest, res: NextApiResponse) {
+export async function GET() {
   try {
     // Replace this with your actual data retrieval logic
     const { feedResponse, settings, me } = await getFeed();
