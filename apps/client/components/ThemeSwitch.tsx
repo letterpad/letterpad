@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 
 function getTheme() {
+  if (typeof document === 'undefined') return 'light';
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
   const userSelectedTheme =
     localStorage.theme ?? isDarkMode.matches ? 'dark' : 'light';

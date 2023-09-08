@@ -54,10 +54,11 @@ export async function getNewPostContent(
     full_name: "Letterpad User",
     post_title: post?.title,
     excerpt: post?.excerpt,
+    author_name: post.author.name,
     cover_image_link: post?.cover_image
       ? `<img src="${post?.cover_image}" width="100%">`
       : "",
-    read_more_link: `<a target="_blank" href="${post.author.setting?.site_url}/${post?.type}/${post?.slug}">Read More</a>`,
+    read_more_link: `<a target="_blank" class="btn" href="${post.author.setting?.site_url}/${post?.type}/${post?.slug}">Read More</a>`,
   });
 
   return {
@@ -65,7 +66,7 @@ export async function getNewPostContent(
     content: {
       subject,
       html: addLineBreaks(body),
-      to: post.author.subscribers.map((s) => s.email),
+      to: post.author.subscribers.map(({ email, id }) => ({ email, id })),
     },
     meta: {
       author: post.author,
