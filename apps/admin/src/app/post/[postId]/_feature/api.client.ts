@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { InputUpdatePost, PostFilters } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { usePostQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
@@ -20,12 +22,17 @@ export const useGetPost = (filters: PostFilters) => {
 
 export const useUpdatePost = () => {
   const [{ fetching }, updatePost] = useUpdatePostMutation();
+  const [updating, setUpdating] = useState(false);
   return {
     fetching,
+    updating,
     updatePost: (params: InputUpdatePost) => {
-      return updatePost({
+      setUpdating(true);
+      const res = updatePost({
         data: { ...params },
       });
+      setUpdating(false);
+      return res;
     },
   };
 };

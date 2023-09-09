@@ -1,8 +1,9 @@
-import { Prisma } from "@prisma/client";
+import { Author, Post, Prisma } from "@prisma/client";
 
 import { report } from "@/components/error";
 
 import {
+  InputPublishOptions,
   MutationUpdatePostArgs,
   PostStatusOptions,
   PostTypes,
@@ -16,6 +17,10 @@ import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
+
+import { bodyDecorator } from "../../mail/decorator";
+import { getEmailTemplate } from "../../mail/templates/getTemplate";
+import { EmailTemplates } from "../../types";
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,
@@ -53,6 +58,16 @@ export const updatePost = async (
         __typename: "PostError",
         message: "No Author found",
       };
+    }
+
+    if (args.data.publishOptions?.testMail) {
+      await handlePostPublish(
+        {
+          testMail: true,
+        },
+        { author, post: existingPost }
+      );
+      return { ...mapPostToGraphql(existingPost) };
     }
 
     const newPostArgs: Prisma.PostUpdateArgs = {
@@ -178,7 +193,13 @@ export const updatePost = async (
 
       if (newPostArgs.data.status === PostStatusOptions.Published) {
         const url = `https://${session.user.username}.letterpad.app/sitemap.xml`;
-        submitSitemap(url);
+        await submitSitemap(url);
+        if (args.data.publishOptions?.sendMail) {
+          await handlePostPublish(args.data.publishOptions, {
+            author,
+            post: updatedPost,
+          });
+        }
       }
     }
 
@@ -200,3 +221,44 @@ export const updatePost = async (
     };
   }
 };
+
+async function handlePostPublish(
+  options: InputPublishOptions | undefined,
+  data: { author: Author; post: Post }
+) {
+  const template = await getEmailTemplate(
+    { template_id: EmailTemplates.NewPost, post_id: data.post.id },
+    prisma
+  );
+  if (!template.ok || !process.env.BREVO_API_KEY) return;
+  let { subject, html, to } = template.content;
+  if (!Array.isArray(to)) return;
+  if (options?.testMail) {
+    to = [{ email: data.author.email, id: data.author.id }];
+  }
+  return fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "api-key": process.env.BREVO_API_KEY,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: {
+        email: "admin@letterpad.app",
+        name: "Letterpad",
+      },
+      subject,
+      htmlContent: html,
+      messageVersions: to.map(({ email, id }) => ({
+        to: [
+          {
+            email,
+          },
+        ],
+        htmlContent: bodyDecorator(html, email, template.meta.author.id, id),
+        subject,
+      })),
+    }),
+  });
+}

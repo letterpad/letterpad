@@ -10,3 +10,11 @@ export type PostContextType = {
   onMediaBrowse: () => void;
   settings?: Setting;
 };
+
+export enum NotPublished {
+  NoTags = "NoTags",
+  TagsNotLinkedWithNav = "TagsNotLinkedWithNav",
+  PageNotLinkedWithNav = "PageNotLinkedWithNav",
+}
+
+export type PublishModals = "PostNotPublished" | "EmailAndPublish" | undefined;

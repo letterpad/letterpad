@@ -1,48 +1,49 @@
 import { useState } from "react";
-import { Button, Modal } from "ui";
+import { Button } from "ui";
 
 import {
   Navigation,
-  NavigationType,
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 import { isTagsNode } from "@/utils/type-guards";
 
-import {
-  PageNotLinkedWithNavigation,
-  TagNotLinkedWithNavigation,
-  WarnNoTags,
-} from "./warnings";
+import { PostNotPublishedModal } from "./modals/postNotPublishedModal";
+import { PublishAndEmailConfirmModal } from "./modals/publishAndEmailConfirmModal";
 import { useGetPost, useUpdatePost } from "../../api.client";
+import { getPagesFromMenu, getTagsFromMenu } from "../../helpers";
+import { NotPublished, PublishModals } from "../../types";
 
 interface Props {
   postId: number;
   menu: Navigation[];
 }
 
-enum NotPublished {
-  NoTags = "NoTags",
-  TagsNotLinkedWithNav = "TagsNotLinkedWithNav",
-  PageNotLinkedWithNav = "PageNotLinkedWithNav",
-}
-
 const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
-
+  const [modal, setModal] = useState<PublishModals>(
+    error ? "PostNotPublished" : undefined
+  );
   const { data: post, fetching: loading } = useGetPost({ id: postId });
 
-  const { updatePost } = useUpdatePost();
+  const { updatePost, updating } = useUpdatePost();
 
   if (loading) return <span>loading...</span>;
   if (post?.__typename !== "Post") return null;
 
-  const validateAndPublish = () => {
+  const navigationTags = getTagsFromMenu(menu);
+  const navigationPages = getPagesFromMenu(menu);
+
+  const validateAndPublish = async ({
+    sendMail,
+    testMail,
+  }: {
+    testMail?: boolean;
+    sendMail?: boolean;
+  } = {}) => {
     const isPost = post.type === PostTypes.Post;
 
-    const navigationTags = getTagsFromMenu(menu);
-    const navigationPages = getPagesFromMenu(menu);
     const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
 
     const navLinkedWithTags = postTags.find((tag) =>
@@ -59,23 +60,29 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
     } else if (!navLinkedWithPages && !isPost) {
       setError(NotPublished.PageNotLinkedWithNav);
     } else {
-      publishOrUnpublish(true);
+      await publishOrUnpublish({ publish: true, sendMail, testMail });
     }
   };
 
-  const publishOrUnpublish = (active: boolean) => {
-    const status = active
-      ? PostStatusOptions.Published
-      : PostStatusOptions.Draft;
+  const publishOrUnpublish = ({ publish, sendMail, testMail }: any) => {
+    let status = post.status;
 
-    if (active) {
+    if (typeof publish !== "undefined") {
+      status = publish ? PostStatusOptions.Published : PostStatusOptions.Draft;
+    }
+
+    if (publish) {
       track({
         eventAction: EventAction.Click,
         eventCategory: "post status",
         eventLabel: "publish",
       });
     }
-    updatePost({ id: postId, status });
+    return updatePost({
+      id: postId,
+      status,
+      publishOptions: { sendMail, testMail },
+    });
   };
 
   const published = post.status === PostStatusOptions.Published;
@@ -86,16 +93,33 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
         {!published && (
           <>
             <label>Ready to publish your {post.type} ?</label>
-
-            <Button
-              variant="success"
-              size="normal"
-              onClick={validateAndPublish}
-              data-testid="publishBtn"
-              className="button btn-success"
-            >
-              Publish
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="dark"
+                size="normal"
+                onClick={() => setModal("EmailAndPublish")}
+                data-testid="publishAndEmailBtn"
+              >
+                Publish And Email
+              </Button>
+              <Button
+                variant="primary"
+                size="normal"
+                onClick={() => validateAndPublish()}
+                data-testid="publishBtn"
+                disabled={updating}
+              >
+                Publish Only
+              </Button>
+              <Button
+                variant="dark"
+                size="normal"
+                onClick={() => validateAndPublish({ sendMail: true })}
+                data-testid="testMailBtn"
+              >
+                Email Only
+              </Button>
+            </div>
           </>
         )}
         {published && (
@@ -107,7 +131,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
               </span>
               <Button
                 variant="dark"
-                onClick={() => publishOrUnpublish(false)}
+                onClick={() => publishOrUnpublish({ publish: false })}
                 data-testid="unPublishBtn"
               >
                 Un-Publish
@@ -116,55 +140,20 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
           </>
         )}
       </div>
-      <Modal
-        className={error}
-        header="Post not published"
-        show={!!error}
-        toggle={() => setError(undefined)}
-        footer={[
-          <Button
-            key="back"
-            onClick={() => setError(undefined)}
-            variant="ghost"
-            data-testid="cancelModalBtn"
-          >
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            variant="primary"
-            onClick={() => {
-              setError(undefined);
-              publishOrUnpublish(true);
-            }}
-            disabled={false}
-          >
-            Publish Anyway
-          </Button>,
-        ]}
-      >
-        {error === NotPublished.NoTags && <WarnNoTags />}
-        {error === NotPublished.TagsNotLinkedWithNav && (
-          <TagNotLinkedWithNavigation tags={getTagsFromMenu(menu)} />
-        )}
-        {error === NotPublished.PageNotLinkedWithNav && (
-          <PageNotLinkedWithNavigation />
-        )}
-      </Modal>
+      <PostNotPublishedModal
+        visible={modal === "PostNotPublished"}
+        error={error}
+        setError={setError}
+        navigationTags={navigationTags}
+        publishOrUnpublish={validateAndPublish}
+      />
+      <PublishAndEmailConfirmModal
+        visible={modal === "EmailAndPublish"}
+        cancelModal={() => setModal(undefined)}
+        publishOrUnpublish={validateAndPublish}
+      />
     </>
   );
 };
 
 export default PublishButton;
-
-function getTagsFromMenu(menu: Navigation[]) {
-  return menu
-    .filter((a) => a.type === NavigationType.Tag)
-    .map((a) => a.slug.replace("/tag/", "").toLowerCase());
-}
-
-function getPagesFromMenu(menu: Navigation[]) {
-  return menu
-    .filter((a) => a.type === NavigationType.Page)
-    .map((a) => a.slug.replace("/page/", "").toLowerCase());
-}
