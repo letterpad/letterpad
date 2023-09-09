@@ -64,7 +64,7 @@ export const updateSetting = async (
       data[option] = value;
     });
     logger.info(`Updating settings with id ${setting_id}- `, data);
-    await prisma.setting.update({
+    const res = await prisma.setting.update({
       data: data,
       where: { id: setting_id },
     });
@@ -75,7 +75,7 @@ export const updateSetting = async (
     if (setting) {
       return {
         ...mapSettingToGraphql(setting),
-        site_url: `https://${author?.username}.letterpad.app`,
+        site_url: res.site_url ?? `https://${author?.username}.letterpad.app`,
         __typename: "Setting",
       };
     }

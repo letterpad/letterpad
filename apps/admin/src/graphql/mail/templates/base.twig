@@ -1,24 +1,3 @@
-<!-- <table
-  role="presentation"
-  border="0"
-  cellpadding="0"
-  cellspacing="0"
-  class="btn btn-primary"
->
-  <tbody>
-    <tr>
-      <td align="center">
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-          <tbody>
-            <tr>
-              <td>${action}</td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table> -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -40,10 +19,9 @@
 
       body {
         background-color: #f6f6f6;
-        font-family: "Oxygen", "Trebuchet MS", "Lucida Grande",
-          "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
         -webkit-font-smoothing: antialiased;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 1.4;
         margin: 0;
         padding: 0;
@@ -58,7 +36,7 @@
         width: 100%;
       }
       table td {
-        font-size: 14px;
+        font-size: 16px;
         vertical-align: top;
       }
 
@@ -132,7 +110,7 @@
       h3,
       h4 {
         color: #000000;
-        font-weight: 400;
+        font-weight: 600;
         line-height: 1.4;
         margin: 0;
         margin-bottom: 30px;
@@ -143,6 +121,11 @@
         font-weight: 300;
         text-align: center;
         text-transform: capitalize;
+      }
+      h2 {
+        font-size: 26px;
+        font-weight: 800;
+        margin-bottom: 4px;
       }
 
       p,
@@ -183,20 +166,22 @@
         border-radius: 5px;
         text-align: center;
       }
-      .btn a {
-        background-color: #ffffff;
-        border: solid 1px #3498db;
+      a.btn {
+        border: solid 1px #2b2c2d;
         border-radius: 5px;
         box-sizing: border-box;
-        color: #3498db;
+        color: #ffffff;
         cursor: pointer;
-        display: inline-block;
+        display: inline;
         font-size: 14px;
-        font-weight: bold;
         margin: 0;
-        padding: 12px 25px;
+        padding: 8px 16px;
         text-decoration: none;
-        text-transform: capitalize;
+        background: #000;
+      }
+      a.btn:hover {
+        background: #333;
+        border: solid 1px #333;
       }
 
       .btn-primary table td {

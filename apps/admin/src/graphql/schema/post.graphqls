@@ -159,6 +159,11 @@ input InputCreatePost {
   page_data: String
 }
 
+input InputPublishOptions {
+  sendMail: Boolean
+  testMail: Boolean
+}
+
 input InputUpdatePost {
   id: Int!
   title: String
@@ -178,6 +183,7 @@ input InputUpdatePost {
   page_type: String
   page_data: String
   stats: InputPostStats
+  publishOptions: InputPublishOptions
 }
 
 type PostError implements LetterpadError {

@@ -150,7 +150,7 @@ export type EmailProps =
   | EmailForgotPasswordProps;
 
 export interface Mail {
-  to: string | string[];
+  to: string | { email: string; id: number }[];
   subject: string;
   html: string;
 }
