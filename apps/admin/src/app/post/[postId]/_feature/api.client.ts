@@ -10,7 +10,7 @@ import { useActivateUpdateAllowed } from "./hooks";
 import { debounce } from "../../../../shared/utils";
 
 export const useGetPost = (filters: PostFilters) => {
-  const [{ data, error, fetching }] = usePostQuery({
+  const [{ data, error, fetching }, refetch] = usePostQuery({
     variables: {
       filters,
     },
@@ -21,10 +21,11 @@ export const useGetPost = (filters: PostFilters) => {
   return {
     data: post,
     fetching,
+    refetch,
   };
 };
 
-export const useUpdatePost = (id: number) => {
+export const useUpdatePost = () => {
   const [{ fetching }, updatePost] = useUpdatePostMutation();
   const allowed = useActivateUpdateAllowed();
 
@@ -44,18 +45,18 @@ export const useUpdatePost = (id: number) => {
 
   const updatePostWithDebounce = useCallback(
     (props: InputUpdatePost) => {
-      let change: InputUpdatePost = { ...props, id };
+      let change: InputUpdatePost = { ...props };
       if (props.version) {
         const stats = WordCount.getStats();
         change = {
           version: props.version,
           stats,
-          id,
+          id: props.id,
         };
       }
       allowed && debounceUpdatePostAPI(change);
     },
-    [debounceUpdatePostAPI, id, allowed]
+    [debounceUpdatePostAPI, allowed]
   );
 
   return {

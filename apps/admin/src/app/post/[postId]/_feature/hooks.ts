@@ -20,7 +20,7 @@ export const useActivateUpdateAllowed = () => {
 };
 
 export const usePostVersioning = (id?: number) => {
-  const { data } = useGetPost({ id });
+  const { data, refetch } = useGetPost({ id });
   const versionManager = useRef(new PostVersion(parseDrafts(data?.html_draft)));
   const [initialContent, setContent] = useState("");
 
@@ -43,5 +43,6 @@ export const usePostVersioning = (id?: number) => {
     onActivate,
     initialContent,
     versionManager: versionManager.current,
+    refetch,
   };
 };

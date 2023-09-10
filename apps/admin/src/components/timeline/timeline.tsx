@@ -20,7 +20,7 @@ export const Timeline: FC<Props> = ({ onTimelineChange, data }) => {
   const pv = new PostVersion(data);
   return (
     <>
-      <div className="h-[calc(100vh-245px)] overflow-y-scroll">
+      <div className="h-[calc(100vh-295px)] overflow-y-scroll">
         <ol className="relative ml-10 flex w-52 list-none flex-col-reverse border-l border-gray-200 p-0 pt-8 dark:border-gray-700">
           {data.map((item, idx) => (
             <li
@@ -36,9 +36,9 @@ export const Timeline: FC<Props> = ({ onTimelineChange, data }) => {
               </span>
               <div className="flex flex-col">
                 <time className="block text-xs font-normal leading-none text-gray-500 dark:text-gray-400">
-                  {formatDate(new Date(item.timestamp))}{" "}
-                  <span className="text-xs font-extrabold text-red-500">
-                    {item.live ? "- Live" : ""}
+                  {formatDate(new Date(item.timestamp))}
+                  <span className="ml-4 text-xs font-extrabold text-red-500">
+                    {item.live ? " Live" : ""}
                   </span>
                 </time>
                 {active === idx ? (
@@ -66,7 +66,7 @@ export const Timeline: FC<Props> = ({ onTimelineChange, data }) => {
           ))}
         </ol>
       </div>
-      <div className="prose h-[calc(100vh-240px)] w-full max-w-3xl overflow-y-scroll border p-8 dark:prose-dark dark:border-slate-700 dark:bg-black/50">
+      <div className="prose h-[calc(100vh-290px)] w-full max-w-3xl overflow-y-scroll border p-8 dark:prose-dark dark:border-slate-700 dark:bg-black/50">
         <div
           dangerouslySetInnerHTML={{
             __html: pv.retrieveBlogAtIndex(active) ?? "",

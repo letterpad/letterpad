@@ -38,11 +38,10 @@ enum NotPublished {
 const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
   const { data: post, fetching: loading } = useGetPost({ id: postId });
-  const { updatePost } = useUpdatePost(postId);
+  const { updatePost } = useUpdatePost();
 
-  const { versionManager } = usePostVersioning(postId);
+  const { versionManager, refetch } = usePostVersioning(postId);
 
-  if (loading) return <span>loading...</span>;
   if (post?.__typename !== "Post") return null;
 
   const validateAndPublish = () => {
@@ -70,7 +69,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
     }
   };
 
-  const publishOrUnpublish = (active: boolean) => {
+  const publishOrUnpublish = async (active: boolean) => {
     const status = active
       ? PostStatusOptions.Published
       : PostStatusOptions.Draft;
@@ -86,11 +85,16 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
       const pv = new PostVersion(parseDrafts(post?.html_draft));
       const activeVersion = pv.retrieveActiveVersion();
       if (activeVersion) {
-        updatePost({ id: postId, status, version: activeVersion.timestamp });
+        await updatePost({
+          id: postId,
+          status,
+          version: activeVersion.timestamp,
+        });
       }
     } else {
-      updatePost({ id: postId, status });
+      await updatePost({ id: postId, status });
     }
+    refetch();
   };
 
   const published = post.status === PostStatusOptions.Published;
@@ -119,11 +123,15 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
               <span className="help-text mb-4 block">
                 Your {post.type} will no longer be visible to users.
               </span>
-              {versionManager.getStatus() > 1 ? (
-                <Button variant="dark" onClick={() => publishOrUnpublish(true)}>
-                  Update Live Post
-                </Button>
-              ) : (
+              <div className="flex flex-row gap-2">
+                {versionManager.getStatus() > 1 && (
+                  <Button
+                    variant="dark"
+                    onClick={() => publishOrUnpublish(true)}
+                  >
+                    Update Live Post
+                  </Button>
+                )}
                 <Button
                   variant="dark"
                   onClick={() => publishOrUnpublish(false)}
@@ -131,7 +139,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
                 >
                   Un-Publish
                 </Button>
-              )}
+              </div>
             </label>
           </>
         )}

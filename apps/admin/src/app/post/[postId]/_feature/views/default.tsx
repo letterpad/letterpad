@@ -24,7 +24,7 @@ interface Props {
 
 export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
   const { initialContent, versionManager } = usePostVersioning(post?.id!);
-  const { updatePost, updatePostWithDebounce } = useUpdatePost(post?.id!);
+  const { updatePost, updatePostWithDebounce } = useUpdatePost();
   const [showTimeline, setShowTimeline] = useState(false);
 
   if (!post) return null;
