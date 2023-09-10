@@ -21,30 +21,6 @@ export const Feature = () => {
 
   const { data: post, fetching: loading } = useGetPost({ id: Number(postId) });
   const { data: settings } = useGetSettings();
-  const { updatePost } = useUpdatePost();
-  const allowed = useActivateUpdateAllowed();
-
-  const debounceUpdatePostAPI = useMemo(
-    () => debounce(updatePost, 1000),
-    [updatePost]
-  );
-
-  const updatePostWithDebounce = useCallback(
-    (props: InputUpdatePost) => {
-      const id = Number(postId);
-      let change: InputUpdatePost = { ...props, id };
-      if (props.version) {
-        const stats = WordCount.getStats();
-        change = {
-          version: props.version,
-          stats,
-          id,
-        };
-      }
-      allowed && debounceUpdatePostAPI(change);
-    },
-    [debounceUpdatePostAPI, postId, allowed]
-  );
 
   if (loading) return <div></div>;
   return (
@@ -54,12 +30,7 @@ export const Feature = () => {
       </Head>
       {post && <Header post={post} />}
       {post?.page_type === PageType["Default"] && (
-        <DefaultPost
-          settings={settings}
-          post={post}
-          loading={loading}
-          onEditorChange={updatePostWithDebounce}
-        />
+        <DefaultPost settings={settings} post={post} loading={loading} />
       )}
       {post?.page_type === PageType["Story Builder"] && (
         <Creatives post={post} />

@@ -1,18 +1,20 @@
 import Link from "next/link";
 import { FC, useState } from "react";
-import { HiPencil } from "react-icons/hi";
+import { BiCurrentLocation } from "react-icons/bi";
+import { MdHistory } from "react-icons/md";
+
+import { PostVersion } from "@/lib/versioning";
 
 import { formatDate } from "./utils";
-import { useGetPost } from "../../app/post/[postId]/_feature/api.client";
-import { History, PostVersion } from "../../lib/versioning";
+
+import { PostHistoryItem } from "@/types";
 
 interface Props {
   onTimelineChange: (data: { timestamp: string; change: string }) => void;
+  data: PostHistoryItem[];
 }
 
-export const Timeline: FC<Props> = ({ onTimelineChange }) => {
-  const res = useGetPost({ id: 3 });
-  const data: History[] = parseDrafts(res.data?.html_draft);
+export const Timeline: FC<Props> = ({ onTimelineChange, data }) => {
   const activeIndex = data.findIndex((item) => item.active);
   const [active, setActive] = useState(activeIndex);
   const pv = new PostVersion(data);
@@ -26,7 +28,11 @@ export const Timeline: FC<Props> = ({ onTimelineChange }) => {
               key={item.timestamp}
             >
               <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 ring-8 ring-white dark:bg-blue-900 dark:ring-gray-900">
-                <HiPencil size={14} />
+                {data.length - 1 === idx ? (
+                  <BiCurrentLocation size={14} />
+                ) : (
+                  <MdHistory size={14} />
+                )}
               </span>
               <div className="flex flex-col">
                 <time className="block text-xs font-normal leading-none text-gray-500 dark:text-gray-400">

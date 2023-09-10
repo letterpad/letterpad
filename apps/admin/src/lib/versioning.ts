@@ -1,19 +1,12 @@
 import DiffMatchPatch from "diff-match-patch";
-// import { useRef, useState } from "react";
 
-export interface History {
-  timestamp: string;
-  content?: string;
-  patches: DiffMatchPatch.Patch[];
-  active: boolean;
-  live: boolean;
-}
+import { PostHistoryItem } from "../types";
 
 export class PostVersion {
-  private history: Array<History> = [];
+  private history: Array<PostHistoryItem> = [];
   private dmp: DiffMatchPatch = new DiffMatchPatch();
 
-  constructor(history: Array<History>) {
+  constructor(history: Array<PostHistoryItem>) {
     this.history = history;
   }
 
@@ -23,7 +16,7 @@ export class PostVersion {
 
   createInitialEntry(content: string): void {
     // Create the initial entry when a new blog is created
-    const entry: History = {
+    const entry: PostHistoryItem = {
       timestamp: this.getCurrentTimestamp(),
       content: content,
       patches: [],
@@ -37,6 +30,16 @@ export class PostVersion {
     return this.history.find((item) => item.active);
   }
 
+  getLastUpdateInSeconds() {
+    if (this.history.length > 0)
+      return secondsAgo(this.history[this.history.length - 1].timestamp);
+  }
+
+  replacePreviousBlog(newContent: string) {
+    this.history.pop();
+    this.updateBlog(newContent);
+  }
+
   updateBlog(newContent: string): void {
     if (this.history.length === 0) {
       return this.createInitialEntry(newContent);
@@ -44,7 +47,7 @@ export class PostVersion {
 
     const currentContent = this.history[0].content;
     const patches = this.dmp.patch_make(currentContent, newContent);
-    const entry: History = {
+    const entry: PostHistoryItem = {
       timestamp: this.getCurrentTimestamp(),
       live: false,
       patches: patches,
@@ -74,7 +77,6 @@ export class PostVersion {
         this.resetActive();
         this.history[i].active = true;
         // Apply patches to retrieve the content at the specified timestamp
-        // const currentContent = entry.content;
         const patches = entry.patches;
         const [restoredContent] = this.dmp.patch_apply(patches, initialContent);
         return restoredContent;
@@ -91,7 +93,6 @@ export class PostVersion {
         this.resetActive();
         this.history[i].active = true;
         // Apply patches to retrieve the content at the specified timestamp
-        // const currentContent = entry.content;
         const patches = entry.patches;
         const [restoredContent] = this.dmp.patch_apply(patches, initialContent);
         return restoredContent;
@@ -104,3 +105,16 @@ export class PostVersion {
     return new Date().toISOString();
   }
 }
+
+const secondsAgo = (datetime) => {
+  const currentDatetime = new Date();
+  const providedDatetime = new Date(datetime);
+
+  // Calculate the time difference in milliseconds
+  const timeDifference = currentDatetime.getTime() - providedDatetime.getTime();
+
+  // Convert milliseconds to seconds
+  const secondsDifference = Math.floor(timeDifference / 1000);
+
+  return secondsDifference;
+};

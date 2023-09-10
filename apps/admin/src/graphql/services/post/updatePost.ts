@@ -19,6 +19,7 @@ import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
 import { PostVersion } from "../../../lib/versioning";
+import { parseDrafts } from "../../../utils/utils";
 
 const dmp = new DiffMatchPatch();
 
@@ -134,12 +135,15 @@ export const updatePost = async (
       const postVersions = new PostVersion(
         parseDrafts(existingPost.html_draft)
       );
-      postVersions.updateBlog(args.data.html_draft);
+      const lastUpdate = postVersions.getLastUpdateInSeconds();
+      if (lastUpdate && lastUpdate < 10) {
+        postVersions.replacePreviousBlog(args.data.html_draft);
+      } else {
+        postVersions.updateBlog(args.data.html_draft);
+      }
       newPostArgs.data.html_draft = JSON.stringify(postVersions.getHistory());
     }
-    // if (args.data.html_draft || args.data.html_draft === "") {
-    //   newPostArgs.data.html_draft = await formatHtml(args.data.html_draft);
-    // }
+
     if (args.data.status === PostStatusOptions.Published && args.data.version) {
       const postVersions = new PostVersion(
         parseDrafts(existingPost.html_draft)
@@ -209,13 +213,3 @@ export const updatePost = async (
     };
   }
 };
-
-function parseDrafts(drafts) {
-  try {
-    return JSON.parse(drafts);
-  } catch (e) {
-    return [
-      { content: drafts, timestamp: new Date().toISOString(), patches: [] },
-    ];
-  }
-}
