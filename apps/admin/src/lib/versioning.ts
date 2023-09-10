@@ -101,6 +101,12 @@ export class PostVersion {
     return null; // Timestamp not found in history
   }
 
+  getStatus() {
+    const index = this.history.findIndex((item) => item.live);
+    if (index > 0) return this.history.length - index;
+    return 0;
+  }
+
   private getCurrentTimestamp(): string {
     return new Date().toISOString();
   }

@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { Button, Modal } from "ui";
 
+import { PostVersion } from "@/lib/versioning";
+
 import {
   Navigation,
   NavigationType,
@@ -9,6 +11,7 @@ import {
 } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 import { isTagsNode } from "@/utils/type-guards";
+import { parseDrafts } from "@/utils/utils";
 
 import {
   PageNotLinkedWithNavigation,
@@ -17,7 +20,9 @@ import {
 } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
 import { usePostContext } from "../../context";
-import { PostVersion } from "../../../../../../lib/versioning";
+import { usePostVersioning } from "../../hooks";
+
+import { PostHistoryItem } from "@/types";
 
 interface Props {
   postId: number;
@@ -33,8 +38,9 @@ enum NotPublished {
 const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
   const { data: post, fetching: loading } = useGetPost({ id: postId });
-  // const pv = useRef(new PostVersion(parseDrafts(post?.html_draft)));
-  const { updatePost } = useUpdatePost();
+  const { updatePost } = useUpdatePost(postId);
+
+  const { versionManager } = usePostVersioning(postId);
 
   if (loading) return <span>loading...</span>;
   if (post?.__typename !== "Post") return null;
@@ -95,7 +101,6 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
         {!published && (
           <>
             <label>Ready to publish your {post.type} ?</label>
-
             <Button
               variant="success"
               size="normal"
@@ -114,13 +119,19 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
               <span className="help-text mb-4 block">
                 Your {post.type} will no longer be visible to users.
               </span>
-              <Button
-                variant="dark"
-                onClick={() => publishOrUnpublish(false)}
-                data-testid="unPublishBtn"
-              >
-                Un-Publish
-              </Button>
+              {versionManager.getStatus() > 1 ? (
+                <Button variant="dark" onClick={() => publishOrUnpublish(true)}>
+                  Update Live Post
+                </Button>
+              ) : (
+                <Button
+                  variant="dark"
+                  onClick={() => publishOrUnpublish(false)}
+                  data-testid="unPublishBtn"
+                >
+                  Un-Publish
+                </Button>
+              )}
             </label>
           </>
         )}
@@ -176,14 +187,4 @@ function getPagesFromMenu(menu: Navigation[]) {
   return menu
     .filter((a) => a.type === NavigationType.Page)
     .map((a) => a.slug.replace("/page/", "").toLowerCase());
-}
-
-function parseDrafts(drafts) {
-  try {
-    return JSON.parse(drafts);
-  } catch (e) {
-    return [
-      { content: drafts, timestamp: new Date().toISOString(), patches: [] },
-    ];
-  }
 }
