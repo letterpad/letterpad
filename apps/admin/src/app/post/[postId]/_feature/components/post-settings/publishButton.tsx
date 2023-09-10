@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Modal } from "ui";
 
 import {
@@ -16,6 +16,8 @@ import {
   WarnNoTags,
 } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
+import { usePostContext } from "../../context";
+import { PostVersion } from "../../../../../../lib/versioning";
 
 interface Props {
   postId: number;
@@ -28,11 +30,10 @@ enum NotPublished {
   PageNotLinkedWithNav = "PageNotLinkedWithNav",
 }
 
-const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
+const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
-
   const { data: post, fetching: loading } = useGetPost({ id: postId });
-
+  // const pv = useRef(new PostVersion(parseDrafts(post?.html_draft)));
   const { updatePost } = useUpdatePost();
 
   if (loading) return <span>loading...</span>;
@@ -75,7 +76,15 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
         eventLabel: "publish",
       });
     }
-    updatePost({ id: postId, status });
+    if (status === PostStatusOptions.Published) {
+      const pv = new PostVersion(parseDrafts(post?.html_draft));
+      const activeVersion = pv.retrieveActiveVersion();
+      if (activeVersion) {
+        updatePost({ id: postId, status, version: activeVersion.timestamp });
+      }
+    } else {
+      updatePost({ id: postId, status });
+    }
   };
 
   const published = post.status === PostStatusOptions.Published;
@@ -167,4 +176,14 @@ function getPagesFromMenu(menu: Navigation[]) {
   return menu
     .filter((a) => a.type === NavigationType.Page)
     .map((a) => a.slug.replace("/page/", "").toLowerCase());
+}
+
+function parseDrafts(drafts) {
+  try {
+    return JSON.parse(drafts);
+  } catch (e) {
+    return [
+      { content: drafts, timestamp: new Date().toISOString(), patches: [] },
+    ];
+  }
 }

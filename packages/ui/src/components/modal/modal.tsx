@@ -32,6 +32,11 @@ export const Modal = ({
 
   useEffect(() => {
     setDisplay(show);
+    document.body.style.overflow = show ? "hidden" : "auto";
+
+    return () => {
+      document.body.style.overflow = "hidden";
+    };
   }, [show]);
 
   useEffect(() => {
@@ -46,7 +51,7 @@ export const Modal = ({
           tabIndex={-1}
           aria-hidden="true"
           className={classNames(
-            "h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
+            "h-modal fixed left-0 right-0 top-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-screen",
             className
           )}
           style={{ zIndex: zIndex ?? 50 }}
@@ -78,7 +83,7 @@ export const Modal = ({
               <div className="p-4">{children}</div>
 
               {footer && (
-                <div className="flex items-end justify-end space-x-2 rounded-b border-t border-gray-200 py-4 px-4 dark:border-gray-700">
+                <div className="flex items-end justify-end space-x-2 rounded-b border-t border-gray-200 px-4 py-4 dark:border-gray-700">
                   <>{footer}</>
                 </div>
               )}
@@ -87,7 +92,7 @@ export const Modal = ({
         </div>
         <div
           onClick={() => toggle(false)}
-          className="fixed top-0 left-0 z-40 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40"
+          className="fixed left-0 top-0 z-40 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40"
         />
       </Portal>
     );

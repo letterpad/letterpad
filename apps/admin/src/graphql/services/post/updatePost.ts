@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import DiffMatchPatch from "diff-match-patch";
 
 import { report } from "@/components/error";
 
@@ -16,6 +17,10 @@ import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
+
+import { PostVersion } from "../../../lib/versioning";
+
+const dmp = new DiffMatchPatch();
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,
@@ -125,23 +130,27 @@ export const updatePost = async (
       );
     }
 
-    if (args.data.html || args.data.html === "") {
-      newPostArgs.data.html = await formatHtml(args.data.html);
-      newPostArgs.data.reading_time = getReadingTimeFromHtml(
-        newPostArgs.data.html
+    if (args.data.html_draft) {
+      const postVersions = new PostVersion(
+        parseDrafts(existingPost.html_draft)
       );
+      postVersions.updateBlog(args.data.html_draft);
+      newPostArgs.data.html_draft = JSON.stringify(postVersions.getHistory());
     }
-    if (args.data.html_draft || args.data.html_draft === "") {
-      newPostArgs.data.html_draft = await formatHtml(args.data.html_draft);
-    }
-
-    if (args.data.status === PostStatusOptions.Published) {
-      newPostArgs.data.html = existingPost.html_draft || "";
+    // if (args.data.html_draft || args.data.html_draft === "") {
+    //   newPostArgs.data.html_draft = await formatHtml(args.data.html_draft);
+    // }
+    if (args.data.status === PostStatusOptions.Published && args.data.version) {
+      const postVersions = new PostVersion(
+        parseDrafts(existingPost.html_draft)
+      );
+      const html = postVersions.retrieveBlogAtTimestamp(args.data.version);
+      newPostArgs.data.html = await formatHtml(html ?? "");
+      postVersions.makeBlogLiveAtTimestamp(args.data.version);
+      newPostArgs.data.html_draft = JSON.stringify(postVersions.getHistory());
       newPostArgs.data.publishedAt = new Date();
     }
-    if (args.data.status === PostStatusOptions.Draft) {
-      newPostArgs.data.html_draft = existingPost.html || "";
-    }
+
     newPostArgs.data.updatedAt = new Date();
     if (args.data.tags) {
       newPostArgs.data.tags = {
@@ -200,3 +209,13 @@ export const updatePost = async (
     };
   }
 };
+
+function parseDrafts(drafts) {
+  try {
+    return JSON.parse(drafts);
+  } catch (e) {
+    return [
+      { content: drafts, timestamp: new Date().toISOString(), patches: [] },
+    ];
+  }
+}

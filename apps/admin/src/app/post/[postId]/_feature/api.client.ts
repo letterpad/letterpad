@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { InputUpdatePost, PostFilters } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { usePostQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
@@ -20,12 +22,18 @@ export const useGetPost = (filters: PostFilters) => {
 
 export const useUpdatePost = () => {
   const [{ fetching }, updatePost] = useUpdatePostMutation();
-  return {
-    fetching,
-    updatePost: (params: InputUpdatePost) => {
+
+  const handleUpdatePost = useCallback(
+    (params: InputUpdatePost) => {
       return updatePost({
         data: { ...params },
       });
     },
+    [updatePost]
+  );
+
+  return {
+    fetching,
+    updatePost: handleUpdatePost,
   };
 };
