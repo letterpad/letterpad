@@ -3,35 +3,27 @@ import { PostTitlePlaceholder } from "ui";
 
 import { FontPageWrapper } from "@/components/fonts";
 
-import { Post, PostStatusOptions, Setting } from "@/__generated__/__types__";
+import { Post, Setting } from "@/__generated__/__types__";
 
+import { useUpdatePost } from "../api.client";
 import { Editor } from "../components/editor";
 import { FeaturedImage } from "../components/featured-image";
 import { SubTitle } from "../components/subtitle";
 import { Title } from "../components/title";
 import { WordCount } from "../components/wordCount";
+import { usePostVersioning } from "../hooks";
 
 interface Props {
   settings?: Setting;
   post?: Post;
   loading: boolean;
-  onEditorChange?: (html: string, id: number) => void;
 }
 
-export const DefaultPost: FC<Props> = ({
-  post,
-  settings,
-  loading,
-  onEditorChange,
-}) => {
+export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
+  const { initialContent } = usePostVersioning(post?.id!);
+  const { updatePostWithDebounce } = useUpdatePost();
+
   if (!post) return null;
-  let content = post?.html;
-  if (
-    post?.status === PostStatusOptions.Draft ||
-    post?.status === PostStatusOptions.Trashed
-  ) {
-    content = post?.html_draft;
-  }
 
   return (
     <FontPageWrapper
@@ -43,17 +35,29 @@ export const DefaultPost: FC<Props> = ({
         {loading ? (
           <PostTitlePlaceholder />
         ) : (
-          <Title title={post?.title || ""} postId={post?.id} />
+          <Title
+            title={post?.title || ""}
+            postId={post?.id}
+            onTitleChange={(title) => {
+              updatePostWithDebounce?.({ title, id: post.id });
+            }}
+          />
         )}
         <div className="mt-8">
-          <SubTitle postId={post?.id} sub_title={post?.sub_title || ""} />
+          <SubTitle
+            postId={post?.id}
+            sub_title={post?.sub_title || ""}
+            onSubtitleChange={(title) => {
+              updatePostWithDebounce?.({ title, id: post.id });
+            }}
+          />
         </div>
         <FeaturedImage id={post.id} cover_image={post.cover_image} />
         <Editor
           loading={loading}
-          text={content ?? ""}
+          text={initialContent}
           onChange={(html) => {
-            onEditorChange?.(html, post.id);
+            updatePostWithDebounce?.({ html_draft: html, id: post.id });
           }}
         />
       </div>

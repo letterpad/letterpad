@@ -21,6 +21,7 @@ import { getLetterpadLatestPost } from "../services/post/getLetterpadLatestPost"
 import { getLetterpadLatestPosts } from "../services/post/getLetterpadLatestPosts";
 import { getStats } from "../services/stats";
 import { setResponsiveImages } from "../utils/imageAttributs";
+import { parseDrafts } from "../../utils/utils";
 
 type PostAttributes = any;
 
@@ -48,6 +49,10 @@ const Post: PostResolvers<ResolverContext> = {
   },
   html: async ({ html }) => {
     return html ? setResponsiveImages(html) : "";
+  },
+  html_draft: async ({ html_draft }) => {
+    const drafts = parseDrafts(html_draft);
+    return JSON.stringify(drafts);
   },
   stats: async ({ stats, reading_time }) => {
     const oldReadingTime = reading_time ? parseInt(reading_time || "") : 2;

@@ -58,6 +58,7 @@ const makeClient = () => {
           }
 
           if (!isAuthorized) {
+            debugger;
             window.location.replace(
               `/login?callbackUrl=${window.location.href}`
             );

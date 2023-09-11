@@ -1,54 +1,83 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import { AiOutlineHistory } from "react-icons/ai";
 import { IoEyeOutline, IoSettingsOutline } from "react-icons/io5";
-import { Button } from "ui";
+
+import { Dropdown } from "@/components/dropdown/dropdown";
+import ThemeSwitcher from "@/components/theme-switcher";
 
 import { EventAction, track } from "@/track";
 
-import ThemeSwitcher from "../../../../../../components/theme-switcher";
+import { PostTimelineModal } from "../postTimelineModal";
+import { useUpdatePost } from "../../api.client";
+import { usePostVersioning } from "../../hooks";
 
 interface Props {
   siteUrl: string;
   postHash: string;
   showDrawer: () => void;
-  preview?: boolean;
+  showPreview?: boolean;
+  id: number;
 }
 export const QuickMenu: FC<Props> = ({
   siteUrl,
   postHash,
   showDrawer,
-  preview,
+  showPreview,
+  id,
 }) => {
+  const { updatePost } = useUpdatePost();
+  const [showTimeline, setShowTimeline] = useState(false);
+  const { versionManager } = usePostVersioning(id);
+  const openPreview = () => {
+    track({
+      eventAction: EventAction.Change,
+      eventCategory: "setting",
+      eventLabel: "preview",
+    });
+    window.open(siteUrl + "/preview/" + postHash);
+  };
   return (
     <div className="flex items-center gap-6">
-      {preview && (
-        <a
-          title="Preview"
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.preventDefault();
-            track({
-              eventAction: EventAction.Change,
-              eventCategory: "setting",
-              eventLabel: "preview",
-            });
-            window.open(siteUrl + "/preview/" + postHash);
-          }}
-        >
-          <IoEyeOutline size={18} />
-        </a>
-      )}
-      <a
-        title="Settings"
-        className="cursor-pointer"
-        onClick={(e) => {
-          e.preventDefault();
-          showDrawer();
+      <Dropdown
+        testId="post-actions"
+        label="Options"
+        options={[
+          {
+            name: "Settings",
+            onClick: showDrawer,
+            testId: "postSettingsLink",
+            icon: IoSettingsOutline,
+          },
+          {
+            name: "Preview",
+            onClick: openPreview,
+            icon: IoEyeOutline,
+            hidden: !showPreview,
+          },
+          {
+            name: "History",
+            onClick: () => setShowTimeline(true),
+            icon: AiOutlineHistory,
+          },
+          {
+            name: "Switch Theme",
+            onClick: ThemeSwitcher.toggle,
+            icon: IoEyeOutline,
+          },
+        ]}
+      />
+      <PostTimelineModal
+        onClose={() => setShowTimeline(false)}
+        visible={showTimeline}
+        onApply={(version) => {
+          window["tinymce"].get("main-editor").setContent(version?.change);
+          versionManager.updateBlog(version?.change ?? "");
+          updatePost?.({
+            html_draft: version?.change,
+            id,
+          });
         }}
-        data-testid="postSettingsLink"
-      >
-        <IoSettingsOutline size={18} />
-      </a>
-      <ThemeSwitcher />
+      />
     </div>
   );
 };

@@ -74,4 +74,13 @@ ThemeSwitcher.switch = (color = "light") => {
 
   setCookie("theme", color);
 };
+
+ThemeSwitcher.toggle = () => {
+  const theme = document.documentElement.getAttribute("data-color-scheme");
+  if (theme === "dark") {
+    ThemeSwitcher.switch("light");
+  } else {
+    ThemeSwitcher.switch("dark");
+  }
+};
 export default ThemeSwitcher;

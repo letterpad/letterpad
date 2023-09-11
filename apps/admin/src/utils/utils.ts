@@ -9,3 +9,13 @@ export const tryToParseCategoryName = (tag: string): string => {
   const category = tag.split(CATEGORY_PARSER_REGEX)[1];
   return category || tag;
 };
+
+export const parseDrafts = (drafts) => {
+  try {
+    return JSON.parse(drafts);
+  } catch (e) {
+    return [
+      { content: drafts, timestamp: new Date().toISOString(), patches: [] },
+    ];
+  }
+};

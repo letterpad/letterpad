@@ -7,6 +7,9 @@ import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { decrypt } from "@/graphql/utils/crypto";
 
+import { PostVersion } from "../../../lib/versioning";
+import { parseDrafts } from "../../../utils/utils";
+
 export const getPost = async (
   args: QueryPostArgs,
   { prisma, session, client_author_id }: ResolverContext
@@ -20,7 +23,6 @@ export const getPost = async (
   }
 
   const authorId = session_author_id || client_author_id;
-
   if (!authorId) {
     return {
       __typename: "NotFound",
@@ -51,10 +53,15 @@ export const getPost = async (
       };
     }
     if (post) {
+      const pv = new PostVersion(parseDrafts(post.html_draft));
+      const draftContent =
+        pv.retrieveBlogAtTimestamp(
+          pv.retrieveActiveVersion()?.timestamp ?? ""
+        ) ?? "";
       const html =
-        post.status === PostStatusOptions.Published
-          ? post.html ?? post.html_draft
-          : post.html_draft ?? "";
+        post.status === PostStatusOptions.Published && !previewHash
+          ? post.html ?? draftContent
+          : draftContent;
       return { ...mapPostToGraphql(post), html, __typename: "Post" };
     }
     return { __typename: "NotFound", message: "Post not found" };

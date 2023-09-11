@@ -52,8 +52,10 @@ function setContent({ title, content }: { title?: string; content?: string }) {
   cy.window().should("have.property", "tinymce");
   if (title) {
     cy.get("#title-editor").should("exist");
-    cy.wait(1000);
+    cy.wait(2000);
     cy.window().then((win) => {
+      //@ts-ignore
+      win.document.body.click();
       //@ts-ignore
       win.tinymce.get("title-editor").setContent(title);
       cy.wait("@UpdatePostMutation");
@@ -63,7 +65,7 @@ function setContent({ title, content }: { title?: string; content?: string }) {
     cy.get("#main-editor").should("exist");
     cy.window().then((win) => {
       //@ts-ignore
-      win.tinymce.get("main-editor").setContent("ignore");
+      win.document.body.click();
       //@ts-ignore
       win.tinymce.get("main-editor").setContent(content);
       cy.wait("@UpdatePostMutation");
@@ -74,7 +76,8 @@ Cypress.Commands.add("setContent", setContent);
 
 //-----
 function openSettings() {
-  return cy.getTestId("postSettingsLink").trigger("click");
+  cy.getTestId("post-actions").trigger("click");
+  cy.getTestId("postSettingsLink").trigger("click");
 }
 Cypress.Commands.add("openSettings", openSettings);
 

@@ -13,7 +13,6 @@ interface Props {
 }
 
 export const Header: React.VFC<Props> = ({ post }) => {
-  const router = useRouter();
   if (!post) return null;
 
   if (post.__typename === "Post") {
