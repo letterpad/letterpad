@@ -66,7 +66,7 @@ export const Timeline: FC<Props> = ({ onTimelineChange, data }) => {
           ))}
         </ol>
       </div>
-      <div className="prose h-[calc(100vh-290px)] w-full max-w-3xl overflow-y-scroll border p-8 dark:prose-dark dark:border-slate-700 dark:bg-black/50">
+      <div className="prose h-[calc(100vh-290px)] w-full max-w-3xl overflow-y-scroll rounded-md border p-8 shadow-sm dark:prose-dark dark:border-slate-800 dark:bg-black/50">
         <div
           dangerouslySetInnerHTML={{
             __html: pv.retrieveBlogAtIndex(active) ?? "",

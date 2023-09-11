@@ -20,9 +20,13 @@ export const formatDate = (date: Date) => {
       ? "rd"
       : "th");
 
-  const formattedDate = `${dayWithSuffix} ${month}, ${hours}:${minutes
-    .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  const formattedDate = `${dayWithSuffix} ${month}, ${pad(hours)}:${pad(
+    minutes
+  )}:${pad(seconds)}`;
 
   return formattedDate;
+};
+
+const pad = (a: number) => {
+  return a.toString().padStart(2, "0");
 };
