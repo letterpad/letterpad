@@ -3,9 +3,10 @@ import React, { FC, useEffect, useState } from "react";
 interface Props {
   label: string;
   options: any[];
+  testId?: string;
 }
 
-export const Dropdown: FC<Props> = ({ label, options }) => {
+export const Dropdown: FC<Props> = ({ label, options, testId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export const Dropdown: FC<Props> = ({ label, options }) => {
     >
       <button
         id="dropdownBtn"
+        data-testid={testId}
         data-dropdown-toggle="dropdown"
         className="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2 text-center text-xs font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"

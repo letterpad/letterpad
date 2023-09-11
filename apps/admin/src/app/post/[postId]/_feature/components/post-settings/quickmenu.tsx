@@ -39,6 +39,7 @@ export const QuickMenu: FC<Props> = ({
   return (
     <div className="flex items-center gap-6">
       <Dropdown
+        testId="post-actions"
         label="Options"
         options={[
           {

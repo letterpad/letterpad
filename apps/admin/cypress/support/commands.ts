@@ -74,7 +74,8 @@ Cypress.Commands.add("setContent", setContent);
 
 //-----
 function openSettings() {
-  return cy.getTestId("postSettingsLink").trigger("click");
+  cy.getTestId("post-actions").trigger("click");
+  cy.getTestId("postSettingsLink").trigger("click");
 }
 Cypress.Commands.add("openSettings", openSettings);
 
