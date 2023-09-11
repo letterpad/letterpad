@@ -6,7 +6,7 @@ describe("Publishing", () => {
     cy.getTestId("createPostBtn").click();
     cy.getTestId("postStatus").should("have.text", "draft");
 
-    cy.setContent({ title, content: "Content written from cypress test" });
+    cy.setContent({ title, content: "Content written from cypress test." });
 
     cy.openSettings();
     cy.enterTags(["first-post"]);

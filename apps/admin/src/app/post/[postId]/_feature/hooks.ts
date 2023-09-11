@@ -1,23 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
+import { PostVersion } from "@/lib/versioning";
+
+import { parseDrafts } from "@/utils/utils";
+
 import { useGetPost } from "./api.client";
-import { PostVersion } from "../../../../lib/versioning";
-import { parseDrafts } from "../../../../utils/utils";
-
-export const useActivateUpdateAllowed = () => {
-  const [allowChange, setAllowChange] = useState(false);
-
-  const activateChangeAction = () => {
-    setAllowChange(true);
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", activateChangeAction);
-    return () => document.removeEventListener("click", activateChangeAction);
-  }, []);
-
-  return allowChange;
-};
 
 export const usePostVersioning = (id?: number) => {
   const { data, refetch } = useGetPost({ id });

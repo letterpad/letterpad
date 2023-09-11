@@ -28,6 +28,15 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
   const [html, setHtml] = useState(text);
   const contentLoadedRef = useRef(false);
 
+  const activateChangeAction = () => {
+    contentLoadedRef.current = true;
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", activateChangeAction);
+    return () => document.removeEventListener("click", activateChangeAction);
+  }, []);
+
   useEffect(() => {
     const editor = editorRef.current;
     if (editor) {
@@ -61,8 +70,6 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
           onEditorChange={(newHtml) => {
             if (contentLoadedRef.current) {
               onChange(newHtml);
-            } else {
-              contentLoadedRef.current = true;
             }
           }}
           init={blogEditorConfig({ isDark, editorRef })}

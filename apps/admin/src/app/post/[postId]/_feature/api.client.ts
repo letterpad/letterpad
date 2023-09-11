@@ -3,11 +3,10 @@ import { useCallback, useMemo } from "react";
 import { InputUpdatePost, PostFilters } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { usePostQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
+import { debounce } from "@/shared/utils";
 import { isPost } from "@/utils/type-guards";
 
 import { WordCount } from "./components/wordCount";
-import { useActivateUpdateAllowed } from "./hooks";
-import { debounce } from "../../../../shared/utils";
 
 export const useGetPost = (filters: PostFilters) => {
   const [{ data, error, fetching }, refetch] = usePostQuery({
@@ -27,7 +26,6 @@ export const useGetPost = (filters: PostFilters) => {
 
 export const useUpdatePost = () => {
   const [{ fetching }, updatePost] = useUpdatePostMutation();
-  const allowed = useActivateUpdateAllowed();
 
   const handleUpdatePost = useCallback(
     (params: InputUpdatePost) => {
@@ -39,7 +37,7 @@ export const useUpdatePost = () => {
   );
 
   const debounceUpdatePostAPI = useMemo(
-    () => debounce(handleUpdatePost, 1000),
+    () => debounce(handleUpdatePost, 500),
     [handleUpdatePost]
   );
 
@@ -54,9 +52,9 @@ export const useUpdatePost = () => {
           id: props.id,
         };
       }
-      allowed && debounceUpdatePostAPI(change);
+      debounceUpdatePostAPI(change);
     },
-    [debounceUpdatePostAPI, allowed]
+    [debounceUpdatePostAPI]
   );
 
   return {
