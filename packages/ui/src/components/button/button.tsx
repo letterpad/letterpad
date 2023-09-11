@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { forwardRef, MouseEvent, PropsWithChildren, ReactNode } from "react";
 
 const classes = {
-  base: "focus:outline-none transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
+  base: "focus:outline-none px-4 transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
   disabled: "opacity-50 cursor-not-allowed",
   pill: "rounded-full",
   size: {

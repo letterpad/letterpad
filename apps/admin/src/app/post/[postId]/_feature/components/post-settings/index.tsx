@@ -66,10 +66,11 @@ const Actions = ({ post }: IProps) => {
   return (
     <>
       <QuickMenu
-        preview={post.page_type !== PageType["Story Builder"]}
+        showPreview={post.page_type !== PageType["Story Builder"]}
         siteUrl={settings?.site_url ?? ""}
         postHash={postHash}
         showDrawer={showDrawer}
+        id={post.id}
       />
       <Drawer show={visible} title="Settings" onClose={onClose} dir="right">
         <div className="space-y-10 whitespace-normal">
