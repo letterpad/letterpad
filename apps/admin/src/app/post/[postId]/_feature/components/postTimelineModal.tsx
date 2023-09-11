@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation";
 import { FC, useState } from "react";
 import { Button, Modal } from "ui";
 
@@ -20,8 +21,9 @@ interface Version {
 }
 
 export const PostTimelineModal: FC<Props> = ({ onClose, visible, onApply }) => {
+  const { postId } = useParams();
   const [tempTimelineData, setTempTimelineData] = useState<Version>();
-  const res = useGetPost({ id: 3 });
+  const res = useGetPost({ id: Number(postId) });
   const data: PostHistoryItem[] = parseDrafts(res.data?.html_draft);
 
   return (
