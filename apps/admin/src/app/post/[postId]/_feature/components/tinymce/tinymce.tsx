@@ -8,6 +8,7 @@ import { FileExplorer } from "@/components/file-explorer";
 import { blogEditorConfig, id } from "./config";
 import { insertImageInEditor } from "../commands";
 import { usePostContext } from "../../context";
+import { useActivateEditorChangeAfterClick } from "../../hooks";
 
 interface Props {
   text: string;
@@ -25,17 +26,8 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
   } = usePostContext();
   const editorRef = useRef<Editor["editor"]>();
   const isDark = document.body.classList.contains("dark");
-  const [html, setHtml] = useState(text);
-  const contentLoadedRef = useRef(false);
 
-  const activateChangeAction = () => {
-    contentLoadedRef.current = true;
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", activateChangeAction);
-    return () => document.removeEventListener("click", activateChangeAction);
-  }, []);
+  const allowEditorChange = useActivateEditorChangeAfterClick();
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -49,12 +41,6 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
     };
   }, [onMediaBrowse, editorRef.current]);
 
-  useEffect(() => {
-    if (typeof html == "undefined") {
-      setHtml(text);
-    }
-  }, [html, text]);
-
   return (
     <div>
       <GrammarlyEditorPlugin clientId="client_BuJhZ29Gc2ovQLpvEUvjJ8">
@@ -66,9 +52,9 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
               setHelpers && setHelpers(editor);
             }
           }}
-          initialValue={html}
+          initialValue={text === "undefined" ? "" : text}
           onEditorChange={(newHtml) => {
-            if (contentLoadedRef.current) {
+            if (allowEditorChange) {
               onChange(newHtml);
             }
           }}
