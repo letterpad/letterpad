@@ -70,7 +70,6 @@ export const getPost = async (
   try {
     const post = await prisma.post.findFirst({
       where: {
-        id: postId,
         author_id: client_author_id,
         status:
           !session_author_id && !postId

@@ -54,7 +54,6 @@ function setContent({ title, content }: { title?: string; content?: string }) {
     cy.get("#title-editor").should("exist");
     cy.wait(2000);
     cy.window().then((win) => {
-      //@ts-ignore
       win.document.body.click();
       //@ts-ignore
       win.tinymce.get("title-editor").setContent(title);
@@ -64,7 +63,6 @@ function setContent({ title, content }: { title?: string; content?: string }) {
   if (content) {
     cy.get("#main-editor").should("exist");
     cy.window().then((win) => {
-      //@ts-ignore
       win.document.body.click();
       //@ts-ignore
       win.tinymce.get("main-editor").setContent(content);

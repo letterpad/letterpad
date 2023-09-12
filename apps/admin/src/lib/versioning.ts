@@ -36,11 +36,11 @@ export class PostVersion {
   }
 
   replacePreviousBlog(newContent: string) {
-    this.history.pop();
-    this.updateBlog(newContent);
+    const prevItem = this.history.pop();
+    this.updateBlog(newContent, !!prevItem?.live);
   }
 
-  updateBlog(newContent: string): void {
+  updateBlog(newContent: string, isLive: boolean = false): void {
     if (this.history.length === 0) {
       return this.createInitialEntry(newContent);
     }
@@ -49,7 +49,7 @@ export class PostVersion {
     const patches = this.dmp.patch_make(currentContent, newContent);
     const entry: PostHistoryItem = {
       timestamp: this.getCurrentTimestamp(),
-      live: false,
+      live: isLive,
       patches: patches,
       active: true,
     };

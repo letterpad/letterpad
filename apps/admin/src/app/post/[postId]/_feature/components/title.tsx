@@ -13,7 +13,6 @@ interface Props {
 export const Title: React.FC<Props> = memo(
   ({ postId, title, onTitleChange }) => {
     const ref = useRef<HTMLTextAreaElement>(null);
-    const [text] = useState(title);
 
     useEffect(() => {
       if (ref.current && title.length === 0) {
@@ -24,11 +23,11 @@ export const Title: React.FC<Props> = memo(
     return (
       <Editor
         id={titleId}
-        initialValue={text}
+        initialValue={title ?? null}
         onEditorChange={(_, editor) => {
           if (postId) {
-            const title = editor.getContent({ format: "text" });
-            onTitleChange(title);
+            const newtitle = editor.getContent({ format: "text" });
+            if (title !== newtitle) onTitleChange(newtitle);
           }
         }}
         init={titleEditorConfig}
