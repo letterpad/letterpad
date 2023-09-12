@@ -19,6 +19,7 @@ import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
 import { PostVersion } from "../../../lib/versioning";
+import { PostHistoryItem } from "../../../types";
 import { parseDrafts } from "../../../utils/utils";
 
 const dmp = new DiffMatchPatch();
@@ -132,16 +133,11 @@ export const updatePost = async (
     }
 
     if (args.data.html_draft) {
-      const postVersions = new PostVersion(
-        parseDrafts(existingPost.html_draft)
+      const html_draft = addOrReplaceHistory(
+        parseDrafts(existingPost.html_draft),
+        args.data.html_draft
       );
-      const lastUpdate = postVersions.getLastUpdateInSeconds();
-      if (lastUpdate && lastUpdate < 10) {
-        postVersions.replacePreviousBlog(args.data.html_draft);
-      } else {
-        postVersions.updateBlog(args.data.html_draft);
-      }
-      newPostArgs.data.html_draft = JSON.stringify(postVersions.getHistory());
+      newPostArgs.data.html_draft = html_draft;
     }
 
     if (args.data.status === PostStatusOptions.Published && args.data.version) {
@@ -213,3 +209,17 @@ export const updatePost = async (
     };
   }
 };
+
+function addOrReplaceHistory(
+  oldHistory: PostHistoryItem[],
+  newHistory: string
+) {
+  const postVersions = new PostVersion(oldHistory);
+  const lastUpdate = postVersions.getLastUpdateInSeconds();
+  if (lastUpdate && lastUpdate < 10) {
+    postVersions.replacePreviousBlog(newHistory);
+  } else {
+    postVersions.updateBlog(newHistory);
+  }
+  return JSON.stringify(postVersions.getHistory());
+}

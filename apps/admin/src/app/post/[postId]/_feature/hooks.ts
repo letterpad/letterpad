@@ -35,10 +35,10 @@ export const usePostVersioning = (id?: number) => {
 };
 
 export const useActivateEditorChangeAfterClick = () => {
-  const ref = useRef(false);
+  const [active, setActive] = useState(false);
 
   const activateChangeAction = () => {
-    ref.current = true;
+    setActive(true);
     document.removeEventListener("click", activateChangeAction);
   };
 
@@ -47,5 +47,5 @@ export const useActivateEditorChangeAfterClick = () => {
     return () => document.removeEventListener("click", activateChangeAction);
   }, []);
 
-  return ref.current;
+  return active;
 };
