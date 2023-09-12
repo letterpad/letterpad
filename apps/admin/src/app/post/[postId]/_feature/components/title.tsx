@@ -26,8 +26,8 @@ export const Title: React.FC<Props> = memo(
         initialValue={title ?? null}
         onEditorChange={(_, editor) => {
           if (postId) {
-            const title = editor.getContent({ format: "text" });
-            onTitleChange(title);
+            const newtitle = editor.getContent({ format: "text" });
+            if (title !== newtitle) onTitleChange(newtitle);
           }
         }}
         init={titleEditorConfig}
