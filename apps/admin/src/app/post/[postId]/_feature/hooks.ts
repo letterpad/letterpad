@@ -33,3 +33,19 @@ export const usePostVersioning = (id?: number) => {
     refetch,
   };
 };
+
+export const useActivateEditorChangeAfterClick = () => {
+  const ref = useRef(false);
+
+  const activateChangeAction = () => {
+    ref.current = true;
+    document.removeEventListener("click", activateChangeAction);
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", activateChangeAction);
+    return () => document.removeEventListener("click", activateChangeAction);
+  }, []);
+
+  return ref.current;
+};

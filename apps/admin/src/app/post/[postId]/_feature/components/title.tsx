@@ -3,7 +3,6 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import "./tinymce/core";
 
 import { titleEditorConfig, titleId } from "./tinymce/config";
-import { useActivateEditorChangeAfterClick } from "../hooks";
 
 interface Props {
   postId?: number;
@@ -14,8 +13,6 @@ interface Props {
 export const Title: React.FC<Props> = memo(
   ({ postId, title, onTitleChange }) => {
     const ref = useRef<HTMLTextAreaElement>(null);
-    const [text] = useState(title);
-    const allowEditorChange = useActivateEditorChangeAfterClick();
 
     useEffect(() => {
       if (ref.current && title.length === 0) {
@@ -26,9 +23,9 @@ export const Title: React.FC<Props> = memo(
     return (
       <Editor
         id={titleId}
-        initialValue={text}
+        initialValue={title ?? null}
         onEditorChange={(_, editor) => {
-          if (postId && allowEditorChange) {
+          if (postId) {
             const title = editor.getContent({ format: "text" });
             onTitleChange(title);
           }

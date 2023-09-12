@@ -3,6 +3,7 @@ import { report } from "@/components/error";
 import {
   MutationResolvers,
   PostResolvers,
+  PostStatusOptions,
   QueryResolvers,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
@@ -21,6 +22,7 @@ import { getLetterpadLatestPost } from "../services/post/getLetterpadLatestPost"
 import { getLetterpadLatestPosts } from "../services/post/getLetterpadLatestPosts";
 import { getStats } from "../services/stats";
 import { setResponsiveImages } from "../utils/imageAttributs";
+import { PostHistoryItem } from "../../types";
 import { parseDrafts } from "../../utils/utils";
 
 type PostAttributes = any;
@@ -50,8 +52,18 @@ const Post: PostResolvers<ResolverContext> = {
   html: async ({ html }) => {
     return html ? setResponsiveImages(html) : "";
   },
-  html_draft: async ({ html_draft }) => {
-    const drafts = parseDrafts(html_draft);
+  html_draft: async ({ html_draft, html, status }) => {
+    if (html && !html_draft) {
+      const entry: PostHistoryItem = {
+        timestamp: new Date().toISOString(),
+        content: html,
+        patches: [],
+        active: true,
+        live: status === PostStatusOptions.Published,
+      };
+      return JSON.stringify([entry]);
+    }
+    const drafts = parseDrafts(html_draft ?? html);
     return JSON.stringify(drafts);
   },
   stats: async ({ stats, reading_time }) => {
@@ -160,3 +172,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
 };
 
 export default { Mutation, Post, Query };
+
+const isJsonString = (str?: string) => {
+  if (!str) {
+    return false;
+  }
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
