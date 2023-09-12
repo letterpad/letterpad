@@ -134,7 +134,10 @@ export const updatePost = async (
 
     if (args.data.html_draft) {
       const html_draft = addOrReplaceHistory(
-        parseDrafts(existingPost.html_draft),
+        parseDrafts(
+          existingPost.html_draft,
+          existingPost.status as PostStatusOptions
+        ),
         args.data.html_draft
       );
       newPostArgs.data.html_draft = html_draft;

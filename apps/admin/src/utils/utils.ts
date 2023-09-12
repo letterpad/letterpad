@@ -1,3 +1,5 @@
+import { PostStatusOptions } from "../../__generated__/__types__";
+
 const CATEGORY_PARSER_REGEX = /_\d{0,2}_/;
 
 export const isCategory = (tag: string): boolean => {
@@ -10,12 +12,17 @@ export const tryToParseCategoryName = (tag: string): string => {
   return category || tag;
 };
 
-export const parseDrafts = (drafts) => {
+export const parseDrafts = (drafts: string, status?: PostStatusOptions) => {
   try {
     return JSON.parse(drafts);
   } catch (e) {
     return [
-      { content: drafts, timestamp: new Date().toISOString(), patches: [] },
+      {
+        content: drafts,
+        timestamp: new Date().toISOString(),
+        patches: [],
+        live: status === PostStatusOptions.Published,
+      },
     ];
   }
 };
