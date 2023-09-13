@@ -47,8 +47,8 @@ export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
           <SubTitle
             postId={post?.id}
             sub_title={post?.sub_title || ""}
-            onSubtitleChange={(title) => {
-              updatePostWithDebounce?.({ title, id: post.id });
+            onSubtitleChange={(sub_title) => {
+              updatePostWithDebounce?.({ sub_title, id: post.id });
             }}
           />
         </div>
