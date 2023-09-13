@@ -70,12 +70,12 @@ export const getPost = async (
         };
       }
 
-      const pv = new PostVersion(parseDrafts(post.html_draft));
+      const pv = new PostVersion(parseDrafts(post.html_draft ?? ""));
       const activeCommit = pv.retrieveActiveVersion()?.timestamp ?? "";
       const html = pv.retrieveBlogAtTimestamp(activeCommit) ?? "";
       return {
         ...mapPostToGraphql(post),
-        html_draft: post.html_draft,
+        html_draft: html,
         __typename: "Post",
       };
     }
