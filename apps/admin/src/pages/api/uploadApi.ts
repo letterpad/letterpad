@@ -14,16 +14,11 @@ import {
 } from "@/graphql/types";
 
 import logger from "./../../shared/logger";
-import initMiddleware from "./middleware";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
 import { getServerSession } from "../../graphql/context";
 
-const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
-// for parsing multipart/form-data
-// note that Multer limits to 1MB file size by default
-const multerAny = initMiddleware(upload.any());
 
 // Doc on custom API configuration:
 // https://nextjs.org/docs/api-routes/api-middlewares#custom-config
@@ -37,7 +32,6 @@ const uploadApi = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse
 ) => {
-  await multerAny(req, res);
   const _session = await getServerSession({ req });
   const session = _session as unknown as { user: SessionData };
   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
