@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 30;
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const totalUsers = await prisma.author.count();
