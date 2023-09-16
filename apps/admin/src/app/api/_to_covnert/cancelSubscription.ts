@@ -2,7 +2,7 @@ import { NextApiResponse } from "next";
 
 import { stripe } from "@/lib/stripe";
 
-import { NextApiRequestWithFormData } from "./../../graphql/types";
+import { NextApiRequestWithFormData } from "../../../graphql/types";
 
 const CancelSubscription = async (
   req: NextApiRequestWithFormData,
