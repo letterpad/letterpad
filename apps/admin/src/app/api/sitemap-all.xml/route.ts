@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
+import { getRootUrl } from "../../../shared/getRootUrl";
+
 const ITEMS_PER_PAGE = 30;
 
 export const dynamic = "force-dynamic";
@@ -11,9 +13,10 @@ export async function GET() {
   const totalGroups = totalUsers / ITEMS_PER_PAGE;
   const lastModified = new Date().toISOString();
   let sitemaps = "";
+
   for (let i = 0; i < totalGroups; i++) {
     sitemaps += `<sitemap>
-      <loc>http://localhost:3000/api/sitemap-all.xml/group?group=${i}</loc>
+      <loc>${getRootUrl()}/api/sitemap-all.xml/group?group=${i}</loc>
       <lastmod>${lastModified}</lastmod>
     </sitemap>`;
   }
