@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getAbout } from '@/data';
 
 import StructuredData from '../../../components/StructuredData';
-import { useTheme } from '../../../themes';
+import { getTheme } from '../../../themes';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,7 +11,7 @@ export default async function About() {
   const { settings, me } = await getAbout();
   const { name, social } = me;
 
-  const { About } = useTheme(settings?.theme);
+  const { About } = getTheme(settings?.theme);
 
   const jsonLd = {
     '@context': 'https://schema.org',

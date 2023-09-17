@@ -5,6 +5,7 @@ import {
   PostsFragmentFragment,
 } from 'letterpad-sdk';
 import { headers } from 'next/headers';
+import { cache } from 'react';
 
 function getLetterpad() {
   const headersList = headers();
@@ -18,7 +19,7 @@ function getLetterpad() {
   });
 }
 
-export async function getData() {
+export const getData = cache(async () => {
   const letterpad = getLetterpad();
 
   const settings = await letterpad.getSettings();
@@ -59,9 +60,9 @@ export async function getData() {
     };
   }
   return result.props;
-}
+});
 
-export async function getPostData(slug: string) {
+export const getPostData = cache(async (slug: string) => {
   const letterpad = getLetterpad();
   const [post, settings, me] = await Promise.all([
     letterpad.getPost(slug),
@@ -73,9 +74,9 @@ export async function getPostData(slug: string) {
     settings,
     me,
   };
-}
+});
 
-export async function getTagsData() {
+export const getTagsData = cache(async () => {
   const letterpad = getLetterpad();
 
   const [tags, settings, me] = await Promise.all([
@@ -89,9 +90,9 @@ export async function getTagsData() {
     settings,
     me,
   };
-}
+});
 
-export async function getPostsByTag(tag: string) {
+export const getPostsByTag = cache(async (tag: string) => {
   const letterpad = getLetterpad();
   const [posts, settings, me] = await Promise.all([
     letterpad.listPosts(tag),
@@ -105,9 +106,9 @@ export async function getPostsByTag(tag: string) {
     me,
     tagName: tag,
   };
-}
+});
 
-export async function getAbout() {
+export const getAbout = cache(async () => {
   const letterpad = getLetterpad();
   const settings = await letterpad.getSettings();
   const me = await letterpad.getAuthor();
@@ -116,16 +117,16 @@ export async function getAbout() {
     settings,
     me,
   };
-}
+});
 
-export async function getSiteMap() {
+export const getSiteMap = cache(async () => {
   const letterpad = getLetterpad();
 
   const sitemapResponse = await letterpad.getSitemap();
   return sitemapResponse;
-}
+});
 
-export async function getFeed() {
+export const getFeed = cache(async () => {
   const letterpad = getLetterpad();
   const [feedResponse, settings, me] = await Promise.all([
     letterpad.getFeed(),
@@ -138,9 +139,9 @@ export async function getFeed() {
     me,
     settings,
   };
-}
+});
 
-export async function getPreviewData(hash: string) {
+export const getPreviewData = cache(async (hash: string) => {
   const letterpad = getLetterpad();
   const post = await letterpad.getPost({
     previewHash: hash,
@@ -153,4 +154,4 @@ export async function getPreviewData(hash: string) {
     settings,
     me,
   };
-}
+});

@@ -32,9 +32,6 @@ export const Layout = ({ children, props }: LayoutProps) => {
         </header>
       </div>
       <main className="mb-auto">{children}</main>
-      <br />
-      <br />
-      <br />
       <div className="border-b-[1px] dark:border-gray-700">
         <Footer author={props.me} settings={props.settings} />
       </div>

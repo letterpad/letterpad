@@ -8,7 +8,7 @@ interface Props {
 
 const Giscus = ({ mapping }: Props) => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true);
-  // const { theme, resolvedTheme } = useTheme();
+  // const { theme, resolvedTheme } = getTheme();
   const commentsTheme =
     siteMetadata.comment.giscusConfig.themeURL === ''
       ? localStorage.theme === 'dark'

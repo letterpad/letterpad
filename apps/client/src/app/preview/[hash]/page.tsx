@@ -2,11 +2,11 @@ import { getPreviewData } from '@/data';
 
 import Creative from '@/layouts/Creative';
 
-import { useTheme } from '../../../../themes';
+import { getTheme } from '../../../../themes';
 
 export default async function Preview({ params, searchParams }) {
   const { post, settings, me } = await getPreviewData(params.hash);
-  const { Preview } = useTheme(settings?.theme);
+  const { Preview } = getTheme(settings?.theme);
 
   if (post.__typename !== 'Post' || settings.__typename !== 'Setting') {
     return null;

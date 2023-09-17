@@ -5,11 +5,11 @@ import { getPostData } from '@/data';
 import StructuredData from '@/components/StructuredData';
 
 import Creative from '@/layouts/Creative';
-import { useTheme } from '@/themes';
+import { getTheme } from '@/themes';
 
 export default async function Page(props) {
   const { post, settings, me } = await getPostData(props.params.slug);
-  const { Post } = useTheme(settings?.theme);
+  const { Post } = getTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
   const jsonLd = {

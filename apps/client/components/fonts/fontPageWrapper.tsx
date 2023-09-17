@@ -11,23 +11,13 @@ export const FontPageWrapper = ({
   return (
     <div
       className={classNames(
+        'flex flex-1 flex-col',
         fonts[primary_font].className,
         fonts[secondary_font].variable,
         fonts['Roboto_Mono'].variable // for codeblocks
       )}
     >
       {children}
-      {/* <style jsx global>
-        {`
-          h1,
-          h2,
-          h3 {
-            font-family: var(
-              --font-${secondary_font?.replaceAll('_', '-')?.toLowerCase()}
-            ) !important;
-          }
-        `}
-      </style> */}
     </div>
   );
 };

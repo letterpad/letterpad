@@ -6,14 +6,14 @@ import { getData } from '@/data';
 import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/HeadMeta';
 
-import { useTheme } from '@/themes';
+import { getTheme } from '@/themes';
 
 import { Css } from './_css';
 
 const Layout = async ({ children }) => {
   const { settings, me } = await getData();
 
-  const { Layout } = useTheme(settings?.theme);
+  const { Layout } = getTheme(settings?.theme);
 
   return (
     <html lang="en" className="scroll-smooth">

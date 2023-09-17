@@ -10,13 +10,13 @@ import { withPageSEO } from '@/components/SEO';
 import Creative from '@/layouts/Creative';
 
 import StructuredData from '../../components/StructuredData';
-import { useTheme } from '../../themes';
+import { getTheme } from '../../themes';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const { settings, me, isPage, page, posts } = await getData();
-  const { HomePosts, HomePage } = useTheme(settings?.theme);
+  const { HomePosts, HomePage } = getTheme(settings?.theme);
 
   const _isPage = isPage && page?.__typename === 'Post';
   const isPosts = !isPage && posts?.__typename === 'PostsNode';

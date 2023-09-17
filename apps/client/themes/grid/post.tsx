@@ -121,8 +121,8 @@ export const Post: FC<PostProps> = ({ post, settings, me }) => {
                 {author.avatar && (
                   <Image
                     src={author.avatar}
-                    width={200}
-                    height={200}
+                    width={100}
+                    height={100}
                     alt={author.name}
                     className="rounded-full"
                   />

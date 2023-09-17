@@ -2,11 +2,11 @@ import { getTagsData } from '@/data';
 
 import { BaseSEO } from '@/components/SEO';
 
-import { useTheme } from '../../../themes';
+import { getTheme } from '../../../themes';
 
 export default async function Tags() {
   const { settings, me, tags } = await getTagsData();
-  const { Tags } = useTheme(settings?.theme);
+  const { Tags } = getTheme(settings?.theme);
 
   if (
     me?.__typename !== 'Author' ||
