@@ -6,9 +6,7 @@ export const Section: FC<{ className?: string; children: ReactNode }> = ({
   className,
 }) => {
   return (
-    <div
-      className={classNames('mx-auto max-w-[1480px] px-5 sm:px-8', className)}
-    >
+    <div className={classNames('mx-auto sm:px-8 md:max-w-[1480px]', className)}>
       {children}
     </div>
   );

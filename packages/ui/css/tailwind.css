@@ -27,7 +27,7 @@
     @apply mr-2 mb-2 rounded-md bg-blue-700 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
   }
   .content {
-    @apply mx-auto max-w-[860px] px-4 sm:px-4 md:px-0;
+    @apply mx-auto max-w-[860px] sm:px-4 md:px-0;
   }
   .highlight-speech {
     @apply rounded-md bg-slate-200 dark:bg-slate-800;

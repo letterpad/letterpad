@@ -23,7 +23,7 @@ const Layout = async ({ children }) => {
     <html lang="en" className="scroll-smooth">
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
-      <body className="line-numbers flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20">
+      <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20">
         <FontPageWrapper
           primary_font={settings.design?.primary_font}
           secondary_font={settings.design?.secondary_font}
