@@ -107,7 +107,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     const data = await getData();
-
+    if (!data) return {};
     const { settings, me } = data;
     return {
       title: settings.site_title,
