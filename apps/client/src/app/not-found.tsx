@@ -1,8 +1,6 @@
-import { Button } from 'ui';
-
-export default function Custom404() {
+export default function Custom404({ homepage = '/' }) {
   return (
-    <section className="w-full ">
+    <section className="w-full py-20">
       <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
         <div className="mx-auto max-w-screen-sm text-center">
           <h1 className="mb-4 text-6xl font-extrabold tracking-tight  lg:text-7xl">
@@ -16,8 +14,8 @@ export default function Custom404() {
             home page.{' '}
           </p>
           <a
-            href="/"
-            className="hover:bg-accent-800 my-4 inline-flex rounded-lg bg-accent-50 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-accent-50 dark:focus:ring-accent-50"
+            href={homepage}
+            className="my-4 inline-flex rounded-lg bg-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-50 dark:focus:ring-blue-50"
           >
             Back to Homepage
           </a>

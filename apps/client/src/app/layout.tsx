@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation';
+
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 
@@ -9,10 +11,14 @@ import { HeadMeta } from '@/components/HeadMeta';
 import { getTheme } from '@/themes';
 
 import { Css } from './_css';
+import Custom404 from './not-found';
 
 const Layout = async ({ children }) => {
-  const { settings, me } = await getData();
-
+  const data = await getData();
+  if (!data) {
+    return <Custom404 homepage="https://letterpad.app" />;
+  }
+  const { settings, me } = data;
   const { Layout } = getTheme(settings?.theme);
 
   return (

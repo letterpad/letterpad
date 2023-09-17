@@ -20,46 +20,51 @@ function getLetterpad() {
 }
 
 export const getData = cache(async () => {
-  const letterpad = getLetterpad();
+  try {
+    const letterpad = getLetterpad();
 
-  const settings = await letterpad.getSettings();
+    const settings = await letterpad.getSettings();
 
-  const { menu } = settings;
+    const { menu } = settings;
 
-  const firstItemOfMenu = menu[0];
-  const isHomePageACollectionOfPosts =
-    !firstItemOfMenu || firstItemOfMenu?.type === NavigationType.Tag;
-  const isHomePageASinglePage = firstItemOfMenu?.type === NavigationType.Page;
+    const firstItemOfMenu = menu[0];
+    const isHomePageACollectionOfPosts =
+      !firstItemOfMenu || firstItemOfMenu?.type === NavigationType.Tag;
+    const isHomePageASinglePage = firstItemOfMenu?.type === NavigationType.Page;
 
-  const me = await letterpad.getAuthor();
+    const me = await letterpad.getAuthor();
 
-  const result = {
-    props: {
-      me,
-      settings,
-      isPage: isHomePageASinglePage,
-      isPosts: isHomePageACollectionOfPosts,
-      posts: null as unknown as PostsFragmentFragment,
-      page: null as unknown as PageFragmentFragment,
-    },
-  };
-
-  if (isHomePageACollectionOfPosts) {
-    const posts = await letterpad.listPosts(firstItemOfMenu?.slug);
-    result.props = {
-      ...result.props,
-      posts,
+    const result = {
+      props: {
+        me,
+        settings,
+        isPage: isHomePageASinglePage,
+        isPosts: isHomePageACollectionOfPosts,
+        posts: null as unknown as PostsFragmentFragment,
+        page: null as unknown as PageFragmentFragment,
+      },
     };
-  }
 
-  if (isHomePageASinglePage) {
-    const page = await letterpad.getPost(firstItemOfMenu.slug);
-    result.props = {
-      ...result.props,
-      page,
-    };
+    if (isHomePageACollectionOfPosts) {
+      const posts = await letterpad.listPosts(firstItemOfMenu?.slug);
+      result.props = {
+        ...result.props,
+        posts,
+      };
+    }
+
+    if (isHomePageASinglePage) {
+      const page = await letterpad.getPost(firstItemOfMenu.slug);
+      result.props = {
+        ...result.props,
+        page,
+      };
+    }
+    return result.props;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e);
   }
-  return result.props;
 });
 
 export const getPostData = cache(async (slug: string) => {
