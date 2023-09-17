@@ -10,7 +10,7 @@ export const FontPageWrapper = ({
 }) => {
   return (
     <div
-      className={classNames('flex flex-1 flex-col')}
+      // className={classNames('flex flex-1 flex-col')}
       style={{ fontFamily: `'${primary_font.replace(/_/g, ' ')}'` }}
     >
       {children}

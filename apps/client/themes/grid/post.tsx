@@ -43,7 +43,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
             >
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
                 {author.avatar && (
-                  <div className="mr-4">
+                  <div className="mr-2">
                     <Image
                       src={author.avatar}
                       width={64}

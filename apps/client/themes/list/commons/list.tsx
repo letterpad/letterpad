@@ -10,8 +10,8 @@ interface Props {
 
 export function List({ posts }: Props) {
   return (
-    <SectionContainer>
-      <div className="content w-full divide-y divide-gray-200 py-12 dark:divide-gray-700">
+    <SectionContainer className="px-4">
+      <div className="w-full divide-y divide-gray-200 py-12 dark:divide-gray-700">
         <ul>
           {posts.rows.map((post) => {
             const { slug, publishedAt, title, tags, excerpt, stats } = post;
