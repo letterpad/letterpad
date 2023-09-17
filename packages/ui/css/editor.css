@@ -4,7 +4,7 @@
 
 .prose {
   word-break: break-word;
-  font-family: inherit;
+  font-family: inherit !important;
   .mce-content-body {
     outline: none;
   }
