@@ -92,7 +92,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                 loading="lazy"
                 alt={post.title}
                 className="py-4"
-                style={{ minHeight: 400 }}
+                style={{ minHeight: 200 }}
               />
             )}
           </header>

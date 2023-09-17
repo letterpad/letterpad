@@ -65,13 +65,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
                       </time>
                     </span>
 
-                    <h2
-                      className={classNames(
-                        'mb-2 mt-2 font-bold leading-5'
-                        // fonts[settings.design?.primary_font ?? 'Inter']
-                        //   .className
-                      )}
-                    >
+                    <h2 className={classNames('mb-2 mt-2 font-bold leading-5')}>
                       {title}
                     </h2>
                     <p className="text-base tracking-tight text-gray-600 dark:text-gray-300">
