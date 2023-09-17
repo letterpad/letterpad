@@ -1,7 +1,7 @@
-'use client';
+// 'use client';
 import classNames from 'classnames';
 
-import { fonts } from './fonts';
+// import { fonts } from './fonts';
 
 export const FontPageWrapper = ({
   children,
@@ -10,12 +10,8 @@ export const FontPageWrapper = ({
 }) => {
   return (
     <div
-      className={classNames(
-        'flex flex-1 flex-col',
-        fonts[primary_font].className,
-        fonts[secondary_font].variable,
-        fonts['Roboto_Mono'].variable // for codeblocks
-      )}
+      className={classNames('flex flex-1 flex-col')}
+      style={{ fontFamily: `'${primary_font.replace(/_/g, ' ')}'` }}
     >
       {children}
     </div>
