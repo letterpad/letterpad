@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
 
@@ -6,7 +6,7 @@ interface Props {
   issueTerm: string;
 }
 
-const Utterances = ({ issueTerm }: Props) => {
+const Utterances: FC<Props> = ({ issueTerm }) => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true);
 
   const commentsTheme =

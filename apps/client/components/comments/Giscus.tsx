@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
 
@@ -6,7 +6,7 @@ interface Props {
   mapping: string;
 }
 
-const Giscus = ({ mapping }: Props) => {
+const Giscus: FC<Props> = ({ mapping }) => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true);
   // const { theme, resolvedTheme } = getTheme();
   const commentsTheme =

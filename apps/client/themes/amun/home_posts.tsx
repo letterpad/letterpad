@@ -19,7 +19,6 @@ export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
     <>
       <div className="mb-10 flex flex-col gap-12 lg:flex-row">
         <LatestPosts posts={firstThreeMax} />
-        {/* @ts-expect-error Async Component - https://github.com/vercel/next.js/issues/42292 */}
         <SidePosts />
       </div>
 

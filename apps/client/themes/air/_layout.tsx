@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 
 import Link from '@/components/Link';
@@ -10,19 +11,20 @@ import { getData } from '../../src/data';
 
 export interface Props {
   children: ReactNode;
-  props: Pick<Awaited<ReturnType<typeof getData>>, 'me' | 'settings'>;
 }
 
-export const Layout = ({ children, props }: Props) => {
-  const { settings, me } = props;
+export const Layout = async ({ children }: Props) => {
+  const data = await getData();
+  if (!data) return notFound();
+  const { settings, me } = data;
 
   return (
     <>
       <header className="mx-auto flex w-full max-w-[1480px] items-center bg-cover bg-no-repeat px-5  py-5 sm:px-8">
-        <Link href="/" aria-label={props.settings.site_title}>
+        <Link href="/" aria-label={settings.site_title}>
           <LogoWithTitle
-            logo={props.settings.site_logo}
-            title={props.settings.site_title}
+            logo={settings.site_logo}
+            title={settings.site_title}
           />
         </Link>
         <Nav menu={settings.menu} />

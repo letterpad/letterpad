@@ -1,4 +1,6 @@
 import { Navigation } from 'letterpad-sdk';
+import { notFound } from 'next/navigation';
+import { FC, PropsWithChildren } from 'react';
 
 import Link from '@/components/Link';
 
@@ -8,19 +10,21 @@ import { Footer } from './commons/footer';
 import { Header } from './commons/header';
 import { Section } from './commons/section';
 import { Subscribe } from './commons/subscribe';
-import { LayoutProps } from '../../types/pageTypes';
+import { getData } from '../../src/data';
 
 export const forceDynamic = true;
 
-export const Layout = ({ children, props }: LayoutProps) => {
-  const { settings } = props;
+export const Layout: FC<PropsWithChildren> = async ({ children }) => {
+  const data = await getData();
+  if (!data) return notFound();
+  const { settings } = data;
   return (
     <>
-      <Header settings={props.settings} />
+      <Header settings={settings} />
       <Banner settings={settings} />
       <Section>{children}</Section>
       <Subscribe />
-      <Footer {...props} />
+      <Footer />
       <Css />
     </>
   );

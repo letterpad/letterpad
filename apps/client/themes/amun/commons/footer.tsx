@@ -1,19 +1,14 @@
-import { Author, SettingsFragmentFragment } from 'letterpad-sdk';
-import { FC } from 'react';
-
 import Link from '@/components/Link';
 import SocialIcon from '@/components/social-icons';
 
 import { LogoWithTitle } from './site-logo';
-import { LayoutProps } from '../../../types/pageTypes';
+import { getData } from '../../../src/data';
 
-interface Props {
-  settings: LayoutProps['props']['settings'];
-  me: LayoutProps['props']['me'];
-}
-
-export const Footer: FC<Props> = ({ settings, me }) => {
-  const { social } = me;
+export const Footer = async () => {
+  const data = await getData();
+  if (!data) return null;
+  const { settings, me } = data;
+  const social = me.social;
   return (
     <div className="mx-auto max-w-[1480px] px-5 sm:px-8">
       <div className="grid gap-12 border-t border-gray-100 pb-24 pt-20 dark:border-gray-900 sm:grid-cols-2 lg:grid-cols-6">

@@ -64,6 +64,7 @@ export const getData = cache(async () => {
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log(e);
+    return undefined;
   }
 });
 

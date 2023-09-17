@@ -15,7 +15,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
-    "typescript": "^4.8.4"
+    "typescript": "5.2.2"
   },
   "publishConfig": {
     "access": "public"

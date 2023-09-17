@@ -1,5 +1,3 @@
-import { notFound } from 'next/navigation';
-
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 
@@ -30,7 +28,7 @@ const Layout = async ({ children }) => {
           primary_font={settings.design?.primary_font}
           secondary_font={settings.design?.secondary_font}
         >
-          <Layout props={{ settings, me }}>{children}</Layout>
+          <Layout>{children}</Layout>
         </FontPageWrapper>
         <div id="modal-creatives" />
       </body>
