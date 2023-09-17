@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import formatDate from '@/lib/utils/formatDate';
 
-import { fonts } from '@/components/fonts';
+// import { fonts } from '@/components/fonts';
 import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
@@ -65,13 +65,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
                       </time>
                     </span>
 
-                    <h2
-                      className={classNames(
-                        'mb-2 mt-2 font-bold leading-5',
-                        fonts[settings.design?.primary_font ?? 'Inter']
-                          .className
-                      )}
-                    >
+                    <h2 className={classNames('mb-2 mt-2 font-bold leading-5')}>
                       {title}
                     </h2>
                     <p className="text-base tracking-tight text-gray-600 dark:text-gray-300">

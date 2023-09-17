@@ -1,6 +1,13 @@
+import { SettingsFragmentFragment } from 'letterpad-sdk';
 import Script from 'next/script';
+import { FC } from 'react';
 
-export const HeadMeta = ({ settings }) => {
+import { generateGoogleFontsLink } from './fonts';
+import { generateGoogleFontsVariables } from './fonts/fontsCssLink';
+
+export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
+  settings,
+}) => {
   const { srcs, contents } = getScripts(settings?.scripts ?? '');
   return (
     <head>
@@ -97,11 +104,26 @@ export const HeadMeta = ({ settings }) => {
         href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400;1,600&display=swap"
         rel="stylesheet"
       />
+      <link
+        href={generateGoogleFontsLink([
+          settings.design?.primary_font,
+          settings.design?.secondary_font,
+          'Roboto_Mono',
+        ])}
+        rel="stylesheet"
+      />
+
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       <style>
         {`
           html {
             --brand-accent: ${settings?.design?.brand_color ?? '#d93097'};
+            ${generateGoogleFontsVariables([
+              settings.design?.primary_font,
+              settings.design?.secondary_font,
+              'Roboto_Mono',
+              'Inter',
+            ])}
           }
           `}
       </style>
