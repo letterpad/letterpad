@@ -125,6 +125,12 @@ export async function generateMetadata({
         card: 'summary_large_image',
         description: settings.site_description,
       },
+      alternates: {
+        canonical: settings.site_url,
+        types: {
+          'application/rss+xml': settings.site_url + '/feed.xml',
+        },
+      },
       openGraph: {
         url: settings.site_url,
         title: settings.site_title,

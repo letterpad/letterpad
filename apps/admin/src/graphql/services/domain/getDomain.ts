@@ -61,6 +61,10 @@ const check = async (domain: string) => {
 
   const configJson = await configResponse.json();
   const domainJson = await domainResponse.json();
+  // eslint-disable-next-line no-console
+  console.log(configJson);
+  // eslint-disable-next-line no-console
+  console.log(domainJson);
   if (domainResponse.status !== 200) {
     return domainJson;
   }
