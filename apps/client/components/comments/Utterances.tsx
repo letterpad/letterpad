@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+'use client';
+
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';
 
@@ -6,11 +8,11 @@ interface Props {
   issueTerm: string;
 }
 
-const Utterances = ({ issueTerm }: Props) => {
+const Utterances: FC<Props> = ({ issueTerm }) => {
   const [enableLoadComments, setEnabledLoadComments] = useState(true);
 
   const commentsTheme =
-    localStorage.theme === 'dark'
+    typeof localStorage !== 'undefined' && localStorage.theme === 'dark'
       ? siteMetadata.comment.utterancesConfig.darkTheme
       : siteMetadata.comment.utterancesConfig.theme;
 

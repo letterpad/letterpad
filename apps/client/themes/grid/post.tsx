@@ -22,7 +22,7 @@ export const getReadableDate = (timestamp: Date | number) => {
   });
 };
 
-export const Post: FC<PostProps> = ({ post, settings, me }) => {
+export const Post: FC<PostProps> = ({ post, settings }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   if (author?.__typename !== 'Author') return null;
@@ -121,8 +121,8 @@ export const Post: FC<PostProps> = ({ post, settings, me }) => {
                 {author.avatar && (
                   <Image
                     src={author.avatar}
-                    width={200}
-                    height={200}
+                    width={100}
+                    height={100}
                     alt={author.name}
                     className="rounded-full"
                   />

@@ -6,14 +6,18 @@ import { getData } from '@/data';
 import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/HeadMeta';
 
-import { useTheme } from '@/themes';
+import { getTheme } from '@/themes';
 
 import { Css } from './_css';
+import Custom404 from './not-found';
 
 const Layout = async ({ children }) => {
-  const { settings, me } = await getData();
-
-  const { Layout } = useTheme(settings?.theme);
+  const data = await getData();
+  if (!data) {
+    return <Custom404 homepage="https://letterpad.app" />;
+  }
+  const { settings } = data;
+  const { Layout } = getTheme(settings?.theme);
 
   return (
     <html lang="en" className="scroll-smooth">
@@ -24,7 +28,7 @@ const Layout = async ({ children }) => {
           primary_font={settings.design?.primary_font}
           secondary_font={settings.design?.secondary_font}
         >
-          <Layout props={{ settings, me }}>{children}</Layout>
+          <Layout>{children}</Layout>
         </FontPageWrapper>
         <div id="modal-creatives" />
       </body>

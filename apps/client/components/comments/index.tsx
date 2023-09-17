@@ -1,5 +1,6 @@
 'use client';
-import dynamic from 'next/dynamic';
+
+import { FC } from 'react';
 
 import { CommentProviders } from './types';
 
@@ -7,22 +8,11 @@ interface Props {
   provider: CommentProviders;
 }
 
-const UtterancesComponent = dynamic(
-  () => import('@/components/comments/Utterances'),
-  {
-    ssr: false,
-  }
-);
+import DisqusComponent from '@/components/comments/Disqus';
+import GiscusComponent from '@/components/comments/Giscus';
+import UtterancesComponent from '@/components/comments/Utterances';
 
-const GiscusComponent = dynamic(() => import('@/components/comments/Giscus'), {
-  ssr: false,
-});
-
-const DisqusComponent = dynamic(() => import('@/components/comments/Disqus'), {
-  ssr: false,
-});
-
-const Comments = ({ provider }: Props) => {
+const Comments: FC<Props> = ({ provider }) => {
   const term =
     typeof window !== 'undefined'
       ? window.location?.origin + window.location.pathname

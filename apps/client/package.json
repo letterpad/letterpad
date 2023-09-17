@@ -32,13 +32,12 @@
   "devDependencies": {
     "@next/bundle-analyzer": "12.0.9",
     "@svgr/webpack": "^6.4.0",
-    "@types/react": "^18.0.21",
     "config": "*",
     "cross-env": "^7.0.3",
     "file-loader": "^6.0.0",
     "graphql-tag": "^2.12.6",
     "lint-staged": "^11.0.0",
-    "typescript": "^4.6.1-rc"
+    "typescript": "5.2.2"
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [

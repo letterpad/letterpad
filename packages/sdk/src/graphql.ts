@@ -268,6 +268,11 @@ export type InputPostStats = {
   words?: InputMaybe<Scalars["Int"]>;
 };
 
+export type InputPublishOptions = {
+  sendMail?: InputMaybe<Scalars["Boolean"]>;
+  testMail?: InputMaybe<Scalars["Boolean"]>;
+};
+
 export type InputSocial = {
   facebook?: InputMaybe<Scalars["String"]>;
   github?: InputMaybe<Scalars["String"]>;
@@ -297,6 +302,7 @@ export type InputUpdatePost = {
   id: Scalars["Int"];
   page_data?: InputMaybe<Scalars["String"]>;
   page_type?: InputMaybe<Scalars["String"]>;
+  publishOptions?: InputMaybe<InputPublishOptions>;
   publishedAt?: InputMaybe<Scalars["Date"]>;
   scheduledAt?: InputMaybe<Scalars["Date"]>;
   slug?: InputMaybe<Scalars["String"]>;
@@ -307,6 +313,7 @@ export type InputUpdatePost = {
   title?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<PostTypes>;
   updatedAt?: InputMaybe<Scalars["Date"]>;
+  version?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputUpdateSubscriber = {

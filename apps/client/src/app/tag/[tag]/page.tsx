@@ -2,14 +2,14 @@ import { getPostsByTag } from '@/data';
 
 import { TagSEO } from '@/components/SEO';
 
-import { useTheme } from '../../../../themes';
+import { getTheme } from '../../../../themes';
 
 export default async function Tag(props) {
   const { posts, me, tagName, settings } = await getPostsByTag(
     props.params.tag
   );
 
-  const { Tag } = useTheme(settings?.theme);
+  const { Tag } = getTheme(settings?.theme);
   if (
     posts.__typename !== 'PostsNode' ||
     settings.__typename !== 'Setting' ||
