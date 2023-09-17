@@ -4,6 +4,7 @@ import * as GridDefaultTheme from './grid';
 import * as List from './list';
 
 export const getTheme = (theme?: string | null) => {
+  return { ...GridDefaultTheme, ...Amun };
   if (theme === 'minimal') return { ...GridDefaultTheme, ...List };
   if (theme === 'air') return { ...GridDefaultTheme, ...Air };
   if (theme === 'amun') return { ...GridDefaultTheme, ...Amun };

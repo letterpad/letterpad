@@ -27,7 +27,7 @@ export const Nav: FC<Props> = ({ menu }) => {
           <li className="relative z-20">
             <ul
               className={classNames(
-                'absolute top-8 -left-36 w-[180px] flex-col gap-0.5 rounded-lg border border-gray-100  bg-white p-4 shadow-md dark:border-gray-600 dark:bg-black md:hidden',
+                'absolute -left-36 top-8 w-[180px] flex-col gap-0.5 rounded-lg border border-gray-100  bg-white p-4 shadow-md dark:border-gray-600 dark:bg-black md:hidden',
                 { hidden: !menuOpen }
               )}
             >
@@ -90,7 +90,7 @@ export const Nav: FC<Props> = ({ menu }) => {
 function getMenu(menu: Omit<Navigation, 'original_name'>[]) {
   return menu.map((item, i) => {
     return (
-      <li>
+      <li key={item.slug}>
         <Link
           key={item.slug}
           href={i === 0 ? '/' : item.slug}

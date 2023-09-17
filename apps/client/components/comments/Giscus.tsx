@@ -1,3 +1,5 @@
+'use client';
+
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import siteMetadata from '@/data/siteMetadata';

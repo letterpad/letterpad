@@ -10,7 +10,7 @@ export const Header: FC<{ settings: SettingsFragmentFragment }> = ({
 }) => {
   return (
     <header
-      className="lp-header mx-auto flex max-h-20  max-w-[1480px] items-center bg-cover bg-no-repeat px-4 py-12 sm:px-8"
+      className="lp-header mx-auto flex max-h-20 w-full  max-w-[1480px] items-center bg-cover bg-no-repeat px-4 py-12 sm:px-8"
       // style={{ backgroundImage: `url(${settings.banner?.src})` }}
     >
       <Link href="/" aria-label={settings.site_title}>
