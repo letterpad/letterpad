@@ -69,17 +69,23 @@ export const getData = cache(async () => {
 });
 
 export const getPostData = cache(async (slug: string) => {
-  const letterpad = getLetterpad();
-  const [post, settings, me] = await Promise.all([
-    letterpad.getPost(slug),
-    letterpad.getSettings(),
-    letterpad.getAuthor(),
-  ]);
-  return {
-    post,
-    settings,
-    me,
-  };
+  try {
+    const letterpad = getLetterpad();
+    const [post, settings, me] = await Promise.all([
+      letterpad.getPost(slug),
+      letterpad.getSettings(),
+      letterpad.getAuthor(),
+    ]);
+    return {
+      post,
+      settings,
+      me,
+    };
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e);
+    return undefined;
+  }
 });
 
 export const getTagsData = cache(async () => {

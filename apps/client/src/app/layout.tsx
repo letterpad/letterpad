@@ -16,7 +16,7 @@ const Layout = async ({ children }) => {
   if (!data) {
     return <Custom404 homepage="https://letterpad.app" />;
   }
-  const { settings, me } = data;
+  const { settings } = data;
   const { Layout } = getTheme(settings?.theme);
 
   return (

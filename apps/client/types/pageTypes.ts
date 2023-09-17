@@ -1,6 +1,7 @@
 import {
   MeFragmentFragment,
   PageFragmentFragment,
+  Post,
   PostsFragmentFragment,
   SettingsFragmentFragment,
 } from 'letterpad-sdk';
@@ -32,7 +33,7 @@ export interface HomePageProps {
 }
 
 export interface PostProps {
-  post: Pick<Awaited<ReturnType<typeof getPostData>>, 'post'>['post'];
+  post: PageFragmentFragment;
   settings: SettingsFragmentFragment;
   me: MeFragmentFragment;
 }

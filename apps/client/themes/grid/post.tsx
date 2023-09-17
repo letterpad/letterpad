@@ -22,7 +22,7 @@ export const getReadableDate = (timestamp: Date | number) => {
   });
 };
 
-export const Post: FC<PostProps> = ({ post, settings, me }) => {
+export const Post: FC<PostProps> = ({ post, settings }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
     post;
   if (author?.__typename !== 'Author') return null;

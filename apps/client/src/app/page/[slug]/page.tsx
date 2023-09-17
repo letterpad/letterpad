@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import { getPostData } from '@/data';
 
@@ -8,7 +9,11 @@ import Creative from '@/layouts/Creative';
 import { getTheme } from '@/themes';
 
 export default async function Page(props) {
-  const { post, settings, me } = await getPostData(props.params.slug);
+  const data = await getPostData(props.params.slug);
+  if (!data) {
+    return notFound();
+  }
+  const { post, settings, me } = data;
   const { Post } = getTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
@@ -61,7 +66,9 @@ export async function generateMetadata({
   params,
   searchParams,
 }): Promise<Metadata> {
-  const { post, settings, me } = await getPostData(params.slug);
+  const data = await getPostData(params.slug);
+  if (!data) return {};
+  const { post, settings, me } = data;
   return {
     title: post.title,
     description: post.excerpt ?? '',
