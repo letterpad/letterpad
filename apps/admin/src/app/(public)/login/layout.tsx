@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Login | Letterpad",
+  title: "Login",
   description: "Login to Letterpad",
   viewport: "width=device-width",
   robots: "follow, index",

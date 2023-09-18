@@ -10,25 +10,26 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Hero from "./Hero";
 import PressLogos from "./PressLogos";
+import { getRootUrl } from "../../shared/getRootUrl";
 
 export const metadata: Metadata = {
-  title: "Letterpad1 - A platform for content creators",
+  title: "Letterpad - Create a beautiful blog.",
   description:
-    "Discover a world of possibilities for your writing and creativity on Letterpad, the premier blogging platform for creative expression",
+    "Letterpad simplifies blogging, making it easy to start your online writing journey.",
   viewport: "width=device-width",
   openGraph: {
     type: "website",
-    url: "https://letterpad.app/",
-    title: "Letterpad - A free blog publishing platform",
+    url: getRootUrl(),
+    title: "Letterpad - A blog publishing platform",
     description:
-      "Discover a world of possibilities for your writing and creativity on Letterpad, the premier blogging platform for creative expression",
-    siteName: "Letterpad - A free blog publishing platform",
+      "Letterpad simplifies blogging, making it easy to start your online writing journey.",
+    siteName: "Letterpad - A blog publishing platform",
     images: [
       {
-        url: "/website/theme-1.png",
+        url: getRootUrl() + "/website/theme-1.png",
         width: 1200,
         height: 630,
-        alt: "Letterpad - A free blog publishing platform",
+        alt: "Letterpad - A blog publishing platform",
       },
     ],
   },
@@ -36,11 +37,11 @@ export const metadata: Metadata = {
     site: "@__abhisaha",
     card: "summary_large_image",
     description:
-      "Discover a world of possibilities for your writing and creativity on Letterpad, the premier blogging platform for creative expression",
-    title: "Letterpad - A free blog publishing platform",
+      "Letterpad simplifies blogging, making it easy to start your online writing journey.",
+    title: "Letterpad - A blog publishing platform",
     images: [
       {
-        url: "/website/theme-1.png",
+        url: getRootUrl() + "/website/theme-1.png",
         width: 1200,
         height: 630,
         alt: "Letterpad - A free blog publishing platform",
@@ -67,6 +68,20 @@ export const Website = () => {
 
   return (
     <>
+      <script
+        key="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(letterpadStructuredData),
+        }}
+      />
+      <script
+        key="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(letterpadBreadCrumb),
+        }}
+      />
       <div className="flex min-h-screen flex-col overflow-hidden bg-gray-900 text-gray-100">
         <Header />
         <main className="grow">
@@ -82,4 +97,56 @@ export const Website = () => {
       </div>
     </>
   );
+};
+
+const letterpadStructuredData = {
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  name: "Letterpad",
+  url: getRootUrl(),
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": getRootUrl(),
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Letterpad",
+    logo: {
+      "@type": "ImageObject",
+      url: getRootUrl() + "/website/logo.png",
+    },
+  },
+  description:
+    "Letterpad simplifies blogging, making it easy to start your online writing journey.",
+};
+
+const letterpadBreadCrumb = {
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: getRootUrl(),
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Register",
+      item: getRootUrl() + "/register",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Login",
+      item: getRootUrl() + "/login",
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      name: "Documentation",
+      item: "https://docs.letterpad.app",
+    },
+  ],
 };

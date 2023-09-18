@@ -65,7 +65,7 @@ const FeedbackForm = () => {
           </Button>,
         ]}
       >
-        <p>
+        <p className="pb-8">
           Help articles are in progress and will take some time to release. In
           the meantime, if you have any questions, use this feedback form.{" "}
           <br />

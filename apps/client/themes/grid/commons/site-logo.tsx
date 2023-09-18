@@ -25,7 +25,7 @@ export const LogoWithTitle = ({
         </span>
       )}
       {hasTitle && (
-        <div className="lp-title mt-2 text-lg font-extrabold md:block">
+        <div className="lp-title mt-2 flex items-center text-lg font-extrabold">
           {title}
         </div>
       )}
