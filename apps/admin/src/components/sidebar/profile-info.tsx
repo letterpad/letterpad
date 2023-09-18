@@ -12,11 +12,15 @@ const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
         {avatar && (
           <div className="flex overflow-hidden rounded-full border-2 border-blue-500">
             <Image
-              src={avatar}
+              src={
+                "https://letterpad.app/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fabhisheksaha%2Fimage%2Fupload%2Fv1684222969%2Fblog-images%2Fjjtxnmhn3roz9h0uvzff.jpg&w=96&q=75"
+              }
               width={36}
               height={36}
+              objectFit="cover"
               alt={name}
               className="rounded-full"
+              style={{ width: 36, height: 36 }}
             />
           </div>
         )}
