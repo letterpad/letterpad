@@ -19,7 +19,7 @@ export default async function Post(props) {
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': 'Article',
     headline: post.title,
     description: post.excerpt ?? post.sub_title,
     image: post.cover_image.src,
