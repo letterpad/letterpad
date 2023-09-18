@@ -6,7 +6,7 @@ import { TwoColumnLayout } from "@/components/layouts/twoColumn";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Media | Letterpad",
+  title: "Media",
   description: "This is where you will find all your media",
 };
 const Layout = ({ children }) => {

@@ -6,7 +6,7 @@ import { TwoColumnLayout } from "@/components/layouts/twoColumn";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Themes | Letterpad",
+  title: "Themes",
 };
 const Layout = ({ children }) => {
   return <TwoColumnLayout>{children}</TwoColumnLayout>;
