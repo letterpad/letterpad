@@ -4,11 +4,10 @@ import { getFeed } from '../../data';
 export async function GET() {
   // Replace this with your actual data retrieval logic
   const { feedResponse, settings, me } = await getFeed();
-
   // Generate the XML feed
   const xmlData = generateXmlFeed(feedResponse.rows, {
     title: settings.site_title,
-    desciption: settings.site_description,
+    description: settings.site_description,
   });
 
   const headers = new Headers({

@@ -29,7 +29,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
           </div>
         </SectionContainer>
       </div>
-      <SectionContainer>
+      <SectionContainer className="mx-auto max-w-7xl md:px-20">
         <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-2 xl:grid-cols-3">
           {posts?.rows.map((post) => {
             const { slug, publishedAt, title, excerpt, cover_image, stats } =

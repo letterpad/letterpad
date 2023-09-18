@@ -241,6 +241,7 @@ query settings {
 
 query domain {
   domain {
+    __typename
     ... on Domain {
       name
       mapped

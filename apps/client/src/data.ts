@@ -14,7 +14,7 @@ function getLetterpad() {
     letterpadServer: {
       url: process.env.API_URL!,
       token: process.env.CLIENT_ID!,
-      host,
+      host: host.replace('www.', ''),
     },
   });
 }

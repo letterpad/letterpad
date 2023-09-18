@@ -21,7 +21,7 @@ export default async function Post(props) {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
-    description: post.excerpt,
+    description: post.excerpt ?? post.sub_title,
     image: post.cover_image.src,
     author: [
       {

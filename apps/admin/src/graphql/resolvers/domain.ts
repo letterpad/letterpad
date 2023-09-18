@@ -67,6 +67,8 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
 
     const data = await response.json();
     if (data.error?.code == "forbidden") {
+      // eslint-disable-next-line no-console
+      console.log(data.error);
       return {
         __typename: "DomainError",
         message: "Forbidden",
