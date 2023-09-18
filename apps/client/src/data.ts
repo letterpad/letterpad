@@ -10,13 +10,11 @@ import { cache } from 'react';
 function getLetterpad() {
   const headersList = headers();
   const host = headersList.get('host')!;
-  // eslint-disable-next-line no-console
-  console.log('=============>', host);
   return new Letterpad({
     letterpadServer: {
       url: process.env.API_URL!,
       token: process.env.CLIENT_ID!,
-      host,
+      host: host.replace('www.', ''),
     },
   });
 }
