@@ -14,18 +14,6 @@ function Cta() {
           data-aos="zoom-out"
         >
           {/* Bg illustration */}
-          <div
-            className="absolute right-0 top-1/2 -z-10 mt-8 hidden -translate-y-1/2 lg:block"
-            aria-hidden="true"
-          >
-            <img
-              src={Illustration}
-              className="max-w-none"
-              width="582"
-              height="662"
-              alt="Illustration"
-            />
-          </div>
           <div className="flex flex-col items-center justify-between lg:flex-row">
             {/* CTA content */}
             <div className="mb-6 text-center lg:mb-0 lg:mr-16 lg:text-left">

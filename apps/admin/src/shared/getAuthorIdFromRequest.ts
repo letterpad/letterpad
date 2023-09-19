@@ -26,7 +26,7 @@ const getAuthorIdFromRequest = async (context: any) => {
       logger.debug("Author from custom domain - ", author_id);
     }
 
-    if (!author_id && authHeader.length > authHeaderPrefix.length) {
+    if (!author_id && authHeader?.length > authHeaderPrefix.length) {
       const email = getAuthorFromAuthHeader(authHeader);
       const author = await prisma.author.findFirst({
         where: { email },

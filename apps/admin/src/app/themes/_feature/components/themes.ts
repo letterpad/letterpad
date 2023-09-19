@@ -30,7 +30,7 @@ export const themes = () => {
       value: "amun",
       description:
         "The 2023 designers theme. Best for blogs with a lot of content.",
-      image: Grid,
+      image: Air,
     },
   ];
 };

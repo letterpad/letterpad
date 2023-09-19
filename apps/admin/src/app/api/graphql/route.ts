@@ -8,7 +8,11 @@ import { schema } from "@/graphql/schema";
 
 import { Cors } from "./_cors";
 
-const apolloServer = startServerAndCreateNextHandler(
+export const config = {
+  runtime: "edge",
+};
+
+const handler = startServerAndCreateNextHandler(
   new ApolloServer({
     schema,
     introspection: true,
@@ -20,7 +24,8 @@ const apolloServer = startServerAndCreateNextHandler(
     },
   }
 );
-// export default apolloServer;
-const cors = Cors();
 
-export default cors(apolloServer);
+const cors = Cors();
+const corsHandler = cors(handler);
+
+export { corsHandler as GET, corsHandler as POST };
