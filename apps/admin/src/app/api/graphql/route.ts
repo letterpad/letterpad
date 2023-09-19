@@ -8,9 +8,7 @@ import { schema } from "@/graphql/schema";
 
 import { Cors } from "./_cors";
 
-export const config = {
-  runtime: "edge",
-};
+export const runtime = "edge";
 
 const handler = startServerAndCreateNextHandler(
   new ApolloServer({
