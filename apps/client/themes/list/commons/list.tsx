@@ -16,7 +16,10 @@ export function List({ posts }: Props) {
           {posts.rows.map((post) => {
             const { slug, publishedAt, title, tags, excerpt, stats } = post;
             return (
-              <li key={slug} className="py-4">
+              <li
+                key={slug}
+                className="py-12 dark:border-gray-800 [&:not(:last-child)]:border-b-[1px]"
+              >
                 <article className="md:space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                   <PublishedAt
                     publishedAt={publishedAt}

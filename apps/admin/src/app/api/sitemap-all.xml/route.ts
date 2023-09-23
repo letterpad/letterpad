@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-import { getRootUrl } from "../../../shared/getRootUrl";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 const ITEMS_PER_PAGE = 30;
 
@@ -16,7 +16,7 @@ export async function GET() {
 
   for (let i = 0; i < totalGroups; i++) {
     sitemaps += `<sitemap>
-      <loc>${getRootUrl()}/api/sitemap-all.xml/group?group=${i}</loc>
+      <loc>${getRootUrl()}/api/sitemap-group.xml?group=${i}</loc>
       <lastmod>${lastModified}</lastmod>
     </sitemap>`;
   }
