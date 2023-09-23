@@ -6,7 +6,7 @@ function getTheme() {
   if (typeof document === 'undefined') return 'light';
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
   const userSelectedTheme =
-    localStorage.theme ?? isDarkMode.matches ? 'dark' : 'light';
+    localStorage.theme ?? (isDarkMode.matches ? 'dark' : 'light');
   return userSelectedTheme;
 }
 
