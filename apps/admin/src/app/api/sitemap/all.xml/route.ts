@@ -16,7 +16,7 @@ export async function GET() {
 
   for (let i = 0; i < totalGroups; i++) {
     sitemaps += `<sitemap>
-      <loc>${getRootUrl()}/api/sitemap-group.xml?group=${i}</loc>
+      <loc>${getRootUrl()}/api/sitemap/${i}.xml</loc>
       <lastmod>${lastModified}</lastmod>
     </sitemap>`;
   }
