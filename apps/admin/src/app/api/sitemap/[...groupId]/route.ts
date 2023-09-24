@@ -7,8 +7,8 @@ const ITEMS_PER_PAGE = 30;
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const group = searchParams.get("group");
+  const group = getGroupId(req.nextUrl.pathname);
+
   if (!group) {
     return new NextResponse("Group not found", {
       status: 501,
@@ -47,4 +47,10 @@ export async function GET(req: NextRequest) {
     status: 200,
     headers,
   });
+}
+
+function getGroupId(url: string) {
+  // const url = "/api/sitemap-group.xml/0.xml";
+  const groupId = url.split("/")[3].split(".")[0];
+  return groupId;
 }
