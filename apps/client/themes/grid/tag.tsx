@@ -11,9 +11,9 @@ export const Tag = ({
 }: TagProps) => {
   return (
     <>
-      <SectionContainer>
+      <SectionContainer className="content">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <PageTitle>{tagName}</PageTitle>
+          <PageTitle>Posts tagged with #{tagName}</PageTitle>
         </div>
       </SectionContainer>
       <List posts={posts} />

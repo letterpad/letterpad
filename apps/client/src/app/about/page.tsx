@@ -69,6 +69,9 @@ export async function generateMetadata({
       card: 'summary_large_image',
       description: me.bio,
     },
+    alternates: {
+      canonical: `${settings.site_url}/about`,
+    },
     openGraph: {
       url: `${settings.site_url}/about`,
       title: 'About',

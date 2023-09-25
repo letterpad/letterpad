@@ -90,8 +90,10 @@ const BrandText = ({ title, tagline, description }) => {
         {tagline}
       </p>
       <p
-        className="hidden px-4 text-center text-sm font-medium italic leading-6 md:block md:text-md"
-        dangerouslySetInnerHTML={{ __html: description }}
+        className="mx-auto hidden px-4 text-center text-sm font-medium leading-6 sm:w-2/3 md:block md:text-md lg:w-3/5"
+        dangerouslySetInnerHTML={{
+          __html: description,
+        }}
       />
     </>
   );
