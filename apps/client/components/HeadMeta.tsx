@@ -81,7 +81,6 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
         href="/static/favicons/favicon-128.png"
         sizes="128x128"
       />
-      <meta name="application-name" content="Letterpad" />
       <meta name="msapplication-TileColor" content="#FFFFFF" />
       <meta name="msapplication-TileImage" content="mstile-144x144.png" />
       <meta name="msapplication-square70x70logo" content="mstile-70x70.png" />

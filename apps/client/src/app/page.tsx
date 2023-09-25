@@ -131,6 +131,11 @@ export async function generateMetadata({
           'application/rss+xml': settings.site_url + '/feed.xml',
         },
       },
+      generator: 'Letterpad',
+      authors: [{ name: me.name }],
+      creator: me.name,
+      publisher: settings.site_title,
+      abstract: settings.site_description,
       openGraph: {
         url: settings.site_url,
         title: settings.site_title,

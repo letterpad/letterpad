@@ -1,6 +1,6 @@
-import { getPostsByTag } from '@/data';
+import { Metadata } from 'next';
 
-import { TagSEO } from '@/components/SEO';
+import { getPostsByTag } from '@/data';
 
 import { getTheme } from '../../../../themes';
 
@@ -19,15 +19,37 @@ export default async function Tag(props) {
   }
   return (
     <>
-      <TagSEO
-        title={`${tagName} - ${settings.site_title}`}
-        description={`${tagName} - Tag of ${settings.site_title}`}
-        site_banner={settings.banner?.src}
-        site_title={settings.site_title}
-        url={settings.site_url + 'tags'}
-        twSite={me.social?.twitter}
-      />
       <Tag posts={posts} settings={settings} me={me} tagName={tagName} />
     </>
   );
+}
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}): Promise<Metadata> {
+  const data = await getPostsByTag(params.tag);
+  if (!data) return {};
+  const { posts, settings, me } = data;
+  return {
+    title: `#${params.tag} - Posts from ${settings.site_title}`,
+    description: `Posts tagged with #${params.tag}`,
+    alternates: {
+      canonical: `${settings.site_url}/tag/${params.tag}`,
+    },
+    openGraph: {
+      url: `${settings.site_url}/tag/${params.tag}`,
+      title: `#${params.tag} - Posts from ${settings.site_title}`,
+      description: `Posts tagged with #${params.tag}`,
+      authors: [me.name],
+      firstName: me.name,
+      siteName: settings.site_title,
+    },
+    twitter: {
+      title: `#${params.tag} - Posts from ${settings.site_title}`,
+      card: 'summary_large_image',
+      description: `Posts tagged with #${params.tag}`,
+      creator: me.social?.twitter,
+    },
+  };
 }
