@@ -75,7 +75,7 @@
     "dotenv": "^16.0.1",
     "dotenv-cli": "^5.1.0",
     "eslint-config-custom": "*",
-    "graphql": "16.6.0",
+    "graphql": "16.8.1",
     "graphql-request": "^3.4.0",
     "image-size": "^0.9.7",
     "jsonwebtoken": "^8.5.1",
