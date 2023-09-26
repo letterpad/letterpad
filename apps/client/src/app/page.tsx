@@ -1,6 +1,7 @@
+export const runtime = 'edge';
+
 import { Metadata } from 'next';
 import Head from 'next/head';
-import { notFound } from 'next/navigation';
 
 import { getData } from '@/data';
 

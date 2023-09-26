@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 

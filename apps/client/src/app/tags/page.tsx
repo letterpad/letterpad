@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { getTagsData } from '@/data';
 
 import { BaseSEO } from '@/components/SEO';
