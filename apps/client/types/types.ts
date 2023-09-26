@@ -7,3 +7,9 @@ export enum PageTypes {
   PREVIEW = 'preview',
   ABOUT = 'about',
 }
+
+declare global {
+  interface Window {
+    Prism: any;
+  }
+}

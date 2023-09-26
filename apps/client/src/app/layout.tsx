@@ -11,6 +11,7 @@ import { HeadMeta } from '@/components/HeadMeta';
 import { getTheme } from '@/themes';
 
 import { Css } from './_css';
+import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
 
 const Layout = async ({ children }) => {
@@ -33,6 +34,7 @@ const Layout = async ({ children }) => {
           <Layout>{children}</Layout>
         </FontPageWrapper>
         <div id="modal-creatives" />
+        <HighlightCode />
       </body>
     </html>
   );
