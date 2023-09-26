@@ -1,171 +1,119 @@
 /**
- * CSS Styles for code highlighting.
- * Feel free to customize token styles 
- * by copying from a prismjs compatible theme:
- * https://github.com/PrismJS/prism-themes
- */
-
-/* Code title styles */
-pre {
-  font-size: 66% !important;
-}
-
-.remark-code-title {
-  @apply rounded-t bg-gray-700 px-5 py-3 font-mono text-sm font-bold text-gray-200;
-}
-
-.remark-code-title + div > pre {
-  @apply mt-0 rounded-t-none;
-}
-
-/* Code block styles */
-.code-highlight {
-  @apply float-left min-w-full;
-}
-
-.code-line {
-  @apply -mx-4 block border-l-4 border-transparent pl-4 pr-4;
-}
-
-.code-line.inserted {
-  @apply bg-green-500 bg-opacity-20;
-}
-
-.code-line.deleted {
-  @apply bg-red-500 bg-opacity-20;
-}
-
-.highlight-line {
-  @apply -mx-4 border-l-4 border-primary-500 bg-gray-700 bg-opacity-50;
-}
-
-.line-number::before {
-  @apply mr-4 -ml-2 inline-block w-4 text-right text-gray-400;
-  content: attr(line);
-}
-
-/* Token styles */
-/**
  * MIT License
- * Copyright (c) 2018 Sarah Drasner
- * Sarah Drasner's[@sdras] Night Owl
- * Ported by Sara vieria [@SaraVieira]
- * Added by Souvik Mandal [@SimpleIndian]
+ * Copyright (c) 2021 Ayush Saini
+ * Holi Theme for prism.js
+ * @author Ayush Saini <@AyushCodes on Twitter>
  */
 
 code[class*='language-'],
 pre[class*='language-'] {
-  color: #f8f8f2;
-  background: none;
-  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  word-wrap: normal;
-  line-height: 1.5;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
+	color: #d6e7ff;
+	text-shadow: none;
+	font-size: 1em;
+	line-height: 1.8;
+	letter-spacing: .8px;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	text-align: left;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
 }
 
-/* Code blocks */
+pre[class*='language-']::-moz-selection,
+pre[class*='language-'] ::-moz-selection,
+code[class*='language-']::-moz-selection,
+code[class*='language-'] ::-moz-selection,
+pre[class*='language-']::selection,
+pre[class*='language-'] ::selection,
+code[class*='language-']::selection,
+code[class*='language-'] ::selection {
+	color: inherit;
+	background: #1d3b54;
+	text-shadow: none;
+}
+
 pre[class*='language-'] {
-  padding: 1em;
-  margin: 0.5em 0;
-  overflow: auto;
-  border-radius: 0.3em;
+	border: 1px solid #2a4555;
+	border-radius: 5px;
+	padding: 1.5em 1em;
+	margin: 1em 0;
+	overflow: auto;
 }
 
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
-  background: #282a36;
-}
-
-/* Inline code */
 :not(pre) > code[class*='language-'] {
-  padding: 0.1em;
-  border-radius: 0.3em;
-  white-space: normal;
+	color: #f0f6f6;
+	background: #2a4555;
+	padding: 0.2em 0.3em;
+	border-radius: 0.2em;
+	box-decoration-break: clone;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #6272a4;
+	color: #446e69;
 }
 
 .token.punctuation {
-  color: #f8f8f2;
-}
-
-.namespace {
-  opacity: 0.7;
+	color: #d6b007;
 }
 
 .token.property,
 .token.tag,
+.token.boolean,
+.token.number,
 .token.constant,
 .token.symbol,
 .token.deleted {
-  color: #ff79c6;
-}
-
-.token.boolean,
-.token.number {
-  color: #bd93f9;
+	color: #d6e7ff;
 }
 
 .token.selector,
 .token.attr-name,
-.token.string,
-.token.char,
 .token.builtin,
 .token.inserted {
-  color: #50fa7b;
+	color: #e60067;
+}
+
+.token.string,
+.token.char {
+	color: #49c6ec;
 }
 
 .token.operator,
 .token.entity,
 .token.url,
 .language-css .token.string,
-.style .token.string,
-.token.variable {
-  color: #f8f8f2;
+.style .token.string {
+	color: #ec8e01;
+	background: transparent;
 }
 
 .token.atrule,
 .token.attr-value,
-.token.function,
-.token.class-name {
-  color: #2af039;
+.token.keyword {
+	color: #0fe468;
 }
 
-.token.keyword {
-  color: #8be9fd;
+.token.function,
+.token.class-name {
+	color: #78f3e9;
 }
 
 .token.regex,
-.token.important {
-  color: #ffb86c;
-}
-
 .token.important,
-.token.bold {
-  font-weight: bold;
-}
-
-.token.italic {
-  font-style: italic;
-}
-
-.token.entity {
-  cursor: help;
+.token.variable {
+	color: #d6e7ff;
 }
 
 .code-toolbar {
@@ -174,10 +122,11 @@ pre[class*='language-'] {
 
 .code-toolbar > .toolbar {
   position: absolute;
-  top: 0.3em;
-  right: 0.2em;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0;
+  top: 0.1em;
+  right: 0.3em;
+  transition: opacity 0.2s ease-in-out;
+  opacity: 0.2;
+  text-transform: uppercase;
 }
 
 .code-toolbar:hover > .toolbar {
@@ -209,8 +158,8 @@ pre[class*='language-'] {
 .code-toolbar > .toolbar button,
 .code-toolbar > .toolbar span {
   color: #bbb;
-  font-size: 0.8em;
-  padding: 0.2em 0.5em;
+  font-size: 0.6em;
+  padding: 0.3em 0.7em;
   background: #f5f2f0;
   background: rgba(224, 224, 224, 0.2);
   box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
