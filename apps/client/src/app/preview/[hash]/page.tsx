@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { getPreviewData } from '@/data';
 
 import Creative from '@/layouts/Creative';
