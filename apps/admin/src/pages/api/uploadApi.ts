@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import multer from "multer";
-import { NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 
 import { prisma } from "@/lib/prisma";
@@ -17,8 +17,19 @@ import logger from "./../../shared/logger";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
 import { getServerSession } from "../../graphql/context";
-
 const uploadDir = path.join(process.cwd(), "public/uploads/");
+
+function initMiddleware(middleware: any) {
+  return (req: NextApiRequest, res: NextApiResponse) =>
+    new Promise((resolve, reject) => {
+      middleware(req, res, (result) => {
+        if (result instanceof Error) {
+          return reject(result);
+        }
+        return resolve(result);
+      });
+    });
+}
 
 // Doc on custom API configuration:
 // https://nextjs.org/docs/api-routes/api-middlewares#custom-config
@@ -27,11 +38,15 @@ export const config = {
     bodyParser: false,
   },
 };
-
+const upload = multer();
+// for parsing multipart/form-data
+// note that Multer limits to 1MB file size by default
+const multerAny = initMiddleware(upload.any());
 const uploadApi = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse
 ) => {
+  await multerAny(req, res);
   const _session = await getServerSession({ req });
   const session = _session as unknown as { user: SessionData };
   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
@@ -47,7 +62,6 @@ const uploadApi = async (
   logger.debug(`Received ${files.length} file/s to upload`);
 
   const output: IMediaUploadResult[] = [];
-
   for (const file of files) {
     if (file) {
       const hashSum = crypto.createHash("sha256");
