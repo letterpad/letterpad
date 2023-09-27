@@ -15,10 +15,9 @@ const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
               src={avatar}
               width={36}
               height={36}
-              objectFit="cover"
               alt={name}
               className="rounded-full"
-              style={{ width: 36, height: 36 }}
+              style={{ width: 36, height: 36, objectFit: "cover" }}
             />
           </div>
         )}
