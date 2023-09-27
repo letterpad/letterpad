@@ -12,24 +12,33 @@ interface Props {
 
 export const Title: React.FC<Props> = memo(
   ({ postId, title, onTitleChange }) => {
-    const ref = useRef<HTMLTextAreaElement>(null);
+    const ref = useRef<Editor>(null);
 
     useEffect(() => {
       if (ref.current && title.length === 0) {
-        ref.current.focus();
+        ref.current.editor?.focus();
       }
     }, [title]);
 
     return (
       <Editor
+        ref={ref}
         id={titleId}
         initialValue={title ?? null}
-        onEditorChange={(_, editor) => {
+        onBlur={() => {
           if (postId) {
-            const newtitle = editor.getContent({ format: "text" });
-            if (title !== newtitle) onTitleChange(newtitle);
+            const newtitle = ref.current?.editor?.getContent({
+              format: "text",
+            });
+            if (title !== newtitle) onTitleChange(newtitle ?? "");
           }
         }}
+        // onEditorChange={(_, editor) => {
+        //   if (postId) {
+        //     const newtitle = editor.getContent({ format: "text" });
+        //     if (title !== newtitle) onTitleChange(newtitle);
+        //   }
+        // }}
         init={titleEditorConfig}
       />
     );
