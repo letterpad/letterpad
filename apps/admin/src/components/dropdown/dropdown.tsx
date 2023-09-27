@@ -11,10 +11,6 @@ export const Dropdown: FC<Props> = ({ label, options, testId }) => {
 
   useEffect(() => {
     function handleClose(e) {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
       setIsDropdownOpen(false);
     }
 
