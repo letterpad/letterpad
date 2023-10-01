@@ -1,15 +1,16 @@
+'use client';
+
 import classNames from 'classnames';
 import Image from 'next/image';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
 import Comments from '@/components/comments';
-import { IconBook } from '@/components/icons';
 import Link from '@/components/Link';
 import ScrollTop from '@/components/ScrollTop';
-import { Share } from '@/components/share';
 
+import { PostAuthor } from './commons/postAuthor';
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
 import { PostProps } from '../../types/pageTypes';
@@ -23,69 +24,25 @@ export const getReadableDate = (timestamp: Date | number) => {
 };
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
-  const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
-    post;
+  const { title, tags, author, type, sub_title } = post;
+
+  useEffect(() => {
+    window.Prism.highlightAll();
+  }, []);
+
   if (author?.__typename !== 'Author') return null;
 
-  const postUrl = `${settings.site_url}${slug}`;
-  const printPublishedAt = getReadableDate(publishedAt);
   const isPage = type === 'page';
+
   return (
     <SectionContainer>
       <ScrollTop />
-      <div className="mx-auto flex w-full  max-w-4xl justify-between pt-10">
+      <div className="mx-auto flex w-full  max-w-2xl justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-4'}>
-            <address
-              className={
-                'mb-6 flex items-center not-italic ' + (isPage && ' hidden')
-              }
-            >
-              <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
-                {author.avatar && (
-                  <div className="mr-2">
-                    <img
-                      src={author.avatar}
-                      width={64}
-                      height={64}
-                      alt={author.name}
-                      style={{ objectFit: 'cover' }}
-                      className="mr-3  h-16 w-16 rounded-full "
-                    />
-                  </div>
-                )}
-                <div className="w-full">
-                  <div className="flex flex-1 items-center justify-between">
-                    <a
-                      href="#"
-                      rel="author"
-                      className="font-sans text-md font-medium text-gray-900 dark:text-white"
-                    >
-                      {author.name}
-                    </a>
-                    <Share
-                      title={title}
-                      summary={excerpt}
-                      url={postUrl}
-                      className="hidden md:block"
-                    />
-                  </div>
-                  <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
-                    {author.occupation}
-                  </p>
-                  <p className="flex text-sm font-normal text-gray-500 dark:text-gray-300">
-                    <time title={printPublishedAt}>{printPublishedAt}</time>{' '}
-                    &nbsp;•&nbsp;
-                    <span className="flex items-center gap-1">
-                      <IconBook />
-                      {post.stats?.reading_time} min read
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </address>
             <PageTitle>{title}</PageTitle>
             <PostSubTitle text={sub_title} />
+            <PostAuthor settings={settings} post={post} />
             {post.cover_image.src && (
               <img
                 src={post.cover_image.src}
