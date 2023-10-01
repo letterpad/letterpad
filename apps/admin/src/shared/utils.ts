@@ -93,7 +93,9 @@ export function removeTypenames<T>(data: T = {} as T): Omit<T, "__typename"> {
 }
 
 const expr = /^[a-z0-9_]*$/;
+const bannedUsernames = ["admin", "administrator", "moderator", "mod"];
 export const sanitizeUsername = (username: string) => {
+  if (bannedUsernames.includes(username)) return false;
   return expr.test(username);
 };
 

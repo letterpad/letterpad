@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 import { Message } from "ui";
 
 import { EventAction, track } from "@/track";
@@ -22,7 +22,8 @@ export const LoginForm = ({
   const params = useSearchParams();
   const router = useRouter();
 
-  const loginAction = async () => {
+  const loginAction = async (e: any) => {
+    e.preventDefault();
     const result = await doLogin({ email, password });
     track({
       eventAction: EventAction.Click,
@@ -82,78 +83,80 @@ export const LoginForm = ({
               Sign in to access your account
             </p>
           </div>
-
-          <div className="mt-8">
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm text-gray-600 dark:text-gray-200"
-              >
-                Email Address
-              </label>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value.trim())}
-                type="email"
-                name="email"
-                id="email"
-                data-testid="email"
-                placeholder="example@example.com"
-                className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
-              />
-            </div>
-
-            <div className="mt-6">
-              <div className="mb-2 flex justify-between">
+          <form onSubmit={loginAction}>
+            <div className="mt-8">
+              <div>
                 <label
-                  htmlFor="password"
-                  className="text-sm text-gray-600 dark:text-gray-200"
+                  htmlFor="email"
+                  className="mb-2 block text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Password
+                  Email Address
                 </label>
-                <a
-                  onClick={hideSelf}
-                  href="#"
-                  className="text-sm text-gray-400 hover:text-blue-500 hover:underline focus:text-blue-500"
-                >
-                  Forgot password?
-                </a>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value.trim())}
+                  type="email"
+                  name="email"
+                  id="email"
+                  data-testid="email"
+                  placeholder="example@example.com"
+                  className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
+                />
               </div>
 
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value.trim())}
-                type="password"
-                name="password"
-                id="password"
-                data-testid="password"
-                placeholder="Your Password"
-                className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
-              />
-            </div>
+              <div className="mt-6">
+                <div className="mb-2 flex justify-between">
+                  <label
+                    htmlFor="password"
+                    className="text-sm text-gray-600 dark:text-gray-200"
+                  >
+                    Password
+                  </label>
+                  <a
+                    onClick={hideSelf}
+                    href="#"
+                    className="text-sm text-gray-400 hover:text-blue-500 hover:underline focus:text-blue-500"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
 
-            <div className="mt-6">
-              <button
-                className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                data-testid="loginBtn"
-                onClick={loginAction}
-              >
-                Sign in
-              </button>
+                <input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value.trim())}
+                  type="password"
+                  name="password"
+                  id="password"
+                  data-testid="password"
+                  placeholder="Your Password"
+                  className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
+                />
+              </div>
+
+              <div className="mt-6">
+                <button
+                  className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                  data-testid="loginBtn"
+                  type="submit"
+                  // onClick={loginAction}
+                >
+                  Sign in
+                </button>
+              </div>
+              <hr className="my-8 h-px border-0 bg-gray-200 dark:bg-gray-700" />
+              <SocialLogin mode={"login"} />
+              <p className="mt-6 text-center text-sm text-gray-400">
+                Don&#x27;t have an account yet?{" "}
+                <Link
+                  href="/register"
+                  className="text-blue-500 hover:underline focus:underline focus:outline-none"
+                >
+                  Sign up
+                </Link>
+                .
+              </p>
             </div>
-            <hr className="my-8 h-px border-0 bg-gray-200 dark:bg-gray-700" />
-            <SocialLogin mode={"login"} />
-            <p className="mt-6 text-center text-sm text-gray-400">
-              Don&#x27;t have an account yet?{" "}
-              <Link
-                href="/register"
-                className="text-blue-500 hover:underline focus:underline focus:outline-none"
-              >
-                Sign up
-              </Link>
-              .
-            </p>
-          </div>
+          </form>
         </div>
       </div>
     </>
