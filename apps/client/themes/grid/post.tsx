@@ -71,7 +71,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           {settings.display_author_info && !isPage && author.bio && (
             <div
               className={
-                'mb-10 mr-3 flex items-center rounded-lg border bg-gray-100 p-8 text-sm text-gray-900 shadow-sm dark:border-gray-900 dark:bg-black dark:bg-opacity-20 dark:text-white'
+                'my-10 mr-3 flex items-center rounded-lg border bg-gray-100 p-4 text-sm text-gray-900 shadow-sm dark:border-gray-900 dark:bg-black dark:bg-opacity-20 dark:text-white'
               }
             >
               <div className="mr-4 hidden md:block">
@@ -81,7 +81,8 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                     width={100}
                     height={100}
                     alt={author.name}
-                    className="rounded-full"
+                    className="rounded-full border-4 dark:border-gray-800"
+                    style={{ objectFit: 'cover', maxWidth: 100, padding: 10 }}
                   />
                 )}
               </div>
