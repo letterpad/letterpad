@@ -27,7 +27,9 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
   const { title, tags, author, type, sub_title } = post;
 
   useEffect(() => {
-    window.Prism.highlightAll();
+    if (typeof window.Prism !== 'undefined') {
+      window.Prism.highlightAll();
+    }
   }, []);
 
   if (author?.__typename !== 'Author') return null;
@@ -82,7 +84,12 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                     height={100}
                     alt={author.name}
                     className="rounded-full border-4 dark:border-gray-800"
-                    style={{ objectFit: 'cover', maxWidth: 100, padding: 10 }}
+                    style={{
+                      objectFit: 'cover',
+                      maxWidth: 100,
+                      padding: 10,
+                      height: 100,
+                    }}
                   />
                 )}
               </div>
