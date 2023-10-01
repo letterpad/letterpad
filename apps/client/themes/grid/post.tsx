@@ -86,13 +86,13 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                 )}
               </div>
               <div className="flex flex-col gap-2">
-                <a
-                  href="#"
+                <Link
+                  href="/about"
                   rel="author"
                   className="font-sans text-xl font-extrabold text-gray-900 dark:text-white "
                 >
                   {author.name}
-                </a>
+                </Link>
                 <p className="text-md font-medium leading-5 text-gray-500 dark:text-gray-300">
                   {author.bio}
                 </p>

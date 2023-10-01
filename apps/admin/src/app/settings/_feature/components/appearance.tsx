@@ -34,14 +34,14 @@ const Appearance = () => {
                     primary_font: key,
                   });
                 }}
-                selected={data?.watch("design.primary_font") ?? "Inter"}
+                selected={data?.watch("design.primary_font") ?? "Noto_Sans"}
                 id="design.primary_font"
               />
             )}
           />
           <p
             className={`${
-              fonts[data?.watch("design.primary_font") ?? "Inter"].className
+              fonts[data?.watch("design.primary_font") ?? "Noto_Sans"].className
             } pt-2`}
           >
             A quick brown fox jumps over the lazy dog.
@@ -64,14 +64,15 @@ const Appearance = () => {
                     secondary_font: key,
                   });
                 }}
-                selected={data?.watch("design.secondary_font") ?? "Inter"}
+                selected={data?.watch("design.secondary_font") ?? "Noto_Sans"}
                 id="design.secondary_font"
               />
             )}
           />
           <p
             className={`${
-              fonts[data?.watch("design.secondary_font") ?? "Inter"].className
+              fonts[data?.watch("design.secondary_font") ?? "Noto_Sans"]
+                .className
             } pt-2`}
           >
             A quick brown fox jumps over the lazy dog.

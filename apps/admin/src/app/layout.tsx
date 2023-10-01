@@ -99,7 +99,7 @@ const RootLayout = async ({ children }) => {
           gtag('config', '${gaTrackingId}',{'user_id': '${userId}'});
           `}
         </Script>
-        <FontPageWrapper primary_font={"Inter"} secondary_font="Roboto">
+        <FontPageWrapper primary_font={"Noto_Sans"} secondary_font="Roboto">
           <Providers loggedIn={false}>{children}</Providers>
         </FontPageWrapper>
       </body>
