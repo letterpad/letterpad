@@ -29,7 +29,7 @@
     "autoprefixer": "10.4.15",
     "eslint-config-custom": "*",
     "husky": "^8.0.3",
-    "postcss": "^8.4.27",
+    "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "prettier": "latest",
     "prettier-plugin-tailwindcss": "^0.1.7",
