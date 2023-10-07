@@ -111,8 +111,6 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
         ])}
         rel="stylesheet"
       />
-
-      <meta content="width=device-width, initial-scale=1" name="viewport" />
       <style>
         {`
           html {

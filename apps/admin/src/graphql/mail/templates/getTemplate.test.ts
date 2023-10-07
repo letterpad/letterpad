@@ -53,10 +53,13 @@ describe("Email templates", () => {
     if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
         {
-          "html": "Hello Letterpad User, <br><br>A new post has been published in <strong>My new blog</strong>.<br><br><img src="https://a.com/image.jpg" width="100%"><br><strong>new-post-test</strong><br><br><br><a target="_blank" href="http://localhost:3000/post/new-post-test">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
+          "html": "Hello Letterpad User, <br><br><strong>My new blog</strong> published a new post.<br><br><img src="https://a.com/image.jpg" width="100%"><br><h2>new-post-test</h2><br><br><br/><br><a target="_blank" class="btn" href="http://localhost:3000/post/new-post-test">Read More</a><br><br/><br><br>Cheers,<br>{Author Name}<br>",
           "subject": "My new blog - New Post",
           "to": [
-            "subscriber@test.com",
+            {
+              "email": "subscriber@test.com",
+              "id": 1,
+            },
           ],
         }
       `);

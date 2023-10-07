@@ -63,7 +63,7 @@ const Post: PostResolvers<ResolverContext> = {
       };
       return JSON.stringify([entry]);
     }
-    const drafts = parseDrafts(html_draft ?? html);
+    const drafts = parseDrafts(html_draft ?? html ?? "");
     return JSON.stringify(drafts);
   },
   stats: async ({ stats, reading_time }) => {

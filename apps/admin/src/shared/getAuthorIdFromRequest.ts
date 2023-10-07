@@ -9,20 +9,20 @@ import { getHeader } from "../utils/headers";
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();
 
-const getAuthorIdFromRequest = async (context: any) => {
-  const authHeader = getHeader(context.req.headers, "authorization");
+const getAuthorIdFromRequest = async (request: Request) => {
+  const authHeader = getHeader(request.headers, "authorization");
 
   let author_id: number | null = null;
 
   try {
-    author_id = await getAuthorFromLetterpadSubdomain(context);
+    author_id = await getAuthorFromLetterpadSubdomain(request);
 
     if (author_id) {
       logger.debug("Author from subdomain - ", author_id);
     }
 
     if (!author_id) {
-      author_id = await getAuthorFromCustomDomain(context);
+      author_id = await getAuthorFromCustomDomain(request);
       logger.debug("Author from custom domain - ", author_id);
     }
 
@@ -41,7 +41,7 @@ const getAuthorIdFromRequest = async (context: any) => {
         );
       } else {
         logger.error("Failed to find email in header token => ", authHeader, {
-          host: context.req.headers.host,
+          host: request.headers["host"],
         });
       }
     }
@@ -67,13 +67,13 @@ const getAuthorIdFromRequest = async (context: any) => {
 };
 export default getAuthorIdFromRequest;
 
-async function getAuthorFromLetterpadSubdomain(context) {
-  if (!context.req.headers) {
+async function getAuthorFromLetterpadSubdomain(request: Request) {
+  if (!request.headers) {
     logger.debug("No identifier found - Internal admin request - OK");
   } else if (
-    getHeader(context.req.headers, "identifier")?.includes("letterpad.app")
+    getHeader(request.headers, "identifier")?.includes("letterpad.app")
   ) {
-    const identifier = getHeader(context.req.headers, "identifier");
+    const identifier = getHeader(request.headers, "identifier");
     logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
     const author = await prisma.author.findUnique({
@@ -84,10 +84,10 @@ async function getAuthorFromLetterpadSubdomain(context) {
   return null;
 }
 
-async function getAuthorFromCustomDomain(context) {
-  if (!getHeader(context.req.headers, "identifier")) return null;
+async function getAuthorFromCustomDomain(request: Request) {
+  if (!getHeader(request.headers, "identifier")) return null;
 
-  const domain = context.req.headers.identifier;
+  const domain = request.headers["identifier"];
   const record = await prisma.domain.findFirst({
     where: {
       name: domain,

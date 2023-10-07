@@ -8,9 +8,9 @@ import { getHeader } from "../utils/headers";
 
 const isTest = process.env.NODE_ENV === "test";
 
-export const getServerSession = async (context) => {
+export const getServerSession = async ({ req }) => {
   try {
-    const headers = context.req.headers;
+    const headers = req.headers;
     const sessionURL =
       (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
       basePath +
@@ -22,20 +22,22 @@ export const getServerSession = async (context) => {
     return session.user ? session : null;
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log("Error in getServerSession");
+    console.log("Error in getServerSession", e);
     // this means the session is not set. This request is probably coming from client and not admin.
     // client will never have a session.
     // It will use authorization header to get the author id or subdmomain name to // get the authorID
   }
 };
 
-export const getResolverContext = async (context) => {
+export const getResolverContext = async (request: Request) => {
   const session = isTest
     ? null
-    : ((await getServerSession(context)) as unknown as { user: SessionData });
+    : ((await getServerSession({ req: request })) as unknown as {
+        user: SessionData;
+      });
   let client_author_id: number | null = null;
   if (!session?.user?.id) {
-    const authorIdFound = await getAuthorIdFromRequest(context);
+    const authorIdFound = await getAuthorIdFromRequest(request);
     if (authorIdFound) {
       client_author_id = authorIdFound;
     }
