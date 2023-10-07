@@ -89,4 +89,10 @@ export class Letterpad {
     handleFeedErrors(feedResponse.feed);
     return feedResponse.feed;
   }
+  async getMeAndSetting() {
+    const response = await this.sdk.meAndSettings();
+    handleAuthorErrors(response.me);
+    handleSettingsErrors(response.settings);
+    return {me: response.me, settings: response.settings};
+  }
 }

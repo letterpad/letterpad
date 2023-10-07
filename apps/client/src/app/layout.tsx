@@ -3,7 +3,7 @@ export const runtime = 'edge';
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 
-import { getData } from '@/data';
+import { getAuthorAndSettingsData, getData } from '@/data';
 
 import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/HeadMeta';
@@ -15,7 +15,7 @@ import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
 
 const Layout = async ({ children }) => {
-  const data = await getData();
+  const data = await getAuthorAndSettingsData();
   if (!data) {
     return <Custom404 homepage="https://letterpad.app" />;
   }

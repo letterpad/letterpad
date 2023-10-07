@@ -1,0 +1,17 @@
+
+query meAndSettings {
+  me {
+    __typename
+    ...meFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+  settings {
+    __typename
+    ...settingsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}

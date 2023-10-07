@@ -3,6 +3,8 @@ import {
   NavigationType,
   PageFragmentFragment,
   PostsFragmentFragment,
+  Setting,
+  SettingResponse,
 } from 'letterpad-sdk';
 import { headers } from 'next/headers';
 import { cache } from 'react';
@@ -23,7 +25,7 @@ export const getData = cache(async () => {
   try {
     const letterpad = getLetterpad();
 
-    const settings = await letterpad.getSettings();
+    const { me, settings } = await getAuthorAndSettingsData();
 
     const { menu } = settings;
 
@@ -31,8 +33,6 @@ export const getData = cache(async () => {
     const isHomePageACollectionOfPosts =
       !firstItemOfMenu || firstItemOfMenu?.type === NavigationType.Tag;
     const isHomePageASinglePage = firstItemOfMenu?.type === NavigationType.Page;
-
-    const me = await letterpad.getAuthor();
 
     const result = {
       props: {
@@ -71,10 +71,9 @@ export const getData = cache(async () => {
 export const getPostData = cache(async (slug: string) => {
   try {
     const letterpad = getLetterpad();
-    const [post, settings, me] = await Promise.all([
+    const [post, { settings, me }] = await Promise.all([
       letterpad.getPost(slug),
-      letterpad.getSettings(),
-      letterpad.getAuthor(),
+      getAuthorAndSettingsData(),
     ]);
     return {
       post,
@@ -91,10 +90,9 @@ export const getPostData = cache(async (slug: string) => {
 export const getTagsData = cache(async () => {
   const letterpad = getLetterpad();
 
-  const [tags, settings, me] = await Promise.all([
+  const [tags, { settings, me }] = await Promise.all([
     letterpad.listTags(),
-    letterpad.getSettings(),
-    letterpad.getAuthor(),
+    getAuthorAndSettingsData(),
   ]);
 
   return {
@@ -106,10 +104,9 @@ export const getTagsData = cache(async () => {
 
 export const getPostsByTag = cache(async (tag: string) => {
   const letterpad = getLetterpad();
-  const [posts, settings, me] = await Promise.all([
+  const [posts, { settings, me }] = await Promise.all([
     letterpad.listPosts(tag),
-    letterpad.getSettings(),
-    letterpad.getAuthor(),
+    getAuthorAndSettingsData(),
   ]);
 
   return {
@@ -121,9 +118,7 @@ export const getPostsByTag = cache(async (tag: string) => {
 });
 
 export const getAbout = cache(async () => {
-  const letterpad = getLetterpad();
-  const settings = await letterpad.getSettings();
-  const me = await letterpad.getAuthor();
+  const { settings, me } = await getAuthorAndSettingsData();
 
   return {
     settings,
@@ -140,10 +135,9 @@ export const getSiteMap = cache(async () => {
 
 export const getFeed = cache(async () => {
   const letterpad = getLetterpad();
-  const [feedResponse, settings, me] = await Promise.all([
+  const [feedResponse, { settings, me }] = await Promise.all([
     letterpad.getFeed(),
-    letterpad.getSettings(),
-    letterpad.getAuthor(),
+    getAuthorAndSettingsData(),
   ]);
 
   return {
@@ -158,12 +152,27 @@ export const getPreviewData = cache(async (hash: string) => {
   const post = await letterpad.getPost({
     previewHash: hash,
   });
-  const settings = await letterpad.getSettings();
-  const me = await letterpad.getAuthor();
+  const { settings, me } = await getAuthorAndSettingsData();
 
   return {
     post,
     settings,
     me,
   };
+});
+
+export const getSettingsData = cache(async () => {
+  const { settings } = await getAuthorAndSettingsData();
+  return settings;
+});
+
+export const getAuthorData = cache(async () => {
+  const { me } = await getAuthorAndSettingsData();
+  return me;
+});
+
+export const getAuthorAndSettingsData = cache(async () => {
+  const letterpad = getLetterpad();
+  const data = await letterpad.getMeAndSetting();
+  return data;
 });

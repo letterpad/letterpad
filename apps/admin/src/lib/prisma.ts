@@ -30,9 +30,9 @@ export const prisma =
     ],
   });
 prisma.$on("query", (e: any) => {
-  console.log("Query: " + e.query);
-  console.log("Params: " + e.params);
-  console.log("Duration: " + e.duration + "ms");
+  // console.log("Query: " + e.query);
+  // console.log("Params: " + e.params);
+  // console.log("Duration: " + e.duration + "ms");
 });
 export default PrismaClient;
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;

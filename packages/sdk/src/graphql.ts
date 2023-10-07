@@ -1007,6 +1007,84 @@ export type FeedFragmentFragment =
   | FeedFragment_Feed_Fragment
   | FeedFragment_FeedError_Fragment;
 
+export type MeAndSettingsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeAndSettingsQuery = {
+  __typename?: "Query";
+  me?:
+    | {
+        __typename: "Author";
+        name: string;
+        bio?: string | null;
+        occupation?: string | null;
+        avatar?: string | null;
+        company_name?: string | null;
+        analytics_uuid?: string | null;
+        social?: {
+          __typename?: "Social";
+          twitter?: string | null;
+          facebook?: string | null;
+          github?: string | null;
+          instagram?: string | null;
+          linkedin?: string | null;
+        } | null;
+      }
+    | { __typename: "Exception"; message: string }
+    | { __typename: "Failed"; message: string }
+    | { __typename: "NotFound"; message: string }
+    | { __typename: "UnAuthorized"; message: string }
+    | null;
+  settings:
+    | { __typename: "NotFound"; message: string }
+    | {
+        __typename: "Setting";
+        site_title: string;
+        site_tagline?: string | null;
+        site_email: string;
+        site_url: string;
+        site_description?: string | null;
+        theme?: string | null;
+        scripts?: string | null;
+        show_about_page?: boolean | null;
+        show_tags_page?: boolean | null;
+        display_author_info: boolean;
+        css?: string | null;
+        site_footer?: string | null;
+        banner?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+        design?: {
+          __typename?: "Design";
+          brand_color?: string | null;
+          primary_font?: string | null;
+          secondary_font?: string | null;
+        } | null;
+        menu: Array<{
+          __typename?: "Navigation";
+          label: string;
+          type: NavigationType;
+          original_name: string;
+          slug: string;
+        }>;
+        site_logo?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+        site_favicon?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+      }
+    | { __typename: "UnAuthorized"; message: string };
+};
+
 export type PostQueryVariables = Exact<{
   filters?: InputMaybe<PostFilters>;
 }>;
@@ -1609,6 +1687,25 @@ export const FeedDocument = `
   }
 }
     ${FeedFragmentFragmentDoc}`;
+export const MeAndSettingsDocument = `
+    query meAndSettings {
+  me {
+    __typename
+    ...meFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+  settings {
+    __typename
+    ...settingsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+    ${MeFragmentFragmentDoc}
+${SettingsFragmentFragmentDoc}`;
 export const PostDocument = `
     query post($filters: PostFilters) {
   post(filters: $filters) {
@@ -1717,6 +1814,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options
       ) as Promise<FeedQuery>;
+    },
+    meAndSettings(
+      variables?: MeAndSettingsQueryVariables,
+      options?: C
+    ): Promise<MeAndSettingsQuery> {
+      return requester<MeAndSettingsQuery, MeAndSettingsQueryVariables>(
+        MeAndSettingsDocument,
+        variables,
+        options
+      ) as Promise<MeAndSettingsQuery>;
     },
     post(variables?: PostQueryVariables, options?: C): Promise<PostQuery> {
       return requester<PostQuery, PostQueryVariables>(

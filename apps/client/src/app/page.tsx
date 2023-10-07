@@ -15,8 +15,6 @@ import Custom404 from './not-found';
 import StructuredData from '../../components/StructuredData';
 import { getTheme } from '../../themes';
 
-export const dynamic = 'force-dynamic';
-
 export default async function Home() {
   const data = await getData();
   if (!data) {
@@ -111,6 +109,7 @@ export async function generateMetadata({
     if (!data) return {};
     const { settings, me } = data;
     return {
+      metadataBase: new URL(settings.site_url),
       title: settings.site_title,
       description: settings.site_description ?? '',
       twitter: {
