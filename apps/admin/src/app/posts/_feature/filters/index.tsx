@@ -12,6 +12,7 @@ import { EventAction, track } from "@/track";
 
 import { Badge } from "./badge";
 import { useGetStats } from "../api.client";
+import { useHomeQueryQuery } from "../../../../graphql/queries/queries.graphql";
 import { useGetTags } from "../../../tags/_feature/api.client";
 
 interface IProps {
@@ -30,9 +31,10 @@ export const Filters = ({
   setFilters,
 }: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
-  const { data: stats } = useGetStats();
-  const statsData = stats
-    ? stats[showPageTypes ? "pages" : "posts"]
+  // const { data: stats } = useGetStats();
+  const [{ data: homeData }] = useHomeQueryQuery();
+  const statsData = homeData?.stats
+    ? homeData.stats[showPageTypes ? "pages" : "posts"]
     : { published: 0, drafts: 0, trashed: 0 };
   const { data, fetching } = useGetTags();
 

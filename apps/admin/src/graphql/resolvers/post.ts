@@ -44,7 +44,7 @@ const Post: PostResolvers<ResolverContext> = {
     };
   },
   author: async (attrs, _args, context) => {
-    return getAuthorFromPost(attrs.id, context);
+    return getAuthorFromPost(attrs.author_id, context);
   },
   tags: async ({ id }, _args, context) => {
     return getTagsFromPost(id, context);
@@ -157,9 +157,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
   },
 
-  async updatePost(_parent, args, { session, prisma }) {
+  async updatePost(_parent, args, context) {
     try {
-      const response = await updatePost(args, { session, prisma });
+      const response = await updatePost(args, context);
       return response;
     } catch (e: any) {
       report.error(e);

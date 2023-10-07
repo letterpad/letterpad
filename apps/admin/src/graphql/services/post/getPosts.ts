@@ -15,8 +15,9 @@ import { tryToParseCategoryName } from "../../../utils/utils";
 
 export const getPosts = async (
   args: QueryPostsArgs,
-  { prisma, session, client_author_id }: ResolverContext
+  context: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
+  const { session, client_author_id, prisma } = context;
   const session_author_id = session?.user.id;
   const authorId = session_author_id || client_author_id;
   if (!authorId) {
@@ -41,7 +42,11 @@ export const getPosts = async (
   // find the real slug of the tag
   if (args.filters?.tagSlug === "/") {
     // find the first menu item. If its a tag, then display its collection of posts.
-    const slug = await getTagSlugOfFirstMenuItemIfPossible(prisma, authorId);
+    const slug = await getTagSlugOfFirstMenuItemIfPossible(
+      prisma,
+      authorId,
+      context
+    );
     if (slug) args.filters.tagSlug = slug;
   } else if (args.filters.tagSlug) {
     args.filters.tagSlug = tryToParseCategoryName(
@@ -80,10 +85,15 @@ export const getPosts = async (
     orderBy: {
       updatedAt: args?.filters?.sortBy || "desc",
     },
+    select: {
+      id: true,
+    },
   };
   try {
-    const posts = await prisma.post.findMany(condition);
-
+    const postIds = await prisma.post.findMany(condition);
+    const posts = await context.dataloaders.post.loadMany(
+      postIds.map((p) => p.id)
+    );
     return {
       __typename: "PostsNode",
       rows: posts.map(mapPostToGraphql),
@@ -101,12 +111,20 @@ export const getPosts = async (
 
 async function getTagSlugOfFirstMenuItemIfPossible(
   prisma: PrismaClient,
-  author_id: number
+  author_id: number,
+  { dataloaders }: ResolverContext
 ) {
-  const authorWithSetting = await prisma.author.findFirst({
-    where: { id: author_id },
-    include: { setting: true },
-  });
+  const author = await dataloaders.author.load(author_id);
+  const settings = await dataloaders.setting.load(author_id);
+  const authorWithSetting = {
+    ...author,
+    setting: settings,
+  };
+
+  // const authorWithSetting = await prisma.author.findFirst({
+  //   where: { id: author_id },
+  //   include: { setting: true },
+  // });
   if (authorWithSetting?.setting?.menu) {
     const menu = JSON.parse(authorWithSetting?.setting.menu);
     if (menu[0].type === NavigationType.Tag) {

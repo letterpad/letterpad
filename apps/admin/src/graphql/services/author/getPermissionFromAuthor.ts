@@ -3,11 +3,12 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getPermissionFromAuthor = async (
   id: number,
-  { prisma }: ResolverContext
+  { prisma, dataloaders }: ResolverContext
 ): Promise<Permissions[]> => {
-  const author = await prisma.author.findFirst({
-    where: { id },
-  });
+  const author = await dataloaders.author.load(id);
+  // const author = await prisma.author.findFirst({
+  //   where: { id },
+  // });
   if (!author || !author.role_id) return [];
   const permissions = await prisma.rolePermissions.findMany({
     where: { role_id: author.role_id },

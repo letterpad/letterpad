@@ -1,4 +1,8 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+// import { Author } from "@prisma/client";
+import { Author, Post, Setting, Tag } from "@prisma/client";
+import DataLoader from "dataloader";
+
+import { prisma } from "@/lib/prisma";
 
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 
@@ -57,6 +61,93 @@ export const getResolverContext = async (request: Request) => {
   };
 };
 
+const batchAuthors = async (keys) => {
+  const authors = await prisma?.author.findMany({
+    where: { id: { in: keys } },
+  });
+
+  const authorMap = {};
+
+  authors?.forEach((author) => {
+    authorMap[author.id] = author;
+  });
+  return keys.map((key) => authorMap[key]);
+};
+
+const batchSettings = async (keys) => {
+  const settings = await prisma?.setting.findMany({
+    where: {
+      author: {
+        id: { in: keys },
+      },
+    },
+  });
+
+  const settingsMap = {};
+
+  settings?.forEach((setting) => {
+    settingsMap[setting.id] = setting;
+  });
+
+  return keys.map((key) => settingsMap[key]);
+};
+
+const batchPosts = async (keys) => {
+  const posts = await prisma?.post.findMany({
+    where: {
+      id: { in: keys },
+    },
+  });
+
+  const postsMap = {};
+
+  posts?.forEach((post) => {
+    postsMap[post.id] = post;
+  });
+
+  return keys.map((key) => postsMap[key]);
+};
+const batchTags = async (keys) => {
+  const tags = await prisma.tag.findMany({
+    where: {
+      posts: {
+        some: { id: { in: keys } },
+      },
+    },
+    include: {
+      posts: true,
+    },
+  });
+
+  const postTags = {};
+
+  tags.forEach((tag, index) => {
+    tag.posts.forEach((post) => {
+      if (!postTags[post.id]) {
+        postTags[post.id] = [];
+      }
+      postTags[post.id].push(tag);
+    });
+  });
+
+  return keys.map((key) => postTags[key] ?? []);
+};
+
+export const context = async ({ request }) => {
+  const resolverContext = await getResolverContext(request);
+
+  return {
+    ...resolverContext,
+    prisma,
+    dataloaders: {
+      author: new DataLoader<any, Author>(batchAuthors),
+      setting: new DataLoader<any, Setting>(batchSettings),
+      post: new DataLoader<any, Post>(batchPosts),
+      tagsByPostId: new DataLoader<any, Tag[]>(batchTags),
+    },
+  };
+};
+
 type Awaited<T> = T extends null | undefined
   ? T // special case for `null | undefined` when not in `--strictNullChecks` mode
   : T extends object & { then(onfulfilled: infer F): any } // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
@@ -65,6 +156,4 @@ type Awaited<T> = T extends null | undefined
     : never // the argument to `then` was not callable
   : T; // non-object or non-thenable
 
-export type ResolverContext = Awaited<ReturnType<typeof getResolverContext>> & {
-  prisma: PrismaClient;
-};
+export type ResolverContext = Awaited<ReturnType<typeof context>>;

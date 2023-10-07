@@ -19,13 +19,13 @@ import { useGetPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
-import { useGetSettings } from "../../settings/_feature/api.client";
+import { useHomeQueryQuery } from "../../../graphql/queries/queries.graphql";
 
 export const Feature = () => {
   const router = useRouter();
   const [filters, setFilters] = useState<PostsFilters>(DEFAULT_FILTERS);
   const { data, refetch, fetching } = useGetPosts(filters);
-  const { data: settings } = useGetSettings();
+  const [{ data: homeData }] = useHomeQueryQuery();
   const { updatePost } = useUpdatePost();
   useRedirectToOnboard();
 
@@ -34,13 +34,13 @@ export const Feature = () => {
   };
 
   React.useEffect(() => {
-    if (!settings) {
+    if (!homeData?.settings) {
       if (!isIntroDismissed()) {
         setIntroDimissed(true);
         router.push("/home");
       }
     }
-  }, [router, settings?.intro_dismissed]);
+  }, [router, homeData?.settings]);
 
   return (
     <>

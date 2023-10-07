@@ -95,8 +95,11 @@ export const options = (): NextAuthOptions => ({
       if (!token.email) {
         throw new Error("Invalid session");
       }
-      const author = await prisma.author.findFirst({
+      let author = await prisma.author.findFirst({
         where: { email: token.email },
+        include: {
+          role: true,
+        },
       });
 
       try {
@@ -118,18 +121,16 @@ export const options = (): NextAuthOptions => ({
               site_email: token.email,
             }
           );
+          author = await prisma.author.findFirst({
+            where: { email: token.email },
+            include: {
+              role: true,
+            },
+          });
         }
 
-        const finalAuthor = await prisma.author.findFirst({
-          where: { email: token.email },
-          include: {
-            role: true,
-          },
-        });
-
-        if (finalAuthor) {
-          const { id, email, username, avatar, name, register_step } =
-            finalAuthor;
+        if (author) {
+          const { id, email, username, avatar, name, register_step } = author;
           session.user = {
             id,
             email,
@@ -137,7 +138,7 @@ export const options = (): NextAuthOptions => ({
             name,
             avatar,
             image: avatar,
-            role: finalAuthor.role.name,
+            role: author.role.name,
             register_step,
           } as any;
         }

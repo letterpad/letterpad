@@ -1,5 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
+import { prisma } from "@/lib/prisma";
+
 import { report } from "@/components/error";
 
 import { decryptEmail } from "./clientToken";
@@ -7,7 +9,6 @@ import logger from "./logger";
 import { getHeader } from "../utils/headers";
 
 const authHeaderPrefix = "Basic ";
-const prisma = new PrismaClient();
 
 const getAuthorIdFromRequest = async (request: Request) => {
   const authHeader = getHeader(request.headers, "authorization");
