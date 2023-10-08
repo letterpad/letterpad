@@ -16,10 +16,7 @@ import { Css } from './_css';
 import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   try {
     const data = await getData();
     if (!data) return {};
