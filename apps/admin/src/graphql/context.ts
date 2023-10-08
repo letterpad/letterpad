@@ -34,31 +34,33 @@ export const getServerSession = async ({ req }) => {
 };
 
 export const getResolverContext = async (request: Request) => {
-  const session = isTest
-    ? null
-    : ((await getServerSession({ req: request })) as unknown as {
-        user: SessionData;
-      });
   let client_author_id: number | null = null;
-  if (!session?.user?.id) {
-    const authorIdFound = await getAuthorIdFromRequest(request);
-    if (authorIdFound) {
-      client_author_id = authorIdFound;
-    }
+  const authorIdFound = await getAuthorIdFromRequest(request);
+  if (authorIdFound) {
+    client_author_id = authorIdFound;
+    return { client_author_id, session: null };
   } else {
-    client_author_id = session.user.id;
-  }
+    const session = isTest
+      ? null
+      : ((await getServerSession({ req: request })) as unknown as {
+          user: SessionData;
+        });
+    if (!session?.user?.id) {
+    } else {
+      client_author_id = session.user.id;
+    }
 
-  if (client_author_id) {
+    if (client_author_id) {
+      return {
+        session,
+        client_author_id,
+      };
+    }
+
     return {
       session,
-      client_author_id,
     };
   }
-
-  return {
-    session,
-  };
 };
 
 const batchAuthors = async (keys) => {

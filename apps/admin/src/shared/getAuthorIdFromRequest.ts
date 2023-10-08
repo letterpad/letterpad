@@ -12,14 +12,26 @@ const authHeaderPrefix = "Basic ";
 
 const getAuthorIdFromRequest = async (request: Request) => {
   const authHeader = getHeader(request.headers, "authorization");
-
   let author_id: number | null = null;
+  if (!authHeader || authHeader.length === 0) return author_id;
 
   try {
-    author_id = await getAuthorFromLetterpadSubdomain(request);
+    const email = getAuthorFromAuthHeader(authHeader);
+    const author = await prisma.author.findFirst({
+      where: { email },
+      select: { id: true },
+    });
+    if (author) author_id = author.id;
 
     if (author_id) {
-      logger.debug("Author from subdomain - ", author_id);
+      logger.debug(
+        "Author from Authorization header after decrypting - ",
+        author_id
+      );
+    } else {
+      logger.error("Failed to find email in header token => ", authHeader, {
+        host: request.headers["host"],
+      });
     }
 
     if (!author_id) {
@@ -27,24 +39,15 @@ const getAuthorIdFromRequest = async (request: Request) => {
       logger.debug("Author from custom domain - ", author_id);
     }
 
-    if (!author_id && authHeader.length > authHeaderPrefix.length) {
-      const email = getAuthorFromAuthHeader(authHeader);
-      const author = await prisma.author.findFirst({
-        where: { email },
-        select: { id: true },
-      });
-      if (author) author_id = author.id;
+    if (!author_id) {
+      author_id = await getAuthorFromLetterpadSubdomain(request);
 
       if (author_id) {
-        logger.debug(
-          "Author from Authorization header after decrypting - ",
-          author_id
-        );
-      } else {
-        logger.error("Failed to find email in header token => ", authHeader, {
-          host: request.headers["host"],
-        });
+        logger.debug("Author from subdomain - ", author_id);
       }
+    }
+
+    if (!author_id && authHeader.length > authHeaderPrefix.length) {
     }
     if (process.env.DOCKER === "true" && process.env.EMAIL) {
       const author = await prisma.author.findFirst({
