@@ -15,7 +15,6 @@ import { getTheme } from '@/themes';
 import { Css } from './_css';
 import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
-import { ErrorBoundary } from '../../components/ErrorBoundary';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
