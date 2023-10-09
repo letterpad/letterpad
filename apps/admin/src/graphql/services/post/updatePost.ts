@@ -140,6 +140,7 @@ export const updatePost = async (
         ),
         args.data.html_draft
       );
+
       newPostArgs.data.html_draft = html_draft;
     }
 
@@ -180,7 +181,6 @@ export const updatePost = async (
 
     if (updatedPost) {
       await updateMenuOnTitleChange({
-        Author: prisma.author,
         authorId: session.user.id,
         isPage: updatedPost.type === PostTypes.Page,
         prevOriginalName: existingPost.title,
@@ -213,16 +213,17 @@ export const updatePost = async (
   }
 };
 
-function addOrReplaceHistory(
-  oldHistory: PostHistoryItem[],
-  newHistory: string
-) {
+function addOrReplaceHistory(oldHistory: PostHistoryItem[], newText: string) {
   const postVersions = new PostVersion(oldHistory);
   const lastUpdate = postVersions.getLastUpdateInSeconds();
-  if (lastUpdate && lastUpdate < 10) {
-    postVersions.replacePreviousBlog(newHistory);
+  if (
+    (lastUpdate && lastUpdate < 10) ||
+    (oldHistory.length === 1 && oldHistory[0].content === "")
+  ) {
+    postVersions.replacePreviousBlog(newText);
   } else {
-    postVersions.updateBlog(newHistory);
+    postVersions.updateBlog(newText);
   }
+  postVersions.fixFirstRecordEmptyContent(postVersions);
   return JSON.stringify(postVersions.getHistory());
 }

@@ -30,7 +30,7 @@ const getAuthorIdFromRequest = async (request: Request) => {
       );
     } else {
       logger.error("Failed to find email in header token => ", authHeader, {
-        host: request.headers["host"],
+        host: getHeader(request.headers, "host"),
       });
     }
 
@@ -47,8 +47,6 @@ const getAuthorIdFromRequest = async (request: Request) => {
       }
     }
 
-    if (!author_id && authHeader.length > authHeaderPrefix.length) {
-    }
     if (process.env.DOCKER === "true" && process.env.EMAIL) {
       const author = await prisma.author.findFirst({
         where: { email: process.env.EMAIL },
@@ -92,6 +90,8 @@ async function getAuthorFromCustomDomain(request: Request) {
   if (!getHeader(request.headers, "identifier")) return null;
 
   const domain = request.headers["identifier"];
+  if (!domain) return null;
+
   const record = await prisma.domain.findFirst({
     where: {
       name: domain,

@@ -6,8 +6,12 @@ export class PostVersion {
   private history: Array<PostHistoryItem> = [];
   private dmp: DiffMatchPatch = new DiffMatchPatch();
 
-  constructor(history: Array<PostHistoryItem>) {
-    this.history = history;
+  constructor(history: Array<PostHistoryItem> = []) {
+    if (!history || history?.length === 0) {
+      this.createInitialEntry("");
+    } else {
+      this.history = history;
+    }
   }
 
   getHistory() {
@@ -45,8 +49,19 @@ export class PostVersion {
       return this.createInitialEntry(newContent);
     }
 
-    const currentContent = this.history[0].content;
-    const patches = this.dmp.patch_make(currentContent, newContent);
+    let initialContent =
+      this.history.find((item) => item.content?.length > 0)?.content ?? "";
+
+    if (!initialContent) {
+      initialContent =
+        this.retrieveBlogAtIndex(this.history.length - 1, false) ?? "";
+    }
+    const [restoredContent] = this.dmp.patch_apply(
+      this.history[this.history.length - 1].patches || [],
+      initialContent
+    );
+
+    const patches = this.dmp.patch_make(restoredContent, newContent);
     const entry: PostHistoryItem = {
       timestamp: this.getCurrentTimestamp(),
       live: isLive,
@@ -85,13 +100,20 @@ export class PostVersion {
     return null; // Timestamp not found in history
   }
 
-  retrieveBlogAtIndex(index: number): string | null {
-    const initialContent = this.history[0]?.content;
+  retrieveBlogAtIndex(
+    index: number,
+    makeItActive: boolean = true
+  ): string | null {
+    const initialContent =
+      this.history[0]?.content ||
+      this.dmp.patch_apply(this.history[1]?.patches ?? [], "");
     for (let i = this.history.length - 1; i >= 0; i--) {
       const entry = this.history[i];
       if (i === index) {
-        this.resetActive();
-        this.history[i].active = true;
+        if (makeItActive) {
+          this.resetActive();
+          this.history[i].active = true;
+        }
         // Apply patches to retrieve the content at the specified timestamp
         const patches = entry.patches;
         const [restoredContent] = this.dmp.patch_apply(patches, initialContent);
@@ -103,8 +125,21 @@ export class PostVersion {
 
   getStatus() {
     const index = this.history.findIndex((item) => item.live);
-    if (index > 0) return this.history.length - index;
-    return 0;
+    if (index < this.history.length - 1) return "update-live";
+    return "";
+  }
+
+  fixFirstRecordEmptyContent(postVersions: PostVersion) {
+    const history = postVersions.getHistory();
+    try {
+      if (history[0]?.content === "") {
+        history[0].content = this.dmp.patch_apply(
+          history[1]?.patches ?? [],
+          ""
+        )[0];
+      }
+    } catch (e) {}
+    return history;
   }
 
   private getCurrentTimestamp(): string {

@@ -88,7 +88,7 @@ const batchSettings = async (keys) => {
   const settingsMap = {};
 
   settings?.forEach((setting) => {
-    settingsMap[setting.id] = setting;
+    settingsMap[keys[0]] = setting;
   });
 
   return keys.map((key) => settingsMap[key]);

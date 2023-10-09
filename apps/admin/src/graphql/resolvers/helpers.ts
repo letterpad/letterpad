@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 import { load } from "cheerio";
 import https from "https";
 import sizeOf from "image-size";
@@ -11,7 +12,7 @@ import { textToSlug } from "@/utils/slug";
 const slugOfUntitledPost = "untitled";
 
 export async function slugify(
-  PostModel: Prisma.PostDelegate<false>,
+  PostModel: Prisma.PostDelegate<DefaultArgs>,
   slug: string = slugOfUntitledPost,
   author_id: number
 ): Promise<string> {

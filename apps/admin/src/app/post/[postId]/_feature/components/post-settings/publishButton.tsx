@@ -124,7 +124,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
                 Your {post.type} will no longer be visible to users.
               </span>
               <div className="flex flex-row gap-2">
-                {versionManager.getStatus() > 1 && (
+                {versionManager.getStatus() === "update-live" && (
                   <Button
                     variant="dark"
                     onClick={() => publishOrUnpublish(true)}

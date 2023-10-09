@@ -23,7 +23,7 @@ interface Version {
 export const PostTimelineModal: FC<Props> = ({ onClose, visible, onApply }) => {
   const { postId } = useParams();
   const [tempTimelineData, setTempTimelineData] = useState<Version>();
-  const res = useGetPost({ id: Number(postId) });
+  const res = useGetPost({ id: Number(postId) }, "network-only");
   const data: PostHistoryItem[] = parseDrafts(res.data?.html_draft);
 
   return (

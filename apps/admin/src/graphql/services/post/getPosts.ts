@@ -83,7 +83,7 @@ export const getPosts = async (
     take: args.filters?.limit || 100,
     skip,
     orderBy: {
-      updatedAt: args?.filters?.sortBy || "desc",
+      publishedAt: args?.filters?.sortBy || "desc",
     },
     select: {
       id: true,
