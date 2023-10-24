@@ -87,11 +87,9 @@ async function getAuthorFromLetterpadSubdomain(request: Request) {
 }
 
 async function getAuthorFromCustomDomain(request: Request) {
+  const domain = getHeader(request.headers, "identifier");
   // eslint-disable-next-line no-console
-  console.log(request.headers);
-  if (!getHeader(request.headers, "identifier")) return null;
-
-  const domain = request.headers["identifier"];
+  console.log("Identifier", domain);
   if (!domain) return null;
 
   const record = await prisma.domain.findFirst({
