@@ -11,7 +11,14 @@ import { cache } from 'react';
 
 function getLetterpad() {
   const headersList = headers();
-  const host = headersList.get('x-forwarded-host')! ?? headersList.get('host');
+  const host = headersList.get('x-forwarded-host')! || headersList.get('host');
+  // eslint-disable-next-line no-console
+  console.log('X-forwarded-host', headersList.get('x-forwarded-host'));
+  // eslint-disable-next-line no-console
+  console.log('get(host)', headersList.get('host'));
+  // eslint-disable-next-line no-console
+  console.log('list', headersList);
+  if (!host) throw new Error('Host not initialized in Letterpad SDK');
   return new Letterpad({
     letterpadServer: {
       url: process.env.API_URL!,
