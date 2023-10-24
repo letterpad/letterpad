@@ -12,7 +12,7 @@ import { parseDrafts } from "@/utils/utils";
 
 export const getPost = async (
   args: QueryPostArgs,
-  { prisma, session, client_author_id }: ResolverContext
+  { prisma, session, client_author_id, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["PostResponse"]> => {
   const session_author_id = session?.user.id;
   if (!args.filters) {
@@ -35,11 +35,7 @@ export const getPost = async (
   if (previewHash) {
     const postId = Number(decrypt(previewHash?.replace(/%3D/g, "=")));
     if (postId) {
-      const post = await prisma.post.findUnique({
-        where: {
-          id: postId,
-        },
-      });
+      const post = await dataloaders.post.load(id);
 
       if (post) {
         const pv = new PostVersion(parseDrafts(post.html_draft));
@@ -56,11 +52,7 @@ export const getPost = async (
   }
 
   if (id) {
-    const post = await prisma.post.findUnique({
-      where: {
-        id: id,
-      },
-    });
+    const post = await dataloaders.post.load(id);
 
     if (post) {
       if (session_author_id && post?.author_id !== session_author_id) {
@@ -69,13 +61,8 @@ export const getPost = async (
           message: "Post was not found",
         };
       }
-
-      const pv = new PostVersion(parseDrafts(post.html_draft ?? ""));
-      const activeCommit = pv.retrieveActiveVersion()?.timestamp ?? "";
-      const html = pv.retrieveBlogAtTimestamp(activeCommit) ?? "";
       return {
         ...mapPostToGraphql(post),
-        html_draft: html,
         __typename: "Post",
       };
     }

@@ -7,10 +7,10 @@ import ThemeSwitch from '@/components/ThemeSwitch';
 import { Footer } from './commons/footer';
 import { MobileNav } from './commons/mobile-nav';
 import { LogoWithTitle } from './commons/site-logo';
-import { getData } from '../../src/data';
+import { getAuthorAndSettingsData } from '../../src/data';
 
 export const Layout: FC<PropsWithChildren> = async ({ children }) => {
-  const data = await getData();
+  const data = await getAuthorAndSettingsData();
   if (!data) return null;
   const { settings, me } = data;
   const routes = [...settings.menu];

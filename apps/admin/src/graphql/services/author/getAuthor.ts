@@ -5,7 +5,7 @@ import { getRootUrl } from "@/shared/getRootUrl";
 
 export const getAuthor = async (
   _: any,
-  { session, prisma, client_author_id }: ResolverContext
+  { session, prisma, client_author_id, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
   const authorId = client_author_id || session?.user.id;
   if (!authorId) {
@@ -14,11 +14,12 @@ export const getAuthor = async (
       message: "Invalid Session or Token",
     };
   }
-  const author = await prisma.author.findFirst({
-    where: {
-      id: authorId,
-    },
-  });
+  const author = await dataloaders.author.load(authorId);
+  // const author = await prisma.author.findFirst({
+  //   where: {
+  //     id: authorId,
+  //   },
+  // });
   if (author) {
     let avatar = author.avatar as string;
     if (avatar && avatar.startsWith("/")) {

@@ -4,20 +4,20 @@ import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getSetting = async (
   _args: unknown,
-  { session, client_author_id, prisma }: ResolverContext
+  { session, client_author_id, prisma, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["SettingResponse"]> => {
   const authorId = session?.user.id || client_author_id;
 
   if (authorId) {
-    const author = await prisma.author.findFirst({
-      where: { id: authorId },
-      include: {
-        setting: true,
-      },
-    });
+    const author = await dataloaders.author.load(authorId);
+    const setting = await dataloaders.setting.load(authorId);
+    const authorWithSetting = {
+      ...author,
+      setting,
+    };
 
-    if (author && author.setting) {
-      return { ...mapSettingToGraphql(author.setting) };
+    if (authorWithSetting.setting) {
+      return { ...mapSettingToGraphql(authorWithSetting.setting) };
     }
   }
 

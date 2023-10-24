@@ -16,7 +16,11 @@ export const Title: React.FC<Props> = memo(
 
     useEffect(() => {
       if (ref.current && title.length === 0) {
-        ref.current.editor?.focus();
+        try {
+          ref.current.editor?.focus();
+        } catch (e) {
+          //
+        }
       }
     }, [title]);
 

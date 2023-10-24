@@ -1,5 +1,4 @@
 import { LetterpadSdkOptions } from "./letterpad.js";
-import 'whatwg-fetch';
 
 export function createRequester(options: LetterpadSdkOptions) {
   return async function requester(query: string, variables: any) {
@@ -10,7 +9,7 @@ export function createRequester(options: LetterpadSdkOptions) {
           authorization: `Bearer ${options.letterpadServer.token}`,
           accept: "application/json",
           "content-type": "application/json",
-          identifier: options.letterpadServer.host
+          identifier: options.letterpadServer.host,
         },
         body: JSON.stringify({
           query,

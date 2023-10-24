@@ -23,10 +23,7 @@ export const Timeline: FC<Props> = ({ onTimelineChange, data }) => {
       <div className="h-[calc(100vh-295px)] overflow-y-scroll">
         <ol className="relative ml-10 flex w-52 list-none flex-col-reverse border-l border-gray-200 p-0 pt-8 dark:border-gray-700">
           {data.map((item, idx) => (
-            <li
-              className="mb-10 ml-6 flex items-center p-0"
-              key={item.timestamp}
-            >
+            <li className="mb-10 ml-6 flex items-center p-0" key={idx}>
               <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 ring-8 ring-white dark:bg-blue-900 dark:ring-gray-900">
                 {data.length - 1 === idx ? (
                   <BiCurrentLocation size={14} />
@@ -41,11 +38,12 @@ export const Timeline: FC<Props> = ({ onTimelineChange, data }) => {
                     {item.live ? " Live" : ""}
                   </span>
                 </time>
-                {active === idx ? (
+                {active === idx && !item.live && (
                   <span className="text-xs font-extrabold text-green-600">
                     Draft
                   </span>
-                ) : (
+                )}
+                {active != idx && (
                   <Link
                     href="#"
                     className="text-xs text-blue-600 dark:text-blue-600"

@@ -56,9 +56,9 @@ export const Dropdown: FC<Props> = ({ label, options, testId }) => {
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="m1 1 4 4 4-4"
           />
         </svg>
@@ -73,8 +73,8 @@ export const Dropdown: FC<Props> = ({ label, options, testId }) => {
               className="py-2 text-sm text-gray-700 dark:text-gray-200"
               aria-labelledby="dropdownBtn"
             >
-              {options.map((option) => (
-                <li className={option.hidden ? "hidden" : ""}>
+              {options.map((option, index) => (
+                <li className={option.hidden ? "hidden" : ""} key={index}>
                   <a
                     onClick={(e) => {
                       e.preventDefault();

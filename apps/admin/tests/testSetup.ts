@@ -1,20 +1,20 @@
 import dotenv from "dotenv";
+import { createServer } from "node:http";
 import path from "path";
 const envPath = path.join(__dirname, "..", ".env.test.local");
 const envLoaded = dotenv.config({ path: envPath, debug: true });
 if (envLoaded.error) {
   throw new Error("`.env.test.local` not found.");
 }
-import { ApolloServer } from "@apollo/server";
 const { exec } = require("child_process");
-import { startStandaloneServer } from "@apollo/server/standalone";
 import React from "react";
 
-import { getResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 
+import { setupYoga } from "../src/app/api/graphql/route";
+import { getResolverContext } from "../src/graphql/context";
 import { seed } from "../src/graphql/db/seed/seed";
-import { schema } from "../src/graphql/schema";
+// import { schema } from "../src/graphql/schema";
 React.useLayoutEffect = React.useEffect;
 
 const session = {
@@ -28,29 +28,16 @@ const session = {
   },
 };
 
-export const createApolloTestServer = async () => {
-  const apolloServer = new ApolloServer({
-    schema,
-    stopOnTerminationSignals: true,
-  });
-
-  const server = startStandaloneServer(apolloServer, {
-    context: async (context) => {
-      const resolverContext = await getResolverContext(context);
-      return {
-        ...context,
-        ...resolverContext,
-        session,
-      };
-    },
-    listen: {
-      port: 3000,
-    },
-  });
-  return { server, apolloServer };
+const creatYogaTestServer = () => {
+  const context = async ({ request }) => {
+    const resolverContext = await getResolverContext(request);
+    return { ...resolverContext, prisma, session };
+  };
+  const server = createServer(setupYoga(context));
+  return { server };
 };
 
-let server;
+let server: ReturnType<typeof createServer> | null = null;
 
 beforeAll(async () => {
   // jest.setTimeout(0);
@@ -70,12 +57,14 @@ beforeAll(async () => {
     console.log(err);
     process.exit(1);
   }
-  server = await createApolloTestServer();
-  logger.info("server listening at " + server.server.url);
+  server = creatYogaTestServer().server;
+  server.listen(3000, () => {
+    logger.info("Server is running on http://localhost:3000/graphql");
+  });
 }, 60000);
 
 afterAll(async () => {
-  server?.apolloServer?.stop();
+  server?.close();
   // console.log(server)
 });
 

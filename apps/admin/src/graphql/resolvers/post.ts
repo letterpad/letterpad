@@ -22,6 +22,7 @@ import { getLetterpadLatestPost } from "../services/post/getLetterpadLatestPost"
 import { getLetterpadLatestPosts } from "../services/post/getLetterpadLatestPosts";
 import { getStats } from "../services/stats";
 import { setResponsiveImages } from "../utils/imageAttributs";
+import { PostVersion } from "../../lib/versioning";
 import { PostHistoryItem } from "../../types";
 import { parseDrafts } from "../../utils/utils";
 
@@ -44,7 +45,7 @@ const Post: PostResolvers<ResolverContext> = {
     };
   },
   author: async (attrs, _args, context) => {
-    return getAuthorFromPost(attrs.id, context);
+    return getAuthorFromPost(attrs.author_id, context);
   },
   tags: async ({ id }, _args, context) => {
     return getTagsFromPost(id, context);
@@ -53,7 +54,7 @@ const Post: PostResolvers<ResolverContext> = {
     return html ? setResponsiveImages(html) : "";
   },
   html_draft: async ({ html_draft, html, status }) => {
-    if (html && !html_draft) {
+    if (!html_draft) {
       const entry: PostHistoryItem = {
         timestamp: new Date().toISOString(),
         content: html,
@@ -63,8 +64,13 @@ const Post: PostResolvers<ResolverContext> = {
       };
       return JSON.stringify([entry]);
     }
-    const drafts = parseDrafts(html_draft ?? html);
-    return JSON.stringify(drafts);
+    const pv = new PostVersion(parseDrafts(html_draft));
+    let history = pv.getHistory();
+    if (history.length === 1) {
+      history[0].live = status === PostStatusOptions.Published;
+      history[0].active = true;
+    }
+    return JSON.stringify(history);
   },
   stats: async ({ stats, reading_time }) => {
     const oldReadingTime = reading_time ? parseInt(reading_time || "") : 2;
@@ -157,9 +163,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
   },
 
-  async updatePost(_parent, args, { session, prisma }) {
+  async updatePost(_parent, args, context) {
     try {
-      const response = await updatePost(args, { session, prisma });
+      const response = await updatePost(args, context);
       return response;
     } catch (e: any) {
       report.error(e);

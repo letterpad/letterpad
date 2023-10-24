@@ -2,7 +2,6 @@ export const runtime = 'edge';
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 import { getPostData } from '@/data';
 
@@ -77,7 +76,7 @@ export async function generateMetadata({
         },
       ],
       card: 'summary_large_image',
-      description: me.bio,
+      description: post.excerpt,
     },
     alternates: {
       canonical: `${settings.site_url}${post.slug}`,

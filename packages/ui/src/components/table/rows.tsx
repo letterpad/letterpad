@@ -44,7 +44,7 @@ export const Rows: FC<Props> = ({
       )}
       {dataSource.map((item, index) => {
         return (
-          <Row onRowClick={() => onRowClick?.(item)}>
+          <Row onRowClick={() => onRowClick?.(item)} key={item.id}>
             {fields.map((key, idx) => {
               const props = columns[idx];
               return (

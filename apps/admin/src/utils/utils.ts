@@ -12,9 +12,14 @@ export const tryToParseCategoryName = (tag: string): string => {
   return category || tag;
 };
 
-export const parseDrafts = (drafts: string, status?: PostStatusOptions) => {
+export const parseDrafts = (
+  drafts: string | null = "",
+  status?: PostStatusOptions
+) => {
   try {
-    return JSON.parse(drafts);
+    if (typeof drafts === "string") {
+      return JSON.parse(drafts);
+    }
   } catch (e) {
     return [
       {
@@ -25,4 +30,5 @@ export const parseDrafts = (drafts: string, status?: PostStatusOptions) => {
       },
     ];
   }
+  return drafts;
 };

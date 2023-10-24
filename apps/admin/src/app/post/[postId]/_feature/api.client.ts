@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import { RequestPolicy } from "urql";
 
 import { InputUpdatePost, PostFilters } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
@@ -8,11 +9,15 @@ import { isPost } from "@/utils/type-guards";
 
 import { WordCount } from "./components/wordCount";
 
-export const useGetPost = (filters: PostFilters) => {
+export const useGetPost = (
+  filters: PostFilters,
+  requestPolicy?: RequestPolicy
+) => {
   const [{ data, error, fetching }, refetch] = usePostQuery({
     variables: {
       filters,
     },
+    requestPolicy,
     pause: !filters.id,
   });
   const post = isPost(data?.post) ? data?.post : undefined;

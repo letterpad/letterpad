@@ -12,7 +12,10 @@ export const Content: FC<{ children?: ReactNode }> = ({ children }) => {
     }
   }, []);
   return (
-    <div className="flex min-h-0 w-full overflow-y-auto" ref={ref}>
+    <div
+      className="flex min-h-0 w-full overflow-y-auto overflow-x-hidden"
+      ref={ref}
+    >
       <div className="flex-1">{children}</div>
     </div>
   );

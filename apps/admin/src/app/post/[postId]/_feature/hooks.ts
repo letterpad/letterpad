@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PostVersion } from "@/lib/versioning";
 
@@ -8,11 +8,17 @@ import { useGetPost } from "./api.client";
 
 export const usePostVersioning = (id?: number) => {
   const { data, refetch } = useGetPost({ id });
-  const versionManager = useRef(new PostVersion(parseDrafts(data?.html_draft)));
+  const pv = useMemo(
+    () => new PostVersion(parseDrafts(data?.html_draft ?? "")),
+    [data?.html_draft]
+  );
+  const versionManager = useRef(pv);
   const [initialContent, setContent] = useState("");
 
   useEffect(() => {
-    versionManager.current = new PostVersion(parseDrafts(data?.html_draft));
+    versionManager.current = new PostVersion(
+      parseDrafts(data?.html_draft ?? "")
+    );
   }, [data?.html_draft]);
 
   useEffect(() => {

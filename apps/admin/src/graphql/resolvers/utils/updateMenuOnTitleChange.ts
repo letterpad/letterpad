@@ -1,9 +1,8 @@
-import { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 
 interface UpdateMenuProps {
-  Author: Prisma.AuthorDelegate<false>;
   authorId: number;
   isPage: boolean;
   slug: string;
@@ -11,11 +10,10 @@ interface UpdateMenuProps {
   prevOriginalName: string;
 }
 export async function updateMenuOnTitleChange(props: UpdateMenuProps) {
-  const { Author, isPage, prevOriginalName, originalName, authorId, slug } =
-    props;
+  const { isPage, prevOriginalName, originalName, authorId, slug } = props;
 
   if (isPage) {
-    const author = await Author.findFirst({
+    const author = await prisma.author.findFirst({
       where: { id: authorId },
       include: { setting: true },
     });
@@ -33,7 +31,7 @@ export async function updateMenuOnTitleChange(props: UpdateMenuProps) {
       return item;
     });
 
-    await Author.update({
+    await prisma.author.update({
       data: {
         setting: {
           update: {

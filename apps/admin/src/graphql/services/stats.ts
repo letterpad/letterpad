@@ -7,7 +7,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getStats = async (
   _,
-  { client_author_id, session, prisma }: ResolverContext
+  { client_author_id, session, prisma, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["StatsResponse"]> => {
   const result = {
     posts: { published: 0, drafts: 0, trashed: 0 },
@@ -24,9 +24,7 @@ export const getStats = async (
     };
   }
 
-  const author = await prisma.author.findFirst({
-    where: { id: client_author_id },
-  });
+  const author = await dataloaders.author.load(client_author_id);
 
   if (!author) {
     return {
