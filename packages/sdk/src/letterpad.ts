@@ -95,4 +95,15 @@ export class Letterpad {
     handleSettingsErrors(response.settings);
     return {me: response.me, settings: response.settings};
   }
+  async getPostPage(slugOrOptions: string | PostFilters) {
+    const options =
+      typeof slugOrOptions === 'string'
+        ? { slug: slugOrOptions }
+        : slugOrOptions;
+    const response = await this.sdk.postPage({ filters: options });
+    handlePostErrors(response.post);
+    handleAuthorErrors(response.me);
+    handleSettingsErrors(response.settings);
+    return { me: response.me, settings: response.settings, post: response.post };
+  }
 }
