@@ -6,6 +6,8 @@ import { maskIfUnauth } from "@/graphql/directives/maskIfUnauth";
 import { resolversArr } from "@/graphql/resolvers";
 import { typeDefsList } from "@/graphql/schema";
 
+import cors from "../_cors";
+
 export const setupYoga = (context) => {
   return createYoga({
     schema: maskIfUnauth("maskIfUnauth")(
@@ -24,6 +26,15 @@ export const setupYoga = (context) => {
 
 const { handleRequest } = setupYoga(context);
 export { handleRequest as GET, handleRequest as POST };
+
+export async function OPTIONS(request: Request) {
+  return cors(
+    request,
+    new Response(null, {
+      status: 204,
+    })
+  );
+}
 
 type Awaited<T> = T extends null | undefined
   ? T // special case for `null | undefined` when not in `--strictNullChecks` mode

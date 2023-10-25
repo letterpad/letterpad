@@ -8,16 +8,9 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div>
-      <h2>Something went wrong! - {error.message}</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
+    <div className="mt-36 flex flex-col items-center justify-center font-mono">
+      <h2>Sorry, we could not load this post.</h2>
+      <pre>Something went wrong!</pre>
     </div>
   );
 }
