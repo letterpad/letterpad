@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+import { Post } from "@prisma/client";
+
 import { PostVersion } from "@/lib/versioning";
 
 import {
@@ -74,16 +77,29 @@ export const getPost = async (
   }
 
   if (slug) {
-    const post = await prisma.post.findFirst({
-      where: {
-        author_id: client_author_id,
-        status: PostStatusOptions.Published,
-        slug: slug?.split("/").pop(),
-      },
-    });
+    // console.time("Prisma Way");
+    // const post = await prisma.post.findFirst({
+    //   where: {
+    //     author_id: client_author_id,
+    //     status: PostStatusOptions.Published,
+    //     slug: slug?.split("/").pop(),
+    //   },
+    // });
+    // console.timeEnd("Prisma Way");
+    // write raw sql query with inner join author for the above query
+    const cleanSlug = slug?.split("/").pop();
 
-    if (post) {
-      return { ...mapPostToGraphql(post), __typename: "Post" };
+    type t = ReturnType<typeof prisma.post.findFirst>;
+    console.time("Raw Way");
+    const post_ = await prisma.$queryRawUnsafe<[Post]>(
+      `SELECT p.id, p.title, p.sub_title, p.html, p.excerpt, p.cover_image, p.type, p.status, p.featured, p.slug, p.createdAt, p.publishedAt, p.scheduledAt, p.updatedAt, p.reading_time, p.page_type, p.page_data, p.author_id FROM Post p INNER JOIN Author a ON p.author_id = a.id WHERE p.slug = $1 AND p.status = $2 AND p.author_id = $3`,
+      `${cleanSlug}`,
+      "published",
+      client_author_id
+    );
+    console.timeEnd("Raw Way");
+    if (post_[0]) {
+      return { ...mapPostToGraphql(post_[0]), __typename: "Post" };
     }
     return {
       __typename: "NotFound",
