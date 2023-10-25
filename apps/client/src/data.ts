@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   Letterpad,
   NavigationType,
@@ -70,11 +71,13 @@ export const getData = cache(async () => {
 
 export const getPostData = cache(async (slug: string) => {
   try {
+    console.time('getPostData');
     const letterpad = getLetterpad();
     const [post, { settings, me }] = await Promise.all([
       letterpad.getPost(slug),
       getAuthorAndSettingsData(),
     ]);
+    console.timeEnd('getPostData');
     return {
       post,
       settings,
@@ -88,13 +91,14 @@ export const getPostData = cache(async (slug: string) => {
 });
 
 export const getTagsData = cache(async () => {
+  console.time('getTagsData');
   const letterpad = getLetterpad();
 
   const [tags, { settings, me }] = await Promise.all([
     letterpad.listTags(),
     getAuthorAndSettingsData(),
   ]);
-
+  console.timeEnd('getTagsData');
   return {
     tags,
     settings,
@@ -103,12 +107,13 @@ export const getTagsData = cache(async () => {
 });
 
 export const getPostsByTag = cache(async (tag: string) => {
+  console.time('getPostsByTag');
   const letterpad = getLetterpad();
   const [posts, { settings, me }] = await Promise.all([
     letterpad.listPosts(tag),
     getAuthorAndSettingsData(),
   ]);
-
+  console.timeEnd('getPostsByTag');
   return {
     posts,
     settings,
@@ -118,8 +123,9 @@ export const getPostsByTag = cache(async (tag: string) => {
 });
 
 export const getAbout = cache(async () => {
+  console.time('getAbout');
   const { settings, me } = await getAuthorAndSettingsData();
-
+  console.timeEnd('getAbout');
   return {
     settings,
     me,
@@ -162,17 +168,23 @@ export const getPreviewData = cache(async (hash: string) => {
 });
 
 export const getSettingsData = cache(async () => {
+  console.time('getSettingsData');
   const { settings } = await getAuthorAndSettingsData();
+  console.timeEnd('getSettingsData');
   return settings;
 });
 
 export const getAuthorData = cache(async () => {
+  console.time('getAuthorData');
   const { me } = await getAuthorAndSettingsData();
+  console.timeEnd('getAuthorData');
   return me;
 });
 
 export const getAuthorAndSettingsData = cache(async () => {
+  console.time('getAuthorAndSettingsData');
   const letterpad = getLetterpad();
   const data = await letterpad.getMeAndSetting();
+  console.timeEnd('getAuthorAndSettingsData');
   return data;
 });
