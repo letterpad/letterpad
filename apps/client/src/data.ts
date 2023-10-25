@@ -83,7 +83,7 @@ export const getPostData = cache(async (slug: string) => {
     //   settings,
     //   me,
     // };
-    const r = await letterpad.getPostPage(slug);
+    const r = await letterpad.getPost(slug);
     console.timeEnd('getPostData');
     return r;
   } catch (e) {

@@ -3,18 +3,19 @@ export const runtime = 'edge';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { getPostData } from '@/data';
+import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 import StructuredData from '@/components/StructuredData';
 
 import { getTheme } from '@/themes';
 
 export default async function Post(props) {
-  const data = await getPostData(props.params.slug);
-  if (!data) {
+  const post = await getPostData(props.params.slug);
+  const { settings, me } = await getAuthorAndSettingsData();
+  if (!post || !settings || !me) {
     return notFound();
   }
-  const { post, settings, me } = data;
+
   const { Post } = getTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
@@ -59,9 +60,9 @@ export async function generateMetadata({
   params,
   searchParams,
 }): Promise<Metadata> {
-  const data = await getPostData(params.slug);
-  if (!data) return {};
-  const { post, settings, me } = data;
+  const post = await getPostData(params.slug);
+  const { settings, me } = await getAuthorAndSettingsData();
+  if (!post) return {};
   return {
     title: post.title,
     description: post.excerpt ?? '',
