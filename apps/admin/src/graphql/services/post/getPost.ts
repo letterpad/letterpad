@@ -77,7 +77,6 @@ export const getPost = async (
   }
 
   if (slug) {
-    // console.time("Prisma Way");
     // const post = await prisma.post.findFirst({
     //   where: {
     //     author_id: client_author_id,
@@ -85,8 +84,8 @@ export const getPost = async (
     //     slug: slug?.split("/").pop(),
     //   },
     // });
-    // console.timeEnd("Prisma Way");
-    // write raw sql query with inner join author for the above query
+
+    // Prisma has a problem with slow execution time. Writing this raw query because of that.
     const cleanSlug = slug?.split("/").pop();
 
     type t = ReturnType<typeof prisma.post.findFirst>;
