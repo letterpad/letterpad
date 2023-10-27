@@ -1199,6 +1199,141 @@ export type PageFragmentFragment = {
   };
 };
 
+export type PostPageQueryVariables = Exact<{
+  filters?: InputMaybe<PostFilters>;
+}>;
+
+export type PostPageQuery = {
+  __typename?: "Query";
+  post:
+    | { __typename: "Exception"; message: string }
+    | { __typename: "InvalidArguments"; message: string }
+    | { __typename: "NotFound"; message: string }
+    | {
+        __typename: "Post";
+        id: number;
+        slug?: string | null;
+        title: string;
+        sub_title?: string | null;
+        reading_time?: string | null;
+        page_type?: string | null;
+        page_data?: string | null;
+        html?: string | null;
+        type: PostTypes;
+        publishedAt?: any | null;
+        updatedAt: any;
+        excerpt?: string | null;
+        stats?: {
+          __typename?: "PostStats";
+          words?: number | null;
+          reading_time?: number | null;
+          characters?: number | null;
+          spaceless_characters?: number | null;
+        } | null;
+        tags?:
+          | { __typename: "Exception"; message: string }
+          | {
+              __typename: "TagsNode";
+              rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
+            }
+          | { __typename: "UnAuthorized"; message: string }
+          | null;
+        author?:
+          | {
+              __typename: "Author";
+              id: number;
+              name: string;
+              avatar?: string | null;
+              occupation?: string | null;
+              bio?: string | null;
+            }
+          | { __typename: "Exception"; message: string }
+          | { __typename: "Failed"; message: string }
+          | { __typename: "NotFound"; message: string }
+          | { __typename: "UnAuthorized"; message: string }
+          | null;
+        cover_image: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        };
+      }
+    | { __typename: "UnAuthorized"; message: string };
+  me?:
+    | {
+        __typename: "Author";
+        name: string;
+        bio?: string | null;
+        occupation?: string | null;
+        avatar?: string | null;
+        company_name?: string | null;
+        analytics_uuid?: string | null;
+        social?: {
+          __typename?: "Social";
+          twitter?: string | null;
+          facebook?: string | null;
+          github?: string | null;
+          instagram?: string | null;
+          linkedin?: string | null;
+        } | null;
+      }
+    | { __typename: "Exception"; message: string }
+    | { __typename: "Failed"; message: string }
+    | { __typename: "NotFound"; message: string }
+    | { __typename: "UnAuthorized"; message: string }
+    | null;
+  settings:
+    | { __typename: "NotFound"; message: string }
+    | {
+        __typename: "Setting";
+        site_title: string;
+        site_tagline?: string | null;
+        site_email: string;
+        site_url: string;
+        site_description?: string | null;
+        theme?: string | null;
+        scripts?: string | null;
+        show_about_page?: boolean | null;
+        show_tags_page?: boolean | null;
+        display_author_info: boolean;
+        css?: string | null;
+        site_footer?: string | null;
+        banner?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+        design?: {
+          __typename?: "Design";
+          brand_color?: string | null;
+          primary_font?: string | null;
+          secondary_font?: string | null;
+        } | null;
+        menu: Array<{
+          __typename?: "Navigation";
+          label: string;
+          type: NavigationType;
+          original_name: string;
+          slug: string;
+        }>;
+        site_logo?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+        site_favicon?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+      }
+    | { __typename: "UnAuthorized"; message: string };
+};
+
 export type PostsQueryVariables = Exact<{
   tagSlug?: InputMaybe<Scalars["String"]>;
 }>;
@@ -1717,6 +1852,33 @@ export const PostDocument = `
   }
 }
     ${PageFragmentFragmentDoc}`;
+export const PostPageDocument = `
+    query postPage($filters: PostFilters) {
+  post(filters: $filters) {
+    __typename
+    ...pageFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+  me {
+    __typename
+    ...meFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+  settings {
+    __typename
+    ...settingsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+    ${PageFragmentFragmentDoc}
+${MeFragmentFragmentDoc}
+${SettingsFragmentFragmentDoc}`;
 export const PostsDocument = `
     query posts($tagSlug: String) {
   posts(filters: {tagSlug: $tagSlug}) {
@@ -1831,6 +1993,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options
       ) as Promise<PostQuery>;
+    },
+    postPage(
+      variables?: PostPageQueryVariables,
+      options?: C
+    ): Promise<PostPageQuery> {
+      return requester<PostPageQuery, PostPageQueryVariables>(
+        PostPageDocument,
+        variables,
+        options
+      ) as Promise<PostPageQuery>;
     },
     posts(variables?: PostsQueryVariables, options?: C): Promise<PostsQuery> {
       return requester<PostsQuery, PostsQueryVariables>(

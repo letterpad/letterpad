@@ -31,11 +31,12 @@ export const Modal = ({
   const escapPressed = useKeyPress({ targetKey: "Escape" });
 
   useEffect(() => {
-    setDisplay(show);
-    document.body.style.overflow = show ? "hidden" : "auto";
-
+    // setDisplay(show);
+    if (show) {
+      document.body.style.overflowY = "hidden";
+    }
     return () => {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflowY = "auto";
     };
   }, [show]);
 
@@ -43,7 +44,7 @@ export const Modal = ({
     if (escapPressed) toggle(false);
   }, [escapPressed, toggle]);
 
-  if (display) {
+  if (show) {
     return (
       <Portal>
         <div

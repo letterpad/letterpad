@@ -5,7 +5,7 @@ import { ImageResponse } from 'next/server';
 
 import formatDate from '@/lib/utils/formatDate';
 
-import { getPostData } from '@/data';
+import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 export const inter = Inter({
   subsets: ['latin'],
@@ -14,15 +14,16 @@ export const inter = Inter({
 
 export default async function AboutOG(props) {
   const image = 'https://picsum.photos/seed/picsum/1200/627';
-  const data = await getPostData(props.params.slug);
-
+  const post = await getPostData(props.params.slug);
+  const { me, settings } = await getAuthorAndSettingsData();
+  if (!post || post.author?.__typename !== 'Author') return {};
   return new ImageResponse(
     (
       <div tw="flex  h-full w-full bg-white flex-col" style={font('Inter 300')}>
         <img
           style={{ objectFit: 'cover' }}
           tw="absolute inset-0 w-full h-full"
-          src={data?.post.cover_image.src ?? image}
+          src={post.cover_image.src ?? image}
           alt="Saha"
         />
         <div tw="bg-black absolute inset-0 bg-opacity-60"></div>
@@ -33,40 +34,40 @@ export default async function AboutOG(props) {
                 tw="text-[14px] pb-10 uppercase text-gray-300"
                 style={font('Roboto 900')}
               >
-                {formatDate(data?.post.publishedAt)}
+                {formatDate(post.publishedAt)}
               </div>
               <div
                 tw="text-[48px] mb-16 font-bolder leading-1"
                 style={font('Roboto 900')}
               >
-                {data?.post.title}
+                {post.title}
               </div>
               <div
                 tw="flex mb-5 text-[24px] text-gray-300"
                 style={font('Roboto 400')}
               >
-                {data?.post.excerpt}
+                {post.excerpt}
               </div>
               <div tw="flex uppercase pt-8 text-sm" style={font('Roboto 400')}>
                 <span className="flex items-center">
                   <div tw="flex">
-                    {data?.me.avatar && (
+                    {me.avatar && (
                       <img
                         tw="rounded-full"
                         alt={
-                          data?.post.author?.__typename === 'Author'
-                            ? data?.post.author?.name
+                          post.author?.__typename === 'Author'
+                            ? post.author?.name
                             : ''
                         }
                         style={{ objectFit: 'cover' }}
                         // @ts-ignore
-                        src={data?.me.avatar}
+                        src={me.avatar}
                         width={40}
                         height={40}
                       />
                     )}
                   </div>
-                  <span tw="flex mt-2 ml-2">{data?.me.name}</span>
+                  <span tw="flex mt-2 ml-2">{post.author.name}</span>
                 </span>
               </div>
             </div>
@@ -77,7 +78,7 @@ export default async function AboutOG(props) {
           tw="flex w-full justify-center text-2xl text-gray-300 pb-10"
           style={font('Roboto Mono 400')}
         >
-          {data?.settings.site_title}
+          {settings.site_title}
         </footer>
       </div>
     ),

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse, userAgent } from "next/server";
 import { decode } from "next-auth/jwt";
 
+export const config = { matcher: "/((?!.*\\.).*)" };
+
 export async function middleware(request: NextRequest) {
   const { device } = userAgent(request);
   const cookie = request.cookies.get("next-auth.session-token");

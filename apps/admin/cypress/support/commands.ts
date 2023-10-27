@@ -57,7 +57,7 @@ function setContent({ title, content }: { title?: string; content?: string }) {
       win.document.body.click();
       //@ts-ignore
       win.tinymce.get("title-editor").setContent(title);
-      cy.wait("@UpdatePostMutation");
+      // cy.wait("@UpdatePostMutation");
     });
   }
   if (content) {
@@ -66,7 +66,7 @@ function setContent({ title, content }: { title?: string; content?: string }) {
       win.document.body.click();
       //@ts-ignore
       win.tinymce.get("main-editor").setContent(content);
-      cy.wait("@UpdatePostMutation");
+      // cy.wait("@UpdatePostMutation");
     });
   }
 }

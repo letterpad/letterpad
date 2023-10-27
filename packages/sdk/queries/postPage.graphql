@@ -1,0 +1,76 @@
+query postPage($filters: PostFilters) {
+  post(filters: $filters) {
+    __typename
+    ...pageFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+  me {
+    __typename
+    ...meFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+  settings {
+    __typename
+    ...settingsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+
+fragment pageFragment on Post {
+  id
+  slug
+  title
+  sub_title
+  reading_time
+  stats{
+    words
+    reading_time
+    characters
+    spaceless_characters
+  }
+  page_type
+  page_data
+  html
+  type
+  publishedAt
+  updatedAt
+  excerpt
+  tags {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+
+    ... on TagsNode {
+      rows {
+        name
+        slug
+      }
+    }
+  }
+  author {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+
+    ... on Author {
+      id
+      name
+      avatar
+      occupation
+      bio
+    }
+  }
+  cover_image {
+    src
+    width
+    height
+  }
+}
