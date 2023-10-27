@@ -1,0 +1,1466 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "5",
+  "dialect": "mysql",
+  "tables": {
+    "Author": {
+      "name": "Author",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "username": {
+          "autoincrement": false,
+          "name": "username",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "autoincrement": false,
+          "name": "password",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bio": {
+          "autoincrement": false,
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "occupation": {
+          "autoincrement": false,
+          "name": "occupation",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_name": {
+          "autoincrement": false,
+          "name": "company_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "avatar": {
+          "autoincrement": false,
+          "name": "avatar",
+          "type": "varchar(300)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "social": {
+          "default": "'{}'",
+          "autoincrement": false,
+          "name": "social",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "verified",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verify_attempt_left": {
+          "default": 3,
+          "autoincrement": false,
+          "name": "verify_attempt_left",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role_id": {
+          "autoincrement": false,
+          "name": "role_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_seen": {
+          "autoincrement": false,
+          "name": "last_seen",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_type": {
+          "default": "'credentials'",
+          "autoincrement": false,
+          "name": "login_type",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "analytics_id": {
+          "autoincrement": false,
+          "name": "analytics_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "analytics_uuid": {
+          "autoincrement": false,
+          "name": "analytics_uuid",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "first_post_published": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "first_post_published",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profile_updated": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "profile_updated",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "settings_updated": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "settings_updated",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stripe_customer_id": {
+          "autoincrement": false,
+          "name": "stripe_customer_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stripe_subscription_id": {
+          "autoincrement": false,
+          "name": "stripe_subscription_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "register_step": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "register_step",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Author_id": {
+          "name": "Author_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "Author_role_id_idx": {
+          "name": "Author_role_id_idx",
+          "columns": [
+            "role_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Author_username_key": {
+          "name": "Author_username_key",
+          "columns": [
+            "username"
+          ]
+        },
+        "Author_email_key": {
+          "name": "Author_email_key",
+          "columns": [
+            "email"
+          ]
+        }
+      }
+    },
+    "Domain": {
+      "name": "Domain",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mapped": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "mapped",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ssl": {
+          "autoincrement": false,
+          "name": "ssl",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "author_id": {
+          "autoincrement": false,
+          "name": "author_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "Domain_id": {
+          "name": "Domain_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Domain_author_id_key": {
+          "name": "Domain_author_id_key",
+          "columns": [
+            "author_id"
+          ]
+        }
+      }
+    },
+    "Email": {
+      "name": "Email",
+      "columns": {
+        "template_id": {
+          "autoincrement": false,
+          "name": "template_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subject": {
+          "autoincrement": false,
+          "name": "subject",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "autoincrement": false,
+          "name": "body",
+          "type": "varchar(4000)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Email_id": {
+          "name": "Email_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Email_template_id_key": {
+          "name": "Email_template_id_key",
+          "columns": [
+            "template_id"
+          ]
+        }
+      }
+    },
+    "EmailDelivery": {
+      "name": "EmailDelivery",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "template_id": {
+          "autoincrement": false,
+          "name": "template_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "author_id": {
+          "autoincrement": false,
+          "name": "author_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "post_id": {
+          "autoincrement": false,
+          "name": "post_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "subscriber_id": {
+          "autoincrement": false,
+          "name": "subscriber_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "delivered": {
+          "autoincrement": false,
+          "name": "delivered",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_delivery_attempt": {
+          "autoincrement": false,
+          "name": "last_delivery_attempt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "EmailDelivery_id": {
+          "name": "EmailDelivery_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Permission": {
+      "name": "Permission",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Permission_id": {
+          "name": "Permission_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Permission_name_key": {
+          "name": "Permission_name_key",
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "Post": {
+      "name": "Post",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "title",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "html": {
+          "autoincrement": false,
+          "name": "html",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "html_draft": {
+          "autoincrement": false,
+          "name": "html_draft",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "excerpt": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "excerpt",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cover_image": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "cover_image",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cover_image_width": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "cover_image_width",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cover_image_height": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "cover_image_height",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "default": "'post'",
+          "autoincrement": false,
+          "name": "type",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "featured": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "featured",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "default": "'draft'",
+          "autoincrement": false,
+          "name": "status",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "slug",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reading_time": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "reading_time",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "publishedAt": {
+          "autoincrement": false,
+          "name": "publishedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scheduledAt": {
+          "autoincrement": false,
+          "name": "scheduledAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "author_id": {
+          "autoincrement": false,
+          "name": "author_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_data": {
+          "autoincrement": false,
+          "name": "page_data",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_type": {
+          "default": "'default'",
+          "autoincrement": false,
+          "name": "page_type",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stats": {
+          "default": "'{}'",
+          "autoincrement": false,
+          "name": "stats",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sub_title": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "sub_title",
+          "type": "varchar(190)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "Post_id": {
+          "name": "Post_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "Post_author_id_idx": {
+          "name": "Post_author_id_idx",
+          "columns": [
+            "author_id"
+          ],
+          "isUnique": false
+        },
+        "idx_post_id": {
+          "name": "idx_post_id",
+          "columns": [
+            "id"
+          ],
+          "isUnique": false
+        },
+        "idx_post_slug": {
+          "name": "idx_post_slug",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": false
+        },
+        "idx_post_createdAt": {
+          "name": "idx_post_createdAt",
+          "columns": [
+            "createdAt"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Role": {
+      "name": "Role",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Role_id": {
+          "name": "Role_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Role_name_key": {
+          "name": "Role_name_key",
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "RolePermissions": {
+      "name": "RolePermissions",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role_id": {
+          "autoincrement": false,
+          "name": "role_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "permission_id": {
+          "autoincrement": false,
+          "name": "permission_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "RolePermissions_id": {
+          "name": "RolePermissions_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "RolePermissions_permission_id_idx": {
+          "name": "RolePermissions_permission_id_idx",
+          "columns": [
+            "permission_id"
+          ],
+          "isUnique": false
+        },
+        "RolePermissions_role_id_idx": {
+          "name": "RolePermissions_role_id_idx",
+          "columns": [
+            "role_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Setting": {
+      "name": "Setting",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_title": {
+          "autoincrement": false,
+          "name": "site_title",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_tagline": {
+          "autoincrement": false,
+          "name": "site_tagline",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_email": {
+          "autoincrement": false,
+          "name": "site_email",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_url": {
+          "autoincrement": false,
+          "name": "site_url",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_footer": {
+          "autoincrement": false,
+          "name": "site_footer",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_description": {
+          "autoincrement": false,
+          "name": "site_description",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subscribe_embed": {
+          "autoincrement": false,
+          "name": "subscribe_embed",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_author_info": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "display_author_info",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cloudinary_key": {
+          "autoincrement": false,
+          "name": "cloudinary_key",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cloudinary_name": {
+          "autoincrement": false,
+          "name": "cloudinary_name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cloudinary_secret": {
+          "autoincrement": false,
+          "name": "cloudinary_secret",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "menu": {
+          "default": "'[]'",
+          "autoincrement": false,
+          "name": "menu",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "css": {
+          "autoincrement": false,
+          "name": "css",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "theme": {
+          "autoincrement": false,
+          "name": "theme",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "client_token": {
+          "autoincrement": false,
+          "name": "client_token",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "banner": {
+          "default": "'{}'",
+          "autoincrement": false,
+          "name": "banner",
+          "type": "varchar(300)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_logo": {
+          "default": "'{}'",
+          "autoincrement": false,
+          "name": "site_logo",
+          "type": "varchar(300)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "site_favicon": {
+          "default": "'{}'",
+          "autoincrement": false,
+          "name": "site_favicon",
+          "type": "varchar(300)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "graphcomment_id": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "graphcomment_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "intro_dismissed": {
+          "autoincrement": false,
+          "name": "intro_dismissed",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "author_id": {
+          "autoincrement": false,
+          "name": "author_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "show_about_page": {
+          "default": 1,
+          "autoincrement": false,
+          "name": "show_about_page",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "show_tags_page": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "show_tags_page",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "scripts": {
+          "autoincrement": false,
+          "name": "scripts",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "design": {
+          "default": "'{}'",
+          "autoincrement": false,
+          "name": "design",
+          "type": "varchar(300)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "Setting_id": {
+          "name": "Setting_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Setting_author_id_key": {
+          "name": "Setting_author_id_key",
+          "columns": [
+            "author_id"
+          ]
+        }
+      }
+    },
+    "Subscriber": {
+      "name": "Subscriber",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "author_id": {
+          "autoincrement": false,
+          "name": "author_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "verified",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verify_attempt_left": {
+          "default": 3,
+          "autoincrement": false,
+          "name": "verify_attempt_left",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Subscriber_id": {
+          "name": "Subscriber_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "Subscriber_author_id_idx": {
+          "name": "Subscriber_author_id_idx",
+          "columns": [
+            "author_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Subscriber_email_author_id_key": {
+          "name": "Subscriber_email_author_id_key",
+          "columns": [
+            "email",
+            "author_id"
+          ]
+        }
+      }
+    },
+    "SubscribersDelivery": {
+      "name": "SubscribersDelivery",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subscriber_id": {
+          "autoincrement": false,
+          "name": "subscriber_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "post_id": {
+          "autoincrement": false,
+          "name": "post_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "delivered": {
+          "autoincrement": false,
+          "name": "delivered",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "SubscribersDelivery_id": {
+          "name": "SubscribersDelivery_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Tag": {
+      "name": "Tag",
+      "columns": {
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "desc": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "desc",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "autoincrement": false,
+          "name": "slug",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Tag_id": {
+          "name": "Tag_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "Tag_name_key": {
+          "name": "Tag_name_key",
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "Upload": {
+      "name": "Upload",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "autoincrement": false,
+          "name": "url",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "width": {
+          "autoincrement": false,
+          "name": "width",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "height": {
+          "autoincrement": false,
+          "name": "height",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "description",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "author_id": {
+          "autoincrement": false,
+          "name": "author_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "Upload_id": {
+          "name": "Upload_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "Upload_author_id_idx": {
+          "name": "Upload_author_id_idx",
+          "columns": [
+            "author_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "_PostToTag": {
+      "name": "_PostToTag",
+      "columns": {
+        "A": {
+          "autoincrement": false,
+          "name": "A",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "B": {
+          "autoincrement": false,
+          "name": "B",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "_PostToTag_B_index": {
+          "name": "_PostToTag_B_index",
+          "columns": [
+            "B"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "_PostToTag_AB_unique": {
+          "name": "_PostToTag_AB_unique",
+          "columns": [
+            "A",
+            "B"
+          ]
+        }
+      }
+    },
+    "_prisma_migrations": {
+      "name": "_prisma_migrations",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "checksum": {
+          "autoincrement": false,
+          "name": "checksum",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "finished_at": {
+          "autoincrement": false,
+          "name": "finished_at",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "migration_name": {
+          "autoincrement": false,
+          "name": "migration_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "logs": {
+          "autoincrement": false,
+          "name": "logs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rolled_back_at": {
+          "autoincrement": false,
+          "name": "rolled_back_at",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "started_at": {
+          "default": "CURRENT_TIMESTAMP(3)",
+          "autoincrement": false,
+          "name": "started_at",
+          "type": "datetime(3)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "applied_steps_count": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "applied_steps_count",
+          "type": "int unsigned",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "_prisma_migrations_id": {
+          "name": "_prisma_migrations_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

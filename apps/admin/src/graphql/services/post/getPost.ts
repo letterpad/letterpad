@@ -13,6 +13,8 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { decrypt } from "@/graphql/utils/crypto";
 import { parseDrafts } from "@/utils/utils";
 
+import { db } from "../../../lib/drizzle";
+
 export const getPost = async (
   args: QueryPostArgs,
   { prisma, session, client_author_id, dataloaders }: ResolverContext
@@ -77,28 +79,26 @@ export const getPost = async (
   }
 
   if (slug) {
-    // const post = await prisma.post.findFirst({
-    //   where: {
-    //     author_id: client_author_id,
-    //     status: PostStatusOptions.Published,
-    //     slug: slug?.split("/").pop(),
-    //   },
-    // });
+    const post = await prisma.post.findFirst({
+      where: {
+        author_id: client_author_id,
+        status: PostStatusOptions.Published,
+        slug: slug?.split("/").pop(),
+      },
+    });
 
     // Prisma has a problem with slow execution time. Writing this raw query because of that.
     const cleanSlug = slug?.split("/").pop();
-
+    console.time("Drizzle way");
+    const r = await db.query.post.findFirst({
+      where: (post, { eq }) => eq(post.slug, slug?.split("/").pop()!),
+    });
+    console.log(r);
+    console.timeEnd("Drizzle way");
     type t = ReturnType<typeof prisma.post.findFirst>;
-    console.time("Raw Way");
-    const post_ = await prisma.$queryRawUnsafe<[Post]>(
-      `SELECT p.id, p.title, p.sub_title, p.html, p.excerpt, p.cover_image, p.type, p.status, p.featured, p.slug, p.createdAt, p.publishedAt, p.scheduledAt, p.updatedAt, p.reading_time, p.page_type, p.page_data, p.author_id FROM Post p INNER JOIN Author a ON p.author_id = a.id WHERE p.slug = $1 AND p.status = $2 AND p.author_id = $3`,
-      `${cleanSlug}`,
-      "published",
-      client_author_id
-    );
-    console.timeEnd("Raw Way");
-    if (post_[0]) {
-      return { ...mapPostToGraphql(post_[0]), __typename: "Post" };
+
+    if (post) {
+      return { ...mapPostToGraphql(post), __typename: "Post" };
     }
     return {
       __typename: "NotFound",
