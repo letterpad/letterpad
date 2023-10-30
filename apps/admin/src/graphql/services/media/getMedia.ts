@@ -31,6 +31,7 @@ export const getMedia = async (
       : undefined,
     skip: (page - 1) * limit,
   };
+
   const result = await prisma.upload.findMany(condition);
 
   return {

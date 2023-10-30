@@ -1,4 +1,6 @@
+/* eslint-disable no-console */
 import { Prisma, PrismaClient } from "@prisma/client";
+import { and, eq, inArray, SQL, sql } from "drizzle-orm";
 
 import {
   NavigationType,
@@ -11,6 +13,8 @@ import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getLastPartFromPath } from "@/utils/slug";
 
+import { _PostToTag, Post, Tag } from "../../../../drizzle/schema";
+import { db } from "../../../lib/drizzle";
 import { tryToParseCategoryName } from "../../../utils/utils";
 
 export const getPosts = async (
@@ -90,14 +94,68 @@ export const getPosts = async (
     },
   };
   try {
-    const postIds = await prisma.post.findMany(condition);
-    const posts = await context.dataloaders.post.loadMany(
-      postIds.map((p) => p.id)
+    const where: SQL[] = [];
+    const whereTags: SQL[] = [];
+    if (args.filters?.tagSlug) {
+      whereTags.push(eq(_PostToTag.B, args.filters?.tagSlug));
+    }
+
+    where.push(eq(Post.author_id, 5));
+    where.push(
+      inArray(
+        Post.status,
+        session?.user.id
+          ? args.filters?.status ?? [
+              PostStatusOptions.Published,
+              PostStatusOptions.Draft,
+            ]
+          : [PostStatusOptions.Published]
+      )
     );
+    where.push(eq(Post.type, args.filters?.type ?? PostTypes.Post));
+    if (args.filters?.featured)
+      where.push(eq(Post.featured, args.filters?.featured ? 1 : 0));
+
+    if (args.filters?.slug) {
+      where.push(eq(Post.slug, args.filters?.slug!));
+    }
+    if (args.filters?.page_type) {
+      where.push(eq(Post.page_type, args.filters?.page_type));
+    }
+    console.time("Drizzle");
+    const posts = await db.query.Post.findMany({
+      limit: args.filters?.limit || 100,
+      offset: skip,
+      with: {
+        postTags: {
+          columns: {
+            A: false,
+            B: false,
+          },
+          with: {
+            tag: {
+              columns: {
+                name: true,
+                slug: true,
+              },
+            },
+          },
+          where: (_, { and }) => and(...whereTags),
+        },
+      },
+      orderBy: (post, { desc, asc }) =>
+        args?.filters?.sortBy ?? "desc"
+          ? desc(post.publishedAt)
+          : asc(post.publishedAt),
+      where: (_, { and }) => and(...where),
+    });
+
+    console.timeEnd("Drizzle");
+    console.log(posts.length);
     return {
       __typename: "PostsNode",
       rows: posts.map(mapPostToGraphql),
-      count: await prisma.post.count({ where: condition.where }),
+      count: 10, //await prisma.post.count({ where: condition.where }),
     };
   } catch (e: any) {
     // eslint-disable-next-line no-console

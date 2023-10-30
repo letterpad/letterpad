@@ -1,11 +1,12 @@
 import {
   QueryTagArgs,
   ResolversTypes,
-  Tag,
   TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { isCategory, tryToParseCategoryName } from "@/utils/utils";
+
+import { db } from "../../../lib/drizzle";
 
 export const getTag = async (
   args: QueryTagArgs,
@@ -20,8 +21,8 @@ export const getTag = async (
     };
   }
 
-  const tag = await prisma.tag.findFirst({
-    where: { slug: args.slug },
+  const tag = await db.query.Tag.findFirst({
+    where: (tag, { eq }) => eq(tag.slug, args.slug),
   });
 
   if (tag) {

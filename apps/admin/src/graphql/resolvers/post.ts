@@ -45,7 +45,8 @@ const Post: PostResolvers<ResolverContext> = {
     };
   },
   author: async (attrs, _args, context) => {
-    return getAuthorFromPost(attrs.author_id, context);
+    const post = await context.dataloaders.post.load(attrs.id);
+    return getAuthorFromPost(post.author_id, context);
   },
   tags: async ({ id }, _args, context) => {
     return getTagsFromPost(id, context);

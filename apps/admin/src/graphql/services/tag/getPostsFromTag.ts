@@ -1,9 +1,14 @@
+import { eq, SQL } from "drizzle-orm";
+
 import {
   PostStatusOptions,
   ResolversParentTypes,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+
+import { Post } from "../../../../drizzle/schema";
+import { db } from "../../../lib/drizzle";
 
 export const getPostsFromTag = async (
   name: string,
@@ -17,22 +22,22 @@ export const getPostsFromTag = async (
     };
   }
 
-  const posts = await prisma.post.findMany({
-    where: {
-      status: session?.user.id ? undefined : PostStatusOptions.Published,
-      author: {
-        id: authorId,
-      },
-      tags: {
-        some: {
-          name,
-        },
+  const where: SQL[] = [];
+  if (session?.user.id) {
+    where.push(eq(Post.status, PostStatusOptions.Published));
+  }
+  where.push(eq(Post.author_id, authorId));
+
+  const posts = await db.query.Post.findMany({
+    with: {
+      postTags: {
+        where: (pt, { ilike }) => ilike(pt.B, name),
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    where: (_, { and }) => and(...where),
+    orderBy: (post, { desc }) => desc(post.createdAt),
   });
+
   return {
     __typename: "PostsNode",
     count: posts?.length,

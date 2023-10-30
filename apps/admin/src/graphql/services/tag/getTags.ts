@@ -2,12 +2,13 @@ import {
   PostStatusOptions,
   QueryTagsArgs,
   ResolversTypes,
-  Tag,
   TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 import { isCategory, tryToParseCategoryName } from "@/utils/utils";
+
+import { db } from "../../../lib/drizzle";
 
 export const getTags = async (
   args: QueryTagsArgs,
@@ -23,11 +24,10 @@ export const getTags = async (
   }
 
   if (args.filters?.suggest) {
-    const tags = await prisma.tag.findMany({
-      orderBy: {
-        name: "asc",
-      },
+    const tags = await db.query.Tag.findMany({
+      orderBy: (tag, { asc }) => asc(tag.name),
     });
+
     return {
       __typename: "TagsNode",
       rows: tags.map((tag) => ({

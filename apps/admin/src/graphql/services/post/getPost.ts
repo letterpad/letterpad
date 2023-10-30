@@ -17,7 +17,7 @@ import { db } from "../../../lib/drizzle";
 
 export const getPost = async (
   args: QueryPostArgs,
-  { prisma, session, client_author_id, dataloaders }: ResolverContext
+  { session, client_author_id, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["PostResponse"]> => {
   const session_author_id = session?.user.id;
   if (!args.filters) {
@@ -79,23 +79,17 @@ export const getPost = async (
   }
 
   if (slug) {
-    const post = await prisma.post.findFirst({
-      where: {
-        author_id: client_author_id,
-        status: PostStatusOptions.Published,
-        slug: slug?.split("/").pop(),
-      },
-    });
-
-    // Prisma has a problem with slow execution time. Writing this raw query because of that.
-    const cleanSlug = slug?.split("/").pop();
+    const cleanSlug = slug?.split("/").pop()!;
     console.time("Drizzle way");
-    const r = await db.query.post.findFirst({
-      where: (post, { eq }) => eq(post.slug, slug?.split("/").pop()!),
+    const post = await db.query.Post.findFirst({
+      where: (post, { eq, and }) =>
+        and(
+          eq(post.slug, cleanSlug),
+          eq(post.author_id, client_author_id!),
+          eq(post.status, PostStatusOptions.Published)
+        ),
     });
-    console.log(r);
     console.timeEnd("Drizzle way");
-    type t = ReturnType<typeof prisma.post.findFirst>;
 
     if (post) {
       return { ...mapPostToGraphql(post), __typename: "Post" };

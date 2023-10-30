@@ -7,6 +7,12 @@ import { Navigation, RegisterStep, Setting } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { ROLES, SessionData } from "@/graphql/types";
 
+import { Author, Post, Setting as DbSetting } from "../drizzle/schema";
+
+export type DbPost = typeof Post.$inferSelect;
+export type DbAuthor = typeof Author.$inferSelect;
+export type DbSetting = typeof DbSetting.$inferSelect;
+
 declare module "next-auth" {
   interface Session {
     user?: DefaultUser & {

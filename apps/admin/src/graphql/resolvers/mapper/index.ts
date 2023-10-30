@@ -1,8 +1,4 @@
-import {
-  Author as DbAuthor,
-  Post as DbPost,
-  Setting as DbSetting,
-} from "@prisma/client";
+import { Author as DbAuthor, Setting as DbSetting } from "@prisma/client";
 
 import {
   Author,
@@ -13,11 +9,13 @@ import {
   SettingInputType,
 } from "@/__generated__/__types__";
 
+import { DbPost } from "../../../types";
 export const mapPostToGraphql = (post: DbPost) => {
   return {
     ...post,
     type: post.type as PostTypes,
     status: post.status as PostStatusOptions,
+    featured: post.featured === 1,
     page_data:
       post.page_data === "{}" ? JSON.stringify({ rows: [] }) : post.page_data,
     __typename: "Post",

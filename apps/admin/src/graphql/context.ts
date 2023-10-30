@@ -6,8 +6,11 @@ import { prisma } from "@/lib/prisma";
 
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 
+import post from "./resolvers/post";
 import { SessionData } from "./types";
 import { basePath } from "../constants";
+import { db } from "../lib/drizzle";
+import { DbPost } from "../types";
 import { getHeader } from "../utils/headers";
 
 const isTest = process.env.NODE_ENV === "test";
@@ -35,7 +38,7 @@ export const getServerSession = async ({ req }) => {
 
 export const getResolverContext = async (request: Request) => {
   let client_author_id: number | null = null;
-  const authorIdFound = await getAuthorIdFromRequest(request);
+  const authorIdFound = 5; //await getAuthorIdFromRequest(request);
   if (authorIdFound) {
     client_author_id = authorIdFound;
     return { client_author_id, session: null };
@@ -64,8 +67,8 @@ export const getResolverContext = async (request: Request) => {
 };
 
 const batchAuthors = async (keys) => {
-  const authors = await prisma?.author.findMany({
-    where: { id: { in: keys } },
+  const authors = await db.query.Author.findMany({
+    where: (author, { inArray }) => inArray(author.id, keys),
   });
 
   const authorMap = {};
@@ -77,12 +80,8 @@ const batchAuthors = async (keys) => {
 };
 
 const batchSettings = async (keys) => {
-  const settings = await prisma?.setting.findMany({
-    where: {
-      author: {
-        id: { in: keys },
-      },
-    },
+  const settings = await db.query.Setting.findMany({
+    where: (setting, { inArray }) => inArray(setting.author_id, keys),
   });
 
   const settingsMap = {};
@@ -95,10 +94,8 @@ const batchSettings = async (keys) => {
 };
 
 const batchPosts = async (keys) => {
-  const posts = await prisma?.post.findMany({
-    where: {
-      id: { in: keys },
-    },
+  const posts = await db.query.Post.findMany({
+    where: (post, { inArray }) => inArray(post.id, keys),
   });
 
   const postsMap = {};
@@ -144,7 +141,7 @@ export const context = async ({ request }) => {
     dataloaders: {
       author: new DataLoader<any, Author>(batchAuthors),
       setting: new DataLoader<any, Setting>(batchSettings),
-      post: new DataLoader<any, Post>(batchPosts),
+      post: new DataLoader<any, DbPost>(batchPosts),
       tagsByPostId: new DataLoader<any, Tag[]>(batchTags),
     },
   };
