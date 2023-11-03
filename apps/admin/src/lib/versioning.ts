@@ -57,6 +57,8 @@ export class PostVersion {
       if (!initialContent) {
         initialContent =
           this.retrieveBlogAtIndex(this.history.length - 1, false) ?? "";
+      } else {
+        initialContent = "";
       }
       // eslint-disable-next-line no-console
       console.log("initialContent", initialContent);
