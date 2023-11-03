@@ -45,18 +45,24 @@ export class PostVersion {
   }
 
   updateBlog(newContent: string, isLive: boolean = false): void {
-    if (this.history.length === 0) {
-      return this.createInitialEntry(newContent);
-    }
+    let patches = [];
+    try {
+      if (this.history.length === 0) {
+        return this.createInitialEntry(newContent);
+      }
 
-    let initialContent =
-      this.history.find((item) => item.content?.length > 0)?.content ?? "";
+      let initialContent =
+        this.history.find((item) => item.content?.length > 0)?.content ?? "";
 
-    if (!initialContent) {
-      initialContent =
-        this.retrieveBlogAtIndex(this.history.length - 1, false) ?? "";
+      if (!initialContent) {
+        initialContent =
+          this.retrieveBlogAtIndex(this.history.length - 1, false) ?? "";
+      }
+      patches = this.dmp.patch_make(initialContent, newContent);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
     }
-    const patches = this.dmp.patch_make(initialContent, newContent);
     const entry: PostHistoryItem = {
       timestamp: this.getCurrentTimestamp(),
       live: isLive,
