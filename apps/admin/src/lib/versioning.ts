@@ -58,6 +58,10 @@ export class PostVersion {
         initialContent =
           this.retrieveBlogAtIndex(this.history.length - 1, false) ?? "";
       }
+      // eslint-disable-next-line no-console
+      console.log("initialContent", initialContent);
+      // eslint-disable-next-line no-console
+      console.log("newContent", newContent);
       patches = this.dmp.patch_make(initialContent, newContent);
     } catch (e) {
       // eslint-disable-next-line no-console
