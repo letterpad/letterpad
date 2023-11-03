@@ -124,8 +124,8 @@ export class PostVersion {
         }
         // Apply patches to retrieve the content at the specified timestamp
         const patches = entry.patches;
-        [result] = this.dmp.patch_apply(patches, result);
-        return result;
+        const [text] = this.dmp.patch_apply(patches, result);
+        return text;
       }
     }
     return null; // Timestamp not found in history
