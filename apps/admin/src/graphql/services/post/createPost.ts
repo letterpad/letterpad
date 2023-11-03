@@ -12,6 +12,8 @@ import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";
 
+import { PostVersion } from "../../../lib/versioning";
+
 export const createPost = async (
   args: MutationCreatePostArgs,
   { prisma, session }: ResolverContext
@@ -33,8 +35,12 @@ export const createPost = async (
       message: "Author not found",
     };
   }
+  const pv = new PostVersion();
+  pv.createInitialEntry("");
+
   const dataToUpdate: Prisma.PostCreateInput = {
     html: args.data.html || "",
+    html_draft: JSON.stringify(pv.getHistory()),
     page_data: JSON.stringify({ rows: [] }),
   };
 
