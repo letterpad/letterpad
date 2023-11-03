@@ -125,6 +125,8 @@ export class PostVersion {
         // Apply patches to retrieve the content at the specified timestamp
         const patches = entry.patches;
         const [text] = this.dmp.patch_apply(patches, result);
+        // eslint-disable-next-line no-console
+        console.log("retrieveBlogAtIndex", text);
         return text;
       }
     }
