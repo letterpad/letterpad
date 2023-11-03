@@ -218,7 +218,7 @@ function addOrReplaceHistory(oldHistory: PostHistoryItem[], newText: string) {
   const lastUpdate = postVersions.getLastUpdateInSeconds();
   if (
     (lastUpdate && lastUpdate < 10) ||
-    (oldHistory.length === 1 && oldHistory[0].content === "")
+    (oldHistory?.length === 1 && oldHistory[0].content === "")
   ) {
     postVersions.replacePreviousBlog(newText);
   } else {
