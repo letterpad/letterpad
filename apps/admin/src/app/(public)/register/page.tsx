@@ -13,7 +13,8 @@ const Register = () => {
         <title>Register</title>
       </Head>
       <div className="register" style={{ height: "100%", flex: 1 }}>
-        <RegisterForm />
+        We are not accepting registrations at the moment.
+        {/* <RegisterForm /> */}
       </div>
     </>
   );
