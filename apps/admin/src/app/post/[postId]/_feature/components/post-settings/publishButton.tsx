@@ -1,7 +1,5 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button, Modal } from "ui";
-
-import { PostVersion } from "@/lib/versioning";
 
 import {
   Navigation,
@@ -11,7 +9,6 @@ import {
 } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 import { isTagsNode } from "@/utils/type-guards";
-import { parseDrafts } from "@/utils/utils";
 
 import {
   PageNotLinkedWithNavigation,
@@ -19,10 +16,6 @@ import {
   WarnNoTags,
 } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
-import { usePostContext } from "../../context";
-import { usePostVersioning } from "../../hooks";
-
-import { PostHistoryItem } from "@/types";
 
 interface Props {
   postId: number;
@@ -39,8 +32,6 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
   const { data: post, fetching: loading } = useGetPost({ id: postId });
   const { updatePost } = useUpdatePost();
-
-  const { versionManager, refetch } = usePostVersioning(postId);
 
   if (post?.__typename !== "Post") return null;
 
@@ -81,20 +72,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
         eventLabel: "publish",
       });
     }
-    if (status === PostStatusOptions.Published) {
-      const pv = new PostVersion(parseDrafts(post?.html_draft));
-      const activeVersion = pv.retrieveActiveVersion();
-      if (activeVersion) {
-        await updatePost({
-          id: postId,
-          status,
-          version: activeVersion.timestamp,
-        });
-      }
-    } else {
-      await updatePost({ id: postId, status });
-    }
-    refetch();
+    await updatePost({ id: postId, status });
   };
 
   const published = post.status === PostStatusOptions.Published;
@@ -124,7 +102,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
                 Your {post.type} will no longer be visible to users.
               </span>
               <div className="flex flex-row gap-2">
-                {versionManager.getStatus() === "update-live" && (
+                {post.status === PostStatusOptions.Published && (
                   <Button
                     variant="dark"
                     onClick={() => publishOrUnpublish(true)}

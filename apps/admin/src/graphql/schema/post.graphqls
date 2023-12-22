@@ -169,7 +169,6 @@ input InputUpdatePost {
   title: String
   sub_title: String
   html: String
-  version: String
   html_draft: String
   featured: Boolean
   excerpt: String
