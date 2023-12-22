@@ -1,5 +1,4 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { MouseEvent, ReactNode, useState } from "react";
 import { BiPlus } from "react-icons/bi";
@@ -25,10 +24,6 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const { createPost } = useCreatePost();
   const { refetch } = useGetPosts({ ...DEFAULT_FILTERS, type }, { skip: true });
   const onClick = async (type, pageType: PageType) => {
-    alert(
-      "Sorry, we have disabled new post creation temporarily. This will be enabled soon."
-    );
-    return;
     track({
       eventAction: EventAction.Click,
       eventCategory: "New",

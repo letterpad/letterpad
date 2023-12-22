@@ -1,7 +1,5 @@
-import { useRef, useState } from "react";
-import { Button, Modal } from "ui";
-
-import { PostVersion } from "@/lib/versioning";
+import { useState } from "react";
+import { Button, Message, Modal } from "ui";
 
 import {
   Navigation,
@@ -11,7 +9,6 @@ import {
 } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 import { isTagsNode } from "@/utils/type-guards";
-import { parseDrafts } from "@/utils/utils";
 
 import {
   PageNotLinkedWithNavigation,
@@ -19,10 +16,6 @@ import {
   WarnNoTags,
 } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
-import { usePostContext } from "../../context";
-import { usePostVersioning } from "../../hooks";
-
-import { PostHistoryItem } from "@/types";
 
 interface Props {
   postId: number;
@@ -37,10 +30,8 @@ enum NotPublished {
 
 const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
-  const { data: post, fetching: loading } = useGetPost({ id: postId });
+  const { data: post, refetch } = useGetPost({ id: postId });
   const { updatePost } = useUpdatePost();
-
-  const { versionManager, refetch } = usePostVersioning(postId);
 
   if (post?.__typename !== "Post") return null;
 
@@ -81,20 +72,20 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
         eventLabel: "publish",
       });
     }
-    if (status === PostStatusOptions.Published) {
-      const pv = new PostVersion(parseDrafts(post?.html_draft));
-      const activeVersion = pv.retrieveActiveVersion();
-      if (activeVersion) {
-        await updatePost({
-          id: postId,
-          status,
-          version: activeVersion.timestamp,
-        });
-      }
-    } else {
-      await updatePost({ id: postId, status });
+    await updatePost({ id: postId, status });
+  };
+
+  const _discardDraft = async () => {
+    const res = await fetch("/api/discardDraft", {
+      method: "POST",
+      body: JSON.stringify({ id: postId }),
+    });
+    if (res.status === 200) {
+      Message().success({ content: "Draft discarded successfully" });
+      setTimeout(() => {
+        document.location.reload();
+      }, 0);
     }
-    refetch();
   };
 
   const published = post.status === PostStatusOptions.Published;
@@ -123,15 +114,26 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
               <span className="help-text mb-4 block">
                 Your {post.type} will no longer be visible to users.
               </span>
-              <div className="flex flex-row gap-2">
-                {versionManager.getStatus() === "update-live" && (
-                  <Button
-                    variant="dark"
-                    onClick={() => publishOrUnpublish(true)}
-                  >
-                    Update Live Post
-                  </Button>
-                )}
+              <div className="flex flex-col gap-2">
+                {post.status === PostStatusOptions.Published &&
+                  post.html !== post.html_draft && (
+                    <div className="flex gap-2">
+                      <Button
+                        variant="dark"
+                        onClick={() => publishOrUnpublish(true)}
+                        className="flex-1"
+                      >
+                        Update Live Post
+                      </Button>
+                      <Button
+                        variant="dark"
+                        onClick={_discardDraft}
+                        className="flex-1"
+                      >
+                        Discard Draft
+                      </Button>
+                    </div>
+                  )}
                 <Button
                   variant="dark"
                   onClick={() => publishOrUnpublish(false)}

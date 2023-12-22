@@ -1,8 +1,3 @@
-/* eslint-disable no-console */
-import { Post } from "@prisma/client";
-
-import { PostVersion } from "@/lib/versioning";
-
 import {
   PostStatusOptions,
   QueryPostArgs,
@@ -11,7 +6,6 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { decrypt } from "@/graphql/utils/crypto";
-import { parseDrafts } from "@/utils/utils";
 
 export const getPost = async (
   args: QueryPostArgs,
@@ -41,10 +35,11 @@ export const getPost = async (
       const post = await dataloaders.post.load(id);
 
       if (post) {
-        const pv = new PostVersion(parseDrafts(post.html_draft));
-        const activeCommit = pv.retrieveActiveVersion()?.timestamp ?? "";
-        const html_draft = pv.retrieveBlogAtTimestamp(activeCommit) ?? "";
-        return { ...mapPostToGraphql(post), html_draft, __typename: "Post" };
+        return {
+          ...mapPostToGraphql(post),
+          html_draft: post.html_draft,
+          __typename: "Post",
+        };
       }
     }
 

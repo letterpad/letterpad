@@ -34,8 +34,6 @@ export const PostProvider: React.FC<{
       setHelpers,
       onMediaBrowse,
       onFileExplorerClose,
-      version,
-      setVersion,
     }),
     [
       fileExplorerOpen,
@@ -44,8 +42,6 @@ export const PostProvider: React.FC<{
       setHelpers,
       onMediaBrowse,
       onFileExplorerClose,
-      version,
-      setVersion,
     ]
   );
 

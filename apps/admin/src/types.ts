@@ -117,11 +117,3 @@ export enum AdminUsersType {
   TOP_USERS = "top_users",
   DOMAIN_MAPPED = "domain_mapped",
 }
-
-export interface PostHistoryItem {
-  timestamp: string;
-  content?: string;
-  patches: DiffMatchPatch.Patch[];
-  active: boolean;
-  live: boolean;
-}

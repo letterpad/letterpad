@@ -18,7 +18,7 @@ export const Header: React.VFC<Props> = ({ post }) => {
   if (post.__typename === "Post") {
     const isPost = post.type === PostTypes.Post;
     return (
-      <div className="flex flex-row justify-between px-4 py-4">
+      <div className="flex flex-row justify-between py-4">
         <div className="left flex flex-row items-center gap-4">
           <Link
             href={isPost ? "/posts" : "/creatives"}

@@ -1,57 +1,17 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-
-import { PostVersion } from "@/lib/versioning";
-
-import { parseDrafts } from "@/utils/utils";
-
-import { useGetPost } from "./api.client";
-
-export const usePostVersioning = (id?: number) => {
-  const { data, refetch } = useGetPost({ id });
-  const pv = useMemo(
-    () => new PostVersion(parseDrafts(data?.html_draft ?? "")),
-    [data?.html_draft]
-  );
-  const versionManager = useRef(pv);
-  const [initialContent, setContent] = useState("");
-
-  useEffect(() => {
-    versionManager.current = new PostVersion(
-      parseDrafts(data?.html_draft ?? "")
-    );
-  }, [data?.html_draft]);
-
-  useEffect(() => {
-    onActivate(
-      versionManager.current.getHistory()[
-        versionManager.current.getHistory().length - 1
-      ]?.timestamp
-    );
-  }, []);
-
-  const onActivate = (timestamp: string) => {
-    setContent(versionManager.current.retrieveBlogAtTimestamp(timestamp) ?? "");
-  };
-  return {
-    onActivate,
-    initialContent,
-    versionManager: versionManager.current,
-    refetch,
-  };
-};
+import { useCallback, useEffect, useState } from "react";
 
 export const useActivateEditorChangeAfterClick = () => {
   const [active, setActive] = useState(false);
 
-  const activateChangeAction = () => {
+  const activateChangeAction = useCallback(() => {
     setActive(true);
     document.removeEventListener("click", activateChangeAction);
-  };
+  }, []);
 
   useEffect(() => {
     document.addEventListener("click", activateChangeAction);
     return () => document.removeEventListener("click", activateChangeAction);
-  }, []);
+  }, [activateChangeAction]);
 
   return active;
 };
