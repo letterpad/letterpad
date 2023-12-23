@@ -42,3 +42,5 @@ tsconfig.tsbuildinfo
 data
 
 apps/docs/**
+
+.vscode
