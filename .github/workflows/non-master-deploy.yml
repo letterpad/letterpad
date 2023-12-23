@@ -120,14 +120,16 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Bun install deps
-        run: bun install
-
       # - run: |
       #     node_modules/cypress/bin/cypress install
 
       - name: Create .env file
         run: mv apps/admin/.env.sample apps/admin/.env
+
+      - name: Bun install deps
+        run: bun install
+        env:
+          DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Generate Prisma Client
         working-directory: apps/admin
