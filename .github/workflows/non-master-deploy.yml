@@ -138,12 +138,12 @@ jobs:
           DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Run Build
-        run: bun build
+        run: bun run build
 
       - name: Run Cypress
         run: |
           node_modules/cypress/bin/cypress install
-          bun e2e:ci
+          bun run e2e:ci
         env:
           DATABASE_URL: "file:data/test_3.sqlite"
           ROOT_URL: "http://localhost:3000"
