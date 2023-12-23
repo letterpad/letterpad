@@ -90,18 +90,18 @@ jobs:
         with:
           node-version: 18
 
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        id: yarn-dep-cache
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+      # - name: Cache node_modules
+      #   uses: actions/cache@v2
+      #   id: yarn-dep-cache
+      #   env:
+      #     cache-name: cache-node-modules
+      #   with:
+      #     path: "**/node_modules"
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-${{ env.cache-name }}-
+      #       ${{ runner.os }}-build-
+      #       ${{ runner.os }}-
       
       - name: Cache Cypress Binary
         uses: actions/cache@v2
@@ -109,25 +109,27 @@ jobs:
           cache-name: cache-cypress
         with:
           path: "/home/runner/work/letterpad/letterpad/apps/admin/cypress/cache"
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-cypress
+          # key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-cypress-${{ env.cache-name }}-
             ${{ runner.os }}-cypress-
             ${{ runner.os }}-
 
-      - name: Install Yarn
-        run: npm install -g yarn
-
-      - name: Yarn install deps
-        run: |
-          yarn install --frozen-lockfile 
-        if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       # - run: |
       #     node_modules/cypress/bin/cypress install
 
       - name: Create .env file
         run: mv apps/admin/.env.sample apps/admin/.env
+
+      - name: Bun install deps
+        run: bun install
+        env:
+          DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Generate Prisma Client
         working-directory: apps/admin
@@ -136,12 +138,12 @@ jobs:
           DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Run Build
-        run: yarn run build --filter=admin
+        run: bun run build --filter=admin
 
       - name: Run Cypress
         run: |
           node_modules/cypress/bin/cypress install
-          yarn e2e:ci
+          bun run e2e:ci
         env:
           DATABASE_URL: "file:data/test_3.sqlite"
           ROOT_URL: "http://localhost:3000"

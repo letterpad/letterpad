@@ -1,11 +1,11 @@
 {
   "name": "letterpad-sdk",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "scripts": {
     "codegen": "graphql-codegen --config codegen.ts",
     "build.tsc.mjs": "tsc -p tsconfig.json",
     "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
-    "build": "yarn codegen && yarn build.tsc.mjs && yarn build.tsc.cjs && ./fixup.sh"
+    "build": "bun run codegen && bun run build.tsc.mjs && bun run build.tsc.cjs && ./fixup.sh"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",

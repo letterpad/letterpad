@@ -26,8 +26,14 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
   } = usePostContext();
   const editorRef = useRef<Editor["editor"]>();
   const isDark = document.body.classList.contains("dark");
-
+  const textRef = useRef("");
   const allowEditorChange = useActivateEditorChangeAfterClick();
+
+  useEffect(() => {
+    if (!allowEditorChange) {
+      textRef.current = text === "undefined" ? "" : text;
+    }
+  }, [allowEditorChange, text]);
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -39,6 +45,7 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
     return () => {
       editor?.off("openFileExplorer");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onMediaBrowse, editorRef.current]);
 
   return (
@@ -52,7 +59,7 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange, style }) => {
               setHelpers && setHelpers(editor);
             }
           }}
-          initialValue={text === "undefined" ? "" : text}
+          initialValue={textRef.current}
           onEditorChange={(newHtml) => {
             if (allowEditorChange) {
               onChange(newHtml);

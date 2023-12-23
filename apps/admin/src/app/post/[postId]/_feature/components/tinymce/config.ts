@@ -73,7 +73,7 @@ export const blogEditorConfig = ({ isDark, editorRef }): IProps["init"] => ({
   contextmenu: false,
   branding: false,
   plugins:
-    "lists image link quickbars autoresize  code codesample directionality wordcount",
+    "lists image ai link quickbars autoresize  code codesample directionality wordcount",
   skin: "none",
   skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
   height: "100%",

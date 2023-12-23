@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { FC, Suspense, useEffect, useState } from "react";
+import { FC, Suspense } from "react";
 import { TextBlockPlaceholder } from "ui";
 
 const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"), {

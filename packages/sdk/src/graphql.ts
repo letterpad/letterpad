@@ -313,7 +313,6 @@ export type InputUpdatePost = {
   title?: InputMaybe<Scalars["String"]>;
   type?: InputMaybe<PostTypes>;
   updatedAt?: InputMaybe<Scalars["Date"]>;
-  version?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputUpdateSubscriber = {
@@ -1959,7 +1958,7 @@ export const TagsDocument = `
 export type Requester<C = {}, E = unknown> = <R, V>(
   doc: string,
   vars?: V,
-  options?: C
+  options?: C,
 ) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -1967,75 +1966,75 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
       return requester<MeQuery, MeQueryVariables>(
         MeDocument,
         variables,
-        options
+        options,
       ) as Promise<MeQuery>;
     },
     feed(variables?: FeedQueryVariables, options?: C): Promise<FeedQuery> {
       return requester<FeedQuery, FeedQueryVariables>(
         FeedDocument,
         variables,
-        options
+        options,
       ) as Promise<FeedQuery>;
     },
     meAndSettings(
       variables?: MeAndSettingsQueryVariables,
-      options?: C
+      options?: C,
     ): Promise<MeAndSettingsQuery> {
       return requester<MeAndSettingsQuery, MeAndSettingsQueryVariables>(
         MeAndSettingsDocument,
         variables,
-        options
+        options,
       ) as Promise<MeAndSettingsQuery>;
     },
     post(variables?: PostQueryVariables, options?: C): Promise<PostQuery> {
       return requester<PostQuery, PostQueryVariables>(
         PostDocument,
         variables,
-        options
+        options,
       ) as Promise<PostQuery>;
     },
     postPage(
       variables?: PostPageQueryVariables,
-      options?: C
+      options?: C,
     ): Promise<PostPageQuery> {
       return requester<PostPageQuery, PostPageQueryVariables>(
         PostPageDocument,
         variables,
-        options
+        options,
       ) as Promise<PostPageQuery>;
     },
     posts(variables?: PostsQueryVariables, options?: C): Promise<PostsQuery> {
       return requester<PostsQuery, PostsQueryVariables>(
         PostsDocument,
         variables,
-        options
+        options,
       ) as Promise<PostsQuery>;
     },
     settings(
       variables?: SettingsQueryVariables,
-      options?: C
+      options?: C,
     ): Promise<SettingsQuery> {
       return requester<SettingsQuery, SettingsQueryVariables>(
         SettingsDocument,
         variables,
-        options
+        options,
       ) as Promise<SettingsQuery>;
     },
     sitemap(
       variables?: SitemapQueryVariables,
-      options?: C
+      options?: C,
     ): Promise<SitemapQuery> {
       return requester<SitemapQuery, SitemapQueryVariables>(
         SitemapDocument,
         variables,
-        options
+        options,
       ) as Promise<SitemapQuery>;
     },
     tags(variables?: TagsQueryVariables, options?: C): Promise<TagsQuery> {
       return requester<TagsQuery, TagsQueryVariables>(
         TagsDocument,
         variables,
-        options
+        options,
       ) as Promise<TagsQuery>;
     },
   };
