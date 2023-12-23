@@ -33,7 +33,7 @@ function login({ email, password }) {
   cy.getTestId("email").type(email);
   cy.getTestId("password").type(password);
   cy.getTestId("loginBtn").click();
-  cy.wait("@getCredentials");
+  // cy.wait("@getCredentials");
   cy.wait("@getSession");
   cy.url().then(($url) => {
     if ($url.includes("home")) {
