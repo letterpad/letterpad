@@ -12,7 +12,6 @@
     ]
   },
   "scripts": {
-    "preinstall": "bun config set ignore-engines true",
     "seedIfNotSeeded": "bun postbuild && node ./src/graphql/db/dist/seedIfNoSeed.js",
     "codegen": "graphql-let && next lint --fix --dir __generated__",
     "prepare": "bun prisma:generate && bun codegen && bun prisma:migrate:run && bun seedIfNotSeeded",
