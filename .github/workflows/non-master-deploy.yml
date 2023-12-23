@@ -138,7 +138,7 @@ jobs:
           DATABASE_URL: "file:data/test_3.sqlite"
 
       - name: Run Build
-        run: bun build --filter=admin
+        run: bun build
 
       - name: Run Cypress
         run: |
