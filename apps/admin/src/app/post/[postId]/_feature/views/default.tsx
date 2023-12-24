@@ -52,6 +52,7 @@ export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
         </div>
         <FeaturedImage id={post.id} cover_image={post.cover_image} />
         <Editor
+          hasAiKey={!!settings?.openai_key}
           loading={loading}
           text={post.html_draft || ""}
           onChange={(html) => {

@@ -34,10 +34,10 @@ There are few things that you should know before running letterpad in a producti
 - Run the below commands.
 
 ```bash
-yarn install
-yarn seed
-yarn build
-yarn start # starts the server
+bun install
+bun run seed
+bun run build
+bun run start # starts the server
 ```
 
 - Open http://localhost:3000/admin
@@ -68,18 +68,18 @@ This section is required only if you want to use Letterpad as a multi-user accou
 First install the node modules and seed the database using
 
 ```bash
-yarn install
-yarn seed
+bun install
+bun seed
 ```
 
-`yarn seed` will reset the database. So use this only in dev environment. When you execute this command, it is going to create the prisma client from the env variable `DATABASE_URL`, with which it is going to seed the database.
+`bun seed` will reset the database. So use this only in dev environment. When you execute this command, it is going to create the prisma client from the env variable `DATABASE_URL`, with which it is going to seed the database.
 
 > If you want to swith the db to something different like `mysql`, you should change the `DATABASE_URL` and generate the client with the command `prisma:generate`.
 
 Then, run the development server:
 
 ```bash
-yarn dev
+bun dev
 ```
 
 Open [http://localhost:3000/admin](http://localhost:3000/admin) with your browser. You can login with the test account mentioned below
