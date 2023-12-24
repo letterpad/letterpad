@@ -151,6 +151,7 @@ model Setting {
   design              String    @default("{}") @db.VarChar(300)
   scripts             String?   @db.Text
   author_id           Int       @unique
+  openai_key          String    @default("") @db.VarChar(300)
   author              Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 
   @@index([author_id])
@@ -202,7 +203,7 @@ model Domain {
   updatedAt DateTime? @updatedAt
   createdAt DateTime? @default(now())
   author_id Int       @unique
-  author    Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 
 model SubscribersDelivery {

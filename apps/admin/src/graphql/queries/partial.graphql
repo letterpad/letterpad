@@ -80,6 +80,7 @@ fragment SettingsFragment on Setting {
   intro_dismissed
   show_about_page
   show_tags_page
+  openai_key
   design {
     brand_color
     primary_font

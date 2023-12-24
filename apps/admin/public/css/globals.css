@@ -9,7 +9,7 @@ html:not(.prose):not(.home),
 body:not(.prose):not(.home) {
   padding: 0;
   margin: 0;
-  font-family: var(--font-inter);
+  /* font-family: var(--font-source-serif-4); */
   color: rgba(var(--color), 0.8);
   min-height: 100vh;
   padding: 0px;

@@ -56,4 +56,5 @@ module.exports.defaultSettings = {
   intro_dismissed: false,
   show_about_page: false,
   show_tags_page: false,
+  openai_key: "",
 };
