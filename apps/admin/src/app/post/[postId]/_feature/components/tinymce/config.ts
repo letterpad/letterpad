@@ -50,7 +50,11 @@ export const titleEditorConfig: IProps["init"] = {
   },
 };
 
-export const blogEditorConfig = ({ isDark, editorRef }): IProps["init"] => ({
+export const blogEditorConfig = ({
+  isDark,
+  editorRef,
+  hasAiKey,
+}): IProps["init"] => ({
   placeholder: "Write your story here...",
   inline: true,
   image_caption: true,
@@ -81,7 +85,7 @@ export const blogEditorConfig = ({ isDark, editorRef }): IProps["init"] => ({
   quickbars_selection_toolbar:
     "h1 h2 mark bold italic underline link nlpcheck nlpremove ltr rtl",
   quickbars_insert_toolbar:
-    "bullist numlist blockquote hr codesample customImage image",
+    "bullist numlist blockquote hr codesample customImage image aiButton",
   statusbar: false,
   formats: {
     hilitecolor: {
@@ -103,6 +107,32 @@ export const blogEditorConfig = ({ isDark, editorRef }): IProps["init"] => ({
         editor.execCommand("HiliteColor", false, "");
       },
     });
+    if (!hasAiKey) {
+      editor.ui.registry.addButton("aiButton", {
+        text: "AI",
+        tooltip: "Autocomplete with AI",
+        onAction: () => {
+          editor.windowManager.open({
+            title: "Autocomplete with AI",
+            body: {
+              type: "panel",
+              items: [
+                {
+                  type: "htmlpanel", // A HTML panel component
+                  html: "You can use AI to autocomplete your text by simply typing +++. To enable this feature, updated the OpenAI Key in <a href='/settings?selected=openai' target='_blank'>settings</a> ",
+                },
+              ],
+            },
+            buttons: [
+              {
+                type: "cancel",
+                text: "OK",
+              },
+            ],
+          });
+        },
+      });
+    }
     // editor.on("init", function () {
     //   setTimeout(() => {
     //     editor.dom.doc
