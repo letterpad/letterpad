@@ -13,7 +13,7 @@ const Home = (p) => {
   const router = useRouter();
   useEffect(() => {
     if (!isPlatform) {
-      router.push("/login");
+      // router.push("/login");
     }
   }, [router]);
 
@@ -26,7 +26,7 @@ const Home = (p) => {
     };
   }, []);
 
-  if (isPlatform) {
+  if (!isPlatform) {
     return (
       <>
         <Website />
