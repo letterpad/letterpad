@@ -38,7 +38,8 @@ export const getServerSession = async ({ req }) => {
 
 export const getResolverContext = async (request: Request) => {
   let client_author_id: number | null = null;
-  const authorIdFound = 5; //await getAuthorIdFromRequest(request);
+  const authorIdFound = await getAuthorIdFromRequest(request);
+  console.log("authorIdFound", authorIdFound);
   if (authorIdFound) {
     client_author_id = authorIdFound;
     return { client_author_id, session: null };
@@ -52,7 +53,7 @@ export const getResolverContext = async (request: Request) => {
     } else {
       client_author_id = session.user.id;
     }
-
+    console.log("client_author_id", client_author_id);
     if (client_author_id) {
       return {
         session,

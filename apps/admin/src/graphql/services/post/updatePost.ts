@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-import DiffMatchPatch from "diff-match-patch";
 
 import { report } from "@/components/error";
 
@@ -10,19 +9,13 @@ import {
   ResolversTypes,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
-import { getReadingTimeFromHtml, slugify } from "@/graphql/resolvers/helpers";
+import { slugify } from "@/graphql/resolvers/helpers";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { formatHtml } from "@/graphql/resolvers/utils/formatHtml";
 import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
-
-import { PostVersion } from "../../../lib/versioning";
-import { PostHistoryItem } from "../../../types";
-import { parseDrafts } from "../../../utils/utils";
-
-const dmp = new DiffMatchPatch();
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,
@@ -133,26 +126,11 @@ export const updatePost = async (
     }
 
     if (args.data.html_draft) {
-      const html_draft = addOrReplaceHistory(
-        parseDrafts(
-          existingPost.html_draft,
-          existingPost.status as PostStatusOptions
-        ),
-        args.data.html_draft
-      );
-
-      newPostArgs.data.html_draft = html_draft;
+      newPostArgs.data.html_draft = args.data.html_draft;
     }
 
-    if (args.data.status === PostStatusOptions.Published && args.data.version) {
-      const postVersions = new PostVersion(
-        parseDrafts(existingPost.html_draft)
-      );
-      const html = postVersions.retrieveBlogAtTimestamp(args.data.version);
-      newPostArgs.data.html = await formatHtml(html ?? "");
-      postVersions.makeBlogLiveAtTimestamp(args.data.version);
-      newPostArgs.data.html_draft = JSON.stringify(postVersions.getHistory());
-      newPostArgs.data.publishedAt = new Date();
+    if (args.data.status === PostStatusOptions.Published) {
+      newPostArgs.data.html = await formatHtml(existingPost.html_draft ?? "");
     }
 
     newPostArgs.data.updatedAt = new Date();
@@ -212,18 +190,3 @@ export const updatePost = async (
     };
   }
 };
-
-function addOrReplaceHistory(oldHistory: PostHistoryItem[], newText: string) {
-  const postVersions = new PostVersion(oldHistory);
-  const lastUpdate = postVersions.getLastUpdateInSeconds();
-  if (
-    (lastUpdate && lastUpdate < 10) ||
-    (oldHistory.length === 1 && oldHistory[0].content === "")
-  ) {
-    postVersions.replacePreviousBlog(newText);
-  } else {
-    postVersions.updateBlog(newText);
-  }
-  postVersions.fixFirstRecordEmptyContent(postVersions);
-  return JSON.stringify(postVersions.getHistory());
-}

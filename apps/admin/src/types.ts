@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-
-import DiffMatchPatch from "diff-match-patch";
 import { DefaultUser } from "next-auth";
 
 import { Navigation, RegisterStep, Setting } from "@/__generated__/__types__";
@@ -122,12 +119,4 @@ export enum AdminUsersType {
   RECENT_USERS = "recent_users",
   TOP_USERS = "top_users",
   DOMAIN_MAPPED = "domain_mapped",
-}
-
-export interface PostHistoryItem {
-  timestamp: string;
-  content?: string;
-  patches: DiffMatchPatch.Patch[];
-  active: boolean;
-  live: boolean;
 }

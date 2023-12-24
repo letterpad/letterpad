@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { FC, Suspense, useEffect, useState } from "react";
+import { FC, Suspense } from "react";
 import { TextBlockPlaceholder } from "ui";
 
 const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"), {
@@ -10,12 +10,14 @@ interface Props {
   onChange: (_html: string) => void;
   style?: string;
   loading?: boolean;
+  hasAiKey: boolean;
 }
 export const Editor: FC<Props> = ({
   text,
   onChange,
   style,
   loading = false,
+  hasAiKey,
 }) => {
   if (loading)
     return (
@@ -31,7 +33,12 @@ export const Editor: FC<Props> = ({
         </div>
       }
     >
-      <TinyMceEditor text={text} onChange={onChange} style={style} />
+      <TinyMceEditor
+        text={text}
+        onChange={onChange}
+        style={style}
+        hasAiKey={hasAiKey}
+      />
     </Suspense>
   );
 };

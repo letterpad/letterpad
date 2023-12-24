@@ -22,9 +22,6 @@ import { getLetterpadLatestPost } from "../services/post/getLetterpadLatestPost"
 import { getLetterpadLatestPosts } from "../services/post/getLetterpadLatestPosts";
 import { getStats } from "../services/stats";
 import { setResponsiveImages } from "../utils/imageAttributs";
-import { PostVersion } from "../../lib/versioning";
-import { PostHistoryItem } from "../../types";
-import { parseDrafts } from "../../utils/utils";
 
 type PostAttributes = any;
 
@@ -54,24 +51,8 @@ const Post: PostResolvers<ResolverContext> = {
   html: async ({ html }) => {
     return html ? setResponsiveImages(html) : "";
   },
-  html_draft: async ({ html_draft, html, status }) => {
-    if (!html_draft) {
-      const entry: PostHistoryItem = {
-        timestamp: new Date().toISOString(),
-        content: html,
-        patches: [],
-        active: true,
-        live: status === PostStatusOptions.Published,
-      };
-      return JSON.stringify([entry]);
-    }
-    const pv = new PostVersion(parseDrafts(html_draft));
-    let history = pv.getHistory();
-    if (history.length === 1) {
-      history[0].live = status === PostStatusOptions.Published;
-      history[0].active = true;
-    }
-    return JSON.stringify(history);
+  html_draft: async ({ html_draft }) => {
+    return html_draft ? setResponsiveImages(html_draft) : "";
   },
   stats: async ({ stats, reading_time }) => {
     const oldReadingTime = reading_time ? parseInt(reading_time || "") : 2;

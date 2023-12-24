@@ -30,9 +30,9 @@ function Hero() {
             <div data-aos="zoom-out">
               <div className="relative mb-6 inline-block rounded-full bg-gray-800 px-4 py-1 text-sm text-gray-300 before:absolute before:inset-0 before:-z-10 before:-m-0.5 before:rounded-full before:bg-gradient-to-t before:from-gray-800 before:via-gray-600 before:to-gray-800 before:content-['']">
                 <div className="text-gray-400">
-                  Launched Creatives.{" "}
+                  With AI Assistance ✨
                   <a
-                    className="group inline-flex items-center font-medium text-blue-500 transition duration-150 ease-in-out"
+                    className="group inline-flex hidden items-center font-medium text-blue-500 transition duration-150 ease-in-out"
                     href="/try-creatives"
                   >
                     Check Demo{" "}

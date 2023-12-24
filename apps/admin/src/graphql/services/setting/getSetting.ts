@@ -15,7 +15,6 @@ export const getSetting = async (
       ...author,
       setting,
     };
-
     if (authorWithSetting.setting) {
       return { ...mapSettingToGraphql(authorWithSetting.setting) };
     }

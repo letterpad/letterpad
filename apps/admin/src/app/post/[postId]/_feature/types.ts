@@ -9,6 +9,4 @@ export type PostContextType = {
   onFileExplorerClose: () => void;
   onMediaBrowse: () => void;
   settings?: Setting;
-  version: string;
-  setVersion: (timestamp: string) => void;
 };

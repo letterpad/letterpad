@@ -42,13 +42,13 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "bun@1.0.1",
   "dependencies": {
     "axios": "^1.2.0",
+    "next": "13.5.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
-    "turbo": "latest",
-    "next": "13.5.4"
+    "turbo": "latest"
   }
 }

@@ -12,6 +12,7 @@ import { CopyToClipboard } from "@/components/clipboard";
 import { SettingInputType } from "@/__generated__/__types__";
 
 import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
+import Ai from "./components/ai";
 import Appearance from "./components/appearance";
 import General from "./components/general";
 import Integrations from "./components/integrations";
@@ -74,6 +75,13 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               description="Basic details and metadata of your site"
             >
               <General />
+            </AccordionItem>
+            <AccordionItem
+              label="Open AI"
+              id="openai"
+              description="Add Open AI key"
+            >
+              <Ai />
             </AccordionItem>
             <AccordionItem
               label="Appearance"

@@ -11,7 +11,6 @@ import { FeaturedImage } from "../components/featured-image";
 import { SubTitle } from "../components/subtitle";
 import { Title } from "../components/title";
 import { WordCount } from "../components/wordCount";
-import { usePostVersioning } from "../hooks";
 
 interface Props {
   settings?: Setting;
@@ -20,7 +19,6 @@ interface Props {
 }
 
 export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
-  const { initialContent } = usePostVersioning(post?.id!);
   const { updatePostWithDebounce } = useUpdatePost();
 
   if (!post) return null;
@@ -54,8 +52,9 @@ export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
         </div>
         <FeaturedImage id={post.id} cover_image={post.cover_image} />
         <Editor
+          hasAiKey={!!settings?.openai_key}
           loading={loading}
-          text={initialContent}
+          text={post.html_draft || ""}
           onChange={(html) => {
             updatePostWithDebounce?.({ html_draft: html, id: post.id });
           }}

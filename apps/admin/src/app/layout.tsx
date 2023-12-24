@@ -77,7 +77,7 @@ const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme")?.value ?? "light";
   const userId = await getUserFromCookie(cookies());
   return (
-    <html lang="en" data-color-scheme={theme}>
+    <html lang="en" data-color-scheme={theme} className={theme + "-theme"}>
       <Head>
         <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
         <script src={basePath + `/prism/prism.js`} async />

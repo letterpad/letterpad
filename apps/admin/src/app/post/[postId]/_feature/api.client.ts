@@ -49,10 +49,10 @@ export const useUpdatePost = () => {
   const updatePostWithDebounce = useCallback(
     (props: InputUpdatePost) => {
       let change: InputUpdatePost = { ...props };
-      if (props.version) {
+      if (props) {
         const stats = WordCount.getStats();
         change = {
-          version: props.version,
+          ...change,
           stats,
           id: props.id,
         };

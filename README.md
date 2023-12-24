@@ -70,25 +70,25 @@ Before you proceed, ensure you've copied `apps/admin/.env.sample` to `apps/admin
 ## Development
 
 ```sh
-yarn install
-yarn build
+bun install
+bun run build
 
 # Copy apps/admin/.env.sample to apps/admin/.env
 # Change the secret key in .env file.
-yarn seed
-yarn dev
+bun run seed
+bun run dev
 ```
 
 ## Production
 
 ```sh
-yarn install
-yarn build
+bun install
+bun run build
 
 # Copy apps/admin/.env.sample to apps/admin/.env
 # Change the secret key in .env file.
-yarn seed
-yarn start
+bun run seed
+bun run start
 ```
 
 ### Using Docker
