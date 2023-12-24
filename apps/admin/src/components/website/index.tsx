@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
+import AiSection from "./AiSection";
 import Client from "./Client";
 import Cta from "./Cta";
 import Features from "./Features";
@@ -87,12 +88,12 @@ export const Website = () => {
         <main className="grow">
           <Hero />
           <Features />
+          <AiSection />
           <Features02 />
           <Client />
           <Cta />
           <PressLogos />
         </main>
-
         <Footer />
       </div>
     </>
