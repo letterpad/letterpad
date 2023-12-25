@@ -88,10 +88,6 @@ export async function seed(folderCheck = true) {
     await insertAuthors();
     console.timeEnd("Insert authors and settings and assign role");
 
-    console.time("Insert email templates");
-    await insertEmailTemplates();
-    console.timeEnd("Insert email templates");
-
     console.time("Insert post and page and tags");
     const author = await prisma.author.findFirst({
       where: { email: process.env.EMAIL || "demo@demo.com" },
@@ -102,6 +98,10 @@ export async function seed(folderCheck = true) {
       await insertPost(postsList[2], author?.id);
     }
     console.timeEnd("Insert post and page and tags");
+
+    console.time("Insert email templates");
+    await insertEmailTemplates();
+    console.timeEnd("Insert email templates");
   } catch (e: any) {
     console.log(e);
     logger.error(e);
