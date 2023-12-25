@@ -262,9 +262,12 @@ async function insertAuthors() {
 export async function insertEmailTemplates() {
   const templates = [];
   getTemplates(EMAIL_DIR, templates);
-  await prisma.emailTemplates.createMany({
-    data: templates,
-  });
+
+  const promises = templates.map((template) =>
+    prisma.emailTemplates.create({ data: template })
+  );
+
+  return Promise.all(promises);
 }
 
 export async function insertPost(postData, author_id) {
