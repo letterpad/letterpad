@@ -136,6 +136,9 @@ const batchTags = async (keys) => {
   return keys.map((key) => postTags[key] ?? []);
 };
 
+const dataLoaderOptions = {
+  batchScheduleFn: (callback) => setTimeout(callback, 20),
+};
 export const context = async ({ request }) => {
   const resolverContext = await getResolverContext(request);
 
@@ -143,10 +146,10 @@ export const context = async ({ request }) => {
     ...resolverContext,
     prisma,
     dataloaders: {
-      author: new DataLoader<any, Author>(batchAuthors),
-      setting: new DataLoader<any, Setting>(batchSettings),
-      post: new DataLoader<any, Post>(batchPosts),
-      tagsByPostId: new DataLoader<any, Tag[]>(batchTags),
+      author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
+      setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
+      post: new DataLoader<any, Post>(batchPosts, dataLoaderOptions),
+      tagsByPostId: new DataLoader<any, Tag[]>(batchTags, dataLoaderOptions),
     },
   };
 };

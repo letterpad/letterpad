@@ -1,7 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import { load } from "cheerio";
-import reading_time from "reading-time";
 
 import { Social } from "@/__generated__/__types__";
 import logger from "@/shared/logger";
@@ -79,12 +78,6 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
     // ignore
   }
   return html;
-};
-
-export const getReadingTimeFromHtml = (html: string) => {
-  const $ = load(html);
-  const text = $.text();
-  return reading_time(text).text;
 };
 
 interface ICaptchaResult {

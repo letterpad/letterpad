@@ -1,13 +1,4 @@
-import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASSWORD,
-  },
-});
 
 interface Props {
   from: string; // sender address
@@ -17,22 +8,25 @@ interface Props {
   replyTo?: string;
   bcc?: string;
 }
-export const mail = (
+export const mail = async (
   mailOptions: Props,
   addBcc = true
 ): Promise<SMTPTransport.SentMessageInfo> => {
-  return new Promise((resolve, reject) => {
-    if (process.env.LETTERPAD_PLATFORM === "true" && addBcc) {
-      mailOptions = {
-        ...mailOptions,
-        bcc: `"Letterpad <${process.env.GMAIL_USER}>`,
-      };
-    }
-    transporter.sendMail(mailOptions, function (err, info) {
-      if (err) reject(err);
-      else resolve(info);
-    });
+  if (process.env.LETTERPAD_PLATFORM === "true" && addBcc) {
+    mailOptions = {
+      ...mailOptions,
+      bcc: `"Letterpad <${process.env.GMAIL_USER}>`,
+    };
+  }
+
+  const req = await fetch(process.env.ROOT_URL + "/api/mailer", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(mailOptions),
   });
+  return await req.json();
 };
 
 export const hasCredentials = () => {

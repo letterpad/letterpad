@@ -15,7 +15,7 @@ const Verify = async (
 ) => {
   try {
     try {
-      verifyToken(req.query.token as string);
+      await verifyToken(req.query.token as string);
     } catch (e: any) {
       return res.redirect(basePath + "/messages/expired");
     }
