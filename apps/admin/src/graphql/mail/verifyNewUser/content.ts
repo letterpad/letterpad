@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import Twig from "twig";
 
 import {
   EmailTemplateResponse,
@@ -15,7 +14,7 @@ export async function getVerifyUserEmailContent(
   data: EmailVerifyNewUserProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
-  const template = getTemplate(data.template_id);
+  const template = await getTemplate(data.template_id);
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
     include: {
@@ -36,16 +35,7 @@ export async function getVerifyUserEmailContent(
       message: `No info found for the current blog.`,
     };
   }
-  const subjectTemplate = Twig.twig({
-    data: template.subject,
-  });
-
-  const subject = subjectTemplate.render({
-    company_name: `Letterpad`,
-  });
-  const bodyTemplate = Twig.twig({
-    data: template.body.toString(),
-  });
+  const subject = template.subject.replaceAll("company_name", `Letterpad`);
 
   const token = getVerifyUserToken({
     author_id: author.id,
@@ -53,13 +43,15 @@ export async function getVerifyUserEmailContent(
   });
   const href = `${getRootUrl()}/api/verify?token=${token}`;
 
-  const body = bodyTemplate.render({
-    company_name: `<a href="https://letterpad.app">Letterpad</a>`,
-    full_name: author.name,
-    verify_link: `<a target="_blank" href="${href}">
+  const body = template.body
+    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("full_name", author.name)
+    .replaceAll(
+      "verify_link",
+      `<a target="_blank" href="${href}">
         Verify Email
-      </a>`,
-  });
+      </a>`
+    );
 
   return {
     ok: true,

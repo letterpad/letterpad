@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import Twig from "twig";
 
 import { EmailNewPostProps, EmailTemplateResponse } from "@/graphql/types";
 
@@ -10,7 +9,7 @@ export async function getNewPostContent(
   data: EmailNewPostProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
-  const template = getTemplate(data.template_id);
+  const template = await getTemplate(data.template_id);
   const post = await prisma.post.findFirst({
     where: { id: data.post_id },
     include: {
@@ -37,29 +36,25 @@ export async function getNewPostContent(
     };
   }
 
-  const subjectTemplate = Twig.twig({
-    data: template.subject,
-  });
+  const subject = template.subject.replaceAll(
+    "blog_name",
+    post.author.setting?.site_title ?? ""
+  );
 
-  const subject = subjectTemplate.render({
-    blog_name: post.author.setting?.site_title,
-  });
-
-  const bodyTemplate = Twig.twig({
-    data: template.body.toString(),
-  });
-
-  const body = bodyTemplate.render({
-    blog_name: post.author.setting?.site_title,
-    full_name: "Letterpad User",
-    post_title: post?.title,
-    excerpt: post?.excerpt,
-    author_name: post.author.name,
-    cover_image_link: post?.cover_image
-      ? `<img src="${post?.cover_image}" width="100%">`
-      : "",
-    read_more_link: `<a target="_blank" class="btn" href="${post.author.setting?.site_url}/${post?.type}/${post?.slug}">Read More</a>`,
-  });
+  const body = template.body
+    .replaceAll("blog_name", post.author.setting?.site_title ?? "")
+    .replaceAll("full_name", "Letterpad User")
+    .replaceAll("post_title", post?.title)
+    .replaceAll("excerpt", post?.excerpt)
+    .replaceAll(
+      "read_more_link",
+      `<a target="_blank" class="btn" href="${post.author.setting?.site_url}/${post?.type}/${post?.slug}">Read More</a>`
+    )
+    .replaceAll(
+      "cover_image_link",
+      post?.cover_image ? `<img src="${post?.cover_image}" width="100%">` : ""
+    )
+    .replaceAll("author_name", post.author.name);
 
   return {
     ok: true,

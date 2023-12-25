@@ -24,6 +24,7 @@ const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
 
 const ROOT_DIR = path.join(__dirname, "../../../");
+const EMAIL_DIR = path.join(__dirname, "../seed/email");
 
 // All paths are relative to this file
 const publicUploadsDir = path.join(ROOT_DIR, "public/uploads");
@@ -86,6 +87,10 @@ export async function seed(folderCheck = true) {
     console.time("Insert authors and settings and assign role");
     await insertAuthors();
     console.timeEnd("Insert authors and settings and assign role");
+
+    console.time("Insert email templates");
+    await insertEmailTemplates();
+    console.timeEnd("Insert email templates");
 
     console.time("Insert post and page and tags");
     const author = await prisma.author.findFirst({
@@ -253,6 +258,15 @@ async function insertAuthors() {
     },
   });
 }
+
+export async function insertEmailTemplates() {
+  const templates = [];
+  getTemplates(EMAIL_DIR, templates);
+  await prisma.emailTemplates.createMany({
+    data: templates,
+  });
+}
+
 export async function insertPost(postData, author_id) {
   const { html } = generatePost(postData.type);
 
@@ -335,3 +349,34 @@ export const cleanupDatabase = async () => {
   await prisma.tag.deleteMany();
   await prisma.upload.deleteMany();
 };
+
+function getTemplates(rootFolder, templates) {
+  // Get a list of all items in the root folder
+  const items = fs.readdirSync(rootFolder);
+  // Loop through each item in the root folder
+  items.forEach((item) => {
+    const itemPath = path.join(rootFolder, item);
+
+    // Check if the item is a directory
+    if (fs.statSync(itemPath).isDirectory()) {
+      // Read the content of a.txt and b.txt in the current folder
+      const body = path.join(itemPath, "body.txt");
+      const subject = path.join(itemPath, "subject.txt");
+
+      try {
+        const bodyContent = fs.readFileSync(body, "utf-8");
+        const subjectContent = fs.readFileSync(subject, "utf-8");
+        templates.push({
+          body: bodyContent,
+          subject: subjectContent,
+          template: itemPath.split("/").pop() ?? "",
+        });
+      } catch (error: any) {
+        console.error(`Error reading files in ${itemPath}:`, error.message);
+      }
+
+      // Recursively call the function for subfolders
+      getTemplates(itemPath, templates);
+    }
+  });
+}

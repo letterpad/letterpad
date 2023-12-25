@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import Twig from "twig";
 
 import {
   EmailChangeSuccessProps,
@@ -13,7 +12,7 @@ export async function getEmailChangeSuccessContent(
   data: EmailChangeSuccessProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
-  const template = getTemplate(data.template_id);
+  const template = await getTemplate(data.template_id);
 
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
@@ -35,21 +34,12 @@ export async function getEmailChangeSuccessContent(
       message: `No info found for the current blog.`,
     };
   }
-  const subjectTemplate = Twig.twig({
-    data: template.subject,
-  });
 
-  const subject = subjectTemplate.render({
-    company_name: `Letterpad`,
-  });
-  const bodyTemplate = Twig.twig({
-    data: template.body.toString(),
-  });
+  const subject = template.subject.replaceAll("company_name", `Letterpad`);
 
-  const body = bodyTemplate.render({
-    company_name: `<a href="https://letterpad.app">Letterpad</a>`,
-    full_name: author.name,
-  });
+  const body = template.body
+    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("full_name", author.name);
 
   return {
     ok: true,

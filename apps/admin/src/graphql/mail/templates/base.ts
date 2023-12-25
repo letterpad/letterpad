@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+export const baseTemplate = `<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width" />
@@ -413,3 +413,4 @@
     </table>
   </body>
 </html>
+`;

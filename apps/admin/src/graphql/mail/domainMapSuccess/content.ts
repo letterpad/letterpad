@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import Twig from "twig";
 
 import { DomainMapSuccessProps, EmailTemplateResponse } from "@/graphql/types";
 
@@ -10,7 +9,7 @@ export async function getdomainMapSuccessContent(
   data: DomainMapSuccessProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
-  const template = getTemplate(data.template_id);
+  const template = await getTemplate(data.template_id);
 
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
@@ -39,23 +38,18 @@ export async function getdomainMapSuccessContent(
       message: `No domain found for the current blog.`,
     };
   }
-  const subjectTemplate = Twig.twig({
-    data: template.subject,
-  });
 
-  const subject = subjectTemplate.render({
-    company_name: `Letterpad`,
-    domain_name: author.domain.name,
-  });
-  const bodyTemplate = Twig.twig({
-    data: template.body.toString(),
-  });
+  const subject = template.subject
+    .replaceAll("company_name", "Letterpad")
+    .replaceAll("domain_name", author?.domain.name);
 
-  const body = bodyTemplate.render({
-    company_name: `<a href="https://letterpad.app">Letterpad</a>`,
-    full_name: author.name,
-    domain_name: `<a href="https://${author.domain.name}">${author.domain.name}</a>`,
-  });
+  const body = template.body
+    .replaceAll(
+      "domain_name",
+      `<a href="https://${author.domain.name}">${author.domain.name}</a>`
+    )
+    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("full_name", author?.name);
 
   return {
     ok: true,
