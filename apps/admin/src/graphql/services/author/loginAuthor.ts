@@ -1,8 +1,7 @@
-import bcrypt from "bcryptjs";
-
 import { MutationLoginArgs, ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
+import { isPasswordValid } from "@/utils/bcrypt";
 
 export const loginAuthor = async (
   args: MutationLoginArgs,
@@ -18,7 +17,7 @@ export const loginAuthor = async (
         message: "Your email id is not verified yet.",
       };
     }
-    const authenticated = await bcrypt.compare(
+    const authenticated = await isPasswordValid(
       args.data?.password || "",
       author.password
     );

@@ -1,5 +1,3 @@
-import bcrypt from "bcryptjs";
-
 import {
   InputCreateAuthor,
   PostStatusOptions,
@@ -15,6 +13,7 @@ import { encryptEmail } from "@/shared/clientToken";
 import { textToSlug } from "@/utils/slug";
 
 import { prisma } from "../../lib/prisma";
+import { getHashedPassword } from "../../utils/bcrypt";
 import siteConfig from "../../../config/site.config";
 
 export const onBoardUser = async (id: number) => {
@@ -130,7 +129,7 @@ export async function createAuthorWithSettings(
           github: "",
           instagram: "",
         }),
-        password: bcrypt.hashSync(data.password, 12),
+        password: await getHashedPassword(data.password),
         role: {
           connect: { id: role.id },
         },

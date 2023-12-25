@@ -1,5 +1,4 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -14,6 +13,7 @@ import { createAuthorWithSettings } from "@/components/onboard";
 import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
+import { isPasswordValid } from "@/utils/bcrypt";
 
 import { isBlackListed } from "./blacklist";
 
@@ -48,7 +48,7 @@ const providers = (): NextAuthOptions["providers"] => [
               new Error("Your email id is not verified yet.")
             );
           }
-          const authenticated = await bcrypt.compare(
+          const authenticated = await isPasswordValid(
             credentials?.password || "",
             author.password
           );

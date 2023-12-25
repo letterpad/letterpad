@@ -1,8 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import { load } from "cheerio";
-import https from "https";
-import sizeOf from "image-size";
 import reading_time from "reading-time";
 
 import { Social } from "@/__generated__/__types__";
@@ -44,26 +42,9 @@ export async function slugify(
 export async function getImageDimensions(
   url: string
 ): Promise<{ width: number; height: number; type: string }> {
-  const actionToTry = () =>
-    new Promise((resolve, reject) =>
-      https.get(new URL(url), function (response) {
-        const chunks: Uint8Array[] = [];
-        response
-          .on("data", function (chunk: Uint8Array) {
-            chunks.push(chunk);
-          })
-          .on("end", async function () {
-            const buffer = Buffer.concat(chunks);
-            return resolve(sizeOf(buffer));
-          })
-          .on("error", function (err) {
-            return reject(err);
-          });
-      })
-    );
-
-  const response = actionToTry();
-  return response as Promise<{ width: number; height: number; type: string }>;
+  const req = await fetch(process.env.ROOT_URL + "/api/imageSize?url=" + url);
+  const data = await req.json();
+  return data;
 }
 
 export const setImageWidthAndHeightInHtml = async (html: string) => {
