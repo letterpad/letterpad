@@ -21,10 +21,10 @@ function getLetterpad() {
     },
   });
 }
-const letterpad = getLetterpad();
 
 export const getData = async () => {
   try {
+    const letterpad = getLetterpad();
     const { me, settings } = await getAuthorAndSettingsData();
 
     const { menu } = settings;
@@ -70,6 +70,7 @@ export const getData = async () => {
 
 export const getPostData = async (slug: string) => {
   try {
+    const letterpad = getLetterpad();
     console.time('getPostData');
     // const [post, { settings, me }] = await Promise.all([
     //   letterpad.getPost(slug),
@@ -93,7 +94,7 @@ export const getPostData = async (slug: string) => {
 
 export const getTagsData = async () => {
   console.time('getTagsData');
-
+  const letterpad = getLetterpad();
   const [tags, { settings, me }] = await Promise.all([
     letterpad.listTags(),
     getAuthorAndSettingsData(),
@@ -108,6 +109,7 @@ export const getTagsData = async () => {
 
 export const getPostsByTag = async (tag: string) => {
   console.time('getPostsByTag');
+  const letterpad = getLetterpad();
   const [posts, { settings, me }] = await Promise.all([
     letterpad.listPosts(tag),
     getAuthorAndSettingsData(),
@@ -123,6 +125,7 @@ export const getPostsByTag = async (tag: string) => {
 
 export const getAbout = async () => {
   console.time('getAbout');
+
   const { settings, me } = await getAuthorAndSettingsData();
   console.timeEnd('getAbout');
   return {
@@ -132,11 +135,13 @@ export const getAbout = async () => {
 };
 
 export const getSiteMap = async () => {
+  const letterpad = getLetterpad();
   const sitemapResponse = await letterpad.getSitemap();
   return sitemapResponse;
 };
 
 export const getFeed = async () => {
+  const letterpad = getLetterpad();
   const [feedResponse, { settings, me }] = await Promise.all([
     letterpad.getFeed(),
     getAuthorAndSettingsData(),
@@ -150,6 +155,7 @@ export const getFeed = async () => {
 };
 
 export const getPreviewData = async (hash: string) => {
+  const letterpad = getLetterpad();
   const post = await letterpad.getPost({
     previewHash: hash,
   });
@@ -178,6 +184,7 @@ export const getAuthorData = async () => {
 
 export const getAuthorAndSettingsData = async () => {
   console.time('getAuthorAndSettingsData');
+  const letterpad = getLetterpad();
   const data = await letterpad.getMeAndSetting();
   console.timeEnd('getAuthorAndSettingsData');
   return data;
