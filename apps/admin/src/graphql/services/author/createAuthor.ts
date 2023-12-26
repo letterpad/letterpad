@@ -11,7 +11,7 @@ import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { validateCaptcha } from "@/graphql/resolvers/helpers";
 import { EmailTemplates } from "@/graphql/types";
 import { isBlackListed } from "@/pages/api/auth/blacklist";
-import { isPasswordValid } from "@/utils/bcrypt";
+import { getHashedPassword, isPasswordValid } from "@/utils/bcrypt";
 
 export const createAuthor = async (
   args: RequireFields<MutationCreateAuthorArgs, "data">,
@@ -68,6 +68,9 @@ export const createAuthor = async (
   }
 
   const { setting = {}, ...authorData } = args.data;
+  if (authorData.password) {
+    authorData.password = await getHashedPassword(authorData.password);
+  }
 
   const created = await createAuthorWithSettings(authorData, setting);
   if (created) {

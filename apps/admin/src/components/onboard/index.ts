@@ -129,7 +129,7 @@ export async function createAuthorWithSettings(
           github: "",
           instagram: "",
         }),
-        password: await getHashedPassword(data.password),
+        password: data.password,
         role: {
           connect: { id: role.id },
         },

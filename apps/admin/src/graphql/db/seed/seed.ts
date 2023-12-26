@@ -1,5 +1,6 @@
 require("dotenv/config");
 /* eslint-disable no-console */
+import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import fs from "fs";
 import path from "path";
@@ -11,14 +12,12 @@ import { prisma } from "@/lib/prisma";
 import { createAuthorWithSettings } from "@/components/onboard";
 
 import { RegisterStep } from "@/__generated__/__types__";
-import { ROLES } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
 import generatePost from "./contentGenerator";
 import { postsList } from "./posts";
-import { encryptEmail } from "../../../shared/clientToken";
 
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
@@ -228,7 +227,7 @@ async function insertAuthors() {
       name: "{Author Name}",
       email: process.env.EMAIL || "demo@demo.com",
       username: "demo",
-      password: process.env.PASSWORD || "demo",
+      password: await bcrypt.hash(process.env.PASSWORD || "demo", 12),
       register_step: RegisterStep.Registered,
       token: "",
     },
