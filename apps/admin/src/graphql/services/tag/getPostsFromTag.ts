@@ -4,8 +4,9 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+import { cache } from "react";
 
-export const getPostsFromTag = async (
+export const getPostsFromTag = cache(async (
   name: string,
   { session, prisma, client_author_id }: ResolverContext
 ): Promise<ResolversParentTypes["PostsResponse"]> => {
@@ -38,4 +39,4 @@ export const getPostsFromTag = async (
     count: posts?.length,
     rows: posts.map(mapPostToGraphql),
   };
-};
+});

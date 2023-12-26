@@ -8,8 +8,9 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 import { isCategory, tryToParseCategoryName } from "@/utils/utils";
+import { cache } from "react";
 
-export const getTags = async (
+export const getTags = cache(async (
   args: QueryTagsArgs,
   { session, client_author_id, prisma }: ResolverContext
 ): Promise<ResolversTypes["TagsResponse"]> => {
@@ -78,4 +79,4 @@ export const getTags = async (
     __typename: "UnAuthorized",
     message: "Missing or invalid token or session",
   };
-};
+});

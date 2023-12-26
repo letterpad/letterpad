@@ -2,8 +2,9 @@ import { RegisterStep, ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { getSocialLink } from "@/graphql/resolvers/helpers";
 import { getRootUrl } from "@/shared/getRootUrl";
+import { cache } from "react";
 
-export const getAuthor = async (
+export const getAuthor = cache(async (
   _: any,
   { session, prisma, client_author_id, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
@@ -15,11 +16,6 @@ export const getAuthor = async (
     };
   }
   const author = await dataloaders.author.load(authorId);
-  // const author = await prisma.author.findFirst({
-  //   where: {
-  //     id: authorId,
-  //   },
-  // });
   if (author) {
     let avatar = author.avatar as string;
     if (avatar && avatar.startsWith("/")) {
@@ -39,4 +35,4 @@ export const getAuthor = async (
     };
   }
   return { __typename: "NotFound", message: "Author not found" };
-};
+});
