@@ -135,7 +135,8 @@
     "tsup": "^6.5.0",
     "typescript": "5.1.6",
     "webpack-graphql-loader": "1.0.2",
-    "yaml-loader": "0.6.0"
+    "yaml-loader": "0.6.0",
+    "@graphql-yoga/plugin-response-cache": "*"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,}": [
