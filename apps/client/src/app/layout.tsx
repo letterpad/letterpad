@@ -136,6 +136,12 @@ const Layout = async ({ children }) => {
 
   return (
     <html lang="en" className="scroll-smooth">
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin={'anonymous'}
+      />
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20">

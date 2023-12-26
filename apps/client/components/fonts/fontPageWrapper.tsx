@@ -5,7 +5,7 @@ export const FontPageWrapper = ({
 }) => {
   return (
     <div
-      style={{ fontFamily: `'${primary_font.replace(/_/g, ' ')}'` }}
+      style={{ fontFamily: `'${primary_font.replace(/_/g, ' ')}', sans-serif` }}
       className="flex min-h-screen flex-col"
     >
       {children}

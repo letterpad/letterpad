@@ -2,8 +2,9 @@ import { SettingsFragmentFragment } from 'letterpad-sdk';
 import Script from 'next/script';
 import { FC } from 'react';
 
-import { generateGoogleFontsLink } from './fonts';
+// import { generateGoogleFontsLink } from './fonts';
 import { generateGoogleFontsVariables } from './fonts/fontsCssLink';
+import Fonts from './fonts/fonts';
 
 export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   settings,
@@ -12,14 +13,6 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   return (
     <head>
       <Script strategy="afterInteractive" src={'/static/prism.js'} async />
-      <link
-        href={generateGoogleFontsLink([
-          settings.design?.primary_font,
-          settings.design?.secondary_font,
-          'Roboto_Mono',
-        ])}
-        rel="stylesheet"
-      />
       <style>
         {`
           html {
@@ -46,6 +39,21 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           }}
         />
       ))}
+      {/* <link
+        href={generateGoogleFontsLink([
+          settings.design?.primary_font,
+          settings.design?.secondary_font,
+          'Roboto_Mono',
+        ])}
+        rel="stylesheet"
+      /> */}
+      <Fonts
+        fonts={[
+          settings.design?.primary_font,
+          settings.design?.secondary_font,
+          'Roboto_Mono',
+        ]}
+      />
     </head>
   );
 };
