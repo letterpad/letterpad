@@ -46,11 +46,10 @@
     "@dnd-kit/utilities": "^3.2.0",
     "@floating-ui/react-dom-interactions": "^0.10.2",
     "@grammarly/editor-sdk-react": "^2.3.2",
-    "@graphql-tools/utils": "^10.0.12",
+    "@graphql-tools/utils": "^8.10.0",
     "@prisma/client": "^5.4.1",
     "@stripe/stripe-js": "^1.42.1",
     "@tinymce/tinymce-react": "^4.3.0",
-    "@graphql-yoga/plugin-response-cache": "3.2.0",
     "@types/bcryptjs": "^2.4.2",
     "@urql/exchange-graphcache": "^6.3.2",
     "@urql/introspection": "^1.0.2",
@@ -136,8 +135,7 @@
     "tsup": "^6.5.0",
     "typescript": "5.1.6",
     "webpack-graphql-loader": "1.0.2",
-    "yaml-loader": "0.6.0",
-    "@graphql-yoga/plugin-response-cache": "*"
+    "yaml-loader": "0.6.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,}": [

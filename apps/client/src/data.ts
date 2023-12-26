@@ -4,15 +4,15 @@ import {
   NavigationType,
   PageFragmentFragment,
   PostsFragmentFragment,
+  Setting,
+  SettingResponse,
 } from 'letterpad-sdk';
 import { headers } from 'next/headers';
 
 function getLetterpad() {
   const headersList = headers();
   const host = headersList.get('x-forwarded-host')! ?? headersList.get('host');
-  console.log('API_URL', process.env.API_URL);
-  console.log('Host', host);
-  console.log('ClientID', process.env.CLIENT_ID);
+
   return new Letterpad({
     letterpadServer: {
       url: process.env.API_URL!,
@@ -25,6 +25,7 @@ function getLetterpad() {
 export const getData = async () => {
   try {
     const letterpad = getLetterpad();
+
     const { me, settings } = await getAuthorAndSettingsData();
 
     const { menu } = settings;
@@ -70,8 +71,8 @@ export const getData = async () => {
 
 export const getPostData = async (slug: string) => {
   try {
-    const letterpad = getLetterpad();
     console.time('getPostData');
+    const letterpad = getLetterpad();
     // const [post, { settings, me }] = await Promise.all([
     //   letterpad.getPost(slug),
     //   getAuthorAndSettingsData(),
@@ -95,6 +96,7 @@ export const getPostData = async (slug: string) => {
 export const getTagsData = async () => {
   console.time('getTagsData');
   const letterpad = getLetterpad();
+
   const [tags, { settings, me }] = await Promise.all([
     letterpad.listTags(),
     getAuthorAndSettingsData(),
@@ -125,7 +127,6 @@ export const getPostsByTag = async (tag: string) => {
 
 export const getAbout = async () => {
   console.time('getAbout');
-
   const { settings, me } = await getAuthorAndSettingsData();
   console.timeEnd('getAbout');
   return {
@@ -136,6 +137,7 @@ export const getAbout = async () => {
 
 export const getSiteMap = async () => {
   const letterpad = getLetterpad();
+
   const sitemapResponse = await letterpad.getSitemap();
   return sitemapResponse;
 };

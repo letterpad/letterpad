@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, userAgent } from "next/server";
 import { decode } from "next-auth/jwt";
 
 export const config = { matcher: "/((?!.*\\.).*)" };
 
 export async function middleware(request: NextRequest) {
+  const { device } = userAgent(request);
   const cookie = request.cookies.get("next-auth.session-token");
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
@@ -33,7 +34,10 @@ export async function middleware(request: NextRequest) {
       // return NextResponse.redirect(ROOT_URL + "/login");
     }
   }
+
+  const viewport = device.type === "mobile" ? "mobile" : "desktop";
   const nextUrl = request.nextUrl;
+  nextUrl.searchParams.set("viewport", viewport);
 
   return NextResponse.rewrite(nextUrl);
 }
