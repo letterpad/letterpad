@@ -5,9 +5,15 @@ import { isAuthDirective } from "@/graphql/directives/isAuth";
 import { maskIfUnauth } from "@/graphql/directives/maskIfUnauth";
 import { resolversArr } from "@/graphql/resolvers";
 import { typeDefsList } from "@/graphql/schema";
-
+import { useResponseCache as responseCache, createInMemoryCache } from '@graphql-yoga/plugin-response-cache'
 import cors from "../_cors";
+
+
+const cache = createInMemoryCache()
+
 // export const runtime = "edge";
+
+
 export const setupYoga = (context) => {
   return createYoga({
     schema: maskIfUnauth("maskIfUnauth")(
@@ -21,6 +27,13 @@ export const setupYoga = (context) => {
     context,
     graphqlEndpoint: "/api/graphql",
     fetchAPI: { Response },
+    plugins: [
+      responseCache({
+        // global cache
+        session: () => null,
+        cache
+      })
+    ]
   });
 };
 
