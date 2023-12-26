@@ -6,8 +6,9 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { isCategory, tryToParseCategoryName } from "@/utils/utils";
+import { cache } from "react";
 
-export const getTag = async (
+export const getTag = cache(async (
   args: QueryTagArgs,
   { session, client_author_id, prisma }: ResolverContext
 ): Promise<ResolversTypes["TagResponse"]> => {
@@ -38,4 +39,4 @@ export const getTag = async (
     __typename: "Exception",
     message: "Tag not found",
   };
-};
+});

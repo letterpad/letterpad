@@ -12,8 +12,9 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getLastPartFromPath } from "@/utils/slug";
 
 import { tryToParseCategoryName } from "../../../utils/utils";
+import { cache } from "react";
 
-export const getPosts = async (
+export const getPosts = cache(async (
   args: QueryPostsArgs,
   context: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
@@ -107,7 +108,7 @@ export const getPosts = async (
       message: "Internal Server Error",
     };
   }
-};
+});
 
 async function getTagSlugOfFirstMenuItemIfPossible(
   prisma: PrismaClient,

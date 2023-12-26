@@ -1,8 +1,9 @@
 import { ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
+import { cache } from "react";
 
-export const getSetting = async (
+export const getSetting = cache(async (
   _args: unknown,
   { session, client_author_id, prisma, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["SettingResponse"]> => {
@@ -24,4 +25,4 @@ export const getSetting = async (
     __typename: "UnAuthorized",
     message: `Setting related to author:${authorId} not found`,
   };
-};
+});

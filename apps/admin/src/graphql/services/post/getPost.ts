@@ -6,11 +6,13 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { decrypt } from "@/graphql/utils/crypto";
+import { cache } from "react";
 
-export const getPost = async (
+export const getPost = cache(async (
   args: QueryPostArgs,
   { prisma, session, client_author_id, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["PostResponse"]> => {
+  console.log("=========Fetching Post ==========")
   const session_author_id = session?.user.id;
   if (!args.filters) {
     return {
@@ -89,4 +91,4 @@ export const getPost = async (
   }
 
   return { __typename: "NotFound", message: "Post not found" };
-};
+});
