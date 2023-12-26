@@ -709,6 +709,7 @@ export type Setting = {
   id: Scalars["Int"];
   intro_dismissed: Scalars["Boolean"];
   menu: Array<Navigation>;
+  openai_key?: Maybe<Scalars["String"]>;
   scripts?: Maybe<Scalars["String"]>;
   show_about_page?: Maybe<Scalars["Boolean"]>;
   show_tags_page?: Maybe<Scalars["Boolean"]>;
@@ -739,6 +740,7 @@ export type SettingInputType = {
   display_author_info?: InputMaybe<Scalars["Boolean"]>;
   intro_dismissed?: InputMaybe<Scalars["Boolean"]>;
   menu?: InputMaybe<Array<InputNavigation>>;
+  openai_key?: InputMaybe<Scalars["String"]>;
   scripts?: InputMaybe<Scalars["String"]>;
   show_about_page?: InputMaybe<Scalars["Boolean"]>;
   show_tags_page?: InputMaybe<Scalars["Boolean"]>;

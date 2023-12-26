@@ -8,7 +8,6 @@ import {
   SettingResponse,
 } from 'letterpad-sdk';
 import { headers } from 'next/headers';
-import { cache } from 'react';
 
 function getLetterpad() {
   const headersList = headers();
@@ -23,7 +22,7 @@ function getLetterpad() {
   });
 }
 
-export const getData = cache(async () => {
+export const getData = async () => {
   try {
     const letterpad = getLetterpad();
 
@@ -68,9 +67,9 @@ export const getData = cache(async () => {
     console.log(e);
     return undefined;
   }
-});
+};
 
-export const getPostData = cache(async (slug: string) => {
+export const getPostData = async (slug: string) => {
   try {
     console.time('getPostData');
     const letterpad = getLetterpad();
@@ -92,9 +91,9 @@ export const getPostData = cache(async (slug: string) => {
     console.log(e);
     return undefined;
   }
-});
+};
 
-export const getTagsData = cache(async () => {
+export const getTagsData = async () => {
   console.time('getTagsData');
   const letterpad = getLetterpad();
 
@@ -108,9 +107,9 @@ export const getTagsData = cache(async () => {
     settings,
     me,
   };
-});
+};
 
-export const getPostsByTag = cache(async (tag: string) => {
+export const getPostsByTag = async (tag: string) => {
   console.time('getPostsByTag');
   const letterpad = getLetterpad();
   const [posts, { settings, me }] = await Promise.all([
@@ -124,9 +123,9 @@ export const getPostsByTag = cache(async (tag: string) => {
     me,
     tagName: tag,
   };
-});
+};
 
-export const getAbout = cache(async () => {
+export const getAbout = async () => {
   console.time('getAbout');
   const { settings, me } = await getAuthorAndSettingsData();
   console.timeEnd('getAbout');
@@ -134,16 +133,16 @@ export const getAbout = cache(async () => {
     settings,
     me,
   };
-});
+};
 
-export const getSiteMap = cache(async () => {
+export const getSiteMap = async () => {
   const letterpad = getLetterpad();
 
   const sitemapResponse = await letterpad.getSitemap();
   return sitemapResponse;
-});
+};
 
-export const getFeed = cache(async () => {
+export const getFeed = async () => {
   const letterpad = getLetterpad();
   const [feedResponse, { settings, me }] = await Promise.all([
     letterpad.getFeed(),
@@ -155,9 +154,9 @@ export const getFeed = cache(async () => {
     me,
     settings,
   };
-});
+};
 
-export const getPreviewData = cache(async (hash: string) => {
+export const getPreviewData = async (hash: string) => {
   const letterpad = getLetterpad();
   const post = await letterpad.getPost({
     previewHash: hash,
@@ -169,26 +168,26 @@ export const getPreviewData = cache(async (hash: string) => {
     settings,
     me,
   };
-});
+};
 
-export const getSettingsData = cache(async () => {
+export const getSettingsData = async () => {
   console.time('getSettingsData');
   const { settings } = await getAuthorAndSettingsData();
   console.timeEnd('getSettingsData');
   return settings;
-});
+};
 
-export const getAuthorData = cache(async () => {
+export const getAuthorData = async () => {
   console.time('getAuthorData');
   const { me } = await getAuthorAndSettingsData();
   console.timeEnd('getAuthorData');
   return me;
-});
+};
 
-export const getAuthorAndSettingsData = cache(async () => {
+export const getAuthorAndSettingsData = async () => {
   console.time('getAuthorAndSettingsData');
   const letterpad = getLetterpad();
   const data = await letterpad.getMeAndSetting();
   console.timeEnd('getAuthorAndSettingsData');
   return data;
-});
+};
