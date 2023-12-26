@@ -1,5 +1,3 @@
-import bcrypt from "bcryptjs";
-
 import {
   InputCreateAuthor,
   PostStatusOptions,
@@ -15,6 +13,7 @@ import { encryptEmail } from "@/shared/clientToken";
 import { textToSlug } from "@/utils/slug";
 
 import { prisma } from "../../lib/prisma";
+import { getHashedPassword } from "../../utils/bcrypt";
 import siteConfig from "../../../config/site.config";
 
 export const onBoardUser = async (id: number) => {
@@ -130,7 +129,7 @@ export async function createAuthorWithSettings(
           github: "",
           instagram: "",
         }),
-        password: bcrypt.hashSync(data.password, 12),
+        password: data.password,
         role: {
           connect: { id: role.id },
         },
@@ -150,19 +149,19 @@ export async function createAuthorWithSettings(
 }
 
 function generateUsernameFromEmail(email: string) {
-  const crypto = require("crypto");
-
-  // Create a hash instance using MD5 algorithm
-  const hash = crypto.createHash("md5");
-
-  // Update the hash with the email
-  hash.update(email);
-
-  // Get the hashed email in hexadecimal format
-  const hashedEmail = hash.digest("hex");
-
+  const hashedEmail = btoa(
+    decodeURIComponent(encodeURIComponent(randomizeString(email)))
+  );
   // Take the first 6 characters of the hash
-  const shortHash = hashedEmail.substring(0, 6);
+  const shortHash = hashedEmail.substring(0, 6).toLowerCase();
 
   return shortHash;
+}
+
+function randomizeString(str: string) {
+  return str
+    .split("")
+    .sort(() => Math.random() - 0.5)
+    .join("")
+    .replace(/[^a-zA-Z0-9]/g, "");
 }

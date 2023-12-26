@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import Twig from "twig";
 
 import {
   EmailSubscriberVerifiedProps,
@@ -14,7 +13,7 @@ export async function getSubscriberVerifiedEmailContent(
   data: EmailSubscriberVerifiedProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
-  const template = getTemplate(data.template_id);
+  const template = await getTemplate(data.template_id);
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
     include: {
@@ -40,29 +39,24 @@ export async function getSubscriberVerifiedEmailContent(
     };
   }
 
-  const subjectTemplate = Twig.twig({
-    data: template.subject,
-  });
-
-  const subject = subjectTemplate.render({
-    blog_name: author.setting?.site_title,
-  });
-
-  const bodyTemplate = Twig.twig({
-    data: template.body.toString(),
-  });
-
   const myURL = new URL(getRootUrl());
 
   const href = `${myURL.protocol}//${author.username}.${myURL.hostname}`;
 
-  const body = bodyTemplate.render({
-    blog_name: author.setting?.site_title,
-    full_name: "There",
-    site_url: `<a target="_blank" href="${href}">
+  const subject = template.subject.replaceAll(
+    "blog_name",
+    author.setting?.site_title ?? ""
+  );
+
+  const body = template.body
+    .replaceAll("blog_name", author.setting?.site_title ?? "")
+    .replaceAll(
+      "site_url",
+      `<a target="_blank" href="${href}">
         Visit ${author.setting?.site_title}
-      </a>`,
-  });
+      </a>`
+    )
+    .replaceAll("full_name", author?.name);
 
   return {
     ok: true,

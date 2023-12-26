@@ -1,5 +1,6 @@
 require("dotenv/config");
 /* eslint-disable no-console */
+import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import fs from "fs";
 import path from "path";
@@ -11,19 +12,18 @@ import { prisma } from "@/lib/prisma";
 import { createAuthorWithSettings } from "@/components/onboard";
 
 import { RegisterStep } from "@/__generated__/__types__";
-import { ROLES } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
 import generatePost from "./contentGenerator";
 import { postsList } from "./posts";
-import { encryptEmail } from "../../../shared/clientToken";
 
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
 
 const ROOT_DIR = path.join(__dirname, "../../../");
+const EMAIL_DIR = path.join(__dirname, "../seed/email");
 
 // All paths are relative to this file
 const publicUploadsDir = path.join(ROOT_DIR, "public/uploads");
@@ -97,6 +97,10 @@ export async function seed(folderCheck = true) {
       await insertPost(postsList[2], author?.id);
     }
     console.timeEnd("Insert post and page and tags");
+
+    console.time("Insert email templates");
+    await insertEmailTemplates();
+    console.timeEnd("Insert email templates");
   } catch (e: any) {
     console.log(e);
     logger.error(e);
@@ -223,7 +227,7 @@ async function insertAuthors() {
       name: "{Author Name}",
       email: process.env.EMAIL || "demo@demo.com",
       username: "demo",
-      password: process.env.PASSWORD || "demo",
+      password: await bcrypt.hash(process.env.PASSWORD || "demo", 12),
       register_step: RegisterStep.Registered,
       token: "",
     },
@@ -253,6 +257,18 @@ async function insertAuthors() {
     },
   });
 }
+
+export async function insertEmailTemplates() {
+  const templates = [];
+  getTemplates(EMAIL_DIR, templates);
+
+  const promises = templates.map((template) =>
+    prisma.emailTemplates.create({ data: template })
+  );
+
+  return Promise.all(promises);
+}
+
 export async function insertPost(postData, author_id) {
   const { html } = generatePost(postData.type);
 
@@ -335,3 +351,34 @@ export const cleanupDatabase = async () => {
   await prisma.tag.deleteMany();
   await prisma.upload.deleteMany();
 };
+
+function getTemplates(rootFolder, templates) {
+  // Get a list of all items in the root folder
+  const items = fs.readdirSync(rootFolder);
+  // Loop through each item in the root folder
+  items.forEach((item) => {
+    const itemPath = path.join(rootFolder, item);
+
+    // Check if the item is a directory
+    if (fs.statSync(itemPath).isDirectory()) {
+      // Read the content of a.txt and b.txt in the current folder
+      const body = path.join(itemPath, "body.txt");
+      const subject = path.join(itemPath, "subject.txt");
+
+      try {
+        const bodyContent = fs.readFileSync(body, "utf-8");
+        const subjectContent = fs.readFileSync(subject, "utf-8");
+        templates.push({
+          body: bodyContent,
+          subject: subjectContent,
+          template: itemPath.split("/").pop() ?? "",
+        });
+      } catch (error: any) {
+        console.error(`Error reading files in ${itemPath}:`, error.message);
+      }
+
+      // Recursively call the function for subfolders
+      getTemplates(itemPath, templates);
+    }
+  });
+}

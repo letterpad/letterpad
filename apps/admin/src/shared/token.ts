@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import { decodeJwt, jwtVerify, SignJWT } from "jose";
 
 import {
   ForgotPasswordToken,
@@ -6,48 +6,24 @@ import {
   VerifySubscriberToken,
 } from "../types";
 
-interface GetToken<T> {
-  data: T;
-  validityInMins?: number;
-  algorithm?: string;
-}
-export function getToken<T extends object>({
-  validityInMins = 120,
-  data,
-  algorithm = "",
-}: GetToken<T>) {
-  let option = { expiresIn: validityInMins * 60 } as any;
-  if (validityInMins === 0) {
-    option = {};
-  }
-  if (algorithm) {
-    option.algorithm = "HS256";
-  }
-  const token = jwt.sign(data, process.env.SECRET_KEY, option);
-  return token;
-}
-
-export function verifyToken(token: string) {
-  return jwt.verify(token, process.env.SECRET_KEY);
+export async function verifyToken(token: string) {
+  const { payload } = await jwtVerify(
+    token,
+    new TextEncoder().encode(process.env.SECRET_KEY)
+  );
+  return payload;
 }
 
 export function decodeJWTToken<T>(token: string) {
-  return jwt.decode(token) as T;
+  return decodeJwt(token) as T;
 }
 
 export function getClientToken({ email }: { email: string }) {
-  return getToken({
-    validityInMins: 0,
-    data: { email },
-    algorithm: "HS256",
-  });
+  return sign({ email }, "1000y");
 }
 
 export function getVerifyUserToken({ email, author_id }) {
-  return getToken({
-    data: { email, author_id },
-    algorithm: "HS256",
-  });
+  return sign({ email, author_id });
 }
 
 export function getVerifySubscriberToken({
@@ -55,17 +31,11 @@ export function getVerifySubscriberToken({
   author_id,
   subscriber_id,
 }: VerifySubscriberToken) {
-  return getToken({
-    data: { email, author_id, subscriber_id },
-    algorithm: "HS256",
-  });
+  return sign({ email, author_id, subscriber_id });
 }
 
 export function getForgotPasswordToken({ email }: ForgotPasswordToken) {
-  return getToken<ForgotPasswordToken>({
-    data: { email },
-    algorithm: "HS256",
-  });
+  return sign({ email });
 }
 
 export function getUnsubscribeToken({
@@ -73,9 +43,16 @@ export function getUnsubscribeToken({
   author_id,
   subscriber_id,
 }: UnsubscribeToken) {
-  return getToken({
-    data: { email, author_id, subscriber_id },
-    algorithm: "HS256",
-    validityInMins: 0,
-  });
+  return sign({ email, author_id, subscriber_id }, "1000y");
+}
+
+function sign(payload: any, validityInHours = "2h"): Promise<string> {
+  const iat = Math.floor(Date.now() / 1000);
+
+  return new SignJWT({ ...payload })
+    .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+    .setExpirationTime("2h")
+    .setIssuedAt(iat)
+    .setNotBefore(iat)
+    .sign(new TextEncoder().encode(process.env.SECRET_KEY));
 }

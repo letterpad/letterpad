@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import Twig from "twig";
 
 import { EmailTemplateResponse, EmailWelcomeUserProps } from "@/graphql/types";
 
@@ -10,7 +9,7 @@ export async function getWelcomeUserContent(
   data: EmailWelcomeUserProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
-  const template = getTemplate(data.template_id);
+  const template = await getTemplate(data.template_id);
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
     include: {
@@ -24,25 +23,16 @@ export async function getWelcomeUserContent(
       message: `No info found for the current blog.`,
     };
   }
-  const subjectTemplate = Twig.twig({
-    data: template.subject,
-  });
 
-  const subject = subjectTemplate.render({
-    company_name: "Letterpad",
-    full_name: author?.name,
-  });
+  const subject = template.subject
+    .replaceAll("company_name", "Letterpad")
+    .replaceAll("full_name", author?.name);
 
-  const bodyTemplate = Twig.twig({
-    data: template.body.toString(),
-  });
-
-  const body = bodyTemplate.render({
-    blog_name: author.setting?.site_title,
-    company_name: `<a href="https://letterpad.app">Letterpad</a>`,
-    full_name: author?.name,
-    blog_url: author.setting?.site_url,
-  });
+  const body = template.body
+    .replaceAll("blog_name", author.setting?.site_title ?? "")
+    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("full_name", author?.name)
+    .replaceAll("blog_url", author.setting?.site_url ?? "");
 
   return {
     ok: true,

@@ -7,7 +7,7 @@ import { resolversArr } from "@/graphql/resolvers";
 import { typeDefsList } from "@/graphql/schema";
 
 import cors from "../_cors";
-
+// export const runtime = "edge";
 export const setupYoga = (context) => {
   return createYoga({
     schema: maskIfUnauth("maskIfUnauth")(

@@ -1,10 +1,7 @@
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
-import logger from "@/shared/logger";
 
-import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import { getDomain, removeDomain } from "../services/domain";
-import { EmailTemplates } from "../types";
 
 import { Optional } from "@/types";
 
@@ -12,35 +9,8 @@ const Query: Optional<QueryResolvers<ResolverContext>> = {
   domain: async (_root, _args, context) => {
     return getDomain(_args, context);
   },
-  certs: async (_root, _args, { session, prisma }) => {
-    if (!session?.user) {
-      return false;
-    }
-    const domain = await prisma.domain.findFirst({
-      where: { author_id: session.user.id },
-    });
-    if (!domain?.name) return false;
-
-    const https = require("https");
-    const validate = new Promise((resolve, reject) => {
-      https
-        .get(`https://${domain.name}`, (res) => {
-          if (res.headers.server === "Vercel") {
-            resolve(true);
-          } else {
-            reject(false);
-          }
-        })
-        .on("error", (_e) => {
-          reject(false);
-        });
-    });
-    try {
-      await validate;
-      return true;
-    } catch (_e) {
-      return false;
-    }
+  certs: async (_root, _args) => {
+    return false;
   },
 };
 

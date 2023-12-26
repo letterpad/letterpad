@@ -58,7 +58,6 @@ const securityHeaders = [
  **/
 module.exports = withAxiom({
   experimental: {
-    appDir: true,
     // serverActions: true,
   },
   reactStrictMode: true,

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-
-import DiffMatchPatch from "diff-match-patch";
 import { DefaultUser } from "next-auth";
 
 import { Navigation, RegisterStep, Setting } from "@/__generated__/__types__";
