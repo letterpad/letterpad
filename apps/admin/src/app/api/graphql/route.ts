@@ -26,12 +26,12 @@ export const setupYoga = (context) => {
     context,
     graphqlEndpoint: "/api/graphql",
     fetchAPI: { Response },
-    plugins: [
-      ResponseCache({
-        session: () => null,
-        includeExtensionMetadata: true,
-      })
-    ]
+    // plugins: [
+    //   ResponseCache({
+    //     session: () => null,
+    //     includeExtensionMetadata: true,
+    //   })
+    // ]
   });
 };
 
