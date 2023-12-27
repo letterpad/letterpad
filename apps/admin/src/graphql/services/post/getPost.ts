@@ -32,14 +32,13 @@ export const getPost = cache(async (
   const { previewHash, id, slug } = args.filters;
 
   if (previewHash) {
-    const postId = Number(decrypt(previewHash?.replace(/%3D/g, "=")));
+    const postId = parseInt(decrypt(previewHash));
     if (postId) {
-      const post = await dataloaders.post.load(id);
-
+      const post = await prisma.post.findFirst({where: {id: postId}});
       if (post) {
         return {
           ...mapPostToGraphql(post),
-          html_draft: post.html_draft,
+          html_draft: post.html_draft ?? "",
           __typename: "Post",
         };
       }
