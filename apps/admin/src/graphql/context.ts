@@ -18,8 +18,11 @@ export const getResolverContext = async (request: Request) => {
   const identifierHeader = getHeader(request.headers, "identifier");
 
   if (cache[`${authHeader}-${identifierHeader}`]) {
+    console.log(`Found author id from header cache: ${cache[`${authHeader}-${identifierHeader}`]}`);
     return { client_author_id: cache[`${authHeader}-${identifierHeader}`], session: null }
   }
+
+  console.log(`AuthHeader: ${authHeader}, IdentifierHeader: ${identifierHeader}`);
 
   let { authorId } = await pipe(
     findEmailFromToken,
@@ -28,6 +31,7 @@ export const getResolverContext = async (request: Request) => {
     ({ authHeader, identifierHeader, authorId: null });
 
     if(authorId) {
+      console.log(`Found author id from header: ${authorId}}`);
       cache[`${authHeader}-${identifierHeader}`] = authorId;
     }
 
@@ -36,6 +40,7 @@ export const getResolverContext = async (request: Request) => {
       user: SessionData;
     };
     if (session?.user?.id) {
+      console.log(`Found author id from session: ${session.user.id}}`);
       return { session }
     }
   }
