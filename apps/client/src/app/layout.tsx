@@ -137,6 +137,7 @@ const Layout = async ({ children }) => {
   return (
     <html lang="en" className="scroll-smooth">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preload" as="image" href={settings.banner?.src} />
       <link
         rel="preconnect"
         href="https://fonts.gstatic.com"
@@ -144,7 +145,7 @@ const Layout = async ({ children }) => {
       />
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
-      <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20">
+      <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
         <FontPageWrapper
           primary_font={settings.design?.primary_font}
           secondary_font={settings.design?.secondary_font}

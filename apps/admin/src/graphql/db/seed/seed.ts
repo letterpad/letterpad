@@ -224,7 +224,7 @@ export async function insertRolePermData() {
 async function insertAuthors() {
   const demoAuthor = await createAuthorWithSettings(
     {
-      name: "{Author Name}",
+      name: "John Doe",
       email: process.env.EMAIL || "demo@demo.com",
       username: "demo",
       password: await bcrypt.hash(process.env.PASSWORD || "demo", 12),
@@ -232,7 +232,7 @@ async function insertAuthors() {
       token: "",
     },
     {
-      site_title: "My new blog",
+      site_title: "Letterpad",
       site_tagline: "Easily create and publish your blog on Letterpad",
       site_url: "http://localhost:3000",
     }
