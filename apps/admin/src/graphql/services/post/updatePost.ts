@@ -127,6 +127,7 @@ export const updatePost = async (
 
     if (args.data.html_draft) {
       newPostArgs.data.html_draft = args.data.html_draft;
+      newPostArgs.data.reading_time = Math.ceil((args.data.stats?.words ?? 200) / 200) + '' ?? '2';
     }
 
     if (args.data.status === PostStatusOptions.Published) {
