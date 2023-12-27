@@ -8,6 +8,7 @@ import { typeDefsList } from "@/graphql/schema";
 
 import cors from "../_cors";
 import { useResponseCache as ResponseCache, createInMemoryCache } from "@graphql-yoga/plugin-response-cache";
+import { getHeader } from "../../../utils/headers";
 
 
 // const cache = createInMemoryCache()
@@ -28,7 +29,7 @@ export const setupYoga = (context) => {
     fetchAPI: { Response },
     plugins: [
       ResponseCache({
-        session: () => null,
+        session: (request) => getHeader(request.headers, "host") || getHeader(request.headers, "authorization") || getHeader(request.headers, "identifier") || getHeader(request.headers, "cookie"),
         includeExtensionMetadata: true,
       })
     ]
