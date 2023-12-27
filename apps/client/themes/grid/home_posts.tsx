@@ -94,7 +94,7 @@ const BrandText = ({ title, tagline, description }) => {
       <PageTitle className="text-center">{title}</PageTitle>
       <p className="pb-4 text-md font-bold leading-6 md:text-md">{tagline}</p>
       <p
-        className="mx-auto hidden px-4 text-sm font-medium leading-6 sm:w-2/3 md:block md:text-md lg:w-3/5"
+        className="hidden text-sm font-medium leading-6 sm:w-2/3 md:block md:text-md lg:w-3/5"
         dangerouslySetInnerHTML={{
           __html: description,
         }}

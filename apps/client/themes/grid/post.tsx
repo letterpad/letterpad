@@ -42,7 +42,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
       <div className="mx-auto flex w-full  max-w-2xl justify-between pt-10">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-4'}>
-            <PageTitle>{title}</PageTitle>
+            <PageTitle className="leading-10">{title}</PageTitle>
             <PostSubTitle text={sub_title} />
             <PostAuthor settings={settings} post={post} />
             {post.cover_image.src && (
