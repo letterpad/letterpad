@@ -17,7 +17,7 @@ export async function findEmailFromToken({ authHeader, ...rest }: P) {
   return { authHeader, ...rest }
 }
 
-export async function findAuthorIdFromLetterpadSubdomain({ identifierHeader, ...rest }: P) {
+export async function findAuthorIdFromLetterpadSubdomain({ identifierHeader, authHeader, ...rest }: P) {
   const found = Object.keys(rest).find(o => rest[o]);
   if (!found) {
     if (identifierHeader?.includes("letterpad.app")) {
@@ -28,13 +28,13 @@ export async function findAuthorIdFromLetterpadSubdomain({ identifierHeader, ...
         },
       });
       if (author)
-        return { identifierHeader, ...rest, authorId: author.id }
+        return { identifierHeader, authHeader, ...rest, authorId: author.id }
     }
   }
-  return { identifierHeader, ...rest }
+  return { identifierHeader, authHeader, ...rest }
 }
 
-export async function findAuthorIdFromCustomDomain({ identifierHeader, ...rest }: P) {
+export async function findAuthorIdFromCustomDomain({ identifierHeader, authHeader, ...rest }: P) {
   const found = Object.keys(rest).find(o => rest[o]);
   if (!found) {
     if (!identifierHeader) return { identifierHeader, ...rest }
@@ -45,9 +45,9 @@ export async function findAuthorIdFromCustomDomain({ identifierHeader, ...rest }
       },
     });
     if (record) {
-      return { identifierHeader, ...rest, authorId: record.author_id }
+      return { identifierHeader, authHeader, ...rest, authorId: record.author_id }
     }
   }
-  return { identifierHeader, ...rest }
+  return { identifierHeader, authHeader, ...rest }
 
 }
