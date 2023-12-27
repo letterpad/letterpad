@@ -8,11 +8,13 @@ import { typeDefsList } from "@/graphql/schema";
 
 import cors from "../_cors";
 import { useResponseCache as ResponseCache, createInMemoryCache } from "@graphql-yoga/plugin-response-cache";
+import { getHeader } from "../../../utils/headers";
 
 
 // const cache = createInMemoryCache()
 
 // export const runtime = "edge";
+
 export const setupYoga = (context) => {
   return createYoga({
     schema: maskIfUnauth("maskIfUnauth")(
@@ -26,12 +28,24 @@ export const setupYoga = (context) => {
     context,
     graphqlEndpoint: "/api/graphql",
     fetchAPI: { Response },
-    // plugins: [
-    //   ResponseCache({
-    //     session: () => null,
-    //     includeExtensionMetadata: true,
-    //   })
-    // ]
+    plugins: [
+      ResponseCache({
+        session: (request) => {
+          const cookie = getHeader(request.headers, "cookie");
+          const host = getHeader(request.headers, "host");
+          const authorization = getHeader(request.headers, "authorization");
+          const identifier = getHeader(request.headers, "identifier");
+          if(authorization || identifier) {
+            return `${authorization}-${identifier}`;
+          }
+          if (cookie) {
+            return cookie;
+          }
+          return host;
+        },
+        includeExtensionMetadata: true,
+      })
+    ]
   });
 };
 
