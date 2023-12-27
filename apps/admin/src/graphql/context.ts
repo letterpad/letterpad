@@ -1,67 +1,50 @@
-// import { Author } from "@prisma/client";
 import { Author, Post, Setting, Tag } from "@prisma/client";
 import DataLoader from "dataloader";
 
 import { prisma } from "@/lib/prisma";
 
-import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
-
 import { SessionData } from "./types";
 import { basePath } from "../constants";
 import { getHeader } from "../utils/headers";
+import { pipe, andThen } from "ramda"
+import { findAuthorIdFromCustomDomain, findAuthorIdFromLetterpadSubdomain, findEmailFromToken } from "../shared/getAuthorIdFromHeaders";
 
 const isTest = process.env.NODE_ENV === "test";
 
-export const getServerSession = async ({ req }) => {
-  try {
-    const headers = req.headers;
-    const sessionURL =
-      (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
-      basePath +
-      "/api/auth/session";
-    const res = await fetch(sessionURL, {
-      headers: { cookie: getHeader(headers, "cookie") },
-    });
-    const session = await res.json();
-    return session.user ? session : null;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log("Error in getServerSession", e);
-    // this means the session is not set. This request is probably coming from client and not admin.
-    // client will never have a session.
-    // It will use authorization header to get the author id or subdmomain name to // get the authorID
-  }
-};
+const cache = {};
 
 export const getResolverContext = async (request: Request) => {
-  let client_author_id: number | null = null;
-  const authorIdFound = await getAuthorIdFromRequest(request);
-  console.log("authorIdFound", authorIdFound);
-  if (authorIdFound) {
-    client_author_id = authorIdFound;
-    return { client_author_id, session: null };
-  } else {
-    const session = isTest
-      ? null
-      : ((await getServerSession({ req: request })) as unknown as {
-          user: SessionData;
-        });
-    if (!session?.user?.id) {
-    } else {
-      client_author_id = session.user.id;
-    }
-    console.log("client_author_id", client_author_id);
-    if (client_author_id) {
-      return {
-        session,
-        client_author_id,
-      };
+  const authHeader = getHeader(request.headers, "authorization");
+  const identifierHeader = getHeader(request.headers, "identifier");
+
+  if (cache[`${authHeader}-${identifierHeader}`]) {
+    console.log(`Found author id from header cache: ${cache[`${authHeader}-${identifierHeader}`]}`);
+    return { client_author_id: cache[`${authHeader}-${identifierHeader}`], session: null }
+  }
+
+  console.log(`AuthHeader: ${authHeader}, IdentifierHeader: ${identifierHeader}`);
+
+  let { authorId } = await pipe(
+    findEmailFromToken,
+    andThen(findAuthorIdFromLetterpadSubdomain),
+    andThen(findAuthorIdFromCustomDomain))
+    ({ authHeader, identifierHeader, authorId: null });
+
+    if(authorId) {
+      console.log(`Found author id from header: ${authorId}}`);
+      cache[`${authHeader}-${identifierHeader}`] = authorId;
     }
 
-    return {
-      session,
+  if (!authorId && !isTest) {
+    const session = await getServerSession({ req: request }) as unknown as {
+      user: SessionData;
     };
+    if (session?.user?.id) {
+      console.log(`Found author id from session: ${session.user.id}}`);
+      return { session }
+    }
   }
+  return { client_author_id: authorId, session: null }
 };
 
 const batchAuthors = async (keys) => {
@@ -154,12 +137,25 @@ export const context = async ({ request }) => {
   };
 };
 
-type Awaited<T> = T extends null | undefined
-  ? T // special case for `null | undefined` when not in `--strictNullChecks` mode
-  : T extends object & { then(onfulfilled: infer F): any } // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
-  ? F extends (value: infer V, ...args: any) => any // if the argument to `then` is callable, extracts the first argument
-    ? Awaited<V> // recursively unwrap the value
-    : never // the argument to `then` was not callable
-  : T; // non-object or non-thenable
-
 export type ResolverContext = Awaited<ReturnType<typeof context>>;
+
+export const getServerSession = async ({ req }) => {
+  try {
+    const headers = req.headers;
+    const sessionURL =
+      (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
+      basePath +
+      "/api/auth/session";
+    const res = await fetch(sessionURL, {
+      headers: { cookie: getHeader(headers, "cookie") },
+    });
+    const session = await res.json();
+    return session.user ? session : null;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log("Error in getServerSession", e);
+    // this means the session is not set. This request is probably coming from client and not admin.
+    // client will never have a session.
+    // It will use authorization header to get the author id or subdmomain name to // get the authorID
+  }
+};
