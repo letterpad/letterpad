@@ -131,6 +131,7 @@ export const updatePost = async (
 
     if (args.data.status === PostStatusOptions.Published) {
       newPostArgs.data.html = await formatHtml(existingPost.html_draft ?? "");
+      newPostArgs.data.publishedAt = new Date();
     }
 
     newPostArgs.data.updatedAt = new Date();

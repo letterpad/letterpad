@@ -30,10 +30,10 @@ export const getResolverContext = async (request: Request) => {
     andThen(findAuthorIdFromCustomDomain))
     ({ authHeader, identifierHeader, authorId: null });
 
-    if(authorId) {
-      console.log(`Found author id from header: ${authorId}}`);
-      cache[`${authHeader}-${identifierHeader}`] = authorId;
-    }
+  if(authorId) {
+    console.log(`Found author id from header: ${authorId}}`);
+    cache[`${authHeader}-${identifierHeader}`] = authorId;
+  }
 
   if (!authorId && !isTest) {
     const session = await getServerSession({ req: request }) as unknown as {
