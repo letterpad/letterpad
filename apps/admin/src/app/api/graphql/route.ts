@@ -14,6 +14,7 @@ import { getHeader } from "../../../utils/headers";
 // const cache = createInMemoryCache()
 
 // export const runtime = "edge";
+
 export const setupYoga = (context) => {
   return createYoga({
     schema: maskIfUnauth("maskIfUnauth")(
