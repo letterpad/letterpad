@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 
 import Link from '@/components/Link';
@@ -8,6 +7,7 @@ import { Footer } from './commons/footer';
 import { Nav } from './commons/nav';
 import { LogoWithTitle } from './commons/site-logo';
 import { getData } from '../../src/data';
+import Custom404 from '../../src/app/not-found';
 
 export interface Props {
   children: ReactNode;
@@ -15,7 +15,7 @@ export interface Props {
 
 export const Layout = async ({ children }: Props) => {
   const data = await getData();
-  if (!data) return notFound();
+  if (!data) return <Custom404 homepage="https://letterpad.app" />;
   const { settings, me } = data;
 
   return (

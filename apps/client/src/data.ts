@@ -26,8 +26,12 @@ export const getData = async () => {
   try {
     const letterpad = getLetterpad();
 
-    const { me, settings } = await getAuthorAndSettingsData();
-
+    const data = await getAuthorAndSettingsData();
+    const settings = data?.settings;
+    const me = data?.me;
+    if (!settings || !me) {
+      throw new Error('No data found');
+    }
     const { menu } = settings;
 
     const firstItemOfMenu = menu[0];
@@ -71,20 +75,9 @@ export const getData = async () => {
 
 export const getPostData = async (slug: string) => {
   try {
-    console.time('getPostData');
     const letterpad = getLetterpad();
-    // const [post, { settings, me }] = await Promise.all([
-    //   letterpad.getPost(slug),
-    //   getAuthorAndSettingsData(),
-    // ]);
-    // console.timeEnd('getPostData');
-    // return {
-    //   post,
-    //   settings,
-    //   me,
-    // };
     const r = await letterpad.getPost(slug);
-    console.timeEnd('getPostData');
+
     return r;
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -94,100 +87,107 @@ export const getPostData = async (slug: string) => {
 };
 
 export const getTagsData = async () => {
-  console.time('getTagsData');
-  const letterpad = getLetterpad();
+  try {
+    const letterpad = getLetterpad();
+    const [tags, data] = await Promise.all([
+      letterpad.listTags(),
+      getAuthorAndSettingsData(),
+    ]);
 
-  const [tags, { settings, me }] = await Promise.all([
-    letterpad.listTags(),
-    getAuthorAndSettingsData(),
-  ]);
-  console.timeEnd('getTagsData');
-  return {
-    tags,
-    settings,
-    me,
-  };
+    return {
+      tags,
+      settings: data?.settings,
+      me: data?.me,
+    };
+  } catch (e) {}
 };
 
 export const getPostsByTag = async (tag: string) => {
-  console.time('getPostsByTag');
-  const letterpad = getLetterpad();
-  const [posts, { settings, me }] = await Promise.all([
-    letterpad.listPosts(tag),
-    getAuthorAndSettingsData(),
-  ]);
-  console.timeEnd('getPostsByTag');
-  return {
-    posts,
-    settings,
-    me,
-    tagName: tag,
-  };
+  try {
+    const letterpad = getLetterpad();
+    const [posts, data] = await Promise.all([
+      letterpad.listPosts(tag),
+      getAuthorAndSettingsData(),
+    ]);
+
+    return {
+      posts,
+      settings: data?.settings,
+      me: data?.me,
+      tagName: tag,
+    };
+  } catch (e) {}
 };
 
 export const getAbout = async () => {
-  console.time('getAbout');
-  const { settings, me } = await getAuthorAndSettingsData();
-  console.timeEnd('getAbout');
-  return {
-    settings,
-    me,
-  };
+  try {
+    const data = await getAuthorAndSettingsData();
+    return data?.me;
+  } catch (e) {}
 };
 
 export const getSiteMap = async () => {
-  const letterpad = getLetterpad();
+  try {
+    const letterpad = getLetterpad();
 
-  const sitemapResponse = await letterpad.getSitemap();
-  return sitemapResponse;
+    const sitemapResponse = await letterpad.getSitemap();
+    return sitemapResponse;
+  } catch (e) {}
 };
 
 export const getFeed = async () => {
-  const letterpad = getLetterpad();
-  const [feedResponse, { settings, me }] = await Promise.all([
-    letterpad.getFeed(),
-    getAuthorAndSettingsData(),
-  ]);
+  try {
+    const letterpad = getLetterpad();
+    const [feedResponse, data] = await Promise.all([
+      letterpad.getFeed(),
+      getAuthorAndSettingsData(),
+    ]);
 
-  return {
-    feedResponse,
-    me,
-    settings,
-  };
+    return {
+      feedResponse,
+      me: data?.me,
+      settings: data?.settings,
+    };
+  } catch (e) {}
 };
 
 export const getPreviewData = async (hash: string) => {
-  const letterpad = getLetterpad();
-  const post = await letterpad.getPost({
-    previewHash: hash,
-  });
-  const { settings, me } = await getAuthorAndSettingsData();
-
-  return {
-    post,
-    settings,
-    me,
-  };
+  try {
+    const letterpad = getLetterpad();
+    const post = await letterpad.getPost({
+      previewHash: hash,
+    });
+    const data = await getAuthorAndSettingsData();
+    return {
+      post,
+      settings: data?.settings,
+      me: data?.me,
+    };
+  } catch (e) {}
 };
 
 export const getSettingsData = async () => {
-  console.time('getSettingsData');
-  const { settings } = await getAuthorAndSettingsData();
-  console.timeEnd('getSettingsData');
-  return settings;
+  try {
+    const data = await getAuthorAndSettingsData();
+    return data?.settings;
+  } catch (e) {
+    //
+  }
 };
 
 export const getAuthorData = async () => {
-  console.time('getAuthorData');
-  const { me } = await getAuthorAndSettingsData();
-  console.timeEnd('getAuthorData');
-  return me;
+  try {
+    const data = await getAuthorAndSettingsData();
+    return data?.me;
+  } catch (e) {}
 };
 
 export const getAuthorAndSettingsData = async () => {
-  console.time('getAuthorAndSettingsData');
-  const letterpad = getLetterpad();
-  const data = await letterpad.getMeAndSetting();
-  console.timeEnd('getAuthorAndSettingsData');
-  return data;
+  try {
+    const letterpad = getLetterpad();
+    const data = await letterpad.getMeAndSetting();
+    return data;
+  } catch (e) {
+    //
+  }
 };

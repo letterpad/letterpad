@@ -8,10 +8,12 @@ import { Footer } from './commons/footer';
 import { MobileNav } from './commons/mobile-nav';
 import { LogoWithTitle } from './commons/site-logo';
 import { getAuthorAndSettingsData } from '../../src/data';
+import { notFound } from 'next/navigation';
+import Custom404 from '../../src/app/not-found';
 
 export const Layout: FC<PropsWithChildren> = async ({ children }) => {
   const data = await getAuthorAndSettingsData();
-  if (!data) return null;
+  if (!data) return <Custom404 homepage="https://letterpad.app" />;
   const { settings, me } = data;
   const routes = [...settings.menu];
 
