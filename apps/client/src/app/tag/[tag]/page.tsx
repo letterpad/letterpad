@@ -5,16 +5,17 @@ import { Metadata } from 'next';
 import { getPostsByTag } from '@/data';
 
 import { getTheme } from '../../../../themes';
+import Custom404 from '../../not-found';
 
 export default async function Tag(props) {
-  const { posts, me, tagName, settings } = await getPostsByTag(
-    props.params.tag
-  );
+  const data = await getPostsByTag(props.params.tag);
+  if (!data) return <Custom404 homepage="https://letterpad.app" />;
+  const { posts, settings, me, tagName } = data;
 
   const { Tag } = getTheme(settings?.theme);
   if (
     posts.__typename !== 'PostsNode' ||
-    settings.__typename !== 'Setting' ||
+    settings?.__typename !== 'Setting' ||
     me?.__typename !== 'Author'
   ) {
     return null;
@@ -31,7 +32,7 @@ export async function generateMetadata({
   searchParams,
 }): Promise<Metadata> {
   const data = await getPostsByTag(params.tag);
-  if (!data) return {};
+  if (!data || !data.settings || !data.me) return {};
   const { posts, settings, me } = data;
   return {
     title: `#${params.tag} - Posts from ${settings.site_title}`,

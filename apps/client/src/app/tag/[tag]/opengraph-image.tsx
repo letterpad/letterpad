@@ -3,7 +3,6 @@ export const revalidate = 60;
 import { Inter } from 'next/font/google';
 import { ImageResponse } from 'next/server';
 
-import formatDate from '../../../../lib/utils/formatDate';
 import { getPostData, getPostsByTag } from '../../../data';
 
 export const inter = Inter({
@@ -14,6 +13,7 @@ export const inter = Inter({
 export default async function AboutOG(props) {
   const image = 'https://picsum.photos/seed/picsum/1200/627';
   const data = await getPostsByTag(props.params.tag);
+  if (!data) return {};
   const { posts, settings, me, tagName } = data;
   return new ImageResponse(
     (
@@ -21,7 +21,7 @@ export default async function AboutOG(props) {
         <img
           style={{ objectFit: 'cover' }}
           tw="absolute inset-0 w-full h-full"
-          src={settings.banner?.src ?? image}
+          src={settings?.banner?.src ?? image}
           alt="Saha"
         />
         <div tw="bg-black absolute inset-0 bg-opacity-60"></div>
@@ -38,7 +38,7 @@ export default async function AboutOG(props) {
                 tw="flex mb-5 flex"
                 style={{ fontSize: 24, fontWeight: 700 }}
               >
-                {settings.site_title}
+                {settings?.site_title}
               </div>
               <div
                 tw="flex uppercase pt-8 text-sm"
@@ -46,10 +46,10 @@ export default async function AboutOG(props) {
               >
                 <span className="flex items-center justify-center">
                   <div tw="flex">
-                    {data?.me.avatar && (
+                    {data?.me?.avatar && (
                       <img
                         tw="rounded-full"
-                        alt={me.name}
+                        alt={me?.name}
                         style={{ objectFit: 'cover' }}
                         src={data?.me.avatar}
                         width={40}
@@ -57,7 +57,7 @@ export default async function AboutOG(props) {
                       />
                     )}
                   </div>
-                  <span tw="flex ml-4 mt-2">{me.name}</span>
+                  <span tw="flex ml-4 mt-2">{me?.name}</span>
                 </span>
               </div>
             </div>

@@ -90,24 +90,27 @@ const OlderPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
 };
 
 const SidePosts = async () => {
-  const { tags, settings } = await getTagsData();
+  const data = await getTagsData();
+  if (!data) return null;
+  const { tags, settings } = data;
   const defaultHomeTag =
-    settings.menu[0].type === NavigationType.Tag ? settings.menu[0] : null;
+    settings?.menu[0].type === NavigationType.Tag ? settings.menu[0] : null;
   const tagsWithoutHome = tags.rows.filter(
     (item) => item.slug !== defaultHomeTag?.slug
   );
   const tag = getRandom(tagsWithoutHome);
 
-  const { posts: postsTag } = await getPostsByTag(tag.slug);
+  const postsTag = await getPostsByTag(tag.slug);
+  if (!postsTag?.posts) return null;
 
-  if (postsTag.rows.length === 0) return null;
+  if (postsTag.posts.rows.length === 0) return null;
   return (
     <div className="hidden flex-col dark:bg-opacity-30 lg:flex">
       <SectionHeading>
         #Random: Posts on {tag.name.toUpperCase()}
       </SectionHeading>
       <div className="space-y-8">
-        {postsTag.rows.slice(0, 3).map((tag) => (
+        {postsTag.posts.rows.slice(0, 3).map((tag) => (
           <HorizontalCard post={tag} key={tag.id} />
         ))}
       </div>
