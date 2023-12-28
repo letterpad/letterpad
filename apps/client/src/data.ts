@@ -122,7 +122,7 @@ export const getPostsByTag = async (tag: string) => {
 export const getAbout = async () => {
   try {
     const data = await getAuthorAndSettingsData();
-    return data?.me;
+    return data;
   } catch (e) {}
 };
 

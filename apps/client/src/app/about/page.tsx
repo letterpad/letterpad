@@ -6,11 +6,15 @@ import { getAbout } from '@/data';
 
 import StructuredData from '../../../components/StructuredData';
 import { getTheme } from '../../../themes';
+import Custom404 from '../not-found';
 
 export const dynamic = 'force-dynamic';
 
 export default async function About() {
-  const { settings, me } = await getAbout();
+  const data = await getAbout();
+  if (!data?.me || !data?.settings)
+    return <Custom404 homepage="https://letterpad.app" />;
+  const { settings, me } = data;
   const { name, social } = me;
 
   const { About } = getTheme(settings?.theme);
@@ -53,7 +57,9 @@ export async function generateMetadata({
   params,
   searchParams,
 }): Promise<Metadata> {
-  const { settings, me } = await getAbout();
+  const data = await getAbout();
+  if (!data?.me || !data?.settings) return {};
+  const { settings, me } = data;
   return {
     title: 'About',
     description: me.bio,
