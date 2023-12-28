@@ -16,6 +16,7 @@ import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
+import { mail } from "../../../lib/mail";
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,
@@ -133,6 +134,14 @@ export const updatePost = async (
     if (args.data.status === PostStatusOptions.Published) {
       newPostArgs.data.html = await formatHtml(existingPost.html_draft ?? "");
       newPostArgs.data.publishedAt = new Date();
+      try {
+        mail({
+          from: `Letterpad<admin@letterpad.app>`,
+          to: `admin@letterpad.app`,
+          subject: `New post published - ${existingPost.title}`,
+          html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
+        }, false);
+      } catch (e) { }
     }
 
     newPostArgs.data.updatedAt = new Date();
