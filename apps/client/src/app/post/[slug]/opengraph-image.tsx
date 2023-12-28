@@ -15,7 +15,11 @@ export const inter = Inter({
 export default async function AboutOG(props) {
   const image = 'https://picsum.photos/seed/picsum/1200/627';
   const post = await getPostData(props.params.slug);
-  const { me, settings } = await getAuthorAndSettingsData();
+  const data = await getAuthorAndSettingsData();
+
+  if (!data?.settings || !data?.me) return {};
+
+  const { settings, me } = data;
   if (!post || post.author?.__typename !== 'Author') return {};
   return new ImageResponse(
     (

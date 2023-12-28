@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import {
   Letterpad,
+  MeFragmentFragment,
   NavigationType,
   PageFragmentFragment,
   PostsFragmentFragment,
-  Setting,
-  SettingResponse,
+  SettingsFragmentFragment,
 } from 'letterpad-sdk';
 import { headers } from 'next/headers';
 
@@ -112,8 +112,8 @@ export const getPostsByTag = async (tag: string) => {
 
     return {
       posts,
-      settings: data?.settings,
-      me: data?.me,
+      settings: data?.settings as SettingsFragmentFragment,
+      me: data?.me as MeFragmentFragment,
       tagName: tag,
     };
   } catch (e) {}
@@ -123,7 +123,9 @@ export const getAbout = async () => {
   try {
     const data = await getAuthorAndSettingsData();
     return data;
-  } catch (e) {}
+  } catch (e) {
+    return null;
+  }
 };
 
 export const getSiteMap = async () => {
@@ -160,34 +162,41 @@ export const getPreviewData = async (hash: string) => {
     const data = await getAuthorAndSettingsData();
     return {
       post,
-      settings: data?.settings,
-      me: data?.me,
+      settings: data?.settings as SettingsFragmentFragment,
+      me: data?.me as MeFragmentFragment,
     };
-  } catch (e) {}
+  } catch (e) {
+    return null;
+  }
 };
 
 export const getSettingsData = async () => {
   try {
     const data = await getAuthorAndSettingsData();
-    return data?.settings;
+    return data?.settings as SettingsFragmentFragment;
   } catch (e) {
-    //
+    return null;
   }
 };
 
 export const getAuthorData = async () => {
   try {
     const data = await getAuthorAndSettingsData();
-    return data?.me;
-  } catch (e) {}
+    return data?.me as MeFragmentFragment;
+  } catch (e) {
+    return null;
+  }
 };
 
 export const getAuthorAndSettingsData = async () => {
   try {
     const letterpad = getLetterpad();
     const data = await letterpad.getMeAndSetting();
-    return data;
+    return data as {
+      me: MeFragmentFragment;
+      settings: SettingsFragmentFragment;
+    };
   } catch (e) {
-    //
+    return null;
   }
 };

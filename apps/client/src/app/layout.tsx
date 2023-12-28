@@ -84,13 +84,13 @@ export async function generateMetadata(): Promise<Metadata> {
         images: [
           {
             url: settings.banner?.src!,
-            width: settings.banner?.width,
-            height: settings.banner?.height,
+            width: settings.banner?.width!,
+            height: settings.banner?.height!,
             alt: settings.site_title,
           },
         ],
         card: 'summary_large_image',
-        description: settings.site_description,
+        description: settings.site_description!,
       },
       themeColor: '#000',
       alternates: {
@@ -107,7 +107,7 @@ export async function generateMetadata(): Promise<Metadata> {
       openGraph: {
         url: settings.site_url,
         title: settings.site_title,
-        description: settings.site_description,
+        description: settings.site_description!,
         authors: [me.name],
         firstName: me.name,
         siteName: settings.site_title,
@@ -137,7 +137,7 @@ const Layout = async ({ children }) => {
   return (
     <html lang="en" className="scroll-smooth">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preload" as="image" href={settings.banner?.src} />
+      <link rel="preload" as="image" href={settings.banner?.src!} />
       <link
         rel="preconnect"
         href="https://fonts.gstatic.com"
@@ -147,8 +147,8 @@ const Layout = async ({ children }) => {
       <HeadMeta settings={settings} />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
         <FontPageWrapper
-          primary_font={settings.design?.primary_font}
-          secondary_font={settings.design?.secondary_font}
+          primary_font={settings.design?.primary_font!}
+          secondary_font={settings.design?.secondary_font!}
         >
           <Layout>{children}</Layout>
         </FontPageWrapper>

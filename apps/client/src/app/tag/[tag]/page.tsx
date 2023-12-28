@@ -52,7 +52,7 @@ export async function generateMetadata({
       title: `#${params.tag} - Posts from ${settings.site_title}`,
       card: 'summary_large_image',
       description: `Posts tagged with #${params.tag}`,
-      creator: me.social?.twitter,
+      creator: me.social?.twitter!,
     },
   };
 }

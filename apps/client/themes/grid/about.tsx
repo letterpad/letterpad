@@ -2,9 +2,8 @@ import SocialIcon from '@/components/social-icons';
 
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
-import { AboutProps } from '../../types/pageTypes';
 
-export const About = ({ settings, me }: AboutProps) => {
+export const About = ({ settings, me }) => {
   const {
     name,
     avatar = '/static/images/avatar.png',

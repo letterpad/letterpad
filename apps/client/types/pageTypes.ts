@@ -38,13 +38,10 @@ export interface PostProps {
   me: MeFragmentFragment;
 }
 
-export type TagProps = Awaited<ReturnType<typeof getPostsByTag>>;
+export type TagProps = NonNullable<Awaited<ReturnType<typeof getPostsByTag>>>;
 
-export interface TagsProps {
-  tags: Awaited<ReturnType<typeof getTagsData>>['tags'];
-  me: Awaited<ReturnType<typeof getTagsData>>['me'];
-  settings: Awaited<ReturnType<typeof getTagsData>>['settings'];
-}
-
-export type PreviewProps = Awaited<ReturnType<typeof getPreviewData>>;
-export type AboutProps = Awaited<ReturnType<typeof getAbout>>;
+export type TagsProps = NonNullable<Awaited<ReturnType<typeof getTagsData>>>;
+export type PreviewProps = NonNullable<
+  Awaited<ReturnType<typeof getPreviewData>>
+>;
+export type AboutProps = NonNullable<Awaited<ReturnType<typeof getAbout>>>;

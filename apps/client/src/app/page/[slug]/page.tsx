@@ -89,7 +89,7 @@ export async function generateMetadata({
         },
       ],
       card: 'summary_large_image',
-      description: me.bio,
+      description: me.bio!,
     },
     alternates: {
       canonical: `${settings.site_url}${post.slug}`,

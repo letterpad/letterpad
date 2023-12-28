@@ -5,9 +5,14 @@ import { getTagsData } from '@/data';
 import { BaseSEO } from '@/components/SEO';
 
 import { getTheme } from '../../../themes';
+import Custom404 from '../not-found';
 
 export default async function Tags() {
-  const { settings, me, tags } = await getTagsData();
+  const data = await getTagsData();
+  if (!data?.tags || !data?.settings || !data?.me) {
+    return <Custom404 homepage="https://letterpad.app" />;
+  }
+  const { tags, settings, me } = data;
   const { Tags } = getTheme(settings?.theme);
 
   if (

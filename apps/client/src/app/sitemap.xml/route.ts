@@ -5,13 +5,23 @@ import { NextResponse } from 'next/server';
 import { getSiteMap } from '../../data';
 
 export async function GET() {
-  const { rows } = await getSiteMap();
   const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
   const urlsetStart =
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
   const urlsetEnd = '</urlset>';
-
+  const headers = new Headers({
+    'Content-Type': 'application/xml',
+  });
   let xmlData = xmlHeader + urlsetStart;
+
+  const data = await getSiteMap();
+  if (!data)
+    return new NextResponse(xmlData, {
+      status: 200,
+      headers,
+    });
+
+  const { rows } = data;
 
   rows.forEach((item) => {
     xmlData += `
@@ -24,9 +34,6 @@ export async function GET() {
   });
 
   xmlData += urlsetEnd;
-  const headers = new Headers({
-    'Content-Type': 'application/xml',
-  });
 
   return new NextResponse(xmlData, {
     status: 200,

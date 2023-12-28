@@ -8,13 +8,15 @@ import { getAuthorAndSettingsData, getPostData } from '@/data';
 import StructuredData from '@/components/StructuredData';
 
 import { getTheme } from '@/themes';
+import Custom404 from '../../not-found';
 
 export default async function Post(props) {
   const post = await getPostData(props.params.slug);
-  const { settings, me } = await getAuthorAndSettingsData();
-  if (!post || !settings || !me) {
-    return notFound();
+  const data = await getAuthorAndSettingsData();
+  if (!post || !data?.settings || !data?.me) {
+    return <Custom404 homepage="https://letterpad.app" />;
   }
+  const { settings, me } = data;
 
   const { Post } = getTheme(settings?.theme);
   const { name = '', avatar = '' } =
@@ -61,8 +63,9 @@ export async function generateMetadata({
   searchParams,
 }): Promise<Metadata> {
   const post = await getPostData(params.slug);
-  const { settings, me } = await getAuthorAndSettingsData();
-  if (!post) return {};
+  const data = await getAuthorAndSettingsData();
+  if (!post || !data?.settings || !data?.me) return {};
+  const { settings, me } = data;
   return {
     title: post.title,
     description: post.excerpt ?? '',

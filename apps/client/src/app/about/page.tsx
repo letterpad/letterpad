@@ -69,13 +69,13 @@ export async function generateMetadata({
       images: [
         {
           url: settings.banner?.src!,
-          width: settings.banner?.width,
-          height: settings.banner?.height,
+          width: settings.banner?.width!,
+          height: settings.banner?.height!,
           alt: settings.site_title,
         },
       ],
       card: 'summary_large_image',
-      description: me.bio,
+      description: me.bio!,
     },
     alternates: {
       canonical: `${settings.site_url}/about`,
@@ -83,15 +83,15 @@ export async function generateMetadata({
     openGraph: {
       url: `${settings.site_url}/about`,
       title: 'About',
-      description: me.bio,
+      description: me.bio!,
       authors: [me.name],
       firstName: me.name,
       siteName: settings.site_title,
       images: [
         {
           url: settings.banner?.src!,
-          width: settings.banner?.width,
-          height: settings.banner?.height,
+          width: settings.banner?.width!,
+          height: settings.banner?.height!,
           alt: settings.site_title,
         },
       ],
