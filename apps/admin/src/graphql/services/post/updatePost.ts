@@ -186,7 +186,7 @@ export const updatePost = async (
         await mail({
           from: `"Letterpad" <admin@letterpad.app>`,
           replyTo: `"Admin" <admin@letterpad.app>`,
-          to: `admin@letterpad.app`,
+          to: `letterpad@ajaxtown.com`,
           subject: `New post published - ${existingPost.title}`,
           html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
         }, false);
