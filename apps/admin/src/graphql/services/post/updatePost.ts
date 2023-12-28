@@ -134,14 +134,6 @@ export const updatePost = async (
     if (args.data.status === PostStatusOptions.Published) {
       newPostArgs.data.html = await formatHtml(existingPost.html_draft ?? "");
       newPostArgs.data.publishedAt = new Date();
-      try {
-        mail({
-          from: `Letterpad<admin@letterpad.app>`,
-          to: `admin@letterpad.app`,
-          subject: `New post published - ${existingPost.title}`,
-          html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
-        }, false);
-      } catch (e) { }
     }
 
     newPostArgs.data.updatedAt = new Date();
@@ -189,7 +181,17 @@ export const updatePost = async (
         message: "Updated post not found",
       };
     }
-
+    if (nowPublished) {
+      try {
+        await mail({
+          from: `"Letterpad" <admin@letterpad.app>`,
+          replyTo: `"Admin" <admin@letterpad.app>`,
+          to: `admin@letterpad.app`,
+          subject: `New post published - ${existingPost.title}`,
+          html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
+        }, false);
+      } catch (e) { }
+    }
     return {
       ...mapPostToGraphql(updatedPost),
     };
