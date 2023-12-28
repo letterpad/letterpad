@@ -30,7 +30,7 @@ export const getData = async () => {
     const settings = data?.settings;
     const me = data?.me;
     if (!settings || !me) {
-      throw new Error('No data found');
+      return null;
     }
     const { menu } = settings;
 
