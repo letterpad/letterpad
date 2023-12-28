@@ -5,7 +5,10 @@ import { NextResponse } from 'next/server';
 import { getFeed } from '../../data';
 export async function GET() {
   // Replace this with your actual data retrieval logic
-  const { feedResponse, settings, me } = await getFeed();
+  const data = await getFeed();
+  if (!data?.feedResponse || !data?.settings)
+    return new NextResponse('Not found', { status: 404 });
+  const { feedResponse, settings } = data;
   // Generate the XML feed
   const xmlData = generateXmlFeed(feedResponse.rows, {
     title: settings.site_title,
