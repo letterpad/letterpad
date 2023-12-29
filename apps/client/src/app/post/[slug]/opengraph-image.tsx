@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 export const revalidate = 60;
 import { Inter } from 'next/font/google';
-import { ImageResponse } from 'next/server';
+import { ImageResponse } from 'next/og';
 
 import formatDate from '@/lib/utils/formatDate';
 
@@ -46,12 +46,12 @@ export default async function AboutOG(props) {
               >
                 {post.title}
               </div>
-              <div
+              {/* <div
                 tw="flex mb-5 text-[24px] text-gray-300"
                 style={font('Roboto 400')}
               >
                 {post.excerpt}
-              </div>
+              </div> */}
               <div tw="flex uppercase pt-8 text-sm" style={font('Roboto 400')}>
                 <span className="flex items-center">
                   <div tw="flex">

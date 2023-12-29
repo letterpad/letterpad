@@ -1,9 +1,13 @@
 import { Metadata } from "next";
-
+import type { Viewport } from 'next'
+ 
+export const viewport: Viewport = {
+  themeColor: 'black',
+  width: 'device-width',
+}
 export const metadata: Metadata = {
   title: "Editing Post",
   description: "Editing Post",
-  viewport: "width=device-width",
   robots: "no-follow, index",
   icons: [
     {

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Letterpad - A blogging platform",
   description:
     "Discover a world of possibilities for your writing and creativity on Letterpad, the premier blogging platform",
-  viewport: "width=device-width",
+  // viewport: "width=device-width",
   robots: "follow, index",
   openGraph: {
     type: "website",

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
@@ -13,11 +13,15 @@ import Hero from "./Hero";
 import PressLogos from "./PressLogos";
 import { getRootUrl } from "../../shared/getRootUrl";
 
+export const viewport: Viewport = {
+  themeColor: 'black',
+  width: 'device-width',
+}
+
 export const metadata: Metadata = {
   title: "Letterpad - Create a beautiful blog.",
   description:
     "Letterpad simplifies blogging, making it easy to start your online writing journey.",
-  viewport: "width=device-width",
   openGraph: {
     type: "website",
     url: getRootUrl(),
