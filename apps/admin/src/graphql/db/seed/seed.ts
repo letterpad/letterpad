@@ -350,6 +350,7 @@ export const cleanupDatabase = async () => {
   await prisma.role.deleteMany();
   await prisma.tag.deleteMany();
   await prisma.upload.deleteMany();
+  await prisma.emailTemplates.deleteMany();
 };
 
 function getTemplates(rootFolder, templates) {
