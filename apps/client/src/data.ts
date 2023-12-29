@@ -25,7 +25,6 @@ function getLetterpad() {
 
 export const getData = cache(async () => {
   try {
-    console.log('getData');
     const letterpad = getLetterpad();
 
     const data = await getAuthorAndSettingsData();

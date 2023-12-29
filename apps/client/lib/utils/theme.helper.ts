@@ -4,6 +4,7 @@ const THEME_DARK = 'dark';
 const THEME_LIGHT = 'light';
 
 const applyPreference = (theme) => {
+  if (typeof document === 'undefined') return;
   const root = document.documentElement;
   if (!root) return;
   root.classList.remove(THEME_LIGHT, THEME_DARK);
@@ -12,6 +13,7 @@ const applyPreference = (theme) => {
 };
 
 export const getPreference = (storageKey) => {
+  if (typeof window === 'undefined') return THEME_DARK;
   const cookie = getCookie(storageKey);
 
   if (cookie) {
