@@ -22,7 +22,7 @@ function AiSection() {
             tabindex="-1"
             preload="auto"
             controls={true}
-            poster="https://res-console.cloudinary.com/abhisheksaha/media_explorer_thumbnails/223914a1195b2b8630fdf76ae5e61f13/detailed"
+            poster="https://res.cloudinary.com/abhisheksaha/image/upload/v1703413410/nyf7lqceicruclatgrfy.png"
             src="https://res.cloudinary.com/abhisheksaha/video/upload/v1703412901/eikymzl7nzhqt7dntex9.mp4"
           ></video>
         </div>
