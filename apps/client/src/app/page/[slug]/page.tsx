@@ -12,8 +12,10 @@ import { getTheme } from '@/themes';
 import Custom404 from '../../not-found';
 
 export default async function Page(props) {
-  const post = await getPostData(props.params.slug);
-  const data = await getAuthorAndSettingsData();
+  const [post, data] = await Promise.all([
+    getPostData(props.params.slug),
+    getAuthorAndSettingsData(),
+  ]);
   if (!post || !data?.settings || !data?.me) {
     return <Custom404 homepage="https://letterpad.app" />;
   }

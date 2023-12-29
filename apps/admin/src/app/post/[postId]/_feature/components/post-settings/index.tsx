@@ -1,7 +1,7 @@
 import classNames from "classnames";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Drawer, Input, Switch, TextArea } from "ui";
-
+import { CgSpinner } from "react-icons/cg";
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/app/settings/_feature/api.client";
@@ -18,6 +18,7 @@ import PublishButton from "./publishButton";
 import { QuickMenu } from "./quickmenu";
 import Tags from "./tags";
 import { useUpdatePost } from "../../api.client";
+import Link from "next/link";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -26,10 +27,11 @@ interface IProps {
 const Actions = ({ post }: IProps) => {
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
-  // const settingsResponse = useSettingsQuery();
+  const excerptRef = useRef<HTMLTextAreaElement>(null);
+
   const { data: settings } = useGetSettings();
   const [slug, setSlug] = useState(post.slug || "");
-  const [saving, setSaving] = useState("");
+  const [busy, setBusy] = useState(false);
 
   const { updatePost } = useUpdatePost();
 
@@ -62,6 +64,34 @@ const Actions = ({ post }: IProps) => {
 
   const isPost = post.type === PostTypes.Post;
   const postVerb = isPost ? "Post" : "Page";
+
+  const generateExcerpt = async (e) => {
+    e.preventDefault();
+    try {
+      setBusy(true);
+      if (!excerptRef.current) return;
+      const element = document.createElement("div");
+      element.innerHTML = post.html_draft ?? "";
+      element.querySelectorAll("pre").forEach((pre) => {
+        pre.remove();
+      });
+      const prompt = element.textContent;
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          field: 'excerpt'
+        }),
+      });
+      const text = await response.text();
+      debounceUpdatePost({ excerpt: text, id: post.id });
+      excerptRef.current.value = text;
+    } catch (e) { }
+    setBusy(false);
+  }
 
   return (
     <>
@@ -103,8 +133,10 @@ const Actions = ({ post }: IProps) => {
               onChange={(e) => {
                 debounceUpdatePost({ excerpt: e.target.value, id: post.id });
               }}
-              defaultValue={post.excerpt ?? ""}
+              ref={excerptRef}
+              defaultValue={post.excerpt}
             />
+            <div className="mt-2">{busy ? <CgSpinner className="animate-spin w-5 h-5" /> : <Link href="#" onClick={generateExcerpt}>Generate ✨</Link>}</div>
           </div>
           <div>
             <Heading heading="Path" subheading={""} />
