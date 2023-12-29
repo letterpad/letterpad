@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 
 import { Metadata } from 'next';
-
+import { cookies } from 'next/headers';
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 
@@ -15,6 +15,9 @@ import { getTheme } from '@/themes';
 import { Css } from './_css';
 import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
+import ThemeProvider from '../../context/ThemeProvider';
+
+const THEME_STORAGE_KEY = 'theme-preference';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -25,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
       metadataBase: new URL(settings.site_url),
       title: {
         default: settings.site_title,
-        template: `%s | ${settings.site_title}`,
+        template: `%s | by ${me.name}`,
       },
       description: settings.site_description ?? '',
       icons: {
@@ -131,11 +134,16 @@ const Layout = async ({ children }) => {
   if (!data) {
     return <Custom404 homepage="https://letterpad.app" />;
   }
+  const theme = cookies().get(THEME_STORAGE_KEY)?.value;
   const { settings } = data;
   const { Layout } = getTheme(settings?.theme);
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html
+      lang="en"
+      className={`scroll-smooth ${theme}`}
+      style={{ colorScheme: theme }}
+    >
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preload" as="image" href={settings.banner?.src!} />
       <link
@@ -146,13 +154,14 @@ const Layout = async ({ children }) => {
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <FontPageWrapper
-          primary_font={settings.design?.primary_font!}
-          secondary_font={settings.design?.secondary_font!}
-        >
-          <Layout>{children}</Layout>
-        </FontPageWrapper>
-
+        <ThemeProvider storageKey={THEME_STORAGE_KEY}>
+          <FontPageWrapper
+            primary_font={settings.design?.primary_font!}
+            secondary_font={settings.design?.secondary_font!}
+          >
+            <Layout>{children}</Layout>
+          </FontPageWrapper>
+        </ThemeProvider>
         <div id="modal-creatives" />
         <HighlightCode />
       </body>

@@ -6,7 +6,6 @@ import { prisma } from "@/lib/prisma";
 
 import { getServerSession } from "../../../graphql/context";
 
-// export const runtime = "edge";
 
 export async function POST(req: Request): Promise<Response> {
   const session = await getServerSession({ req });
@@ -23,7 +22,7 @@ export async function POST(req: Request): Promise<Response> {
 
   if (!openai_api_key || openai_api_key === "") {
     return new Response(
-      "Missing OPENAI_API_KEY – make sure to add it to your .env file.",
+      "Missing OPENAI_API_KEY – Add the openai key in settings under Open AI.",
       {
         status: 400,
       }
@@ -34,7 +33,37 @@ export async function POST(req: Request): Promise<Response> {
     apiKey: openai_api_key,
   });
 
-  let { prompt } = await req.json();
+  let { prompt, field="post" } = await req.json();
+
+  if (field === "excerpt")  {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are SEO expert who is responsible to write meta descriptions of a blog. " +
+            "Make it no longer than 20 words",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      stream: true,
+      n: 1,
+    });
+
+    // Convert the response into a friendly text-stream
+    const stream = OpenAIStream(response);
+
+    // Respond with the stream
+    return new StreamingTextResponse(stream);
+  }
 
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",

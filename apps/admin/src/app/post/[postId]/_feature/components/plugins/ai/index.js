@@ -88,37 +88,6 @@ async function openAiCompletion(prompt) {
     }),
   });
 
-  // Check if the response is okay
-  // if (!response.ok) {
-  //   throw new Error("Network response was not ok");
-  // }
-
-  // // Create a ReadableStream from the response body
-  // const stream = response.body;
-
-  // // Create a TextDecoder to decode the stream
-  // const textDecoder = new TextDecoder();
-
-  // // Read chunks from the stream
-  // const reader = stream.getReader();
-
-  // // Function to process each chunk
-  // function processChunk({ done, value }) {
-  //   if (done) {
-  //     // Stream has ended
-  //     return;
-  //   }
-
-  //   // Update the editor content with the new data
-  //   updateEditorContent(value);
-
-  //   // Continue reading the next chunk
-  //   return reader.read().then(processChunk);
-  // }
-
-  // // Start reading chunks
-  // return reader.read().then(processChunk);
-
   const text = await response.text();
   return text;
 }
