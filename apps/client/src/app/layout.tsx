@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 
-import { getAuthorAndSettingsData, getData } from '@/data';
+import { getData } from '@/data';
 
 import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/Scripts';
@@ -18,6 +18,10 @@ import Custom404 from './not-found';
 import ThemeProvider from '../../context/ThemeProvider';
 
 const THEME_STORAGE_KEY = 'theme-preference';
+
+export const viewport = {
+  themeColor: 'black',
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -95,7 +99,6 @@ export async function generateMetadata(): Promise<Metadata> {
         card: 'summary_large_image',
         description: settings.site_description!,
       },
-      themeColor: '#000',
       alternates: {
         canonical: settings.site_url,
         types: {
@@ -130,7 +133,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Layout = async ({ children }) => {
-  const data = await getAuthorAndSettingsData();
+  const data = await getData();
   if (!data) {
     return <Custom404 homepage="https://letterpad.app" />;
   }

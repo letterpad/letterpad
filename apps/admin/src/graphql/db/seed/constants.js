@@ -42,7 +42,7 @@ module.exports.defaultSettings = {
   theme: "minimal",
   menu: JSON.stringify(menu),
   design: JSON.stringify({
-    brand_color: "#d93097",
+    brand_color: "#5835cd",
     primary_font: "Inter",
     secondary_font: "Lora",
   }),
