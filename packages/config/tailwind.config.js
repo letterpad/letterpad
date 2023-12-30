@@ -36,6 +36,7 @@ module.exports = {
         sans: ['sans-serif', ...defaultTheme.fontFamily.sans],
         inter: ["Inter", "sans-serif"],
         "uncut-sans": ["Uncut Sans", "sans-serif"],
+        "roboto_mono": ["Roboto_Mono", "monospace"],
       },
       fontSize: {
         xs: '.7rem',
@@ -109,11 +110,11 @@ module.exports = {
               color: theme('colors.gray.900'),
             },
             code: {
-              color: theme('colors.accent.50'),
-              backgroundColor: '#4eaa3730',
-              fontSize: 'inherit',
+              // color: theme('colors.green.600'),
+              fontSize: theme('fontSize.md'),
+              backgroundColor: '#6fd7535c',
               fontWeight: 'initial',
-              fontFamily: 'initial',
+              fontFamily: theme('fontFamily.roboto_mono'),
               padding: '0.1rem 0.2rem',
               borderRadius: '0.25rem',
             },
@@ -183,7 +184,8 @@ module.exports = {
             //   backgroundColor: theme('colors.gray.900'),
             // },
             code: {
-              color: '#88cead',
+              color: theme('colors.lime.500'),
+              backgroundColor: 'transparent',
             },
             details: {
               backgroundColor: theme('colors.gray.800'),

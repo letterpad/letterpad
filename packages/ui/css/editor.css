@@ -1,42 +1,49 @@
-
 @import './creatives.css';
 @import './prism.css';
 
 .prose {
   word-break: break-word;
   font-family: inherit !important;
+
   .mce-content-body {
     outline: none;
   }
+
   ::selection {
     background: yellow;
     color: #000;
   }
+
   @media only screen and (max-width: 600px) {
     h1 {
       font-size: 2rem;
       margin-bottom: 8px;
       line-height: 2.5rem;
     }
+
     h2 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
     }
   }
-  p,
-   {
+
+  p {
     margin-top: 21px;
     line-height: 1.5;
   }
+
   pre {
     font-size: 0.7em;
     font-family: var(--font-roboto-mono), monospace !important;
     padding: 0.8rem !important;
     opacity: 0.9;
+    line-height: 1.8!important;
   }
+
   pre code {
     background-color: initial;
   }
+
   figure {
     margin: 0px;
     margin-top: 10px;
@@ -46,10 +53,12 @@
     flex-direction: column;
     justify-content: center;
   }
+
   figure img {
     max-width: 100%;
     height: auto;
   }
+
   figure figcaption {
     font-size: 0.8rem;
     text-align: center;
@@ -65,6 +74,7 @@
   [data-mce-selected='inline-boundary'] {
     /* color: initial; */
   }
+
   .highlight {
     color: rgb(221, 79, 79);
   }
@@ -74,9 +84,11 @@
     cursor: pointer;
     border-bottom: 3px solid #d932c0;
   }
+
   .mce-offscreen-selection {
     display: none;
   }
+
   figure img {
     cursor: pointer;
   }
@@ -84,10 +96,12 @@
   hr {
     border: 1px solid rgb(var(--color-border));
   }
-  h2 + figure {
+
+  h2+figure {
     margin-top: 1.4rem !important;
   }
 }
+
 .dark .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
   color: #526278;
 }
