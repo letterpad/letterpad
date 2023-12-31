@@ -27,7 +27,7 @@ export const NewDomain = ({ refetch }) => {
           duration: 3,
         });
       }
-      refetch();
+      document.location.reload();
     }
   };
 

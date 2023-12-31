@@ -25,11 +25,11 @@ export const Feature = () => {
     Message().success({
       content: result.data?.removeDomain.message!,
     });
-    refetch();
+    document.location.reload();
   };
 
   const validate = (
-    <Button className="mt-4" onClick={() => refetch()} variant="primary">
+    <Button className="mt-4" onClick={() => document.location.reload()} variant="primary">
       Validate this change
     </Button>
   );
