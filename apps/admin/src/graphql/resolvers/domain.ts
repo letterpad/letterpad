@@ -67,6 +67,7 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
       },
       update: {
         name: domain.trim(),
+        mapped: true,
       },
       where: {
         author_id: context.session.user.id,

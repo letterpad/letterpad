@@ -15,12 +15,6 @@ export async function middleware(request: NextRequest) {
   }
   const ROOT_URL = proto + "://" + host;
 
-  // if (request.nextUrl.pathname.includes("session")) {
-  //   if (!request.cookies.get("next-auth.session-token")) {
-  //     return NextResponse.json({});
-  //   }
-  // }
-
   if (cookie?.value) {
     try {
       const decoded = await decode({
