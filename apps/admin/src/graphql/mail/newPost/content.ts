@@ -37,24 +37,24 @@ export async function getNewPostContent(
   }
 
   const subject = template.subject.replaceAll(
-    "blog_name",
+    "{{ blog_name }}",
     post.author.setting?.site_title ?? ""
   );
 
   const body = template.body
-    .replaceAll("blog_name", post.author.setting?.site_title ?? "")
-    .replaceAll("full_name", "Letterpad User")
-    .replaceAll("post_title", post?.title)
-    .replaceAll("excerpt", post?.excerpt)
+    .replaceAll("{{ blog_name }}", post.author.setting?.site_title ?? "")
+    .replaceAll("{{ full_name }}", "Letterpad User")
+    .replaceAll("{{ post_title }}", post?.title)
+    .replaceAll("{{ excerpt }}", post?.excerpt)
     .replaceAll(
-      "read_more_link",
+      "{{ read_more_link }}",
       `<a target="_blank" class="btn" href="${post.author.setting?.site_url}/${post?.type}/${post?.slug}">Read More</a>`
     )
     .replaceAll(
-      "cover_image_link",
+      "{{ cover_image_link }}",
       post?.cover_image ? `<img src="${post?.cover_image}" width="100%">` : ""
     )
-    .replaceAll("author_name", post.author.name);
+    .replaceAll("{{ author_name }}", post.author.name);
 
   return {
     ok: true,

@@ -43,17 +43,17 @@ export async function getVerifyUserEmailChangeContent(
   });
   const href = `${getRootUrl()}/api/verify?token=${token}`;
 
-  const subject = template.subject.replaceAll("company_name", "Letterpad");
+  const subject = template.subject.replaceAll("{{ company_name }}", "Letterpad");
 
   const body = template.body
     .replaceAll(
-      "verify_link",
+      "{{ verify_link }}",
       `<a target="_blank" href="${href}">
         Verify Email
       </a>`
     )
-    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
-    .replaceAll("full_name", author?.name);
+    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("{{ full_name }}", author?.name);
 
   return {
     ok: true,

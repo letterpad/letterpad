@@ -40,16 +40,16 @@ export async function getdomainMapSuccessContent(
   }
 
   const subject = template.subject
-    .replaceAll("company_name", "Letterpad")
-    .replaceAll("domain_name", author?.domain.name);
+    .replaceAll("{{ company_name }}", "Letterpad")
+    .replaceAll("{{ domain_name }}", author?.domain.name);
 
   const body = template.body
     .replaceAll(
       "domain_name",
       `<a href="https://${author.domain.name}">${author.domain.name}</a>`
     )
-    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
-    .replaceAll("full_name", author?.name);
+    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("{{ full_name }}", author?.name);
 
   return {
     ok: true,
