@@ -16,6 +16,7 @@ export async function findEmailFromToken({ authHeader, ...rest }: P) {
     const author = await prisma.author.findUnique({ where: { email: tokenData } });
     if (author) return { authHeader, ...rest, authorId: author.id }
   }
+  console.log("No token found");
   return { authHeader, ...rest }
 }
 
@@ -32,6 +33,7 @@ export async function findAuthorIdFromLetterpadSubdomain({ identifierHeader, aut
         return { identifierHeader, authHeader, authorId: author.id }
     }
   }
+  console.log("No subdomain found");
   return { identifierHeader, authHeader, authorId }
 }
 
@@ -46,6 +48,7 @@ export async function findAuthorIdFromCustomDomain({ identifierHeader, authHeade
       return { identifierHeader, authHeader, authorId: author.author_id }
     }
   }
+  console.log("No custom  domain found");
   return { identifierHeader, authHeader, authorId }
 
 }
