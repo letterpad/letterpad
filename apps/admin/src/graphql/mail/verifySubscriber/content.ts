@@ -54,10 +54,10 @@ export async function getVerifySubscriberEmailContent(
   const href = `${getRootUrl()}/api/verifySubscriber?token=${token}&subscriber=1`;
 
   const body = template.body
-    .replaceAll("blog_name", author.setting?.site_title ?? "")
-    .replaceAll("full_name", "There")
+    .replaceAll("{{ blog_name }}", author.setting?.site_title ?? "")
+    .replaceAll("{{ full_name }}", "There")
     .replaceAll(
-      "verify_link",
+      "{{ verify_link }}",
       `<a target="_blank" href="${href}">
         Verify Email
       </a>`

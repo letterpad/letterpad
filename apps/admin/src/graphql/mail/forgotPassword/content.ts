@@ -29,7 +29,7 @@ export async function getForgotPasswordContent(
     };
   }
 
-  const subject = template.subject.replaceAll("company_name", "Letterpad");
+  const subject = template.subject.replaceAll("{{ company_name }}", "Letterpad");
 
   const token = getForgotPasswordToken({
     email: author.email,
@@ -37,11 +37,11 @@ export async function getForgotPasswordContent(
   const href = `${getRootUrl()}/resetPassword?token=${token}`;
 
   const body = template.body
-    .replaceAll("blog_name", author.setting?.site_title ?? "")
-    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
-    .replaceAll("full_name", author?.name)
+    .replaceAll("{{ blog_name }}", author.setting?.site_title ?? "")
+    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("{{ full_name }}", author?.name)
     .replaceAll(
-      "change_password_link",
+      "{{ change_password_link }}",
       `<a target="_blank"  href="${href}">Change Password</a>`
     );
 

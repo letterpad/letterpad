@@ -35,11 +35,11 @@ export async function getPasswordChangeSuccessContent(
     };
   }
 
-  const subject = template.subject.replaceAll("company_name", "Letterpad");
+  const subject = template.subject.replaceAll("{{ company_name }}", "Letterpad");
 
   const body = template.body
-    .replaceAll("company_name", `<a href="https://letterpad.app">Letterpad</a>`)
-    .replaceAll("full_name", author?.name);
+    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll("{{ full_name }}", author?.name);
 
   return {
     ok: true,

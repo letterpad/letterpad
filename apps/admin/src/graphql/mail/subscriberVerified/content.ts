@@ -44,19 +44,19 @@ export async function getSubscriberVerifiedEmailContent(
   const href = `${myURL.protocol}//${author.username}.${myURL.hostname}`;
 
   const subject = template.subject.replaceAll(
-    "blog_name",
+    "{{ blog_name }}",
     author.setting?.site_title ?? ""
   );
 
   const body = template.body
-    .replaceAll("blog_name", author.setting?.site_title ?? "")
+    .replaceAll("{{ blog_name }}", author.setting?.site_title ?? "")
     .replaceAll(
-      "site_url",
+      "{{ site_url }}",
       `<a target="_blank" href="${href}">
         Visit ${author.setting?.site_title}
       </a>`
     )
-    .replaceAll("full_name", author?.name);
+    .replaceAll("{{ full_name }}", author?.name);
 
   return {
     ok: true,

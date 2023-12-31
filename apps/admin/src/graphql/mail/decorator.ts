@@ -24,7 +24,7 @@ export const bodyDecorator = (
     : "";
 
   const body = baseTemplate
-    .replace("content", html)
-    .replace("unsubscribe_link", unsubscribe_link);
+    .replace("{{ content }}", html)
+    .replace("{{ unsubscribe_link }}", unsubscribe_link);
   return body;
 };
