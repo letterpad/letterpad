@@ -1,6 +1,6 @@
-export const revalidate = 60;
+// export const revalidate = 60;
 import { ImageResponse } from 'next/og';
-
+// export const runtime = 'edge';
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 // const fetchNotoSansMedium = fetch(
@@ -74,12 +74,6 @@ export default async function AboutOG(props) {
           style: 'normal',
           weight: 700,
         },
-        // {
-        //   name: 'Noto Sans',
-        //   data: NotoSansMedium,
-        //   style: 'normal',
-        //   weight: 500,
-        // },
       ],
     }
   );
