@@ -7,12 +7,12 @@ import { getAuthorAndSettingsData, getPostData } from '@/data';
 //   new URL('../../../../public/fonts/NotoSans-Medium.ttf', import.meta.url).href
 // ).then((res) => res.arrayBuffer());
 
-const fetchNotoSansBold = fetch(
-  new URL('../../../../public/fonts/NotoSans-Bold.ttf', import.meta.url).href
-).then((res) => res.arrayBuffer());
+// const fetchNotoSansBold = fetch(
+//   new URL('../../../../public/fonts/NotoSans-Bold.ttf', import.meta.url).href
+// ).then((res) => res.arrayBuffer());
 
 export default async function AboutOG(props) {
-  const NotoSansBold = await fetchNotoSansBold;
+  // const NotoSansBold = await fetchNotoSansBold;
   // const NotoSansMedium = await fetchNotoSansMedium;
   const post = await getPostData(props.params.slug);
   const data = await getAuthorAndSettingsData();
@@ -65,16 +65,16 @@ export default async function AboutOG(props) {
           </div>
         </div>
       </div>
-    ),
-    {
-      fonts: [
-        {
-          name: 'Noto Sans',
-          data: NotoSansBold,
-          style: 'normal',
-          weight: 700,
-        },
-      ],
-    }
+      // {
+      //   fonts: [
+      //     {
+      //       name: 'Noto Sans',
+      //       data: NotoSansBold,
+      //       style: 'normal',
+      //       weight: 700,
+      //     },
+      //   ],
+      // }
+    )
   );
 }
