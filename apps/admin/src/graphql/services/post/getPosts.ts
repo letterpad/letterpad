@@ -84,7 +84,7 @@ export const getPosts = cache(async (
     take: args.filters?.limit || 100,
     skip,
     orderBy: {
-      publishedAt: args?.filters?.sortBy || "desc",
+      updatedAt: args?.filters?.sortBy || "desc",
     },
     select: {
       id: true,

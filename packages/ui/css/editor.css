@@ -67,7 +67,8 @@
   }
 
   a {
-    color: rgb(var(--accent));
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent);
     text-decoration: none;
   }
 

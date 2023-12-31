@@ -16,7 +16,7 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
       <style>
         {`
           html {
-            --brand-accent: ${settings?.design?.brand_color ?? '#d93097'};
+            --accent: ${settings?.design?.brand_color ?? '#d93097'};
             ${generateGoogleFontsVariables([
               settings.design?.primary_font,
               settings.design?.secondary_font,
