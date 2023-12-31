@@ -46,6 +46,7 @@ export async function findAuthorIdFromCustomDomain({ identifierHeader, authHeade
       },
     });
     if (author) {
+      console.log("author from custom domain", author.id + " : " + author.name)
       return { identifierHeader, authHeader, authorId: author.author_id }
     }
   }
