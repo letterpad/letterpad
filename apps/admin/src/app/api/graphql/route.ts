@@ -28,24 +28,24 @@ export const setupYoga = (context) => {
     context,
     graphqlEndpoint: "/api/graphql",
     fetchAPI: { Response },
-    plugins: [
-      ResponseCache({
-        session: (request) => {
-          const cookie = getHeader(request.headers, "cookie");
-          const host = getHeader(request.headers, "host");
-          const authorization = getHeader(request.headers, "authorization");
-          const identifier = getHeader(request.headers, "identifier");
-          if(authorization || identifier) {
-            return `${authorization}-${identifier}`;
-          }
-          if (cookie) {
-            return cookie;
-          }
-          return host;
-        },
-        includeExtensionMetadata: true,
-      })
-    ]
+    // plugins: [
+    //   ResponseCache({
+    //     session: (request) => {
+    //       const cookie = getHeader(request.headers, "cookie");
+    //       const host = getHeader(request.headers, "host");
+    //       const authorization = getHeader(request.headers, "authorization");
+    //       const identifier = getHeader(request.headers, "identifier");
+    //       if(authorization || identifier) {
+    //         return `${authorization}-${identifier}`;
+    //       }
+    //       if (cookie) {
+    //         return cookie;
+    //       }
+    //       return host;
+    //     },
+    //     includeExtensionMetadata: true,
+    //   })
+    // ]
   });
 };
 

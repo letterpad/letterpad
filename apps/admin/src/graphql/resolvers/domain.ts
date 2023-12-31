@@ -58,6 +58,7 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
     const dbResponse = await context.prisma.domain.upsert({
       create: {
         name: domain.trim(),
+        mapped: true,
         ssl: false,
         author: {
           connect: {
