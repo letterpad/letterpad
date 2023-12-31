@@ -3,9 +3,9 @@ import { ImageResponse } from 'next/og';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-const fetchNotoSansMedium = fetch(
-  new URL('../../../../public/fonts/NotoSans-Medium.ttf', import.meta.url).href
-).then((res) => res.arrayBuffer());
+// const fetchNotoSansMedium = fetch(
+//   new URL('../../../../public/fonts/NotoSans-Medium.ttf', import.meta.url).href
+// ).then((res) => res.arrayBuffer());
 
 const fetchNotoSansBold = fetch(
   new URL('../../../../public/fonts/NotoSans-Bold.ttf', import.meta.url).href
@@ -13,7 +13,7 @@ const fetchNotoSansBold = fetch(
 
 export default async function AboutOG(props) {
   const NotoSansBold = await fetchNotoSansBold;
-  const NotoSansMedium = await fetchNotoSansMedium;
+  // const NotoSansMedium = await fetchNotoSansMedium;
   const post = await getPostData(props.params.slug);
   const data = await getAuthorAndSettingsData();
 
@@ -74,12 +74,12 @@ export default async function AboutOG(props) {
           style: 'normal',
           weight: 700,
         },
-        {
-          name: 'Noto Sans',
-          data: NotoSansMedium,
-          style: 'normal',
-          weight: 500,
-        },
+        // {
+        //   name: 'Noto Sans',
+        //   data: NotoSansMedium,
+        //   style: 'normal',
+        //   weight: 500,
+        // },
       ],
     }
   );
