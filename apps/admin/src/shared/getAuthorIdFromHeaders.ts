@@ -19,9 +19,8 @@ export async function findEmailFromToken({ authHeader, ...rest }: P) {
   return { authHeader, ...rest }
 }
 
-export async function findAuthorIdFromLetterpadSubdomain({ identifierHeader, authHeader, ...rest }: P) {
-  const found = Object.keys(rest).find(o => rest[o]);
-  if (!found) {
+export async function findAuthorIdFromLetterpadSubdomain({ identifierHeader, authHeader, authorId }: P) {
+  if (!authorId) {
     if (identifierHeader?.includes("letterpad.app")) {
       const username = identifierHeader.split(".")[0];
       const author = await prisma.author.findFirst({
@@ -30,26 +29,23 @@ export async function findAuthorIdFromLetterpadSubdomain({ identifierHeader, aut
         },
       });
       if (author)
-        return { identifierHeader, authHeader, ...rest, authorId: author.id }
+        return { identifierHeader, authHeader, authorId: author.id }
     }
   }
-  return { identifierHeader, authHeader, ...rest }
+  return { identifierHeader, authHeader, authorId }
 }
 
-export async function findAuthorIdFromCustomDomain({ identifierHeader, authHeader, ...rest }: P) {
-  const found = Object.keys(rest).find(o => rest[o]);
-  if (!found) {
-    if (!identifierHeader) return { identifierHeader, ...rest }
-    const record = await prisma.domain.findFirst({
+export async function findAuthorIdFromCustomDomain({ identifierHeader, authHeader, authorId }: P) {
+  if (!authorId && identifierHeader) {
+    const author = await prisma.domain.findFirst({
       where: {
         name: identifierHeader,
-        mapped: true,
       },
     });
-    if (record) {
-      return { identifierHeader, authHeader, ...rest, authorId: record.author_id }
+    if (author) {
+      return { identifierHeader, authHeader, authorId: author.author_id }
     }
   }
-  return { identifierHeader, authHeader, ...rest }
+  return { identifierHeader, authHeader, authorId }
 
 }
