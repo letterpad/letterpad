@@ -9,7 +9,6 @@ import Fonts from './fonts/fonts';
 export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   settings,
 }) => {
-  console.log(settings.scripts);
   const { srcs, content } = extractScriptInfo(settings?.scripts ?? '');
   return (
     <head>
