@@ -42,13 +42,14 @@ export async function findAuthorIdFromCustomDomain({ identifierHeader, authHeade
     const author = await prisma.domain.findFirst({
       where: {
         name: identifierHeader,
+        mapped: true,
       },
     });
     if (author) {
       return { identifierHeader, authHeader, authorId: author.author_id }
     }
   }
-  console.log("No custom  domain found");
+  console.log("No domain found");
   return { identifierHeader, authHeader, authorId }
 
 }
