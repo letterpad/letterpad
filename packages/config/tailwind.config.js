@@ -67,7 +67,7 @@ module.exports = {
         gray: colors.slate,
         muted: colors.slate[400],
         accent: {
-          50: "var(--brand-accent)",
+          50: "var(--accent)",
           100: '#f4f5f7',
         },
         zinc: {

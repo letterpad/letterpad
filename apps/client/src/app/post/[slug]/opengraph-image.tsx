@@ -1,160 +1,87 @@
 export const runtime = 'edge';
 export const revalidate = 60;
-import { Inter } from 'next/font/google';
 import { ImageResponse } from 'next/og';
-
-import formatDate from '@/lib/utils/formatDate';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-export const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-});
+const fetchNotoSansMedium = fetch(
+  new URL('../../../../public/fonts/NotoSans-Medium.ttf', import.meta.url).href
+).then((res) => res.arrayBuffer());
+
+const fetchNotoSansBold = fetch(
+  new URL('../../../../public/fonts/NotoSans-Bold.ttf', import.meta.url).href
+).then((res) => res.arrayBuffer());
 
 export default async function AboutOG(props) {
-  const image = 'https://picsum.photos/seed/picsum/1200/627';
+  const NotoSansBold = await fetchNotoSansBold;
+  const NotoSansMedium = await fetchNotoSansMedium;
   const post = await getPostData(props.params.slug);
   const data = await getAuthorAndSettingsData();
 
   if (!data?.settings || !data?.me) return {};
 
   const { settings, me } = data;
+
+  const image =
+    'https://images.unsplash.com/photo-1550100136-e092101726f4?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
   if (!post || post.author?.__typename !== 'Author') return {};
   return new ImageResponse(
     (
-      <div tw="flex  h-full w-full bg-white flex-col" style={font('Inter 300')}>
-        <img
-          style={{ objectFit: 'cover' }}
-          tw="absolute inset-0 w-full h-full"
-          src={post.cover_image.src ?? image}
-          alt="Saha"
-        />
-        <div tw="bg-black absolute inset-0 bg-opacity-60"></div>
-        <main tw="flex grow pt-4 w-full justify-center items-center p-10">
-          <div tw="flex flex-col px-10">
-            <div tw="flex flex-col  grow text-[28px] h-70 justify-center text-white">
-              <div
-                tw="text-[14px] pb-10 uppercase text-gray-300"
-                style={font('Roboto 900')}
-              >
-                {formatDate(post.publishedAt)}
-              </div>
-              <div
-                tw="text-[48px] mb-16 font-bolder leading-1"
-                style={font('Roboto 900')}
-              >
-                {post.title}
-              </div>
-              {/* <div
-                tw="flex mb-5 text-[24px] text-gray-300"
-                style={font('Roboto 400')}
-              >
-                {post.excerpt}
-              </div> */}
-              <div tw="flex uppercase pt-8 text-sm" style={font('Roboto 400')}>
-                <span className="flex items-center">
-                  <div tw="flex">
-                    {me.avatar && (
-                      <img
-                        tw="rounded-full"
-                        alt={
-                          post.author?.__typename === 'Author'
-                            ? post.author?.name
-                            : ''
-                        }
-                        style={{ objectFit: 'cover' }}
-                        // @ts-ignore
-                        src={me.avatar}
-                        width={40}
-                        height={40}
-                      />
-                    )}
-                  </div>
-                  <span tw="flex mt-2 ml-2">{post.author.name}</span>
-                </span>
-              </div>
+      <div
+        tw="flex bg-black text-white w-full h-full flex-row items-center justify-center border"
+        style={{
+          background: 'linear-gradient(to bottom, #274151, #000)',
+          border: '10px solid #ffffff2f',
+        }}
+      >
+        <div tw="w-1/3 bg-gray-200 flex h-full">
+          <img
+            src={post.cover_image.src ?? image}
+            tw="flex w-full h-full object-cover"
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
+        <div
+          tw="py-16 w-full flex flex-1 px-8 flex-col h-full justify-between"
+          style={{
+            fontFamily: "'Noto Sans', sans-serif",
+            fontWeight: 700,
+          }}
+        >
+          <div tw={`flex flex-col`}>
+            <p>{settings.site_title}</p>
+            <h1 tw="text-5xl text-bolder">{post.title}</h1>
+          </div>
+          <div tw="flex items-center flex-row">
+            <img
+              src="https://res.cloudinary.com/abhisheksaha/image/upload/v1696722571/blog-images/ykyfykt7tgxehmsojmhc.jpg"
+              style={{ objectFit: 'cover' }}
+              tw="w-16 h-16 rounded-full object-cover"
+            />
+            <div tw="flex flex-col ml-4">
+              <span tw="text-2xl font-medium">{post.author.name}</span>
+              <span tw="text-blue-400 text-xl">{settings.site_url}</span>
             </div>
           </div>
-        </main>
-
-        <footer
-          tw="flex w-full justify-center text-2xl text-gray-300 pb-10"
-          style={font('Roboto Mono 400')}
-        >
-          {settings.site_title}
-        </footer>
+        </div>
       </div>
     ),
     {
-      width: 800,
-      height: 600,
       fonts: [
         {
-          name: 'Roboto 900',
-          data: (await fetchAndConvertFont(
-            'https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap'
-          )) as ArrayBuffer,
+          name: 'Noto Sans',
+          data: NotoSansBold,
+          style: 'normal',
+          weight: 700,
         },
         {
-          name: 'Roboto 400',
-          data: (await fetchAndConvertFont(
-            'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap'
-          )) as ArrayBuffer,
+          name: 'Noto Sans',
+          data: NotoSansMedium,
+          style: 'normal',
+          weight: 500,
         },
       ],
     }
   );
-}
-
-// lil helper for more succinct styles
-function font(fontFamily: string) {
-  return { fontFamily };
-}
-
-// Function to extract the font URL from the Google Fonts CSS
-function extractFontUrl(cssText) {
-  const matches = cssText.match(/url\((.*?)\)/);
-  if (matches && matches.length > 1) {
-    return matches[1].replace(/['"]/g, ''); // Remove single or double quotes around the URL
-  }
-  return null;
-}
-
-// Function to convert a font URL to ArrayBuffer
-async function fontUrlToArrayBuffer(url) {
-  try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch font file');
-    }
-
-    const buffer = await response.arrayBuffer();
-    return buffer;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching font:', error);
-    return null;
-  }
-}
-
-// Fetch and convert Google Fonts CSS to ArrayBuffer using async/await
-async function fetchAndConvertFont(cssUrl: string) {
-  //   try {
-  const response = await fetch(cssUrl);
-  if (!response.ok) {
-    throw new Error('Failed to fetch CSS');
-  }
-  const cssText = await response.text();
-
-  const fontUrl = extractFontUrl(cssText);
-  if (!fontUrl) {
-    throw new Error('Font URL not found in CSS');
-  }
-
-  const arrayBuffer = await fontUrlToArrayBuffer(fontUrl);
-  if (arrayBuffer) {
-    return arrayBuffer;
-  }
 }
