@@ -9,7 +9,8 @@ import Fonts from './fonts/fonts';
 export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   settings,
 }) => {
-  const { srcs, contents } = getScripts(settings?.scripts ?? '');
+  console.log(settings.scripts);
+  const { srcs, content } = extractScriptInfo(settings?.scripts ?? '');
   return (
     <head>
       <Script strategy="afterInteractive" src={'/static/prism.js'} async />
@@ -27,18 +28,15 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           `}
       </style>
       {srcs.map((src) => (
-        <Script strategy="afterInteractive" src={src} key={src} />
+        <Script strategy="afterInteractive" src={src} key={src} async />
       ))}
-      {contents.map((src, idx) => (
-        <Script
-          key={idx}
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: src,
-          }}
-        />
-      ))}
+      <Script
+        id="script"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: content,
+        }}
+      />
       {/* <link
         href={generateGoogleFontsLink([
           settings.design?.primary_font,
@@ -58,18 +56,38 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   );
 };
 
-function getScripts(str: string) {
-  const srcs: string[] = [];
-  const contents: string[] = [];
-  if (typeof window === 'undefined') return { srcs, contents };
-  var doc = document.implementation.createHTMLDocument(); // Sandbox
-  doc.body.innerHTML = str; // Parse HTML properly
+function extractScriptInfo(inputString) {
+  const scriptInfo: any = {
+    srcs: [],
+    content: '',
+  };
 
-  const scripts = doc.querySelectorAll('script');
-  scripts.forEach((el: HTMLScriptElement) => {
-    if (el.src) srcs.push(el.src);
-    if (el.textContent) contents.push(el.textContent);
-  });
+  // Regular expression to match <script> tags
+  const scriptTagRegex = /<script(?:\s[^>]*)?>[\s\S]*?<\/script>/gi;
 
-  return { srcs, contents };
+  // Regular expression to match src attribute in a <script> tag
+  const srcAttributeRegex = /src=["']([^"']+)["']/i;
+
+  // Extracting <script> tags from the input string
+  const scriptTags = inputString.match(scriptTagRegex);
+
+  if (scriptTags) {
+    scriptTags.forEach((scriptTag) => {
+      // Extracting src attribute
+      const srcMatch = srcAttributeRegex.exec(scriptTag);
+      if (srcMatch && srcMatch[1]) {
+        scriptInfo.srcs.push(srcMatch[1]);
+      }
+
+      // Extracting content between <script> tags
+      const content = scriptTag
+        .replace(/<script(?:\s[^>]*)?>|<\/script>/gi, '')
+        .trim();
+      if (content.length > 0) {
+        scriptInfo.content = content;
+      }
+    });
+  }
+
+  return scriptInfo;
 }
