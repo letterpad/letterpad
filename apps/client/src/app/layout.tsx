@@ -28,13 +28,15 @@ export async function generateMetadata(): Promise<Metadata> {
     const data = await getData();
     if (!data) return {};
     const { settings, me } = data;
+    const description =
+      settings.site_description ?? settings.site_tagline ?? '';
     return {
       metadataBase: new URL(settings.site_url),
       title: {
         default: settings.site_title,
         template: `%s | by ${me.name}`,
       },
-      description: settings.site_description ?? '',
+      description,
       icons: {
         icon: [
           {
@@ -97,7 +99,7 @@ export async function generateMetadata(): Promise<Metadata> {
           },
         ],
         card: 'summary_large_image',
-        description: settings.site_description!,
+        description,
       },
       alternates: {
         canonical: settings.site_url,
@@ -109,11 +111,11 @@ export async function generateMetadata(): Promise<Metadata> {
       authors: [{ name: me.name }],
       creator: me.name,
       publisher: settings.site_title,
-      abstract: settings.site_description,
+      abstract: description,
       openGraph: {
         url: settings.site_url,
         title: settings.site_title,
-        description: settings.site_description!,
+        description,
         authors: [me.name],
         firstName: me.name,
         siteName: settings.site_title,

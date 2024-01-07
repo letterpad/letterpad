@@ -27,7 +27,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.9",
     "autoprefixer": "10.4.15",
-    "eslint-config-custom": "*",
+    "eslint-config-custom": "workspace:*",
     "husky": "^8.0.3",
     "postcss": "^8.4.27",
     "postcss-import": "^15.1.0",
@@ -42,7 +42,6 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "bun@1.0.1",
   "dependencies": {
     "axios": "^1.2.0",
     "next": "14.0.4",

@@ -3,7 +3,6 @@ import { FC } from 'react';
 
 import formatDate from '@/lib/utils/formatDate';
 
-// import { fonts } from '@/components/fonts';
 import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
@@ -22,6 +21,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
             decoding="async"
             src={settings.banner?.src}
             className="object-cover w-full h-full absolute top-0"
+            alt={settings.site_url}
           />
         )}
         <SectionContainer className="py:10 space-y-2 md:space-y-3 md:py-32 max-w-7xl mx-auto relative">
@@ -91,7 +91,9 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
 const BrandText = ({ title, tagline, description }) => {
   return (
     <>
-      <PageTitle className="text-center">{title}</PageTitle>
+      <h1 className="py-2 pb-4 text-4xl font-extrabold leading-8 tracking-tight md:text-5xl md:leading-12">
+        {title}
+      </h1>
       <p className="pb-4 text-md font-bold leading-6 md:text-md">{tagline}</p>
       <p
         className="hidden text-sm font-medium leading-6 sm:w-2/3 md:block md:text-md lg:w-3/5"

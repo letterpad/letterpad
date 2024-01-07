@@ -21,22 +21,7 @@ export const HomePage: FC<HomePageProps> = ({ children }) => {
             </div>
           </div>
           <footer>
-            <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
-              {/* {prev && (
-                <div className="pt-4 xl:pt-8">
-                  <Link href={`/blog/${prev.slug}`} className="link">
-                    &larr; {prev.title}
-                  </Link>
-                </div>
-              )}
-              {next && (
-                <div className="pt-4 xl:pt-8">
-                  <Link href={`/blog/${next.slug}`} className="link">
-                    {next.title} &rarr;
-                  </Link>
-                </div>
-              )} */}
-            </div>
+            <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base"></div>
           </footer>
         </div>
       </article>
