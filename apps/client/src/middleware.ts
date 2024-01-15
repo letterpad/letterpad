@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getAuthCookieName } from '../lib/utils/authCookie';
 
 export function middleware(request: Request) {
   // Store current request url in a custom header, which you can read later
@@ -13,12 +14,33 @@ export function middleware(request: Request) {
   requestHeaders.set('Cache-Control', 'public, s-maxage=1');
   requestHeaders.set('CDN-Cache-Control', 'public, s-maxage=60');
   requestHeaders.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600');
-  return NextResponse.next({
+  const response = NextResponse.next({
     request: {
-      // Apply new request headers
       headers: requestHeaders,
     },
   });
+
+  if (u.pathname === '/api/identity/login') {
+    const token = u.searchParams.get('token');
+    if (token) {
+      response.headers.set(
+        'set-cookie',
+        `${getAuthCookieName()}=${token}; SameSite=None; Secure; HttpOnly; Max-Age=60*60*24`
+      );
+    }
+  }
+
+  if (u.pathname === '/api/identity/logout') {
+    const token = u.searchParams.get('token');
+    if (token) {
+      response.headers.set(
+        'set-cookie',
+        `${getAuthCookieName()}=${token}; SameSite=None; Secure; HttpOnly; Max-Age=-0`
+      );
+    }
+  }
+
+  return response;
 }
 
 export const config = { matcher: '/((?!.*\\.).*)' };
