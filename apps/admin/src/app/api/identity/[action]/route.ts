@@ -33,11 +33,11 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
       });
       /**
         const headers = new Headers();
-        headers.append('set-cookie', `next-auth.session-token=${cookieStore.get("next-auth.session-token")?.value!}; SameSite=None; Secure; HttpOnly; Max-Age=60*60*24`);
+        headers.append('set-cookie', `__Secure-next-auth.session-token=${cookieStore.get("__Secure-next-auth.session-token")?.value!}; SameSite=None; Secure; HttpOnly; Max-Age=60*60*24`);
         headers.append('location', callbackUrl);
         return new Response(undefined, { status: 307, headers });
       */
-      const sessionToken = cookieStore.get("next-auth.session-token")?.value!;
+      const sessionToken = cookieStore.get("__Secure-next-auth.session-token")?.value!;
       const found = await prisma.session.findFirst({
         where: {
           author_id: session?.user?.id!,
@@ -60,7 +60,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
         await prisma.session.create({
           data: {
             domain: new URL(callbackUrl).origin,
-            token: cookieStore.get("next-auth.session-token")?.value!,
+            token: cookieStore.get("__Secure-next-auth.session-token")?.value!,
             expiresAt: new Date(token?.exp! as Date),
             author: {
               connect: {
@@ -71,11 +71,10 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
         });
       }
       const response = NextResponse.redirect(`${callbackUrl}?token=${sessionToken}`, { status: 302 });
-      response.cookies.set("next-auth.session-token", sessionToken);
+      response.cookies.set("__Secure-next-auth.session-token", sessionToken);
       return response;
     } catch (e) {
-
-
+      console.log(e);
       // return NextResponse.redirect("/login?error=callbackUrl is missing", { status: 307 });
     }
   }

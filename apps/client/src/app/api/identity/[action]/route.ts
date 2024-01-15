@@ -9,14 +9,14 @@ export async function GET(req: NextRequest) {
     const response = NextResponse.redirect(decodeURIComponent(next), {
       status: 302,
     });
-    response.cookies.delete('next-auth.session-token');
+    response.cookies.delete('__Secure-next-auth.session-token');
     return response;
   } else {
     // If no more 'next' URL, redirect back to the 'origin'
     const response = NextResponse.redirect(decodeURIComponent(origin), {
       status: 302,
     });
-    response.cookies.delete('next-auth.session-token');
+    response.cookies.delete('__Secure-next-auth.session-token');
     return response;
   }
 }

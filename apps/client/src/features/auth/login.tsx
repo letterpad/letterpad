@@ -10,7 +10,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (token) {
-      document.cookie = `next-auth.session-token=${token}`;
+      document.cookie = `__Secure-next-auth.session-token=${token}`;
       document.location.href = document.location.href.replace(
         document.location.search,
         ''

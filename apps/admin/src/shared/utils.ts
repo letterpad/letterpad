@@ -70,7 +70,7 @@ export const uploadFile = async ({
     method: "post",
     body: data,
     headers: {
-      authorization: localStorage["next-auth.session-token"],
+      authorization: localStorage["__Secure-next-auth.session-token"],
     },
   })
     .then((data) => {
