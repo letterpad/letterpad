@@ -8,11 +8,18 @@ import { getAuthCookieName } from "@/utils/authCookie";
 export async function GET(req: NextRequest, { params }: { params: { action: string } }) {
   const callbackUrl = req.nextUrl.searchParams.get("callbackUrl")!;
   const session = await getServerSession({ req });
-  const token = await getToken({
-    req: req as any,
-    secret: process.env.SECRET_KEY,
-  });
+  try {
+    const token = await getToken({
+      req: req as any,
+      secret: process.env.SECRET_KEY,
+    });
+    console.log(token, "=========token======xx")
 
+  } catch (e) {
+    console.log("=========token======xx", e)
+  }
+  const token = { exp: new Date() };
+  console.log(session, "=========session======xx")
   if (!session) {
     return NextResponse.redirect(`${process.env.ROOT_URL}/login?error=unauthorized&callbackUrl=${callbackUrl}`, { status: 307 });
   }
@@ -43,7 +50,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
       }
       const cookieStore = cookies();
 
-      console.log(token, "=========token======xx")
+      // console.log(token, "=========token======xx")
       /**
         const headers = new Headers();
         headers.append('set-cookie', `__Secure-next-auth.session-token=${cookieStore.get(getAuthCookieName())?.value!}; SameSite=None; Secure; HttpOnly; Max-Age=60*60*24`);
