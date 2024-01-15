@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/graphql/context";
-import { getToken } from "next-auth/jwt";
+import { getToken, decode } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthCookieName } from "@/utils/authCookie";
 
@@ -9,6 +9,13 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
   const callbackUrl = req.nextUrl.searchParams.get("callbackUrl")!;
   const session = await getServerSession({ req });
   try {
+    const decodedToken = await decode({
+      token: req.cookies.get(getAuthCookieName())?.value!,
+      secret: process.env.SECRET_KEY,
+    });
+    console.log("getAuthCookieName()", getAuthCookieName())
+    console.log(req.cookies.get(getAuthCookieName())?.value!, "=========req.cookies.get(getAuthCookieName())?.value!======xx")
+    console.log(decodedToken, "=========decodedToken======xx")
     const token = await getToken({
       req: req as any,
       secret: process.env.SECRET_KEY,
