@@ -13,6 +13,6 @@ export const getSession = async (siteUrl?: string) => {
     const session = await req.json();
     return Object.keys(session).length ? session : null;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 };
