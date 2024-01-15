@@ -110,7 +110,7 @@ const RootLayout = async ({ children }) => {
 export default RootLayout;
 
 async function getUserFromCookie(cookies: ReadonlyRequestCookies) {
-  const sessionCookie = cookies.get("next-auth.session-token");
+  const sessionCookie = cookies.get("__Secure-next-auth.session-token");
   if (!sessionCookie) return null;
 
   try {
