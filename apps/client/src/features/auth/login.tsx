@@ -18,7 +18,6 @@ export const Login = () => {
     }
   }, [token]);
 
-  console.log(getApiRootUrl());
   const onClick = () => {
     document.location.href = `${getApiRootUrl()}/api/identity/login?callbackUrl=${
       document.location.href
