@@ -16,6 +16,7 @@ import { FontPageWrapper } from "@/components/fonts";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
+import { getAuthCookieName } from "../utils/authCookie";
 
 export const metadata: Metadata = {
   title: "Letterpad - A blogging platform",
@@ -110,7 +111,7 @@ const RootLayout = async ({ children }) => {
 export default RootLayout;
 
 async function getUserFromCookie(cookies: ReadonlyRequestCookies) {
-  const sessionCookie = cookies.get("__Secure-next-auth.session-token");
+  const sessionCookie = cookies.get(getAuthCookieName());
   if (!sessionCookie) return null;
 
   try {

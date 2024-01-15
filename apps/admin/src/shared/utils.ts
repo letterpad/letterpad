@@ -2,6 +2,7 @@ import { basePath } from "@/constants";
 import { IMediaUploadResult } from "@/graphql/types";
 
 import { IUploadFileProps } from "../types";
+import { getAuthCookieName } from "../utils/authCookie";
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString("en-us", {
@@ -70,7 +71,7 @@ export const uploadFile = async ({
     method: "post",
     body: data,
     headers: {
-      authorization: localStorage["__Secure-next-auth.session-token"],
+      authorization: localStorage[getAuthCookieName()],
     },
   })
     .then((data) => {

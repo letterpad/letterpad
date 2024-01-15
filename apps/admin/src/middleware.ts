@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse, userAgent } from "next/server";
 import { decode } from "next-auth/jwt";
+import { getAuthCookieName } from "./utils/authCookie";
+
 export const config = { matcher: "/((?!.*\\.).*)" };
 
 export async function middleware(request: NextRequest) {
   const { device } = userAgent(request);
-  const cookie = request.cookies.get("__Secure-next-auth.session-token");
+  const cookie = request.cookies.get(getAuthCookieName());
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
   const callbackUrl = new URL(request.url).searchParams.get("callbackUrl");
