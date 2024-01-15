@@ -9,6 +9,7 @@ const nextConfig = {
     ROOT: __dirname,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXT_PUBLIC_BASE_PATH: process.env.BASE_PATH,
+    NEXT_PUBLIC_ROOT_URL: process.env.ROOT_URL,
     NEXT_PUBLIC_LETTERPAD_PLATFORM: process.env.LETTERPAD_PLATFORM == "true",
   },
   swcMinify: true,

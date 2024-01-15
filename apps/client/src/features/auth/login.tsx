@@ -3,6 +3,7 @@ import { Button } from 'ui';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getApiRootUrl } from '../../../lib/utils/url';
+import { getAuthCookieName } from '../../../lib/utils/authCookie';
 
 export const Login = () => {
   const searchParams = useSearchParams();
@@ -10,7 +11,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (token) {
-      document.cookie = `__Secure-next-auth.session-token=${token}`;
+      document.cookie = `${getAuthCookieName()}=${token}`;
       document.location.href = document.location.href.replace(
         document.location.search,
         ''

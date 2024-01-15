@@ -1,7 +1,5 @@
 "use client";
 
-import { cookies } from "next/headers";
-
 export function setCookie(name: string, value: string) {
   if (typeof document === "undefined") return;
   const date = new Date();
