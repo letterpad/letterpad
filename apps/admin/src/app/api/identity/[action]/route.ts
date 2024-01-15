@@ -7,34 +7,21 @@ import { getAuthCookieName } from "@/utils/authCookie";
 
 export async function GET(req: NextRequest, { params }: { params: { action: string } }) {
   const callbackUrl = req.nextUrl.searchParams.get("callbackUrl")!;
-  const session = await getServerSession({ req });
-  try {
-    const decodedToken = await decode({
-      token: req.cookies.get(getAuthCookieName())?.value!,
-      secret: process.env.SECRET_KEY,
-    });
-    console.log("getAuthCookieName()", getAuthCookieName())
-    console.log(req.cookies.get(getAuthCookieName())?.value!, "=========req.cookies.get(getAuthCookieName())?.value!======xx")
-    console.log(decodedToken, "=========decodedToken======xx")
-    const token = await getToken({
-      req: req as any,
-      secret: process.env.SECRET_KEY,
-    });
-    console.log(token, "=========token======xx")
+  // const session = await getServerSession({ req });
 
-  } catch (e) {
-    console.log("=========token======xx", e)
-  }
-  const token = { exp: new Date() };
-  console.log(session, "=========session======xx")
-  if (!session) {
+  const decodedToken = await decode({
+    token: req.cookies.get(getAuthCookieName())?.value!,
+    secret: process.env.SECRET_KEY,
+  });
+
+  if (!decodedToken) {
     return NextResponse.redirect(`${process.env.ROOT_URL}/login?error=unauthorized&callbackUrl=${callbackUrl}`, { status: 307 });
   }
 
   if (params.action === "logout") {
     const sessions = await prisma.session.findMany({
       where: {
-        author_id: Number(session.user.id)!,
+        author_id: Number(decodedToken.sub)!,
       },
     });
     if (!sessions.length) {
@@ -44,7 +31,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
     const urls = sessions.map((session) => `${session.domain}/api/identity/logout?origin=${callbackUrl}`).join("&next=");
     await prisma.session.deleteMany({
       where: {
-        author_id: Number(session.user.id)!,
+        author_id: Number(decodedToken.sub)!,
       },
     });
     return NextResponse.redirect(urls, { status: 307 });
@@ -67,7 +54,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
       const sessionToken = cookieStore.get(getAuthCookieName())?.value!;
       const found = await prisma.session.findFirst({
         where: {
-          author_id: Number(session.user.id),
+          author_id: Number(decodedToken.sub),
           domain: new URL(callbackUrl).origin,
         },
       });
@@ -79,7 +66,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
             },
             data: {
               token: sessionToken,
-              expiresAt: token?.exp ? new Date(token?.exp! as Date) : new Date(),
+              expiresAt: decodedToken?.exp ? new Date(decodedToken?.exp! as Date) : new Date(),
             },
           });
         }
@@ -88,10 +75,10 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
           data: {
             domain: new URL(callbackUrl).origin,
             token: cookieStore.get(getAuthCookieName())?.value!,
-            expiresAt: token?.exp ? new Date(token?.exp! as Date) : new Date(),
+            expiresAt: decodedToken?.exp ? new Date(decodedToken?.exp! as Date) : new Date(),
             author: {
               connect: {
-                id: Number(session.user.id),
+                id: Number(decodedToken.sub),
               },
             },
           },
