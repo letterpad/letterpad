@@ -12,16 +12,18 @@ type LoginResult = {
 export const doLogin = async ({
   email,
   password,
+  callbackUrl
 }: {
   email: string;
   password: string;
+  callbackUrl?: string | null;
 }): Promise<LoginResult> => {
   Message().loading({ content: "Please wait..." });
   const result = await signIn("credentials", {
     redirect: false,
     password: password,
     email: email,
-    callbackUrl: basePath + "/posts",
+    callbackUrl: callbackUrl ?? basePath + "/posts",
   });
   if (result && result["error"]) {
     return {
