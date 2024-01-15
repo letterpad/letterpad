@@ -32,11 +32,9 @@ export function middleware(request: Request) {
   }
   // }
 
-  if (u.pathname === '/api/identity/logout') {
-    response.headers.set(
-      'set-cookie',
-      `${getAuthCookieName()}=; SameSite=True; Secure; HttpOnly; Max-Age=-10`
-    );
+  if (u.pathname === '/logout') {
+    console.log('found logout');
+    response.headers.set('set-cookie', `${getAuthCookieName()}=; Max-Age=-1`);
   }
 
   return response;
