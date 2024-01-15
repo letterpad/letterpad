@@ -30,7 +30,7 @@ export const getResolverContext = async (request: Request) => {
     andThen(findAuthorIdFromCustomDomain))
     ({ authHeader, identifierHeader, authorId: null });
 
-  if(authorId) {
+  if (authorId) {
     console.log(`Found author id from header: ${authorId}}`);
     cache[`${authHeader}-${identifierHeader}`] = authorId;
   }
@@ -146,6 +146,8 @@ export const getServerSession = async ({ req }) => {
       (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
       basePath +
       "/api/auth/session";
+    console.log(sessionURL, "=========sessionURL======xx")
+    console.log(getHeader(headers, "cookie"), "=========cookie======xx")
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });
