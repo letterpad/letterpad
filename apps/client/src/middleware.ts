@@ -20,17 +20,17 @@ export function middleware(request: Request) {
     },
   });
 
-  if (u.pathname === '/api/identity/login') {
-    console.log('Entered login');
-    const token = u.searchParams.get('token');
-    if (token) {
-      console.log('found token');
-      response.headers.set(
-        'set-cookie',
-        `${getAuthCookieName()}=${token}; SameSite=True; Secure; HttpOnly; Max-Age=60*60*24`
-      );
-    }
+  // if (u.pathname === '/api/identity/login') {
+  console.log('Entered login');
+  const token = u.searchParams.get('token');
+  if (token) {
+    console.log('found token');
+    response.headers.set(
+      'set-cookie',
+      `${getAuthCookieName()}=${token}; SameSite=True; Secure; HttpOnly; Max-Age=60*60*24`
+    );
   }
+  // }
 
   if (u.pathname === '/api/identity/logout') {
     response.headers.set(
