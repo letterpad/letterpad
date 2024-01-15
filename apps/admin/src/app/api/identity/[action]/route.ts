@@ -35,6 +35,12 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
       },
     });
     const response = NextResponse.redirect(urls, { status: 302 });
+    response.cookies.set(getAuthCookieName(), '', {
+      expires: new Date(0),
+      secure: true,
+      httpOnly: true,
+      path: '/',
+    });
     return response
   }
 

@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
       expires: new Date(0),
       secure: true,
       httpOnly: true,
+      path: '/',
     });
     return response;
   } else {
@@ -24,6 +25,12 @@ export async function GET(req: NextRequest) {
       status: 302,
     });
     response.cookies.delete(getAuthCookieName());
+    response.cookies.set(getAuthCookieName(), '', {
+      expires: new Date(0),
+      secure: true,
+      httpOnly: true,
+      path: '/',
+    });
     return response;
   }
 }
