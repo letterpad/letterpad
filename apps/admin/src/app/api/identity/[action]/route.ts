@@ -7,20 +7,20 @@ import { getAuthCookieName } from "@/utils/authCookie";
 
 export async function GET(req: NextRequest, { params }: { params: { action: string } }) {
   const callbackUrl = req.nextUrl.searchParams.get("callbackUrl")!;
-  // const session = await getServerSession({ req });
+  const session = await getServerSession({ req });
   const token = await getToken({
     req: req as any,
     secret: process.env.SECRET_KEY,
   });
 
-  if (!token) {
+  if (!session) {
     return NextResponse.redirect(`${process.env.ROOT_URL}/login?error=unauthorized&callbackUrl=${callbackUrl}`, { status: 307 });
   }
 
   if (params.action === "logout") {
     const sessions = await prisma.session.findMany({
       where: {
-        author_id: Number(token.sub)!,
+        author_id: Number(session.user.id)!,
       },
     });
     if (!sessions.length) {
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
     const urls = sessions.map((session) => `${session.domain}/api/identity/logout?origin=${callbackUrl}`).join("&next=");
     await prisma.session.deleteMany({
       where: {
-        author_id: Number(token.sub)!,
+        author_id: Number(session.user.id)!,
       },
     });
     return NextResponse.redirect(urls, { status: 307 });
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
       const sessionToken = cookieStore.get(getAuthCookieName())?.value!;
       const found = await prisma.session.findFirst({
         where: {
-          author_id: Number(token.sub),
+          author_id: Number(session.user.id),
           domain: new URL(callbackUrl).origin,
         },
       });
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
             },
             data: {
               token: sessionToken,
-              expiresAt: new Date(token?.exp! as Date),
+              expiresAt: token?.exp ? new Date(token?.exp! as Date) : new Date(),
             },
           });
         }
@@ -74,10 +74,10 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
           data: {
             domain: new URL(callbackUrl).origin,
             token: cookieStore.get(getAuthCookieName())?.value!,
-            expiresAt: new Date(token?.exp! as Date),
+            expiresAt: token?.exp ? new Date(token?.exp! as Date) : new Date(),
             author: {
               connect: {
-                id: Number(token.sub),
+                id: Number(session.user.id),
               },
             },
           },

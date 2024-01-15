@@ -39,7 +39,7 @@ export const LoginForm = ({
       const callbackUrl = params.get("callbackUrl");
       let redirectUrl = result.redirectUrl;
       if (callbackUrl && new URL(callbackUrl).host !== document.location.host) {
-        document.location.href = `/api/redirect-session?callbackUrl=${callbackUrl}`;
+        document.location.href = `/api/identity/login?callbackUrl=${callbackUrl}`;
         return;
       }
       if (callbackUrl && typeof callbackUrl === "string") {
