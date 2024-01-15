@@ -24,7 +24,11 @@ export const LoginForm = ({
 
   const loginAction = async (e: any) => {
     e.preventDefault();
-    const result = await doLogin({ email, password });
+    const result = await doLogin({
+      email,
+      password,
+      callbackUrl: params.get("callbackUrl"),
+    });
     track({
       eventAction: EventAction.Click,
       eventCategory: "login",
@@ -34,6 +38,10 @@ export const LoginForm = ({
       Message().success({ content: result.message, duration: 3 });
       const callbackUrl = params.get("callbackUrl");
       let redirectUrl = result.redirectUrl;
+      if (callbackUrl && new URL(callbackUrl).host !== document.location.host) {
+        document.location.href = `/api/redirect-session?callbackUrl=${callbackUrl}`;
+        return;
+      }
       if (callbackUrl && typeof callbackUrl === "string") {
         redirectUrl = new URL(callbackUrl).pathname;
       }

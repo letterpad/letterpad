@@ -41,8 +41,21 @@ model Author {
   profile_updated        Boolean      @default(false)
   stripe_customer_id     String?
   stripe_subscription_id String?
+  session                Session[]
 
   @@index([role_id])
+}
+
+model Session {
+  id        Int       @id @default(autoincrement())
+  domain    String
+  author_id Int
+  token     String
+  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  expiresAt DateTime?
+  createdAt DateTime? @default(now())
+
+  @@index([author_id])
 }
 
 model EmailDelivery {
@@ -217,7 +230,7 @@ model SubscribersDelivery {
 }
 
 model EmailTemplates {
-  template  String @unique
-  subject   String
-  body      String
+  template String @unique
+  subject  String
+  body     String
 }

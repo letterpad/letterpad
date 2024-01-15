@@ -3,45 +3,58 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Author {
-  id                  Int          @id @default(autoincrement())
-  name                String
-  username            String       @unique
-  email               String       @unique
-  password            String
-  bio                 String       @db.Text
-  occupation          String       @db.VarChar(100)
-  company_name        String       @db.VarChar(100)
-  avatar              String       @db.VarChar(300)
-  social              String       @default("{}") @db.VarChar(500)
-  verified            Boolean      @default(false)
-  createdAt           DateTime?    @default(now())
-  updatedAt           DateTime?    @updatedAt
-  verify_attempt_left Int?         @default(3)
-  analytics_id        Int?
-  analytics_uuid      String?
-  role_id             Int
-  login_type          String       @default("credentials")
-  last_seen           DateTime?
-  register_step       String?     @default("")   @db.VarChar(50)
-  role                Role         @relation(fields: [role_id], references: [id])
-  domain              Domain?
-  posts               Post[]
-  setting             Setting?
-  subscribers         Subscriber[]
-  uploads             Upload[]
-  first_post_published Boolean      @default(false)
-  settings_updated    Boolean      @default(false)
-  profile_updated      Boolean      @default(false)
-  stripe_customer_id  String?
+  id                     Int          @id @default(autoincrement())
+  name                   String
+  username               String       @unique
+  email                  String       @unique
+  password               String
+  bio                    String       @db.Text
+  occupation             String       @db.VarChar(100)
+  company_name           String       @db.VarChar(100)
+  avatar                 String       @db.VarChar(300)
+  social                 String       @default("{}") @db.VarChar(500)
+  verified               Boolean      @default(false)
+  createdAt              DateTime?    @default(now())
+  updatedAt              DateTime?    @updatedAt
+  verify_attempt_left    Int?         @default(3)
+  analytics_id           Int?
+  analytics_uuid         String?
+  role_id                Int
+  login_type             String       @default("credentials")
+  last_seen              DateTime?
+  register_step          String?      @default("") @db.VarChar(50)
+  role                   Role         @relation(fields: [role_id], references: [id])
+  domain                 Domain?
+  posts                  Post[]
+  setting                Setting?
+  subscribers            Subscriber[]
+  uploads                Upload[]
+  first_post_published   Boolean      @default(false)
+  settings_updated       Boolean      @default(false)
+  profile_updated        Boolean      @default(false)
+  stripe_customer_id     String?
   stripe_subscription_id String?
+  session                Session[]
 
   @@index([role_id])
+}
+
+model Session {
+  id        Int       @id @default(autoincrement())
+  domain    String
+  author_id Int
+  token     String
+  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  expiresAt DateTime?
+  createdAt DateTime? @default(now())
+
+  @@index([author_id])
 }
 
 model EmailDelivery {
@@ -75,7 +88,7 @@ model Permission {
 model Post {
   id                 Int       @id @default(autoincrement())
   title              String    @default("")
-  sub_title          String    @db.VarChar(190) @default("")
+  sub_title          String    @default("") @db.VarChar(190)
   html               String    @db.Text
   html_draft         String?   @db.Text
   excerpt            String    @default("")
@@ -92,11 +105,12 @@ model Post {
   updatedAt          DateTime? @updatedAt
   createdAt          DateTime? @default(now())
   author_id          Int
-  author             Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author             Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
   tags               Tag[]
   page_type          String    @default("default")
   page_data          String    @db.Text
   stats              String    @default("{}")
+
   @@index([author_id])
 }
 
@@ -165,7 +179,7 @@ model Subscriber {
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
-  author              Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author              Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
 
   @@unique([email, author_id])
   @@index([author_id])
@@ -216,7 +230,7 @@ model SubscribersDelivery {
 }
 
 model EmailTemplates {
-  template  String @unique
-  subject   String
-  body      String @db.VarChar(2000)
+  template String @unique
+  subject  String
+  body     String @db.VarChar(2000)
 }
