@@ -34,7 +34,9 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
         author_id: Number(decodedToken.sub)!,
       },
     });
-    return NextResponse.redirect(urls, { status: 307 });
+    const response = NextResponse.redirect(urls, { status: 307 });
+    response.cookies.delete(getAuthCookieName());
+    return response
   }
 
   if (params.action === "login") {
