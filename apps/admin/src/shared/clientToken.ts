@@ -12,4 +12,5 @@ export function decryptEmail(text) {
   return bufferObj
     .toString("utf8")
     .replace(ENCRYPTION_KEY, "")
+    .replace("6gExXHbH3MMTaFnydd4kvscD7ZC6TC7W", "") // remove this later. only for testing
 }
