@@ -11,6 +11,7 @@ export const getSession = async (siteUrl?: string) => {
       },
     });
     const session = await req.json();
+    // eslint-disable-next-line no-console
     console.log('========xx===session=====', session);
     return Object.keys(session).length ? session : null;
   } catch (e) {

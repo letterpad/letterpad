@@ -18,9 +18,12 @@ export function middleware(request: NextRequest) {
 
   const token = url.searchParams.get('token');
   if (token) {
+    // eslint-disable-next-line no-console
     console.log('Found Token', url.pathname);
     url.searchParams.delete('token');
+    // eslint-disable-next-line no-console
     console.log('Deleting Token from search params');
+    // eslint-disable-next-line no-console
     console.log('Setting cookie through header');
     requestHeaders.set(
       'set-cookie',
@@ -29,6 +32,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (u.pathname === '/api/identity/logout') {
+    // eslint-disable-next-line no-console
     console.log('found logout');
     requestHeaders.set(
       'set-cookie',

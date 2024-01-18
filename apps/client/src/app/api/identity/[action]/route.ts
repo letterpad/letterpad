@@ -4,7 +4,7 @@ import { getAuthCookieName } from '@/lib/utils/authCookie';
 export async function GET(req: NextRequest) {
   const next = req.nextUrl.searchParams.get('next')!;
   const origin = req.nextUrl.searchParams.get('origin')!;
-
+  // eslint-disable-next-line no-console
   console.log('next', next, 'origin', origin);
   // Check if there is a 'next' URL
   if (next) {
