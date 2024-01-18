@@ -11,8 +11,10 @@ export async function findEmailFromToken({ authHeader, ...rest }: P) {
     return { authHeader, ...rest }
   }
   const token = authHeader.split(/\s+/).pop() || "";
+  console.log("token", token)
   if (token !== "null") {
     const tokenData = decryptEmail(token);
+    console.log(tokenData)
     const author = await prisma.author.findUnique({ where: { email: tokenData } });
     if (author) return { authHeader, ...rest, authorId: author.id }
   }
