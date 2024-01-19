@@ -5,11 +5,10 @@ import { getAuthCookieName } from "./utils/authCookie";
 export const config = { matcher: "/((?!.*\\.).*)" };
 
 export async function middleware(request: NextRequest) {
-  const { device } = userAgent(request);
   const cookie = request.cookies.get(getAuthCookieName());
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
-  const callbackUrl = new URL(request.url).searchParams.get("callbackUrl");
+  const source = new URL(request.url).searchParams.get("source");
 
   if (!process.env.SECRET_KEY) {
     throw new Error(
@@ -20,30 +19,54 @@ export async function middleware(request: NextRequest) {
 
   if (cookie?.value) {
     try {
-      const decoded = await decode({
+      const user = await decode({
         token: cookie.value,
         secret: process.env.SECRET_KEY,
       });
-      if (!decoded?.email) {
+      if (!user?.email) {
         return NextResponse.redirect(ROOT_URL + "/login");
-      } else if (callbackUrl) {
-        const callbackUrlHost = new URL(callbackUrl || "");
-        if (host !== callbackUrlHost.host && !request.nextUrl.pathname.includes("/logout")) {
-          const url = request.nextUrl;
-          url.pathname = 'api/identity/login';
-          url.search = "";
-          url.searchParams.set("callbackUrl", callbackUrl);
-          return NextResponse.rewrite(url);
-        }
       }
     } catch (e) {
       // return NextResponse.redirect(ROOT_URL + "/login");
     }
   }
-
-  const viewport = device.type === "mobile" ? "mobile" : "desktop";
+  if (source) {
+    return handleAuth({ request, source });
+  }
   const nextUrl = request.nextUrl;
-  nextUrl.searchParams.set("viewport", viewport);
-
   return NextResponse.rewrite(nextUrl);
+}
+
+
+
+interface Props {
+  request: NextRequest;
+  source: string;
+  user?: any
+}
+function handleAuth({ request, source, user }: Props) {
+  const sourceURL = new URL(source);
+  const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
+  const adminURL = new URL(process.env.ROOT_URL);
+  const url = request.nextUrl;
+  const isLogin = url.pathname === "/api/identity/login";
+  const isLogout = url.pathname === "/api/identity/logout";
+
+
+  if (adminURL.host !== callback.host) {
+    if (!url.searchParams.get("serviceUrl")) {
+      const requestHeaders = new Headers();
+      url.searchParams.set("source", source);
+      if (isLogin) {
+        url.pathname = 'api/identity/login';
+        url.searchParams.set("serviceUrl", `${callback.href}api/identity/login`);
+      }
+      if (isLogout) {
+        requestHeaders.set('set-cookie', `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`)
+        url.pathname = 'api/identity/logout';
+        url.searchParams.set("serviceUrl", `${callback.href}api/identity/logout`);
+      }
+      return NextResponse.redirect(url, { headers: requestHeaders });
+    }
+  }
 }

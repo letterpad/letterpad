@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthCookieName } from '../lib/utils/authCookie';
+import { getApiRootUrl } from '../lib/utils/url';
+import { getSession } from '../lib/utils/session';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Store current request url in a custom header, which you can read later
   const requestHeaders = new Headers(request.headers);
   const u = new URL(request.url);
@@ -17,29 +19,41 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl;
 
   const token = url.searchParams.get('token');
-  if (token) {
-    // eslint-disable-next-line no-console
-    console.log('Found Token', url.pathname);
+  if (token && u.pathname === '/api/identity/login') {
     url.searchParams.delete('token');
-    // eslint-disable-next-line no-console
-    console.log('Deleting Token from search params');
-    // eslint-disable-next-line no-console
-    console.log('Setting cookie through header');
     requestHeaders.set(
       'set-cookie',
-      `${getAuthCookieName()}=${token}; SameSite=True; Secure; HttpOnly; Max-Age=60*60*24`
+      `${getAuthCookieName()}=${token}; SameSite=True; Secure; Max-Age=60*60*24; path=/;`
     );
+    const sourceUrl = new URL(url.searchParams.get('source')!);
+    sourceUrl.searchParams.delete('token');
+    return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
   }
-
   if (u.pathname === '/api/identity/logout') {
-    // eslint-disable-next-line no-console
-    console.log('found logout');
     requestHeaders.set(
       'set-cookie',
-      `${getAuthCookieName()}=; Max-Age=-1; httpOnly; path=/; secure;`
+      `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
     );
+    const sourceUrl = new URL(url.searchParams.get('source')!);
+    return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
   }
 
+  if (u.pathname === '/api/client/session') {
+    const a = await getSession(
+      request.headers.get('siteurl')!,
+      `${getAuthCookieName()}=${request.cookies.get(getAuthCookieName())
+        ?.value}`
+    );
+
+    if (!a || Object.keys(a).length === 0) {
+      requestHeaders.set(
+        'set-cookie',
+        `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
+      );
+      return NextResponse.redirect(u.origin, { headers: requestHeaders });
+    }
+    return NextResponse.json(a);
+  }
   return NextResponse.rewrite(url, { headers: requestHeaders });
 }
 

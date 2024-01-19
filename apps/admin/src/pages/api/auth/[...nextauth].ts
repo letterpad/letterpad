@@ -55,8 +55,8 @@ const providers = (): NextAuthOptions["providers"] => [
           return authenticated
             ? author
             : Promise.reject(
-                new Error("Incorrect password. Please try again.")
-              );
+              new Error("Incorrect password. Please try again.")
+            );
         } else {
           return Promise.reject(
             new Error("The email you provided is not registered.")

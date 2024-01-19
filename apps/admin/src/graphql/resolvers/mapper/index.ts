@@ -29,13 +29,13 @@ export const mapAuthorToGraphql = <T extends DbAuthor>(author: T) => {
     ...author,
     social: JSON.parse(
       author.social ||
-        JSON.stringify({
-          twitter: "",
-          facebook: "",
-          github: "",
-          instagram: "",
-          linkedin: "",
-        })
+      JSON.stringify({
+        twitter: "",
+        facebook: "",
+        github: "",
+        instagram: "",
+        linkedin: "",
+      })
     ),
     __typename: "Author",
   } as Author & T;

@@ -27,7 +27,7 @@ export const LoginForm = ({
     const result = await doLogin({
       email,
       password,
-      callbackUrl: params.get("callbackUrl"),
+      callbackUrl: params.get("serviceUrl"),
     });
     track({
       eventAction: EventAction.Click,
@@ -36,20 +36,22 @@ export const LoginForm = ({
     });
     if (result.success) {
       Message().success({ content: result.message, duration: 3 });
-      const callbackUrl = params.get("callbackUrl");
+      const serviceUrl = params.get("serviceUrl");
       let redirectUrl = result.redirectUrl;
-      if (callbackUrl && new URL(callbackUrl).host !== document.location.host) {
-        document.location.href = `/api/identity/login?callbackUrl=${callbackUrl}`;
+      if (serviceUrl && new URL(serviceUrl).host !== document.location.host) {
+        document.location.href = `/api/identity/login?serviceUrl=${serviceUrl}&source=${params.get(
+          "source"
+        )}`;
         return;
       }
-      if (callbackUrl && typeof callbackUrl === "string") {
-        redirectUrl = new URL(callbackUrl).pathname;
-      }
+
       if (redirectUrl?.includes("login")) {
         redirectUrl = redirectUrl.replace("login", "posts");
       }
       if (redirectUrl) {
         router.push(redirectUrl);
+        // document.location.href = `/api/identity/login?source=${redirectUrl}`;
+        return;
       }
       return;
     }

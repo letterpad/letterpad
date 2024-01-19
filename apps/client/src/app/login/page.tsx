@@ -4,7 +4,7 @@ import { getData } from '../../data';
 
 const Auth = async () => {
   const data = await getData();
-  const session = await getSession(data?.settings.site_url);
+  const session = await getSession(data?.settings.site_url!);
 
   return !session ? (
     <Login />

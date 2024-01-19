@@ -4,7 +4,7 @@ import { getApiRootUrl } from 'lib/utils/url';
 
 export const Logout = () => {
   const onClick = () => {
-    document.location.href = `${getApiRootUrl()}/api/identity/logout?callbackUrl=${
+    document.location.href = `${getApiRootUrl()}/api/identity/logout?source=${
       document.location.href
     }`;
   };
