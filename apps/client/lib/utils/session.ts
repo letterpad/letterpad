@@ -15,6 +15,7 @@ export const getSession = async (siteUrl: string, cookie?: string) => {
     const session = await req.json();
     return Object.keys(session).length ? session : null;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
 };
