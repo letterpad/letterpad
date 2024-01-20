@@ -32,8 +32,8 @@ export const Sidebar = () => {
               if (key === "/logout") {
                 e.preventDefault();
                 await fetch(
-                  "http://localhost:3000/api/identity/logout?source=" +
-                    document.location.origin
+                  `${document.location.origin}/api/identity/logout?source=
+                    ${document.location.origin}`
                 );
                 signOut({
                   redirect: true,
