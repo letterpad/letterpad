@@ -5,10 +5,10 @@ import { getData } from '../../data';
 const Auth = async () => {
   const data = await getData();
   const session = await getSession(data?.settings.site_url!);
-
+  const hasSession = session && Object.keys(session).length > 0;
   // eslint-disable-next-line no-console
   console.log('Client Auth session', session);
-  return !session ? (
+  return !hasSession ? (
     <Login />
   ) : (
     <>

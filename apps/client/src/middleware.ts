@@ -39,20 +39,24 @@ export async function middleware(request: NextRequest) {
   }
 
   if (u.pathname === '/api/client/session') {
-    const a = await getSession(
-      request.headers.get('siteurl')!,
-      `${getAuthCookieName()}=${request.cookies.get(getAuthCookieName())
-        ?.value}`
-    );
-
-    if (!a || Object.keys(a).length === 0) {
-      requestHeaders.set(
-        'set-cookie',
-        `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
+    const sessionCookie = request.cookies.get(getAuthCookieName());
+    if (sessionCookie) {
+      const a = await getSession(
+        request.headers.get('siteurl')!,
+        `${getAuthCookieName()}=${sessionCookie})
+          ?.value}`
       );
-      return NextResponse.redirect(u.origin, { headers: requestHeaders });
+
+      if (!a || Object.keys(a).length === 0) {
+        requestHeaders.set(
+          'set-cookie',
+          `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
+        );
+        return NextResponse.redirect(u.origin, { headers: requestHeaders });
+      }
+      return NextResponse.json(a);
     }
-    return NextResponse.json(a);
+    return NextResponse.json({});
   }
   return NextResponse.rewrite(url, { headers: requestHeaders });
 }
