@@ -4,7 +4,6 @@ import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getData } from '@/data';
 
 import { FontPageWrapper } from '@/components/fonts';
@@ -170,7 +169,6 @@ const Layout = async ({ children }) => {
         </ThemeProvider>
         <div id="modal-creatives" />
         <HighlightCode />
-        <SpeedInsights />
       </body>
     </html>
   );

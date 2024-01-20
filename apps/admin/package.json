@@ -18,7 +18,7 @@
     "client": "concurrently -k 'bun dev'",
     "dev": "next",
     "postbuild": "tsup ./src/graphql/db/seed/seedIfNoSeed.ts ./src/graphql/db/seed/index.ts --format cjs --outDir ./src/graphql/db/dist",
-    "prestart": "bun run _prepare",
+    "prestart": "bun run prepare",
     "build": "bun run codegen && next build",
     "test": "bun run codegen && jest --runInBand",
     "start": "next start",
