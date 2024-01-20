@@ -26,24 +26,12 @@ export async function middleware(request: NextRequest) {
       });
       if (!decoded?.email) {
         return NextResponse.redirect(ROOT_URL + "/login");
-      } else if (callbackUrl) {
-        const callbackUrlHost = new URL(callbackUrl || "");
-        if (host !== callbackUrlHost.host && !request.nextUrl.pathname.includes("/logout")) {
-          const url = request.nextUrl;
-          url.pathname = 'api/identity/login';
-          url.search = "";
-          url.searchParams.set("callbackUrl", callbackUrl);
-          return NextResponse.rewrite(url);
-        }
       }
     } catch (e) {
       // return NextResponse.redirect(ROOT_URL + "/login");
     }
   }
-
-  const viewport = device.type === "mobile" ? "mobile" : "desktop";
   const nextUrl = request.nextUrl;
-  nextUrl.searchParams.set("viewport", viewport);
 
   return NextResponse.rewrite(nextUrl);
 }
