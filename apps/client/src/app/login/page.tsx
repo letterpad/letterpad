@@ -6,6 +6,8 @@ const Auth = async () => {
   const data = await getData();
   const session = await getSession(data?.settings.site_url!);
 
+  // eslint-disable-next-line no-console
+  console.log('Client Auth session', session);
   return !session ? (
     <Login />
   ) : (

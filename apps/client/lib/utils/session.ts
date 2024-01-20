@@ -5,6 +5,12 @@ export const getSession = async (siteUrl: string, cookie?: string) => {
   if (!siteUrl) return null;
   const cStore = cookies();
   try {
+    // eslint-disable-next-line no-console
+    console.log('getSession client headers passed', {
+      cookie: cookie ?? cStore.toString(),
+      siteurl: siteUrl,
+      origin: getApiRootUrl()!,
+    });
     const req = await fetch(`${getApiRootUrl()}/api/client/session`, {
       headers: {
         cookie: cookie ?? cStore.toString(),
