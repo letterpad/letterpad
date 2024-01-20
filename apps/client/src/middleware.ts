@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
   requestHeaders.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600');
   const url = request.nextUrl;
 
-  return NextResponse.rewrite(url, { headers: requestHeaders });
+  return NextResponse.rewrite(url);
 }
 
 export const config = { matcher: '/((?!.*\\.).*)' };
