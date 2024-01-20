@@ -45,14 +45,18 @@ interface Props {
   user?: any
 }
 function handleAuth({ request, source, user }: Props) {
+  console.log("Root", process.env.ROOT_URL)
   const sourceURL = new URL(source);
+  console.log("sourceURL", sourceURL.href)
   const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
-  const adminURL = new URL(request.headers.get("host")!);
+  console.log("callback", callback.href)
+  const adminURL = new URL(process.env.ROOT_URL);
+  console.log("adminURL", adminURL.href)
   const url = request.nextUrl;
   const isLogin = url.pathname === "/api/identity/login";
   const isLogout = url.pathname === "/api/identity/logout";
 
-  console.log("middleware - admin and callback host check", adminURL.host, callback.host)
+
   if (adminURL.host !== callback.host) {
     if (!url.searchParams.get("serviceUrl")) {
       const requestHeaders = new Headers();
