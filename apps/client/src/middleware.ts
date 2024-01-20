@@ -12,10 +12,10 @@ export async function middleware(request: NextRequest) {
     u.host = u.host.replace('www.', '');
     return NextResponse.redirect(u.toString());
   }
-  requestHeaders.set('x-url', u.pathname);
-  requestHeaders.set('Cache-Control', 'public, s-maxage=1');
-  requestHeaders.set('CDN-Cache-Control', 'public, s-maxage=60');
-  requestHeaders.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600');
+  // requestHeaders.set('x-url', u.pathname);
+  // requestHeaders.set('Cache-Control', 'public, s-maxage=1');
+  // requestHeaders.set('CDN-Cache-Control', 'public, s-maxage=60');
+  // requestHeaders.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600');
   const url = request.nextUrl;
 
   const token = url.searchParams.get('token');
