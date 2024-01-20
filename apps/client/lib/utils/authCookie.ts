@@ -5,5 +5,5 @@ export const getAuthCookieName = () => {
   if (apiUrl && new URL(apiUrl).protocol === 'https:') {
     return '__Secure-next-auth.session-token';
   }
-  return '__Secure-next-auth.session-token';
+  return 'next-auth.session-token';
 };
