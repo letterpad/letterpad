@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 interface IInfiniteScrollListProps {
@@ -13,7 +12,6 @@ export const InfiniteScrollList = ({
   loadMore,
 }: IInfiniteScrollListProps) => {
   return (
-    <>
       <div className="grid">
         <InfiniteScroll
           height={400}
@@ -27,6 +25,5 @@ export const InfiniteScrollList = ({
           </div>
         </InfiniteScroll>
       </div>
-    </>
-  ) as ReactNode;
+  ) as JSX.Element;
 };
