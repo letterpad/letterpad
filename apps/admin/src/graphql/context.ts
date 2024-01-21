@@ -150,13 +150,10 @@ export const getServerSession = async ({ req }) => {
       (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
       basePath +
       "/api/auth/session";
-    console.log(`sessionURL: ${sessionURL}`);
-    console.log('session cookie', getHeader(headers, "cookie"));
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });
     const session = await res.json();
-    console.log(session);
     return session.user ? session : null;
   } catch (e) {
     // eslint-disable-next-line no-console
