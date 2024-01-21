@@ -66,7 +66,6 @@ function handleAuth({ request, source, user }: Props) {
         url.searchParams.set("serviceUrl", `${callback.href}api/identity/login`);
       }
       if (isLogout) {
-        requestHeaders.set('set-cookie', `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`)
         url.pathname = 'api/identity/logout';
         url.searchParams.set("serviceUrl", `${callback.href}api/identity/logout`);
       }
