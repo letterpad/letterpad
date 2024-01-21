@@ -58,7 +58,7 @@ function clearCookieAndRedirect(request: NextRequest) {
 
 async function handleSessionResponse(request: NextRequest) {
   const requestUrl = new URL(request.url);
-  const sessionCookie = request.cookies.get(getAuthCookieName());
+  const sessionCookie = request.cookies.get(getAuthCookieName())?.value;
   const header = request.headers;
   const siteUrl = `${header.get('x-forwarded-proto')}://${header.get('host')}`;
 
