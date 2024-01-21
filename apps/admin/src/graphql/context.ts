@@ -151,6 +151,7 @@ export const getServerSession = async ({ req }) => {
       basePath +
       "/api/auth/session";
     console.log(`sessionURL: ${sessionURL}`);
+    console.log('session cookie', getHeader(headers, "cookie"))
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });
