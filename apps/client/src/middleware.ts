@@ -1,63 +1,80 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthCookieName } from '../lib/utils/authCookie';
 import { getApiRootUrl } from '../lib/utils/url';
-import { getSession } from '../lib/utils/session';
 
 export async function middleware(request: NextRequest) {
-  // Store current request url in a custom header, which you can read later
   const requestHeaders = new Headers(request.headers);
-  const u = new URL(request.url);
-  const isSubdomainWww = u.host.split('.')[0];
-  if (isSubdomainWww === 'www') {
-    u.host = u.host.replace('www.', '');
-    return NextResponse.redirect(u.toString());
-  }
-  // requestHeaders.set('x-url', u.pathname);
-  // requestHeaders.set('Cache-Control', 'public, s-maxage=1');
-  // requestHeaders.set('CDN-Cache-Control', 'public, s-maxage=60');
-  // requestHeaders.set('Vercel-CDN-Cache-Control', 'public, s-maxage=3600');
+  const requestUrl = new URL(request.url);
+  const isSubdomainWww = requestUrl.host.split('.')[0];
+  const hasWwwPrefix = isSubdomainWww === 'www';
+  const isLogin = requestUrl.pathname === '/api/identity/login';
+  const isLogout = requestUrl.pathname === '/api/identity/logout';
+  const isSession = requestUrl.pathname === '/api/client/session';
   const url = request.nextUrl;
+  const tokenReceived = url.searchParams.get('token');
 
-  const token = url.searchParams.get('token');
-  if (token && u.pathname === '/api/identity/login') {
-    url.searchParams.delete('token');
-    requestHeaders.set(
-      'set-cookie',
-      `${getAuthCookieName()}=${token}; SameSite=True; Secure; Max-Age=60*60*24; path=/;`
-    );
-    const sourceUrl = new URL(url.searchParams.get('source')!);
-    sourceUrl.searchParams.delete('token');
-    return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
-  }
-  if (u.pathname === '/api/identity/logout') {
-    requestHeaders.set(
-      'set-cookie',
-      `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
-    );
-    const sourceUrl = new URL(url.searchParams.get('source')!);
-    return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
+  if (hasWwwPrefix) {
+    requestUrl.host = requestUrl.host.replace('www.', '');
+    return NextResponse.redirect(requestUrl.toString());
   }
 
-  if (u.pathname === '/api/client/session') {
-    const sessionCookie = request.cookies.get(getAuthCookieName());
-    if (sessionCookie) {
-      const a = await getSession(
-        request.headers.get('siteurl')!,
-        `${getAuthCookieName()}=${sessionCookie.value}`
-      );
+  if (tokenReceived && isLogin) {
+    return tokenReceivedResponse(request);
+  }
+  if (isLogout) {
+    return clearCookieAndRedirect(request);
+  }
 
-      if (!a || Object.keys(a).length === 0) {
-        requestHeaders.set(
-          'set-cookie',
-          `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
-        );
-        return NextResponse.redirect(u.origin, { headers: requestHeaders });
-      }
-      return NextResponse.json(a);
-    }
-    return NextResponse.json({});
+  if (isSession) {
+    return handleSessionResponse(request);
   }
   return NextResponse.rewrite(url, { headers: requestHeaders });
 }
 
 export const config = { matcher: '/((?!.*\\.).*)' };
+
+// Helpers
+function tokenReceivedResponse(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  const sourceUrl = new URL(request.nextUrl.searchParams.get('source')!);
+  const token = request.nextUrl.searchParams.get('token');
+  request.nextUrl.searchParams.delete('token');
+  requestHeaders.set(
+    'set-cookie',
+    `${getAuthCookieName()}=${token}; SameSite=True; Secure; Max-Age=60*60*24; path=/;`
+  );
+  return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
+}
+
+function clearCookieAndRedirect(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  const sourceUrl = new URL(request.nextUrl.searchParams.get('source')!);
+  requestHeaders.set(
+    'set-cookie',
+    `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
+  );
+  return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
+}
+
+async function handleSessionResponse(request: NextRequest) {
+  const requestUrl = new URL(request.url);
+  const sessionCookie = request.cookies.get(getAuthCookieName());
+  const header = request.headers;
+  const siteUrl = `${header.get('x-forwarded-proto')}://${header.get('host')}`;
+
+  if (sessionCookie) {
+    const req = await fetch(`${getApiRootUrl()}/api/client/session`, {
+      headers: {
+        cookie: request.cookies.toString(),
+        siteurl: siteUrl,
+      },
+    });
+    const session = await req.json();
+    if (!session) {
+      request.nextUrl.searchParams.set('source', requestUrl.origin);
+      return clearCookieAndRedirect(request);
+    }
+    return NextResponse.json(session);
+  }
+  return NextResponse.json(null);
+}

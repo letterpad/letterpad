@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "@/graphql/context";
 import { prisma } from "@/lib/prisma";
 import { cookies } from 'next/headers'
-import { getAuthCookieName } from "../../../../utils/authCookie";
+import { getAuthCookieName } from "@/utils/authCookie";
 
 export async function GET(request: Request) {
     const hasToken = cookies().get(getAuthCookieName());
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     });
     console.log(`siteURL from client session: ${request.headers.get('siteurl')!},  session: ${session}, found: ${found}`)
     if (!found) {
-        return NextResponse.json({}, { status: 200 });
+        return NextResponse.json(null, { status: 200 });
     }
     return NextResponse.json(session, { status: 200 });
 }

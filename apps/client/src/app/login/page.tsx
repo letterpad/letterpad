@@ -1,14 +1,22 @@
-import { getSession } from 'lib/utils/session';
 import { Login, Logout } from '../../features/auth';
-import { getData } from '../../data';
+import { cookies, headers } from 'next/headers';
 
+async function getSession() {
+  const header = headers();
+  const siteUrl = `${header.get('x-forwarded-proto')}://${header.get('host')}`;
+  const response = await fetch(`${siteUrl}/api/client/session`, {
+    headers: {
+      cookie: cookies().toString(),
+    },
+  });
+  const data = await response.json();
+  return data;
+}
 const Auth = async () => {
-  const data = await getData();
-  const session = await getSession(data?.settings.site_url!);
-  const hasSession = session && Object.keys(session).length > 0;
+  const session = await getSession();
   // eslint-disable-next-line no-console
   console.log('Client Auth session', session);
-  return !hasSession ? (
+  return !session ? (
     <Login />
   ) : (
     <>
