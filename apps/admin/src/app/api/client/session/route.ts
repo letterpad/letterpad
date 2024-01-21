@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "@/graphql/context";
 import { prisma } from "@/lib/prisma";
-import { getAuthCookieName } from "@/utils/authCookie";
+import { cookies } from 'next/headers'
+import { getAuthCookieName } from "../../../../utils/authCookie";
 
 export async function GET(request: Request) {
+    const hasToken = cookies().get(getAuthCookieName());
+    if (!hasToken) {
+        console.log("no token")
+        return NextResponse.json({}, { status: 200 });
+    }
     const session = await getServerSession({ req: request as any });
     const siteUrl = request.headers.get('siteurl')!;
     const found = await prisma.session.findFirst({
@@ -14,8 +20,6 @@ export async function GET(request: Request) {
     });
     console.log(`siteURL from client session: ${request.headers.get('siteurl')!},  session: ${session}, found: ${found}`)
     if (!found) {
-        const headers = new Headers();
-        headers.set('set-cookie', `${getAuthCookieName()}=; SameSite=None; Secure; Max-Age=0`);
         return NextResponse.json({}, { status: 200 });
     }
     return NextResponse.json(session, { status: 200 });

@@ -43,8 +43,7 @@ export async function middleware(request: NextRequest) {
     if (sessionCookie) {
       const a = await getSession(
         request.headers.get('siteurl')!,
-        `${getAuthCookieName()}=${sessionCookie})
-          ?.value}`
+        `${getAuthCookieName()}=${sessionCookie.value}`
       );
 
       if (!a || Object.keys(a).length === 0) {
