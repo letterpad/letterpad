@@ -49,7 +49,7 @@ model Session {
   id        Int       @id @default(autoincrement())
   domain    String
   author_id Int
-  token     String
+  token     String    @db.VarChar(300)
   author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
   expiresAt DateTime?
   createdAt DateTime? @default(now())

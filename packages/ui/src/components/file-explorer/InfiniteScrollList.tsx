@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 interface IInfiniteScrollListProps {
@@ -27,5 +28,5 @@ export const InfiniteScrollList = ({
         </InfiniteScroll>
       </div>
     </>
-  );
+  ) as ReactNode;
 };
