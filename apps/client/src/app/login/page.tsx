@@ -27,7 +27,7 @@ const Auth = async () => {
     <Login />
   ) : (
     <>
-      {session?.user?.name} <Logout />
+      {session?.name} <Logout />
     </>
   );
 };
