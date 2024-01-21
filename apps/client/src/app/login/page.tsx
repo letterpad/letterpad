@@ -4,10 +4,10 @@ import { cookies, headers } from 'next/headers';
 async function getSession() {
   try {
     const header = headers();
-    const siteUrl = `${header.get('x-forwarded-proto')}://${header.get(
-      'host'
-    )}`;
-    console.log('siteUrl', siteUrl);
+    const proto = header.get('x-forwarded-proto');
+    const host = header.get('host');
+    const siteUrl = `${proto}://${host}`;
+
     const response = await fetch(`${siteUrl}/api/client/session`, {
       headers: {
         cookie: cookies().toString(),
@@ -21,8 +21,6 @@ async function getSession() {
 }
 const Auth = async () => {
   const session = await getSession();
-  // eslint-disable-next-line no-console
-  console.log('Client Auth session', session);
   return !session ? (
     <Login />
   ) : (

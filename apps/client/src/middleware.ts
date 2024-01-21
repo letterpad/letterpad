@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (tokenReceived && isLogin) {
-    return tokenReceivedResponse(request);
+    return setSessionCookieAndRedirect(request);
   }
   if (isLogout) {
     return clearCookieAndRedirect(request);
@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
 export const config = { matcher: '/((?!.*\\.).*)' };
 
 // Helpers
-function tokenReceivedResponse(request: NextRequest) {
+function setSessionCookieAndRedirect(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   const sourceUrl = new URL(request.nextUrl.searchParams.get('source')!);
   const token = request.nextUrl.searchParams.get('token');

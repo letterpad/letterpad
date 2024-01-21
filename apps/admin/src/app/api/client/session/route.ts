@@ -8,7 +8,6 @@ import { decode } from "next-auth/jwt";
 export async function GET(request: Request) {
     const hasToken = cookies().get(getAuthCookieName());
     if (!hasToken) {
-        console.log("no token")
         return NextResponse.json(null, { status: 200 });
     }
     try {
@@ -20,7 +19,6 @@ export async function GET(request: Request) {
                 domain: siteUrl,
             },
         });
-        console.log(`siteURL from client session: ${request.headers.get('siteurl')!},  session: ${session}, found: ${found}`)
         if (!found) {
             return NextResponse.json(null, { status: 200 });
         }
