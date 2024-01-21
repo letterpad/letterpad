@@ -65,7 +65,7 @@ async function handleSessionResponse(request: NextRequest) {
   if (sessionCookie) {
     const req = await fetch(`${getApiRootUrl()}/api/client/session`, {
       headers: {
-        cookie: request.cookies.toString(),
+        cookie: `${getAuthCookieName()}=${sessionCookie}`,
         siteurl: siteUrl,
       },
     });
