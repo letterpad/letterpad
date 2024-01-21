@@ -22,12 +22,16 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
   }
 
   if (params.action === "logout") {
-    await prisma.session.deleteMany({
+    console.log("logout entered", decodedToken)
+    const deleted = await prisma.session.deleteMany({
       where: {
         author_id: Number(decodedToken.sub)!,
       },
     });
-    const response = NextResponse.redirect(`${serviceUrl}?source=${sourceUrl}`, { status: 302 });
+    const requestHeaders = new Headers(req.headers)
+    req.cookies.delete(getAuthCookieName())
+    requestHeaders.set('set-cookie', `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`)
+    const response = NextResponse.redirect(`${serviceUrl}?source=${sourceUrl}`, { status: 302, headers: requestHeaders });
     return response
   }
 
