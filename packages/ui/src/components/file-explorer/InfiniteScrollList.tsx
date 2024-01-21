@@ -12,7 +12,6 @@ export const InfiniteScrollList = ({
   loadMore,
 }: IInfiniteScrollListProps) => {
   return (
-    <>
       <div className="grid">
         <InfiniteScroll
           height={400}
@@ -26,6 +25,5 @@ export const InfiniteScrollList = ({
           </div>
         </InfiniteScroll>
       </div>
-    </>
-  );
+  ) as JSX.Element;
 };

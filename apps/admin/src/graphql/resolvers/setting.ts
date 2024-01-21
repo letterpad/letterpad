@@ -15,6 +15,7 @@ import {
 import { resolveDesignField } from "../services/setting/resolveDesignField";
 
 import { Optional } from "@/types";
+import { encryptEmail } from "../../shared/clientToken";
 
 const Setting: SettingResolvers<ResolverContext> = {
   menu: ({ menu, show_about_page, show_tags_page }, _, context) =>
@@ -28,6 +29,9 @@ const Setting: SettingResolvers<ResolverContext> = {
   site_logo: ({ site_logo }) => resolveImageField(site_logo),
   site_favicon: ({ site_favicon }) => resolveImageField(site_favicon),
   design: ({ design }) => resolveDesignField(design),
+  client_token: ({ }, _, { session }) => {
+    return session?.user.email ? encryptEmail(session?.user.email) : ""
+  },
 };
 
 const Query: QueryResolvers<ResolverContext> = {

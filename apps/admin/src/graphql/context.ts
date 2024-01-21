@@ -8,6 +8,9 @@ import { basePath } from "../constants";
 import { getHeader } from "../utils/headers";
 import { pipe, andThen } from "ramda"
 import { findAuthorIdFromCustomDomain, findAuthorIdFromLetterpadSubdomain, findEmailFromToken } from "../shared/getAuthorIdFromHeaders";
+import { decode } from "next-auth/jwt";
+import { getAuthCookieName } from "../utils/authCookie";
+
 
 const isTest = process.env.NODE_ENV === "test";
 
@@ -142,6 +145,7 @@ export type ResolverContext = Awaited<ReturnType<typeof context>>;
 export const getServerSession = async ({ req }) => {
   try {
     const headers = req.headers;
+
     const sessionURL =
       (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
       basePath +

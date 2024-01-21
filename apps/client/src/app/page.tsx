@@ -57,7 +57,6 @@ export default async function Home() {
       '@id': `${settings.site_url}`,
     },
   };
-
   return (
     <>
       <Head>

@@ -11,7 +11,6 @@ import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { EmailTemplates } from "@/graphql/types";
-import { encryptEmail } from "@/shared/clientToken";
 import { sanitizeUsername } from "@/shared/utils";
 import { getHashedPassword } from "@/utils/bcrypt";
 
@@ -106,7 +105,7 @@ export const updateAuthor = async (
       dataToUpdate.register_step === RegisterStep.Registered &&
       exisitingAuthor?.createdAt &&
       Date.parse(exisitingAuthor.createdAt.toDateString()) >=
-        Date.parse("2023-01-06")
+      Date.parse("2023-01-06")
     ) {
       onBoardUser(author.id);
     }
@@ -115,15 +114,6 @@ export const updateAuthor = async (
       await enqueueEmailAndSend({
         template_id: EmailTemplates.VerifyChangedEmail,
         author_id: author.id,
-      });
-
-      await prisma.setting.update({
-        data: {
-          client_token: encryptEmail(args.author.email as string),
-        },
-        where: {
-          author_id: args.author.id,
-        },
       });
     }
     if (args.author.username) {

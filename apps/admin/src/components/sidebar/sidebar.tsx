@@ -28,12 +28,16 @@ export const Sidebar = () => {
         >
           <Menu
             Link={Link}
-            onSelect={(e, key) => {
+            onSelect={async (e, key) => {
               if (key === "/logout") {
                 e.preventDefault();
+                await fetch(
+                  `${document.location.origin}/api/identity/logout?source=
+                    ${document.location.origin}`
+                );
                 signOut({
                   redirect: true,
-                }).then(() => {
+                }).then(async () => {
                   window.location.href = "/login";
                 });
               }

@@ -234,7 +234,7 @@ async function insertAuthors() {
     {
       site_title: "Letterpad",
       site_tagline: "Easily create and publish your blog on Letterpad",
-      site_url: "http://localhost:3000",
+      site_url: "http://127.0.0.1:3001",
     }
   );
 
@@ -300,17 +300,17 @@ export async function insertPost(postData, author_id) {
       tags:
         postData.type === "post"
           ? {
-              connectOrCreate: [
-                {
-                  create: tags[0],
-                  where: { name: tags[0].name },
-                },
-                {
-                  create: tags[1],
-                  where: { name: tags[1].name },
-                },
-              ],
-            }
+            connectOrCreate: [
+              {
+                create: tags[0],
+                where: { name: tags[0].name },
+              },
+              {
+                create: tags[1],
+                where: { name: tags[1].name },
+              },
+            ],
+          }
           : undefined,
       author: {
         connect: {

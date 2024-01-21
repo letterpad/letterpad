@@ -15,6 +15,7 @@ import { Css } from './_css';
 import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
 import ThemeProvider from '../../context/ThemeProvider';
+import { SessionCleaner } from '../features/auth/cleaner';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
@@ -141,7 +142,6 @@ const Layout = async ({ children }) => {
   const theme = cookies().get(THEME_STORAGE_KEY)?.value;
   const { settings } = data;
   const { Layout } = getTheme(settings?.theme);
-
   return (
     <html
       lang="en"
@@ -157,6 +157,7 @@ const Layout = async ({ children }) => {
       />
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
+      <SessionCleaner />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
         <ThemeProvider storageKey={THEME_STORAGE_KEY}>
           <FontPageWrapper
