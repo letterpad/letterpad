@@ -61,6 +61,8 @@ async function handleSessionResponse(request: NextRequest) {
   const sessionCookie = request.cookies.get(getAuthCookieName());
   const header = request.headers;
   const siteUrl = `${header.get('x-forwarded-proto')}://${header.get('host')}`;
+  console.log('middleware siteurl', siteUrl);
+  console.log('middleware host', header.get('host'));
 
   if (sessionCookie) {
     const req = await fetch(`${getApiRootUrl()}/api/client/session`, {
