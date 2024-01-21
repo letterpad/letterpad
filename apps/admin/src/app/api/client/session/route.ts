@@ -12,7 +12,7 @@ export async function GET(request: Request) {
             domain: siteUrl,
         },
     });
-    console.log("siteURL from client session", request.headers.get('siteurl')!, "session", session, "found", found)
+    console.log(`siteURL from client session: ${request.headers.get('siteurl')!},  session: ${session}, found: ${found}`)
     if (!found) {
         const headers = new Headers();
         headers.set('set-cookie', `${getAuthCookieName()}=; SameSite=None; Secure; Max-Age=0`);
