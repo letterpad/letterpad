@@ -199,7 +199,7 @@ const Actions = ({ post }: IProps) => {
                 />
                 <Preview
                   title={post.title}
-                  url={settings?.site_url! + slug}
+                  url={settings?.site_url! + "/" + slug}
                   excerpt={excerptRef.current?.value}
                   image={post.cover_image.src}
                 />
