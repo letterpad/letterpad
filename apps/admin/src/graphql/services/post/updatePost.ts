@@ -115,14 +115,16 @@ export const updatePost = async (
       newPostArgs.data.slug = await slugify(
         prisma.post,
         textToSlug(args.data.slug.split("/").pop() ?? ""),
-        existingPost.author_id
+        existingPost.author_id,
+        existingPost.id
       );
     }
     if (args.data.title && existingPost.slug.includes("untitled")) {
       newPostArgs.data.slug = await slugify(
         prisma.post,
         textToSlug(args.data.title.trim()),
-        existingPost.author_id
+        existingPost.author_id,
+        existingPost.id
       );
     }
 

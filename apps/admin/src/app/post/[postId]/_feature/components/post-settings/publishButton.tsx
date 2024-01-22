@@ -16,6 +16,7 @@ import {
   WarnNoTags,
 } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
+import { Heading } from "./heading";
 
 interface Props {
   postId: number;
@@ -31,7 +32,7 @@ enum NotPublished {
 const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
   const { data: post, refetch } = useGetPost({ id: postId });
-  const { updatePost } = useUpdatePost();
+  const { updatePost, fetching } = useUpdatePost();
 
   if (post?.__typename !== "Post") return null;
 
@@ -42,8 +43,8 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
     const navigationPages = getPagesFromMenu(menu);
     const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
 
-    const navLinkedWithTags = postTags.find((tag) =>
-      navigationTags?.includes(tag.name.toLowerCase())
+    const navLinkedWithTags = postTags.find(
+      (tag) => navigationTags?.includes(tag.name.toLowerCase())
     );
     const navLinkedWithPages = navigationPages?.find(
       (page) => page === post.slug?.replace("/page/", "").toLowerCase()
@@ -92,57 +93,74 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         {!published && (
           <>
-            <label>Ready to publish your {post.type} ?</label>
-            <Button
-              variant="success"
-              size="normal"
-              onClick={validateAndPublish}
-              data-testid="publishBtn"
-              className="button btn-success"
-            >
-              Publish
-            </Button>
+            <Heading
+              heading={`Ready to publish your ${post.type} ?`}
+              subheading={``}
+            />
+            <div>
+              <Button
+                variant="success"
+                size="normal"
+                onClick={validateAndPublish}
+                data-testid="publishBtn"
+                className="button btn-success"
+                disabled={fetching}
+              >
+                {fetching ? "Publishing..." : "Publish"}
+              </Button>
+            </div>
           </>
         )}
         {published && (
           <>
-            <label className="flex flex-col">
-              Unpublish this {post.type} ? &nbsp;
-              <span className="help-text mb-4 block">
-                Your {post.type} will no longer be visible to users.
-              </span>
-              <div className="flex flex-col gap-2">
-                {post.status === PostStatusOptions.Published &&
-                  post.html !== post.html_draft && (
-                    <div className="flex gap-2">
-                      <Button
-                        variant="dark"
-                        onClick={() => publishOrUnpublish(true)}
-                        className="flex-1"
-                      >
-                        Update Live Post
-                      </Button>
-                      <Button
-                        variant="dark"
-                        onClick={_discardDraft}
-                        className="flex-1"
-                      >
-                        Discard Draft
-                      </Button>
-                    </div>
-                  )}
-                <Button
-                  variant="dark"
-                  onClick={() => publishOrUnpublish(false)}
-                  data-testid="unPublishBtn"
-                >
-                  Un-Publish
-                </Button>
-              </div>
-            </label>
+            <Heading
+              heading={`Unpublish this ${post.type} ?`}
+              subheading={`Your ${post.type} will no longer be visible to users.`}
+            />
+            <div className="flex flex-col gap-2">
+              {post.status === PostStatusOptions.Published &&
+              post.html !== post.html_draft ? (
+                <div className="flex gap-2">
+                  <Button
+                    variant="dark"
+                    onClick={() => publishOrUnpublish(true)}
+                    className="flex-1"
+                    disabled={fetching}
+                  >
+                    {fetching ? "Updating Post..." : "Update Live Post"}
+                  </Button>
+                  <Button
+                    variant="dark"
+                    onClick={_discardDraft}
+                    className="flex-1"
+                  >
+                    Discard Draft
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => publishOrUnpublish(false)}
+                    data-testid="unPublishBtn"
+                    disabled={fetching}
+                  >
+                    Unpublish
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    variant="danger"
+                    onClick={() => publishOrUnpublish(false)}
+                    data-testid="unPublishBtn"
+                    disabled={fetching}
+                  >
+                    {fetching ? "Unpublishing..." : "Unpublish"}
+                  </Button>
+                </div>
+              )}
+            </div>
           </>
         )}
       </div>

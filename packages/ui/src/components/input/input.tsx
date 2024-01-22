@@ -40,7 +40,7 @@ interface Props extends HTMLProps<HTMLInputElement> {
   label?: string;
   addonBefore?: ReactNode;
   addonAfter?: ReactNode;
-  help?: string;
+  help?: string | ReactNode;
   limit?: number;
   onEnter?: (event: KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -71,60 +71,60 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     rest.onChange?.(e);
   };
 
-  if (label) {
-    return (
-      <div className="w-full">
-        <Label label={label} className={"mb-2 " + labelClassName} />
-        <div className="relative flex items-center">
-          {addonBefore && (
-            <span
-              className={classNames(
-                "rounded-l-md border-[1px] border-r border-gray-300 bg-neutral-100 p-2 py-[0.58rem] text-gray-500 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300"
-              )}
-            >
-              {addonBefore}
-            </span>
-          )}
-          <input
-            ref={ref}
-            type={type}
-            disabled={disabled}
+
+  return (
+    <div className="w-full">
+      {label && <Label label={label} className={"mb-2 " + labelClassName} />}
+      <div className="relative flex items-center">
+        {addonBefore && (
+          <span
             className={classNames(
-              error && classes.error,
-              classes.base,
-              classes.variant[variant],
-              disabled && classes.disabled,
-              className,
-              {
-                "rounded-l-none border-l-0": addonBefore,
-                "rounded-r-none border-r-0": addonAfter,
-              }
+              "rounded-l-md border-[1px] border-r border-gray-300 bg-neutral-100 p-2 py-[0.58rem] text-gray-500 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300"
             )}
-            onKeyDown={(ev) => {
-              if (ev.key === "Enter") {
-                onEnter?.(ev);
-              }
-            }}
-            {...rest}
-            onChange={onChange}
-          />
-          {addonAfter && (
-            <span
-              className={classNames(
-                "rounded-r-md border-[1px] border-r border-gray-300 bg-neutral-100 p-2 py-[0.58rem] text-gray-500 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300"
-              )}
-            >
-              {addonAfter}
-            </span>
+          >
+            {addonBefore}
+          </span>
+        )}
+        <input
+          ref={ref}
+          type={type}
+          disabled={disabled}
+          className={classNames(
+            error && classes.error,
+            classes.base,
+            classes.variant[variant],
+            disabled && classes.disabled,
+            className,
+            {
+              "rounded-l-none border-l-0": addonBefore,
+              "rounded-r-none border-r-0": addonAfter,
+            }
           )}
-        </div>
-        {help && <span className="py-4 text-sm text-gray-500">{help}</span>}
-        {limit && (
-          <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter") {
+              onEnter?.(ev);
+            }
+          }}
+          {...rest}
+          onChange={onChange}
+        />
+        {addonAfter && (
+          <span
+            className={classNames(
+              "rounded-r-md border-[1px] border-r border-gray-300 bg-neutral-100 p-2 py-[0.58rem] text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-gray-300"
+            )}
+          >
+            {addonAfter}
+          </span>
         )}
       </div>
-    );
-  }
+      {help && <span className="py-4 text-sm text-gray-500">{help}</span>}
+      {limit && (
+        <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
+      )}
+    </div>
+  );
+
   return (
     <input
       ref={ref}

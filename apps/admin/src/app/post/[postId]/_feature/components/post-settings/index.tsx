@@ -19,6 +19,7 @@ import { QuickMenu } from "./quickmenu";
 import Tags from "./tags";
 import { useUpdatePost } from "../../api.client";
 import Link from "next/link";
+import { Heading } from "./heading";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -33,7 +34,7 @@ const Actions = ({ post }: IProps) => {
   const [slug, setSlug] = useState(post.slug || "");
   const [busy, setBusy] = useState(false);
 
-  const { updatePost } = useUpdatePost();
+  const { updatePost, fetching } = useUpdatePost();
 
   const debounceUpdatePost = useMemo(
     () => debounce((data) => updatePost(data), 500),
@@ -83,15 +84,15 @@ const Actions = ({ post }: IProps) => {
         },
         body: JSON.stringify({
           prompt: prompt,
-          field: 'excerpt'
+          field: "excerpt",
         }),
       });
       const text = await response.text();
       debounceUpdatePost({ excerpt: text, id: post.id });
       excerptRef.current.value = text;
-    } catch (e) { }
+    } catch (e) {}
     setBusy(false);
-  }
+  };
 
   return (
     <>
@@ -102,9 +103,112 @@ const Actions = ({ post }: IProps) => {
         showDrawer={showDrawer}
         id={post.id}
       />
-      <Drawer show={visible} title="Settings" onClose={onClose} dir="right">
-        <div className="space-y-10 whitespace-normal">
-          <PublishButton postId={post.id} menu={settings?.menu ?? []} />
+      <Drawer
+        show={visible}
+        title="Settings"
+        onClose={onClose}
+        dir="top"
+        className="w-screen"
+      >
+        <div className="whitespace-normal lg:w-2/3 m-auto">
+          <div className="flex flex-col-reverse md:flex-row gap-10">
+            <div className="flex-1 space-y-10">
+              <div>
+                <Heading
+                  heading={`${postVerb} Meta`}
+                  subheading={`Used in search engines and social media.`}
+                />
+                <TextArea
+                  rows={4}
+                  maxLength={160}
+                  onChange={(e) => {
+                    debounceUpdatePost({
+                      excerpt: e.target.value,
+                      id: post.id,
+                    });
+                  }}
+                  ref={excerptRef}
+                  defaultValue={post.excerpt}
+                />
+                <div className="mt-2">
+                  {busy ? (
+                    <CgSpinner className="animate-spin w-5 h-5" />
+                  ) : (
+                    <Link href="#" onClick={generateExcerpt}>
+                      Generate ✨
+                    </Link>
+                  )}
+                </div>
+              </div>
+              {isPost && (
+                <Tags
+                  post={post}
+                  header={
+                    <Heading
+                      heading="Tags"
+                      subheading={
+                        <>
+                          Add or change tags (up to 5) so readers know what your
+                          story is about.
+                        </>
+                      }
+                    />
+                  }
+                />
+              )}
+              <PublishButton postId={post.id} menu={settings?.menu ?? []} />
+            </div>
+            <div className="flex-1  space-y-10">
+              <div>
+                <Heading
+                  heading="Path"
+                  subheading={
+                    "The URL of your post. Should contain only letters, numbers or hyphen (-) "
+                  }
+                />
+                <Input
+                  onChange={(e) => setSlug(e.target.value)}
+                  value={getLastPartFromPath(slug)}
+                  addonBefore={`/${post.type}/`}
+                  addonAfter={
+                    <a
+                      className="cursor-pointer text-blue-500"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        formatSlug(slug);
+                      }}
+                    >
+                      Validate
+                    </a>
+                  }
+                  onEnter={() => formatSlug(slug)}
+                  data-testid="slugInp"
+                  help={
+                    <span className="text-white">
+                      {fetching ? "Checking..." : " "}
+                    </span>
+                  }
+                />
+              </div>
+              <div>
+                <Heading
+                  heading="Story Preview"
+                  subheading={
+                    "This is how various search engines and social posting will look like."
+                  }
+                />
+                <Preview
+                  title={post.title}
+                  url={settings?.site_url! + slug}
+                  excerpt={excerptRef.current?.value}
+                  image={post.cover_image.src}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div />
+
           <div
             className={classNames({
               hidden: true || !isPost,
@@ -121,65 +225,6 @@ const Actions = ({ post }: IProps) => {
               }}
             />
           </div>
-          <div>
-            <Heading
-              heading={`${postVerb} Description`}
-              subheading={`This will be used in displaying your post in your feed, in SEO and
-              when sharing in social media.`}
-            />
-            <TextArea
-              rows={4}
-              maxLength={160}
-              onChange={(e) => {
-                debounceUpdatePost({ excerpt: e.target.value, id: post.id });
-              }}
-              ref={excerptRef}
-              defaultValue={post.excerpt}
-            />
-            <div className="mt-2">{busy ? <CgSpinner className="animate-spin w-5 h-5" /> : <Link href="#" onClick={generateExcerpt}>Generate ✨</Link>}</div>
-          </div>
-          <div>
-            <Heading heading="Path" subheading={""} />
-            <Input
-              onChange={(e) => setSlug(e.target.value)}
-              value={getLastPartFromPath(slug)}
-              addonBefore={`/${post.type}/`}
-              addonAfter={
-                <a
-                  className="cursor-pointer text-blue-500"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    formatSlug(slug);
-                  }}
-                >
-                  Validate
-                </a>
-              }
-              label="The URL of your post. Should contain only letters, numbers or hyphen (-) "
-              onEnter={() => formatSlug(slug)}
-              data-testid="slugInp"
-            />
-          </div>
-          {isPost && (
-            <Tags
-              post={post}
-              header={
-                <Heading
-                  heading="Tags"
-                  subheading={
-                    <>
-                      Tags are used to group your posts together. Without tags,
-                      your post wont be visible in your blog. Add a tag and
-                      ensure its linked with navigation.{" "}
-                      <a href="https://docs.letterpad.app/navigation-menu">
-                        Learn more
-                      </a>
-                    </>
-                  }
-                />
-              }
-            />
-          )}
         </div>
       </Drawer>
     </>
@@ -188,11 +233,29 @@ const Actions = ({ post }: IProps) => {
 
 export default Actions;
 
-const Heading = ({ heading, subheading }) => {
+const Preview = ({ title, url, excerpt, image }) => {
   return (
     <>
-      <label className="font-bold">{heading}</label>
-      <p className="help-text mb-4 mt-2">{subheading}</p>
+      <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-neutral-900 shadow-md rounded-md">
+        {image && (
+          <img
+            src={image}
+            alt="Search Result Image"
+            className="mb-4 rounded-md h-36 w-full object-cover"
+          />
+        )}
+        <div>
+          <div className="font-bold">Ajaxtown</div>
+          <p className="text-xs text-gray-600 dark:text-gray-300">
+            <span className="hover:underline">{url}</span>
+          </p>
+        </div>
+        <h2 className="text-xl font-semibold text-blue-700 mt-2">
+          <span className="hover:underline">{title}</span>
+        </h2>
+
+        <p className="text-gray-700 mt-2 dark:text-gray-300">{excerpt}</p>
+      </div>
     </>
   );
 };
