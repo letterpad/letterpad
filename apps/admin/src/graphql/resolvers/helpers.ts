@@ -11,11 +11,18 @@ const slugOfUntitledPost = "untitled";
 export async function slugify(
   PostModel: Prisma.PostDelegate<DefaultArgs>,
   slug: string = slugOfUntitledPost,
-  author_id: number
+  author_id: number,
+  postId: number
 ): Promise<string> {
   slug = textToSlug(slug);
   const result = await PostModel.findFirst({
-    where: { slug: slug, author: { id: author_id } },
+    where: {
+      slug: slug, author: { id: author_id }, id: {
+        not: {
+          equals: postId
+        }
+      }
+    },
   });
   if (result === null) {
     return slug;
@@ -25,7 +32,13 @@ export async function slugify(
 
   async function recursiveFindUniqueSlug() {
     const result = await PostModel.findFirst({
-      where: { slug: slug + count, author: { id: author_id } },
+      where: {
+        slug: slug + count, author: { id: author_id }, id: {
+          not: {
+            equals: postId
+          }
+        }
+      },
     });
 
     if (result === null) {

@@ -13,7 +13,9 @@ export const Tag = ({
     <>
       <SectionContainer className="content">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <PageTitle>Posts tagged with #{tagName}</PageTitle>
+          <div className="text-3xl font-bold py-1 border-b-[1px] dark:border-gray-700">
+            {tagName}
+          </div>
         </div>
       </SectionContainer>
       <List posts={posts} />

@@ -7,6 +7,7 @@ import { useGetTags } from "@/app/tags/_feature/api.client";
 import { textToSlug } from "@/utils/slug";
 
 import { useUpdatePost } from "../../api.client";
+import { isPostsNode } from "../../../../../../utils/type-guards";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -16,6 +17,7 @@ interface IProps {
 interface Tag {
   id: string;
   name: string;
+  slug: string;
 }
 
 const Tags = ({ post, header }: IProps) => {
@@ -35,7 +37,17 @@ const Tags = ({ post, header }: IProps) => {
         return !tags.find((t) => s.name === t.name);
       });
 
-      setSuggestions(addTagsWithId(result));
+      const resultWithCount = result.map((tag) => {
+        const count =
+          tag.posts?.__typename === "PostsNode" ? tag.posts.count : 0;
+        return {
+          ...tag,
+          name: `${tag.name} ${count ? `(${count})` : ""}`,
+          slug: tag.name,
+        };
+      });
+
+      setSuggestions(addTagsWithId(resultWithCount));
     }
   }, [computedTags, loading, tags]);
 
@@ -58,15 +70,18 @@ const Tags = ({ post, header }: IProps) => {
   };
 
   const onAddition = (tag) => {
-    tag = { ...tag, name: textToSlug(tag.name) };
-    const _tags = [...tags, { ...tag, id: tag.name }];
+    tag = {
+      ...tag,
+      name: textToSlug(removeCount(tag.name)),
+    };
+    const _tags = [...tags, { ...tag, id: removeCount(tag.name) }];
     setTags(_tags);
     saveTags(_tags);
     removeFromSuggestion(tag);
   };
 
   const removeFromSuggestion = ({ name }: Tag) => {
-    setSuggestions(suggestions.filter((s) => s.name !== name));
+    setSuggestions(suggestions.filter((s) => removeCount(s.name) !== name));
   };
 
   const addToSuggestion = (tag: Tag) => {
@@ -152,6 +167,10 @@ const Tags = ({ post, header }: IProps) => {
           line-height: inherit;
           background: transparent;
         }
+        .react-tags__search input:focus {
+          box-shadow: 0 0px 0px rgba(0, 0, 0, 0.3) inset !important;
+          outline: none;
+        }
         .react-tags__suggestions {
           position: absolute;
           top: 100%;
@@ -194,23 +213,22 @@ const Tags = ({ post, header }: IProps) => {
           background: rgb(var(--content-bg));
         }
 
-        .react-tags__suggestions li:hover mark {
-          color: rgb(var(--content-bg));
-        }
-
-        .react-tags__suggestions li.is-active mark {
-          color: rgb(var(--content-bg));
+        .dark .react-tags__suggestions li mark,
+        .dark .react-tags__suggestions li mark {
+          color: #fff;
+          font-weight: bold;
         }
 
         .react-tags__suggestions li:hover {
           cursor: pointer;
-          background: rgba(var(--accent), 0.9);
-          color: rgb(var(--content-bg));
+          background: #283141;
         }
 
-        .react-tags__suggestions li.is-active {
-          background: rgba(var(--accent), 0.9);
-          color: rgb(var(--content-bg));
+        .dark .react-tags__suggestions li.is-active {
+          background: #283141;
+        }
+        .light .react-tags__suggestions li.is-active {
+          background: #eee;
         }
 
         .react-tags__suggestions li.is-disabled {
@@ -239,4 +257,8 @@ function addTagsWithId(tags: { name: string; slug: string }[]) {
     slug: tag.name,
     id: tag.name,
   }));
+}
+
+function removeCount(str: string) {
+  return str.replace(/\([^)]*\)/, "").trim();
 }
