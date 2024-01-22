@@ -41,7 +41,7 @@ export const Drawer: FC<Props> = ({
     transform,
     config: {
       tension: 200,
-      friction: 20,
+      friction: 25,
     },
     scale: show ? 1 : 0.2,
     delay:2,

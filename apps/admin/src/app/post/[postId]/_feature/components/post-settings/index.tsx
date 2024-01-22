@@ -148,8 +148,8 @@ const Actions = ({ post }: IProps) => {
                       heading="Tags"
                       subheading={
                         <>
-                          Add or change tags (up to 5) so readers know what your
-                          story is about.
+                          Add or change tags (up to 5) so readers can discover
+                          your posts and know what your story is about.
                         </>
                       }
                     />
@@ -184,8 +184,8 @@ const Actions = ({ post }: IProps) => {
                   onEnter={() => formatSlug(slug)}
                   data-testid="slugInp"
                   help={
-                    <span className="text-white">
-                      {fetching ? "Checking..." : " "}
+                    <span className="dark:text-white">
+                      {fetching ? "Checking..." : <span>&nbsp;</span>}
                     </span>
                   }
                 />
