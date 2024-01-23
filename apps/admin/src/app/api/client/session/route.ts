@@ -22,7 +22,16 @@ export async function GET(request: Request) {
         if (!found) {
             return NextResponse.json(null, { status: 200 });
         }
-        return NextResponse.json(session, { status: 200 });
+        const user = await prisma.author.findFirst({
+            select: {
+                name: true,
+                avatar: true,
+            },
+            where: {
+                id: Number(session?.sub),
+            },
+        })
+        return NextResponse.json(user, { status: 200 });
     } catch (e) {
         return NextResponse.json(null, { status: 501 });
     }

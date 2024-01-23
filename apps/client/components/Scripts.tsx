@@ -36,14 +36,6 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           __html: content,
         }}
       />
-      {/* <link
-        href={generateGoogleFontsLink([
-          settings.design?.primary_font,
-          settings.design?.secondary_font,
-          'Roboto_Mono',
-        ])}
-        rel="stylesheet"
-      /> */}
       <Fonts
         fonts={[
           settings.design?.primary_font,

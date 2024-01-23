@@ -39,9 +39,10 @@ function setSessionCookieAndRedirect(request: NextRequest) {
   const sourceUrl = new URL(request.nextUrl.searchParams.get('source')!);
   const token = request.nextUrl.searchParams.get('token');
   request.nextUrl.searchParams.delete('token');
+  const days30 = 30 * 60 * 60 * 24 * 1000;
   requestHeaders.set(
     'set-cookie',
-    `${getAuthCookieName()}=${token}; SameSite=True; Secure; Max-Age=60*60*24; path=/;`
+    `${getAuthCookieName()}=${token}; SameSite=True; Secure; Max-Age=${days30}; path=/;`
   );
   return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
 }

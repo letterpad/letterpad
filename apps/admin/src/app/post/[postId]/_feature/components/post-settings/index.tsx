@@ -109,6 +109,7 @@ const Actions = ({ post }: IProps) => {
         onClose={onClose}
         dir="top"
         className="w-screen"
+        scale={true}
       >
         <div className="whitespace-normal lg:w-2/3 m-auto">
           <div className="flex flex-col-reverse md:flex-row gap-10">
