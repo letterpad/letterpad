@@ -13,6 +13,8 @@ interface Props {
   footer?: React.ReactNode;
   dir?: "right" | "left" | "top" | "bottom";
   className?: string;
+  scale?:boolean
+  closeIcon?:boolean
 }
 export const Drawer: FC<Props> = ({
   show,
@@ -21,7 +23,9 @@ export const Drawer: FC<Props> = ({
   footer,
   children,
   dir = "bottom",
-  className
+  className,
+  scale = false,
+  closeIcon = true
 }) => {
   let initalClass = dir === "left" ? "left-0 top-0" : "";
   initalClass = dir === "right" ? "right-0 top-0" : initalClass;
@@ -43,7 +47,7 @@ export const Drawer: FC<Props> = ({
       tension: 200,
       friction: 25,
     },
-    scale: show ? 1 : 0.2,
+    scale: scale ? (show ? 1 : 0.2): 1,
     delay:2,
   });
 
@@ -53,11 +57,11 @@ export const Drawer: FC<Props> = ({
 
   return (
     <>
-      {show && (
+      {show  && (
         <div
           onClick={() => onClose()}
           className="fixed inset-0 z-30 bg-zinc-800 bg-opacity-50 dark:bg-opacity-80"
-        ></div>
+        />
       )}
       <animated.div
       style={animation}
@@ -66,13 +70,13 @@ export const Drawer: FC<Props> = ({
         aria-labelledby="drawer-label"
         aria-hidden="true"
       >
-        <h5
+        {title && <h5
           id="drawer-label"
           className="mb-4 inline-flex items-center text-base font-semibold text-gray-500 dark:text-gray-300"
         >
           {title}
-        </h5>
-        <button
+        </h5>}
+        {closeIcon && <button
           onClick={() => onClose()}
           type="button"
           data-testid="close-drawer"
@@ -80,7 +84,7 @@ export const Drawer: FC<Props> = ({
         >
           <IoCloseOutline size={20} />
           <span className="sr-only">Close menu</span>
-        </button>
+        </button>}
         <div className="mb-6 flex-1 text-sm text-gray-500 dark:text-gray-300">
           {children}
         </div>

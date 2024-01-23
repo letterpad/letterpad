@@ -18,7 +18,7 @@ export const Layout: FC<PropsWithChildren> = async ({ children }) => {
   return (
     <>
       <Header settings={settings} />
-      <Banner settings={settings} />
+      {/* <Banner settings={settings} /> */}
       <Section>{children}</Section>
       <Subscribe />
       <Footer />
