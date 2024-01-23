@@ -12,8 +12,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function About() {
   const data = await getAbout();
-  if (!data?.me || !data?.settings)
-    return <Custom404 homepage="https://letterpad.app" />;
+  if (!data?.me || !data?.settings) return <Custom404 />;
   const { settings, me } = data;
   const { name, social } = me;
 

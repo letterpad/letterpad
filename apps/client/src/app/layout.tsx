@@ -135,7 +135,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const Layout = async ({ children }) => {
   const data = await getData();
   if (!data) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const theme = cookies().get(THEME_STORAGE_KEY)?.value;
   const { settings, me } = data;

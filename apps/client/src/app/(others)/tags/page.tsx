@@ -125,7 +125,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Tags() {
   const data = await getTagsData();
   if (!data?.tags || !data?.settings || !data?.me) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const { tags, settings, me } = data;
 

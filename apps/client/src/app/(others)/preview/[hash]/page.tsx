@@ -10,7 +10,7 @@ import { Post } from '../../../../features/post/post';
 export default async function Preview({ params, searchParams }) {
   const data = await getPreviewData(params.hash);
   if (!data?.post || !data?.settings || !data?.me) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const { post, settings, me } = data;
 

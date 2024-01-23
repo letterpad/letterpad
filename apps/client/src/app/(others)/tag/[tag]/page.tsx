@@ -10,7 +10,7 @@ import { List } from '../../../../components/list';
 
 export default async function Tag(props) {
   const data = await getPostsByTag(props.params.tag);
-  if (!data) return <Custom404 homepage="https://letterpad.app" />;
+  if (!data) return <Custom404 />;
   const { posts, settings, me, tagName } = data;
 
   if (

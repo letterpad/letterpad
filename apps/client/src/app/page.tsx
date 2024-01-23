@@ -15,7 +15,7 @@ import { StructuredData } from '../components/structured-data';
 export default async function Home() {
   const data = await getData();
   if (!data) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const { settings, me, isPage, page, posts } = data;
   const { HomePosts } = getTheme(settings?.theme);

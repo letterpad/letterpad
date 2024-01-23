@@ -16,7 +16,7 @@ export default async function Page(props) {
     getAuthorAndSettingsData(),
   ]);
   if (!post || !data?.settings || !data?.me) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const { settings, me } = data;
 
