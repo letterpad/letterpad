@@ -169,6 +169,7 @@ const Layout = async ({ children }) => {
         </ThemeProvider>
         <div id="modal-creatives" />
         <PrismHighlight />
+        <div id="modal-root" />
       </body>
     </html>
   );

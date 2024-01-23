@@ -17,6 +17,7 @@ fragment meFragment on Author {
     avatar
     company_name
     analytics_uuid
+    createdAt
     social {
       twitter
       facebook

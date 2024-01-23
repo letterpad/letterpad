@@ -1,6 +1,6 @@
 {
   "name": "letterpad-sdk",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "scripts": {
     "codegen": "graphql-codegen --config codegen.ts",
     "build.tsc.mjs": "tsc -p tsconfig.json",
@@ -19,8 +19,7 @@
     "dist",
     "README.md"
   ],
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.8",
     "@graphql-codegen/typescript-generic-sdk": "^3.0.4"

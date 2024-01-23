@@ -92,7 +92,7 @@ function getMenu(
     .filter((_, i) => i !== 0)
     .map((item, i) => {
       return item.type === 'custom' ? (
-        <a key={item.slug} href={item.slug} className="text-gray-50 sm:p-4">
+        <a key={item.slug} href={item.slug} className="md:font-bold sm:p-4">
           {item.label}
         </a>
       ) : (
@@ -100,7 +100,7 @@ function getMenu(
           key={item.slug}
           href={item.slug}
           target="_self"
-          className={classNames('text-gray-50 pb-2', {
+          className={classNames('md:font-bold pb-2', {
             'border-b': pathname === item.slug,
           })}
           onClick={(e) => onClick?.(e, item.slug)}

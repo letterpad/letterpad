@@ -27,11 +27,9 @@ export const Modal = ({
   className,
   show = false,
 }: Props) => {
-  const [display, setDisplay] = useState<boolean>(show ? true : false);
-  const escapPressed = useKeyPress({ targetKey: "Escape" });
+  useKeyPress({ targetKey: "Escape",onKeyPress: () => toggle(false) });
 
   useEffect(() => {
-    // setDisplay(show);
     if (show) {
       document.body.style.overflowY = "hidden";
     }
@@ -39,10 +37,6 @@ export const Modal = ({
       document.body.style.overflowY = "auto";
     };
   }, [show]);
-
-  useEffect(() => {
-    if (escapPressed) toggle(false);
-  }, [escapPressed, toggle]);
 
   if (show) {
     return (
@@ -53,7 +47,7 @@ export const Modal = ({
           aria-hidden="true"
           className={classNames(
             "h-modal fixed left-0 right-0 top-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-screen",
-            className
+            // className
           )}
           style={{ zIndex: zIndex ?? 50 }}
         >
@@ -93,7 +87,7 @@ export const Modal = ({
         </div>
         <div
           onClick={() => toggle(false)}
-          className="fixed left-0 top-0 z-40 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40"
+          className="fixed left-0 top-0 z-40 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-slate-700/80"
         />
       </Portal>
     );

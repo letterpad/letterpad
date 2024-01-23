@@ -31,6 +31,7 @@ export type Author = {
   avatar?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
   company_name?: Maybe<Scalars["String"]>;
+  createdAt?: Maybe<Scalars["String"]>;
   email: Scalars["String"];
   first_post_published?: Maybe<Scalars["Boolean"]>;
   id: Scalars["Int"];
@@ -930,6 +931,7 @@ export type MeQuery = {
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        createdAt?: string | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -954,6 +956,7 @@ export type MeFragmentFragment = {
   avatar?: string | null;
   company_name?: string | null;
   analytics_uuid?: string | null;
+  createdAt?: string | null;
   social?: {
     __typename?: "Social";
     twitter?: string | null;
@@ -1021,6 +1024,7 @@ export type MeAndSettingsQuery = {
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        createdAt?: string | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1270,6 +1274,7 @@ export type PostPageQuery = {
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        createdAt?: string | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1620,6 +1625,7 @@ export const MeFragmentFragmentDoc = `
     avatar
     company_name
     analytics_uuid
+    createdAt
     social {
       twitter
       facebook

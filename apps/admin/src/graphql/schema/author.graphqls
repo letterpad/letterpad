@@ -36,6 +36,7 @@ type Author {
   register_step: RegisterStep
   stripe_customer_id: String
   stripe_subscription_id: String
+  createdAt: String
 }
 
 type Subscription {
