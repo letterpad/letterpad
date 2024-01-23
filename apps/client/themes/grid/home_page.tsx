@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { SectionContainer } from './commons/section';
 import { HomePageProps } from '../../types/pageTypes';
 import ScrollTop from '../../src/components/scroll-top';
+import { SectionContainer } from '../../src/components/section';
 
 export const HomePage: FC<HomePageProps> = ({ children }) => {
   return (

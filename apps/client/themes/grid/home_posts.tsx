@@ -7,9 +7,10 @@ import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 
-import { SectionContainer } from './commons/section';
-import { PageTitle } from './commons/title';
+// import { SectionContainer } from './commons/section';
+// import { PageTitle } from './commons/title';
 import { HomePostsProps } from '../../types/pageTypes';
+import { SectionContainer } from '../../src/components/section';
 
 export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
   return (
@@ -64,23 +65,6 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
           })}
         </div>
       </SectionContainer>
-    </>
-  );
-};
-
-const BrandText = ({ title, tagline, description }) => {
-  return (
-    <>
-      <h1 className="py-2 pb-4 text-4xl font-extrabold leading-8 tracking-tight md:text-5xl md:leading-12">
-        {title}
-      </h1>
-      <p className="pb-4 text-md font-bold leading-6 md:text-md">{tagline}</p>
-      <p
-        className="hidden text-sm font-medium leading-6 sm:w-2/3 md:block md:text-md lg:w-3/5"
-        dangerouslySetInnerHTML={{
-          __html: description,
-        }}
-      />
     </>
   );
 };

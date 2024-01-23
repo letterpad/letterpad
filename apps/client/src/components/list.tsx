@@ -2,7 +2,7 @@ import { PostsFragmentFragment } from 'letterpad-sdk';
 
 import Link from '@/components/Link';
 
-import { PublishedAt } from './publishedAt';
+import { PublishedAt } from './published-at';
 import { SectionContainer } from './section';
 interface Props {
   posts: PostsFragmentFragment;

@@ -1,5 +1,5 @@
-import { IconBook } from '../../../components/icons';
-import formatDate from '../../../lib/utils/formatDate';
+import formatDate from '@/lib/utils/formatDate';
+import { IconBook } from '../../components/icons';
 
 export const PublishedAt = ({ publishedAt, className, reading_time }) => (
   <dl className={className + ' ' + 'text-gray-500 dark:text-gray-400'}>

@@ -2,7 +2,7 @@ export const runtime = 'edge';
 
 import { getData } from '@/data';
 
-import SectionContainer from '@/components/SectionContainer';
+import { SectionContainer } from '../../src/components/section';
 import { withPageSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
