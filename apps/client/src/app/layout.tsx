@@ -10,10 +10,10 @@ import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
-import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
 import ThemeProvider from '../../context/ThemeProvider';
 import { Footer } from '../components/footer';
+import { PrismHighlight } from '../components/prism-highlight';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
@@ -168,7 +168,7 @@ const Layout = async ({ children }) => {
           </FontPageWrapper>
         </ThemeProvider>
         <div id="modal-creatives" />
-        <HighlightCode />
+        <PrismHighlight />
       </body>
     </html>
   );

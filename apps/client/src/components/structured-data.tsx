@@ -1,4 +1,4 @@
-export default function StructuredData({ data }) {
+export const StructuredData = ({ data }) => {
   return (
     <script
       key="structured-data"
@@ -6,4 +6,4 @@ export default function StructuredData({ data }) {
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
-}
+};

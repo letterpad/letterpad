@@ -1,19 +1,17 @@
 export const runtime = 'edge';
 
-import Head from 'next/head';
-
 import { getData } from '@/data';
 
-import { CodeBlock } from '@/components/codeblock';
 import SectionContainer from '@/components/SectionContainer';
 import { withPageSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
 
 import Custom404 from './not-found';
-import StructuredData from '../../components/StructuredData';
 import { getTheme } from '../../themes';
 import { Navbar } from '../components/navbar';
+import { PrismHighlight } from '../components/prism-highlight';
+import { StructuredData } from '../components/structured-data';
 
 export default async function Home() {
   const data = await getData();
@@ -63,7 +61,7 @@ export default async function Home() {
       <Navbar settings={settings} isHome={true} me={me} />
       <StructuredData data={jsonLd} />
       <div>
-        <CodeBlock />
+        <PrismHighlight />
         <SectionContainer>
           {isEmpty && (
             <span className="py-16 text-gray-400">

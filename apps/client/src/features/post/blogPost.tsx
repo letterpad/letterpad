@@ -1,9 +1,8 @@
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-import StructuredData from '@/components/StructuredData';
-
 import { getTheme } from '@/themes';
 import Custom404 from '../../app/not-found';
+import { StructuredData } from '../../components/structured-data';
 
 export async function BlogPost(props) {
   const [post, data] = await Promise.all([

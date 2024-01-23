@@ -4,9 +4,9 @@ import { Metadata } from 'next';
 
 import { getAbout } from '@/data';
 
-import StructuredData from '../../../../components/StructuredData';
 import { getTheme } from '../../../../themes';
 import Custom404 from '../../not-found';
+import { StructuredData } from '../../../components/structured-data';
 
 export const dynamic = 'force-dynamic';
 

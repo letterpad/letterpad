@@ -5,11 +5,10 @@ import { notFound } from 'next/navigation';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-import StructuredData from '@/components/StructuredData';
-
 import Creative from '@/layouts/Creative';
 import { getTheme } from '@/themes';
 import Custom404 from '../../../not-found';
+import { StructuredData } from '../../../../components/structured-data';
 
 export default async function Page(props) {
   const [post, data] = await Promise.all([

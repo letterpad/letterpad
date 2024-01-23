@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-export const CodeBlock = () => {
+export const PrismHighlight = () => {
   const path = usePathname();
 
   useEffect(() => {
