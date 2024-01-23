@@ -4,15 +4,15 @@ import { Metadata } from 'next';
 
 import { getPostsByTag } from '@/data';
 
-import { getTheme } from '../../../../../themes';
 import Custom404 from '../../../not-found';
+import { SectionContainer } from '../../../../components/section';
+import { List } from '../../../../components/list';
 
 export default async function Tag(props) {
   const data = await getPostsByTag(props.params.tag);
   if (!data) return <Custom404 homepage="https://letterpad.app" />;
   const { posts, settings, me, tagName } = data;
 
-  const { Tag } = getTheme(settings?.theme);
   if (
     posts.__typename !== 'PostsNode' ||
     settings?.__typename !== 'Setting' ||
@@ -22,7 +22,14 @@ export default async function Tag(props) {
   }
   return (
     <>
-      <Tag posts={posts} settings={settings} me={me} tagName={tagName} />
+      <SectionContainer className="content">
+        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
+          <div className="text-3xl font-bold py-1 border-b-[1px] dark:border-gray-700">
+            {tagName}
+          </div>
+        </div>
+      </SectionContainer>
+      <List posts={posts} />
     </>
   );
 }

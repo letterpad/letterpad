@@ -4,8 +4,8 @@ import { getPreviewData } from '@/data';
 
 import Creative from '@/layouts/Creative';
 
-import { getTheme } from '../../../../../themes';
 import Custom404 from '../../../not-found';
+import { Post } from '../../../../features/post/post';
 
 export default async function Preview({ params, searchParams }) {
   const data = await getPreviewData(params.hash);
@@ -13,7 +13,6 @@ export default async function Preview({ params, searchParams }) {
     return <Custom404 homepage="https://letterpad.app" />;
   }
   const { post, settings, me } = data;
-  const { Preview } = getTheme(settings?.theme);
 
   if (post.__typename !== 'Post' || settings.__typename !== 'Setting') {
     return null;
@@ -29,5 +28,5 @@ export default async function Preview({ params, searchParams }) {
       />
     );
   }
-  return <Preview post={post} settings={settings} me={me} />;
+  return <Post post={post} settings={settings} me={me} />;
 }
