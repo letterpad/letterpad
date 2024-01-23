@@ -9,13 +9,11 @@ import { getData } from '@/data';
 import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/Scripts';
 
-import { getTheme } from '@/themes';
-
 import { Css } from './_css';
 import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
 import ThemeProvider from '../../context/ThemeProvider';
-import { SessionCleaner } from '../features/auth/cleaner';
+import { Footer } from '../components/footer';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
@@ -140,8 +138,8 @@ const Layout = async ({ children }) => {
     return <Custom404 homepage="https://letterpad.app" />;
   }
   const theme = cookies().get(THEME_STORAGE_KEY)?.value;
-  const { settings } = data;
-  const { Layout } = getTheme(settings?.theme);
+  const { settings, me } = data;
+
   return (
     <html
       lang="en"
@@ -157,14 +155,16 @@ const Layout = async ({ children }) => {
       />
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
-      <SessionCleaner />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <ThemeProvider storageKey={THEME_STORAGE_KEY}>
+        <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
           <FontPageWrapper
             primary_font={settings.design?.primary_font!}
             secondary_font={settings.design?.secondary_font!}
           >
-            <Layout>{children}</Layout>
+            <main className="mb-auto">{children}</main>
+            <div className="border-b-[1px] dark:border-gray-700">
+              <Footer author={me} settings={settings} />
+            </div>
           </FontPageWrapper>
         </ThemeProvider>
         <div id="modal-creatives" />

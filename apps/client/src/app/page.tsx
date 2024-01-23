@@ -13,6 +13,7 @@ import Creative from '@/layouts/Creative';
 import Custom404 from './not-found';
 import StructuredData from '../../components/StructuredData';
 import { getTheme } from '../../themes';
+import { Navbar } from '../components/navbar';
 
 export default async function Home() {
   const data = await getData();
@@ -59,16 +60,7 @@ export default async function Home() {
   };
   return (
     <>
-      <Head>
-        {settings.site_favicon?.src && (
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href={settings.site_favicon.src}
-          />
-        )}
-      </Head>
+      <Navbar settings={settings} isHome={true} me={me} />
       <StructuredData data={jsonLd} />
       <div>
         <CodeBlock />
