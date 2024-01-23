@@ -42,7 +42,10 @@ export async function generateMetadata({
   if (!data || !data.settings || !data.me) return {};
   const { posts, settings, me } = data;
   return {
-    title: `#${params.tag} - Posts from ${settings.site_title}`,
+    title: {
+      default: 'Read my posts related to ' + params.tag,
+      template: `%s | by ${me.name}`,
+    },
     description: `Posts tagged with #${params.tag}`,
     alternates: {
       canonical: `${settings.site_url}/tag/${params.tag}`,
