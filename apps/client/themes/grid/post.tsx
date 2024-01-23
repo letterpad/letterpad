@@ -8,12 +8,12 @@ import kebabCase from '@/lib/utils/kebabCase';
 
 import Comments from '@/components/comments';
 import Link from '@/components/Link';
-import ScrollTop from '@/components/ScrollTop';
 
 import { PostAuthor } from './commons/postAuthor';
 import { SectionContainer } from './commons/section';
 import { PageTitle } from './commons/title';
 import { PostProps } from '../../types/pageTypes';
+import ScrollTop from '../../src/components/scroll-top';
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString('en-us', {

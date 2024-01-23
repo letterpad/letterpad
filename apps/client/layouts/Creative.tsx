@@ -7,8 +7,8 @@ import {
 import Head from 'next/head';
 import { BuilderContext, Layout } from 'ui';
 
-import ScrollTop from '@/components/ScrollTop';
 import { BlogSEO } from '@/components/SEO';
+import ScrollTop from '../src/components/scroll-top';
 
 interface Props {
   data: PageFragmentFragment;

@@ -12,6 +12,6 @@ export const Preview = dynamic(() =>
   import('./preview').then((mod) => mod.Preview)
 );
 export const Tag = dynamic(() => import('./tag').then((mod) => mod.Tag));
-export { Layout } from './_layout';
+
 export { About } from './about';
 export { Tags } from './tags';

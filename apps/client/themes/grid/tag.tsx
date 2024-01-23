@@ -1,6 +1,5 @@
 import { List } from './commons/list';
 import { SectionContainer } from './commons/section';
-import { PageTitle } from './commons/title';
 import { TagProps } from '../../types/pageTypes';
 
 export const Tag = ({

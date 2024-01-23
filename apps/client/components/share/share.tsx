@@ -1,14 +1,12 @@
 'use client';
 import { GrReddit } from 'react-icons/gr';
-import { ImLinkedin2, ImReddit, ImTwitter } from 'react-icons/im';
+import { ImLinkedin2, ImTwitter } from 'react-icons/im';
 import {
-  LinkedinIcon,
   LinkedinShareButton,
-  RedditIcon,
   RedditShareButton,
-  TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
+
 export const Share = ({ title, summary, url, className }) => {
   return (
     <div

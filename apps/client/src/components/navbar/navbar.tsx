@@ -1,12 +1,12 @@
 import Link from '@/components/Link';
-import ThemeSwitch from '@/components/ThemeSwitch';
+
 import { ProfileDropdown } from '../../components/profile-dropdown';
 import { LogoOrTitle } from '../../components/site-logo';
 import { Menu } from '../../components/menu';
 import { CollapsableMenu } from './collapsable-menu';
-import SocialIcon from '../../../components/social-icons';
 import { SocialIcons } from '../social-icons';
 import classNames from 'classnames';
+import ThemeSwitch from '../theme-switch';
 
 export const Navbar = ({ settings, isHome = false, showCollapsedMenu, me }) => {
   const routes = [...settings.menu];

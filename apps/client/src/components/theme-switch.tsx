@@ -1,6 +1,6 @@
 'use client';
 
-import useTheme from '../context/theme.context';
+import useTheme from '../../context/theme.context';
 import { CiDark, CiLight } from 'react-icons/ci';
 
 const ThemeSwitch = () => {
