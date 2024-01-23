@@ -7,8 +7,20 @@ import { CollapsableMenu } from './collapsable-menu';
 import { SocialIcons } from '../social-icons';
 import classNames from 'classnames';
 import ThemeSwitch from '../theme-switch';
+import { FC } from 'react';
 
-export const Navbar = ({ settings, isHome = false, showCollapsedMenu, me }) => {
+interface Props {
+  settings: any;
+  isHome?: boolean;
+  showCollapsedMenu?: boolean;
+  me: any;
+}
+export const Navbar: FC<Props> = ({
+  settings,
+  isHome = false,
+  showCollapsedMenu,
+  me,
+}) => {
   const routes = [...settings.menu];
   const logoOrTitle = (
     <LogoOrTitle logo={settings.site_logo} title={settings.site_title} />
@@ -48,13 +60,13 @@ export const Navbar = ({ settings, isHome = false, showCollapsedMenu, me }) => {
             >
               {logoOrTitle}
             </Link>
-            {isHome && (
+            {
               <p className="text-center py-2 md:hidden">
                 {settings.site_tagline}
               </p>
-            )}
+            }
           </div>
-          {isHome && (
+          {
             <div className="flex md:justify-between justify-center items-center">
               <button
                 type="button"
@@ -64,7 +76,7 @@ export const Navbar = ({ settings, isHome = false, showCollapsedMenu, me }) => {
               </button>
               <SocialIcons me={me} />
             </div>
-          )}
+          }
           {isHome && <Menu routes={routes} />}
         </div>
       </div>

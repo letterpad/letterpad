@@ -41,7 +41,12 @@ export const CollapsableMenu: FC<Props> = ({ settings, forceShow = false }) => {
         'md:hidden': !forceShow,
       })}
     >
-      <button type="button" aria-label="Toggle Menu" onClick={onToggleNav}>
+      <button
+        type="button"
+        aria-label="Toggle Menu"
+        onClick={onToggleNav}
+        className="h-10 w-10"
+      >
         {navShow ? (
           <IoClose className="h-6 w-6 md:h-8 md:w-8" />
         ) : (

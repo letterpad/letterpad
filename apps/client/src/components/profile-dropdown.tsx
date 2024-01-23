@@ -56,6 +56,7 @@ export const ProfileDropdown = () => {
         {session?.avatar ? (
           <img
             src={session.avatar}
+            alt={session.name}
             className="h-6 w-6 rounded-full shrink-0 object-cover"
           ></img>
         ) : (
