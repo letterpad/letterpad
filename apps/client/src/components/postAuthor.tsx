@@ -1,7 +1,6 @@
 import { IconBook } from '@/components/icons';
 import { Share } from '@/components/share';
-
-import { getReadableDate } from '../post';
+import { getReadableDate } from '../utils';
 
 export const PostAuthor = ({ settings, post }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =

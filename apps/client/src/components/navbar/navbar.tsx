@@ -49,7 +49,9 @@ export const Navbar = ({ settings, isHome = false, showCollapsedMenu, me }) => {
               {logoOrTitle}
             </Link>
             {isHome && (
-              <p className="text-center md:hidden">{settings.site_tagline}</p>
+              <p className="text-center py-2 md:hidden">
+                {settings.site_tagline}
+              </p>
             )}
           </div>
           {isHome && (

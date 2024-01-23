@@ -1,5 +1,3 @@
-'use client';
-
 import classNames from 'classnames';
 import Image from 'next/image';
 import { FC, useEffect } from 'react';
@@ -14,23 +12,10 @@ import { SectionContainer } from '../../components/section';
 import { PageTitle } from '../../components/title';
 import { PostAuthor } from '../../components/postAuthor';
 import { PostProps } from '../../../types/pageTypes';
-
-export const getReadableDate = (timestamp: Date | number) => {
-  return new Date(timestamp).toLocaleString('en-us', {
-    month: 'short',
-    year: 'numeric',
-    day: 'numeric',
-  });
-};
+import { PrismHighlight } from '../../components/prism-highlight';
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
   const { title, tags, author, type, sub_title } = post;
-
-  useEffect(() => {
-    if (typeof window.Prism !== 'undefined') {
-      window.Prism.highlightAll();
-    }
-  }, []);
 
   if (author?.__typename !== 'Author') return null;
 
@@ -110,6 +95,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           {type === 'post' && <Comments provider="utterances" />}
         </article>
       </div>
+      <PrismHighlight />
     </SectionContainer>
   );
 };

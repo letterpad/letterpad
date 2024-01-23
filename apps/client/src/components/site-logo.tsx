@@ -43,12 +43,12 @@ interface Props2 extends Logo {
 }
 function getLogoWidthAndHeight({ width, height, src, title = '' }: Props2) {
   if (!width || !height) {
-    return { width: 60, height: 60, src, classname: '' };
+    return { width: 80, height: 80, src, classname: '' };
   }
   const ratio = width / height;
 
   if (ratio === 1) {
-    return { width: 60, height: 60, src, className: 'flex-row items-left ' };
+    return { width: 80, height: 80, src, className: 'flex-row items-left ' };
   }
   if (ratio > 1) {
     const ratio = width / height;
@@ -61,8 +61,8 @@ function getLogoWidthAndHeight({ width, height, src, title = '' }: Props2) {
   if (ratio < 1) {
     const ratio = width / height;
     return {
-      width: 40,
-      height: 40 / ratio,
+      width: 80,
+      height: 80 / ratio,
       src,
       className: 'flex-row items-left ',
     };
