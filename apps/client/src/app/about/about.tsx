@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { getFeed } from '../../data';
+import { getFeed, getTagsData } from '../../data';
 import { getReadableDate } from '../../utils';
-import { CgCalendar } from 'react-icons/cg';
 import { BiCalendar, BiPencil } from 'react-icons/bi';
 
 export const About = async ({ settings, me }) => {
@@ -14,6 +13,7 @@ export const About = async ({ settings, me }) => {
   } = me;
 
   const feed = await getFeed();
+  const data = await getTagsData();
 
   const rows = feed ? feed.feedResponse.rows : [];
   const postCount = rows.filter((row) => row.link.includes('/post/')).length;
@@ -38,22 +38,38 @@ export const About = async ({ settings, me }) => {
         <MetricItem title="Posts" value={postCount} />
       </div>
       <div className="flex gap-8 items-start pb-32 flex-col md:flex-row">
-        <p
-          className="block antialiased font-sans text-md font-normal leading-relaxed text-inherit mt-8 max-w-2xl"
-          dangerouslySetInnerHTML={{ __html: bio }}
-        ></p>
+        <div>
+          <p
+            className="block antialiased font-sans text-md font-normal leading-relaxed text-inherit mt-8 max-w-2xl"
+            dangerouslySetInnerHTML={{ __html: bio }}
+          ></p>
+          <div>
+            <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-xl py-5 mt-10">
+              Topics I write about:
+            </h3>
+            {data?.tags?.rows?.map((tag) => {
+              return (
+                <Link href={`/tag/${tag.name}`}>
+                  <span className="rounded-full border-green-500 hover:bg-green-400 hover:text-black border text-gray-800 dark:text-gray-200 px-4 py-2  text-sm mr-2 mb-2 font-bold">
+                    {tag.name}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
 
         {rows.length && (
           <div className="py-20 md:py-0">
             <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-xl py-4">
-              My Feed
+              Feed
             </h3>
             <ol className="relative border-s border-gray-200 dark:border-gray-700">
               {rows.map((row) => {
                 return (
                   <li className="mb-10 ms-4">
                     <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                    <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500 flex gap-4">
+                    <time className="mb-1 text-sm font-normal leading-none text-gray-500 dark:text-gray-500 flex gap-4">
                       {getReadableDate(new Date(row.pubDate))}{' '}
                       <span className="flex gap-1">
                         <BiPencil />
@@ -62,9 +78,7 @@ export const About = async ({ settings, me }) => {
                     </time>
                     <p className="text-base font-normal text-gray-500 dark:text-gray-400"></p>
                     <h3 className="text-md font-semibold text-gray-900 dark:text-white">
-                      <Link href={row.link} className="hover:text-blue-500">
-                        {row.title}
-                      </Link>
+                      <Link href={row.link}>{row.title}</Link>
                     </h3>
                   </li>
                 );
