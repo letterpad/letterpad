@@ -37,7 +37,7 @@ export async function getVerifyUserEmailContent(
   }
   const subject = template.subject.replaceAll("{{ company_name }}", `Letterpad`);
 
-  const token = getVerifyUserToken({
+  const token = await getVerifyUserToken({
     author_id: author.id,
     email: author.email,
   });

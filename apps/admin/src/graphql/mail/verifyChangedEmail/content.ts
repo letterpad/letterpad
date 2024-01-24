@@ -37,7 +37,7 @@ export async function getVerifyUserEmailChangeContent(
     };
   }
 
-  const token = getVerifyUserToken({
+  const token = await getVerifyUserToken({
     author_id: author.id,
     email: author.email,
   });
