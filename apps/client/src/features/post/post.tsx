@@ -87,7 +87,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                   {author.name}
                 </Link>
                 <p className="text-md font-medium leading-5 text-gray-500 dark:text-gray-300">
-                  {author.bio}
+                  {author.signature}
                 </p>
               </div>
             </div>

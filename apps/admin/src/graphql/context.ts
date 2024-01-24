@@ -43,7 +43,6 @@ export const getResolverContext = async (request: Request) => {
       user: SessionData;
     };
     if (session?.user?.id) {
-      console.log(`Found author id from session: ${session.user.id}}`);
       return { session }
     }
   }

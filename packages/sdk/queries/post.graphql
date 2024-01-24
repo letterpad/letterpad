@@ -52,6 +52,7 @@ fragment pageFragment on Post {
       avatar
       occupation
       bio
+      signature
     }
   }
   cover_image {

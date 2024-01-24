@@ -59,7 +59,7 @@ export const Feature = () => {
             activeKey={searchParams.get("selected")!}
           >
             <AccordionItem
-              label="Basic Information"
+              label="About you"
               id="basic"
               description="Author information and details"
             >

@@ -53,7 +53,7 @@ describe("Email templates", () => {
     if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
         {
-          "html": "Hello Letterpad User, <br><br><strong>My new blog</strong> published a new post.<br><br><img src="https://a.com/image.jpg" width="100%"><br><h2>new-post-test</h2><br><br><br/><br><a target="_blank" class="btn" href="http://localhost:3000/post/new-post-test">Read More</a><br><br/><br><br>Cheers,<br>{Author Name}<br>",
+          "html": "Hello Letterpad User, <br><br><strong>My new blog</strong> published a new post.<br><br><img src="https://a.com/image.jpg" width="100%"><br><h2>new-post-test</h2><br><br><br/><br><a target="_blank" class="btn" href="http://localhost:3000/post/new-post-test">Read More</a><br><br/><br><br>Cheers,<br>Robert Smith<br>",
           "subject": "My new blog - New Post",
           "to": [
             {
@@ -226,7 +226,7 @@ describe("Email templates", () => {
   });
 });
 
-export {};
+export { };
 
 function removeToken(content: string) {
   const [_part1, part2] = content.split("token=");

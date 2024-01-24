@@ -20,6 +20,7 @@ type Author {
   social: Social
   bio: String
   occupation: String
+  signature: String
   company_name: String
   role: Role
   permissions: [Permissions!]
@@ -67,6 +68,7 @@ input InputAuthor {
   name: String
   bio: String
   occupation: String
+  signature: String
   company_name: String
   social: InputSocial
   password: String

@@ -4,12 +4,9 @@ import { Metadata } from 'next';
 
 import { getAbout } from '@/data';
 
-import { getTheme } from '../../../themes';
 import Custom404 from '../not-found';
 import { StructuredData } from '../../components/structured-data';
 import { About } from './about';
-
-export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
   const data = await getAbout();

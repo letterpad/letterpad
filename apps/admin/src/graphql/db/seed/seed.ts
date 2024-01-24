@@ -249,7 +249,7 @@ async function insertAuthors() {
         instagram: "",
         linkedin: "",
       }),
-      occupation: "{Your Occupation}",
+      occupation: "Author at Letterpad",
       company_name: "Letterpad",
       bio: "You can write some information about yourself for the world to know you a little better.",
       avatar:

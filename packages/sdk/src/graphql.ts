@@ -42,6 +42,7 @@ export type Author = {
   register_step?: Maybe<RegisterStep>;
   role?: Maybe<Role>;
   settings_updated?: Maybe<Scalars["Boolean"]>;
+  signature?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
   stripe_customer_id?: Maybe<Scalars["String"]>;
   stripe_subscription_id?: Maybe<Scalars["String"]>;
@@ -207,6 +208,7 @@ export type InputAuthor = {
   register_step?: InputMaybe<RegisterStep>;
   roleId?: InputMaybe<Scalars["Int"]>;
   settings_updated?: InputMaybe<Scalars["Boolean"]>;
+  signature?: InputMaybe<Scalars["String"]>;
   social?: InputMaybe<InputSocial>;
   stripe_customer_id?: InputMaybe<Scalars["String"]>;
   stripe_subscription_id?: InputMaybe<Scalars["String"]>;
@@ -928,6 +930,7 @@ export type MeQuery = {
         name: string;
         bio?: string | null;
         occupation?: string | null;
+        signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
@@ -953,6 +956,7 @@ export type MeFragmentFragment = {
   name: string;
   bio?: string | null;
   occupation?: string | null;
+  signature?: string | null;
   avatar?: string | null;
   company_name?: string | null;
   analytics_uuid?: string | null;
@@ -1021,6 +1025,7 @@ export type MeAndSettingsQuery = {
         name: string;
         bio?: string | null;
         occupation?: string | null;
+        signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
@@ -1137,6 +1142,7 @@ export type PostQuery = {
               avatar?: string | null;
               occupation?: string | null;
               bio?: string | null;
+              signature?: string | null;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1190,6 +1196,7 @@ export type PageFragmentFragment = {
         avatar?: string | null;
         occupation?: string | null;
         bio?: string | null;
+        signature?: string | null;
       }
     | { __typename: "Exception"; message: string }
     | { __typename: "Failed"; message: string }
@@ -1251,6 +1258,7 @@ export type PostPageQuery = {
               avatar?: string | null;
               occupation?: string | null;
               bio?: string | null;
+              signature?: string | null;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1271,6 +1279,7 @@ export type PostPageQuery = {
         name: string;
         bio?: string | null;
         occupation?: string | null;
+        signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
@@ -1622,6 +1631,7 @@ export const MeFragmentFragmentDoc = `
     name
     bio
     occupation
+    signature
     avatar
     company_name
     analytics_uuid
@@ -1698,6 +1708,7 @@ export const PageFragmentFragmentDoc = `
       avatar
       occupation
       bio
+      signature
     }
   }
   cover_image {

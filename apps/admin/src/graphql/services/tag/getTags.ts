@@ -9,6 +9,7 @@ import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 import { cache } from "react";
+import { prisma } from "@/lib/prisma";
 
 export const getTags = cache(async (
   args: QueryTagsArgs,
@@ -42,35 +43,18 @@ export const getTags = cache(async (
   }
 
   try {
-    const tags = await prisma.tag.findMany({
-      where: {
-        name: args.filters?.name,
-        posts: {
-          some: {
-            author: {
-              id: authorId,
-            },
-            status:
-              args.filters?.active || !session?.user.id
-                ? PostStatusOptions.Published
-                : undefined,
-          },
-        },
-      },
-      orderBy: {
-        name: "asc",
-      },
+    const rows = await getTagsLinkedWithPosts({
+      name: args.filters?.name!,
+      id: authorId,
+      status:
+        args.filters?.active || !session?.user.id
+          ? PostStatusOptions.Published
+          : undefined
     });
 
     return {
       __typename: "TagsNode",
-      rows: tags.map((tag) => ({
-        ...tag,
-        slug: tag.slug!,
-        type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
-        name: tryToParseCategoryName(tag.name),
-        id: tag.name,
-      })),
+      rows,
     };
   } catch (e: any) {
     logger.error(e);
@@ -80,3 +64,33 @@ export const getTags = cache(async (
     message: "Missing or invalid token or session",
   };
 });
+
+
+export async function getTagsLinkedWithPosts({ name, id, status }: { name?: string, id: number, status?: PostStatusOptions }) {
+  const tags = await prisma.tag.findMany({
+    where: {
+      name,
+      posts: {
+        some: {
+          author: {
+            id,
+          },
+          status,
+        },
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  const rows = tags.map((tag) => ({
+    ...tag,
+    slug: tag.slug!,
+    type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
+    name: tryToParseCategoryName(tag.name),
+    id: tag.name,
+  }));
+
+  return rows;
+}

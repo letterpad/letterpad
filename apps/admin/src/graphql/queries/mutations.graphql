@@ -95,6 +95,7 @@ mutation UpdateAuthor($author: InputAuthor!) {
       }
       bio
       occupation
+      signature
       company_name
       avatar
       username

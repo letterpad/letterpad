@@ -129,6 +129,7 @@ fragment MeFragment on Author {
   email
   bio
   occupation
+  signature
   company_name
   avatar
   first_post_published
