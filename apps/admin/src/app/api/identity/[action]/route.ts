@@ -22,7 +22,6 @@ export async function GET(req: NextRequest, { params }: { params: { action: stri
   }
 
   if (params.action === "logout") {
-    console.log("logout entered", decodedToken)
     const deleted = await prisma.session.deleteMany({
       where: {
         author_id: Number(decodedToken.sub)!,

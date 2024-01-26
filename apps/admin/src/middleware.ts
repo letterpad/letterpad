@@ -45,13 +45,9 @@ interface Props {
   user?: any
 }
 function handleAuth({ request, source, user }: Props) {
-  console.log("Root", process.env.ROOT_URL)
   const sourceURL = new URL(source);
-  console.log("sourceURL", sourceURL.href)
   const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
-  console.log("callback", callback.href)
   const adminURL = new URL(process.env.ROOT_URL);
-  console.log("adminURL", adminURL.href)
   const url = request.nextUrl;
   const isLogin = url.pathname === "/api/identity/login";
   const isLogout = url.pathname === "/api/identity/logout";

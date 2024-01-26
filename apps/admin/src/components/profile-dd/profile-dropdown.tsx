@@ -9,6 +9,8 @@ import { RxAvatar } from "react-icons/rx";
 import classNames from "classnames";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { VscDebugStart } from "react-icons/vsc";
 
 interface Session {
   name: string;
@@ -95,7 +97,10 @@ export const ProfileDropdown = ({
               <MenuItem
                 label="Logout"
                 icon={<LuLogOut size={18} />}
-                path={`/api/identity/logout?source=${document.location.href}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  signOut();
+                }}
               />
             </>
           ) : (
@@ -107,7 +112,7 @@ export const ProfileDropdown = ({
               />
               <MenuItem
                 label="Get started"
-                icon={<CgProfile size={18} />}
+                icon={<VscDebugStart size={18} />}
                 path="/register"
               />
             </>
@@ -117,10 +122,20 @@ export const ProfileDropdown = ({
   );
 };
 
-const MenuItem = ({ label, icon, path }) => {
+const MenuItem = ({
+  label,
+  icon,
+  path = "#",
+  onClick,
+}: {
+  label: string;
+  icon: ReactNode;
+  path?: string;
+  onClick?: (e: any) => void;
+}) => {
   return (
     <li className="py-2.5 px-4  hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer ">
-      <Link className="flex items-center gap-2" href={path}>
+      <Link className="flex items-center gap-2" href={path} onClick={onClick}>
         <span>{icon}</span>
         <span>{label}</span>
       </Link>
