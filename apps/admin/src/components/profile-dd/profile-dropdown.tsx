@@ -1,22 +1,27 @@
-'use client';
-import { useState, useEffect, useRef } from 'react';
-import { useSpring, animated } from '@react-spring/web';
-import { LuLogOut, LuLogIn } from 'react-icons/lu';
-import { CgProfile } from 'react-icons/cg';
-import { FiEdit2 } from 'react-icons/fi';
-import { IoSettingsOutline } from 'react-icons/io5';
-import { useOnClickOutside } from '@/hooks/useOnClickOutisde';
-import { RxAvatar } from 'react-icons/rx';
-import classNames from 'classnames';
-import { getApiRootUrl } from '../../lib/utils/url';
-import Link from 'next/link';
+"use client";
+import { useState, useEffect, useRef, ReactNode } from "react";
+import { useSpring, animated } from "@react-spring/web";
+import { LuLogOut, LuLogIn } from "react-icons/lu";
+import { CgProfile } from "react-icons/cg";
+import { FiEdit2 } from "react-icons/fi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { RxAvatar } from "react-icons/rx";
+import classNames from "classnames";
+import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
+import Link from "next/link";
 
 interface Session {
   name: string;
   avatar: string;
 }
 
-export const ProfileDropdown = () => {
+export const ProfileDropdown = ({
+  sessionPath = `/api/client/session`,
+  renderSign,
+}: {
+  sessionPath?: string;
+  renderSign?: ReactNode;
+}) => {
   const [show, setShow] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const ref = useRef(null);
@@ -28,46 +33,46 @@ export const ProfileDropdown = () => {
   useOnClickOutside(ref, handleClickOutside);
 
   const style = useSpring({
-    transform: show ? 'translate3D(0,0,0)' : 'translate3D(0,-10px,0)',
+    transform: show
+      ? "translate3D(calc(-100% + 32px),0,0)"
+      : "translate3D(calc(-100% + 32px),-10px,0)",
     opacity: show ? 1 : 0,
   });
 
   useEffect(() => {
-    fetch(`/api/client/session`, {
+    fetch(`${sessionPath}`, {
       headers: {
         siteurl: document.location.origin,
       },
     })
       .then((res) => res.json())
-      .then((session) => setSession(session?.user));
+      .then((session) => setSession(session.user));
   }, []);
 
   return (
-    <div className="relative w-max mx-auto">
+    <div className="relative w-max mx-auto" ref={ref}>
       <button
         type="button"
         className={classNames(
-          'flex items-center rounded-full text-[#333] text-sm font-semibold border-2 dark:border-gray-800 border-gray-300 outline-none bg-gray-100 dark:bg-slate-800 dark:text-gray-200',
+          "flex items-center rounded-full text-[#333] text-sm font-semibold outline-none bg-gray-100 dark:bg-slate-600 dark:text-gray-200",
           {
-            'p-1': session,
+            "p-1": session,
           }
         )}
         onClick={() => setShow(!show)}
       >
         {session?.avatar ? (
           <img
-            src={session.avatar}
-            alt={session.name}
-            className="h-6 w-6 rounded-full shrink-0 object-cover"
+            src={session?.avatar}
+            className="w-6 h-6 rounded-full shrink-0 object-cover"
           ></img>
         ) : (
-          <RxAvatar className="h-6 w-6 md:h-8 md:w-8 rounded-full shrink-0 object-cover" />
+          <RxAvatar size={32} />
         )}
       </button>
       <animated.ul
         style={style}
-        className="mt-1 w-52 absolute shadow-lg bg-white dark:bg-slate-800 py-2 z-[1000] rounded-lg max-h-96 overflow-auto -ml-48 md:-ml-20"
-        ref={ref}
+        className="mt-1 w-52 absolute shadow-lg bg-white dark:bg-slate-800 py-2 z-[1000] rounded-lg max-h-96 overflow-auto"
       >
         {show &&
           (session ? (
@@ -101,7 +106,7 @@ export const ProfileDropdown = () => {
                 path={`/api/identity/login?source=${document.location.href}`}
               />
               <MenuItem
-                label="Start Publishing"
+                label="Get started"
                 icon={<CgProfile size={18} />}
                 path="/register"
               />
@@ -113,10 +118,9 @@ export const ProfileDropdown = () => {
 };
 
 const MenuItem = ({ label, icon, path }) => {
-  const link = getApiRootUrl() + path;
   return (
-    <li className="py-2.5 px-6  hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer ">
-      <Link className="flex items-center gap-2" href={link}>
+    <li className="py-2.5 px-4  hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer ">
+      <Link className="flex items-center gap-2" href={path}>
         <span>{icon}</span>
         <span>{label}</span>
       </Link>

@@ -51,9 +51,9 @@ const About = async ({ params }: { params: { username: string } }) => {
           <img src={avatar} alt="avatar" className="w-20 h-20 rounded-full" />
         </span>
         <div className="flex justify-between flex-col">
-          <h5 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-3xl">
+          <h1 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-3xl">
             {name}
-          </h5>
+          </h1>
           <span className="font-bold">@{username}</span>
           <span>{occupation}</span>
         </div>

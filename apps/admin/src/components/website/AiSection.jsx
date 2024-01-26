@@ -19,7 +19,7 @@ function AiSection() {
           <video
             data-cld-font-face="inherit"
             class="vjs-tech"
-            tabindex="-1"
+            tabIndex="-1"
             preload="auto"
             controls={true}
             poster="https://res.cloudinary.com/abhisheksaha/image/upload/v1703413410/nyf7lqceicruclatgrfy.png"

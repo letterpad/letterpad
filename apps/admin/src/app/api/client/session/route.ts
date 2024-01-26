@@ -31,7 +31,7 @@ export async function GET(request: Request) {
                 id: Number(session?.sub),
             },
         })
-        return NextResponse.json(user, { status: 200 });
+        return NextResponse.json({ user }, { status: 200 });
     } catch (e) {
         return NextResponse.json(null, { status: 501 });
     }
