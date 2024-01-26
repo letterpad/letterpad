@@ -9,6 +9,7 @@ import Creative from '@/layouts/Creative';
 import { getTheme } from '@/themes';
 import Custom404 from '../../../not-found';
 import { StructuredData } from '../../../../components/structured-data';
+import { Post } from '../../../../features/post/post';
 
 export default async function Page(props) {
   const [post, data] = await Promise.all([
@@ -20,7 +21,6 @@ export default async function Page(props) {
   }
   const { settings, me } = data;
 
-  const { Post } = getTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
   const jsonLd = {
