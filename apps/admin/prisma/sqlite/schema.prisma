@@ -17,7 +17,7 @@ model Author {
   password               String
   bio                    String
   occupation             String
-  signature              String
+  signature              String       @default("")
   company_name           String
   avatar                 String
   social                 String       @default("{}")
