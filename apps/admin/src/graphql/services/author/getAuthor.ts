@@ -27,6 +27,7 @@ export const getAuthor = cache(async (
       register_step: author.register_step as RegisterStep,
       social: getSocialLink(JSON.parse(author.social as string)),
       avatar,
+      createdAt: author.createdAt?.toISOString(),
       analytics_id: author.analytics_id || undefined,
       analytics_uuid: author.analytics_uuid || undefined,
       stripe_customer_id: author.stripe_customer_id || undefined,

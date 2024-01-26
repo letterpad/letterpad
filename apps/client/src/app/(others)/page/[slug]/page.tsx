@@ -1,12 +1,10 @@
 export const runtime = 'edge';
 
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 import Creative from '@/layouts/Creative';
-import { getTheme } from '@/themes';
 import Custom404 from '../../../not-found';
 import { StructuredData } from '../../../../components/structured-data';
 import { Post } from '../../../../features/post/post';

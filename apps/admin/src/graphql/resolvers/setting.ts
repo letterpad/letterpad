@@ -18,13 +18,16 @@ import { Optional } from "@/types";
 import { encryptEmail } from "../../shared/clientToken";
 
 const Setting: SettingResolvers<ResolverContext> = {
-  menu: ({ menu, show_about_page, show_tags_page }, _, context) =>
-    getMenuWithSanitizedSlug(
+  menu: async ({ menu, show_about_page, show_tags_page }, _, { dataloaders, client_author_id, session }) => {
+    const author = await dataloaders.author.load(session?.user.id || client_author_id);
+    return getMenuWithSanitizedSlug(
       parse(menu),
-      !!context.session?.user,
+      !!session?.user,
+      author.username,
       show_about_page,
-      show_tags_page
-    ),
+      show_tags_page,
+    )
+  },
   banner: ({ banner }) => resolveImageField(banner),
   site_logo: ({ site_logo }) => resolveImageField(site_logo),
   site_favicon: ({ site_favicon }) => resolveImageField(site_favicon),
@@ -46,8 +49,9 @@ export default { Query, Mutation, Setting };
 function getMenuWithSanitizedSlug(
   menu: Navigation[],
   loggedIn: boolean,
+  username: string,
   show_about_page?: boolean,
-  show_tags_page?: boolean
+  show_tags_page?: boolean,
 ) {
   const cleanMenu = menu.map((item) => {
     switch (item.type) {
@@ -70,9 +74,9 @@ function getMenuWithSanitizedSlug(
   }
   if (show_about_page) {
     cleanMenu.push({
-      slug: "/about",
+      slug: new URL(`@${username}`, process.env.ROOT_URL).href,
       label: "About",
-      type: NavigationType.Page,
+      type: NavigationType.Custom,
       original_name: "About",
     });
   }

@@ -11,6 +11,7 @@ import { getTheme } from '../../themes';
 import { Navbar } from '../components/navbar';
 import { PrismHighlight } from '../components/prism-highlight';
 import { StructuredData } from '../components/structured-data';
+import { getApiRootUrl } from '../../lib/utils/url';
 
 export default async function Home() {
   const data = await getData();
@@ -76,7 +77,31 @@ export default async function Home() {
             me={me}
           />
         )}
+        <AboutMe me={me} />
       </div>
     </>
   );
 }
+
+const AboutMe = ({ me }) => {
+  return (
+    <div className="rounded text-center text-gray-500 p-8 md:px-0 bg-slate-900">
+      <img
+        className="w-32 h-32 rounded-full mx-auto p-4 border-4"
+        src={me.avatar}
+        alt={me.name}
+      />
+      <div className="mt-5">
+        <a
+          href={new URL(`@${me.username}`, getApiRootUrl()).href}
+          className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-300 transition duration-500 ease-in-out"
+        >
+          {me.name}
+        </a>
+        <p>{me.occupation}</p>
+      </div>
+
+      <p className="mt-2 text-sm text-gray-900">{me.signature}</p>
+    </div>
+  );
+};
