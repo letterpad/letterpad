@@ -1,78 +1,48 @@
-import classNames from "classnames";
-import { forwardRef, MouseEvent, PropsWithChildren, ReactNode } from "react";
+import { VariantProps, cva } from "class-variance-authority"
+import classNames from "classnames"
 
-const classes = {
-  base: "focus:outline-none px-4 transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
-  disabled: "opacity-50 cursor-not-allowed",
-  pill: "rounded-full",
-  size: {
-    small: "px-2 py-1 text-sm",
-    normal: "px-2 py-2",
-    large: "px-8 py-3 text-lg",
-    none: "",
-  },
-  variant: {
-    primary:
-      "bg-blue-600 hover:bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-white",
-    dark: "bg-gray-800 text-white hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-800 dark:focus:ring-gray-900",
-    success:
-      "bg-green-700 text-white hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800",
-    warning:
-      "bg-yellow-700 text-white hover:bg-yellow-800 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800",
-    secondary:
-      "bg-gray-200 hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 text-gray-900 hover:text-white",
-    danger:
-      "bg-red-500 hover:bg-red-800 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-white",
-    ghost: "text-blue-600",
-  },
-};
+import { forwardRef } from "react"
 
-interface Props {
-  children: ReactNode;
-  pill?: boolean;
-  size?: "small" | "normal" | "large" | "none";
-  variant?:
-    | "primary"
-    | "secondary"
-    | "danger"
-    | "dark"
-    | "success"
-    | "warning"
-    | "ghost";
-  className?: string;
-  disabled?: boolean;
-  onClick?: (e: MouseEvent) => void;
-  type?: "button" | "submit" | "reset";
-}
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
+  {
+    variants: {
+      variant: {
+        primary: "bg-black dark:bg-white text-white dark:text-black hover:bg-slate-700 dark:hover:bg-slate-100",
+        danger:"bg-red-500 text-white hover:bg-red-800 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50",
+        outline: "border border-slate-400 dark:border-slate-600 text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+        secondary:"border dark:border-slate-600 border-slate-900 text-black dark:text-white hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 text-gray-900 hover:text-black",
+        ghost: "text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-200",
+        link: "text-black dark:text-white hover:underline",
+      },
+      size: {
+        normal: "h-10 py-2 px-4",
+        small: "h-9 px-3 rounded-md",
+        large: "h-11 px-8 rounded-md",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "normal",
+    },
+  }
+)
 
-export const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>(
-  (props, ref) => {
-    const {
-      children,
-      className,
-      variant = "primary",
-      size = "normal",
-      pill,
-      disabled = false,
-      ...rest
-    } = props;
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => {
     return (
       <button
+        className={classNames(buttonVariants({ variant, size, className }))}
         ref={ref}
-        disabled={disabled}
-        className={classNames(
-          className,
-          classes.base,
-          classes.size[size],
-          classes.variant[variant],
-          pill && classes.pill,
-          disabled && classes.disabled
-        )}
-        {...rest}
-      >
-        {children}
-      </button>
-    );
+        {...props}
+      />
+    )
   }
-);
-Button.displayName = "Button";
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }

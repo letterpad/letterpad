@@ -5,6 +5,7 @@ import {
   HTMLProps,
   KeyboardEvent,
   ReactNode,
+  useRef,
 } from "react";
 
 import { Label } from "./label";
@@ -61,6 +62,8 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     onEnter,
     ...rest
   } = props;
+  const localRef = useRef<HTMLInputElement>();
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length <= rest.value?.length!) {
       return rest.onChange?.(e);
@@ -71,6 +74,14 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     rest.onChange?.(e);
   };
 
+  const setRef = (node: HTMLInputElement) => {
+    localRef.current = node;
+    if (typeof ref === "function") {
+      ref(node);
+    } else if (ref) {
+      ref.current = node;
+    }
+  };
 
   return (
     <div className="w-full">
@@ -86,7 +97,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
           </span>
         )}
         <input
-          ref={ref}
+          ref={setRef}
           type={type}
           disabled={disabled}
           className={classNames(
@@ -118,10 +129,12 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
           </span>
         )}
       </div>
-      {help && <span className="py-4 text-sm text-gray-500">{help}</span>}
-      {limit && (
-        <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
-      )}
+      {(help || limit) && <div className="flex justify-between items-start flex-row mt-2">
+        {help && <span className="text-sm text-gray-500">{help}</span>}
+        {limit && (
+          <div className="text-right text-xs">{`${localRef.current?.value?.length}/${limit}`}</div>
+        )}
+      </div>}
     </div>
   );
 

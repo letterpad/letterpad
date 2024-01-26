@@ -22,6 +22,7 @@ const General: React.FC<Props> = () => {
             placeholder="Name of your blog"
             data-testid="siteTitle"
             maxLength={30}
+            help="This title will appear in search engines and browser tabs."
           />
           <div className="mt-2 text-right text-xs">
             {data.watch("site_title")?.length}/30
@@ -37,47 +38,48 @@ const General: React.FC<Props> = () => {
             maxLength={60}
             placeholder="A short phrase for your blog"
             data-testid="siteTagline"
+            help="In certain scenarios, this tagline will be displayed along with the title."
+            limit={60}
           />
-          <div className="mt-2 text-right text-xs">
-            {data.watch("site_tagline")?.length}/60
-          </div>
         </div>
         <Input
           label="Site Email (public)"
           {...data.register("site_email")}
           placeholder="e.g. foo@letterpad.app"
           data-testid="siteEmail"
+          help="This email will be publicly visible on your site."
         />
 
         <Input
-          label="Site Url"
+          label="Site Url / Canonical Url"
           {...data.register("site_url", { required: true })}
           placeholder="URL of your site"
+          help="If you have a custom domain, enter it here."
         />
+
+        <Input
+          label="Submit Sitemap to Google"
+          value={data.watch("site_url") + "/sitemap.xml"}
+          readOnly
+          placeholder="URL of your site"
+          help="Submit this to Google Search Central for better indexing on Google."
+        />
+
         <div>
           <TextArea
-            label="Short Description"
+            label="Search Description"
             {...data.register("site_description", {
               required: false,
               maxLength: 190,
             })}
-            placeholder="Write something about your site. Will be used in SEO and other pages"
+            placeholder="Tell the world the purpose of your blog.."
             autoGrow={true}
             data-testid="shortDescription"
             maxLength={190}
+            help="Search engines will show this description in search results"
+            limit={190}
           />
-          <div className="mt-2 text-right text-xs">
-            {data.watch("site_description")?.length}/190
-          </div>
         </div>
-        <TextArea
-          label="Footer Description"
-          {...data.register("site_footer", { maxLength: 200 })}
-          placeholder="Anything that you want display in footer. html is allowed."
-          autoGrow={true}
-          maxLength={200}
-          data-testid="footerDescription"
-        />
       </div>
       <SaveButton testId="save-general" />
     </>

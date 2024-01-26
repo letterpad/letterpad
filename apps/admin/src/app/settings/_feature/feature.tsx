@@ -14,7 +14,7 @@ import { SettingInputType } from "@/__generated__/__types__";
 import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
 import Ai from "./components/ai";
 import Appearance from "./components/appearance";
-import General from "./components/general";
+import SeoSettings from "./components/seo";
 import Integrations from "./components/integrations";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
@@ -70,11 +70,11 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             activeKey={searchParams.get("selected")!}
           >
             <AccordionItem
-              label="General Settings"
-              id="general"
+              label="SEO Settings"
+              id="seo"
               description="Basic details and metadata of your site"
             >
-              <General />
+              <SeoSettings />
             </AccordionItem>
             <AccordionItem
               label="Open AI"
@@ -122,7 +122,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               id="keys"
               description="Custom token to access letterpad API"
             >
-              <div className="mb-8 flex flex-1 items-center">
+              <div className="mb-8 flex flex-1 items-center gap-2">
                 <TextArea
                   label="Client Key"
                   value={data.client_token}

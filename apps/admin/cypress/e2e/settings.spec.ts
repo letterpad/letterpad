@@ -6,9 +6,9 @@ describe("Settings", () => {
     cy.addNavItem("New Tag", "first-post");
   });
 
-  it("can fill general settings", () => {
+  it("can fill SEO settings", () => {
     cy.visitSettings();
-    cy.getTestId("general").click();
+    cy.getTestId("seo").click();
 
     cy.getTestId("siteTitle").type("site title");
 
@@ -19,7 +19,7 @@ describe("Settings", () => {
     cy.getTestId("siteEmail").type("site email");
 
     cy.getTestId("footerDescription").type("footer description").tab();
-    cy.getTestId("save-general").click();
+    cy.getTestId("save-seo").click();
     cy.wait("@UpdateOptionsMutation");
   });
 
@@ -50,7 +50,7 @@ describe("Settings", () => {
   });
 });
 
-export {};
+export { };
 
 // cy.url().then((url) => {
 //   const saveLocation = `cypress/results/data/${Cypress.spec.name}.location.txt`;

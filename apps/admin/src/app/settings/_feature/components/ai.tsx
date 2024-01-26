@@ -12,7 +12,7 @@ const Ai: React.FC<Props> = () => {
   return (
     <>
       <div className="mb-8 grid w-full grid-cols-1 gap-8">
-        <span>
+        <span className="max-w-2xl">
           To get an OpenAI key, you first need to register at{" "}
           <a
             href="https://platform.openai.com/login?launch"
