@@ -4,6 +4,7 @@ import { Button, useResponsiveLayout } from "ui";
 
 import FeedbackForm from "./feedback-form";
 import ThemeSwitcher from "../theme-switcher";
+import { ProfileDropdown } from "../profile-dd";
 
 export const TopBar = () => {
   const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
@@ -29,6 +30,7 @@ export const TopBar = () => {
         </Button>
         <FeedbackForm />
         <ThemeSwitcher />
+        <ProfileDropdown sessionPath="/api/auth/session" />
       </div>
     </div>
   );

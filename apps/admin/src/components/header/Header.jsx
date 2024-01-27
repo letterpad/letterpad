@@ -13,17 +13,18 @@ function Header() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <div className="mr-4 shrink-0 flex gap-2">
-            <Link className="block" href="/" aria-label="Letterpad">
+            <Link className="flex gap-2" href="/" aria-label="Letterpad">
               <img
                 className="mx-auto md:max-w-none"
                 width={40}
                 src={Logo.src}
                 alt="Letterpad"
               />
+              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                Letterpad
+              </span>
             </Link>
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Letterpad
-            </span>
+            
           </div>
 
           <nav className="flex grow">

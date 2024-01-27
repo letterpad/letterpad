@@ -52,6 +52,7 @@ export default async function Home() {
       '@id': `${settings.site_url}`,
     },
   };
+  console.log(me);
   return (
     <>
       <Navbar settings={settings} isHome={true} me={me} />

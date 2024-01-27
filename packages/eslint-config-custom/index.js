@@ -6,6 +6,7 @@ module.exports = {
   },
   parser: "@typescript-eslint/parser",
   rules: {
+    "react/no-unescaped-entities": "off",
     "@next/next/no-img-element": "off",
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "off",

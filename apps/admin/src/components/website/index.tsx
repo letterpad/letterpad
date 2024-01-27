@@ -8,15 +8,15 @@ import Cta from "./Cta";
 import Features from "./Features";
 import Features02 from "./Features02";
 import Footer from "./Footer";
-import Header from "./Header";
+import Header from "../header/Header";
 import Hero from "./Hero";
 import PressLogos from "./PressLogos";
 import { getRootUrl } from "../../shared/getRootUrl";
 
 export const viewport: Viewport = {
-  themeColor: 'black',
-  width: 'device-width',
-}
+  themeColor: "black",
+  width: "device-width",
+};
 
 export const metadata: Metadata = {
   title: "Letterpad - Create a beautiful blog.",

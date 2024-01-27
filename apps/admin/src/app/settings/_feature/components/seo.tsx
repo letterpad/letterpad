@@ -23,10 +23,8 @@ const General: React.FC<Props> = () => {
             data-testid="siteTitle"
             maxLength={30}
             help="This title will appear in search engines and browser tabs."
+            limit={30}
           />
-          <div className="mt-2 text-right text-xs">
-            {data.watch("site_title")?.length}/30
-          </div>
         </div>
         <div>
           <Input

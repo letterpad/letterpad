@@ -6,7 +6,7 @@ import { Subscribe } from './subscribe';
 
 export function Footer({ author, settings }) {
   return (
-    <footer className="mx-auto max-w-7xl border-t border-gray-200 border-opacity-60 px-8 dark:border-gray-700 md:px-20">
+    <footer className="mx-auto max-w-7xl border-gray-200 border-opacity-60 px-8 dark:border-gray-700 md:px-20">
       <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
         {/* <LogoOrTitle logo={settings.site_logo} title={settings.site_title} /> */}
         <Subscribe />
