@@ -19,6 +19,16 @@ fragment meFragment on Author {
     company_name
     analytics_uuid
     username
+    followers {
+      name
+      avatar
+      username
+    }
+    following {
+      name
+      avatar
+      username
+    }
     createdAt
     social {
       twitter

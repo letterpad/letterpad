@@ -1,15 +1,18 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { useSpring, animated } from '@react-spring/web';
-import { LuLogOut, LuLogIn } from 'react-icons/lu';
+import { animated, useSpring } from '@react-spring/web';
+import classNames from 'classnames';
+import Link from 'next/link';
+import { useRef, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { useOnClickOutside } from '@/hooks/useOnClickOutisde';
+import { LuLogIn, LuLogOut } from 'react-icons/lu';
 import { RxAvatar } from 'react-icons/rx';
-import classNames from 'classnames';
+
+import { useOnClickOutside } from '@/hooks/useOnClickOutisde';
+
+import { useSession } from '../../context/SessionProvider';
 import { getApiRootUrl } from '../../lib/utils/url';
-import Link from 'next/link';
 
 interface Session {
   name: string;
@@ -18,7 +21,7 @@ interface Session {
 
 export const ProfileDropdown = () => {
   const [show, setShow] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
+  const session = useSession();
   const ref = useRef(null);
 
   const handleClickOutside = () => {
@@ -31,16 +34,6 @@ export const ProfileDropdown = () => {
     transform: show ? 'translate3D(0,0,0)' : 'translate3D(0,-10px,0)',
     opacity: show ? 1 : 0,
   });
-
-  useEffect(() => {
-    fetch(`/api/client/session`, {
-      headers: {
-        siteurl: document.location.origin,
-      },
-    })
-      .then((res) => res.json())
-      .then((session) => setSession(session?.user));
-  }, []);
 
   return (
     <div className="relative w-max mx-auto">

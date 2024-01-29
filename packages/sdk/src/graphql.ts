@@ -34,6 +34,8 @@ export type Author = {
   createdAt?: Maybe<Scalars["String"]>;
   email: Scalars["String"];
   first_post_published?: Maybe<Scalars["Boolean"]>;
+  followers?: Maybe<Array<Maybe<FollowAuthor>>>;
+  following?: Maybe<Array<Maybe<FollowAuthor>>>;
   id: Scalars["Int"];
   name: Scalars["String"];
   occupation?: Maybe<Scalars["String"]>;
@@ -174,6 +176,20 @@ export type FeedNode = {
 };
 
 export type FeedResponse = Feed | FeedError;
+
+export type FollowAuthor = {
+  __typename?: "FollowAuthor";
+  avatar?: Maybe<Scalars["String"]>;
+  createdAt?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  username: Scalars["String"];
+};
+
+export type FollowAuthorResponse = {
+  __typename?: "FollowAuthorResponse";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
 
 export type Forbidden = LetterpadError & {
   __typename?: "Forbidden";
@@ -400,6 +416,7 @@ export type Mutation = {
   deleteAuthor?: Maybe<DeleteAuthorResponse>;
   deleteMedia?: Maybe<MediaDeleteResponse>;
   deleteTags: DeleteTagsResponse;
+  followAuthor: FollowAuthorResponse;
   forgotPassword: ForgotPasswordResponse;
   login?: Maybe<LoginResponse>;
   removeDomain: RemoveDomainResponse;
@@ -934,7 +951,20 @@ export type MeQuery = {
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        username: string;
         createdAt?: string | null;
+        followers?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
+        following?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -960,7 +990,20 @@ export type MeFragmentFragment = {
   avatar?: string | null;
   company_name?: string | null;
   analytics_uuid?: string | null;
+  username: string;
   createdAt?: string | null;
+  followers?: Array<{
+    __typename?: "FollowAuthor";
+    name: string;
+    avatar?: string | null;
+    username: string;
+  } | null> | null;
+  following?: Array<{
+    __typename?: "FollowAuthor";
+    name: string;
+    avatar?: string | null;
+    username: string;
+  } | null> | null;
   social?: {
     __typename?: "Social";
     twitter?: string | null;
@@ -1029,7 +1072,20 @@ export type MeAndSettingsQuery = {
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        username: string;
         createdAt?: string | null;
+        followers?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
+        following?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1283,7 +1339,20 @@ export type PostPageQuery = {
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        username: string;
         createdAt?: string | null;
+        followers?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
+        following?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1635,6 +1704,17 @@ export const MeFragmentFragmentDoc = `
     avatar
     company_name
     analytics_uuid
+    username
+    followers {
+      name
+      avatar
+      username
+    }
+    following {
+      name
+      avatar
+      username
+    }
     createdAt
     social {
       twitter

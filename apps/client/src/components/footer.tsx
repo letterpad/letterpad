@@ -1,6 +1,5 @@
 import Link from '@/components/Link';
 
-import { LogoOrTitle } from './site-logo';
 import { SocialIcons } from './social-icons';
 import { Subscribe } from './subscribe';
 
@@ -8,7 +7,6 @@ export function Footer({ author, settings }) {
   return (
     <footer className="mx-auto max-w-7xl border-gray-200 border-opacity-60 px-8 dark:border-gray-700 md:px-20">
       <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-        {/* <LogoOrTitle logo={settings.site_logo} title={settings.site_title} /> */}
         <Subscribe />
       </div>
       <div className="py-8 text-center">

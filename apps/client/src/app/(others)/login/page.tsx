@@ -1,7 +1,8 @@
-import { Login, Logout } from '../../../features/auth';
 import { cookies, headers } from 'next/headers';
 
-async function getSession() {
+import { Login, Logout } from '../../../features/auth';
+
+export async function getSession() {
   try {
     const header = headers();
     const proto = header.get('x-forwarded-proto');

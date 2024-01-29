@@ -2,18 +2,22 @@ export const runtime = 'edge';
 
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
+
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
+
 import { getData } from '@/data';
 
 import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
+import { getSession } from './(others)/login/page';
 import Custom404 from './not-found';
-import ThemeProvider from '../../context/ThemeProvider';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
+import { SessionProvider } from '../../context/SessionProvider';
+import ThemeProvider from '../../context/ThemeProvider';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
@@ -134,6 +138,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const Layout = async ({ children }) => {
   const data = await getData();
+  const session = await getSession();
   if (!data) {
     return <Custom404 />;
   }
@@ -156,20 +161,22 @@ const Layout = async ({ children }) => {
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
-          <FontPageWrapper
-            primary_font={settings.design?.primary_font!}
-            secondary_font={settings.design?.secondary_font!}
-          >
-            <main className="mb-auto">{children}</main>
-            <div className="border-b-[1px] dark:border-gray-700">
-              <Footer author={me} settings={settings} />
-            </div>
-          </FontPageWrapper>
-        </ThemeProvider>
-        <div id="modal-creatives" />
-        <PrismHighlight />
-        <div id="modal-root" />
+        <SessionProvider session={session}>
+          <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
+            <FontPageWrapper
+              primary_font={settings.design?.primary_font!}
+              secondary_font={settings.design?.secondary_font!}
+            >
+              <main className="mb-auto">{children}</main>
+              <div className="border-b-[1px] dark:border-gray-700">
+                <Footer author={me} settings={settings} />
+              </div>
+            </FontPageWrapper>
+          </ThemeProvider>
+          <div id="modal-creatives" />
+          <PrismHighlight />
+          <div id="modal-root" />
+        </SessionProvider>
       </body>
     </html>
   );
