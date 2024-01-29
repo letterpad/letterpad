@@ -1,6 +1,6 @@
+import Header from "../../components/header/Header";
 import ThemeSwitcher from "../../components/theme-switcher";
 import Footer from "../../components/website/Footer";
-import Header from "../../components/header/Header";
 
 const Layout = ({ children }) => {
   return (

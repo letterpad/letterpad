@@ -42,8 +42,22 @@ model Author {
   stripe_customer_id     String?
   stripe_subscription_id String?
   session                Session[]
+  followers              Follows[]    @relation("following")
+  following              Follows[]    @relation("follower")
 
   @@index([role_id])
+}
+
+model Follows {
+  follower_id  Int
+  follower     Author    @relation("follower", fields: [follower_id], references: [id])
+  following_id Int
+  following    Author    @relation("following", fields: [following_id], references: [id])
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+
+  @@unique([follower_id, following_id])
+  @@index([following_id])
 }
 
 model Session {

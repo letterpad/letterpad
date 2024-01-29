@@ -264,6 +264,25 @@ query domainCerts {
   certs
 }
 
+query IsFollowing($username: String!) {
+  isFollowing(username: $username) {
+    ok
+    following
+    message
+  }
+}
+
+query AboutStats($username: String!) {
+  aboutStats(username: $username) {
+    stats {
+      postCount
+      followerCount
+      followingCount
+    }
+    ok
+  }
+}
+
 query homeQuery {
   me {
     __typename

@@ -14,10 +14,10 @@ import { SettingInputType } from "@/__generated__/__types__";
 import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
 import Ai from "./components/ai";
 import Appearance from "./components/appearance";
-import SeoSettings from "./components/seo";
 import Integrations from "./components/integrations";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
+import SeoSettings from "./components/seo";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;

@@ -29,7 +29,11 @@ export const Feature = () => {
   };
 
   const validate = (
-    <Button className="mt-4" onClick={() => document.location.reload()} variant="primary">
+    <Button
+      className="mt-4"
+      onClick={() => document.location.reload()}
+      variant="primary"
+    >
       Validate this change
     </Button>
   );

@@ -1,16 +1,17 @@
 "use client";
-import { useState, useEffect, useRef, ReactNode } from "react";
-import { useSpring, animated } from "@react-spring/web";
-import { LuLogOut, LuLogIn } from "react-icons/lu";
+import { animated, useSpring } from "@react-spring/web";
+import classNames from "classnames";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
+import { LuLogIn, LuLogOut } from "react-icons/lu";
 import { RxAvatar } from "react-icons/rx";
-import classNames from "classnames";
-import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { VscDebugStart } from "react-icons/vsc";
+
+import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
 
 interface Session {
   name: string;

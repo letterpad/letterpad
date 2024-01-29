@@ -1,11 +1,16 @@
-import { prisma } from "@/lib/prisma";
-import { TfiNewWindow } from "react-icons/tfi";
 import Link from "next/link";
 import { BiCalendar, BiPencil } from "react-icons/bi";
-import { getReadableDate } from "../../shared/utils";
-import { getTagsLinkedWithPosts } from "../../graphql/services/tag/getTags";
+import { TfiNewWindow } from "react-icons/tfi";
+
+import { prisma } from "@/lib/prisma";
+
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
+
+import { FollowMe } from "./followme";
 import { SocialIcons } from "./social";
+import { AboutStats } from "../../components/about-stats";
+import { getTagsLinkedWithPosts } from "../../graphql/services/tag/getTags";
+import { getReadableDate } from "../../shared/utils";
 
 const About = async ({ params }: { params: { username: string } }) => {
   const username = decodeURIComponent(params.username).replace("@", "");
@@ -17,6 +22,17 @@ const About = async ({ params }: { params: { username: string } }) => {
   });
 
   if (!author) return <div>not found - {username}</div>;
+  const feed = await prisma.post.findMany({
+    where: {
+      author: {
+        id: author.id,
+      },
+      status: PostStatusOptions.Published,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   const data = await getTagsLinkedWithPosts({
     id: author.id,
     status: PostStatusOptions.Published,
@@ -31,37 +47,29 @@ const About = async ({ params }: { params: { username: string } }) => {
     setting,
   } = author;
 
-  const feed = await prisma.post.findMany({
-    where: {
-      author: {
-        id: author.id,
-      },
-      status: PostStatusOptions.Published,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  const postCount = feed.filter((row) => row.type === PostTypes.Post).length;
-
   return (
-    <div className="mx-auto px-8 lg:px-52">
-      <div className="flex items-center mt-16 gap-4">
-        <span className="rounded p-1 bg-black dark:bg-white">
-          <img src={avatar} alt="avatar" className="w-20 h-20 rounded-full" />
-        </span>
-        <div className="flex justify-between flex-col">
-          <h1 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-3xl">
-            {name}
-          </h1>
-          <span className="font-bold">@{username}</span>
-          <span>{occupation}</span>
+    <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mt-16 flex flex-row items-start justify-between">
+        <div className="flex gap-2 md:gap-4 items-center flex-row">
+          <span className="rounded p-1 bg-black dark:bg-white">
+            <img
+              src={avatar}
+              alt="avatar"
+              className="w-16 h-16 md:w-20 md:h-20 rounded-full"
+            />
+          </span>
+          <div className="flex justify-between flex-col">
+            <h1 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-2xl md:text-3xl">
+              {name}
+            </h1>
+            <span className="font-bold">@{username}</span>
+            <span>{occupation}</span>
+          </div>
         </div>
+        <FollowMe username={username} />
       </div>
       <div className="space-y-4">
-        <div className="flex items-center gap-6">
-          <MetricItem title="Posts" value={postCount} />
-        </div>
+        <AboutStats username={username} />
         <div className="dark:bg-slate-800 flex flex-col gap-6 p-3 border rounded mt-2 border-slate-200 dark:border-slate-700">
           <span className="flex gap-2 items-center dark:text-slate-400">
             <BiCalendar />
@@ -159,19 +167,6 @@ const About = async ({ params }: { params: { username: string } }) => {
           </div>
         )}
       </div>
-    </div>
-  );
-};
-
-const MetricItem = ({ title, value }) => {
-  return (
-    <div className="flex items-center gap-2 mt-3">
-      <p className="block antialiased text-base leading-relaxed text-inherit  font-bold">
-        {value}
-      </p>
-      <p className="block antialiased text-base leading-relaxed text-inherit font-normal">
-        {title}
-      </p>
     </div>
   );
 };

@@ -255,3 +255,17 @@ mutation DeleteAuthor {
     message
   }
 }
+
+mutation FollowAuthor($username: String!) {
+  followAuthor(username: $username) {
+    ok
+    message
+  }
+}
+
+mutation UnFollowAuthor($username: String!) {
+  unFollowAuthor(username: $username) {
+    ok
+    message
+  }
+}
