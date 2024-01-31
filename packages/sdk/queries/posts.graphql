@@ -15,6 +15,10 @@ fragment postsFragment on PostsNode {
     title
     sub_title
     slug
+    likes {
+      avatar
+      username
+    }
     cover_image {
       src
     }
@@ -27,6 +31,7 @@ fragment postsFragment on PostsNode {
       ... on Author {
         name
         avatar
+        username
         __typename
       }
     }

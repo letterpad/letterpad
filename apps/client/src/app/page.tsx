@@ -2,16 +2,15 @@ export const runtime = 'edge';
 
 import { getData } from '@/data';
 
-import { SectionContainer } from '../../src/components/section';
-
 import Creative from '@/layouts/Creative';
 
 import Custom404 from './not-found';
-import { getTheme } from '../../themes';
 import { Navbar } from '../components/navbar';
 import { PrismHighlight } from '../components/prism-highlight';
 import { StructuredData } from '../components/structured-data';
 import { getApiRootUrl } from '../../lib/utils/url';
+import { SectionContainer } from '../../src/components/section';
+import { getTheme } from '../../themes';
 
 export default async function Home() {
   const data = await getData();
@@ -52,7 +51,7 @@ export default async function Home() {
       '@id': `${settings.site_url}`,
     },
   };
-  console.log(me);
+
   return (
     <>
       <Navbar settings={settings} isHome={true} me={me} />

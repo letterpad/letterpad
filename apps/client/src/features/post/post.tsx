@@ -31,7 +31,9 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
             <PageTitle className="leading-10">{title}</PageTitle>
             <PostSubTitle text={sub_title} />
             <PostAuthor settings={settings} post={post} />
-            <div>{!isPage && <Like postId={id} />}</div>
+            <div className="relative">
+              {!isPage && <Like postId={id} likes={post.likes} />}
+            </div>
             {post.cover_image.src && (
               <img
                 src={post.cover_image.src}
@@ -51,9 +53,9 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                 <Link
                   href={`/tag/${kebabCase(name)}`}
                   key={name}
-                  className="mr-1  inline-block  text-sm font-medium opacity-60 hover:text-accent-50 hover:opacity-100"
+                  className="mr-1 bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
                 >
-                  #{name.split(' ').join('-')}
+                  {name.split(' ').join('-')}
                 </Link>
               ))}
           </div>

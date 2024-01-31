@@ -224,10 +224,17 @@ type ToggleLikePostResponse {
   message: String!
 }
 
+type IsPostLikedResponse {
+  ok: Boolean!
+  liked: Boolean!
+  message: String
+}
+
 type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
   stats: StatsResponse
+  isPostLiked(postId: Int!): IsPostLikedResponse!
   letterpadLatestPosts: PostsResponse!
   letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
 }

@@ -156,10 +156,14 @@ export const getServerSession = async ({ req }) => {
   try {
     const headers = req.headers;
 
-    const sessionURL =
-      (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
-      basePath +
-      "/api/auth/session";
+    // const sessionURL =
+    //   (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
+    //   basePath +
+    //   "/api/auth/session";
+
+    const sessionURL = process.env.ROOT_URL + basePath + "/api/auth/session";
+
+    console.log(sessionURL);
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });

@@ -19,6 +19,19 @@ export type Scalars = {
   Date: any;
 };
 
+export type AboutStats = {
+  __typename?: "AboutStats";
+  followerCount: Scalars["Int"];
+  followingCount: Scalars["Int"];
+  postCount: Scalars["Int"];
+};
+
+export type AboutStatsResponse = {
+  __typename?: "AboutStatsResponse";
+  ok: Scalars["Boolean"];
+  stats?: Maybe<AboutStats>;
+};
+
 export type AddDomainResponse = Domain | DomainError;
 
 export type Author = {
@@ -344,6 +357,20 @@ export type InvalidArguments = LetterpadError & {
   message: Scalars["String"];
 };
 
+export type IsFollowingResponse = {
+  __typename?: "IsFollowingResponse";
+  following: Scalars["Boolean"];
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
+export type IsPostLikedResponse = {
+  __typename?: "IsPostLikedResponse";
+  liked: Scalars["Boolean"];
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
 export type LetterpadError = {
   message: Scalars["String"];
 };
@@ -351,6 +378,12 @@ export type LetterpadError = {
 export type LetterpadPostFilters = {
   slug: Scalars["String"];
   username: Scalars["String"];
+};
+
+export type Like = {
+  __typename?: "Like";
+  avatar?: Maybe<Scalars["String"]>;
+  username?: Maybe<Scalars["String"]>;
 };
 
 export type LoginData = {
@@ -418,9 +451,12 @@ export type Mutation = {
   deleteTags: DeleteTagsResponse;
   followAuthor: FollowAuthorResponse;
   forgotPassword: ForgotPasswordResponse;
+  likePost: ToggleLikePostResponse;
   login?: Maybe<LoginResponse>;
   removeDomain: RemoveDomainResponse;
   resetPassword: ForgotPasswordResponse;
+  unFollowAuthor: FollowAuthorResponse;
+  unLikePost: ToggleLikePostResponse;
   updateAuthor?: Maybe<AuthorResponse>;
   updateMedia?: Maybe<MediaUpdateResponse>;
   updateOptions?: Maybe<SettingResponse>;
@@ -453,8 +489,16 @@ export type MutationDeleteTagsArgs = {
   name: Scalars["String"];
 };
 
+export type MutationFollowAuthorArgs = {
+  username: Scalars["String"];
+};
+
 export type MutationForgotPasswordArgs = {
   email: Scalars["String"];
+};
+
+export type MutationLikePostArgs = {
+  postId: Scalars["Int"];
 };
 
 export type MutationLoginArgs = {
@@ -464,6 +508,14 @@ export type MutationLoginArgs = {
 export type MutationResetPasswordArgs = {
   password: Scalars["String"];
   token: Scalars["String"];
+};
+
+export type MutationUnFollowAuthorArgs = {
+  username: Scalars["String"];
+};
+
+export type MutationUnLikePostArgs = {
+  postId: Scalars["Int"];
 };
 
 export type MutationUpdateAuthorArgs = {
@@ -527,6 +579,7 @@ export type Post = {
   html?: Maybe<Scalars["String"]>;
   html_draft?: Maybe<Scalars["String"]>;
   id: Scalars["Int"];
+  likes?: Maybe<Array<Maybe<Like>>>;
   page_data?: Maybe<Scalars["String"]>;
   page_type?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["Date"]>;
@@ -623,12 +676,15 @@ export type PostsResponse = Exception | PostsNode | UnAuthorized;
 
 export type Query = {
   __typename?: "Query";
+  aboutStats: AboutStatsResponse;
   certs: Scalars["Boolean"];
   createSubscription: CreateSubscriptionResponse;
   domain: DomainResponse;
   email: EmailResponse;
   emails: Array<Maybe<Email>>;
   feed: FeedResponse;
+  isFollowing: IsFollowingResponse;
+  isPostLiked: IsPostLikedResponse;
   letterpadLatestPost: PostResponse;
   letterpadLatestPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;
@@ -646,12 +702,24 @@ export type Query = {
   updateSubscription: UpdateSubscriptionResponse;
 };
 
+export type QueryAboutStatsArgs = {
+  username: Scalars["String"];
+};
+
 export type QueryCreateSubscriptionArgs = {
   type?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryEmailArgs = {
   template_id?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryIsFollowingArgs = {
+  username: Scalars["String"];
+};
+
+export type QueryIsPostLikedArgs = {
+  postId: Scalars["Int"];
 };
 
 export type QueryLetterpadLatestPostArgs = {
@@ -910,6 +978,12 @@ export type TagsNode = {
 };
 
 export type TagsResponse = Exception | TagsNode | UnAuthorized;
+
+export type ToggleLikePostResponse = {
+  __typename?: "ToggleLikePostResponse";
+  message: Scalars["String"];
+  ok: Scalars["Boolean"];
+};
 
 export type UnAuthorized = LetterpadError & {
   __typename?: "UnAuthorized";
@@ -1182,6 +1256,11 @@ export type PostQuery = {
           characters?: number | null;
           spaceless_characters?: number | null;
         } | null;
+        likes?: Array<{
+          __typename?: "Like";
+          avatar?: string | null;
+          username?: string | null;
+        } | null> | null;
         tags?:
           | { __typename: "Exception"; message: string }
           | {
@@ -1199,6 +1278,7 @@ export type PostQuery = {
               occupation?: string | null;
               bio?: string | null;
               signature?: string | null;
+              username: string;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1236,6 +1316,11 @@ export type PageFragmentFragment = {
     characters?: number | null;
     spaceless_characters?: number | null;
   } | null;
+  likes?: Array<{
+    __typename?: "Like";
+    avatar?: string | null;
+    username?: string | null;
+  } | null> | null;
   tags?:
     | { __typename: "Exception"; message: string }
     | {
@@ -1253,6 +1338,7 @@ export type PageFragmentFragment = {
         occupation?: string | null;
         bio?: string | null;
         signature?: string | null;
+        username: string;
       }
     | { __typename: "Exception"; message: string }
     | { __typename: "Failed"; message: string }
@@ -1298,6 +1384,11 @@ export type PostPageQuery = {
           characters?: number | null;
           spaceless_characters?: number | null;
         } | null;
+        likes?: Array<{
+          __typename?: "Like";
+          avatar?: string | null;
+          username?: string | null;
+        } | null> | null;
         tags?:
           | { __typename: "Exception"; message: string }
           | {
@@ -1315,6 +1406,7 @@ export type PostPageQuery = {
               occupation?: string | null;
               bio?: string | null;
               signature?: string | null;
+              username: string;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1438,9 +1530,19 @@ export type PostsQuery = {
           publishedAt?: any | null;
           reading_time?: string | null;
           excerpt?: string | null;
+          likes?: Array<{
+            __typename?: "Like";
+            avatar?: string | null;
+            username?: string | null;
+          } | null> | null;
           cover_image: { __typename?: "Image"; src?: string | null };
           author?:
-            | { __typename: "Author"; name: string; avatar?: string | null }
+            | {
+                __typename: "Author";
+                name: string;
+                avatar?: string | null;
+                username: string;
+              }
             | { __typename: "Exception"; message: string }
             | { __typename: "Failed"; message: string }
             | { __typename: "NotFound"; message: string }
@@ -1478,9 +1580,19 @@ export type PostsFragmentFragment = {
     publishedAt?: any | null;
     reading_time?: string | null;
     excerpt?: string | null;
+    likes?: Array<{
+      __typename?: "Like";
+      avatar?: string | null;
+      username?: string | null;
+    } | null> | null;
     cover_image: { __typename?: "Image"; src?: string | null };
     author?:
-      | { __typename: "Author"; name: string; avatar?: string | null }
+      | {
+          __typename: "Author";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        }
       | { __typename: "Exception"; message: string }
       | { __typename: "Failed"; message: string }
       | { __typename: "NotFound"; message: string }
@@ -1765,6 +1877,10 @@ export const PageFragmentFragmentDoc = `
   publishedAt
   updatedAt
   excerpt
+  likes {
+    avatar
+    username
+  }
   tags {
     __typename
     ... on LetterpadError {
@@ -1789,6 +1905,7 @@ export const PageFragmentFragmentDoc = `
       occupation
       bio
       signature
+      username
     }
   }
   cover_image {
@@ -1806,6 +1923,10 @@ export const PostsFragmentFragmentDoc = `
     title
     sub_title
     slug
+    likes {
+      avatar
+      username
+    }
     cover_image {
       src
     }
@@ -1817,6 +1938,7 @@ export const PostsFragmentFragmentDoc = `
       ... on Author {
         name
         avatar
+        username
         __typename
       }
     }

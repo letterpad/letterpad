@@ -65,6 +65,7 @@ model Likes {
   post_id   Int
   liked_by  Int
   createdAt DateTime? @default(now())
+  count     Int       @default(0)
   updatedAt DateTime? @updatedAt
   author    Author    @relation(fields: [liked_by], references: [id], onDelete: Cascade)
   post      Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)

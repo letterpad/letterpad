@@ -62,7 +62,7 @@ module.exports = withAxiom({
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
+        source: '/redirect-api/:path*',
         destination: `${API_URL}/api/:path*`,
       },
     ];

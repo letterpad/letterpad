@@ -1,44 +1,35 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
-import { Button, Modal } from "ui";
+'use client';
 
-import { useFollowAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
-import { useIsFollowingQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
-import { useUnFollowAuthorMutation } from "@/graphql/queries/mutations.graphql";
-import { useAboutStatsQuery } from "@/graphql/queries/queries.graphql";
+import { useEffect, useState } from 'react';
+import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
+import { Button, Modal } from 'ui';
+
+import { doFollow, doUnFollow, getIsFollowing } from '../../graphql';
+import { useSession } from '../../../context/SessionProvider';
 
 export const FollowMe = ({ username }) => {
   const session = useSession();
   const [show, setShow] = useState(false);
-  const [{}, followAuthor] = useFollowAuthorMutation();
-  const [{}, unFollowAuthor] = useUnFollowAuthorMutation();
-  const [{}, refetchAboutStats] = useAboutStatsQuery({
-    variables: { username },
-    pause: true,
-  });
+  const [following, setFollowing] = useState(false);
 
-  const [{ data }, refetch] = useIsFollowingQuery({
-    variables: { username },
-  });
+  useEffect(() => {
+    getIsFollowing(username).then((res) => {
+      setFollowing(res?.isFollowing?.following);
+    });
+  }, []);
 
   const doFollowOrUnfollow = async () => {
-    if (!session.data?.user?.id) {
+    if (!session?.user?.avatar) {
       setShow(true);
       return;
     }
-    if (!!data?.isFollowing.following) {
-      await unFollowAuthor({ username });
+    if (!!following) {
+      await doUnFollow(username);
+      setFollowing(false);
     } else {
-      await followAuthor({ username });
+      await doFollow(username);
+      setFollowing(true);
     }
-    refetch({
-      requestPolicy: "network-only",
-    });
-    refetchAboutStats({
-      requestPolicy: "network-only",
-    });
   };
 
   return (
@@ -48,9 +39,9 @@ export const FollowMe = ({ username }) => {
         className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm px-5 py-2 text-center flex gap-1 items-center"
         onClick={doFollowOrUnfollow}
       >
-        {data?.isFollowing.following ? (
+        {following ? (
           <>
-            <RiUserUnfollowLine size={18} /> <span>UnFollow</span>
+            <RiUserUnfollowLine size={18} />
           </>
         ) : (
           <>

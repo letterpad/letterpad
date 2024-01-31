@@ -1,6 +1,8 @@
 import { IconBook } from '@/components/icons';
 import { Share } from '@/components/share';
+
 import { getReadableDate } from '../utils';
+import { getApiRootUrl } from '../../lib/utils/url';
 
 export const PostAuthor = ({ settings, post }) => {
   const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
@@ -25,16 +27,17 @@ export const PostAuthor = ({ settings, post }) => {
               height={64}
               alt={author.name}
               style={{ objectFit: 'cover' }}
-              className="mr-3  h-16 w-16 rounded-full "
+              className="mr-3 h-16 w-16 rounded-full dark:bg-slate-800 bg-slate-200 p-2"
             />
           </div>
         )}
         <div className="w-full">
           <div className="flex flex-1 items-center justify-between">
             <a
-              href="#"
-              rel="author"
-              className="font-sans text-md font-medium text-gray-900 dark:text-white"
+              href={`${getApiRootUrl()}/@${author.username}`}
+              target="_blank"
+              className="font-sans md:text-lg font-bold text-gray-900 dark:text-white"
+              rel="noreferrer"
             >
               {author.name}
             </a>

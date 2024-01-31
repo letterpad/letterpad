@@ -146,6 +146,26 @@ const Query: QueryResolvers<ResolverContext> = {
     }
   },
 
+  async isPostLiked(_, args, { prisma, session }) {
+    if (!session?.user.id) {
+      return {
+        ok: false,
+        liked: false,
+        message: "You need to be logged in to like a post",
+      };
+    }
+    const row = await prisma.likes.findFirst({
+      where: {
+        liked_by: session.user.id,
+        post_id: args.postId,
+      },
+    });
+
+    return {
+      ok: true,
+      liked: !!row,
+    };
+  },
   async stats(_, args, context) {
     return getStats(args, context);
   },
@@ -186,16 +206,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
     try {
-      const record = await prisma.post.findFirst({
+      const record = await prisma.likes.findFirst({
         where: {
-          id: args.postId,
-          likes: {
-            some: {
-              author: {
-                id: session.user.id,
-              },
-            },
-          },
+          post_id: args.postId,
+          liked_by: session.user.id,
         },
       });
 
@@ -205,6 +219,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           ok: false,
         };
       }
+
       await prisma.likes.create({
         data: {
           post: {
@@ -219,9 +234,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
           },
         },
       });
+
       return {
         ok: true,
-        message: "Post liked",
+        message: `Post Liked`,
       };
     } catch (e: any) {
       return {
@@ -248,7 +264,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       });
       return {
         ok: true,
-        message: "Post undo liked",
+        message: "Post like removed",
       };
     } catch (e: any) {
       return {
