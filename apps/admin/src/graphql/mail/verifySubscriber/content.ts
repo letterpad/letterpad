@@ -45,7 +45,7 @@ export async function getVerifySubscriberEmailContent(
     author.setting?.site_title ?? ""
   );
 
-  const token = getVerifySubscriberToken({
+  const token = await getVerifySubscriberToken({
     email: subscriber.email,
     subscriber_id: subscriber.id,
     author_id: data.author_id,
