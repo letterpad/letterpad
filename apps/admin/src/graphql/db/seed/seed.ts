@@ -300,17 +300,17 @@ export async function insertPost(postData, author_id) {
       tags:
         postData.type === "post"
           ? {
-            connectOrCreate: [
-              {
-                create: tags[0],
-                where: { name: tags[0].name },
-              },
-              {
-                create: tags[1],
-                where: { name: tags[1].name },
-              },
-            ],
-          }
+              connectOrCreate: [
+                {
+                  create: tags[0],
+                  where: { name: tags[0].name },
+                },
+                {
+                  create: tags[1],
+                  where: { name: tags[1].name },
+                },
+              ],
+            }
           : undefined,
       author: {
         connect: {
@@ -338,6 +338,9 @@ async function walk(dir) {
 }
 
 export const cleanupDatabase = async () => {
+  await prisma.follows.deleteMany();
+  await prisma.likes.deleteMany();
+  await prisma.session.deleteMany();
   await prisma.permission.deleteMany();
   await prisma.author.deleteMany();
   await prisma.domain.deleteMany();
