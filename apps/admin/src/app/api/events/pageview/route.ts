@@ -1,9 +1,10 @@
-export const dynamic = "force-dynamic";
+export const runtime = "edge";
 
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { getKeyForViews, incrementPageViews } from "@/lib/redis";
+
 export async function GET(req: Request) {
   try {
     const head = headers();
@@ -30,6 +31,9 @@ export async function GET(req: Request) {
     return NextResponse.json(data, { status: 400 });
   } catch (e) {
     //@ts-ignore
-    return NextResponse.error(e);
+    return NextResponse.json(
+      { ok: false, message: e.message },
+      { status: 400 }
+    );
   }
 }
