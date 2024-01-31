@@ -1,26 +1,27 @@
 import classNames from 'classnames';
 import Image from 'next/image';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
 import Comments from '@/components/comments';
 import Link from '@/components/Link';
 
+import { Like } from '../../components/like';
+import { PageView } from '../../components/pageView';
+import { PostAuthor } from '../../components/postAuthor';
+import { PrismHighlight } from '../../components/prism-highlight';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
 import { PageTitle } from '../../components/title';
-import { PostAuthor } from '../../components/postAuthor';
 import { PostProps } from '../../../types/pageTypes';
-import { PrismHighlight } from '../../components/prism-highlight';
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
-  const { title, tags, author, type, sub_title } = post;
+  const { title, tags, author, type, sub_title, id } = post;
 
   if (author?.__typename !== 'Author') return null;
 
   const isPage = type === 'page';
-
   return (
     <SectionContainer>
       <ScrollTop />
@@ -30,6 +31,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
             <PageTitle className="leading-10">{title}</PageTitle>
             <PostSubTitle text={sub_title} />
             <PostAuthor settings={settings} post={post} />
+            <div>{!isPage && <Like postId={id} />}</div>
             {post.cover_image.src && (
               <img
                 src={post.cover_image.src}
@@ -96,6 +98,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
         </article>
       </div>
       <PrismHighlight />
+      {!isPage && <PageView id={id} type="post" />}
     </SectionContainer>
   );
 };

@@ -47,10 +47,10 @@ export const ProfileDropdown = () => {
         )}
         onClick={() => setShow(!show)}
       >
-        {session?.avatar ? (
+        {session?.user.avatar ? (
           <img
-            src={session.avatar}
-            alt={session.name}
+            src={session.user.avatar}
+            alt={session.user.name}
             className="h-6 w-6 rounded-full shrink-0 object-cover"
           ></img>
         ) : (

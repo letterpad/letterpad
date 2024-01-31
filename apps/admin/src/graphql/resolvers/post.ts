@@ -3,7 +3,6 @@ import { report } from "@/components/error";
 import {
   MutationResolvers,
   PostResolvers,
-  PostStatusOptions,
   QueryResolvers,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
@@ -64,6 +63,28 @@ const Post: PostResolvers<ResolverContext> = {
       };
     }
     return { reading_time: oldReadingTime };
+  },
+  likes: async ({ id }, _, { prisma }) => {
+    const result = await prisma.likes.findMany({
+      select: {
+        author: {
+          select: {
+            avatar: true,
+            username: true,
+          },
+        },
+      },
+      where: {
+        post: {
+          id,
+        },
+      },
+    });
+
+    return result.map((row) => ({
+      avatar: row.author.avatar,
+      username: row.author.username,
+    }));
   },
 };
 
@@ -156,18 +177,86 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
+
+  async likePost(_parent, args, { prisma, session }) {
+    if (!session?.user.id) {
+      return {
+        message: "You need to be logged in to like a post",
+        ok: false,
+      };
+    }
+    try {
+      const record = await prisma.post.findFirst({
+        where: {
+          id: args.postId,
+          likes: {
+            some: {
+              author: {
+                id: session.user.id,
+              },
+            },
+          },
+        },
+      });
+
+      if (record) {
+        return {
+          message: "You have already liked this post",
+          ok: false,
+        };
+      }
+      await prisma.likes.create({
+        data: {
+          post: {
+            connect: {
+              id: args.postId,
+            },
+          },
+          author: {
+            connect: {
+              id: session.user.id,
+            },
+          },
+        },
+      });
+      return {
+        ok: true,
+        message: "Post liked",
+      };
+    } catch (e: any) {
+      return {
+        message: e.message,
+        ok: false,
+      };
+    }
+  },
+  async unLikePost(_parent, args, { prisma, session }) {
+    if (!session?.user.id) {
+      return {
+        message: "You need to be logged in to like a post",
+        ok: false,
+      };
+    }
+    try {
+      await prisma.likes.delete({
+        where: {
+          post_id_liked_by: {
+            post_id: args.postId,
+            liked_by: session.user.id,
+          },
+        },
+      });
+      return {
+        ok: true,
+        message: "Post undo liked",
+      };
+    } catch (e: any) {
+      return {
+        message: e.message,
+        ok: false,
+      };
+    }
+  },
 };
 
 export default { Mutation, Post, Query };
-
-const isJsonString = (str?: string) => {
-  if (!str) {
-    return false;
-  }
-  try {
-    JSON.parse(str);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};

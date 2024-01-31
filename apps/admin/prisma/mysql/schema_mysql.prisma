@@ -44,6 +44,7 @@ model Author {
   session                Session[]
   followers              Follows[]    @relation("following")
   following              Follows[]    @relation("follower")
+  likes                  Likes[]
 
   @@index([role_id])
 }
@@ -58,6 +59,19 @@ model Follows {
 
   @@unique([follower_id, following_id])
   @@index([following_id])
+}
+
+model Likes {
+  post_id   Int
+  liked_by  Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  author    Author    @relation(fields: [liked_by], references: [id], onDelete: Cascade)
+  post      Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
+
+  @@unique([post_id, liked_by])
+  @@index([liked_by])
+  @@index([post_id])
 }
 
 model Session {
@@ -125,6 +139,7 @@ model Post {
   page_type          String    @default("default")
   page_data          String    @db.Text
   stats              String    @default("{}")
+  likes              Likes[]
 
   @@index([author_id])
 }
@@ -207,6 +222,8 @@ model Tag {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
   posts     Post[]
+  likes     Int       @default(0)
+  views     Int       @default(0)
 }
 
 model Upload {

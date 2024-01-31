@@ -3,8 +3,11 @@
 import { createContext, useContext } from 'react';
 
 interface Session {
-  avatar: string;
-  name: string;
+  user: {
+    avatar: string;
+    name: string;
+    username: string;
+  };
 }
 const Context = createContext<Session | null>(null);
 

@@ -1,9 +1,8 @@
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-import { getTheme } from '@/themes';
+import { Post } from './post';
 import Custom404 from '../../app/not-found';
 import { StructuredData } from '../../components/structured-data';
-import { Post } from './post';
 
 export async function BlogPost(props) {
   const [post, data] = await Promise.all([
@@ -15,7 +14,6 @@ export async function BlogPost(props) {
   }
   const { settings, me } = data;
 
-  // const { Post } = getTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
 

@@ -31,6 +31,7 @@ export async function GET(request: Request) {
       select: {
         name: true,
         avatar: true,
+        username: true,
       },
       where: {
         id: Number(session?.sub),

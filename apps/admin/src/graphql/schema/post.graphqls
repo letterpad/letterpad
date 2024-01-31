@@ -42,6 +42,12 @@ type Post {
 
   # Stats - words, characters, reading time.
   stats: PostStats
+  likes: [Like]
+}
+
+type Like {
+  avatar: String
+  username: String
 }
 
 type PostStats {
@@ -213,6 +219,11 @@ union UpdatePostResponse = Post | PostError | PostTrashed
 
 union StatsResponse = Stats | StatsError
 
+type ToggleLikePostResponse {
+  ok: Boolean!
+  message: String!
+}
+
 type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
@@ -224,4 +235,6 @@ type Query {
 type Mutation {
   createPost(data: InputCreatePost): CreatePostResponse!
   updatePost(data: InputUpdatePost): UpdatePostResponse!
+  likePost(postId: Int!): ToggleLikePostResponse!
+  unLikePost(postId: Int!): ToggleLikePostResponse!
 }

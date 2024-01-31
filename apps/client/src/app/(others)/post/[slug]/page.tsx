@@ -1,11 +1,11 @@
 export const runtime = 'edge';
 
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 import { BlogPost } from '../../../../features/post/blogPost';
-import { Suspense } from 'react';
 import { Skeleton } from '../../../../features/post/skeleton';
 
 export default async function Post(props) {

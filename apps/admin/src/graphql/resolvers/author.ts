@@ -29,11 +29,11 @@ const Author: AuthorResolvers<ResolverContext> = {
     }
     return social;
   },
-  followers: async ({ id }, _args, { prisma, client_author_id }) => {
+  followers: async ({ id }, _args, { prisma }) => {
     const followers = await prisma.follows.findMany({
       where: {
         follower: {
-          id: Number(client_author_id!),
+          id,
         },
       },
     });
@@ -53,11 +53,11 @@ const Author: AuthorResolvers<ResolverContext> = {
       }))
     );
   },
-  following: async ({ id }, _args, { prisma, client_author_id }) => {
+  following: async ({ id }, _args, { prisma }) => {
     const following = await prisma.follows.findMany({
       where: {
         following: {
-          id: Number(client_author_id!),
+          id,
         },
       },
     });
