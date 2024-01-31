@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
@@ -12,12 +12,12 @@ import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
-import { getSession } from './(others)/login/page';
 import Custom404 from './not-found';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
 import { SessionProvider } from '../../context/SessionProvider';
 import ThemeProvider from '../../context/ThemeProvider';
+import { getSession } from '../../lib/utils/getSession';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
@@ -138,7 +138,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const Layout = async ({ children }) => {
   const data = await getData();
-  const session = await getSession();
+  const session = await getSession(headers());
   if (!data) {
     return <Custom404 />;
   }
