@@ -46,6 +46,7 @@
   "packageManager": "bun@1.0.21",
   "dependencies": {
     "@react-spring/web": "^9.7.3",
+    "@upstash/redis": "^1.28.2",
     "axios": "^1.2.0",
     "class-variance-authority": "^0.7.0",
     "hashids": "^2.3.0",
