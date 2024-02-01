@@ -43,6 +43,13 @@ type Post {
   # Stats - words, characters, reading time.
   stats: PostStats
   likes: [Like]
+  mail_status: MailStatus
+}
+
+enum MailStatus {
+  ACTIVE
+  INACTIVE
+  SENT
 }
 
 type Like {
@@ -190,6 +197,7 @@ input InputUpdatePost {
   page_data: String
   stats: InputPostStats
   publishOptions: InputPublishOptions
+  mail_status: MailStatus
 }
 
 type PostError implements LetterpadError {

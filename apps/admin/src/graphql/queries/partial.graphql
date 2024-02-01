@@ -16,6 +16,7 @@ fragment Partial on Post {
   reading_time
   page_type
   page_data
+  mail_status
   stats {
     words
     characters

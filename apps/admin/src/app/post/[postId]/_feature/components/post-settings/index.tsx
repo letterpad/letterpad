@@ -1,7 +1,9 @@
 import classNames from "classnames";
+import Link from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Drawer, Input, Switch, TextArea } from "ui";
 import { CgSpinner } from "react-icons/cg";
+import { Drawer, Input, Switch, TextArea } from "ui";
+
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/app/settings/_feature/api.client";
@@ -14,12 +16,12 @@ import {
 } from "@/utils/slug";
 
 import { getPostHash } from "./api";
+import { Heading } from "./heading";
 import PublishButton from "./publishButton";
 import { QuickMenu } from "./quickmenu";
+import { SendEmailCheckbox } from "./sendEmailCheckbox";
 import Tags from "./tags";
 import { useUpdatePost } from "../../api.client";
-import Link from "next/link";
-import { Heading } from "./heading";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -93,7 +95,6 @@ const Actions = ({ post }: IProps) => {
     } catch (e) {}
     setBusy(false);
   };
-
   return (
     <>
       <QuickMenu
@@ -120,7 +121,7 @@ const Actions = ({ post }: IProps) => {
                   subheading={`Used in search engines and social media.`}
                 />
                 <TextArea
-                  rows={4}
+                  rows={2}
                   maxLength={160}
                   onChange={(e) => {
                     debounceUpdatePost({
@@ -156,6 +157,29 @@ const Actions = ({ post }: IProps) => {
                     />
                   }
                 />
+              )}
+              {isPost && (
+                <div>
+                  <Heading
+                    heading="Email Subscribers"
+                    subheading={
+                      <>
+                        Notify your email subscribers when you publish this
+                        post.
+                      </>
+                    }
+                  />
+                  <SendEmailCheckbox
+                    mail_status={post.mail_status!}
+                    post_status={post.status}
+                    onChange={(mail_status) =>
+                      debounceUpdatePost({
+                        id: post.id,
+                        mail_status,
+                      })
+                    }
+                  />
+                </div>
               )}
               <PublishButton postId={post.id} menu={settings?.menu ?? []} />
             </div>
@@ -203,6 +227,7 @@ const Actions = ({ post }: IProps) => {
                   url={settings?.site_url! + "/" + slug}
                   excerpt={excerptRef.current?.value}
                   image={post.cover_image.src}
+                  siteTitle={settings?.site_title!}
                 />
               </div>
             </div>
@@ -234,7 +259,7 @@ const Actions = ({ post }: IProps) => {
 
 export default Actions;
 
-const Preview = ({ title, url, excerpt, image }) => {
+const Preview = ({ title, url, excerpt, image, siteTitle }) => {
   return (
     <>
       <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-neutral-900 shadow-md rounded-md">
@@ -246,7 +271,7 @@ const Preview = ({ title, url, excerpt, image }) => {
           />
         )}
         <div>
-          <div className="font-bold">Ajaxtown</div>
+          <div className="font-bold">{siteTitle}</div>
           <p className="text-xs text-gray-600 dark:text-gray-300">
             <span className="hover:underline">{url}</span>
           </p>
