@@ -85,7 +85,7 @@ export const Like: FC<Props> = ({ postId, likes }) => {
     <div className="flex flex-row items-center justify-center sticky top-0">
       {liked ? (
         <button
-          className="group mb-2 ml-0 mt-4 flex flex-row items-center overflow-hidden rounded-full bg-slate-100 pl-2 pr-1 text-sm font-semibold leading-snug text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 hover:dark:bg-slate-700 md:mb-0 md:ml-4 md:mt-0 gap-2 py-1"
+          className="group flex flex-row items-center overflow-hidden rounded-full bg-slate-100 pl-2 pr-1 text-sm font-semibold leading-snug text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 hover:dark:bg-slate-700  gap-2 py-1"
           onClick={onUnlike}
         >
           <BiSolidHeart size={20} />
@@ -94,7 +94,7 @@ export const Like: FC<Props> = ({ postId, likes }) => {
         </button>
       ) : (
         <button
-          className="group mb-2 ml-0 mt-4 flex flex-row items-center overflow-hidden rounded-full bg-slate-100 pl-2 pr-1 text-sm font-semibold leading-snug text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 hover:dark:bg-slate-700 md:mb-0 md:ml-4 md:mt-0 gap-2 py-1"
+          className="group flex flex-row items-center overflow-hidden rounded-full bg-slate-100 pl-2 pr-1 text-sm font-semibold leading-snug text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 hover:dark:bg-slate-700 gap-2 py-1"
           onClick={onLike}
         >
           <BiHeart size={20} />

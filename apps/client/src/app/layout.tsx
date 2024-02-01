@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 
 import { Metadata } from 'next';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
@@ -17,7 +17,6 @@ import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
 import { SessionProvider } from '../../context/SessionProvider';
 import ThemeProvider from '../../context/ThemeProvider';
-import { getSession } from '../../lib/utils/getSession';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
@@ -138,7 +137,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const Layout = async ({ children }) => {
   const data = await getData();
-  const session = await getSession(headers());
   if (!data) {
     return <Custom404 />;
   }
@@ -161,7 +159,7 @@ const Layout = async ({ children }) => {
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <SessionProvider session={session}>
+        <SessionProvider>
           <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
             <FontPageWrapper
               primary_font={settings.design?.primary_font!}

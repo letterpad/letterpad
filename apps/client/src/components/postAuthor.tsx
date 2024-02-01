@@ -1,33 +1,27 @@
-import { IconBook } from '@/components/icons';
 import { Share } from '@/components/share';
 
-import { getReadableDate } from '../utils';
 import { getApiRootUrl } from '../../lib/utils/url';
 
 export const PostAuthor = ({ settings, post }) => {
-  const { slug, publishedAt, title, excerpt, tags, author, type, sub_title } =
-    post;
+  const { slug, title, excerpt, author, type } = post;
   const isPage = type === 'page';
 
   const postUrl = `${settings.site_url}${slug}`;
-  const printPublishedAt = getReadableDate(publishedAt);
 
   return (
     <address
-      className={
-        'mb-6 mt-6 flex items-center not-italic ' + (isPage && ' hidden')
-      }
+      className={'flex items-center not-italic ' + (isPage && ' hidden')}
     >
-      <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
+      <div className="flex w-full items-center text-sm text-gray-900 dark:text-white gap-2">
         {author.avatar && (
-          <div className="mr-2">
+          <div className="max-h-16 max-w-16">
             <img
               src={author.avatar}
               width={64}
               height={64}
               alt={author.name}
               style={{ objectFit: 'cover' }}
-              className="mr-3 h-16 w-16 rounded-full dark:bg-slate-800 bg-slate-200 p-2"
+              className="w-full h-full rounded-full dark:bg-slate-800 bg-slate-200 p-2"
             />
           </div>
         )}
@@ -36,7 +30,7 @@ export const PostAuthor = ({ settings, post }) => {
             <a
               href={`${getApiRootUrl()}/@${author.username}`}
               target="_blank"
-              className="font-sans md:text-lg font-bold text-gray-900 dark:text-white"
+              className="font-sans text-lg md:text-xl font-bold text-gray-900 dark:text-white"
               rel="noreferrer"
             >
               {author.name}
@@ -45,19 +39,11 @@ export const PostAuthor = ({ settings, post }) => {
               title={title}
               summary={excerpt}
               url={postUrl}
-              className="hidden md:block"
+              className="hidden md:flex"
             />
           </div>
-          <p className="text-sm font-normal text-gray-500 dark:text-gray-300">
+          <p className="text-md font-normal text-gray-500 dark:text-gray-300">
             {author.occupation}
-          </p>
-          <p className="flex text-sm font-normal text-gray-500 dark:text-gray-300">
-            <time title={printPublishedAt}>{printPublishedAt}</time>{' '}
-            &nbsp;•&nbsp;
-            <span className="flex items-center gap-1">
-              <IconBook />
-              {post.stats?.reading_time} min read
-            </span>
           </p>
         </div>
       </div>

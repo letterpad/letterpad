@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface Session {
   user: {
@@ -11,7 +11,17 @@ interface Session {
 }
 const Context = createContext<Session | null>(null);
 
-export function SessionProvider({ children, session }: any) {
+export function SessionProvider({ children }: any) {
+  const [session, setSession] = useState<Session | null>(null);
+  useEffect(() => {
+    fetch(`/redirect-api/client/session`, {
+      headers: {
+        siteurl: window.location.origin,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setSession(data));
+  }, []);
   return <Context.Provider value={session}>{children}</Context.Provider>;
 }
 

@@ -66,16 +66,19 @@ export const ProfileDropdown = () => {
           (session ? (
             <>
               <MenuItem
+                target="_blank"
                 label="New Story"
                 icon={<FiEdit2 size={18} />}
                 path="/api/create?type=post"
               />
               <MenuItem
+                target="_blank"
                 label="Edit Profile"
                 icon={<CgProfile size={18} />}
                 path="/profile"
               />
               <MenuItem
+                target="_blank"
                 label="Settings"
                 icon={<IoSettingsOutline size={18} />}
                 path="/settings"
@@ -105,14 +108,14 @@ export const ProfileDropdown = () => {
   );
 };
 
-const MenuItem = ({ label, icon, path }) => {
+const MenuItem = ({ label, icon, path, target = '' }) => {
   const link = getApiRootUrl() + path;
   return (
     <li className="py-2.5 px-6  hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer ">
-      <Link className="flex items-center gap-2" href={link}>
+      <a className="flex items-center gap-2" href={link} target={target}>
         <span>{icon}</span>
         <span>{label}</span>
-      </Link>
+      </a>
     </li>
   );
 };

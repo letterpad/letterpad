@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { decode } from "next-auth/jwt";
 
-// import { getServerSession } from "@/graphql/context";
 import { prisma } from "@/lib/prisma";
 
 import { getAuthCookieName } from "@/utils/authCookie";

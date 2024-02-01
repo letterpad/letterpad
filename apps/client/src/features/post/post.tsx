@@ -11,6 +11,7 @@ import { Like } from '../../components/like';
 import { PageView } from '../../components/pageView';
 import { PostAuthor } from '../../components/postAuthor';
 import { PrismHighlight } from '../../components/prism-highlight';
+import { PublishedAt } from '../../components/published-at';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
 import { PageTitle } from '../../components/title';
@@ -30,8 +31,16 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           <header className={'mb-4 lg:mb-4'}>
             <PageTitle className="leading-10">{title}</PageTitle>
             <PostSubTitle text={sub_title} />
-            <PostAuthor settings={settings} post={post} />
-            <div className="relative">
+            <div className="flex flex-col py-4">
+              <PostAuthor settings={settings} post={post} />
+            </div>
+            <div className="flex justify-between border-t border-b border-slate-200 dark:border-slate-800 py-2 my-4 px-2">
+              <PublishedAt
+                publishedAt={post.publishedAt}
+                reading_time={post.reading_time!}
+                className="flex-row flex gap-2 justify-center text-sm md:text-md items-center"
+                separator={<span className="">•</span>}
+              />
               {!isPage && <Like postId={id} likes={post.likes} />}
             </div>
             {post.cover_image.src && (
