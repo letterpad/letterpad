@@ -6,6 +6,7 @@ import Creative from '@/layouts/Creative';
 
 import Custom404 from './not-found';
 import { Navbar } from '../components/navbar';
+import { PageView } from '../components/pageView';
 import { PrismHighlight } from '../components/prism-highlight';
 import { StructuredData } from '../components/structured-data';
 import { getApiRootUrl } from '../../lib/utils/url';
@@ -78,6 +79,7 @@ export default async function Home() {
           />
         )}
         <AboutMe me={me} />
+        <PageView type="home" id={me.username} />
       </div>
     </>
   );

@@ -8,6 +8,7 @@ import {
 import { ResolverContext } from "@/graphql/context";
 
 import { getSocialLink } from "./helpers";
+import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import {
   createAuthor,
   forgotPassword,
@@ -18,6 +19,7 @@ import {
   updateAuthor,
 } from "../services/author";
 import { loginAuthor } from "../services/author/loginAuthor";
+import { EmailTemplates } from "../types";
 
 const Author: AuthorResolvers<ResolverContext> = {
   role: async ({ id }, _args, context) => getRoleFromAuthor(id, context),
@@ -166,6 +168,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
             },
           },
         },
+      });
+      await enqueueEmailAndSend({
+        template_id: EmailTemplates.NewFollower,
+        follower_id: session.user.id,
+        following_id: author.id,
       });
       return {
         ok: true,

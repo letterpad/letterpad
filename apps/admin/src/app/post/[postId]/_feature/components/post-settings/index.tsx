@@ -17,6 +17,7 @@ import {
 
 import { getPostHash } from "./api";
 import { Heading } from "./heading";
+import { Preview } from "./preview";
 import PublishButton from "./publishButton";
 import { QuickMenu } from "./quickmenu";
 import { SendEmailCheckbox } from "./sendEmailCheckbox";
@@ -225,7 +226,7 @@ const Actions = ({ post }: IProps) => {
                 <Preview
                   title={post.title}
                   url={settings?.site_url! + "/" + slug}
-                  excerpt={excerptRef.current?.value}
+                  excerpt={excerptRef.current?.value!}
                   image={post.cover_image.src}
                   siteTitle={settings?.site_title!}
                 />
@@ -258,30 +259,3 @@ const Actions = ({ post }: IProps) => {
 };
 
 export default Actions;
-
-const Preview = ({ title, url, excerpt, image, siteTitle }) => {
-  return (
-    <>
-      <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-neutral-900 shadow-md rounded-md">
-        {image && (
-          <img
-            src={image}
-            alt="Search Result Image"
-            className="mb-4 rounded-md h-36 w-full object-cover"
-          />
-        )}
-        <div>
-          <div className="font-bold">{siteTitle}</div>
-          <p className="text-xs text-gray-600 dark:text-gray-300">
-            <span className="hover:underline">{url}</span>
-          </p>
-        </div>
-        <h2 className="text-xl font-semibold text-blue-700 mt-2">
-          <span className="hover:underline">{title}</span>
-        </h2>
-
-        <p className="text-gray-700 mt-2 dark:text-gray-300">{excerpt}</p>
-      </div>
-    </>
-  );
-};

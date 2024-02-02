@@ -79,8 +79,8 @@ export enum EmailTemplates {
   SubscriberVerified = "subscriberVerified",
   ForgotPassword = "forgotPassword",
   PasswordChangeSuccess = "passwordChangeSuccess",
-  NewPost = "newPost",
   WelcomeUser = "welcomeUser",
+  NewFollower = "newFollower",
 }
 export interface Template {
   body: string;
@@ -122,9 +122,10 @@ export interface EmailSubscriberVerifiedProps {
   template_id: EmailTemplates.SubscriberVerified;
 }
 
-export interface EmailNewPostProps {
-  post_id: number;
-  template_id: EmailTemplates.NewPost;
+export interface NewFollowerProps {
+  follower_id: number;
+  following_id: number;
+  template_id: EmailTemplates.NewFollower;
 }
 
 export interface EmailForgotPasswordProps {
@@ -142,12 +143,12 @@ export type EmailProps =
   | EmailVerifyNewEmailProps
   | EmailVerifySubscriberProps
   | EmailSubscriberVerifiedProps
-  | EmailNewPostProps
   | EmailWelcomeUserProps
   | EmailChangeSuccessProps
   | DomainMapSuccessProps
   | PasswordChangeSuccessProps
-  | EmailForgotPasswordProps;
+  | EmailForgotPasswordProps
+  | NewFollowerProps;
 
 export interface Mail {
   to: string | { email: string; id: number }[];

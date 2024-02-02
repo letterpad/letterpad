@@ -3,7 +3,7 @@ import { EmailProps, EmailTemplates } from "@/graphql/types";
 import { getdomainMapSuccessContent } from "../domainMapSuccess/content";
 import { getEmailChangeSuccessContent } from "../emailChangeSuccess/content";
 import { getForgotPasswordContent } from "../forgotPassword/content";
-import { getNewPostContent } from "../newPost/content";
+import { getNewFollowerContent } from "../newFollower/content";
 import { getPasswordChangeSuccessContent } from "../passwordChangeSuccess/content";
 import { getSubscriberVerifiedEmailContent } from "../subscriberVerified/content";
 import { getVerifyUserEmailChangeContent } from "../verifyChangedEmail/content";
@@ -15,8 +15,6 @@ export async function getEmailTemplate(props: EmailProps, prismaInstance) {
   switch (props.template_id) {
     case EmailTemplates.ForgotPassword:
       return await getForgotPasswordContent(props, prismaInstance);
-    case EmailTemplates.NewPost:
-      return await getNewPostContent(props, prismaInstance);
     case EmailTemplates.VerifySubscriber:
       return await getVerifySubscriberEmailContent(props, prismaInstance);
     case EmailTemplates.SubscriberVerified:
@@ -33,5 +31,7 @@ export async function getEmailTemplate(props: EmailProps, prismaInstance) {
       return await getPasswordChangeSuccessContent(props, prismaInstance);
     case EmailTemplates.DomainMapSuccess:
       return await getdomainMapSuccessContent(props, prismaInstance);
+    case EmailTemplates.NewFollower:
+      return await getNewFollowerContent(props, prismaInstance);
   }
 }

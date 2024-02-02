@@ -1,15 +1,11 @@
-import { MailStatus } from "@prisma/client";
 import type { NextRequest } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 import { queueSubscribeEmails } from "@/lib/redis";
 
-import { PostStatusOptions } from "@/__generated__/__types__";
+import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 import { getTemplate } from "@/graphql/mail/template";
-import { baseTemplate } from "@/graphql/mail/templates/base";
 import { EmailTemplates } from "@/graphql/types";
-import { getRootUrl } from "@/shared/getRootUrl";
-import { getUnsubscribeToken } from "@/shared/token";
 
 interface Base {
   post_id: number;
@@ -28,6 +24,7 @@ interface Subscribers extends Base {
 }
 
 interface Followers extends Base {
+  follower_name: string;
   __typename: "Followers";
 }
 
@@ -46,7 +43,7 @@ export async function GET(request: NextRequest) {
       posts: {
         where: {
           status: PostStatusOptions.Published,
-          mail_status: MailStatus.ACTIVE,
+          mail_status: MailStatus.Active,
         },
       },
       subscribers: {
@@ -79,6 +76,7 @@ export async function GET(request: NextRequest) {
     select: {
       email: true,
       id: true,
+      name: true,
     },
     where: {
       id: {
@@ -89,10 +87,10 @@ export async function GET(request: NextRequest) {
 
   const followersMap = followers.reduce(
     (acc, obj) => {
-      acc[obj.id] = obj.email;
+      acc[obj.id] = obj;
       return acc;
     },
-    {} as Record<number, string>
+    {} as Record<number, (typeof followers)[0]>
   );
 
   const variables: Record<number, Variables[]> = [];
@@ -116,9 +114,10 @@ export async function GET(request: NextRequest) {
       });
       author.followers.forEach((follower) => {
         variables[post.id].push({
+          follower_name: followersMap[follower.follower_id].name,
           author_id: author.id,
           post_id: post.id,
-          to: followersMap[follower.follower_id],
+          to: followersMap[follower.follower_id].email,
           title: post.title,
           author_name: author.name,
           cover_image: post.cover_image,

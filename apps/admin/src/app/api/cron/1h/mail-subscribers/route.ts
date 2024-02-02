@@ -1,11 +1,11 @@
-import { MailStatus } from "@prisma/client";
 import type { NextRequest } from "next/server";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { mail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
 import { getQueuedSubscriberEmails, queueSubscribeEmails } from "@/lib/redis";
 
-import { PostStatusOptions } from "@/__generated__/__types__";
+import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 import { getTemplate } from "@/graphql/mail/template";
 import { baseTemplate } from "@/graphql/mail/templates/base";
 import { EmailTemplates } from "@/graphql/types";
@@ -48,17 +48,17 @@ export async function GET(request: NextRequest) {
     },
     where: {
       status: PostStatusOptions.Published,
-      mail_status: MailStatus.ACTIVE,
+      mail_status: MailStatus.Active,
     },
   });
 
-  const emails: Variables[] = await Promise.all(
+  const emailsPerPost: Variables[] = await Promise.all(
     posts.map((post) => getQueuedSubscriberEmails(post.id))
   );
 
   const template = await getTemplate(EmailTemplates.NewPost);
 
-  const mails = emails.map(async (variable) => {
+  const mails = emailsPerPost.map(async (variable) => {
     const subject = template.subject.replaceAll(
       "{{ blog_name }}",
       variable.site_title
@@ -80,27 +80,32 @@ export async function GET(request: NextRequest) {
       )
       .replaceAll("{{ author_name }}", variable.author_name);
 
-    const unSubscribeLink = await getUnsubscribeText({
-      recipient_email: variable.to,
-      author_id: variable.author_id,
-      subcriber_id:
-        variable.__typename === "Subscribers" ? variable.subscriber_id : 0,
+    return new Promise<SMTPTransport.SentMessageInfo>(async (resolve) => {
+      const unSubscribeLink = await getUnsubscribeText({
+        recipient_email: variable.to,
+        author_id: variable.author_id,
+        subcriber_id:
+          variable.__typename === "Subscribers" ? variable.subscriber_id : 0,
+      });
+
+      const html = baseTemplate
+        .replaceAll("{{ content }}", body)
+        .replaceAll("{{ unsubscribe_link }}", unSubscribeLink);
+
+      const toName =
+        variable.__typename === "Subscribers" ? "Reader" : variable.author_name;
+      const res = await mail(
+        {
+          from: `"Letterpad" <admin@letterpad.app>`,
+          replyTo: `"No-Reply" <admin@letterpad.app>`,
+          to: `"${toName}" <${variable.to}>`,
+          subject,
+          html,
+        },
+        false
+      );
+      resolve(res);
     });
-
-    const html = baseTemplate
-      .replaceAll("{{ content }}", body)
-      .replaceAll("{{ unsubscribe_link }}", unSubscribeLink);
-
-    await mail(
-      {
-        from: `"Letterpad" <admin@letterpad.app>`,
-        replyTo: `"No-Reply" <admin@letterpad.app>`,
-        bcc: `"Reader" <${variable.to}>`,
-        subject,
-        html,
-      },
-      false
-    );
   });
 
   return Response.json({ success: true });

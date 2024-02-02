@@ -9,6 +9,7 @@ import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { FollowMe } from "./followme";
 import { SocialIcons } from "./social";
 import { AboutStats } from "../../components/about-stats";
+import { PageView } from "../../components/pageView";
 import { getTagsLinkedWithPosts } from "../../graphql/services/tag/getTags";
 import { getReadableDate } from "../../shared/utils";
 
@@ -167,6 +168,7 @@ const About = async ({ params }: { params: { username: string } }) => {
           </div>
         )}
       </div>
+      <PageView type="profile" id={author.id} />
     </div>
   );
 };

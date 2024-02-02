@@ -95,6 +95,9 @@ export const updatePost = async (
     if (args.data.type) {
       newPostArgs.data.type = args.data.type;
     }
+    if (args.data.mail_status) {
+      newPostArgs.data.mail_status = args.data.mail_status;
+    }
     if (args.data.page_type) {
       newPostArgs.data.page_type = args.data.page_type;
     }
