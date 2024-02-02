@@ -130,8 +130,6 @@ export async function GET(request: NextRequest) {
     });
   });
 
-  const template = await getTemplate(EmailTemplates.NewPost);
-
   await Promise.all(
     Object.keys(variables).map(async (post_id) => {
       return queueSubscribeEmails(Number(post_id), variables[post_id]);

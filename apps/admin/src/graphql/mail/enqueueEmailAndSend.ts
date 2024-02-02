@@ -26,7 +26,7 @@ export async function enqueueEmailAndSend(props: EmailProps) {
 
     const data = await getEmailTemplate(props, prisma);
 
-    if (data.ok) {
+    if (data?.ok) {
       const response = await sendMail(data.content, data.meta);
       if (response && response.length > 0) {
         if (response[0].response.indexOf("OK") > 0) {
