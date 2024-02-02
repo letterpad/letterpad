@@ -1,5 +1,5 @@
-query posts($tagSlug: String) {
-  posts(filters: { tagSlug: $tagSlug }) {
+query posts($tagSlug: String, $search: String) {
+  posts(filters: { tagSlug: $tagSlug, search: $search}) {
     __typename
     ...postsFragment
     ... on LetterpadError {

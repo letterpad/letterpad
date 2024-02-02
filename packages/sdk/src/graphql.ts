@@ -332,6 +332,7 @@ export type InputUpdatePost = {
   html?: InputMaybe<Scalars["String"]>;
   html_draft?: InputMaybe<Scalars["String"]>;
   id: Scalars["Int"];
+  mail_status?: InputMaybe<MailStatus>;
   page_data?: InputMaybe<Scalars["String"]>;
   page_type?: InputMaybe<Scalars["String"]>;
   publishOptions?: InputMaybe<InputPublishOptions>;
@@ -397,6 +398,12 @@ export type LoginError = LetterpadError & {
 };
 
 export type LoginResponse = Author | LoginError;
+
+export enum MailStatus {
+  Active = "ACTIVE",
+  Inactive = "INACTIVE",
+  Sent = "SENT",
+}
 
 export type Media = {
   __typename?: "Media";
@@ -580,6 +587,7 @@ export type Post = {
   html_draft?: Maybe<Scalars["String"]>;
   id: Scalars["Int"];
   likes?: Maybe<Array<Maybe<Like>>>;
+  mail_status?: Maybe<MailStatus>;
   page_data?: Maybe<Scalars["String"]>;
   page_type?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["Date"]>;
@@ -658,6 +666,7 @@ export type PostsFilters = {
   page?: InputMaybe<Scalars["Int"]>;
   page_type?: InputMaybe<Scalars["String"]>;
   previewHash?: InputMaybe<Scalars["String"]>;
+  search?: InputMaybe<Scalars["String"]>;
   slug?: InputMaybe<Scalars["String"]>;
   sortBy?: InputMaybe<SortBy>;
   status?: InputMaybe<Array<InputMaybe<PostStatusOptions>>>;
@@ -1512,6 +1521,7 @@ export type PostPageQuery = {
 
 export type PostsQueryVariables = Exact<{
   tagSlug?: InputMaybe<Scalars["String"]>;
+  search?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type PostsQuery = {
@@ -2100,8 +2110,8 @@ export const PostPageDocument = `
 ${MeFragmentFragmentDoc}
 ${SettingsFragmentFragmentDoc}`;
 export const PostsDocument = `
-    query posts($tagSlug: String) {
-  posts(filters: {tagSlug: $tagSlug}) {
+    query posts($tagSlug: String, $search: String) {
+  posts(filters: {tagSlug: $tagSlug, search: $search}) {
     __typename
     ...postsFragment
     ... on LetterpadError {

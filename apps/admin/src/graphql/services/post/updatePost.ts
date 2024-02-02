@@ -16,6 +16,7 @@ import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
+
 import { mail } from "../../../lib/mail";
 
 export const updatePost = async (
@@ -130,7 +131,8 @@ export const updatePost = async (
 
     if (args.data.html_draft) {
       newPostArgs.data.html_draft = args.data.html_draft;
-      newPostArgs.data.reading_time = Math.ceil((args.data.stats?.words ?? 200) / 200) + '' ?? '2';
+      newPostArgs.data.reading_time =
+        Math.ceil((args.data.stats?.words ?? 200) / 200) + "" ?? "2";
     }
 
     if (args.data.status === PostStatusOptions.Published) {
@@ -185,14 +187,20 @@ export const updatePost = async (
     }
     if (nowPublished) {
       try {
-        await mail({
-          from: `"Letterpad" <admin@letterpad.app>`,
-          replyTo: `"Admin" <admin@letterpad.app>`,
-          to: `admin@letterpad.app`,
-          subject: `New post published - ${existingPost.title}`,
-          html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
-        }, false);
-      } catch (e) { }
+        await mail(
+          {
+            from: `"Letterpad" <admin@letterpad.app>`,
+            replyTo: `"Admin" <admin@letterpad.app>`,
+            to: `admin@letterpad.app`,
+            subject: `New post published - ${existingPost.title}`,
+            html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
+          },
+          false
+        );
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
     }
     return {
       ...mapPostToGraphql(updatedPost),

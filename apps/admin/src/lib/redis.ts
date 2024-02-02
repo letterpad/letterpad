@@ -14,6 +14,27 @@ export const getPageViewsForPost = async (postId: string): Promise<number> => {
   return count;
 };
 
+export const queueSubscribeEmails = async (
+  postId: number,
+  data: Array<any>
+) => {
+  await client.json.set(getKeyForEmailSubscription(postId), "$", data, {
+    nx: true,
+  });
+};
+
+export const removePostFromSubscribeEmail = async (postId: number) => {
+  await client.json.del(getKeyForEmailSubscription(postId));
+};
+
+export const getQueuedSubscriberEmails = async (postId: number) => {
+  return await client.json.get(getKeyForEmailSubscription(postId));
+};
+
 export const getKeyForViews = (type: string, id: string) => {
   return `${type}:${id}:views`;
+};
+
+export const getKeyForEmailSubscription = (id: number) => {
+  return `mail:post:${id}`;
 };

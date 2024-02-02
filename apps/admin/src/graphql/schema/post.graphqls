@@ -126,6 +126,7 @@ input PostsFilters {
   limit: Int
   sortBy: SortBy
   page_type: String
+  search: String
 }
 
 type PostsNode {

@@ -1,0 +1,12 @@
+{
+    "crons": [
+        {
+            "path": "/api/cron/1h/mail-subscribers",
+            "schedule": "0 * * * *"
+        },
+        {
+            "path": "/api/cron/1h/queue-subscribers",
+            "schedule": "0 * * * *"
+        }
+    ]
+}
