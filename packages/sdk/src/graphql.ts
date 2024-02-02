@@ -591,6 +591,7 @@ export type Post = {
   page_data?: Maybe<Scalars["String"]>;
   page_type?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["Date"]>;
+  /** @deprecated Use stats.reading_time in Post */
   reading_time?: Maybe<Scalars["String"]>;
   scheduledAt?: Maybe<Scalars["Date"]>;
   slug?: Maybe<Scalars["String"]>;
@@ -634,8 +635,7 @@ export type PostResponse =
 export type PostStats = {
   __typename?: "PostStats";
   characters?: Maybe<Scalars["Int"]>;
-  /** @deprecated Use stats.reading_time in Post */
-  reading_time?: Maybe<Scalars["Int"]>;
+  reading_time?: Maybe<Scalars["String"]>;
   spaceless_characters?: Maybe<Scalars["Int"]>;
   words?: Maybe<Scalars["Int"]>;
 };
@@ -1261,7 +1261,7 @@ export type PostQuery = {
         stats?: {
           __typename?: "PostStats";
           words?: number | null;
-          reading_time?: number | null;
+          reading_time?: string | null;
           characters?: number | null;
           spaceless_characters?: number | null;
         } | null;
@@ -1321,7 +1321,7 @@ export type PageFragmentFragment = {
   stats?: {
     __typename?: "PostStats";
     words?: number | null;
-    reading_time?: number | null;
+    reading_time?: string | null;
     characters?: number | null;
     spaceless_characters?: number | null;
   } | null;
@@ -1389,7 +1389,7 @@ export type PostPageQuery = {
         stats?: {
           __typename?: "PostStats";
           words?: number | null;
-          reading_time?: number | null;
+          reading_time?: string | null;
           characters?: number | null;
           spaceless_characters?: number | null;
         } | null;
@@ -1561,7 +1561,7 @@ export type PostsQuery = {
           stats?: {
             __typename?: "PostStats";
             words?: number | null;
-            reading_time?: number | null;
+            reading_time?: string | null;
             characters?: number | null;
             spaceless_characters?: number | null;
           } | null;
@@ -1611,7 +1611,7 @@ export type PostsFragmentFragment = {
     stats?: {
       __typename?: "PostStats";
       words?: number | null;
-      reading_time?: number | null;
+      reading_time?: string | null;
       characters?: number | null;
       spaceless_characters?: number | null;
     } | null;

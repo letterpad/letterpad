@@ -59,7 +59,8 @@ const Post: PostResolvers<ResolverContext> = {
       const newReadingTime = Math.ceil((newStats.words ?? 0) / 200);
       return {
         ...newStats,
-        reading_time: newStats.words ? newReadingTime : oldReadingTime,
+        reading_time:
+          (newStats.words ? newReadingTime : oldReadingTime) + " mins",
       };
     }
     return { reading_time: oldReadingTime };

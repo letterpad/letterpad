@@ -32,7 +32,7 @@ type Post {
   # Last updated date of the post
   updatedAt: Date!
   # Reading time of the post in minutes
-  reading_time: String
+  reading_time: String @deprecated(reason: "Use stats.reading_time in Post")
   # Tags of the post
   tags: TagsResponse
   # Page can have different templates like portfolio
@@ -65,7 +65,7 @@ type PostStats {
   # Number of characters in the post excluding spaces
   spaceless_characters: Int
   # Reading time of the post in minutes
-  reading_time: Int @deprecated(reason: "Use stats.reading_time in Post")
+  reading_time: String
 }
 
 input InputPostStats {

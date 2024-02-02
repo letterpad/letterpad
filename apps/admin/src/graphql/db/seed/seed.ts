@@ -292,7 +292,7 @@ export async function insertPost(postData, author_id) {
       reading_time: "5 mins",
       stats: JSON.stringify({
         characters: 1000,
-        reading_time: 2,
+        reading_time: "2 mins",
         spaceless_characters: 800,
         words: 200,
       }),

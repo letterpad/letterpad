@@ -21,7 +21,7 @@ export function List({ posts }: Props) {
                   <PublishedAt
                     publishedAt={publishedAt}
                     className="flex justify-between text-sm xl:block"
-                    reading_time={stats?.reading_time}
+                    reading_time={stats?.reading_time!}
                   />
                   <div className="md:space-y-3 xl:col-span-3">
                     <div>
