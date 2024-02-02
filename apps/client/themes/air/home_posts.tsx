@@ -2,10 +2,11 @@ import classNames from 'classnames';
 import { PostsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 
+import formatDate from '@/lib/utils/formatDate';
+
 import Link from '@/components/Link';
 
 import Image from '../../components/Image';
-import formatDate from '@/lib/utils/formatDate';
 import { SectionContainer } from '../../src/components/section';
 export interface Props {
   posts: PostsFragmentFragment;
@@ -103,7 +104,7 @@ const Card: FC<{
           </span>
           <span className="px-2.5">⋅</span>
           <span className="whitespace-nowrap">
-            {post.stats?.reading_time} min read
+            {post.stats?.reading_time} read
           </span>
         </div>
       </div>

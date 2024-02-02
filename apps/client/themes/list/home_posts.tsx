@@ -1,9 +1,10 @@
 import { FC } from 'react';
 
-import { HomePostsProps } from '../../types/pageTypes';
-import { PublishedAt } from '../../src/components/published-at';
 import Link from '@/components/Link';
+
+import { PublishedAt } from '../../src/components/published-at';
 import { SectionContainer } from '../../src/components/section';
+import { HomePostsProps } from '../../types/pageTypes';
 
 export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   return (
@@ -21,7 +22,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
                   <PublishedAt
                     publishedAt={publishedAt}
                     className="flex justify-between text-sm xl:block"
-                    reading_time={stats?.reading_time}
+                    reading_time={stats?.reading_time!}
                   />
                   <div className="md:space-y-3 xl:col-span-3">
                     <div>

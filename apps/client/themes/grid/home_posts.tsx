@@ -7,10 +7,10 @@ import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 
+import { SectionContainer } from '../../src/components/section';
 // import { SectionContainer } from './commons/section';
 // import { PageTitle } from './commons/title';
 import { HomePostsProps } from '../../types/pageTypes';
-import { SectionContainer } from '../../src/components/section';
 
 export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
   return (
@@ -44,7 +44,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
                     <span className="inline-flex w-full items-center justify-between">
                       <span className="flex items-center gap-1 text-sm">
                         <IconBook />
-                        {stats?.reading_time} min read
+                        {stats?.reading_time} read
                       </span>
 
                       <time dateTime={publishedAt} className="text-sm">
