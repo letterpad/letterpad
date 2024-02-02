@@ -3,11 +3,12 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { mail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
-import { getQueuedSubscriberEmails, queueSubscribeEmails } from "@/lib/redis";
+import { getQueuedSubscriberEmails } from "@/lib/redis";
 
 import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 import { getTemplate } from "@/graphql/mail/template";
 import { baseTemplate } from "@/graphql/mail/templates/base";
+import { addLineBreaks } from "@/graphql/mail/utils";
 import { EmailTemplates } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { getUnsubscribeToken } from "@/shared/token";
@@ -89,7 +90,7 @@ export async function GET(request: NextRequest) {
       });
 
       const html = baseTemplate
-        .replaceAll("{{ content }}", body)
+        .replaceAll("{{ content }}", addLineBreaks(body))
         .replaceAll("{{ unsubscribe_link }}", unSubscribeLink);
 
       const toName =
