@@ -58,11 +58,10 @@ export const getPosts = cache(
     const { page = 1, limit = 10 } = args.filters;
     const skip = page && limit ? (page - 1) * limit : 0;
     const isPage = args.filters.type === PostTypes.Page;
-
     const condition: Prisma.PostFindManyArgs = {
       where: {
         html: {
-          search: args.filters?.search,
+          contains: args.filters?.search,
         },
         author_id: authorId,
         // id: args.filters?.id,
@@ -94,6 +93,9 @@ export const getPosts = cache(
         id: true,
       },
     };
+    if (condition.where?.html?.["search"]) {
+      condition.where.html["search"] = args.filters?.search;
+    }
     try {
       const postIds = await prisma.post.findMany(condition);
       const posts = await context.dataloaders.post.loadMany(
@@ -158,4 +160,7 @@ function getTags({
     };
   }
   return undefined;
+}
+function hasKey(obj: any, key: string): obj is { [k in typeof key]: any } {
+  return key in obj;
 }

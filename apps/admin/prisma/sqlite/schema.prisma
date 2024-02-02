@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["metrics"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -142,8 +141,11 @@ model Post {
   page_data          String    @default("")
   stats              String    @default("{}")
   likes              Likes[]
+  mail_status        String    @default("INACTIVE")
 
   @@index([author_id])
+  @@index([status, mail_status])
+  @@index([author_id, status, slug])
 }
 
 model RolePermissions {
