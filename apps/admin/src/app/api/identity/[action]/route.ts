@@ -31,9 +31,13 @@ export async function GET(
   }
 
   if (params.action === "logout") {
+    const author = await prisma.author.findFirst({
+      select: { id: true },
+      where: { email: decodedToken.email! },
+    });
     const deleted = await prisma.session.deleteMany({
       where: {
-        author_id: Number(decodedToken.sub)!,
+        author_id: author?.id!,
       },
     });
     const requestHeaders = new Headers(req.headers);
@@ -59,9 +63,13 @@ export async function GET(
       }
       const cookieStore = cookies();
       const sessionToken = cookieStore.get(getAuthCookieName())?.value!;
+      const author = await prisma.author.findFirst({
+        select: { id: true },
+        where: { email: decodedToken.email! },
+      });
       const found = await prisma.session.findFirst({
         where: {
-          author_id: Number(decodedToken.sub),
+          author_id: author?.id,
           domain: new URL(serviceUrl).origin,
         },
       });
@@ -87,7 +95,7 @@ export async function GET(
               : new Date(),
             author: {
               connect: {
-                id: Number(decodedToken.sub),
+                id: author?.id,
               },
             },
           },

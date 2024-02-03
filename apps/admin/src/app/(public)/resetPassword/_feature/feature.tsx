@@ -115,11 +115,11 @@ export const Feature = () => {
               <input
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value.trim())}
-                type="email"
+                type="password"
                 name="email"
                 id="email"
                 data-testid="email"
-                placeholder="example@example.com"
+                placeholder="xxxxxxxxxxxxxxxxx"
                 className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-40 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-600 dark:focus:border-blue-400"
               />
             </div>
