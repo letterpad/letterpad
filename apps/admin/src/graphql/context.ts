@@ -16,7 +16,7 @@ import { getHeader } from "../utils/headers";
 
 const isTest = process.env.NODE_ENV === "test";
 
-const cache: Record<string, string> = {};
+const cache: Record<string, number> = {};
 
 export const getResolverContext = async (request: Request) => {
   const authHeader = getHeader(request.headers, "authorization");
@@ -24,10 +24,9 @@ export const getResolverContext = async (request: Request) => {
 
   if (cache[`${authHeader}-${identifierHeader}`]) {
     console.log(
-      `Found author id from header cache: ${
-        cache[`${authHeader}-${identifierHeader}`]
-      }`
+      `Found authorId from cache: ${cache[`${authHeader}-${identifierHeader}`]}`
     );
+
     return {
       client_author_id: cache[`${authHeader}-${identifierHeader}`],
       session: null,

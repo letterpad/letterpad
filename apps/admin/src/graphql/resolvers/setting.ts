@@ -13,27 +13,33 @@ import {
   updateSetting,
 } from "../services/setting";
 import { resolveDesignField } from "../services/setting/resolveDesignField";
-
-import { Optional } from "@/types";
 import { encryptEmail } from "../../shared/clientToken";
 
+import { Optional } from "@/types";
+
 const Setting: SettingResolvers<ResolverContext> = {
-  menu: async ({ menu, show_about_page, show_tags_page }, _, { dataloaders, client_author_id, session }) => {
-    const author = await dataloaders.author.load(session?.user.id || client_author_id);
+  menu: async (
+    { menu, show_about_page, show_tags_page },
+    _,
+    { dataloaders, client_author_id, session }
+  ) => {
+    const author = await dataloaders.author.load(
+      session?.user.id || client_author_id
+    );
     return getMenuWithSanitizedSlug(
       parse(menu),
       !!session?.user,
       author.username,
       show_about_page,
-      show_tags_page,
-    )
+      show_tags_page
+    );
   },
   banner: ({ banner }) => resolveImageField(banner),
   site_logo: ({ site_logo }) => resolveImageField(site_logo),
   site_favicon: ({ site_favicon }) => resolveImageField(site_favicon),
   design: ({ design }) => resolveDesignField(design),
-  client_token: ({ }, _, { session }) => {
-    return session?.user.email ? encryptEmail(session?.user.email) : ""
+  client_token: (__, _, { session }) => {
+    return session?.user.email ? encryptEmail(session?.user.email) : "";
   },
 };
 
@@ -51,7 +57,7 @@ function getMenuWithSanitizedSlug(
   loggedIn: boolean,
   username: string,
   show_about_page?: boolean,
-  show_tags_page?: boolean,
+  show_tags_page?: boolean
 ) {
   const cleanMenu = menu.map((item) => {
     switch (item.type) {

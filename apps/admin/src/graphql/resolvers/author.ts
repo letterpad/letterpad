@@ -1,6 +1,9 @@
+import { au } from "@upstash/redis/zmscore-a4ec4c2a";
+
 import {
   AuthorResolvers,
   MutationResolvers,
+  NotificationMeta,
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
@@ -150,38 +153,52 @@ const Mutation: MutationResolvers<ResolverContext> = {
     return resetPassword(args, context);
   },
   async followAuthor(_root, { username }, { prisma, session }) {
+    if (!session?.user?.id)
+      return { ok: false, message: "You are not logged in" };
+
     const author = await prisma.author.findFirst({
       where: { username },
       select: { id: true },
     });
-    if (session?.user?.id && author?.id) {
-      await prisma.follows.create({
-        data: {
-          follower: {
-            connect: {
-              id: session.user.id,
-            },
-          },
-          following: {
-            connect: {
-              id: author.id,
-            },
+
+    if (!author?.id) return { ok: false, message: "Author not found" };
+
+    await prisma.follows.create({
+      data: {
+        follower: {
+          connect: {
+            id: session.user.id,
           },
         },
-      });
-      await enqueueEmailAndSend({
-        template_id: EmailTemplates.NewFollower,
-        follower_id: session.user.id,
-        following_id: author.id,
-      });
-      return {
-        ok: true,
-        message: "You are now following this author",
-      };
-    }
+        following: {
+          connect: {
+            id: author.id,
+          },
+        },
+      },
+    });
+
+    await prisma.notifications.create({
+      data: {
+        author_id: author.id,
+        meta: {
+          __typename: "FollowerNewMeta",
+          follower_avatar: session.user.avatar,
+          follower_name: session.user.username,
+          follower_username: session.user.username,
+          follower_id: session.user.id,
+        } as NotificationMeta,
+      },
+    });
+
+    await enqueueEmailAndSend({
+      template_id: EmailTemplates.NewFollower,
+      follower_id: session.user.id,
+      following_id: author.id,
+    });
     return {
-      ok: false,
-      message: "You are not logged in",
+      ok: true,
+      message: "You are now following this author",
     };
   },
   async unFollowAuthor(_root, { username }, { prisma, session }) {

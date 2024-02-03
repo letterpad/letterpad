@@ -2,6 +2,7 @@ import { report } from "@/components/error";
 
 import {
   MutationResolvers,
+  NotificationMeta,
   PostResolvers,
   QueryResolvers,
 } from "@/__generated__/__types__";
@@ -233,6 +234,30 @@ const Mutation: MutationResolvers<ResolverContext> = {
               id: session.user.id,
             },
           },
+        },
+      });
+
+      const post = await prisma.post.findFirst({
+        where: {
+          id: args.postId,
+        },
+        select: {
+          author_id: true,
+          slug: true,
+        },
+      });
+
+      await prisma.notifications.create({
+        data: {
+          author_id: post?.author_id!,
+          meta: {
+            __typename: "PostLikeMeta",
+            author_avatar: session.user.avatar,
+            author_name: session.user.username,
+            author_username: session.user.username,
+            post_id: args.postId,
+            post_slug: post?.slug,
+          } as NotificationMeta,
         },
       });
 

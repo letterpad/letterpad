@@ -4,6 +4,7 @@ import { report } from "@/components/error";
 
 import {
   MutationUpdatePostArgs,
+  NotificationMeta,
   PostStatusOptions,
   PostTypes,
   ResolversTypes,
@@ -46,6 +47,10 @@ export const updatePost = async (
         message: "Current post not found to update",
       };
     }
+
+    const isFirstPublish =
+      args.data.status === PostStatusOptions.Published &&
+      existingPost.status !== PostStatusOptions.Published;
 
     const author = await prisma.author.findFirst({
       where: { id: existingPost.author_id },
@@ -176,7 +181,7 @@ export const updatePost = async (
         slug: updatedPost.slug,
       });
 
-      if (newPostArgs.data.status === PostStatusOptions.Published) {
+      if (isFirstPublish) {
         const url = `https://${session.user.username}.letterpad.app/sitemap.xml`;
         submitSitemap(url);
       }
@@ -188,7 +193,33 @@ export const updatePost = async (
         message: "Updated post not found",
       };
     }
-    if (nowPublished) {
+
+    if (isFirstPublish) {
+      const followers = await prisma.follows.findMany({
+        where: {
+          following_id: session.user.id,
+        },
+      });
+
+      await Promise.all(
+        followers.map((follower) => {
+          return prisma.notifications.create({
+            data: {
+              author_id: follower.follower_id,
+              meta: {
+                __typename: "PostNewMeta",
+                author_avatar: session.user.avatar,
+                author_name: session.user.username,
+                author_username: session.user.username,
+                post_id: existingPost.id,
+                post_slug: existingPost.slug,
+                post_title: existingPost.title,
+              } as NotificationMeta,
+            },
+          });
+        })
+      );
+
       try {
         await mail(
           {

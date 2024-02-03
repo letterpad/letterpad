@@ -1,6 +1,7 @@
 import Author from "./author";
 import Domain from "./domain";
 import Media from "./media";
+import Notification from "./notification";
 import Post from "./post";
 import Setting from "./setting";
 import Sitemap from "./sitemap";
@@ -16,4 +17,5 @@ export const resolversArr = [
   Subscriber,
   Domain,
   Sitemap,
+  Notification,
 ];
