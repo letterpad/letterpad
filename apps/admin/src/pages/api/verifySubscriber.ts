@@ -6,6 +6,7 @@ import { basePath } from "@/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { decodeJWTToken } from "@/shared/token";
 
+import { convertNotificationMetaIn } from "../../graphql/resolvers/utils/dbTypeCheck";
 import {
   EmailTemplates,
   NextApiRequestWithFormData,
@@ -39,10 +40,10 @@ const Verify = async (
     await prisma.notifications.create({
       data: {
         author_id: token.author_id,
-        meta: {
+        meta: convertNotificationMetaIn({
           __typename: "SubscriberNewMeta",
           subscriber_email: subscriber?.email,
-        } as NotificationMeta,
+        }),
       },
     });
 

@@ -18,6 +18,7 @@ import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnT
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
+import { convertNotificationMetaIn } from "../../resolvers/utils/dbTypeCheck";
 import { mail } from "../../../lib/mail";
 
 export const updatePost = async (
@@ -206,7 +207,7 @@ export const updatePost = async (
           return prisma.notifications.create({
             data: {
               author_id: follower.follower_id,
-              meta: {
+              meta: convertNotificationMetaIn({
                 __typename: "PostNewMeta",
                 author_avatar: session.user.avatar,
                 author_name: session.user.username,
@@ -214,7 +215,7 @@ export const updatePost = async (
                 post_id: existingPost.id,
                 post_slug: existingPost.slug,
                 post_title: existingPost.title,
-              } as NotificationMeta,
+              }),
             },
           });
         })

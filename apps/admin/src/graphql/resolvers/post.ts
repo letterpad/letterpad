@@ -10,6 +10,7 @@ import { ResolverContext } from "@/graphql/context";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { createPathWithPrefix } from "@/utils/slug";
 
+import { convertNotificationMetaIn } from "./utils/dbTypeCheck";
 import {
   createPost,
   getAuthorFromPost,
@@ -250,14 +251,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await prisma.notifications.create({
         data: {
           author_id: post?.author_id!,
-          meta: {
+          meta: convertNotificationMetaIn({
             __typename: "PostLikeMeta",
             author_avatar: session.user.avatar,
             author_name: session.user.username,
             author_username: session.user.username,
             post_id: args.postId,
             post_slug: post?.slug,
-          } as NotificationMeta,
+          }),
         },
       });
 

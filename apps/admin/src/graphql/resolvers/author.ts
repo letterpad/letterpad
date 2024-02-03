@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { au } from "@upstash/redis/zmscore-a4ec4c2a";
 
 import {
@@ -11,6 +12,7 @@ import {
 import { ResolverContext } from "@/graphql/context";
 
 import { getSocialLink } from "./helpers";
+import { convertNotificationMetaIn } from "./utils/dbTypeCheck";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import {
   createAuthor,
@@ -181,13 +183,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
     await prisma.notifications.create({
       data: {
         author_id: author.id,
-        meta: {
+        meta: convertNotificationMetaIn({
           __typename: "FollowerNewMeta",
           follower_avatar: session.user.avatar,
           follower_name: session.user.username,
           follower_username: session.user.username,
           follower_id: session.user.id,
-        } as NotificationMeta,
+        }),
       },
     });
 

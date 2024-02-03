@@ -9,44 +9,58 @@ datasource db {
 }
 
 model Author {
-  id                     Int          @id @default(autoincrement())
+  id                     Int             @id @default(autoincrement())
   name                   String
-  username               String       @unique
-  email                  String       @unique
+  username               String          @unique
+  email                  String          @unique
   password               String
   bio                    String
   occupation             String
-  signature              String       @default("")
+  signature              String          @default("")
   company_name           String
   avatar                 String
-  social                 String       @default("{}")
-  verified               Boolean      @default(false)
-  createdAt              DateTime?    @default(now())
-  updatedAt              DateTime?    @updatedAt
-  verify_attempt_left    Int?         @default(3)
+  social                 String          @default("{}")
+  verified               Boolean         @default(false)
+  createdAt              DateTime?       @default(now())
+  updatedAt              DateTime?       @updatedAt
+  verify_attempt_left    Int?            @default(3)
   posts                  Post[]
   uploads                Upload[]
   analytics_id           Int?
   analytics_uuid         String?
   setting                Setting?
-  register_step          String?      @default("")
+  register_step          String?         @default("")
   role_id                Int
-  role                   Role         @relation(fields: [role_id], references: [id])
+  role                   Role            @relation(fields: [role_id], references: [id])
   subscribers            Subscriber[]
-  login_type             String       @default("credentials")
+  login_type             String          @default("credentials")
   domain                 Domain?
   last_seen              DateTime?
-  first_post_published   Boolean      @default(false)
-  settings_updated       Boolean      @default(false)
-  profile_updated        Boolean      @default(false)
+  first_post_published   Boolean         @default(false)
+  settings_updated       Boolean         @default(false)
+  profile_updated        Boolean         @default(false)
   stripe_customer_id     String?
   stripe_subscription_id String?
   session                Session[]
-  followers              Follows[]    @relation("following")
-  following              Follows[]    @relation("follower")
+  followers              Follows[]       @relation("following")
+  following              Follows[]       @relation("follower")
   likes                  Likes[]
+  notifications          Notifications[]
 
   @@index([role_id])
+}
+
+model Notifications {
+  notification_id String    @id @default(uuid())
+  author_id       Int
+  meta            String    @default("{}")
+  is_read         Boolean   @default(false)
+  mail_sent       Boolean   @default(false)
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
+  author          Author?   @relation(fields: [author_id], references: [id])
+
+  @@index([author_id])
 }
 
 model Follows {

@@ -4,6 +4,7 @@ import {
   QueryResolvers,
 } from "@/__generated__/__types__";
 
+import { convertNotificationMetaOut } from "./utils/dbTypeCheck";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -22,7 +23,7 @@ const Query: QueryResolvers<ResolverContext> = {
       count: notifications.length,
       rows: notifications.map((notification) => ({
         ...notification,
-        meta: notification.meta as NotificationMeta,
+        meta: convertNotificationMetaOut(notification.meta),
       })),
     };
   },
