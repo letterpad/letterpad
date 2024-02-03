@@ -43,6 +43,10 @@ const tags = [
 ];
 
 export async function seed(folderCheck = true) {
+  if (process.env.DATABASE_URL.includes("connect.psdb")) {
+    console.log("Not seeding the database in planetscale");
+    return;
+  }
   try {
     if (folderCheck) {
       console.time("delete all recoreds from all tables");

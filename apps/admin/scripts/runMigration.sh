@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source scripts/schema.sh
-
 # for planetscale prisma migration is not required.
 DB_IGNORE_MIGRATION="connect.psdb"
 
