@@ -43,7 +43,7 @@ interface Props2 {
 }
 async function send({ html, subject, to, author_id, author_name }: Props2) {
   try {
-    const body = bodyDecorator(html, to, author_id, 0);
+    const body = await bodyDecorator(html, to, author_id, 0);
     // send mail
     const fromEmail = process.env.SENDER_EMAIL;
     const addBcc = false;

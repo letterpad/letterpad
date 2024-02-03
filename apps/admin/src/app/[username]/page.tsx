@@ -56,7 +56,7 @@ const About = async ({ params }: { params: { username: string } }) => {
             <img
               src={avatar}
               alt="avatar"
-              className="w-16 h-16 md:w-20 md:h-20 rounded-full"
+              className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover"
             />
           </span>
           <div className="flex justify-between flex-col">

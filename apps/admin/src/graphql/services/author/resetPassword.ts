@@ -13,7 +13,7 @@ export const resetPassword = async (
 ): Promise<ResolversTypes["ForgotPasswordResponse"]> => {
   try {
     const token = args.token;
-    const isValidToken = verifyToken(token);
+    const isValidToken = await verifyToken(token);
     if (!isValidToken) {
       throw new Error("The link is not valid.");
     }

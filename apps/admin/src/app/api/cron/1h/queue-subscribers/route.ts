@@ -4,8 +4,6 @@ import { prisma } from "@/lib/prisma";
 import { queueSubscribeEmails } from "@/lib/redis";
 
 import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
-import { getTemplate } from "@/graphql/mail/template";
-import { EmailTemplates } from "@/graphql/types";
 
 interface Base {
   post_id: number;

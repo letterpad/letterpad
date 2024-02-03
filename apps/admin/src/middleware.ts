@@ -51,7 +51,7 @@ interface Props {
 function handleAuth({ request, source, user }: Props) {
   const sourceURL = new URL(source);
   const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
-  const adminURL = new URL(process.env.ROOT_URL);
+  const adminURL = new URL(process.env.ROOT_URL!);
   const url = request.nextUrl;
   const isLogin = url.pathname === "/api/identity/login";
   const isLogout = url.pathname === "/api/identity/logout";

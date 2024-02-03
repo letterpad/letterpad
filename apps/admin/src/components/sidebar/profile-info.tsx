@@ -11,7 +11,7 @@ const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
       <div className="fixed bottom-0 flex h-16 w-full items-center gap-2 border-t border-t-blue-900 bg-zinc-800 p-4 text-gray-400">
         {avatar && (
           <div className="flex overflow-hidden rounded-full border-2 border-blue-500">
-            <Image
+            <img
               src={avatar}
               width={36}
               height={36}

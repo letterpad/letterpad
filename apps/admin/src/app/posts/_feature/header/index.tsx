@@ -6,7 +6,7 @@ const titleColumn = {
   title: "Title",
   dataIndex: "title",
   key: "title",
-  width: "45%",
+  className: "max-w-md text-ellipsis",
   render: (title: string) => <span>{title || "(Draft)"}</span>,
 };
 

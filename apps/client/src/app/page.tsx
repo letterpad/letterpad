@@ -89,7 +89,7 @@ const AboutMe = ({ me }) => {
   return (
     <div className="rounded text-center text-gray-500 p-8 md:px-0 dark:bg-slate-900 bg-slate-100 shadow-inner">
       <img
-        className="w-32 h-32 rounded-full mx-auto p-4 border-4"
+        className="w-32 h-32 rounded-full mx-auto p-4 border-4 object-cover"
         src={me.avatar}
         alt={me.name}
       />

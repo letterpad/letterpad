@@ -14,7 +14,7 @@ const Unsubscribe = async (
   res: NextApiResponse
 ) => {
   try {
-    const isValidToken = verifyToken(req.query.token as string);
+    const isValidToken = await verifyToken(req.query.token as string);
     if (!isValidToken) {
       return res.redirect(basePath + "/messages/expired");
     }
