@@ -15,6 +15,14 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
       eventCategory: `social-${mode}`,
       eventLabel: type,
     });
+    if (params.get("source") && params.get("serviceUrl")) {
+      const source = params.get("source");
+      const serviceUrl = params.get("serviceUrl");
+      await signIn(type, {
+        callbackUrl: `${document.location.origin}/api/identity/login?source=${source}&serviceUrl=${serviceUrl}`,
+      });
+      return;
+    }
     const cbUrl = params.get("callbackUrl");
     const callback = typeof cbUrl === "string" ? cbUrl : "/posts";
     await signIn(type, { callbackUrl: callback });

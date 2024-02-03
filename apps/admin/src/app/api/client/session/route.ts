@@ -16,10 +16,14 @@ export async function GET(request: Request) {
       token: hasToken.value,
       secret: process.env.SECRET_KEY,
     });
+    const author = await prisma.author.findFirst({
+      select: { id: true },
+      where: { email: session?.email! },
+    });
     const siteUrl = request.headers.get("siteurl")!;
     const found = await prisma.session.findFirst({
       where: {
-        author_id: Number(session?.sub) ?? 0,
+        author_id: author?.id ?? 0,
         domain: siteUrl,
       },
     });
@@ -33,7 +37,7 @@ export async function GET(request: Request) {
         username: true,
       },
       where: {
-        id: Number(session?.sub),
+        id: author?.id,
       },
     });
     return NextResponse.json({ user }, { status: 200 });
