@@ -71,7 +71,7 @@ const About = async ({ params }: { params: { username: string } }) => {
       </div>
       <div className="space-y-4">
         <AboutStats username={username} />
-        <div className="dark:bg-slate-800 flex flex-col gap-6 p-3 border rounded mt-2 border-slate-200 dark:border-slate-700">
+        <div className="flex flex-col gap-6 p-3 border rounded mt-2 border-slate-200 dark:border-slate-800 dark:bg-sky-900/10">
           <span className="flex gap-2 items-center dark:text-slate-400">
             <BiCalendar />
             Member Since
@@ -88,7 +88,7 @@ const About = async ({ params }: { params: { username: string } }) => {
       </div>
       <div className="flex gap-8 items-start pb-32 flex-col md:flex-row">
         <div>
-          <div className="dark:bg-slate-800 p-4 rounded dark:border-slate-700 border">
+          <div className="p-4 rounded dark:border-slate-800 dark:bg-sky-900/10 border">
             <h3 className="block antialiased tracking-normal font-semibold text-inherit text-[1.1rem] py-2">
               Publishes At:
             </h3>
