@@ -3,13 +3,13 @@ import { getUnsubscribeToken } from "@/shared/token";
 
 import { baseTemplate } from "./templates/base";
 
-export const bodyDecorator = (
+export const bodyDecorator = async (
   html: string,
   recipient_email: string,
   author_id: number,
   subcriber_id: number
 ) => {
-  const token = getUnsubscribeToken({
+  const token = await getUnsubscribeToken({
     email: recipient_email,
     author_id: author_id,
     subscriber_id: subcriber_id,
