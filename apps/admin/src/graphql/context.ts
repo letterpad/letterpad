@@ -1,37 +1,47 @@
+/* eslint-disable no-console */
 import { Author, Post, Setting, Tag } from "@prisma/client";
 import DataLoader from "dataloader";
+import { andThen, pipe } from "ramda";
 
 import { prisma } from "@/lib/prisma";
 
 import { SessionData } from "./types";
 import { basePath } from "../constants";
+import {
+  findAuthorIdFromCustomDomain,
+  findAuthorIdFromLetterpadSubdomain,
+  findEmailFromToken,
+} from "../shared/getAuthorIdFromHeaders";
 import { getHeader } from "../utils/headers";
-import { pipe, andThen } from "ramda"
-import { findAuthorIdFromCustomDomain, findAuthorIdFromLetterpadSubdomain, findEmailFromToken } from "../shared/getAuthorIdFromHeaders";
-import { decode } from "next-auth/jwt";
-import { getAuthCookieName } from "../utils/authCookie";
-
 
 const isTest = process.env.NODE_ENV === "test";
 
-const cache = {};
+const cache: Record<string, number> = {};
 
 export const getResolverContext = async (request: Request) => {
   const authHeader = getHeader(request.headers, "authorization");
   const identifierHeader = getHeader(request.headers, "identifier");
 
   if (cache[`${authHeader}-${identifierHeader}`]) {
-    console.log(`Found author id from header cache: ${cache[`${authHeader}-${identifierHeader}`]}`);
-    return { client_author_id: cache[`${authHeader}-${identifierHeader}`], session: null }
+    console.log(
+      `Found authorId from cache: ${cache[`${authHeader}-${identifierHeader}`]}`
+    );
+
+    return {
+      client_author_id: cache[`${authHeader}-${identifierHeader}`],
+      session: null,
+    };
   }
 
-  console.log(`AuthHeader: ${authHeader}, IdentifierHeader: ${identifierHeader}`);
+  console.log(
+    `AuthHeader: ${authHeader}, IdentifierHeader: ${identifierHeader}`
+  );
 
   let { authorId } = await pipe(
     findEmailFromToken,
     andThen(findAuthorIdFromLetterpadSubdomain),
-    andThen(findAuthorIdFromCustomDomain))
-    ({ authHeader, identifierHeader, authorId: null });
+    andThen(findAuthorIdFromCustomDomain)
+  )({ authHeader, identifierHeader, authorId: null });
 
   if (authorId) {
     console.log(`Found author id from header: ${authorId}}`);
@@ -39,15 +49,14 @@ export const getResolverContext = async (request: Request) => {
   }
 
   if (!authorId && !isTest) {
-    const session = await getServerSession({ req: request }) as unknown as {
+    const session = (await getServerSession({ req: request })) as unknown as {
       user: SessionData;
     };
     if (session?.user?.id) {
-      console.log(`Found author id from session: ${session.user.id}}`);
-      return { session }
+      return { session };
     }
   }
-  return { client_author_id: authorId, session: null }
+  return { client_author_id: authorId, session: null };
 };
 
 const batchAuthors = async (keys) => {
@@ -146,10 +155,14 @@ export const getServerSession = async ({ req }) => {
   try {
     const headers = req.headers;
 
-    const sessionURL =
-      (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
-      basePath +
-      "/api/auth/session";
+    // const sessionURL =
+    //   (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
+    //   basePath +
+    //   "/api/auth/session";
+
+    const sessionURL = process.env.ROOT_URL + basePath + "/api/auth/session";
+
+    console.log(sessionURL);
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });

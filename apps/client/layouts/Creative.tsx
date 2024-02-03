@@ -7,8 +7,7 @@ import {
 import Head from 'next/head';
 import { BuilderContext, Layout } from 'ui';
 
-import ScrollTop from '@/components/ScrollTop';
-import { BlogSEO } from '@/components/SEO';
+import ScrollTop from '../src/components/scroll-top';
 
 interface Props {
   data: PageFragmentFragment;
@@ -17,8 +16,6 @@ interface Props {
   me: MeFragmentFragment;
 }
 export default function Creative({ site_name, data, settings, me }: Props) {
-  const { slug, publishedAt, title, excerpt, updatedAt, cover_image, tags } =
-    data;
   if (settings.__typename !== 'Setting') return null;
   if (me?.__typename !== 'Author' || data.author?.__typename !== 'Author')
     return null;
@@ -38,22 +35,6 @@ export default function Creative({ site_name, data, settings, me }: Props) {
   ];
   return (
     <>
-      <BlogSEO
-        url={`${settings.site_url}${slug}`}
-        date={publishedAt}
-        title={title}
-        summary={excerpt || ''}
-        lastmod={updatedAt}
-        images={[cover_image?.src ?? '']}
-        slug={slug ?? ''}
-        tags={
-          tags?.__typename === 'TagsNode' ? tags.rows?.map((t) => t.name) : []
-        }
-        fileName={title}
-        site_name={site_name}
-        //@ts-ignore
-        authorDetails={authorDetails}
-      />
       <ScrollTop />
       <article>
         <BuilderContext

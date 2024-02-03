@@ -101,11 +101,13 @@ export const Item: FC<Props> = ({
         </div>
 
         <div className="menu-content block">
-          <Inputv2
-            style={{ width: "calc(100% - 200px)", cursor: "not-allowed" }}
-            value={type + ": " + library.original_name}
-            disabled
-          />
+          <div className="flex-1">
+            <Inputv2
+              style={{ width: "calc(100%)", cursor: "not-allowed" }}
+              value={type + ": " + library.original_name}
+              disabled
+            />
+          </div>
           <Button
             variant="primary"
             onClick={(e) => {

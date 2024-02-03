@@ -264,6 +264,25 @@ query domainCerts {
   certs
 }
 
+query IsFollowing($username: String!) {
+  isFollowing(username: $username) {
+    ok
+    following
+    message
+  }
+}
+
+query AboutStats($username: String!) {
+  aboutStats(username: $username) {
+    stats {
+      postCount
+      followerCount
+      followingCount
+    }
+    ok
+  }
+}
+
 query homeQuery {
   me {
     __typename
@@ -306,6 +325,57 @@ query homeQuery {
 
     ... on StatsError {
       message
+    }
+  }
+}
+
+query Notification {
+  notifications {
+    __typename
+    ... on NotificationNode {
+      count
+      rows {
+        ... on Notification {
+          notification_id
+          author_id
+          createdAt
+          meta {
+            ... on PostLikeMeta {
+              post_id
+              post_title
+              post_slug
+              author_name
+              author_avatar
+              __typename
+            }
+            ... on PostNewMeta {
+              post_id
+              post_slug
+              author_name
+              author_avatar
+              author_username
+               __typename
+            }
+            ... on FollowerNewMeta {
+              follower_id
+              follower_name
+              follower_username
+              follower_avatar
+               __typename
+            }
+            ... on SubscriberNewMeta{
+              subscriber_email
+               __typename
+            }
+            ... on SystemMeta{
+              message
+              url
+              slug
+               __typename
+            }
+          }
+        }
+      }
     }
   }
 }

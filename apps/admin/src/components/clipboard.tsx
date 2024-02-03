@@ -23,7 +23,7 @@ export const CopyToClipboard: VFC<Props> = ({ elementId }) => {
     <>
       <Button
         ref={buttonRef}
-        variant="ghost"
+        variant="secondary"
         onClick={(e) => {
           e.preventDefault();
           Message().success({ content: "Copied" });

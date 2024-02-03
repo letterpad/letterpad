@@ -1,7 +1,9 @@
 import classNames from "classnames";
+import Link from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Drawer, Input, Switch, TextArea } from "ui";
 import { CgSpinner } from "react-icons/cg";
+import { Drawer, Input, Switch, TextArea } from "ui";
+
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/app/settings/_feature/api.client";
@@ -14,12 +16,13 @@ import {
 } from "@/utils/slug";
 
 import { getPostHash } from "./api";
+import { Heading } from "./heading";
+import { Preview } from "./preview";
 import PublishButton from "./publishButton";
 import { QuickMenu } from "./quickmenu";
+import { SendEmailCheckbox } from "./sendEmailCheckbox";
 import Tags from "./tags";
 import { useUpdatePost } from "../../api.client";
-import Link from "next/link";
-import { Heading } from "./heading";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -93,7 +96,6 @@ const Actions = ({ post }: IProps) => {
     } catch (e) {}
     setBusy(false);
   };
-
   return (
     <>
       <QuickMenu
@@ -109,6 +111,7 @@ const Actions = ({ post }: IProps) => {
         onClose={onClose}
         dir="top"
         className="w-screen"
+        scale={true}
       >
         <div className="whitespace-normal lg:w-2/3 m-auto">
           <div className="flex flex-col-reverse md:flex-row gap-10">
@@ -119,7 +122,7 @@ const Actions = ({ post }: IProps) => {
                   subheading={`Used in search engines and social media.`}
                 />
                 <TextArea
-                  rows={4}
+                  rows={2}
                   maxLength={160}
                   onChange={(e) => {
                     debounceUpdatePost({
@@ -155,6 +158,29 @@ const Actions = ({ post }: IProps) => {
                     />
                   }
                 />
+              )}
+              {isPost && (
+                <div>
+                  <Heading
+                    heading="Email Subscribers"
+                    subheading={
+                      <>
+                        Notify your email subscribers when you publish this
+                        post.
+                      </>
+                    }
+                  />
+                  <SendEmailCheckbox
+                    mail_status={post.mail_status!}
+                    post_status={post.status}
+                    onChange={(mail_status) =>
+                      debounceUpdatePost({
+                        id: post.id,
+                        mail_status,
+                      })
+                    }
+                  />
+                </div>
               )}
               <PublishButton postId={post.id} menu={settings?.menu ?? []} />
             </div>
@@ -200,8 +226,9 @@ const Actions = ({ post }: IProps) => {
                 <Preview
                   title={post.title}
                   url={settings?.site_url! + "/" + slug}
-                  excerpt={excerptRef.current?.value}
+                  excerpt={excerptRef.current?.value!}
                   image={post.cover_image.src}
+                  siteTitle={settings?.site_title!}
                 />
               </div>
             </div>
@@ -232,30 +259,3 @@ const Actions = ({ post }: IProps) => {
 };
 
 export default Actions;
-
-const Preview = ({ title, url, excerpt, image }) => {
-  return (
-    <>
-      <div className="max-w-2xl mx-auto mt-8 p-6 bg-white dark:bg-neutral-900 shadow-md rounded-md">
-        {image && (
-          <img
-            src={image}
-            alt="Search Result Image"
-            className="mb-4 rounded-md h-36 w-full object-cover"
-          />
-        )}
-        <div>
-          <div className="font-bold">Ajaxtown</div>
-          <p className="text-xs text-gray-600 dark:text-gray-300">
-            <span className="hover:underline">{url}</span>
-          </p>
-        </div>
-        <h2 className="text-xl font-semibold text-blue-700 mt-2">
-          <span className="hover:underline">{title}</span>
-        </h2>
-
-        <p className="text-gray-700 mt-2 dark:text-gray-300">{excerpt}</p>
-      </div>
-    </>
-  );
-};

@@ -1,7 +1,6 @@
-import SocialIcon from '@/components/social-icons';
-
-import { SectionContainer } from './commons/section';
-import { PageTitle } from './commons/title';
+import { SectionContainer } from '../../src/components/section';
+import { PageTitle } from '../../src/components/title';
+import { SocialIcons } from '../../src/components/social-icons';
 
 export const About = ({ settings, me }) => {
   const {
@@ -38,14 +37,7 @@ export const About = ({ settings, me }) => {
               {company_name}
             </div>
             <div className="flex space-x-3 pt-6">
-              <SocialIcon
-                kind="mail"
-                href={`mailto:${settings.site_email}`}
-                size={5}
-              />
-              <SocialIcon kind="github" href={social?.github} size={5} />
-              <SocialIcon kind="linkedin" href={social?.linkedin} size={5} />
-              <SocialIcon kind="twitter" href={social?.twitter} size={5} />
+              <SocialIcons me={me} />
             </div>
           </div>
           <div className="prose max-w-none pb-8 pt-8 dark:prose-dark xl:col-span-2">

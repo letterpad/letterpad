@@ -32,7 +32,7 @@ type Post {
   # Last updated date of the post
   updatedAt: Date!
   # Reading time of the post in minutes
-  reading_time: String
+  reading_time: String @deprecated(reason: "Use stats.reading_time in Post")
   # Tags of the post
   tags: TagsResponse
   # Page can have different templates like portfolio
@@ -42,6 +42,19 @@ type Post {
 
   # Stats - words, characters, reading time.
   stats: PostStats
+  likes: [Like]
+  mail_status: MailStatus
+}
+
+enum MailStatus {
+  ACTIVE
+  INACTIVE
+  SENT
+}
+
+type Like {
+  avatar: String
+  username: String
 }
 
 type PostStats {
@@ -52,7 +65,7 @@ type PostStats {
   # Number of characters in the post excluding spaces
   spaceless_characters: Int
   # Reading time of the post in minutes
-  reading_time: Int @deprecated(reason: "Use stats.reading_time in Post")
+  reading_time: String
 }
 
 input InputPostStats {
@@ -113,6 +126,7 @@ input PostsFilters {
   limit: Int
   sortBy: SortBy
   page_type: String
+  search: String
 }
 
 type PostsNode {
@@ -184,6 +198,7 @@ input InputUpdatePost {
   page_data: String
   stats: InputPostStats
   publishOptions: InputPublishOptions
+  mail_status: MailStatus
 }
 
 type PostError implements LetterpadError {
@@ -213,10 +228,22 @@ union UpdatePostResponse = Post | PostError | PostTrashed
 
 union StatsResponse = Stats | StatsError
 
+type ToggleLikePostResponse {
+  ok: Boolean!
+  message: String!
+}
+
+type IsPostLikedResponse {
+  ok: Boolean!
+  liked: Boolean!
+  message: String
+}
+
 type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
   stats: StatsResponse
+  isPostLiked(postId: Int!): IsPostLikedResponse!
   letterpadLatestPosts: PostsResponse!
   letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
 }
@@ -224,4 +251,6 @@ type Query {
 type Mutation {
   createPost(data: InputCreatePost): CreatePostResponse!
   updatePost(data: InputUpdatePost): UpdatePostResponse!
+  likePost(postId: Int!): ToggleLikePostResponse!
+  unLikePost(postId: Int!): ToggleLikePostResponse!
 }

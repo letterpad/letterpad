@@ -34,8 +34,8 @@ describe("Test Post Query Graphql API", () => {
     expect(firstRecord.author).toEqual({
       bio: "You can write some information about yourself for the world to know you a little better.",
       company_name: "Letterpad",
-      name: "{Author Name}",
-      occupation: "{Your Occupation}",
+      name: "Robert Smith",
+      occupation: "Author at Letterpad",
       social: {
         facebook: "",
         github: "",
@@ -128,7 +128,7 @@ describe("Test Post Query Graphql API", () => {
     expect(updatePost.slug).toBe("/post/new-slug");
   });
 });
-export {};
+export { };
 
 async function runQuery(query, args) {
   return API({
@@ -141,4 +141,4 @@ async function runQuery(query, args) {
   });
 }
 
-export {};
+export { };

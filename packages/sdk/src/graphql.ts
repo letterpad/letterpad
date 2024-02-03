@@ -19,6 +19,19 @@ export type Scalars = {
   Date: any;
 };
 
+export type AboutStats = {
+  __typename?: "AboutStats";
+  followerCount: Scalars["Int"];
+  followingCount: Scalars["Int"];
+  postCount: Scalars["Int"];
+};
+
+export type AboutStatsResponse = {
+  __typename?: "AboutStatsResponse";
+  ok: Scalars["Boolean"];
+  stats?: Maybe<AboutStats>;
+};
+
 export type AddDomainResponse = Domain | DomainError;
 
 export type Author = {
@@ -31,8 +44,11 @@ export type Author = {
   avatar?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
   company_name?: Maybe<Scalars["String"]>;
+  createdAt?: Maybe<Scalars["String"]>;
   email: Scalars["String"];
   first_post_published?: Maybe<Scalars["Boolean"]>;
+  followers?: Maybe<Array<Maybe<FollowAuthor>>>;
+  following?: Maybe<Array<Maybe<FollowAuthor>>>;
   id: Scalars["Int"];
   name: Scalars["String"];
   occupation?: Maybe<Scalars["String"]>;
@@ -41,6 +57,7 @@ export type Author = {
   register_step?: Maybe<RegisterStep>;
   role?: Maybe<Role>;
   settings_updated?: Maybe<Scalars["Boolean"]>;
+  signature?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
   stripe_customer_id?: Maybe<Scalars["String"]>;
   stripe_subscription_id?: Maybe<Scalars["String"]>;
@@ -173,6 +190,20 @@ export type FeedNode = {
 
 export type FeedResponse = Feed | FeedError;
 
+export type FollowAuthor = {
+  __typename?: "FollowAuthor";
+  avatar?: Maybe<Scalars["String"]>;
+  createdAt?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  username: Scalars["String"];
+};
+
+export type FollowAuthorResponse = {
+  __typename?: "FollowAuthorResponse";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
 export type Forbidden = LetterpadError & {
   __typename?: "Forbidden";
   message: Scalars["String"];
@@ -206,6 +237,7 @@ export type InputAuthor = {
   register_step?: InputMaybe<RegisterStep>;
   roleId?: InputMaybe<Scalars["Int"]>;
   settings_updated?: InputMaybe<Scalars["Boolean"]>;
+  signature?: InputMaybe<Scalars["String"]>;
   social?: InputMaybe<InputSocial>;
   stripe_customer_id?: InputMaybe<Scalars["String"]>;
   stripe_subscription_id?: InputMaybe<Scalars["String"]>;
@@ -300,6 +332,7 @@ export type InputUpdatePost = {
   html?: InputMaybe<Scalars["String"]>;
   html_draft?: InputMaybe<Scalars["String"]>;
   id: Scalars["Int"];
+  mail_status?: InputMaybe<MailStatus>;
   page_data?: InputMaybe<Scalars["String"]>;
   page_type?: InputMaybe<Scalars["String"]>;
   publishOptions?: InputMaybe<InputPublishOptions>;
@@ -325,6 +358,20 @@ export type InvalidArguments = LetterpadError & {
   message: Scalars["String"];
 };
 
+export type IsFollowingResponse = {
+  __typename?: "IsFollowingResponse";
+  following: Scalars["Boolean"];
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
+export type IsPostLikedResponse = {
+  __typename?: "IsPostLikedResponse";
+  liked: Scalars["Boolean"];
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
 export type LetterpadError = {
   message: Scalars["String"];
 };
@@ -332,6 +379,12 @@ export type LetterpadError = {
 export type LetterpadPostFilters = {
   slug: Scalars["String"];
   username: Scalars["String"];
+};
+
+export type Like = {
+  __typename?: "Like";
+  avatar?: Maybe<Scalars["String"]>;
+  username?: Maybe<Scalars["String"]>;
 };
 
 export type LoginData = {
@@ -345,6 +398,12 @@ export type LoginError = LetterpadError & {
 };
 
 export type LoginResponse = Author | LoginError;
+
+export enum MailStatus {
+  Active = "ACTIVE",
+  Inactive = "INACTIVE",
+  Sent = "SENT",
+}
 
 export type Media = {
   __typename?: "Media";
@@ -397,10 +456,14 @@ export type Mutation = {
   deleteAuthor?: Maybe<DeleteAuthorResponse>;
   deleteMedia?: Maybe<MediaDeleteResponse>;
   deleteTags: DeleteTagsResponse;
+  followAuthor: FollowAuthorResponse;
   forgotPassword: ForgotPasswordResponse;
+  likePost: ToggleLikePostResponse;
   login?: Maybe<LoginResponse>;
   removeDomain: RemoveDomainResponse;
   resetPassword: ForgotPasswordResponse;
+  unFollowAuthor: FollowAuthorResponse;
+  unLikePost: ToggleLikePostResponse;
   updateAuthor?: Maybe<AuthorResponse>;
   updateMedia?: Maybe<MediaUpdateResponse>;
   updateOptions?: Maybe<SettingResponse>;
@@ -433,8 +496,16 @@ export type MutationDeleteTagsArgs = {
   name: Scalars["String"];
 };
 
+export type MutationFollowAuthorArgs = {
+  username: Scalars["String"];
+};
+
 export type MutationForgotPasswordArgs = {
   email: Scalars["String"];
+};
+
+export type MutationLikePostArgs = {
+  postId: Scalars["Int"];
 };
 
 export type MutationLoginArgs = {
@@ -444,6 +515,14 @@ export type MutationLoginArgs = {
 export type MutationResetPasswordArgs = {
   password: Scalars["String"];
   token: Scalars["String"];
+};
+
+export type MutationUnFollowAuthorArgs = {
+  username: Scalars["String"];
+};
+
+export type MutationUnLikePostArgs = {
+  postId: Scalars["Int"];
 };
 
 export type MutationUpdateAuthorArgs = {
@@ -507,9 +586,12 @@ export type Post = {
   html?: Maybe<Scalars["String"]>;
   html_draft?: Maybe<Scalars["String"]>;
   id: Scalars["Int"];
+  likes?: Maybe<Array<Maybe<Like>>>;
+  mail_status?: Maybe<MailStatus>;
   page_data?: Maybe<Scalars["String"]>;
   page_type?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["Date"]>;
+  /** @deprecated Use stats.reading_time in Post */
   reading_time?: Maybe<Scalars["String"]>;
   scheduledAt?: Maybe<Scalars["Date"]>;
   slug?: Maybe<Scalars["String"]>;
@@ -553,8 +635,7 @@ export type PostResponse =
 export type PostStats = {
   __typename?: "PostStats";
   characters?: Maybe<Scalars["Int"]>;
-  /** @deprecated Use stats.reading_time in Post */
-  reading_time?: Maybe<Scalars["Int"]>;
+  reading_time?: Maybe<Scalars["String"]>;
   spaceless_characters?: Maybe<Scalars["Int"]>;
   words?: Maybe<Scalars["Int"]>;
 };
@@ -585,6 +666,7 @@ export type PostsFilters = {
   page?: InputMaybe<Scalars["Int"]>;
   page_type?: InputMaybe<Scalars["String"]>;
   previewHash?: InputMaybe<Scalars["String"]>;
+  search?: InputMaybe<Scalars["String"]>;
   slug?: InputMaybe<Scalars["String"]>;
   sortBy?: InputMaybe<SortBy>;
   status?: InputMaybe<Array<InputMaybe<PostStatusOptions>>>;
@@ -603,12 +685,15 @@ export type PostsResponse = Exception | PostsNode | UnAuthorized;
 
 export type Query = {
   __typename?: "Query";
+  aboutStats: AboutStatsResponse;
   certs: Scalars["Boolean"];
   createSubscription: CreateSubscriptionResponse;
   domain: DomainResponse;
   email: EmailResponse;
   emails: Array<Maybe<Email>>;
   feed: FeedResponse;
+  isFollowing: IsFollowingResponse;
+  isPostLiked: IsPostLikedResponse;
   letterpadLatestPost: PostResponse;
   letterpadLatestPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;
@@ -626,12 +711,24 @@ export type Query = {
   updateSubscription: UpdateSubscriptionResponse;
 };
 
+export type QueryAboutStatsArgs = {
+  username: Scalars["String"];
+};
+
 export type QueryCreateSubscriptionArgs = {
   type?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryEmailArgs = {
   template_id?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryIsFollowingArgs = {
+  username: Scalars["String"];
+};
+
+export type QueryIsPostLikedArgs = {
+  postId: Scalars["Int"];
 };
 
 export type QueryLetterpadLatestPostArgs = {
@@ -891,6 +988,12 @@ export type TagsNode = {
 
 export type TagsResponse = Exception | TagsNode | UnAuthorized;
 
+export type ToggleLikePostResponse = {
+  __typename?: "ToggleLikePostResponse";
+  message: Scalars["String"];
+  ok: Scalars["Boolean"];
+};
+
 export type UnAuthorized = LetterpadError & {
   __typename?: "UnAuthorized";
   message: Scalars["String"];
@@ -927,9 +1030,24 @@ export type MeQuery = {
         name: string;
         bio?: string | null;
         occupation?: string | null;
+        signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        username: string;
+        createdAt?: string | null;
+        followers?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
+        following?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -951,9 +1069,24 @@ export type MeFragmentFragment = {
   name: string;
   bio?: string | null;
   occupation?: string | null;
+  signature?: string | null;
   avatar?: string | null;
   company_name?: string | null;
   analytics_uuid?: string | null;
+  username: string;
+  createdAt?: string | null;
+  followers?: Array<{
+    __typename?: "FollowAuthor";
+    name: string;
+    avatar?: string | null;
+    username: string;
+  } | null> | null;
+  following?: Array<{
+    __typename?: "FollowAuthor";
+    name: string;
+    avatar?: string | null;
+    username: string;
+  } | null> | null;
   social?: {
     __typename?: "Social";
     twitter?: string | null;
@@ -1018,9 +1151,24 @@ export type MeAndSettingsQuery = {
         name: string;
         bio?: string | null;
         occupation?: string | null;
+        signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        username: string;
+        createdAt?: string | null;
+        followers?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
+        following?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1113,10 +1261,15 @@ export type PostQuery = {
         stats?: {
           __typename?: "PostStats";
           words?: number | null;
-          reading_time?: number | null;
+          reading_time?: string | null;
           characters?: number | null;
           spaceless_characters?: number | null;
         } | null;
+        likes?: Array<{
+          __typename?: "Like";
+          avatar?: string | null;
+          username?: string | null;
+        } | null> | null;
         tags?:
           | { __typename: "Exception"; message: string }
           | {
@@ -1133,6 +1286,8 @@ export type PostQuery = {
               avatar?: string | null;
               occupation?: string | null;
               bio?: string | null;
+              signature?: string | null;
+              username: string;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1166,10 +1321,15 @@ export type PageFragmentFragment = {
   stats?: {
     __typename?: "PostStats";
     words?: number | null;
-    reading_time?: number | null;
+    reading_time?: string | null;
     characters?: number | null;
     spaceless_characters?: number | null;
   } | null;
+  likes?: Array<{
+    __typename?: "Like";
+    avatar?: string | null;
+    username?: string | null;
+  } | null> | null;
   tags?:
     | { __typename: "Exception"; message: string }
     | {
@@ -1186,6 +1346,8 @@ export type PageFragmentFragment = {
         avatar?: string | null;
         occupation?: string | null;
         bio?: string | null;
+        signature?: string | null;
+        username: string;
       }
     | { __typename: "Exception"; message: string }
     | { __typename: "Failed"; message: string }
@@ -1227,10 +1389,15 @@ export type PostPageQuery = {
         stats?: {
           __typename?: "PostStats";
           words?: number | null;
-          reading_time?: number | null;
+          reading_time?: string | null;
           characters?: number | null;
           spaceless_characters?: number | null;
         } | null;
+        likes?: Array<{
+          __typename?: "Like";
+          avatar?: string | null;
+          username?: string | null;
+        } | null> | null;
         tags?:
           | { __typename: "Exception"; message: string }
           | {
@@ -1247,6 +1414,8 @@ export type PostPageQuery = {
               avatar?: string | null;
               occupation?: string | null;
               bio?: string | null;
+              signature?: string | null;
+              username: string;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1267,9 +1436,24 @@ export type PostPageQuery = {
         name: string;
         bio?: string | null;
         occupation?: string | null;
+        signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
         analytics_uuid?: string | null;
+        username: string;
+        createdAt?: string | null;
+        followers?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
+        following?: Array<{
+          __typename?: "FollowAuthor";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        } | null> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1337,6 +1521,7 @@ export type PostPageQuery = {
 
 export type PostsQueryVariables = Exact<{
   tagSlug?: InputMaybe<Scalars["String"]>;
+  search?: InputMaybe<Scalars["String"]>;
 }>;
 
 export type PostsQuery = {
@@ -1355,9 +1540,19 @@ export type PostsQuery = {
           publishedAt?: any | null;
           reading_time?: string | null;
           excerpt?: string | null;
+          likes?: Array<{
+            __typename?: "Like";
+            avatar?: string | null;
+            username?: string | null;
+          } | null> | null;
           cover_image: { __typename?: "Image"; src?: string | null };
           author?:
-            | { __typename: "Author"; name: string; avatar?: string | null }
+            | {
+                __typename: "Author";
+                name: string;
+                avatar?: string | null;
+                username: string;
+              }
             | { __typename: "Exception"; message: string }
             | { __typename: "Failed"; message: string }
             | { __typename: "NotFound"; message: string }
@@ -1366,7 +1561,7 @@ export type PostsQuery = {
           stats?: {
             __typename?: "PostStats";
             words?: number | null;
-            reading_time?: number | null;
+            reading_time?: string | null;
             characters?: number | null;
             spaceless_characters?: number | null;
           } | null;
@@ -1395,9 +1590,19 @@ export type PostsFragmentFragment = {
     publishedAt?: any | null;
     reading_time?: string | null;
     excerpt?: string | null;
+    likes?: Array<{
+      __typename?: "Like";
+      avatar?: string | null;
+      username?: string | null;
+    } | null> | null;
     cover_image: { __typename?: "Image"; src?: string | null };
     author?:
-      | { __typename: "Author"; name: string; avatar?: string | null }
+      | {
+          __typename: "Author";
+          name: string;
+          avatar?: string | null;
+          username: string;
+        }
       | { __typename: "Exception"; message: string }
       | { __typename: "Failed"; message: string }
       | { __typename: "NotFound"; message: string }
@@ -1406,7 +1611,7 @@ export type PostsFragmentFragment = {
     stats?: {
       __typename?: "PostStats";
       words?: number | null;
-      reading_time?: number | null;
+      reading_time?: string | null;
       characters?: number | null;
       spaceless_characters?: number | null;
     } | null;
@@ -1617,9 +1822,22 @@ export const MeFragmentFragmentDoc = `
     name
     bio
     occupation
+    signature
     avatar
     company_name
     analytics_uuid
+    username
+    followers {
+      name
+      avatar
+      username
+    }
+    following {
+      name
+      avatar
+      username
+    }
+    createdAt
     social {
       twitter
       facebook
@@ -1669,6 +1887,10 @@ export const PageFragmentFragmentDoc = `
   publishedAt
   updatedAt
   excerpt
+  likes {
+    avatar
+    username
+  }
   tags {
     __typename
     ... on LetterpadError {
@@ -1692,6 +1914,8 @@ export const PageFragmentFragmentDoc = `
       avatar
       occupation
       bio
+      signature
+      username
     }
   }
   cover_image {
@@ -1709,6 +1933,10 @@ export const PostsFragmentFragmentDoc = `
     title
     sub_title
     slug
+    likes {
+      avatar
+      username
+    }
     cover_image {
       src
     }
@@ -1720,6 +1948,7 @@ export const PostsFragmentFragmentDoc = `
       ... on Author {
         name
         avatar
+        username
         __typename
       }
     }
@@ -1881,8 +2110,8 @@ export const PostPageDocument = `
 ${MeFragmentFragmentDoc}
 ${SettingsFragmentFragmentDoc}`;
 export const PostsDocument = `
-    query posts($tagSlug: String) {
-  posts(filters: {tagSlug: $tagSlug}) {
+    query posts($tagSlug: String, $search: String) {
+  posts(filters: {tagSlug: $tagSlug, search: $search}) {
     __typename
     ...postsFragment
     ... on LetterpadError {

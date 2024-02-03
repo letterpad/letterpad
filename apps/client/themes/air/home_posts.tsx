@@ -2,16 +2,17 @@ import classNames from 'classnames';
 import { PostsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 
+import formatDate from '@/lib/utils/formatDate';
+
 import Link from '@/components/Link';
 
 import Image from '../../components/Image';
-import formatDate from '../../lib/utils/formatDate';
+import { SectionContainer } from '../../src/components/section';
 export interface Props {
   posts: PostsFragmentFragment;
 }
 
 const style = {};
-// position: absolute; height: 100%; width: 100%; inset: 0px; object-fit: cover; color: transparent;
 
 export const HomePosts: FC<Props> = ({ posts }) => {
   let featuredThreePosts;
@@ -57,7 +58,7 @@ export const HomePosts: FC<Props> = ({ posts }) => {
   const hasLatestPosts = posts.count - featuredPostsCount;
 
   return (
-    <>
+    <SectionContainer className="mx-auto max-w-7xl md:px-20">
       <h2 className="mb-4 mt-10 text-base font-medium uppercase tracking-wider">
         Featured Posts
       </h2>
@@ -76,7 +77,7 @@ export const HomePosts: FC<Props> = ({ posts }) => {
           </div>
         </>
       ) : null}
-    </>
+    </SectionContainer>
   );
 };
 
@@ -103,7 +104,7 @@ const Card: FC<{
           </span>
           <span className="px-2.5">⋅</span>
           <span className="whitespace-nowrap">
-            {post.stats?.reading_time} min read
+            {post.stats?.reading_time} read
           </span>
         </div>
       </div>

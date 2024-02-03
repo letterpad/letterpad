@@ -7,33 +7,14 @@ import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 
-import { SectionContainer } from './commons/section';
-import { PageTitle } from './commons/title';
+import { SectionContainer } from '../../src/components/section';
+// import { SectionContainer } from './commons/section';
+// import { PageTitle } from './commons/title';
 import { HomePostsProps } from '../../types/pageTypes';
 
 export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
   return (
     <>
-      <div className={'bg-accent-50  text-white relative'}>
-        {settings.banner?.src && (
-          <img
-            loading="eager"
-            decoding="async"
-            src={settings.banner?.src}
-            className="object-cover w-full h-full absolute top-0"
-            alt={settings.site_url}
-          />
-        )}
-        <SectionContainer className="py:10 space-y-2 md:space-y-3 md:py-32 max-w-7xl mx-auto relative">
-          <div className="py-20 md:py-10 h-[calc(100vh-300px)] md:h-64 flex flex-col justify-end items-start md:px-20">
-            <BrandText
-              tagline={settings.site_tagline}
-              title={settings.site_title}
-              description={settings.site_description}
-            />
-          </div>
-        </SectionContainer>
-      </div>
       <SectionContainer className="mx-auto max-w-7xl md:px-20">
         <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-2 xl:grid-cols-3">
           {posts?.rows.map((post, index) => {
@@ -63,7 +44,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
                     <span className="inline-flex w-full items-center justify-between">
                       <span className="flex items-center gap-1 text-sm">
                         <IconBook />
-                        {stats?.reading_time} min read
+                        {stats?.reading_time} read
                       </span>
 
                       <time dateTime={publishedAt} className="text-sm">
@@ -84,23 +65,6 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
           })}
         </div>
       </SectionContainer>
-    </>
-  );
-};
-
-const BrandText = ({ title, tagline, description }) => {
-  return (
-    <>
-      <h1 className="py-2 pb-4 text-4xl font-extrabold leading-8 tracking-tight md:text-5xl md:leading-12">
-        {title}
-      </h1>
-      <p className="pb-4 text-md font-bold leading-6 md:text-md">{tagline}</p>
-      <p
-        className="hidden text-sm font-medium leading-6 sm:w-2/3 md:block md:text-md lg:w-3/5"
-        dangerouslySetInnerHTML={{
-          __html: description,
-        }}
-      />
     </>
   );
 };

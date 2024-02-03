@@ -26,7 +26,7 @@ function Hero() {
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="pb-12 pt-32 md:pb-20 md:pt-40">
           {/* Hero content */}
-          <div className="mx-auto max-w-xl text-center md:mx-0 md:max-w-[640px] md:text-left">
+          <div className="mx-auto max-w-xl text-center md:mx-0 md:max-w-[690px] md:text-left">
             <div data-aos="zoom-out">
               <div className="relative mb-6 inline-block rounded-full bg-gray-800 px-4 py-1 text-sm text-gray-300 before:absolute before:inset-0 before:-z-10 before:-m-0.5 before:rounded-full before:bg-gradient-to-t before:from-gray-800 before:via-gray-600 before:to-gray-800 before:content-['']">
                 <div className="text-gray-400">
@@ -48,8 +48,8 @@ function Hero() {
               data-aos="zoom-out"
               data-aos-delay="100"
             >
-              A publishing platform for{" "}
-              <em className="font-italic">creative</em> people
+              Letterpad is a publishing platform for{" "}
+              <em className="font-italic">writers</em>
             </h1>
             <p
               className="mb-10 text-xl text-gray-400"

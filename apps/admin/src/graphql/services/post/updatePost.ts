@@ -4,6 +4,7 @@ import { report } from "@/components/error";
 
 import {
   MutationUpdatePostArgs,
+  NotificationMeta,
   PostStatusOptions,
   PostTypes,
   ResolversTypes,
@@ -16,6 +17,8 @@ import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
+
+import { convertNotificationMetaIn } from "../../resolvers/utils/dbTypeCheck";
 import { mail } from "../../../lib/mail";
 
 export const updatePost = async (
@@ -45,6 +48,10 @@ export const updatePost = async (
         message: "Current post not found to update",
       };
     }
+
+    const isFirstPublish =
+      args.data.status === PostStatusOptions.Published &&
+      existingPost.status !== PostStatusOptions.Published;
 
     const author = await prisma.author.findFirst({
       where: { id: existingPost.author_id },
@@ -94,6 +101,9 @@ export const updatePost = async (
     if (args.data.type) {
       newPostArgs.data.type = args.data.type;
     }
+    if (args.data.mail_status) {
+      newPostArgs.data.mail_status = args.data.mail_status;
+    }
     if (args.data.page_type) {
       newPostArgs.data.page_type = args.data.page_type;
     }
@@ -130,7 +140,8 @@ export const updatePost = async (
 
     if (args.data.html_draft) {
       newPostArgs.data.html_draft = args.data.html_draft;
-      newPostArgs.data.reading_time = Math.ceil((args.data.stats?.words ?? 200) / 200) + '' ?? '2';
+      newPostArgs.data.reading_time =
+        Math.ceil((args.data.stats?.words ?? 200) / 200) + "" ?? "2";
     }
 
     if (args.data.status === PostStatusOptions.Published) {
@@ -171,7 +182,7 @@ export const updatePost = async (
         slug: updatedPost.slug,
       });
 
-      if (newPostArgs.data.status === PostStatusOptions.Published) {
+      if (isFirstPublish) {
         const url = `https://${session.user.username}.letterpad.app/sitemap.xml`;
         submitSitemap(url);
       }
@@ -183,16 +194,48 @@ export const updatePost = async (
         message: "Updated post not found",
       };
     }
-    if (nowPublished) {
+
+    if (isFirstPublish) {
+      const followers = await prisma.follows.findMany({
+        where: {
+          following_id: session.user.id,
+        },
+      });
+
+      await Promise.all(
+        followers.map((follower) => {
+          return prisma.notifications.create({
+            data: {
+              author_id: follower.follower_id,
+              meta: convertNotificationMetaIn({
+                __typename: "PostNewMeta",
+                author_avatar: session.user.avatar,
+                author_name: session.user.username,
+                author_username: session.user.username,
+                post_id: existingPost.id,
+                post_slug: existingPost.slug,
+                post_title: existingPost.title,
+              }),
+            },
+          });
+        })
+      );
+
       try {
-        await mail({
-          from: `"Letterpad" <admin@letterpad.app>`,
-          replyTo: `"Admin" <admin@letterpad.app>`,
-          to: `admin@letterpad.app`,
-          subject: `New post published - ${existingPost.title}`,
-          html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
-        }, false);
-      } catch (e) { }
+        await mail(
+          {
+            from: `"Letterpad" <admin@letterpad.app>`,
+            replyTo: `"Admin" <admin@letterpad.app>`,
+            to: `admin@letterpad.app`,
+            subject: `New post published - ${existingPost.title}`,
+            html: `<p>Hi,</p><p>A new post has been published on your blog. <a href="https://${session.user.username}.letterpad.app/post/${existingPost.slug}">Click here</a> to view the post.</p><p>Regards,<br/>Letterpad</p>`,
+          },
+          false
+        );
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
     }
     return {
       ...mapPostToGraphql(updatedPost),

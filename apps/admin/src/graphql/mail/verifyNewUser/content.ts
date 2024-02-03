@@ -35,7 +35,10 @@ export async function getVerifyUserEmailContent(
       message: `No info found for the current blog.`,
     };
   }
-  const subject = template.subject.replaceAll("{{ company_name }}", `Letterpad`);
+  const subject = template.subject.replaceAll(
+    "{{ company_name }}",
+    `Letterpad`
+  );
 
   const token = await getVerifyUserToken({
     author_id: author.id,
@@ -44,7 +47,10 @@ export async function getVerifyUserEmailContent(
   const href = `${getRootUrl()}/api/verify?token=${token}`;
 
   const body = template.body
-    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll(
+      "{{ company_name }}",
+      `<a href="https://letterpad.app">Letterpad</a>`
+    )
     .replaceAll("{{ full_name }}", author.name)
     .replaceAll(
       "{{ verify_link }}",

@@ -2,14 +2,15 @@ import { report } from "@/components/error";
 
 import {
   MutationResolvers,
+  NotificationMeta,
   PostResolvers,
-  PostStatusOptions,
   QueryResolvers,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { createPathWithPrefix } from "@/utils/slug";
 
+import { convertNotificationMetaIn } from "./utils/dbTypeCheck";
 import {
   createPost,
   getAuthorFromPost,
@@ -60,10 +61,33 @@ const Post: PostResolvers<ResolverContext> = {
       const newReadingTime = Math.ceil((newStats.words ?? 0) / 200);
       return {
         ...newStats,
-        reading_time: newStats.words ? newReadingTime : oldReadingTime,
+        reading_time:
+          (newStats.words ? newReadingTime : oldReadingTime) + " mins",
       };
     }
     return { reading_time: oldReadingTime };
+  },
+  likes: async ({ id }, _, { prisma }) => {
+    const result = await prisma.likes.findMany({
+      select: {
+        author: {
+          select: {
+            avatar: true,
+            username: true,
+          },
+        },
+      },
+      where: {
+        post: {
+          id,
+        },
+      },
+    });
+
+    return result.map((row) => ({
+      avatar: row.author.avatar,
+      username: row.author.username,
+    }));
   },
 };
 
@@ -125,6 +149,26 @@ const Query: QueryResolvers<ResolverContext> = {
     }
   },
 
+  async isPostLiked(_, args, { prisma, session }) {
+    if (!session?.user.id) {
+      return {
+        ok: false,
+        liked: false,
+        message: "You need to be logged in to like a post",
+      };
+    }
+    const row = await prisma.likes.findFirst({
+      where: {
+        liked_by: session.user.id,
+        post_id: args.postId,
+      },
+    });
+
+    return {
+      ok: true,
+      liked: !!row,
+    };
+  },
   async stats(_, args, context) {
     return getStats(args, context);
   },
@@ -156,18 +200,106 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
+
+  async likePost(_parent, args, { prisma, session }) {
+    if (!session?.user.id) {
+      return {
+        message: "You need to be logged in to like a post",
+        ok: false,
+      };
+    }
+    try {
+      const record = await prisma.likes.findFirst({
+        where: {
+          post_id: args.postId,
+          liked_by: session.user.id,
+        },
+      });
+
+      if (record) {
+        return {
+          message: "You have already liked this post",
+          ok: false,
+        };
+      }
+
+      await prisma.likes.create({
+        data: {
+          post: {
+            connect: {
+              id: args.postId,
+            },
+          },
+          author: {
+            connect: {
+              id: session.user.id,
+            },
+          },
+        },
+      });
+
+      const post = await prisma.post.findFirst({
+        where: {
+          id: args.postId,
+        },
+        select: {
+          author_id: true,
+          slug: true,
+        },
+      });
+
+      await prisma.notifications.create({
+        data: {
+          author_id: post?.author_id!,
+          meta: convertNotificationMetaIn({
+            __typename: "PostLikeMeta",
+            author_avatar: session.user.avatar,
+            author_name: session.user.username,
+            author_username: session.user.username,
+            post_id: args.postId,
+            post_slug: post?.slug,
+          }),
+        },
+      });
+
+      return {
+        ok: true,
+        message: `Post Liked`,
+      };
+    } catch (e: any) {
+      return {
+        message: e.message,
+        ok: false,
+      };
+    }
+  },
+  async unLikePost(_parent, args, { prisma, session }) {
+    if (!session?.user.id) {
+      return {
+        message: "You need to be logged in to like a post",
+        ok: false,
+      };
+    }
+    try {
+      await prisma.likes.delete({
+        where: {
+          post_id_liked_by: {
+            post_id: args.postId,
+            liked_by: session.user.id,
+          },
+        },
+      });
+      return {
+        ok: true,
+        message: "Post like removed",
+      };
+    } catch (e: any) {
+      return {
+        message: e.message,
+        ok: false,
+      };
+    }
+  },
 };
 
 export default { Mutation, Post, Query };
-
-const isJsonString = (str?: string) => {
-  if (!str) {
-    return false;
-  }
-  try {
-    JSON.parse(str);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};

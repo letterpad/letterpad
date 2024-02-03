@@ -53,10 +53,20 @@ const securityHeaders = [
   },
 ];
 
+const API_URL = process.env.API_URL?.replace('/api/graphql', '');
+
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
 module.exports = withAxiom({
+  async rewrites() {
+    return [
+      {
+        source: '/redirect-api/:path*',
+        destination: `${API_URL}/api/:path*`,
+      },
+    ];
+  },
   experimental: {
     // serverActions: true,
   },
@@ -83,6 +93,12 @@ module.exports = withAxiom({
         protocol: 'http',
         hostname: 'localhost',
         port: '3001',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
         pathname: '/**',
       },
     ],

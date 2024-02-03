@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -8,41 +9,85 @@ datasource db {
   relationMode = "prisma"
 }
 
+model Notifications {
+  notification_id String    @id @default(uuid())
+  author_id       Int
+  meta            Json      @default("{}")
+  is_read         Boolean   @default(false)
+  mail_sent       Boolean   @default(false)
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
+  author          Author?   @relation(fields: [author_id], references: [id])
+
+  @@index([author_id])
+}
+
 model Author {
-  id                     Int          @id @default(autoincrement())
+  id                     Int             @id @default(autoincrement())
   name                   String
-  username               String       @unique
-  email                  String       @unique
+  username               String          @unique
+  email                  String          @unique
   password               String
-  bio                    String       @db.Text
-  occupation             String       @db.VarChar(100)
-  company_name           String       @db.VarChar(100)
-  avatar                 String       @db.VarChar(300)
-  social                 String       @default("{}") @db.VarChar(500)
-  verified               Boolean      @default(false)
-  createdAt              DateTime?    @default(now())
-  updatedAt              DateTime?    @updatedAt
-  verify_attempt_left    Int?         @default(3)
+  bio                    String          @db.Text
+  occupation             String          @db.VarChar(100)
+  company_name           String          @db.VarChar(100)
+  avatar                 String          @db.VarChar(300)
+  signature              String?         @db.VarChar(400)
+  social                 String          @default("{}") @db.VarChar(500)
+  verified               Boolean         @default(false)
+  createdAt              DateTime?       @default(now())
+  updatedAt              DateTime?       @updatedAt
+  verify_attempt_left    Int?            @default(3)
   analytics_id           Int?
   analytics_uuid         String?
   role_id                Int
-  login_type             String       @default("credentials")
+  login_type             String          @default("credentials")
   last_seen              DateTime?
-  register_step          String?      @default("") @db.VarChar(50)
-  role                   Role         @relation(fields: [role_id], references: [id])
+  register_step          String?         @default("") @db.VarChar(50)
+  role                   Role            @relation(fields: [role_id], references: [id])
   domain                 Domain?
   posts                  Post[]
   setting                Setting?
   subscribers            Subscriber[]
   uploads                Upload[]
-  first_post_published   Boolean      @default(false)
-  settings_updated       Boolean      @default(false)
-  profile_updated        Boolean      @default(false)
+  first_post_published   Boolean         @default(false)
+  settings_updated       Boolean         @default(false)
+  profile_updated        Boolean         @default(false)
   stripe_customer_id     String?
   stripe_subscription_id String?
   session                Session[]
+  followers              Follows[]       @relation("following")
+  following              Follows[]       @relation("follower")
+  likes                  Likes[]
+  notifications          Notifications[]
 
   @@index([role_id])
+}
+
+model Follows {
+  follower_id  Int
+  follower     Author    @relation("follower", fields: [follower_id], references: [id])
+  following_id Int
+  following    Author    @relation("following", fields: [following_id], references: [id])
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
+
+  @@unique([follower_id, following_id])
+  @@index([following_id])
+}
+
+model Likes {
+  post_id   Int
+  liked_by  Int
+  createdAt DateTime? @default(now())
+  count     Int       @default(0)
+  updatedAt DateTime? @updatedAt
+  author    Author    @relation(fields: [liked_by], references: [id], onDelete: Cascade)
+  post      Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
+
+  @@unique([post_id, liked_by])
+  @@index([liked_by])
+  @@index([post_id])
 }
 
 model Session {
@@ -63,6 +108,8 @@ model EmailDelivery {
   author_id             Int?
   post_id               Int?
   subscriber_id         Int?
+  follower_id           Int?
+  following_id          Int?
   delivered             Int?
   last_delivery_attempt DateTime?
   createdAt             DateTime? @default(now())
@@ -86,32 +133,37 @@ model Permission {
 }
 
 model Post {
-  id                 Int       @id @default(autoincrement())
-  title              String    @default("")
-  sub_title          String    @default("") @db.VarChar(190)
-  html               String    @db.Text
-  html_draft         String?   @db.Text
-  excerpt            String    @default("")
-  cover_image        String    @default("") @db.VarChar(255)
-  cover_image_width  Int       @default(0)
-  cover_image_height Int       @default(0)
-  type               String    @default("post")
-  featured           Boolean   @default(false)
-  status             String    @default("draft")
-  slug               String    @default("")
-  reading_time       String    @default("")
+  id                 Int        @id @default(autoincrement())
+  title              String     @default("")
+  sub_title          String     @default("") @db.VarChar(190)
+  html               String     @db.Text
+  html_draft         String?    @db.Text
+  excerpt            String     @default("")
+  cover_image        String     @default("") @db.VarChar(255)
+  cover_image_width  Int        @default(0)
+  cover_image_height Int        @default(0)
+  type               String     @default("post")
+  featured           Boolean    @default(false)
+  status             String     @default("draft")
+  slug               String     @default("")
+  reading_time       String     @default("")
   publishedAt        DateTime?
   scheduledAt        DateTime?
-  updatedAt          DateTime? @updatedAt
-  createdAt          DateTime? @default(now())
+  updatedAt          DateTime?  @updatedAt
+  createdAt          DateTime?  @default(now())
   author_id          Int
-  author             Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author             Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
   tags               Tag[]
-  page_type          String    @default("default")
-  page_data          String    @db.Text
-  stats              String    @default("{}")
+  page_type          String     @default("default")
+  page_data          String     @db.Text
+  stats              String     @default("{}")
+  likes              Likes[]
+  mail_status        MailStatus @default(INACTIVE)
 
   @@index([author_id])
+  @@index([status, mail_status])
+  @@index([author_id, status, slug])
+  @@fulltext([html])
 }
 
 model RolePermissions {
@@ -192,6 +244,8 @@ model Tag {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
   posts     Post[]
+  likes     Int       @default(0)
+  views     Int       @default(0)
 }
 
 model Upload {
@@ -233,4 +287,10 @@ model EmailTemplates {
   template String @unique
   subject  String
   body     String @db.VarChar(2000)
+}
+
+enum MailStatus {
+  ACTIVE
+  SENT
+  INACTIVE
 }

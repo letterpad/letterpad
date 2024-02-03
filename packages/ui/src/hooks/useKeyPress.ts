@@ -1,43 +1,26 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
-interface UseKeyPressOptions {
-  targetKey: KeyboardEvent["key"];
+interface Props {
+  targetKey: string;
+  onKeyPress: (event: KeyboardEvent) => void;
+  enable?: boolean
 }
-
-export function useKeyPress({ targetKey }: UseKeyPressOptions): boolean {
-  const [keyPressed, setKeyPressed] = useState(false);
-
-  const downHandler = useCallback(
-    ({ key }: { key: string }) => {
-      if (key === targetKey) {
-        setKeyPressed(true);
-      }
+export const useKeyPress = (
+  { targetKey, onKeyPress, enable = true }: Props
+): void => {
+  const handleKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (!enable || event.key !== targetKey) return;
+      onKeyPress(event);
     },
-    [targetKey]
-  );
-
-  const upHandler = useCallback(
-    ({ key }: { key: string }) => {
-      if (key === targetKey) {
-        setKeyPressed(false);
-      }
-    },
-    [targetKey]
+    [enable, targetKey, onKeyPress]
   );
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    window.addEventListener("keydown", downHandler);
-    window.addEventListener("keyup", upHandler);
-
+    window.addEventListener('keyup', handleKeyPress);
     return () => {
-      window.removeEventListener("keydown", downHandler);
-      window.removeEventListener("keyup", upHandler);
+      window.removeEventListener('keyup', handleKeyPress);
     };
-  }, [downHandler, upHandler]);
+  }, [handleKeyPress]);
+};
 
-  return keyPressed;
-}

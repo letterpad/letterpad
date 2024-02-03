@@ -10,6 +10,10 @@ export const postsList = [
     html_draft: "",
     page_type: "default",
     page_data: JSON.stringify({ rows: [] }),
+    sub_title:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+    excerpt:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
   },
   {
     title: "A walk through time",
@@ -22,6 +26,10 @@ export const postsList = [
     html_draft: "",
     page_type: "default",
     page_data: JSON.stringify({ rows: [] }),
+    sub_title:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+    excerpt:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
   },
   {
     title: "Best practices for successful prototypes",
@@ -34,5 +42,9 @@ export const postsList = [
     html_draft: "",
     page_type: "default",
     page_data: JSON.stringify({ rows: [] }),
+    sub_title:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+    excerpt:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
   },
 ];

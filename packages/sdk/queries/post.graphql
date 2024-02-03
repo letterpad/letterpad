@@ -27,6 +27,10 @@ fragment pageFragment on Post {
   publishedAt
   updatedAt
   excerpt
+  likes {
+    avatar
+    username
+  }
   tags {
     __typename
     ... on LetterpadError {
@@ -52,6 +56,8 @@ fragment pageFragment on Post {
       avatar
       occupation
       bio
+      signature
+      username
     }
   }
   cover_image {

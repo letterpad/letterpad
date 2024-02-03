@@ -16,6 +16,7 @@ fragment Partial on Post {
   reading_time
   page_type
   page_data
+  mail_status
   stats {
     words
     characters
@@ -129,9 +130,11 @@ fragment MeFragment on Author {
   email
   bio
   occupation
+  signature
   company_name
   avatar
   first_post_published
   settings_updated
   profile_updated
+  createdAt
 }

@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { ThemeContext } from './theme.context';
 import {
   getColors,
   getPreference,
   setPreference,
 } from '../lib/utils/theme.helper';
-import { ThemeContext } from './theme.context';
 
 const color = getColors();
 

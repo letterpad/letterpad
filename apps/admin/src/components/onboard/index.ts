@@ -133,11 +133,12 @@ export async function createAuthorWithSettings(
         role: {
           connect: { id: role.id },
         },
+        signature: "",
         setting: {
           create: {
             ...defaultSettings,
             ...mapSettingToDb(setting),
-            // site_url: `https://${authorData.username}.letterpad.app`,
+            site_url: `https://${authorData.username}.letterpad.app`,
             client_token: encryptEmail(authorData.email),
           },
         },

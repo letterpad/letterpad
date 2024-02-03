@@ -1,9 +1,8 @@
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-import StructuredData from '@/components/StructuredData';
-
-import { getTheme } from '@/themes';
+import { Post } from './post';
 import Custom404 from '../../app/not-found';
+import { StructuredData } from '../../components/structured-data';
 
 export async function BlogPost(props) {
   const [post, data] = await Promise.all([
@@ -11,11 +10,10 @@ export async function BlogPost(props) {
     getAuthorAndSettingsData(),
   ]);
   if (!post || !data?.settings || !data?.me) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const { settings, me } = data;
 
-  const { Post } = getTheme(settings?.theme);
   const { name = '', avatar = '' } =
     post.author?.__typename === 'Author' ? post.author : {};
 

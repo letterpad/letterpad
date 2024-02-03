@@ -164,7 +164,15 @@ const Appearance = () => {
           )}
         />
       </div>
-
+      <TextArea
+        label="Footer Description"
+        {...data.register("site_footer", { maxLength: 200 })}
+        placeholder="Anything that you want display in footer. html is allowed."
+        autoGrow={true}
+        maxLength={200}
+        data-testid="footerDescription"
+        help="This will appear in the footer of your site."
+      />
       <div>
         <Controller
           name="css"

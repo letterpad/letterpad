@@ -4,6 +4,7 @@ import { FC, ReactNode } from 'react';
 import { Card, HorizontalCard } from './commons/card';
 import { getPostsByTag, getTagsData } from '../../src/data';
 import { HomePostsProps } from '../../types/pageTypes';
+import { SectionContainer } from '../../src/components/section';
 
 const pickThreePostsMax = (posts: PostsFragmentFragment['rows']) => {
   if (posts.length >= 3) return posts.slice(0, 3);
@@ -16,14 +17,14 @@ export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   const firstThreeMax = pickThreePostsMax(posts.rows);
   const olderPosts = posts.rows.slice(firstThreeMax.length);
   return (
-    <>
+    <SectionContainer className="mx-auto max-w-7xl md:px-20">
       <div className="mb-10 flex flex-col gap-12 lg:flex-row">
         <LatestPosts posts={firstThreeMax} />
         <SidePosts />
       </div>
 
       <OlderPosts posts={olderPosts} />
-    </>
+    </SectionContainer>
   );
 };
 

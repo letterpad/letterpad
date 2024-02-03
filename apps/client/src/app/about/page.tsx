@@ -4,20 +4,17 @@ import { Metadata } from 'next';
 
 import { getAbout } from '@/data';
 
-import StructuredData from '../../../components/StructuredData';
-import { getTheme } from '../../../themes';
 import Custom404 from '../not-found';
+import { StructuredData } from '../../components/structured-data';
+import { About } from './about';
 
-export const dynamic = 'force-dynamic';
-
-export default async function About() {
+export default async function AboutPage() {
   const data = await getAbout();
-  if (!data?.me || !data?.settings)
-    return <Custom404 homepage="https://letterpad.app" />;
+  if (!data?.me || !data?.settings) return <Custom404 />;
   const { settings, me } = data;
   const { name, social } = me;
 
-  const { About } = getTheme(settings?.theme);
+  // const { About } = getTheme(settings?.theme);
 
   const jsonLd = {
     '@context': 'https://schema.org',

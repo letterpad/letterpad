@@ -102,7 +102,6 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
             />
             <div>
               <Button
-                variant="success"
                 size="normal"
                 onClick={validateAndPublish}
                 data-testid="publishBtn"
@@ -125,17 +124,17 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
               post.html !== post.html_draft ? (
                 <div className="flex gap-2">
                   <Button
-                    variant="dark"
                     onClick={() => publishOrUnpublish(true)}
                     className="flex-1"
                     disabled={fetching}
+                    variant="outline"
                   >
                     {fetching ? "Updating Post..." : "Update Live Post"}
                   </Button>
                   <Button
-                    variant="dark"
                     onClick={_discardDraft}
                     className="flex-1"
+                    variant="outline"
                   >
                     Discard Draft
                   </Button>

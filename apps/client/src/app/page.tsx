@@ -1,36 +1,31 @@
 export const runtime = 'edge';
 
-import Head from 'next/head';
-
 import { getData } from '@/data';
-
-import { CodeBlock } from '@/components/codeblock';
-import SectionContainer from '@/components/SectionContainer';
-import { withPageSEO } from '@/components/SEO';
 
 import Creative from '@/layouts/Creative';
 
 import Custom404 from './not-found';
-import StructuredData from '../../components/StructuredData';
+import { Navbar } from '../components/navbar';
+import { PageView } from '../components/pageView';
+import { PrismHighlight } from '../components/prism-highlight';
+import { StructuredData } from '../components/structured-data';
+import { getApiRootUrl } from '../../lib/utils/url';
+import { SectionContainer } from '../../src/components/section';
 import { getTheme } from '../../themes';
 
 export default async function Home() {
   const data = await getData();
   if (!data) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const { settings, me, isPage, page, posts } = data;
-  const { HomePosts, HomePage } = getTheme(settings?.theme);
+  const { HomePosts } = getTheme(settings?.theme);
 
   const _isPage = isPage && page?.__typename === 'Post';
   const isPosts = !isPage && posts?.__typename === 'PostsNode';
   const isSinglePage = _isPage && page.page_type === 'default';
   const isCreative = _isPage && page.page_type !== 'default';
   const isEmpty = posts?.__typename === 'PostsNode' && posts.rows.length === 0;
-
-  const HomePageWithSEO = withPageSEO({
-    Component: HomePage,
-  });
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -57,21 +52,13 @@ export default async function Home() {
       '@id': `${settings.site_url}`,
     },
   };
+
   return (
     <>
-      <Head>
-        {settings.site_favicon?.src && (
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href={settings.site_favicon.src}
-          />
-        )}
-      </Head>
+      <Navbar settings={settings} isHome={true} me={me} />
       <StructuredData data={jsonLd} />
       <div>
-        <CodeBlock />
+        <PrismHighlight />
         <SectionContainer>
           {isEmpty && (
             <span className="py-16 text-gray-400">
@@ -81,9 +68,7 @@ export default async function Home() {
         </SectionContainer>
         {isPosts && <HomePosts posts={posts} settings={settings} />}
         {isSinglePage && (
-          <HomePageWithSEO data={page} settings={settings} me={me}>
-            <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
-          </HomePageWithSEO>
+          <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
         )}
         {isCreative && (
           <Creative
@@ -93,7 +78,32 @@ export default async function Home() {
             me={me}
           />
         )}
+        <AboutMe me={me} />
+        <PageView type="home" id={me.username} />
       </div>
     </>
   );
 }
+
+const AboutMe = ({ me }) => {
+  return (
+    <div className="rounded text-center text-gray-500 p-8 md:px-0 dark:bg-slate-900 bg-slate-100 shadow-inner">
+      <img
+        className="w-32 h-32 rounded-full mx-auto p-4 border-4"
+        src={me.avatar}
+        alt={me.name}
+      />
+      <div className="mt-5">
+        <a
+          href={new URL(`@${me.username}`, getApiRootUrl()).href}
+          className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-300 transition duration-500 ease-in-out"
+        >
+          {me.name}
+        </a>
+        <p>{me.occupation}</p>
+      </div>
+
+      <p className="mt-2 text-sm text-gray-900">{me.signature}</p>
+    </div>
+  );
+};

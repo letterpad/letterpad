@@ -54,7 +54,7 @@ export const Card: FC<{
             </span>
             <span className="px-2.5">⋅</span>
             <span className="whitespace-nowrap">
-              {post.stats?.reading_time} min read
+              {post.stats?.reading_time} read
             </span>
           </div>
         </div>
@@ -127,7 +127,7 @@ export const HorizontalCard = ({ post }) => {
           </span>
           <span className="px-2.5">⋅</span>
           <span className="whitespace-nowrap">
-            {post.stats?.reading_time} min read
+            {post.stats?.reading_time} read
           </span>
         </div>
       </div>

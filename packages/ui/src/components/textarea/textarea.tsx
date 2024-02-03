@@ -17,6 +17,7 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
   labelClassName?: string;
   error?: boolean;
   limit?: number;
+  help?:string
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
@@ -58,6 +59,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     label,
     labelClassName,
     limit,
+    help,
     ...rest
   } = props;
   return (
@@ -85,9 +87,12 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
         onChange={onChange}
         onKeyUp={onKeyUp}
       />
-      {limit && (
-        <div className="mt-2 text-right text-xs">{`${rest.value?.length}/${limit}`}</div>
-      )}
+      <div className="flex justify-between items-start flex-row mt-2">
+        {help && <div className="text-sm text-gray-500">{help}</div>}
+        {limit && (
+          <div className="text-right text-xs">{`${localRef.current?.value.length}/${limit}`}</div>
+        )}
+      </div>
     </div>
   );
 });

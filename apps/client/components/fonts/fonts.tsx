@@ -1,5 +1,6 @@
 'use client';
 import { useEffect } from 'react';
+
 import { generateGoogleFontsLink } from './fontsCssLink';
 
 const Fonts = ({ fonts }) => {

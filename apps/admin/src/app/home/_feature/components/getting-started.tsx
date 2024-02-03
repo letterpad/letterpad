@@ -54,7 +54,7 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
                 Write a short text about yourself, change your profile image and
                 update your social links by visiting{"  "}
                 <Link href={"/profile?selected=basic"}>
-                  Profile → Basic Information
+                  Profile → About You
                 </Link>
                 .
               </p>

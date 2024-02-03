@@ -43,6 +43,10 @@ const tags = [
 ];
 
 export async function seed(folderCheck = true) {
+  if (process.env.DATABASE_URL.includes("connect.psdb")) {
+    console.log("Not seeding the database in planetscale");
+    return;
+  }
   try {
     if (folderCheck) {
       console.time("delete all recoreds from all tables");
@@ -249,7 +253,7 @@ async function insertAuthors() {
         instagram: "",
         linkedin: "",
       }),
-      occupation: "{Your Occupation}",
+      occupation: "Author at Letterpad",
       company_name: "Letterpad",
       bio: "You can write some information about yourself for the world to know you a little better.",
       avatar:
@@ -292,7 +296,7 @@ export async function insertPost(postData, author_id) {
       reading_time: "5 mins",
       stats: JSON.stringify({
         characters: 1000,
-        reading_time: 2,
+        reading_time: "2 mins",
         spaceless_characters: 800,
         words: 200,
       }),
@@ -300,17 +304,17 @@ export async function insertPost(postData, author_id) {
       tags:
         postData.type === "post"
           ? {
-            connectOrCreate: [
-              {
-                create: tags[0],
-                where: { name: tags[0].name },
-              },
-              {
-                create: tags[1],
-                where: { name: tags[1].name },
-              },
-            ],
-          }
+              connectOrCreate: [
+                {
+                  create: tags[0],
+                  where: { name: tags[0].name },
+                },
+                {
+                  create: tags[1],
+                  where: { name: tags[1].name },
+                },
+              ],
+            }
           : undefined,
       author: {
         connect: {
@@ -338,6 +342,9 @@ async function walk(dir) {
 }
 
 export const cleanupDatabase = async () => {
+  await prisma.follows.deleteMany();
+  await prisma.likes.deleteMany();
+  await prisma.session.deleteMany();
   await prisma.permission.deleteMany();
   await prisma.author.deleteMany();
   await prisma.domain.deleteMany();

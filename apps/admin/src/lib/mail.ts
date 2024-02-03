@@ -2,18 +2,20 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: "aws",
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASSWORD,
+    user: process.env.SMTP_USERNAME,
+    pass: process.env.SMTP_PASSWORD,
   },
+  host: process.env.SMTP_HOST,
+  port: 465,
 });
 
 interface Props {
-  from: string; // sender address
-  to: string; // list of receivers
-  subject: string; // Subject line
-  html: string; // plain text body
+  from: string;
+  to?: string;
+  subject: string;
+  html: string;
   replyTo?: string;
   bcc?: string;
 }
@@ -25,10 +27,10 @@ export const mail = (
     if (process.env.LETTERPAD_PLATFORM === "true" && addBcc) {
       mailOptions = {
         ...mailOptions,
-        bcc: `"Letterpad <${process.env.GMAIL_USER}>`,
+        bcc: `"Letterpad <${process.env.SENDER_EMAIL}>`,
       };
     }
-    transporter.sendMail(mailOptions, function (err, info) {
+    transporter.sendMail(mailOptions, async function (err, info) {
       if (err) reject(err);
       else resolve(info);
     });
@@ -36,5 +38,9 @@ export const mail = (
 };
 
 export const hasCredentials = () => {
-  return process.env.GMAIL_USER && process.env.GMAIL_PASSWORD;
+  return (
+    process.env.SMTP_USERNAME &&
+    process.env.SMTP_PASSWORD &&
+    process.env.SMTP_HOST
+  );
 };

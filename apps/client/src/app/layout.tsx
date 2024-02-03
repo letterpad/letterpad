@@ -2,20 +2,21 @@ export const runtime = 'edge';
 
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
+
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
+
 import { getData } from '@/data';
 
 import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/Scripts';
 
-import { getTheme } from '@/themes';
-
 import { Css } from './_css';
-import { HighlightCode } from './_highlightCode';
 import Custom404 from './not-found';
+import { Footer } from '../components/footer';
+import { PrismHighlight } from '../components/prism-highlight';
+import { SessionProvider } from '../../context/SessionProvider';
 import ThemeProvider from '../../context/ThemeProvider';
-import { SessionCleaner } from '../features/auth/cleaner';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
@@ -137,11 +138,11 @@ export async function generateMetadata(): Promise<Metadata> {
 const Layout = async ({ children }) => {
   const data = await getData();
   if (!data) {
-    return <Custom404 homepage="https://letterpad.app" />;
+    return <Custom404 />;
   }
   const theme = cookies().get(THEME_STORAGE_KEY)?.value;
-  const { settings } = data;
-  const { Layout } = getTheme(settings?.theme);
+  const { settings, me } = data;
+
   return (
     <html
       lang="en"
@@ -157,18 +158,23 @@ const Layout = async ({ children }) => {
       />
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
-      <SessionCleaner />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <ThemeProvider storageKey={THEME_STORAGE_KEY}>
-          <FontPageWrapper
-            primary_font={settings.design?.primary_font!}
-            secondary_font={settings.design?.secondary_font!}
-          >
-            <Layout>{children}</Layout>
-          </FontPageWrapper>
-        </ThemeProvider>
-        <div id="modal-creatives" />
-        <HighlightCode />
+        <SessionProvider>
+          <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
+            <FontPageWrapper
+              primary_font={settings.design?.primary_font!}
+              secondary_font={settings.design?.secondary_font!}
+            >
+              <main className="mb-auto">{children}</main>
+              <div className="border-b-[1px] dark:border-gray-700">
+                <Footer author={me} settings={settings} />
+              </div>
+            </FontPageWrapper>
+          </ThemeProvider>
+          <div id="modal-creatives" />
+          <PrismHighlight />
+          <div id="modal-root" />
+        </SessionProvider>
       </body>
     </html>
   );

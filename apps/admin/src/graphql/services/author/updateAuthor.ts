@@ -46,7 +46,6 @@ export const updateAuthor = async (
     if (args.author.social) {
       dataToUpdate.social = JSON.stringify(args.author.social);
     }
-
     if (args.author.username) {
       if (!sanitizeUsername(args.author.username)) {
         return {
@@ -93,9 +92,9 @@ export const updateAuthor = async (
       }
       dataToUpdate.verified = false;
     }
-
+    const { id, ...data } = dataToUpdate
     const author = await prisma.author.update({
-      data: dataToUpdate,
+      data: { ...data },
       where: { id: args.author.id },
     });
 
@@ -116,7 +115,7 @@ export const updateAuthor = async (
         author_id: author.id,
       });
     }
-    if (args.author.username) {
+    if (args.author.username && !author.username) {
       await prisma.setting.update({
         data: {
           site_url: `https://${args.author.username}.letterpad.app`,
@@ -131,6 +130,7 @@ export const updateAuthor = async (
       ...mapAuthorToGraphql(author),
     };
   } catch (e: any) {
+    console.log(e)
     return {
       __typename: "Exception",
       message: "Something wrong happened",

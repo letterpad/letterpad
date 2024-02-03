@@ -95,6 +95,7 @@ mutation UpdateAuthor($author: InputAuthor!) {
       }
       bio
       occupation
+      signature
       company_name
       avatar
       username
@@ -250,6 +251,34 @@ mutation RemoveDomain {
 }
 mutation DeleteAuthor {
   deleteAuthor {
+    ok
+    message
+  }
+}
+
+mutation FollowAuthor($username: String!) {
+  followAuthor(username: $username) {
+    ok
+    message
+  }
+}
+
+mutation UnFollowAuthor($username: String!) {
+  unFollowAuthor(username: $username) {
+    ok
+    message
+  }
+}
+
+mutation LikePost($postId: Int!) {
+  likePost(postId: $postId) {
+    ok
+    message
+  }
+}
+
+mutation UnLikePost($postId: Int!) {
+  unLikePost(postId: $postId) {
     ok
     message
   }

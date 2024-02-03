@@ -12,6 +12,13 @@ enum RegisterStep {
   Registered
 }
 
+type FollowAuthor {
+  username: String!
+  name: String!
+  avatar: String
+  createdAt: String
+}
+
 type Author {
   id: Int!
   email: String!
@@ -20,8 +27,11 @@ type Author {
   social: Social
   bio: String
   occupation: String
+  signature: String
   company_name: String
   role: Role
+  followers: [FollowAuthor]
+  following: [FollowAuthor]
   permissions: [Permissions!]
   avatar: String
   verified: Boolean
@@ -36,6 +46,7 @@ type Author {
   register_step: RegisterStep
   stripe_customer_id: String
   stripe_subscription_id: String
+  createdAt: String
 }
 
 type Subscription {
@@ -66,6 +77,7 @@ input InputAuthor {
   name: String
   bio: String
   occupation: String
+  signature: String
   company_name: String
   social: InputSocial
   password: String
@@ -107,8 +119,31 @@ type DeleteAuthorResponse {
   message: String
 }
 
+type FollowAuthorResponse {
+  ok: Boolean!
+  message: String
+}
+
+type IsFollowingResponse {
+  ok: Boolean!
+  following: Boolean!
+  message: String
+}
+
+type AboutStats {
+  postCount: Int!
+  followerCount: Int!
+  followingCount: Int!
+}
+
+type AboutStatsResponse {
+  stats: AboutStats
+  ok: Boolean!
+}
 type Query {
   me: AuthorResponse
+  isFollowing(username: String!): IsFollowingResponse!
+  aboutStats(username: String!): AboutStatsResponse!
 }
 
 type Mutation {
@@ -118,4 +153,6 @@ type Mutation {
   createAuthor(data: InputCreateAuthor!): AuthorResponse
   forgotPassword(email: String!): ForgotPasswordResponse!
   resetPassword(password: String!, token: String!): ForgotPasswordResponse!
+  followAuthor(username: String!): FollowAuthorResponse!
+  unFollowAuthor(username: String!): FollowAuthorResponse!
 }

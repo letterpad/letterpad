@@ -6,10 +6,12 @@ import { basePath } from "@/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { decodeJWTToken } from "@/shared/token";
 
+import { convertNotificationMetaIn } from "../../graphql/resolvers/utils/dbTypeCheck";
 import {
   EmailTemplates,
   NextApiRequestWithFormData,
 } from "../../graphql/types";
+import { NotificationMeta } from "../../../__generated__/__types__";
 
 import { VerifySubscriberToken } from "@/types";
 
@@ -29,6 +31,20 @@ const Verify = async (
         verified: true,
       },
       where: { id: token.subscriber_id },
+    });
+
+    const subscriber = await prisma.subscriber.findFirst({
+      where: { id: token.subscriber_id },
+    });
+
+    await prisma.notifications.create({
+      data: {
+        author_id: token.author_id,
+        meta: convertNotificationMetaIn({
+          __typename: "SubscriberNewMeta",
+          subscriber_email: subscriber?.email,
+        }),
+      },
     });
 
     await enqueueEmailAndSend({

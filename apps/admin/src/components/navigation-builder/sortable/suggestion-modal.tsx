@@ -49,7 +49,7 @@ function getOptions(source, type: NavigationType, onClick) {
         key={navItem.slug}
         data-testid={navItem.slug}
         onClick={() => onClick(navItem.slug)}
-        variant="ghost"
+        variant="link"
         className="px-0"
       >
         {getSuggestionLabel(navItem)}
