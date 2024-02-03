@@ -1,8 +1,4 @@
-import {
-  MutationResolvers,
-  NotificationMeta,
-  QueryResolvers,
-} from "@/__generated__/__types__";
+import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 import { decodeJWTToken } from "@/shared/token";
@@ -103,16 +99,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
               id: client_author_id,
             },
           },
-        },
-      });
-
-      await prisma.notifications.create({
-        data: {
-          author_id: client_author_id,
-          meta: {
-            __typename: "SubscriberNewMeta",
-            subscriber_email: args.email,
-          } as NotificationMeta,
         },
       });
 
