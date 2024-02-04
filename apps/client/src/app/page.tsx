@@ -18,13 +18,9 @@ export default async function Home() {
   if (!data) {
     return <Custom404 />;
   }
-  const { settings, me, isPage, page, posts } = data;
+  const { settings, me, page, posts } = data;
   const { HomePosts } = getTheme(settings?.theme);
 
-  const _isPage = isPage && page?.__typename === 'Post';
-  const isPosts = !isPage && posts?.__typename === 'PostsNode';
-  const isSinglePage = _isPage && page.page_type === 'default';
-  const isCreative = _isPage && page.page_type !== 'default';
   const isEmpty = posts?.__typename === 'PostsNode' && posts.rows.length === 0;
 
   const jsonLd = {
@@ -66,18 +62,7 @@ export default async function Home() {
             </span>
           )}
         </SectionContainer>
-        {isPosts && <HomePosts posts={posts} settings={settings} />}
-        {isSinglePage && (
-          <div dangerouslySetInnerHTML={{ __html: page.html ?? '' }}></div>
-        )}
-        {isCreative && (
-          <Creative
-            data={page}
-            site_name={settings.site_title}
-            settings={settings}
-            me={me}
-          />
-        )}
+        <HomePosts posts={posts} settings={settings} />
         <AboutMe me={me} />
         <PageView type="home" id={me.username} />
       </div>
