@@ -3,7 +3,7 @@ import { HiOutlineMenu } from "react-icons/hi";
 import { Button, useResponsiveLayout } from "ui";
 
 import FeedbackForm from "./feedback-form";
-import { NotificationDropdown } from "../notification-dd/list";
+// import { NotificationDropdown } from "../notification-dd/list";
 import { ProfileDropdown } from "../profile-dd";
 import ThemeSwitcher from "../theme-switcher";
 
@@ -31,7 +31,7 @@ export const TopBar = () => {
         </Button>
         <FeedbackForm />
         <ThemeSwitcher />
-        <NotificationDropdown />
+        {/* <NotificationDropdown /> */}
         <ProfileDropdown sessionPath="/api/auth/session" />
       </div>
     </div>

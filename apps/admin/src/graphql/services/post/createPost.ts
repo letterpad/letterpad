@@ -67,18 +67,6 @@ export const createPost = async (
     dataToUpdate.page_data = args.data.page_data;
   }
 
-  // add default tag
-  if (dataToUpdate.type === PostTypes.Post) {
-    dataToUpdate.tags = {
-      connectOrCreate: {
-        create: {
-          name: siteConfig.default_tag,
-          slug: siteConfig.default_tag,
-        },
-        where: { name: siteConfig.default_tag },
-      },
-    };
-  }
   const slug = args.data.slug;
 
   try {

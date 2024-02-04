@@ -17,6 +17,7 @@ fragment Partial on Post {
   page_type
   page_data
   mail_status
+  exclude_from_home
   stats {
     words
     characters

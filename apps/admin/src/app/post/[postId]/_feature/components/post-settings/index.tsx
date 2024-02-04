@@ -16,6 +16,7 @@ import {
 } from "@/utils/slug";
 
 import { getPostHash } from "./api";
+import { ExcludeFromHome } from "./excludeFromHome";
 import { Heading } from "./heading";
 import { Preview } from "./preview";
 import PublishButton from "./publishButton";
@@ -145,6 +146,7 @@ const Actions = ({ post }: IProps) => {
               </div>
               {isPost && (
                 <Tags
+                  key={!fetching ? +new Date() : null}
                   post={post}
                   header={
                     <Heading
@@ -218,6 +220,23 @@ const Actions = ({ post }: IProps) => {
               </div>
               <div>
                 <Heading
+                  heading="Exclude this post from home page"
+                  subheading={
+                    "If you want to display this post under a different menu item, tag it with the menu item name and make sure, that tag is added in navigation menu"
+                  }
+                />
+                <ExcludeFromHome
+                  status={!!post.exclude_from_home}
+                  onChange={(exclude_from_home) =>
+                    debounceUpdatePost({
+                      id: post.id,
+                      exclude_from_home,
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <Heading
                   heading="Story Preview"
                   subheading={
                     "This is how various search engines and social posting will look like."
@@ -225,7 +244,7 @@ const Actions = ({ post }: IProps) => {
                 />
                 <Preview
                   title={post.title}
-                  url={settings?.site_url! + "/" + slug}
+                  url={settings?.site_url! + slug}
                   excerpt={excerptRef.current?.value!}
                   image={post.cover_image.src}
                   siteTitle={settings?.site_title!}

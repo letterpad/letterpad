@@ -42,15 +42,8 @@ export const getPosts = cache(
     // If posts are requested by client, then verify if this a collection of posts for
     // displaying in homepage.
     // find the real slug of the tag
-    if (args.filters?.tagSlug === "/") {
-      // find the first menu item. If its a tag, then display its collection of posts.
-      const slug = await getTagSlugOfFirstMenuItemIfPossible(
-        prisma,
-        authorId,
-        context
-      );
-      if (slug) args.filters.tagSlug = slug;
-    } else if (args.filters.tagSlug) {
+
+    if (args.filters.tagSlug && args.filters.tagSlug !== "/") {
       args.filters.tagSlug = tryToParseCategoryName(
         getLastPartFromPath(args.filters.tagSlug)
       );
@@ -64,6 +57,7 @@ export const getPosts = cache(
           contains: args.filters?.search,
         },
         author_id: authorId,
+        exclude_from_home: undefined,
         // id: args.filters?.id,
         featured: args.filters?.featured,
         status: {
@@ -93,6 +87,11 @@ export const getPosts = cache(
         id: true,
       },
     };
+
+    if (condition.where && args.filters.tagSlug === "/") {
+      condition.where.exclude_from_home = false;
+      condition.where.tags = undefined;
+    }
     if (condition.where?.html?.["search"]) {
       condition.where.html["search"] = args.filters?.search;
     }

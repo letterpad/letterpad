@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Message, Modal } from "ui";
 
 import {
@@ -10,13 +10,13 @@ import {
 import { EventAction, track } from "@/track";
 import { isTagsNode } from "@/utils/type-guards";
 
+import { Heading } from "./heading";
 import {
   PageNotLinkedWithNavigation,
   TagNotLinkedWithNavigation,
   WarnNoTags,
 } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
-import { Heading } from "./heading";
 
 interface Props {
   postId: number;
@@ -31,7 +31,7 @@ enum NotPublished {
 
 const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
-  const { data: post, refetch } = useGetPost({ id: postId });
+  const { data: post } = useGetPost({ id: postId });
   const { updatePost, fetching } = useUpdatePost();
 
   if (post?.__typename !== "Post") return null;
@@ -39,21 +39,15 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const validateAndPublish = () => {
     const isPost = post.type === PostTypes.Post;
 
-    const navigationTags = getTagsFromMenu(menu);
     const navigationPages = getPagesFromMenu(menu);
     const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
 
-    const navLinkedWithTags = postTags.find(
-      (tag) => navigationTags?.includes(tag.name.toLowerCase())
-    );
     const navLinkedWithPages = navigationPages?.find(
       (page) => page === post.slug?.replace("/page/", "").toLowerCase()
     );
 
     if (postTags.length === 0 && isPost) {
       setError(NotPublished.NoTags);
-    } else if (!navLinkedWithTags && isPost) {
-      setError(NotPublished.TagsNotLinkedWithNav);
     } else if (!navLinkedWithPages && !isPost) {
       setError(NotPublished.PageNotLinkedWithNav);
     } else {
@@ -165,7 +159,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
       </div>
       <Modal
         className={error}
-        header="Post not published"
+        header="Reminder"
         show={!!error}
         toggle={() => setError(undefined)}
         footer={[
@@ -190,10 +184,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
           </Button>,
         ]}
       >
-        {error === NotPublished.NoTags && <WarnNoTags />}
-        {error === NotPublished.TagsNotLinkedWithNav && (
-          <TagNotLinkedWithNavigation tags={getTagsFromMenu(menu)} />
-        )}
+        {error === NotPublished.NoTags && <WarnNoTags postId={postId} />}
         {error === NotPublished.PageNotLinkedWithNav && (
           <PageNotLinkedWithNavigation />
         )}
@@ -203,12 +194,6 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
 };
 
 export default PublishButton;
-
-function getTagsFromMenu(menu: Navigation[]) {
-  return menu
-    .filter((a) => a.type === NavigationType.Tag)
-    .map((a) => a.slug.replace("/tag/", "").toLowerCase());
-}
 
 function getPagesFromMenu(menu: Navigation[]) {
   return menu
