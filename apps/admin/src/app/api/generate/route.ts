@@ -6,7 +6,6 @@ import { prisma } from "@/lib/prisma";
 
 import { getServerSession } from "../../../graphql/context";
 
-
 export async function POST(req: Request): Promise<Response> {
   const session = await getServerSession({ req });
   if (!session?.user?.id) {
@@ -33,9 +32,9 @@ export async function POST(req: Request): Promise<Response> {
     apiKey: openai_api_key,
   });
 
-  let { prompt, field="post" } = await req.json();
+  let { prompt, field = "post" } = await req.json();
 
-  if (field === "excerpt")  {
+  if (field === "excerpt") {
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [

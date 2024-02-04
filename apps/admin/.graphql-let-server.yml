@@ -1,0 +1,16 @@
+schema: "src/graphql/schema/**/*.graphqls"
+documents:
+  - "src/graphql/**/*.graphql"
+plugins:
+  - typescript-operations
+  # - typescript-react-apollo
+  - typescript-urql
+  - add
+cacheDir: __generated__server
+config:
+  avoidOptionals: false
+  maybeValue: T
+  withComponent: false
+  withHooks: false
+  # skipTypename: false
+  content: '//@ts-nocheck'

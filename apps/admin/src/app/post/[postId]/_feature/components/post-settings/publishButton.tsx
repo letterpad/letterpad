@@ -10,13 +10,13 @@ import {
 import { EventAction, track } from "@/track";
 import { isTagsNode } from "@/utils/type-guards";
 
+import { Heading } from "./heading";
 import {
   PageNotLinkedWithNavigation,
   TagNotLinkedWithNavigation,
   WarnNoTags,
 } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
-import { Heading } from "./heading";
 
 interface Props {
   postId: number;

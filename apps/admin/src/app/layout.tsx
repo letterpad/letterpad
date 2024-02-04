@@ -16,6 +16,7 @@ import { FontPageWrapper } from "@/components/fonts";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
+
 import { getAuthCookieName } from "../utils/authCookie";
 
 export const metadata: Metadata = {

@@ -1,3 +1,7 @@
+import {
+  createInMemoryCache,
+  useResponseCache as ResponseCache,
+} from "@graphql-yoga/plugin-response-cache";
 import { createSchema, createYoga } from "graphql-yoga";
 
 import { context } from "@/graphql/context";
@@ -7,9 +11,7 @@ import { resolversArr } from "@/graphql/resolvers";
 import { typeDefsList } from "@/graphql/schema";
 
 import cors from "../_cors";
-import { useResponseCache as ResponseCache, createInMemoryCache } from "@graphql-yoga/plugin-response-cache";
 import { getHeader } from "../../../utils/headers";
-
 
 // const cache = createInMemoryCache()
 

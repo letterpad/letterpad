@@ -1,11 +1,12 @@
-import { Social } from "../../../__generated__/__types__";
 import {
+  FaFacebook,
   FaGithub,
+  FaInstagram,
   FaLinkedin,
   FaTwitter,
-  FaFacebook,
-  FaInstagram,
 } from "react-icons/fa";
+
+import { Social } from "../../../__generated__/__types__";
 
 export const SocialIcons = ({ social }: { social: Social }) => {
   return (

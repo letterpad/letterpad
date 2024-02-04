@@ -13,7 +13,7 @@
   },
   "scripts": {
     "seedIfNotSeeded": "bun run postbuild && node ./src/graphql/db/dist/seedIfNoSeed.js",
-    "codegen": "graphql-let && next lint --fix --dir __generated__",
+    "codegen": "graphql-let && next lint --fix --dir __generated__ && graphql-let --config .graphql-let-server.yml",
     "prepare": "bun run prisma:generate && bun run codegen && bun run prisma:migrate:run && bun run seedIfNotSeeded",
     "client": "concurrently -k 'bun dev'",
     "dev": "next",

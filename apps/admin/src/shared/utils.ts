@@ -6,8 +6,8 @@ import { getAuthCookieName } from "../utils/authCookie";
 
 export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString("en-us", {
-    month: "long",
-    year: "numeric",
+    month: "short",
+    year: "2-digit",
     day: "numeric",
   });
 };

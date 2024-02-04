@@ -13,6 +13,7 @@ import {
   getTags,
   updateTags,
 } from "../services/tag";
+import { categoryNameToSlug } from "../../utils/utils";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, context) {
@@ -20,6 +21,29 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async tags(_root, args, context) {
     return getTags(args, context);
+  },
+  async categories(_root, args, { prisma }) {
+    const tags = await prisma.tag.groupBy({
+      by: ["category"],
+      _count: {
+        category: true,
+      },
+      where: {
+        posts: {
+          some: {
+            status: "published",
+          },
+        },
+      },
+    });
+    return {
+      ok: true,
+      rows: tags.map((tag) => ({
+        name: tag.category,
+        slug: categoryNameToSlug(tag.category),
+        count: tag._count.category,
+      })),
+    };
   },
 };
 

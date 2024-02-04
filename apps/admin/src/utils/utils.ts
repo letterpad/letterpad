@@ -9,3 +9,18 @@ export const tryToParseCategoryName = (tag: string): string => {
   const category = tag.split(CATEGORY_PARSER_REGEX)[1];
   return category || tag;
 };
+
+export const categoryNameToSlug = (name: string) => {
+  return name.replace(/ /g, "_").toLowerCase();
+};
+
+export const categorySlugToName = (slug: string) => {
+  return convertInitialsToUpperCase(slug.replace(/_/g, " "));
+};
+
+const convertInitialsToUpperCase = (sentence: string) => {
+  return sentence
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};

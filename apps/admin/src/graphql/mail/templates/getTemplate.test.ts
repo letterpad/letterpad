@@ -226,7 +226,7 @@ describe("Email templates", () => {
   });
 });
 
-export { };
+export {};
 
 function removeToken(content: string) {
   const [_part1, part2] = content.split("token=");

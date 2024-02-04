@@ -379,3 +379,57 @@ query Notification {
     }
   }
 }
+
+query LetterpadLatestPosts($cursor: Int) {
+  letterpadLatestPosts(cursor: $cursor) {
+    __typename
+    ... on PostsNode {
+      count
+      rows {
+        id
+        title
+        slug
+        sub_title
+        createdAt
+        publishedAt
+        excerpt
+        cover_image {
+          src
+          width
+          height
+        }
+        stats {
+          reading_time
+        }
+        author {
+          ... on Author {
+            name
+            username
+            avatar
+            __typename
+          }
+        }
+        tags {
+          ... on TagsNode {
+            rows {
+              name
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query GetCategories {
+  categories {
+    rows {
+      count
+      name
+      slug
+    }
+    ok
+    message
+  }
+}

@@ -8,9 +8,9 @@ import Cta from "./Cta";
 import Features from "./Features";
 import Features02 from "./Features02";
 import Footer from "./Footer";
-import Header from "../header/Header";
 import Hero from "./Hero";
 import PressLogos from "./PressLogos";
+import Header from "../header/Header";
 import { getRootUrl } from "../../shared/getRootUrl";
 
 export const viewport: Viewport = {

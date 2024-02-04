@@ -35,10 +35,16 @@ export async function getEmailChangeSuccessContent(
     };
   }
 
-  const subject = template.subject.replaceAll("{{ company_name }}", `Letterpad`);
+  const subject = template.subject.replaceAll(
+    "{{ company_name }}",
+    `Letterpad`
+  );
 
   const body = template.body
-    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll(
+      "{{ company_name }}",
+      `<a href="https://letterpad.app">Letterpad</a>`
+    )
     .replaceAll("{{ full_name }}", author.name);
 
   return {
