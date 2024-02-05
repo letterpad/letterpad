@@ -1,4 +1,6 @@
+import { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { BiCalendar, BiPencil } from "react-icons/bi";
 import { TfiNewWindow } from "react-icons/tfi";
 
@@ -11,7 +13,58 @@ import { SocialIcons } from "./social";
 import { AboutStats } from "../../components/about-stats";
 import { PageView } from "../../components/pageView";
 import { getTagsLinkedWithPosts } from "../../graphql/services/tag/getTags";
+import { getRootUrl } from "../../shared/getRootUrl";
 import { getReadableDate } from "../../shared/utils";
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const username = decodeURIComponent(params.username).replace("@", "");
+  const data = await prisma.author.findFirst({
+    where: { username },
+    include: {
+      setting: true,
+    },
+  });
+  if (!data) return {};
+  const { setting, ...me } = data;
+  const banner = JSON.parse(setting?.banner ?? "{}");
+  return {
+    title: `${me.name}'s profile on Letterpad`,
+    description: me.signature ?? me.bio,
+    category: "Profile",
+    twitter: {
+      title: `${me.name}'s profile on Letterpad`,
+      images: [
+        {
+          url: banner?.src!,
+          width: banner?.width!,
+          height: banner?.height!,
+          alt: setting?.site_title,
+        },
+      ],
+      card: "summary_large_image",
+      description: me.signature! ?? me.bio,
+    },
+    alternates: {
+      canonical: `${getRootUrl()}/@${me.username}`,
+    },
+    openGraph: {
+      url: `${getRootUrl()}/@${me.username}`,
+      title: `${me.name}'s profile on Letterpad`,
+      description: me.signature! ?? me.bio,
+      authors: [me.name],
+      firstName: me.name,
+      siteName: setting?.site_title,
+      images: [
+        {
+          url: banner?.src!,
+          width: banner?.width!,
+          height: banner?.height!,
+          alt: setting?.site_title,
+        },
+      ],
+    },
+  };
+}
 
 const About = async ({ params }: { params: { username: string } }) => {
   const username = decodeURIComponent(params.username).replace("@", "");
@@ -22,7 +75,7 @@ const About = async ({ params }: { params: { username: string } }) => {
     },
   });
 
-  if (!author) return <div>not found - {username}</div>;
+  if (!author) return notFound();
   const feed = await prisma.post.findMany({
     where: {
       author: {
@@ -116,22 +169,25 @@ const About = async ({ params }: { params: { username: string } }) => {
             className="block antialiased font-sans text-md font-normal leading-relaxed text-inherit mt-8 max-w-2xl"
             dangerouslySetInnerHTML={{ __html: bio }}
           ></p>
-          <div>
+          <div className="max-w-2xl">
             <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-xl py-5 mt-10">
               Topics I write about:
             </h3>
-            {data?.map((tag) => {
-              return (
-                <Link
-                  target="_blank"
-                  href={new URL(`/tag/${tag.name}`, setting?.site_url).href}
-                >
-                  <span className="rounded-full border-green-500 hover:bg-green-400 hover:text-black border text-gray-800 dark:text-gray-200 px-4 py-2  text-sm mr-2 mb-2 font-bold">
-                    {tag.name}
-                  </span>
-                </Link>
-              );
-            })}
+            <div className="flex flex-wrap leading-11">
+              {data?.map((tag) => {
+                return (
+                  <Link
+                    key={tag.id}
+                    target="_blank"
+                    href={new URL(`/tag/${tag.name}`, setting?.site_url).href}
+                  >
+                    <span className="py-1.5 px-4 me-2 mb-1 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                      {tag.name}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
 
