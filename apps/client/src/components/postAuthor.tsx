@@ -21,7 +21,7 @@ export const PostAuthor = ({ settings, post }) => {
               height={64}
               alt={author.name}
               style={{ objectFit: 'cover' }}
-              className="w-full h-full rounded-full dark:bg-slate-800 bg-slate-200 p-2"
+              className="w-full h-full rounded-full dark:bg-slate-800 bg-slate-200 p-2 object-cover"
             />
           </div>
         )}
