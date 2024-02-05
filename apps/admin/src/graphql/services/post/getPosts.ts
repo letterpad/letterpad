@@ -22,13 +22,13 @@ export const getPosts = cache(
     const { session, client_author_id, prisma } = context;
     const session_author_id = session?.user.id;
     const authorId = (session_author_id || client_author_id) as number;
-    if (!authorId) {
-      return {
-        __typename: "UnAuthorized",
-        message:
-          "Either use session or add a valid Authorization token in the header.",
-      };
-    }
+    // if (!authorId) {
+    //   return {
+    //     __typename: "UnAuthorized",
+    //     message:
+    //       "Either use session or add a valid Authorization token in the header.",
+    //   };
+    // }
     if (!args.filters) {
       args.filters = {};
     }

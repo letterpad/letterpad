@@ -34,14 +34,14 @@ union TagResponse = Exception | Tag | UnAuthorized
 union UpdateTagsResponse = EditTaxResponse | UnAuthorized
 union DeleteTagsResponse = DeleteTagsResult | UnAuthorized
 
-type Category {
+type Tag {
   name: String
   count: Int
   slug: String
 }
 
-type CategoriesResponse {
-  rows: [Category]
+type PopularTagsResponse {
+  rows: [Tag]
   ok: Boolean!
   message: String
 }
@@ -60,7 +60,7 @@ type TagsNode {
 type Query {
   tags(filters: TagsFilters): TagsResponse!
   tag(slug: String!): TagResponse!
-  categories: CategoriesResponse!
+  popularTags: PopularTagsResponse!
 }
 
 type Mutation {

@@ -422,8 +422,8 @@ query LetterpadLatestPosts($cursor: Int) {
   }
 }
 
-query GetCategories {
-  categories {
+query PopularTags {
+  popularTags {
     rows {
       count
       name

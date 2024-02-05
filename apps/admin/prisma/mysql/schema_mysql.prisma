@@ -241,7 +241,6 @@ model Tag {
   name      String    @id @unique
   desc      String?   @default("")
   slug      String?
-  category  String    @default("")
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
   posts     Post[]

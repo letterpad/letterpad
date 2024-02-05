@@ -1,10 +1,10 @@
 import { print } from "graphql";
 
 import {
-  GetCategoriesDocument,
-  GetCategoriesQuery,
   LetterpadLatestPostsDocument,
   LetterpadLatestPostsQuery,
+  PopularTagsDocument,
+  PopularTagsQuery,
 } from "../../../__generated__server/src/graphql/queries/queries.graphql";
 
 export async function getLetterpadPosts(cursor: number) {
@@ -37,7 +37,7 @@ export async function getLetterpadCategories() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: print(GetCategoriesDocument),
+      query: print(PopularTagsDocument),
     }),
     next: {
       tags: ["categories"],
@@ -45,5 +45,5 @@ export async function getLetterpadCategories() {
     cache: "no-cache",
   });
   const data = await resp.json();
-  return data.data as GetCategoriesQuery;
+  return data.data as PopularTagsQuery;
 }
