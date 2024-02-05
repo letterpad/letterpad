@@ -1,10 +1,15 @@
+"use server";
 import { print } from "graphql";
 
+import { client } from "../../lib/urqlClient";
 import {
   LetterpadLatestPostsDocument,
   LetterpadLatestPostsQuery,
   PopularTagsDocument,
   PopularTagsQuery,
+  PostsDocument,
+  PostsQuery,
+  PostsQueryVariables,
 } from "../../../__generated__server/src/graphql/queries/queries.graphql";
 
 export async function getLetterpadPosts(cursor: number) {
@@ -46,4 +51,18 @@ export async function getLetterpadCategories() {
   });
   const data = await resp.json();
   return data.data as PopularTagsQuery;
+}
+
+export async function doOmniSearch(search: string) {
+  "use server";
+  const res = await client.query<PostsQuery, PostsQueryVariables>(
+    PostsDocument,
+    {
+      filters: {
+        search,
+      },
+    },
+    { requestPolicy: "network-only" }
+  );
+  return res.data?.posts.__typename === "PostsNode" ? res.data.posts.rows : [];
 }

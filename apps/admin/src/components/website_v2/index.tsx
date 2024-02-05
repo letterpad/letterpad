@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card } from "./card";
 import { getLetterpadCategories, getLetterpadPosts } from "./data";
 import { InfiniteList } from "./infinite-list";
+import { Search } from "./search";
 import Header from "../header/Header";
 
 export const Website = async () => {
@@ -16,6 +17,7 @@ export const Website = async () => {
     <>
       <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-900 dark:text-gray-100 text-black/60">
         <Header />
+        <Search />
         <main className="grow">
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:gap-8">
             <section className="w-full mb-5 flex flex-col overflow-hidden">

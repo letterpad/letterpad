@@ -21,7 +21,7 @@ export const getPosts = cache(
   ): Promise<ResolversTypes["PostsResponse"]> => {
     const { session, client_author_id, prisma } = context;
     const session_author_id = session?.user.id;
-    const authorId = (session_author_id || client_author_id) as number;
+    const authorId = undefined; //(session_author_id || client_author_id) as number;
     // if (!authorId) {
     //   return {
     //     __typename: "UnAuthorized",
@@ -54,7 +54,7 @@ export const getPosts = cache(
     const condition: Prisma.PostFindManyArgs = {
       where: {
         html: {
-          contains: args.filters?.search,
+          search: args.filters?.search,
         },
         author_id: authorId,
         exclude_from_home: undefined,
