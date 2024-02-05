@@ -9,15 +9,15 @@ import { TopBar } from "@/components/top-bar";
 
 export const TwoColumnLayout = ({ children }) => {
   return (
-      <Layout
-        left={<Sidebar />}
-        right={
-          <div className="flex h-screen flex-col justify-between px-4 md:px-6">
-            <TopBar />
-            <div className="mb-auto">{children}</div>
-            <SiteFooter />
-          </div>
-        }
-      />
+    <Layout
+      left={<Sidebar />}
+      right={
+        <div className="flex h-screen flex-col justify-between px-4 md:px-6">
+          <TopBar />
+          <div className="mb-auto">{children}</div>
+          <SiteFooter />
+        </div>
+      }
+    />
   );
 };

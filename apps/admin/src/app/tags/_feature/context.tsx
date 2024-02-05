@@ -29,7 +29,7 @@ export const TagsProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
   const {
-    data,
+    data = [],
     fetching: loading,
     refetch: refetchTags,
   } = useGetTags({ active: true });
@@ -38,8 +38,8 @@ export const TagsProvider: React.FC<{
   const postsQuery = useGetPosts({}, { skip: true });
   const statsQuery = useGetStats({}, { skip: true });
 
-  const { updateTags } = useUpdateTags();
-  const { deleteTags } = useDeleteTags();
+  const { updateTags, fetching: saving } = useUpdateTags();
+  const { deleteTags, fetching: deleting } = useDeleteTags();
 
   const computedTags = useMemo(() => data ?? [], [data]);
 
@@ -61,7 +61,10 @@ export const TagsProvider: React.FC<{
     async (key: React.Key) => {
       const tagToDelete = [...tags].filter((item) => item.key === key);
       if (tagToDelete.length > 0) {
+        Message().loading({ content: "Saving...", duration: 3 });
         await deleteTags({ name: tagToDelete[0].name });
+        setTags(tags.filter((item) => item.key !== key));
+        Message().success({ content: "Tag Deleted", duration: 2 });
         postsQuery.refetch();
         statsQuery.refetch();
       }
@@ -82,6 +85,7 @@ export const TagsProvider: React.FC<{
       if (isDuplicate) {
         return Message().error({ content: "Tag name already exists!" });
       }
+      setEditTagId(null);
       let old_name = "";
       const newData = tags.map((item) => {
         if (item.key === row.key) {
@@ -92,14 +96,15 @@ export const TagsProvider: React.FC<{
       });
 
       const { name, slug } = row;
+      Message().loading({ content: "Saving...", duration: 3 });
       await updateTags({
         data: { name, slug, old_name },
       });
+      Message().success({ content: "Saved", duration: 2 });
       postsQuery.refetch();
-      refetchTags();
-      setEditTagId(null);
+      setTags(newData);
     },
-    [tags, updateTags, postsQuery, refetchTags]
+    [tags, updateTags, postsQuery]
   );
 
   const addTag = useCallback(() => {
@@ -126,8 +131,11 @@ export const TagsProvider: React.FC<{
   );
 
   const onSave = () => {
-    if (tagToBeEdited)
-      saveTag({ ...tagToBeEdited, name: inputRef.current?.value ?? "" });
+    if (tagToBeEdited) {
+      const slug =
+        inputRef.current?.value.replace(/\s+/g, "-").toLowerCase() ?? "";
+      saveTag({ ...tagToBeEdited, name: slug, id: slug, slug });
+    }
   };
 
   const tagToBeEdited = tags.filter((item) => item.key === editTagId).pop();

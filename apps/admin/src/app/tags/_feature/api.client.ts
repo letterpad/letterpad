@@ -42,7 +42,7 @@ export const useUpdateTags = () => {
 
 export const useDeleteTags = () => {
   const [{ fetching, error }, deleteTags] = useDeleteTagsMutation();
-  const { refetch } = useGetTags({}, { skip: true });
+  const { refetch } = useGetTags({ active: true }, { skip: true });
 
   return {
     fetching,

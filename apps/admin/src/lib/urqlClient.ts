@@ -1,11 +1,10 @@
-import { createClient, fetchExchange } from "@urql/core";
+import { Client, createClient, fetchExchange } from "@urql/core";
 import { cacheExchange } from "@urql/exchange-graphcache";
-import { Message } from "ui";
 import { mapExchange } from "urql";
 
-import { isOperationDefinition } from "../utils/type-guards";
 import schema from "../../schema.json";
 
+let _client: Client | null = null;
 export const cache = cacheExchange({
   schema,
   formatDocument: true,
@@ -25,54 +24,30 @@ export const cache = cacheExchange({
   },
 });
 const makeClient = () => {
-  return createClient({
+  if (_client) return _client;
+  _client = createClient({
     url: "/api/graphql",
     maskTypename: true,
     exchanges: [
       cache,
       mapExchange({
-        onOperation(operation) {
-          if (isOperationDefinition(operation.query.definitions[0])) {
-            const mutationName = operation.query.definitions[0].name?.value;
-            switch (mutationName) {
-              case "UpdateAuthor":
-              case "UpdateOptions":
-              case "UpdatePost":
-              case "UpdateTags":
-                Message().loading({ content: "Saving...", duration: 3 });
-            }
-          }
-        },
         onResult(result) {
           const isAuthorized =
             result?.data?.[Object.keys(result?.data)[0]]?.__typename !==
             "UnAuthorized";
 
-          if (result.operation.kind === "mutation") {
-            Message().loading({ content: "Saved", duration: 0.5 });
-          }
-
           if (!isAuthorized) {
-            debugger;
             window.location.replace(
               `/login?callbackUrl=${window.location.href}`
             );
           }
           if (result.operation.kind === "query") return;
         },
-        onError() {
-          Message().destroy();
-        },
       }),
       fetchExchange,
     ],
-    fetchOptions: {
-      credentials: "same-origin",
-      headers: {
-        "Letterpad-Admin": "true",
-      },
-    },
   });
+  return _client;
 };
 
 export const client = makeClient();
