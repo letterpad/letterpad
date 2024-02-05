@@ -1,4 +1,6 @@
+import { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { BiCalendar, BiPencil } from "react-icons/bi";
 import { TfiNewWindow } from "react-icons/tfi";
 
@@ -11,7 +13,58 @@ import { SocialIcons } from "./social";
 import { AboutStats } from "../../components/about-stats";
 import { PageView } from "../../components/pageView";
 import { getTagsLinkedWithPosts } from "../../graphql/services/tag/getTags";
+import { getRootUrl } from "../../shared/getRootUrl";
 import { getReadableDate } from "../../shared/utils";
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const username = decodeURIComponent(params.username).replace("@", "");
+  const data = await prisma.author.findFirst({
+    where: { username },
+    include: {
+      setting: true,
+    },
+  });
+  if (!data) return {};
+  const { setting, ...me } = data;
+  const banner = JSON.parse(setting?.banner ?? "{}");
+  return {
+    title: `${me.name}'s profile on Letterpad`,
+    description: me.signature ?? me.bio,
+    category: "Profile",
+    twitter: {
+      title: `${me.name}'s profile on Letterpad`,
+      images: [
+        {
+          url: banner?.src!,
+          width: banner?.width!,
+          height: banner?.height!,
+          alt: setting?.site_title,
+        },
+      ],
+      card: "summary_large_image",
+      description: me.signature! ?? me.bio,
+    },
+    alternates: {
+      canonical: `${getRootUrl()}/@${me.username}`,
+    },
+    openGraph: {
+      url: `${getRootUrl()}/@${me.username}`,
+      title: `${me.name}'s profile on Letterpad`,
+      description: me.signature! ?? me.bio,
+      authors: [me.name],
+      firstName: me.name,
+      siteName: setting?.site_title,
+      images: [
+        {
+          url: banner?.src!,
+          width: banner?.width!,
+          height: banner?.height!,
+          alt: setting?.site_title,
+        },
+      ],
+    },
+  };
+}
 
 const About = async ({ params }: { params: { username: string } }) => {
   const username = decodeURIComponent(params.username).replace("@", "");
@@ -22,7 +75,7 @@ const About = async ({ params }: { params: { username: string } }) => {
     },
   });
 
-  if (!author) return <div>not found - {username}</div>;
+  if (!author) return notFound();
   const feed = await prisma.post.findMany({
     where: {
       author: {
