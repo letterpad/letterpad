@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
-import { Accordion, AccordionItem } from "ui";
+import { Accordion, AccordionItem, Message } from "ui";
 
 import { getDirtyFields } from "@/lib/react-form";
 
@@ -16,7 +16,7 @@ import { Social } from "./components/social";
 
 export const Feature = () => {
   const { data, fetching } = useGetAuthor();
-  const { updateAuthor } = useUpdateAuthor();
+  const { updateAuthor, fetching: saving } = useUpdateAuthor();
 
   const searchParams = useSearchParams();
   const methods = useForm<Author | {}>({
@@ -48,10 +48,14 @@ export const Feature = () => {
               fields,
               formState.dirtyFields
             );
+            Message().loading({ content: "Saving...", duration: 3 });
             updateAuthor({
               ...change,
               id: data.id,
-            }).then(() => methods.reset(fields));
+            }).then(() => {
+              methods.reset(fields);
+              Message().success({ content: "Saved", duration: 2 });
+            });
           })}
         >
           <Accordion

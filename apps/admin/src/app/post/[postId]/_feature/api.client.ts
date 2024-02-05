@@ -8,6 +8,7 @@ import { debounce } from "@/shared/utils";
 import { isPost } from "@/utils/type-guards";
 
 import { WordCount } from "./components/wordCount";
+import { Message } from "../../../../components/client-wrapper";
 
 export const useGetPost = (
   filters: PostFilters,
@@ -33,10 +34,13 @@ export const useUpdatePost = () => {
   const [{ fetching }, updatePost] = useUpdatePostMutation();
 
   const handleUpdatePost = useCallback(
-    (params: InputUpdatePost) => {
-      return updatePost({
+    async (params: InputUpdatePost) => {
+      Message().loading({ content: "Saving...", duration: 3 });
+      const res = await updatePost({
         data: { ...params },
       });
+      Message().success({ content: "Saved", duration: 2 });
+      return res;
     },
     [updatePost]
   );

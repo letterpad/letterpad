@@ -1,5 +1,6 @@
 "use client";
-import { useAboutStatsQuery } from "../../graphql/queries/queries.graphql";
+
+import { useAboutStatsQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 export const AboutStats = ({ username }) => {
   const [{ data }] = useAboutStatsQuery({ variables: { username } });

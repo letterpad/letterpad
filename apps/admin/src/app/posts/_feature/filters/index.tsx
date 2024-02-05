@@ -6,13 +6,11 @@ import {
   PostStatusOptions,
   SortBy,
 } from "@/__generated__/__types__";
-// import { useStatsQuery } from "@/__generated__/queries/queries.graphql";
+import { useHomeQueryQuery } from "@/__generated__/queries/queries.graphql";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
 import { Badge } from "./badge";
-import { useGetStats } from "../api.client";
-import { useHomeQueryQuery } from "../../../../graphql/queries/queries.graphql";
 import { useGetTags } from "../../../tags/_feature/api.client";
 
 interface IProps {

@@ -7,22 +7,20 @@ import { Provider as UrqlProvider } from "urql";
 
 import { basePath } from "../../constants";
 import { client } from "../../lib/urqlClient";
-export const Providers = ({ children, loggedIn }) => {
+export const Providers = ({ children }) => {
   return (
     <SessionProvider basePath={basePath + "/api/auth"}>
-      <UrqlProvider value={client}>
-        <ResponsiveProvider>
-          <div id="message" />
-          {children}
-          <ProgressBar
-            height="3px"
-            color="#2fb2fa"
-            options={{ showSpinner: false }}
-            shallowRouting
-          />
-          <div id="modal-root" />
-        </ResponsiveProvider>
-      </UrqlProvider>
+      <ResponsiveProvider>
+        <div id="message" />
+        <UrqlProvider value={client}>{children}</UrqlProvider>
+        <ProgressBar
+          height="3px"
+          color="#2fb2fa"
+          options={{ showSpinner: false }}
+          shallowRouting
+        />
+        <div id="modal-root" />
+      </ResponsiveProvider>
     </SessionProvider>
   );
 };

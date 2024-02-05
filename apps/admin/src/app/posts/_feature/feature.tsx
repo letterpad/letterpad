@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Table } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
@@ -9,6 +9,7 @@ import { postsStyles } from "@/components/posts.css";
 import { useRedirectToOnboard } from "@/components/onboard/useRedirectToOnboard";
 
 import { PostsFilters, PostStatusOptions } from "@/__generated__/__types__";
+import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 import {
   isIntroDismissed,
   setIntroDimissed,
@@ -19,7 +20,6 @@ import { useGetPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
-import { useHomeQueryQuery } from "../../../graphql/queries/queries.graphql";
 
 export const Feature = () => {
   const router = useRouter();
@@ -54,7 +54,6 @@ export const Feature = () => {
       <Table
         columns={postsColumns({ changeStatus })}
         dataSource={data?.map((item) => ({ ...item, key: item.id }))}
-        // dataSource={data?.map((item) => ({ ...item, key: item.id }))}
         loading={fetching}
         onRowClick={(row) => router.push("/post/" + row.id)}
       />

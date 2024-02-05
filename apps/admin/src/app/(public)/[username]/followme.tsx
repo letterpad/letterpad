@@ -4,10 +4,14 @@ import { useState } from "react";
 import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
 import { Button, Modal } from "ui";
 
-import { useFollowAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
-import { useIsFollowingQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
-import { useUnFollowAuthorMutation } from "@/graphql/queries/mutations.graphql";
-import { useAboutStatsQuery } from "@/graphql/queries/queries.graphql";
+import {
+  useFollowAuthorMutation,
+  useUnFollowAuthorMutation,
+} from "@/__generated__/src/graphql/queries/mutations.graphql";
+import {
+  useAboutStatsQuery,
+  useIsFollowingQuery,
+} from "@/__generated__/src/graphql/queries/queries.graphql";
 
 export const FollowMe = ({ username }) => {
   const session = useSession();
