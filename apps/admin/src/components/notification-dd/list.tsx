@@ -1,8 +1,6 @@
 "use client";
-import { animated, useSpring } from "@react-spring/web";
 import { useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";
-import { BsEye, BsEyeFill } from "react-icons/bs";
 
 import {
   FollowerNewMeta,
@@ -15,6 +13,7 @@ import {
 import { useNotificationQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { NotificationItem } from "./notification";
+import { Drawer } from "../client-wrapper";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
 
 interface Session {
@@ -33,13 +32,6 @@ export const NotificationDropdown = () => {
 
   useOnClickOutside(ref, handleClickOutside);
 
-  const style = useSpring({
-    transform: show
-      ? "translate3D(calc(-100% + 32px),0,0)"
-      : "translate3D(calc(-100% + 32px),-10px,0)",
-    opacity: show ? 1 : 0,
-  });
-
   const notifications = isNotificationNode(data?.notifications)
     ? data.notifications.rows
     : [];
@@ -56,13 +48,13 @@ export const NotificationDropdown = () => {
 
           <div className="absolute block w-3 h-3 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 dark:border-gray-900"></div>
         </button>
-        <animated.div
-          style={style}
-          className="mt-1 w-96 absolute shadow-lg bg-white dark:bg-slate-800 z-[1000] rounded-lg max-h-96 overflow-auto  dark:divide-gray-700 divide-y divide-gray-100 max-w-sm"
+        <Drawer
+          show={show}
+          onClose={handleClickOutside}
+          title="Notifications"
+          className="w-96"
+          dir="right"
         >
-          <div className="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white">
-            Notifications
-          </div>
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
             {notifications.map((notification) => {
               if (isPostLikeMeta(notification.meta)) {
@@ -146,16 +138,7 @@ export const NotificationDropdown = () => {
               }
             })}
           </div>
-          <a
-            href="#"
-            className="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
-          >
-            <div className="inline-flex items-center ">
-              <BsEyeFill className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" />
-              View all
-            </div>
-          </a>
-        </animated.div>
+        </Drawer>
       </div>
     </div>
   );
