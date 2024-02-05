@@ -3,7 +3,14 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Accordion, AccordionItem, Button, PopConfirm, TextArea } from "ui";
+import {
+  Accordion,
+  AccordionItem,
+  Button,
+  Message,
+  PopConfirm,
+  TextArea,
+} from "ui";
 
 import { getDirtyFields } from "@/lib/react-form";
 
@@ -62,7 +69,11 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               data,
               formState.dirtyFields
             );
-            updateSetting(change).then(() => methods.reset(change));
+            Message().loading({ content: "Saving...", duration: 3 });
+            updateSetting(change).then(() => {
+              methods.reset(change);
+              Message().success({ content: "Saved", duration: 2 });
+            });
           })}
         >
           <Accordion

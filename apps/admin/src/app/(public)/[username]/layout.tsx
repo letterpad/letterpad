@@ -1,6 +1,6 @@
-import Header from "../../components/header/Header";
-import ThemeSwitcher from "../../components/theme-switcher";
-import Footer from "../../components/website/Footer";
+import Header from "../../../components/header/Header";
+import ThemeSwitcher from "../../../components/theme-switcher";
+import Footer from "../../../components/website/Footer";
 
 const Layout = ({ children }) => {
   return (
@@ -17,7 +17,6 @@ const Layout = ({ children }) => {
               Letterpad
             </span>
           </a>
-
           <div className="w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:border-gray-700">
               <li>
