@@ -93,12 +93,6 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
   };
 
   const onItemRemove = (change: IMenuWithError) => {
-    if (libraries.length <= 1) {
-      return Message().error({
-        content: "You cannot delete the last row",
-        duration: 2,
-      });
-    }
     const modified = libraries.filter((item) => item.id !== change.id);
     updateLibraries(modified);
     track({

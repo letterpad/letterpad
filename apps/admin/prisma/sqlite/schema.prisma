@@ -156,6 +156,7 @@ model Post {
   stats              String    @default("{}")
   likes              Likes[]
   mail_status        String    @default("INACTIVE")
+  exclude_from_home  Boolean   @default(false)
 
   @@index([author_id])
   @@index([status, mail_status])

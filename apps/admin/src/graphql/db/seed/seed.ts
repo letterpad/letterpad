@@ -301,21 +301,6 @@ export async function insertPost(postData, author_id) {
         words: 200,
       }),
       createdAt: new Date().toISOString(),
-      tags:
-        postData.type === "post"
-          ? {
-              connectOrCreate: [
-                {
-                  create: tags[0],
-                  where: { name: tags[0].name },
-                },
-                {
-                  create: tags[1],
-                  where: { name: tags[1].name },
-                },
-              ],
-            }
-          : undefined,
       author: {
         connect: {
           id: author_id,
@@ -323,22 +308,6 @@ export async function insertPost(postData, author_id) {
       },
     },
   });
-}
-
-// const fs = require("fs").promises;
-
-async function walk(dir) {
-  let files: any = await fs.promises.readdir(dir);
-  files = await Promise.all(
-    files.map(async (file) => {
-      const filePath = path.join(dir, file);
-      const stats = await fs.promises.stat(filePath);
-      if (stats.isDirectory()) return walk(filePath);
-      else if (stats.isFile()) return filePath;
-    })
-  );
-
-  return files.reduce((all, folderContents) => all.concat(folderContents), []);
 }
 
 export const cleanupDatabase = async () => {

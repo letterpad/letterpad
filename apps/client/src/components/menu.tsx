@@ -2,8 +2,9 @@
 
 import classNames from 'classnames';
 import { Navigation, NavigationType } from 'letterpad-sdk';
+import { usePathname, useRouter } from 'next/navigation';
+
 import Link from '@/components/Link';
-import { useRouter, usePathname } from 'next/navigation';
 
 export const Menu = ({ routes }) => {
   const pathname = usePathname();
@@ -32,21 +33,19 @@ function getMenu(
   pathname: string,
   onClick
 ) {
-  return menu
-    .filter((_, i) => i !== 0)
-    .map((item, i) => {
-      return (
-        <Link
-          key={item.slug}
-          href={item.slug}
-          target={item.type === NavigationType.Custom ? '_blank' : '_self'}
-          className={classNames('text-gray-50 pb-2', {
-            'border-b': pathname === item.slug,
-          })}
-          onClick={(e) => onClick?.(e, item)}
-        >
-          {item.label}
-        </Link>
-      );
-    });
+  return menu.map((item, i) => {
+    return (
+      <Link
+        key={item.slug}
+        href={item.slug}
+        target={item.type === NavigationType.Custom ? '_blank' : '_self'}
+        className={classNames('text-gray-50 pb-2', {
+          'border-b': pathname === item.slug,
+        })}
+        onClick={(e) => onClick?.(e, item)}
+      >
+        {item.label}
+      </Link>
+    );
+  });
 }

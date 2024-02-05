@@ -25,7 +25,6 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
     [updateOption]
   );
 
-  if (menu.length === 0) return null;
   return (
     <>
       <List items={menu} suggestions={collection} onChange={onChange} />

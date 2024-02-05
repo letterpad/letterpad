@@ -33,39 +33,19 @@ export const getData = cache(async () => {
     if (!settings || !me) {
       return null;
     }
-    const { menu } = settings;
-
-    const firstItemOfMenu = menu[0];
-    const isHomePageACollectionOfPosts =
-      !firstItemOfMenu || firstItemOfMenu?.type === NavigationType.Tag;
-    const isHomePageASinglePage = firstItemOfMenu?.type === NavigationType.Page;
-
     const result = {
       props: {
         me,
         settings,
-        isPage: isHomePageASinglePage,
-        isPosts: isHomePageACollectionOfPosts,
         posts: null as unknown as PostsFragmentFragment,
         page: null as unknown as PageFragmentFragment,
       },
     };
-
-    if (isHomePageACollectionOfPosts) {
-      const posts = await letterpad.listPosts(firstItemOfMenu?.slug);
-      result.props = {
-        ...result.props,
-        posts,
-      };
-    }
-
-    if (isHomePageASinglePage) {
-      const page = await letterpad.getPost(firstItemOfMenu.slug);
-      result.props = {
-        ...result.props,
-        page,
-      };
-    }
+    const posts = await letterpad.listPosts('/');
+    result.props = {
+      ...result.props,
+      posts,
+    };
     return result.props;
   } catch (e) {
     // eslint-disable-next-line no-console

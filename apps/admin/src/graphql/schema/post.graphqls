@@ -44,6 +44,7 @@ type Post {
   stats: PostStats
   likes: [Like]
   mail_status: MailStatus
+  exclude_from_home: Boolean
 }
 
 enum MailStatus {
@@ -199,6 +200,7 @@ input InputUpdatePost {
   stats: InputPostStats
   publishOptions: InputPublishOptions
   mail_status: MailStatus
+  exclude_from_home: Boolean
 }
 
 type PostError implements LetterpadError {

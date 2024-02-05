@@ -101,6 +101,9 @@ export const updatePost = async (
     if (args.data.type) {
       newPostArgs.data.type = args.data.type;
     }
+    if (typeof args.data.exclude_from_home !== "undefined") {
+      newPostArgs.data.exclude_from_home = args.data.exclude_from_home;
+    }
     if (args.data.mail_status) {
       newPostArgs.data.mail_status = args.data.mail_status;
     }
