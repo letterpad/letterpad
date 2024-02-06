@@ -72,64 +72,79 @@ export async function GET(request: NextRequest) {
     const updateCount = (prevCountsObjectDb[key] ?? 0) + count;
     if (key.includes("home")) {
       const author_id = Number(key.replace(/[^0-9]/g, ""));
-      return prisma.pageViews.upsert({
-        where: {
-          author_id_view_type: {
-            author_id,
-            view_type: "home",
-          },
-        },
-        update: { count: updateCount },
-        create: {
-          view_type: "home",
-          count,
-          author: {
-            connect: {
-              id: author_id,
+      return prisma.pageViews
+        .upsert({
+          where: {
+            author_id_view_type: {
+              author_id,
+              view_type: "home",
             },
           },
-        },
-      });
+          update: { count: updateCount },
+          create: {
+            view_type: "home",
+            count,
+            author: {
+              connect: {
+                id: author_id,
+              },
+            },
+          },
+        })
+        .catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(`pageView home error for author_id: ${author_id}`);
+        });
     } else if (key.includes("profile")) {
       const author_id = Number(key.replace(/[^0-9]/g, ""));
-      return prisma.pageViews.upsert({
-        where: {
-          author_id_view_type: {
-            author_id,
-            view_type: "profile",
-          },
-        },
-        update: { count: updateCount },
-        create: {
-          view_type: "profile",
-          count,
-          author: {
-            connect: {
-              id: author_id,
+      return prisma.pageViews
+        .upsert({
+          where: {
+            author_id_view_type: {
+              author_id,
+              view_type: "profile",
             },
           },
-        },
-      });
+          update: { count: updateCount },
+          create: {
+            view_type: "profile",
+            count,
+            author: {
+              connect: {
+                id: author_id,
+              },
+            },
+          },
+        })
+        .catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(`pageView profile error for author_id: ${author_id}`);
+        });
     } else if (key.includes("post")) {
       const post_id = Number(key.replace(/[^0-9]/g, ""));
-      return prisma.pageViews.upsert({
-        where: {
-          post_id_view_type: {
-            post_id,
-            view_type: "post",
-          },
-        },
-        update: { count: updateCount },
-        create: {
-          view_type: "post",
-          count,
-          post: {
-            connect: {
-              id: post_id,
+      return prisma.pageViews
+        .upsert({
+          where: {
+            post_id_view_type: {
+              post_id,
+              view_type: "post",
             },
           },
-        },
-      });
+          update: { count: updateCount },
+          create: {
+            view_type: "post",
+            count,
+            post: {
+              connect: {
+                id: post_id,
+              },
+            },
+          },
+        })
+        .catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(`pageView post error for post_id: ${post_id}`);
+        });
     }
     return Promise.resolve();
   });
