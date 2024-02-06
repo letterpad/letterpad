@@ -116,7 +116,7 @@ const About = async ({ params }: { params: { username: string } }) => {
       },
     ],
     mainEntity: {
-      "@type": "ProfilePage",
+      "@type": "Person",
       name: name,
       description: signature ?? bio,
       image: avatar,
