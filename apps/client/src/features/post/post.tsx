@@ -81,11 +81,11 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                     width={100}
                     height={100}
                     alt={author.name}
-                    className="rounded-full border-4 dark:border-gray-800"
+                    className="rounded-full border-2 dark:border-gray-800"
                     style={{
                       objectFit: 'cover',
                       maxWidth: 100,
-                      padding: 10,
+                      padding: 4,
                       height: 100,
                     }}
                   />
