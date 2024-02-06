@@ -3,7 +3,11 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { mail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
-import { getQueuedSubscriberEmails } from "@/lib/redis";
+import {
+  delQueuedSubscriberEmails,
+  getKeyForEmailSubscription,
+  getQueuedSubscriberEmails,
+} from "@/lib/redis";
 
 import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 import { getTemplate } from "@/graphql/mail/template";
@@ -38,9 +42,9 @@ type Variables = Subscribers | Followers;
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    // return new Response("Unauthorized", {
-    //   status: 401,
-    // });
+    return new Response("Unauthorized", {
+      status: 401,
+    });
   }
 
   const posts = await prisma.post.findMany({
@@ -53,13 +57,13 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  const emailsPerPost: Variables[] = await Promise.all(
+  const allEmails: Variables[] = await Promise.all(
     posts.map((post) => getQueuedSubscriberEmails(post.id))
   );
 
   const template = await getTemplate(EmailTemplates.NewPost);
 
-  const mails = emailsPerPost.map(async (variable) => {
+  const mails = allEmails.map(async (variable) => {
     const subject = template.subject.replaceAll(
       "{{ blog_name }}",
       variable.site_title
@@ -105,9 +109,22 @@ export async function GET(request: NextRequest) {
         },
         false
       );
+      await prisma.post.update({
+        where: {
+          id: variable.post_id,
+        },
+        data: {
+          mail_status: MailStatus.Sent,
+        },
+      });
       resolve(res);
     });
   });
+  await Promise.all(mails);
+
+  await delQueuedSubscriberEmails(
+    posts.map((post) => getKeyForEmailSubscription(post.id))
+  );
 
   return Response.json({ success: true });
 }

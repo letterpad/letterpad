@@ -11,6 +11,7 @@ query me {
 fragment meFragment on Author {
   ... on Author {
     __typename
+    id
     name
     bio
     occupation
