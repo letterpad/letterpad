@@ -47,11 +47,14 @@ export const Card: FC<Props> = ({
           className="flex items-center justify-left flex-row gap-2"
           href={new URL(`@${author?.username}`, origin).toString()}
         >
-          <img
-            src={author?.avatar}
-            alt={author?.name}
-            className="w-7 h-7 object-cover rounded-full"
-          />
+          <div className="rounded-full flex-none">
+            <img
+              src={author?.avatar}
+              alt={author?.name}
+              className="w-7 h-7 object-cover rounded-full"
+              referrerPolicy="no-referrer"
+            />
+          </div>
           <span className="text-gray-800 dark:text-gray-200">
             {author?.name}
           </span>

@@ -46,7 +46,10 @@ query Posts($filters: PostsFilters) {
         ...Partial
         author {
           ... on Author {
+            __typename
             name
+            avatar
+            username
             social {
               github
               twitter

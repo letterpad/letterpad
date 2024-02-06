@@ -28,7 +28,7 @@ export async function getLetterpadPosts(cursor: number) {
     next: {
       tags: ["letterpadLatestPosts"],
     },
-    cache: "force-cache",
+    cache: "no-cache",
   });
   const data = await resp.json();
   return data.data as LetterpadLatestPostsQuery;

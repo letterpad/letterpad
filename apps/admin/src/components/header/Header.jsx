@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import ThemeSwitcher from "@/components/theme-switcher";
+import { Search } from "@/components/website_v2/search";
 
 import { EventAction, track } from "@/track";
 
@@ -28,7 +29,10 @@ function Header() {
           </div>
 
           <nav className="flex grow">
-            <ul className="flex grow flex-wrap items-center justify-end gap-4">
+            <ul className="flex grow flex-wrap items-center justify-end gap-6">
+              <li>
+                <Search />
+              </li>
               <li>
                 <ThemeSwitcher />
               </li>
