@@ -23,12 +23,16 @@ export const queueSubscribeEmails = async (
   });
 };
 
-export const removePostFromSubscribeEmail = async (postId: number) => {
-  await client.json.del(getKeyForEmailSubscription(postId));
-};
+// export const removePostFromSubscribeEmail = async (postId: number) => {
+//   await client.json.del(getKeyForEmailSubscription(postId));
+// };
 
 export const getQueuedSubscriberEmails = async (postId: number) => {
   return await client.json.get(getKeyForEmailSubscription(postId));
+};
+
+export const delQueuedSubscriberEmails = async (...postIds) => {
+  return await client.del(...postIds);
 };
 
 export const getKeyForViews = (type: string, id: string) => {
