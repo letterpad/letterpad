@@ -52,7 +52,7 @@ export const delQueuedSubscriberEmails = async (...keys) => {
   return await client.del(...keys);
 };
 
-export const getKeyForViews = (type: string, id: string) => {
+export const getKeyForViews = (type: string, id: string | number) => {
   return `views:${type}:${id}`;
 };
 

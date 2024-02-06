@@ -185,7 +185,7 @@ model RolePermissions {
 model PageViews {
   id        String    @id @default(uuid())
   post_id   Int?
-  author_id Int
+  author_id Int?
   view_type String
   count     Int       @default(0)
   createdAt DateTime? @default(now())
