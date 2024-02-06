@@ -25,9 +25,9 @@ export async function getLetterpadPosts(cursor: number) {
         cursor,
       },
     }),
-    next: {
-      tags: ["letterpadLatestPosts"],
-    },
+    // next: {
+    //   tags: ["letterpadLatestPosts"],
+    // },
     cache: "no-cache",
   });
   const data = await resp.json();
