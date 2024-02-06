@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     },
     where: {
       status: PostStatusOptions.Published,
-      mail_status: MailStatus.Active,
+      mail_status: MailStatus.Sent,
     },
   });
 
@@ -136,7 +136,7 @@ export async function GET(request: NextRequest) {
   await Promise.all(mails);
 
   await delQueuedSubscriberEmails(
-    posts.map((post) => getKeyForEmailSubscription(post.id))
+    ...posts.map((post) => getKeyForEmailSubscription(post.id)).flat()
   );
 
   return Response.json({ success: true });
