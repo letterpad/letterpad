@@ -18,7 +18,7 @@ export default async function Home() {
   if (!data) {
     return <Custom404 />;
   }
-  const { settings, me, page, posts } = data;
+  const { settings, me, posts } = data;
   const { HomePosts } = getTheme(settings?.theme);
 
   const isEmpty = posts?.__typename === 'PostsNode' && posts.rows.length === 0;
@@ -64,7 +64,7 @@ export default async function Home() {
         </SectionContainer>
         <HomePosts posts={posts} settings={settings} />
         <AboutMe me={me} />
-        <PageView type="home" id={me.username} />
+        <PageView type="home" id={me.id} />
       </div>
     </>
   );
