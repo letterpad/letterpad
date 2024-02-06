@@ -18,7 +18,7 @@ export async function GET() {
       .map(({ username, updatedAt }) => {
         return `<url>
         <loc>https://letterpad.app/@${username}</loc>
-        <lastmod>${updatedAt}</lastmod>
+        <lastmod>${new Date(updatedAt!).toISOString()}</lastmod>
         </url>`;
       })
       .join("")}
