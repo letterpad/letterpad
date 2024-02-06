@@ -60,10 +60,9 @@ export async function GET(request: NextRequest) {
   const allEmails: Variables[] = await Promise.all(
     posts.map((post) => getQueuedSubscriberEmails(post.id))
   );
-
   const template = await getTemplate(EmailTemplates.NewPost);
 
-  const mails = allEmails.map(async (variable) => {
+  const mails = allEmails.flat().map(async (variable) => {
     const subject = template.subject.replaceAll(
       "{{ blog_name }}",
       variable.site_title
@@ -85,40 +84,54 @@ export async function GET(request: NextRequest) {
       )
       .replaceAll("{{ author_name }}", variable.author_name);
 
-    return new Promise<SMTPTransport.SentMessageInfo>(async (resolve) => {
-      const unSubscribeLink = await getUnsubscribeText({
-        recipient_email: variable.to,
-        author_id: variable.author_id,
-        subcriber_id:
-          variable.__typename === "Subscribers" ? variable.subscriber_id : 0,
-      });
+    return new Promise<SMTPTransport.SentMessageInfo | void>(
+      async (resolve) => {
+        const unSubscribeLink = await getUnsubscribeText({
+          recipient_email: variable.to,
+          author_id: variable.author_id,
+          subcriber_id:
+            variable.__typename === "Subscribers" ? variable.subscriber_id : 0,
+        });
 
-      const html = baseTemplate
-        .replaceAll("{{ content }}", addLineBreaks(body))
-        .replaceAll("{{ unsubscribe_link }}", unSubscribeLink);
+        const html = baseTemplate
+          .replaceAll("{{ content }}", addLineBreaks(body))
+          .replaceAll("{{ unsubscribe_link }}", unSubscribeLink);
 
-      const toName =
-        variable.__typename === "Subscribers" ? "Reader" : variable.author_name;
-      const res = await mail(
-        {
-          from: `"Letterpad" <admin@letterpad.app>`,
-          replyTo: `"No-Reply" <admin@letterpad.app>`,
-          to: `"${toName}" <${variable.to}>`,
-          subject,
-          html,
-        },
-        false
-      );
-      await prisma.post.update({
-        where: {
-          id: variable.post_id,
-        },
-        data: {
-          mail_status: MailStatus.Sent,
-        },
-      });
-      resolve(res);
-    });
+        const toName =
+          variable.__typename === "Subscribers"
+            ? "Reader"
+            : variable.author_name;
+        const res = await mail(
+          {
+            from: `"Letterpad" <admin@letterpad.app>`,
+            replyTo: `"No-Reply" <admin@letterpad.app>`,
+            to: `"${toName}" <${variable.to}>`,
+            subject,
+            html,
+          },
+          false
+        ).catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(`Failed to send email to ${variable.to}`);
+        });
+        await prisma.post
+          .update({
+            where: {
+              id: variable.post_id,
+            },
+            data: {
+              mail_status: MailStatus.Sent,
+            },
+          })
+          .catch((e) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              `Failed to update mail status for post ${variable.post_id}`
+            );
+          });
+        resolve(res);
+      }
+    );
   });
   await Promise.all(mails);
 
