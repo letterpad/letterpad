@@ -62,6 +62,7 @@ export async function GET(request: NextRequest) {
   );
   const template = await getTemplate(EmailTemplates.NewPost);
 
+  const mailSentIds: number[] = [];
   const mails = allEmails.flat().map(async (variable) => {
     const subject = template.subject.replaceAll(
       "{{ blog_name }}",
@@ -95,7 +96,8 @@ export async function GET(request: NextRequest) {
 
         const html = baseTemplate
           .replaceAll("{{ content }}", addLineBreaks(body))
-          .replaceAll("{{ unsubscribe_link }}", unSubscribeLink);
+          .replaceAll("{{ unsubscribe_link }}", unSubscribeLink)
+          .replaceAll("{{ signature }}", "");
 
         const toName =
           variable.__typename === "Subscribers"
@@ -114,26 +116,30 @@ export async function GET(request: NextRequest) {
           // eslint-disable-next-line no-console
           console.log(`Failed to send email to ${variable.to}`);
         });
-        await prisma.post
-          .update({
-            where: {
-              id: variable.post_id,
-            },
-            data: {
-              mail_status: MailStatus.Sent,
-            },
-          })
-          .catch((e) => {
-            // eslint-disable-next-line no-console
-            console.log(
-              `Failed to update mail status for post ${variable.post_id}`
-            );
-          });
+        mailSentIds.push(variable.post_id);
         resolve(res);
       }
     );
   });
-  await Promise.all(mails);
+  await Promise.all(mails).catch((e) => {
+    // eslint-disable-next-line no-console
+    console.log("Failed to send one or more emails", e);
+  });
+  await prisma.post
+    .updateMany({
+      where: {
+        id: {
+          in: mailSentIds,
+        },
+      },
+      data: {
+        mail_status: MailStatus.Sent,
+      },
+    })
+    .catch((e) => {
+      // eslint-disable-next-line no-console
+      console.log(`Failed to update mail status for one or more post`);
+    });
 
   await delQueuedSubscriberEmails(
     ...posts.map((post) => getKeyForEmailSubscription(post.id)).flat()

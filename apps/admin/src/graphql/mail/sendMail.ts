@@ -13,7 +13,8 @@ export async function sendMail(data: Mail, meta: EmailTemplateMeta) {
   const mails = recipients.map(async (to) => {
     const body = baseTemplate
       .replace("{{ content }}", data.html)
-      .replace("{{ unsubscribe_link }}", "");
+      .replace("{{ unsubscribe_link }}", "")
+      .replace("{{ signature }}", "<br><br>Cheers,<br>Letterpad Team");
     // send mail
     const fromEmail = process.env.SENDER_EMAIL;
 
