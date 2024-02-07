@@ -55,3 +55,6 @@ prisma/sqlite/data
 .vscode
 
 public/css/custom.css
+
+__generated__/*
+__generated__server/*
