@@ -9,6 +9,7 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+import { isSqliteDb } from "@/utils/utils";
 
 export const getPosts = cache(
   async (
@@ -33,6 +34,7 @@ export const getPosts = cache(
     const isPage = args.filters.type === PostTypes.Page;
     const condition: Partial<Prisma.PostFindManyArgs> = {
       where: {
+        html: {},
         author_id: authorId,
         exclude_from_home: undefined,
         featured: args.filters?.featured,
@@ -62,13 +64,15 @@ export const getPosts = cache(
       condition.where.exclude_from_home = false;
       condition.where.tags = undefined;
     }
+
     // sqlite does not suppost search but mysql does
-    if (condition.where?.html?.["search"]) {
-      condition.where.html["search"] = args.filters?.search;
-    } else if (condition.where?.html?.["contains"]) {
+    if (!isSqliteDb() && condition.where?.html) {
+      condition.where.html.search = args.filters?.search
+        ?.replace(/\s\s+/g, " ")
+        .replaceAll(/ /g, " + ");
+    } else if (condition.where?.html) {
       condition.where.html["contains"] = args.filters?.search;
     }
-
     try {
       const postIds = await prisma.post.findMany(condition);
       const posts = await context.dataloaders.post.loadMany(
