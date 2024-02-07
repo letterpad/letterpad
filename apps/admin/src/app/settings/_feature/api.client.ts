@@ -1,18 +1,18 @@
+import { client } from "@/lib/urqlClient";
+
 import { SettingInputType } from "@/__generated__/__types__";
 import {
   UpdateOptionsMutation,
   UpdateOptionsMutationVariables,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";
+import { useSettingsQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 import {
   DeleteAuthorDocument,
   DeleteAuthorMutation,
   UpdateOptionsDocument,
   useUpdateOptionsMutation,
 } from "@/graphql/queries/mutations.graphql";
-
-import { useSettingsQuery } from "../../../../__generated__/src/graphql/queries/queries.graphql";
-import { client } from "../../../lib/urqlClient";
-import { isSettings } from "../../../utils/type-guards";
+import { isSettings } from "@/utils/type-guards";
 
 export const updateSetting = (change: SettingInputType) =>
   client.mutation<UpdateOptionsMutation, UpdateOptionsMutationVariables>(

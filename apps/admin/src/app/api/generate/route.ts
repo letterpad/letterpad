@@ -4,7 +4,7 @@ import OpenAI from "openai";
 
 import { prisma } from "@/lib/prisma";
 
-import { getServerSession } from "../../../graphql/context";
+import { getServerSession } from "@/graphql/context";
 
 export async function POST(req: Request): Promise<Response> {
   const session = await getServerSession({ req });

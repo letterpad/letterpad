@@ -2,7 +2,7 @@
 import Head from "next/head";
 import { PageHeader } from "ui/isomorphic";
 
-import { usePostsQuery } from "../../../../../__generated__/src/graphql/queries/queries.graphql";
+import { usePostsQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 const Tag = ({ params }: { params: { name: string } }) => {
   const [{ data }] = usePostsQuery({

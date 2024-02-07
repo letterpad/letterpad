@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from "react";
 import { RequestPolicy } from "urql";
 
+import { Message } from "@/components/client-wrapper";
+
 import { InputUpdatePost, PostFilters } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { usePostQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
@@ -8,7 +10,6 @@ import { debounce } from "@/shared/utils";
 import { isPost } from "@/utils/type-guards";
 
 import { WordCount } from "./components/wordCount";
-import { Message } from "../../../../components/client-wrapper";
 
 export const useGetPost = (
   filters: PostFilters,

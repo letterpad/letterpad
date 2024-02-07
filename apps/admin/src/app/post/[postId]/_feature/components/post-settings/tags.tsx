@@ -1,13 +1,11 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
 
-// import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { textToSlug } from "@/utils/slug";
 
 import { useUpdatePost } from "../../api.client";
-import { isPostsNode } from "../../../../../../utils/type-guards";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;

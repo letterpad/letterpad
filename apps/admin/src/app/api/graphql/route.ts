@@ -11,7 +11,6 @@ import { resolversArr } from "@/graphql/resolvers";
 import { typeDefsList } from "@/graphql/schema";
 
 import cors from "../_cors";
-import { getHeader } from "../../../utils/headers";
 
 // const cache = createInMemoryCache()
 

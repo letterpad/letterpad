@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma";
 
+import { API } from "@/../tests/testClient";
 import {
   CreateAuthorDocument,
   LoginDocument,
-} from "./../../../__generated__/src/graphql/queries/mutations.graphql";
-import { PostsDocument } from "./../../../__generated__/src/graphql/queries/queries.graphql";
-import { API } from "../../../tests/testClient";
+} from "@/__generated__/src/graphql/queries/mutations.graphql";
+import { PostsDocument } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 describe("Test author", () => {
   it("can login", async () => {

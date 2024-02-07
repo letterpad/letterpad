@@ -7,10 +7,10 @@ import { Button, Modal, PageHeader } from "ui";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
+import { isPost } from "@/utils/type-guards";
 
 import { useCreatePost, useGetPosts } from "../api.client";
 import { DEFAULT_FILTERS } from "../constants";
-import { isPost } from "../../../../utils/type-guards";
 
 interface IProps {
   type: PostTypes;

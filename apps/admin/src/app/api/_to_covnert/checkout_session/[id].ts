@@ -3,9 +3,8 @@ import Stripe from "stripe";
 
 import { prisma } from "@/lib/prisma";
 
+import { getServerSession } from "@/graphql/context";
 import { NextApiRequestWithFormData, SessionData } from "@/graphql/types";
-
-import { getServerSession } from "../../../../graphql/context";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-08-01",
 });

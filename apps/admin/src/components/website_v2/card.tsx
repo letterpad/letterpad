@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 
-import { getReadableDate } from "../../shared/utils";
+import { getReadableDate } from "@/shared/utils";
+
 import { Author, PostStats } from "../../../__generated__server/__types__";
 
 interface Props {

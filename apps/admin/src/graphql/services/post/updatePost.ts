@@ -1,5 +1,7 @@
 import { Prisma } from "@prisma/client";
 
+import { mail } from "@/lib/mail";
+
 import { report } from "@/components/error";
 
 import {
@@ -12,14 +14,12 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { slugify } from "@/graphql/resolvers/helpers";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+import { convertNotificationMetaIn } from "@/graphql/resolvers/utils/dbTypeCheck";
 import { formatHtml } from "@/graphql/resolvers/utils/formatHtml";
 import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
-
-import { convertNotificationMetaIn } from "../../resolvers/utils/dbTypeCheck";
-import { mail } from "../../../lib/mail";
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,
