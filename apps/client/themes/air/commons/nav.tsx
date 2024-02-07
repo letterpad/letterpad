@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Navigation } from 'letterpad-sdk';
 import Link from 'next/link';
 import { FC, useState } from 'react';
+
 import ThemeSwitch from '../../../src/components/theme-switch';
 
 interface Props {

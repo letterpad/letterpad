@@ -1,15 +1,16 @@
 export const runtime = 'edge';
 
-import { getData, getTagsData } from '@/data';
-
-import Custom404 from '../../not-found';
-import { PageTitle } from '../../../components/title';
-import { SectionContainer } from '../../../components/section';
+import { Metadata } from 'next';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
+import { getData, getTagsData } from '@/data';
+
 import Link from '@/components/Link';
-import { Metadata } from 'next';
+
+import Custom404 from '../../not-found';
+import { SectionContainer } from '../../../components/section';
+import { PageTitle } from '../../../components/title';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
