@@ -7,7 +7,6 @@ import {
   TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
-import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 
 export const getTag = cache(
   async (
@@ -32,8 +31,8 @@ export const getTag = cache(
         __typename: "Tag",
         ...tag!,
         slug: tag.slug!,
-        type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
-        name: tryToParseCategoryName(tag.name),
+        type: TagType.Tag,
+        name: tag.name,
         id: tag.name,
       };
     }

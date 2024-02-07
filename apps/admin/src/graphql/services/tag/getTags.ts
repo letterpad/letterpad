@@ -11,7 +11,6 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
-import { isCategory, tryToParseCategoryName } from "@/utils/utils";
 
 export const getTags = cache(
   async (
@@ -38,8 +37,8 @@ export const getTags = cache(
         rows: tags.map((tag) => ({
           ...tag,
           slug: tag.slug!,
-          type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
-          name: tryToParseCategoryName(tag.name),
+          type: TagType.Tag,
+          name: tag.name,
           id: tag.name,
         })),
       };
@@ -98,8 +97,8 @@ export async function getTagsLinkedWithPosts({
   const rows = tags.map((tag) => ({
     ...tag,
     slug: tag.slug!,
-    type: isCategory(tag.name) ? TagType.Category : TagType.Tag,
-    name: tryToParseCategoryName(tag.name),
+    type: TagType.Tag,
+    name: tag.name,
     id: tag.name,
   }));
 

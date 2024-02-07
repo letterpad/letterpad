@@ -15,7 +15,6 @@ import {
   getTags,
   updateTags,
 } from "../services/tag";
-import { categoryNameToSlug } from "../../utils/utils";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, context) {

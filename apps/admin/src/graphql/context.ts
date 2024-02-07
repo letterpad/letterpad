@@ -59,12 +59,12 @@ export const getResolverContext = async (request: Request) => {
   return { client_author_id: authorId, session: null };
 };
 
-const batchAuthors = async (keys) => {
+const batchAuthors = async (keys: readonly number[]) => {
   const authors = await prisma?.author.findMany({
-    where: { id: { in: keys } },
+    where: { id: { in: [...keys] } },
   });
 
-  const authorMap = {};
+  const authorMap: Record<number, (typeof authors)[0]> = {};
 
   authors?.forEach((author) => {
     authorMap[author.id] = author;
@@ -72,16 +72,16 @@ const batchAuthors = async (keys) => {
   return keys.map((key) => authorMap[key]);
 };
 
-const batchSettings = async (keys) => {
+const batchSettings = async (keys: readonly number[]) => {
   const settings = await prisma?.setting.findMany({
     where: {
       author: {
-        id: { in: keys },
+        id: { in: [...keys] },
       },
     },
   });
 
-  const settingsMap = {};
+  const settingsMap: Record<number, (typeof settings)[0]> = {};
 
   settings?.forEach((setting) => {
     settingsMap[keys[0]] = setting;
@@ -90,14 +90,14 @@ const batchSettings = async (keys) => {
   return keys.map((key) => settingsMap[key]);
 };
 
-const batchPosts = async (keys) => {
+const batchPosts = async (keys: readonly number[]) => {
   const posts = await prisma?.post.findMany({
     where: {
-      id: { in: keys },
+      id: { in: [...keys] },
     },
   });
 
-  const postsMap = {};
+  const postsMap: Record<number, (typeof posts)[0]> = {};
 
   posts?.forEach((post) => {
     postsMap[post.id] = post;
@@ -105,11 +105,11 @@ const batchPosts = async (keys) => {
 
   return keys.map((key) => postsMap[key]);
 };
-const batchTags = async (keys) => {
+const batchTags = async (keys: readonly number[]) => {
   const tags = await prisma.tag.findMany({
     where: {
       posts: {
-        some: { id: { in: keys } },
+        some: { id: { in: [...keys] } },
       },
     },
     include: {
@@ -117,7 +117,7 @@ const batchTags = async (keys) => {
     },
   });
 
-  const postTags = {};
+  const postTags: Record<number, (typeof tags)[0][]> = [];
 
   tags.forEach((tag, index) => {
     tag.posts.forEach((post) => {
@@ -143,7 +143,10 @@ export const context = async ({ request }) => {
     dataloaders: {
       author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
       setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
-      post: new DataLoader<any, Post>(batchPosts, dataLoaderOptions),
+      post: new DataLoader<Readonly<number>, Post>(
+        batchPosts,
+        dataLoaderOptions
+      ),
       tagsByPostId: new DataLoader<any, Tag[]>(batchTags, dataLoaderOptions),
     },
   };
@@ -154,15 +157,7 @@ export type ResolverContext = Awaited<ReturnType<typeof context>>;
 export const getServerSession = async ({ req }) => {
   try {
     const headers = req.headers;
-
-    // const sessionURL =
-    //   (getHeader(headers, "origin") ?? `http://${getHeader(headers, "host")}`) +
-    //   basePath +
-    //   "/api/auth/session";
-
     const sessionURL = process.env.ROOT_URL + basePath + "/api/auth/session";
-
-    console.log(sessionURL);
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });
@@ -170,9 +165,5 @@ export const getServerSession = async ({ req }) => {
     return session.user ? session : null;
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log("Error in getServerSession", e);
-    // this means the session is not set. This request is probably coming from client and not admin.
-    // client will never have a session.
-    // It will use authorization header to get the author id or subdmomain name to // get the authorID
   }
 };

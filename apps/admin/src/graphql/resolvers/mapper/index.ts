@@ -13,7 +13,10 @@ import {
   SettingInputType,
 } from "@/__generated__/__types__";
 
-export const mapPostToGraphql = (post: DbPost) => {
+export const mapPostToGraphql = (post: DbPost | Error) => {
+  if (post instanceof Error) {
+    return post as unknown as Post;
+  }
   return {
     ...post,
     type: post.type as PostTypes,
@@ -27,16 +30,7 @@ export const mapPostToGraphql = (post: DbPost) => {
 export const mapAuthorToGraphql = <T extends DbAuthor>(author: T) => {
   return {
     ...author,
-    social: JSON.parse(
-      author.social ||
-        JSON.stringify({
-          twitter: "",
-          facebook: "",
-          github: "",
-          instagram: "",
-          linkedin: "",
-        })
-    ),
+    social: JSON.parse(author.social || socialString),
     __typename: "Author",
   } as Author & T;
 };
@@ -67,3 +61,11 @@ export const mapSettingToGraphql = (setting: DbSetting) => {
 function removeUndefined<T>(obj: T) {
   return JSON.parse(JSON.stringify(obj));
 }
+
+const socialString = JSON.stringify({
+  twitter: "",
+  facebook: "",
+  github: "",
+  instagram: "",
+  linkedin: "",
+});

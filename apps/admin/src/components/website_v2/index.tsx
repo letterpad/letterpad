@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Card } from "./card";
 import { getLetterpadCategories, getLetterpadPosts } from "./data";
 import { InfiniteList } from "./infinite-list";
-import { Search } from "./search";
 import Header from "../header/Header";
 
 export const Website = async () => {
@@ -24,7 +23,10 @@ export const Website = async () => {
                 const author =
                   item.author?.__typename === "Author" ? item.author : null;
 
-                const link = `https://${author?.username}.letterpad.app/${item.slug}`;
+                const link = new URL(
+                  item.slug ?? "",
+                  `https://${author?.username}.letterpad.app`
+                ).toString();
                 return (
                   <Card
                     key={item.id}

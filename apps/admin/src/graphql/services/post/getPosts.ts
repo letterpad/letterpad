@@ -1,8 +1,7 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { cache } from "react";
 
 import {
-  NavigationType,
   PostStatusOptions,
   PostTypes,
   QueryPostsArgs,
@@ -10,9 +9,6 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
-import { getLastPartFromPath } from "@/utils/slug";
-
-import { tryToParseCategoryName } from "../../../utils/utils";
 
 export const getPosts = cache(
   async (
@@ -21,16 +17,8 @@ export const getPosts = cache(
   ): Promise<ResolversTypes["PostsResponse"]> => {
     const { session, client_author_id, prisma } = context;
     const session_author_id = session?.user.id;
-    const authorId = (session_author_id || client_author_id || undefined) as
-      | number
-      | undefined;
-    // if (!authorId) {
-    //   return {
-    //     __typename: "UnAuthorized",
-    //     message:
-    //       "Either use session or add a valid Authorization token in the header.",
-    //   };
-    // }
+    const authorId = session_author_id || client_author_id || undefined;
+
     if (!args.filters) {
       args.filters = {};
     }
@@ -40,38 +28,15 @@ export const getPosts = cache(
       args.filters.status = [PostStatusOptions.Published];
     }
 
-    // First verify if posts are requested from client and not admin dashboard.
-    // If posts are requested by client, then verify if this a collection of posts for
-    // displaying in homepage.
-    // find the real slug of the tag
-
-    if (args.filters.tagSlug && args.filters.tagSlug !== "/") {
-      args.filters.tagSlug = tryToParseCategoryName(
-        getLastPartFromPath(args.filters.tagSlug)
-      );
-    }
     const { page = 1, limit = 10 } = args.filters;
     const skip = page && limit ? (page - 1) * limit : 0;
     const isPage = args.filters.type === PostTypes.Page;
-    const condition: Prisma.PostFindManyArgs = {
+    const condition: Partial<Prisma.PostFindManyArgs> = {
       where: {
-        html: {
-          contains: args.filters?.search,
-        },
         author_id: authorId,
         exclude_from_home: undefined,
-        // id: args.filters?.id,
         featured: args.filters?.featured,
-        status: {
-          in: session?.user.id
-            ? args.filters?.status ?? [
-                PostStatusOptions.Published,
-                PostStatusOptions.Draft,
-              ]
-            : [PostStatusOptions.Published],
-        },
-        //@todo - remove slug
-        slug: args.filters?.slug,
+        status: getStatus(session?.user.id, args.filters?.status),
         type: args.filters?.type ?? PostTypes.Post,
         tags: getTags({
           slug: args.filters.tagSlug,
@@ -83,7 +48,10 @@ export const getPosts = cache(
       take: args.filters?.limit || 100,
       skip,
       orderBy: {
-        updatedAt: args?.filters?.sortBy || "desc",
+        updatedAt: session?.user ? args?.filters?.sortBy || "desc" : undefined,
+        publishedAt: !session?.user
+          ? args?.filters?.sortBy || "desc"
+          : undefined,
       },
       select: {
         id: true,
@@ -94,14 +62,19 @@ export const getPosts = cache(
       condition.where.exclude_from_home = false;
       condition.where.tags = undefined;
     }
+    // sqlite does not suppost search but mysql does
     if (condition.where?.html?.["search"]) {
       condition.where.html["search"] = args.filters?.search;
+    } else if (condition.where?.html?.["contains"]) {
+      condition.where.html["contains"] = args.filters?.search;
     }
+
     try {
       const postIds = await prisma.post.findMany(condition);
       const posts = await context.dataloaders.post.loadMany(
         postIds.map((p) => p.id)
       );
+
       return {
         __typename: "PostsNode",
         rows: posts.map(mapPostToGraphql),
@@ -118,39 +91,13 @@ export const getPosts = cache(
   }
 );
 
-async function getTagSlugOfFirstMenuItemIfPossible(
-  prisma: PrismaClient,
-  author_id: number,
-  { dataloaders }: ResolverContext
-) {
-  const author = await dataloaders.author.load(author_id);
-  const settings = await dataloaders.setting.load(author_id);
-  const authorWithSetting = {
-    ...author,
-    setting: settings,
-  };
-
-  // const authorWithSetting = await prisma.author.findFirst({
-  //   where: { id: author_id },
-  //   include: { setting: true },
-  // });
-  if (authorWithSetting?.setting?.menu) {
-    const menu = JSON.parse(authorWithSetting?.setting.menu);
-    if (menu[0].type === NavigationType.Tag) {
-      return getLastPartFromPath(menu[0].slug);
-    }
-  }
-}
-
-function getTags({
-  slug,
-  loggedIn,
-  isPage,
-}: {
+interface GetTagsProps {
   isPage: boolean;
   slug?: string;
   loggedIn: boolean;
-}) {
+}
+
+function getTags({ slug, loggedIn, isPage }: GetTagsProps) {
   if (isPage) return { every: {} };
   if (!loggedIn && !slug) return undefined;
   if (slug) {
@@ -162,6 +109,11 @@ function getTags({
   }
   return undefined;
 }
-function hasKey(obj: any, key: string): obj is { [k in typeof key]: any } {
-  return key in obj;
+
+function getStatus(session, status?: PostStatusOptions[]) {
+  return {
+    in: session
+      ? status ?? [PostStatusOptions.Published, PostStatusOptions.Draft]
+      : [PostStatusOptions.Published],
+  };
 }
