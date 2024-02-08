@@ -247,7 +247,9 @@ const About = async ({ params }: { params: { username: string } }) => {
                       <p className="text-base font-normal text-gray-500 dark:text-gray-400"></p>
                       <h3 className="text-md font-semibold text-gray-900 dark:text-white">
                         <Link
-                          href={new URL(row.slug, setting?.site_url).href}
+                          href={
+                            new URL(`post/${row.slug}`, setting?.site_url).href
+                          }
                           target="_blank"
                         >
                           {row.title}
