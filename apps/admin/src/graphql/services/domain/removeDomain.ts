@@ -1,6 +1,8 @@
 import { ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
+import { check } from "./check";
+
 export const removeDomain = async (
   _args: unknown,
   { prisma, session }: ResolverContext
@@ -34,6 +36,7 @@ export const removeDomain = async (
     );
 
     const json = await response.json();
+    await check(domain.name);
     // eslint-disable-next-line no-console
     console.log(json);
     await prisma.domain.delete({ where: { author_id: session.user.id } });

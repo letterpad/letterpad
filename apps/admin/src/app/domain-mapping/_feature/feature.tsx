@@ -3,6 +3,8 @@
 import { AiFillCheckCircle } from "react-icons/ai";
 import { Button, Message } from "ui";
 
+import { Spinner } from "@/components/loading";
+
 import { Domain, DomainVerification } from "@/__generated__/__types__";
 import { useRemoveDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import {
@@ -17,21 +19,27 @@ import { NewDomain } from "./components/new-domain";
 import { VerifyDomain } from "./components/verify-domain";
 
 export const Feature = () => {
-  const [{ data }, refetch] = useDomainQuery();
-  const [{}, removeDomain] = useRemoveDomainMutation();
+  const [{ data, fetching }, refetch] = useDomainQuery();
+  const [{ fetching: removing }, removeDomain] = useRemoveDomainMutation();
 
   const removeMapping = async () => {
     const result = await removeDomain({});
     Message().success({
       content: result.data?.removeDomain.message!,
     });
-    document.location.reload();
+    refetch({
+      requestPolicy: "network-only",
+    });
   };
 
   const validate = (
     <Button
       className="mt-4"
-      onClick={() => document.location.reload()}
+      onClick={() =>
+        refetch({
+          requestPolicy: "network-only",
+        })
+      }
       variant="primary"
     >
       Validate this change
@@ -73,6 +81,7 @@ export const Feature = () => {
       )}
 
       <div className="mt-4 flex gap-8">
+        {fetching || removing ? <Spinner /> : null}
         {isVerified(data) && (
           <div className="flex items-center gap-2">
             <AiFillCheckCircle className="text-green-500" size={20} />
