@@ -1,3 +1,5 @@
+"use client";
+
 import { Metadata, Viewport } from "next";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
