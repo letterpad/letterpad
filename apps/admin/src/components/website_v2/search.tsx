@@ -72,6 +72,11 @@ export const Search = () => {
         <div className="mt-6 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700 overflow-y-scroll max-h-96">
           {posts.map((p) => {
             const author = p.author?.__typename === "Author" ? p.author : null;
+            const link = new URL(
+              p.slug ?? "",
+              `https://${author?.username}.letterpad.app`
+            ).toString();
+
             return (
               <div
                 className="flex flex-row items-center mb-2 gap-3 py-3"
@@ -97,7 +102,7 @@ export const Search = () => {
                   </div>
                   <Link
                     className="font-bold text-gray-700 dark:text-gray-300 text-[1rem]"
-                    href={p.slug!}
+                    href={link}
                     target="_blank"
                   >
                     {p.title}

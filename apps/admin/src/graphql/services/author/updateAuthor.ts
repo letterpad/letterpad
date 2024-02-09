@@ -14,9 +14,13 @@ import { EmailTemplates } from "@/graphql/types";
 import { sanitizeUsername } from "@/shared/utils";
 import { getHashedPassword } from "@/utils/bcrypt";
 
+import { getRootUrl } from "../../../shared/getRootUrl";
+
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
 }
+
+const hostname = new URL(getRootUrl()).hostname;
 
 export const updateAuthor = async (
   args: RequireFields<MutationUpdateAuthorArgs, "author">,
@@ -31,6 +35,9 @@ export const updateAuthor = async (
   const exisitingAuthor = await prisma.author.findFirst({
     where: {
       id: session.user.id,
+    },
+    include: {
+      setting: true,
     },
   });
   try {
@@ -102,11 +109,9 @@ export const updateAuthor = async (
     // remove this after 2023-06-06
     if (
       dataToUpdate.register_step === RegisterStep.Registered &&
-      exisitingAuthor?.createdAt &&
-      Date.parse(exisitingAuthor.createdAt.toDateString()) >=
-        Date.parse("2023-01-06")
+      exisitingAuthor?.createdAt
     ) {
-      onBoardUser(author.id);
+      await onBoardUser(author.id);
     }
 
     if (newEmail) {
@@ -115,10 +120,13 @@ export const updateAuthor = async (
         author_id: author.id,
       });
     }
-    if (args.author.username && !author.username) {
+    if (
+      args.author.username &&
+      exisitingAuthor?.setting?.site_url.includes(hostname)
+    ) {
       await prisma.setting.update({
         data: {
-          site_url: `https://${args.author.username}.letterpad.app`,
+          site_url: `https://${args.author.username}.${hostname}`,
         },
         where: {
           author_id: author.id,

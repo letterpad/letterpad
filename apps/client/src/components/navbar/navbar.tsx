@@ -87,9 +87,10 @@ export const Navbar: FC<Props> = ({
       {isHome && (
         <div className="bg-slate-900  bg-cover text-slate-300 py-10">
           <div className="px-4 flex text-center justify-center mx-auto">
-            <span className="max-w-4xl md:text-lg">
-              {settings.site_description}
-            </span>
+            <span
+              className="max-w-4xl md:text-lg"
+              dangerouslySetInnerHTML={{ __html: settings.site_description }}
+            />
           </div>
         </div>
       )}
