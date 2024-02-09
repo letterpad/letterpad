@@ -35,10 +35,20 @@ export const NewDomain = ({ refetch }) => {
     <>
       <div className="flex max-w-4xl flex-auto flex-col gap-8">
         Domain mapping is a two step process. First you need to verify your
-        domain using a TXT record and then map it with a CNAME record.
+        domain using a TXT record and then map it with:
+        <ul className="-mt-5">
+          <li>
+            <strong>CNAME record</strong> - if its a subdomain
+          </li>
+          <li>
+            <strong>A record</strong> - if its an apex domain
+          </li>
+        </ul>
+        You will have to visit your domain registrar's DNS settings to make
+        these changes.
         <div className="flex flex-1 items-end gap-2">
           <Input
-            label="Add Domain"
+            label="Add Domain or Sub Domain"
             value={domain}
             placeholder="e.g. example.com, blog.example.com"
             onChange={changeDomainName}

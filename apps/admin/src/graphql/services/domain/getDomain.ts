@@ -3,6 +3,8 @@ import { ResolverContext } from "@/graphql/context";
 
 import { check } from "./check";
 
+// import { check } from "./check";
+
 export const getDomain = async (
   _args: unknown,
   { prisma, session }: ResolverContext
