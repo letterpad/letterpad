@@ -44,8 +44,6 @@ export const NewDomain = ({ refetch }) => {
             <strong>A record</strong> - if its an apex domain
           </li>
         </ul>
-        You will have to visit your domain registrar's DNS settings to make
-        these changes.
         <div className="flex flex-1 items-end gap-2">
           <Input
             label="Add Domain or Sub Domain"
