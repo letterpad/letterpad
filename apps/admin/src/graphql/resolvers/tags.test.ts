@@ -1,3 +1,4 @@
+import { API } from "@/../tests/testClient";
 import {
   DeleteTagsDocument,
   UpdateTagsDocument,
@@ -6,8 +7,6 @@ import {
   TagDocument,
   TagsDocument,
 } from "@/__generated__/src/graphql/queries/queries.graphql";
-
-import { API } from "../../../tests/testClient";
 
 describe("Test Tags Graphql API", () => {
   it("get tags", async () => {

@@ -1,9 +1,8 @@
 import { FC, useState } from "react";
 import { Button, Input } from "ui";
 
+import { useUpdateAuthor } from "@/app/posts/_feature/api.client";
 import { sanitizeUsername } from "@/shared/utils";
-
-import { useUpdateAuthor } from "../../../posts/_feature/api.client";
 
 interface Props {
   username: string;

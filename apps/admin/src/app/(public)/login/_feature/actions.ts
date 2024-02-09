@@ -12,7 +12,7 @@ type LoginResult = {
 export const doLogin = async ({
   email,
   password,
-  callbackUrl
+  callbackUrl,
 }: {
   email: string;
   password: string;

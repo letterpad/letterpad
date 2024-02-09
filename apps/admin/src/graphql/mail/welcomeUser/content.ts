@@ -32,7 +32,10 @@ export async function getWelcomeUserContent(
 
   const body = template.body
     .replaceAll("{{ blog_name }}", author.setting?.site_title ?? "")
-    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll(
+      "{{ company_name }}",
+      `<a href="https://letterpad.app">Letterpad</a>`
+    )
     .replaceAll("{{ full_name }}", author?.name)
     .replaceAll("{{ blog_url }}", author.setting?.site_url ?? site_url);
 

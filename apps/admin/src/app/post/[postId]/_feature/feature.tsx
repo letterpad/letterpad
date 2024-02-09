@@ -2,13 +2,13 @@
 import Head from "next/head";
 import { useParams } from "next/navigation";
 
+import { useGetSettings } from "@/app/settings/_feature/api.client";
 import { PageType } from "@/graphql/types";
 
 import { useGetPost } from "./api.client";
 import { Header } from "./components/header";
 import { Creatives } from "./views/creatives";
 import { DefaultPost } from "./views/default";
-import { useGetSettings } from "../../../settings/_feature/api.client";
 
 export const Feature = () => {
   const { postId } = useParams();

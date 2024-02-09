@@ -6,15 +6,16 @@ import { TfiNewWindow } from "react-icons/tfi";
 
 import { prisma } from "@/lib/prisma";
 
+import { AboutStats } from "@/components/about-stats";
+import { PageView } from "@/components/pageView";
+
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
+import { getTagsLinkedWithPosts } from "@/graphql/services/tag/getTags";
+import { getRootUrl } from "@/shared/getRootUrl";
+import { getReadableDate } from "@/shared/utils";
 
 import { FollowMe } from "./followme";
 import { SocialIcons } from "./social";
-import { AboutStats } from "../../../components/about-stats";
-import { PageView } from "../../../components/pageView";
-import { getTagsLinkedWithPosts } from "../../../graphql/services/tag/getTags";
-import { getRootUrl } from "../../../shared/getRootUrl";
-import { getReadableDate } from "../../../shared/utils";
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const username = decodeURIComponent(params.username).replace("@", "");

@@ -10,6 +10,7 @@ import {
   useBuilderContext,
 } from "ui";
 
+import { CreativesHead } from "@/components/creatives";
 import {
   introData,
   paintingData,
@@ -19,7 +20,6 @@ import {
 import { FileExplorer } from "@/components/file-explorer";
 import ThemeSwitcher from "@/components/theme-switcher";
 
-import { CreativesHead } from "@/creatives";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 

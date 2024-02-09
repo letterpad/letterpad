@@ -1,5 +1,6 @@
-import { NavigationType } from "../../../../__generated__/__types__";
-import { IMenuWithError } from "../../../types";
+import { NavigationType } from "@/__generated__/__types__";
+
+import { IMenuWithError } from "@/types";
 
 export const createNewRow = (libraries: IMenuWithError[]) => {
   return {

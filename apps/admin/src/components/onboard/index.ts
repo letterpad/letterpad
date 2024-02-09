@@ -1,3 +1,5 @@
+import { prisma } from "@/lib/prisma";
+
 import {
   InputCreateAuthor,
   PostStatusOptions,
@@ -5,16 +7,13 @@ import {
   RegisterStep,
   SettingInputType,
 } from "@/__generated__/__types__";
+import siteConfig from "@/config/site.config";
 import { defaultSettings } from "@/graphql/db/seed/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { EmailTemplates, ROLES } from "@/graphql/types";
 import { encryptEmail } from "@/shared/clientToken";
 import { textToSlug } from "@/utils/slug";
-
-import { prisma } from "../../lib/prisma";
-import { getHashedPassword } from "../../utils/bcrypt";
-import siteConfig from "../../../config/site.config";
 
 export const onBoardUser = async (id: number) => {
   const newAuthor = await prisma.author.findUnique({ where: { id } });

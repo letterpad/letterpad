@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 
-import { getServerSession } from "../../../graphql/context";
+import { getServerSession } from "@/graphql/context";
 
 export async function POST(request: Request) {
   const session = await getServerSession({ req: request });

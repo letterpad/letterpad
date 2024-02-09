@@ -1,7 +1,9 @@
 import {
   MutationResolvers,
   QueryResolvers,
+  Tag,
   TagResolvers,
+  TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { createPathWithPrefix } from "@/utils/slug";
@@ -20,6 +22,23 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async tags(_root, args, context) {
     return getTags(args, context);
+  },
+  async popularTags(_root, args, { prisma }) {
+    const tags: Tag[] =
+      await prisma.$queryRaw`SELECT count(*) as count, T.name, T.slug FROM _PostToTag 
+    INNER JOIN Tag T ON B = T.name
+    group by T.name HAVING count > 5 order by count DESC`;
+
+    return {
+      ok: true,
+      rows: tags.map((tag) => ({
+        name: tag.name,
+        slug: tag.name,
+        count: Number(tag.count),
+        id: tag.name,
+        type: TagType.Tag,
+      })),
+    };
   },
 };
 

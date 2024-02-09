@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
+import { API } from "@/../tests/testClient";
 import {
   AddSubscriberDocument,
   CreateAuthorDocument,
@@ -12,7 +13,6 @@ import { EmailTemplates } from "@/graphql/types";
 import { getToken } from "@/shared/token";
 
 import { getEmailTemplate } from "./getTemplate";
-import { API } from "../../../../tests/testClient";
 
 describe("Email templates", () => {
   it("gets new post email template", async () => {
@@ -226,7 +226,7 @@ describe("Email templates", () => {
   });
 });
 
-export { };
+export {};
 
 function removeToken(content: string) {
   const [_part1, part2] = content.split("token=");

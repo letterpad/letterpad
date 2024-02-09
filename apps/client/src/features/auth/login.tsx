@@ -1,7 +1,8 @@
 'use client';
-import { Button } from 'ui';
 import { useSearchParams } from 'next/navigation';
-import { getApiRootUrl } from '../../../lib/utils/url';
+import { Button } from 'ui';
+
+import { getApiRootUrl } from '@/lib/utils/url';
 
 export const Login = () => {
   const searchParams = useSearchParams();

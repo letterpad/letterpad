@@ -7,11 +7,11 @@ import {
   SortBy,
 } from "@/__generated__/__types__";
 import { useHomeQueryQuery } from "@/__generated__/queries/queries.graphql";
+import { useGetTags } from "@/app/tags/_feature/api.client";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
 import { Badge } from "./badge";
-import { useGetTags } from "../../../tags/_feature/api.client";
 
 interface IProps {
   showTags?: boolean;

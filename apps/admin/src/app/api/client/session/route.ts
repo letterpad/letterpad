@@ -21,12 +21,14 @@ export async function GET(request: Request) {
       where: { email: session?.email! },
     });
     const siteUrl = request.headers.get("siteurl")!;
-    const found = await prisma.session.findFirst({
-      where: {
-        author_id: author?.id ?? 0,
-        domain: siteUrl,
-      },
-    });
+    const found = await prisma.session
+      .findFirst({
+        where: {
+          author_id: author?.id,
+          domain: siteUrl,
+        },
+      })
+      .catch(() => null);
     if (!found) {
       return NextResponse.json(null, { status: 200 });
     }

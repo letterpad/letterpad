@@ -90,7 +90,7 @@ export const updateSetting = async (
 export type ChangeTypeOfKeys<
   T extends object,
   Keys extends keyof T,
-  NewType
+  NewType,
 > = {
   // Loop to every key. We gonna check if the key
   // is assignable to Keys. If yes, change the type.

@@ -246,7 +246,7 @@ type Query {
   posts(filters: PostsFilters): PostsResponse!
   stats: StatsResponse
   isPostLiked(postId: Int!): IsPostLikedResponse!
-  letterpadLatestPosts: PostsResponse!
+  letterpadLatestPosts(cursor: Int): PostsResponse!
   letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
 }
 

@@ -41,9 +41,9 @@ const ThemeSwitcher = () => {
         onClick={() => switchTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "dark" ? (
-          <BiSun fill="#fff" size={24} />
+          <BiSun fill="#fff" size={25} />
         ) : (
-          <BsMoonStars size={18} />
+          <BsMoonStars size={20} />
         )}
       </div>
 

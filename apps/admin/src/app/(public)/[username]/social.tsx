@@ -6,7 +6,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
-import { Social } from "../../../../__generated__/__types__";
+import { Social } from "@/__generated__/__types__";
 
 export const SocialIcons = ({ social }: { social: Social }) => {
   return (

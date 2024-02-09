@@ -1,10 +1,12 @@
 import { FC } from "react";
 import { BuilderContext, Layout as LayoutBuilder } from "ui";
 
+import { CreativesHead } from "@/components/creatives";
+import { FileExplorer } from "@/components/file-explorer";
+
+import { Post } from "@/__generated__/__types__";
+
 import { Title } from "../components/title";
-import { Post } from "../../../../../../__generated__/__types__";
-import { FileExplorer } from "../../../../../components/file-explorer";
-import { CreativesHead } from "../../../../../creatives";
 
 interface Props {
   post?: Post;

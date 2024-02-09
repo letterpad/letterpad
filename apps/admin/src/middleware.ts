@@ -5,18 +5,23 @@ import { getAuthCookieName } from "./utils/authCookie";
 
 export const config = { matcher: "/((?!.*\\.).*)" };
 
+const isPlatform = process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM;
+
 export async function middleware(request: NextRequest) {
   const cookie = request.cookies.get(getAuthCookieName());
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
   const source = new URL(request.url).searchParams.get("source");
+  const ROOT_URL = proto + "://" + host;
 
+  if (request.nextUrl.pathname === "/" && !isPlatform) {
+    return NextResponse.redirect(ROOT_URL + "/login");
+  }
   if (!process.env.SECRET_KEY) {
     throw new Error(
       "You have not setup the variable SECRET_KEY in `apps/admin/.env`. If you do not have this `.env` file, you can copy it from `apps/admin/.env.sample`. Set its value to a secret string."
     );
   }
-  const ROOT_URL = proto + "://" + host;
 
   if (cookie?.value) {
     try {

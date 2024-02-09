@@ -2,7 +2,7 @@ import {
   PostStatusOptions,
   PostTypes,
   SortBy,
-} from "../../../../__generated__/__types__";
+} from "@/__generated__/__types__";
 
 export const DEFAULT_FILTERS = {
   sortBy: SortBy["Desc"],

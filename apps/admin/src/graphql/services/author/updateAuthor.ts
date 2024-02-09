@@ -92,7 +92,7 @@ export const updateAuthor = async (
       }
       dataToUpdate.verified = false;
     }
-    const { id, ...data } = dataToUpdate
+    const { id, ...data } = dataToUpdate;
     const author = await prisma.author.update({
       data: { ...data },
       where: { id: args.author.id },
@@ -104,7 +104,7 @@ export const updateAuthor = async (
       dataToUpdate.register_step === RegisterStep.Registered &&
       exisitingAuthor?.createdAt &&
       Date.parse(exisitingAuthor.createdAt.toDateString()) >=
-      Date.parse("2023-01-06")
+        Date.parse("2023-01-06")
     ) {
       onBoardUser(author.id);
     }
@@ -130,7 +130,6 @@ export const updateAuthor = async (
       ...mapAuthorToGraphql(author),
     };
   } catch (e: any) {
-    console.log(e)
     return {
       __typename: "Exception",
       message: "Something wrong happened",

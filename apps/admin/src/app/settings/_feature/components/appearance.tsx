@@ -1,16 +1,11 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Button, Input, Label, Select, TextArea } from "ui";
 
+import { fontItemsSans, fontItemsSerif, fonts } from "@/components/fonts";
+import { SaveButton } from "@/components/save-button";
 import { Upload } from "@/components/upload";
 
 import { removeTypenames } from "@/shared/utils";
-
-import {
-  fontItemsSans,
-  fontItemsSerif,
-  fonts,
-} from "../../../../components/fonts";
-import { SaveButton } from "../../../../components/save-button";
 
 const Appearance = () => {
   const data = useFormContext();
