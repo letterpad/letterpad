@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 
 import { mail } from "@/lib/mail";
 
@@ -6,7 +7,6 @@ import { report } from "@/components/error";
 
 import {
   MutationUpdatePostArgs,
-  NotificationMeta,
   PostStatusOptions,
   PostTypes,
   ResolversTypes,
@@ -167,6 +167,11 @@ export const updatePost = async (
     const updatedPost = await prisma.post.update(newPostArgs);
 
     const nowPublished = args.data.status === PostStatusOptions.Published;
+
+    if (nowPublished) {
+      revalidateTag("letterpadLatestPosts");
+      revalidateTag("categories");
+    }
     if (!author.first_post_published && nowPublished) {
       await prisma.author.update({
         data: { first_post_published: true },

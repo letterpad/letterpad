@@ -1,13 +1,10 @@
-import { Prisma } from "@prisma/client";
-import { au } from "@upstash/redis/zmscore-a4ec4c2a";
-
 import {
   AuthorResolvers,
   MutationResolvers,
-  NotificationMeta,
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
+  RegisterStep,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
@@ -25,8 +22,18 @@ import {
 } from "../services/author";
 import { loginAuthor } from "../services/author/loginAuthor";
 import { EmailTemplates } from "../types";
+import { getRootUrl } from "../../shared/getRootUrl";
 
 const Author: AuthorResolvers<ResolverContext> = {
+  avatar: async ({ avatar }, _args, context) => {
+    const _avatar = avatar?.startsWith("/")
+      ? new URL(avatar, getRootUrl()).href
+      : avatar;
+    if (_avatar) {
+      return `https://res.cloudinary.com/abhisheksaha/image/fetch/${_avatar}`;
+    }
+    return ``;
+  },
   role: async ({ id }, _args, context) => getRoleFromAuthor(id, context),
   permissions: async ({ id }, _args, context) =>
     getPermissionFromAuthor(id, context),
@@ -89,6 +96,35 @@ const Author: AuthorResolvers<ResolverContext> = {
 const Query: QueryResolvers<ResolverContext> = {
   async me(_parent, _args, context) {
     return getAuthor(_args, context);
+  },
+  async newAuthors(_parent, _args, { prisma }) {
+    const authors = await prisma.author.findMany({
+      take: 10,
+      where: {
+        verified: true,
+        name: {
+          not: "",
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    const fixedAuthors = authors.map((author) => ({
+      ...author,
+      register_step: author.register_step as RegisterStep,
+      social: getSocialLink(JSON.parse(author.social as string)),
+      createdAt: author.createdAt?.toISOString(),
+      analytics_id: author.analytics_id || undefined,
+      analytics_uuid: author.analytics_uuid || undefined,
+      stripe_customer_id: author.stripe_customer_id || undefined,
+      stripe_subscription_id: author.stripe_subscription_id || undefined,
+      signature: author.signature || undefined,
+    }));
+    return {
+      authors: fixedAuthors,
+      ok: true,
+    };
   },
   async aboutStats(_parent, { username }, { prisma }) {
     const author = await prisma.author.findFirst({

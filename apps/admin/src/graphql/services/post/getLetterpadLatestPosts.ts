@@ -37,7 +37,7 @@ export const getLetterpadLatestPosts = async (
       },
     },
     skip: cursor.cursor?.id ?? 0 > 0 ? 1 : 0,
-    take: 12,
+    take: 13,
     ...cursor,
     orderBy: {
       publishedAt: "desc",
@@ -47,7 +47,9 @@ export const getLetterpadLatestPosts = async (
     const posts = await prisma.post.findMany(condition);
     return {
       __typename: "PostsNode",
-      rows: posts.map(mapPostToGraphql),
+      rows: posts
+        .map(mapPostToGraphql)
+        .filter((row) => (row.html?.length ?? 0) > 800),
       count: await prisma.post.count({ where: condition.where }),
     };
   } catch (e: any) {

@@ -18,7 +18,7 @@ export const InfiniteList = ({ cursor }) => {
   }, [cursor]);
 
   const loadMore = () => {
-    getLetterpadPosts(data[data.length - 1].id).then((res) => {
+    getLetterpadPosts(data[data.length - 1]?.id).then((res) => {
       if (res.letterpadLatestPosts.__typename === "PostsNode") {
         const newRows = res.letterpadLatestPosts.rows;
         setData((data) => [...data, ...(newRows as any)]);

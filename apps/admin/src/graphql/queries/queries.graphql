@@ -436,3 +436,15 @@ query PopularTags {
     message
   }
 }
+
+query NewAuthors {
+  newAuthors {
+    authors {
+      id
+      name
+      username
+      avatar
+      createdAt
+    }
+  }
+}

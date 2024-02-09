@@ -33,10 +33,6 @@ export const getResolverContext = async (request: Request) => {
     };
   }
 
-  console.log(
-    `AuthHeader: ${authHeader}, IdentifierHeader: ${identifierHeader}`
-  );
-
   let { authorId } = await pipe(
     findEmailFromToken,
     andThen(findAuthorIdFromLetterpadSubdomain),
