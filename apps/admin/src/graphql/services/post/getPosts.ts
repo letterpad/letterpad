@@ -64,7 +64,6 @@ export const getPosts = cache(
       condition.where.exclude_from_home = false;
       condition.where.tags = undefined;
     }
-
     // sqlite does not suppost search but mysql does
     if (!isSqliteDb() && condition.where?.html) {
       condition.where.html.search = args.filters?.search

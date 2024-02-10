@@ -3,8 +3,9 @@
 import { print } from 'graphql';
 import gql from 'graphql-tag';
 import { PageFragmentFragment } from 'letterpad-sdk';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { BiHeart, BiSolidHeart } from 'react-icons/bi';
+import { Message } from 'ui';
 
 import { getApiRootUrl } from '@/lib/utils/url';
 
@@ -26,17 +27,10 @@ interface Props {
 }
 export const Like: FC<Props> = ({ postId, likes }) => {
   const [liked, setLiked] = useState(false);
-  const [likesArr, setLikesArr] = useState(likes);
+  const [likesArr, setLikesArr] = useState(likes ?? []);
   const session = useSession();
 
-  useEffect(() => {
-    checkIfLiked().then(setLiked);
-  }, []);
-
-  const checkIfLiked = async () => {
-    if (!session?.user.name) {
-      return;
-    }
+  const checkIfLiked = useCallback(async () => {
     const url = new URL('/redirect-api/graphql', window.location.href);
     const req = await fetch(url.href, {
       method: 'POST',
@@ -52,11 +46,21 @@ export const Like: FC<Props> = ({ postId, likes }) => {
     });
     const data = await req.json();
     return data?.data?.isPostLiked?.liked;
-  };
+  }, [postId]);
+
+  useEffect(() => {
+    if (!session?.user.name) {
+      return;
+    }
+    checkIfLiked().then(setLiked);
+  }, [checkIfLiked, session]);
 
   const sendRequest = async (path: string) => {
     if (!session?.user.name) {
-      return alert('You must be logged in to like this event');
+      setLiked(false);
+      return Message().error({
+        content: 'You must be logged in to like this event',
+      });
     }
     const url = new URL(path, window.location.href);
     const params = new URLSearchParams({
@@ -70,10 +74,19 @@ export const Like: FC<Props> = ({ postId, likes }) => {
   };
 
   const onLike = async () => {
-    const res = await sendRequest('/redirect-api/events/like');
-    if (res.likePost.ok) {
-      setLiked(true);
-      alert(res.likePost.message);
+    setLiked(true);
+    try {
+      const res = await sendRequest('/redirect-api/events/like');
+      if (!res.likePost.ok) {
+        setLiked(false);
+      } else {
+        setLikesArr((likes) => [
+          { avatar: session?.user.avatar, username: session?.user.name },
+          ...likes,
+        ]);
+      }
+    } catch (e) {
+      setLiked(false);
     }
   };
   const onUnlike = async () => {
@@ -88,7 +101,7 @@ export const Like: FC<Props> = ({ postId, likes }) => {
           className="group flex flex-row items-center overflow-hidden rounded-full bg-slate-100 pl-2 pr-1 text-sm font-semibold leading-snug text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 hover:dark:bg-slate-700  gap-2 py-1"
           onClick={onUnlike}
         >
-          <BiSolidHeart size={20} />
+          <BiSolidHeart size={20} className="text-red-500" />
           <span>{likesArr!.length}</span>
           <Avatars likes={likesArr} />
         </button>
@@ -120,7 +133,7 @@ const Avatars: FC<{ likes: PageFragmentFragment['likes'] }> = ({ likes }) => {
             rel="noreferrer"
           >
             <img
-              className="block mr-3 h-full w-full rounded-full hover:opacity-80"
+              className="block mr-3 h-full w-full rounded-full hover:opacity-80 object-cover"
               src={like?.avatar!}
               loading="lazy"
               alt={`@${like?.username}`}

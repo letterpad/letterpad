@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Banner } from "./banner";
 import { Card } from "./card";
 import {
   getLetterpadCategories,
@@ -21,6 +22,7 @@ export const Website = async () => {
     <>
       <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-900 dark:text-gray-100 text-black/60">
         <Header />
+        <Banner />
         <main className="grow">
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:gap-8">
             <section className="w-full mb-5 flex flex-col overflow-hidden">
@@ -73,7 +75,7 @@ export const Website = async () => {
                   })}
                 </ul>
               </section>
-              <section className="hidden">
+              <section className="">
                 <h3 className="font-bold text-lg pb-2">Recommended Topics</h3>
                 <ul className="flex flex-col gap-2">
                   {categories?.popularTags?.rows?.map((category) => {
