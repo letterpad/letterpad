@@ -579,6 +579,12 @@ export enum NavigationType {
   Tag = "tag",
 }
 
+export type NewAuthorResponse = {
+  __typename?: "NewAuthorResponse";
+  authors: Array<Maybe<Author>>;
+  ok: Scalars["Boolean"];
+};
+
 export type NotFound = LetterpadError & {
   __typename?: "NotFound";
   message: Scalars["String"];
@@ -654,6 +660,13 @@ export enum Permissions {
   ManageUsers = "MANAGE_USERS",
   ReadOnlyPosts = "READ_ONLY_POSTS",
 }
+
+export type PopularTagsResponse = {
+  __typename?: "PopularTagsResponse";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+  rows?: Maybe<Array<Maybe<Tag>>>;
+};
 
 export type Post = {
   __typename?: "Post";
@@ -798,7 +811,9 @@ export type Query = {
   letterpadLatestPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;
   media: MediaResponse;
+  newAuthors?: Maybe<NewAuthorResponse>;
   notifications: NotificationResponse;
+  popularTags: PopularTagsResponse;
   post: PostResponse;
   posts: PostsResponse;
   settings: SettingResponse;
@@ -836,8 +851,16 @@ export type QueryLetterpadLatestPostArgs = {
   filters?: InputMaybe<LetterpadPostFilters>;
 };
 
+export type QueryLetterpadLatestPostsArgs = {
+  cursor?: InputMaybe<Scalars["Int"]>;
+};
+
 export type QueryMediaArgs = {
   filters?: InputMaybe<MediaFilters>;
+};
+
+export type QueryNewAuthorsArgs = {
+  limit?: InputMaybe<Scalars["Int"]>;
 };
 
 export type QueryNotificationsArgs = {
@@ -1068,6 +1091,8 @@ export type SystemMeta = {
 
 export type Tag = {
   __typename?: "Tag";
+  category?: Maybe<Scalars["String"]>;
+  count?: Maybe<Scalars["Int"]>;
   id: Scalars["String"];
   name: Scalars["String"];
   posts?: Maybe<PostsResponse>;

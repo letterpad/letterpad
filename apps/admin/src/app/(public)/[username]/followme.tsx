@@ -45,6 +45,7 @@ export const FollowMe = ({ username }) => {
     });
   };
 
+  if (session.data?.user?.username === username) return null;
   return (
     <>
       <button
@@ -54,7 +55,7 @@ export const FollowMe = ({ username }) => {
       >
         {data?.isFollowing.following ? (
           <>
-            <RiUserUnfollowLine size={18} /> <span>UnFollow</span>
+            <RiUserUnfollowLine size={18} />
           </>
         ) : (
           <>

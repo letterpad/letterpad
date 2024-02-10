@@ -32,6 +32,8 @@ export const FollowMe = ({ username }) => {
     }
   };
 
+  if (session?.user?.username === username) return null;
+
   return (
     <>
       <button

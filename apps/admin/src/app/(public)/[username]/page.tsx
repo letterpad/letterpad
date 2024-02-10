@@ -172,7 +172,7 @@ const About = async ({ params }: { params: { username: string } }) => {
           </div>
         </div>
         <div className="flex gap-8 items-start pb-32 flex-col md:flex-row">
-          <div>
+          <div className="max-w-2xl w-full">
             <div className="p-4 rounded dark:border-slate-800 dark:bg-sky-900/10 border">
               <h3 className="block antialiased tracking-normal font-semibold text-inherit text-[1.1rem] py-2">
                 Publishes At:
@@ -205,7 +205,7 @@ const About = async ({ params }: { params: { username: string } }) => {
               className="block antialiased font-sans text-md font-normal leading-relaxed text-inherit mt-8 max-w-2xl"
               dangerouslySetInnerHTML={{ __html: bio }}
             ></p>
-            <div className="max-w-2xl">
+            <div>
               <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-xl py-5 mt-10">
                 Topics I write about:
               </h3>

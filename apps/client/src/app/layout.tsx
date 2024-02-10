@@ -15,6 +15,7 @@ import { Css } from './_css';
 import Custom404 from './not-found';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
+import { generateGoogleFontsVariables } from '../../components/fonts/fontsCssLink';
 import { SessionProvider } from '../../context/SessionProvider';
 import ThemeProvider from '../../context/ThemeProvider';
 
@@ -149,16 +150,22 @@ const Layout = async ({ children }) => {
       className={`scroll-smooth ${theme}`}
       style={{ colorScheme: theme }}
     >
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preload" as="image" href={settings.banner?.src!} />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin={'anonymous'}
-      />
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
+        <style>
+          {`
+          html {
+            --accent: ${settings?.design?.brand_color ?? '#d93097'};
+            ${generateGoogleFontsVariables([
+              settings.design?.primary_font,
+              settings.design?.secondary_font,
+              'Roboto_Mono',
+              'Inter',
+            ])}
+          }
+        `}
+        </style>
         <SessionProvider>
           <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
             <FontPageWrapper
@@ -174,6 +181,7 @@ const Layout = async ({ children }) => {
           <div id="modal-creatives" />
           <PrismHighlight />
           <div id="modal-root" />
+          <div id="message" />
         </SessionProvider>
       </body>
     </html>

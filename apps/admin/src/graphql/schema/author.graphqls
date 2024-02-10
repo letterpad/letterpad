@@ -140,10 +140,17 @@ type AboutStatsResponse {
   stats: AboutStats
   ok: Boolean!
 }
+
+type NewAuthorResponse {
+  authors: [Author]!
+  ok: Boolean!
+}
+
 type Query {
   me: AuthorResponse
   isFollowing(username: String!): IsFollowingResponse!
   aboutStats(username: String!): AboutStatsResponse!
+  newAuthors(limit: Int): NewAuthorResponse
 }
 
 type Mutation {

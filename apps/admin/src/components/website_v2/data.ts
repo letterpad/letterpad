@@ -5,6 +5,9 @@ import { client } from "../../lib/urqlClient";
 import {
   LetterpadLatestPostsDocument,
   LetterpadLatestPostsQuery,
+  NewAuthorsDocument,
+  NewAuthorsQuery,
+  NewAuthorsQueryVariables,
   PopularTagsDocument,
   PopularTagsQuery,
   PostsDocument,
@@ -25,10 +28,10 @@ export async function getLetterpadPosts(cursor: number) {
         cursor,
       },
     }),
-    // next: {
-    //   tags: ["letterpadLatestPosts"],
-    // },
-    cache: "no-cache",
+    next: {
+      tags: ["letterpadLatestPosts"],
+    },
+    cache: "force-cache",
   });
   const data = await resp.json();
   return data.data as LetterpadLatestPostsQuery;
@@ -47,7 +50,7 @@ export async function getLetterpadCategories() {
     next: {
       tags: ["categories"],
     },
-    cache: "no-cache",
+    cache: "force-cache",
   });
   const data = await resp.json();
   return data.data as PopularTagsQuery;
@@ -65,4 +68,23 @@ export async function doOmniSearch(search: string) {
     { requestPolicy: "network-only" }
   );
   return res.data?.posts.__typename === "PostsNode" ? res.data.posts.rows : [];
+}
+
+export async function getNewAuthors() {
+  "use server";
+  const res = await client.query<NewAuthorsQuery, NewAuthorsQueryVariables>(
+    NewAuthorsDocument,
+    {},
+    {
+      requestPolicy: "network-only",
+      fetch,
+      fetchOptions: {
+        next: {
+          tags: ["newAuthors"],
+        },
+        cache: "force-cache",
+      },
+    }
+  );
+  return res.data?.newAuthors?.authors || [];
 }

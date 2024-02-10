@@ -22,7 +22,7 @@ import { getAuthCookieName } from "../utils/authCookie";
 export const metadata: Metadata = {
   title: "Letterpad - A blogging platform",
   description:
-    "Discover a world of possibilities for your writing and creativity on Letterpad, the premier blogging platform",
+    "Publish stories, build subscribers, follow other publishers and stay connected. Its free.",
   // viewport: "width=device-width",
   robots: "follow, index",
   openGraph: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     url: "https://letterpad.app/",
     title: "Letterpad - A free blog publishing platform",
     description:
-      "Discover a world of possibilities for your writing and creativity on Letterpad, the premier blogging platform",
+      "Publish stories, build subscribers, follow other publishers and stay connected. Its free.",
     siteName: "Letterpad - A free blog publishing platform",
     images: [
       {
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     site: "@__abhisaha",
     card: "summary_large_image",
     description:
-      "Discover a world of possibilities for your writing and creativity on Letterpad, the premier blogging platform",
+      "Publish stories, build subscribers, follow other publishers and stay connected. Its free.",
     title: "Letterpad - A free blog publishing platform",
     images: [
       {
