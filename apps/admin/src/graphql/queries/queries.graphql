@@ -383,8 +383,8 @@ query Notification {
   }
 }
 
-query LetterpadLatestPosts($cursor: Int) {
-  letterpadLatestPosts(cursor: $cursor) {
+query LetterpadLatestPosts($filters: LetterpadPostsFilters) {
+  letterpadLatestPosts(filters: $filters) {
     __typename
     ... on PostsNode {
       count
