@@ -13,16 +13,21 @@ export const getLetterpadLatestPosts = async (
   args: Partial<QueryLetterpadLatestPostsArgs>,
   { prisma }: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
-  const cursor = args.cursor
+  const cursor = args.filters?.cursor
     ? {
         cursor: {
-          id: args.cursor,
+          id: args.filters.cursor,
         },
       }
     : {};
 
   const condition: Prisma.PostFindManyArgs = {
     where: {
+      tags: {
+        some: {
+          slug: args.filters?.tag,
+        },
+      },
       status: PostStatusOptions.Published,
       type: PostTypes.Post,
       excerpt: {

@@ -241,12 +241,17 @@ type IsPostLikedResponse {
   message: String
 }
 
+input LetterpadPostsFilters {
+  cursor: Int
+  tag: String
+}
+
 type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
   stats: StatsResponse
   isPostLiked(postId: Int!): IsPostLikedResponse!
-  letterpadLatestPosts(cursor: Int): PostsResponse!
+  letterpadLatestPosts(filters: LetterpadPostsFilters): PostsResponse!
   letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
 }
 

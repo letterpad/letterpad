@@ -5,6 +5,7 @@ import { client } from "../../lib/urqlClient";
 import {
   LetterpadLatestPostsDocument,
   LetterpadLatestPostsQuery,
+  LetterpadLatestPostsQueryVariables,
   NewAuthorsDocument,
   NewAuthorsQuery,
   NewAuthorsQueryVariables,
@@ -15,7 +16,9 @@ import {
   PostsQueryVariables,
 } from "../../../__generated__server/src/graphql/queries/queries.graphql";
 
-export async function getLetterpadPosts(cursor: number) {
+export async function getLetterpadPosts(
+  filters: LetterpadLatestPostsQueryVariables
+) {
   const root = typeof window === "undefined" ? process.env.ROOT_URL : "";
   const resp = await fetch((root + "/api/graphql") as string, {
     method: "POST",
@@ -25,7 +28,7 @@ export async function getLetterpadPosts(cursor: number) {
     body: JSON.stringify({
       query: print(LetterpadLatestPostsDocument),
       variables: {
-        cursor,
+        filters: filters.filters,
       },
     }),
     next: {
@@ -35,6 +38,27 @@ export async function getLetterpadPosts(cursor: number) {
   });
   const data = await resp.json();
   return data.data as LetterpadLatestPostsQuery;
+  // const res = await client.query<
+  //   LetterpadLatestPostsQuery,
+  //   LetterpadLatestPostsQueryVariables
+  // >(
+  //   LetterpadLatestPostsDocument,
+  //   {
+  //     filters: {
+  //       cursor,
+  //     },
+  //   },
+  //   {
+  //     fetch: fetch,
+  //     fetchOptions: {
+  //       next: {
+  //         tags: ["letterpadLatestPosts"],
+  //       },
+  //       cache: "force-cache",
+  //     },
+  //   }
+  // );
+  // return res.data;
 }
 
 export async function getLetterpadCategories() {
@@ -87,4 +111,26 @@ export async function getNewAuthors() {
     }
   );
   return res.data?.newAuthors?.authors || [];
+}
+
+export async function getLetterpadPostsByTag(tag: string, cursor: number) {
+  const root = typeof window === "undefined" ? process.env.ROOT_URL : "";
+  const resp = await fetch((root + "/api/graphql") as string, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: print(LetterpadLatestPostsDocument),
+      variables: {
+        cursor,
+      },
+    }),
+    next: {
+      tags: ["letterpadLatestPosts"],
+    },
+    cache: "force-cache",
+  });
+  const data = await resp.json();
+  return data.data as LetterpadLatestPostsQuery;
 }

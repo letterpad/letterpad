@@ -10,20 +10,22 @@ export const InfiniteList = ({ cursor }) => {
   const [data, setData] = useState<Post[]>([]);
 
   useEffect(() => {
-    getLetterpadPosts(cursor).then((res) => {
-      if (res.letterpadLatestPosts.__typename === "PostsNode") {
+    getLetterpadPosts({ filters: { cursor } }).then((res) => {
+      if (res?.letterpadLatestPosts.__typename === "PostsNode") {
         setData(res.letterpadLatestPosts.rows as any);
       }
     });
   }, [cursor]);
 
   const loadMore = () => {
-    getLetterpadPosts(data[data.length - 1]?.id).then((res) => {
-      if (res.letterpadLatestPosts.__typename === "PostsNode") {
-        const newRows = res.letterpadLatestPosts.rows;
-        setData((data) => [...data, ...(newRows as any)]);
+    getLetterpadPosts({ filters: { cursor: data[data.length - 1]?.id } }).then(
+      (res) => {
+        if (res?.letterpadLatestPosts.__typename === "PostsNode") {
+          const newRows = res.letterpadLatestPosts.rows;
+          setData((data) => [...data, ...(newRows as any)]);
+        }
       }
-    });
+    );
   };
 
   return (

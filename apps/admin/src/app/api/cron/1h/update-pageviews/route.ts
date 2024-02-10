@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
   }
 
   const views = await getAllPageViews();
-
   const viewsObject = views.reduce(
     (acc, { key, count }) => {
       acc[key] = count;
@@ -150,7 +149,8 @@ export async function GET(request: NextRequest) {
   });
 
   await Promise.all(dbUpdateViewPromsies);
-  await delAllPageViews(...views.map((v) => v.key));
-
+  if (views.length > 0) {
+    await delAllPageViews(...views.map((v) => v.key));
+  }
   return Response.json({ success: true });
 }

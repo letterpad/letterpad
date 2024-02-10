@@ -11,11 +11,11 @@ import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
 
 export const Website = async () => {
-  const data = await getLetterpadPosts(0);
+  const data = await getLetterpadPosts({ filters: { cursor: 0 } });
   const categories = await getLetterpadCategories();
   const newAuthors = await getNewAuthors();
   const rows =
-    data.letterpadLatestPosts.__typename === "PostsNode"
+    data?.letterpadLatestPosts.__typename === "PostsNode"
       ? data.letterpadLatestPosts.rows
       : [];
   return (
