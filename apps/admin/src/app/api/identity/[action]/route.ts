@@ -42,6 +42,8 @@ export async function GET(
     });
     const requestHeaders = new Headers(req.headers);
     req.cookies.delete(getAuthCookieName());
+    requestHeaders.delete("cookie");
+    cookies().delete(getAuthCookieName());
     requestHeaders.set(
       "set-cookie",
       `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
