@@ -4,8 +4,8 @@ import { getPreviewData } from '@/data';
 
 import Creative from '@/layouts/Creative';
 
-import Custom404 from '../../../not-found';
 import { Post } from '../../../../features/post/post';
+import Custom404 from '../../../not-found';
 
 export default async function Preview({ params, searchParams }) {
   const data = await getPreviewData(params.hash);

@@ -1,4 +1,4 @@
-import { getCookie, setCookie, eraseCookie } from '@/lib/utils/cookie';
+import { eraseCookie, getCookie, setCookie } from '@/lib/utils/cookie';
 
 const THEME_DARK = 'dark';
 const THEME_LIGHT = 'light';

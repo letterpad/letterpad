@@ -1,6 +1,5 @@
 import {
   MutationResolvers,
-  NotificationMeta,
   QueryResolvers,
 } from "@/__generated__/__types__";
 
@@ -15,6 +14,7 @@ const Query: QueryResolvers<ResolverContext> = {
           id: session?.user.id,
         },
       },
+      take: 21,
       orderBy: { createdAt: "desc" },
     });
 
@@ -69,15 +69,30 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
   markAllAsRead: async (_, args, { prisma, session }) => {
-    // await prisma.notifications.update({
-    //   data: {
-    //     is_read: true,
-    //   },
-    //   where: {
-    //     au: session?.user.id!,
-    //   },
-    // });
-
+    if (!session?.user.id) {
+      return {
+        ok: false
+      }
+    }
+    const notifications = await prisma.notifications.findMany({
+      where: {
+        author: {
+          id: session?.user.id,
+        },
+      },
+    });
+    if (notifications.length > 0) {
+      await prisma.notifications.updateMany({
+        data: {
+          is_read: true,
+        },
+        where: {
+          notification_id: {
+            in: notifications.map((n) => n.notification_id)
+          }
+        },
+      });
+    }
     return {
       ok: true,
     };

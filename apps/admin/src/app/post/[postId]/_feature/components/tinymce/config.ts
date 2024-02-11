@@ -34,7 +34,7 @@ export const titleEditorConfig: IProps["init"] = {
   toolbar: false,
   placeholder: "Title",
   inline: true,
-  content_style: `#${titleId} p { font-size: 3rem;  line-height: 3rem; font-weight: 700; margin-bottom: 1rem; }`,
+  content_style: `#${titleId} p, #${titleId}::before { font-size: 3rem;  line-height: 3rem; font-weight: 700; margin-bottom: 1rem; }`,
   setup: function (ed) {
     ed.on("keydown", function (e) {
       if (e.key === "Enter") {

@@ -27,7 +27,7 @@ const Layout = async ({ children, ...p }) => {
                 <ul className="flex flex-col gap-2">
                   {categories?.popularTags?.rows?.map((category) => {
                     return (
-                      <li className="text-md truncate">
+                      <li className="text-md truncate" key={category.slug}>
                         <Link href={`${category.slug!}`}>
                           {category.name} ({category.count})
                         </Link>

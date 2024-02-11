@@ -17,9 +17,11 @@ import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
 
+import { getRootUrl } from "../shared/getRootUrl";
 import { getAuthCookieName } from "../utils/authCookie";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getRootUrl()),
   title: "Letterpad - A blogging platform",
   description:
     "Publish stories, build subscribers, follow other publishers and stay connected. Its free.",

@@ -80,7 +80,7 @@ export const Website = async () => {
                 <ul className="flex flex-col gap-2">
                   {categories?.popularTags?.rows?.map((category) => {
                     return (
-                      <li className="text-md truncate">
+                      <li className="text-md truncate" key={category.slug}>
                         <Link href={`${category.slug!}`}>
                           {category.name} ({category.count})
                         </Link>
