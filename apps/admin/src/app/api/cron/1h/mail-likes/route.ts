@@ -68,7 +68,11 @@ export async function GET(request: NextRequest) {
         switch (update.__typename) {
           case "PostLikeMeta":
             emailContent.push(
-              `👉 ${update.author_name} liked this <a href="https://${recipient.username}.letterpad.app/post/${update.post_slug}">post</a> of yours.`
+              `👉 <a href="https://${getRootUrl()}/@${
+                update.author_username
+              }">${update.author_name}</a> liked this <a href="https://${
+                recipient.username
+              }.letterpad.app/post/${update.post_slug}">post</a> of yours.`
             );
             break;
           case "FollowerNewMeta":

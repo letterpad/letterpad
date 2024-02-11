@@ -1,22 +1,38 @@
-"use client";
+import { Card } from "@/components/website_v2/card";
+import { getLetterpadPosts } from "@/components/website_v2/data";
+import { InfiniteList } from "@/components/website_v2/infinite-list";
 
-import { usePostsQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
-
-const Tag = ({ params }: { params: { name: string } }) => {
-  const [{ data }] = usePostsQuery({
-    variables: {
-      filters: {
-        tagSlug: params.name,
-      },
-    },
+const Tag = async ({ params }: { params: { name: string } }) => {
+  const data = await getLetterpadPosts({
+    filters: { tag: params.name, cursor: 0 },
   });
-
-  // eslint-disable-next-line no-console
-  console.log(data);
+  const rows =
+    data?.letterpadLatestPosts.__typename === "PostsNode"
+      ? data.letterpadLatestPosts.rows
+      : [];
   return (
     <>
-      {/* <Feature /> */}
-      {JSON.stringify(data)}
+      <section className="w-full mb-5 flex flex-col overflow-hidden">
+        {rows.map((item) => {
+          const author =
+            item.author?.__typename === "Author" ? item.author : null;
+
+          const link = new URL(
+            item.slug ?? "",
+            `https://${author?.username}.letterpad.app`
+          ).toString();
+          return (
+            <Card
+              key={item.id}
+              {...item}
+              link={link}
+              slug={link}
+              author={author!}
+            />
+          );
+        })}
+        <InfiniteList cursor={rows?.[rows.length - 1]?.id} tag={params.name} />
+      </section>
     </>
   );
 };

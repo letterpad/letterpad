@@ -1,5 +1,46 @@
 "use client";
 
-import { PageSkeleton } from "@/components/skeleton";
+import { TextBlockPlaceholder } from "ui";
 
-export default PageSkeleton;
+export default function Loading() {
+  return (
+    <>
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+      <br />
+      <br />
+      <br />
+      <TextBlockPlaceholder />
+    </>
+  );
+}

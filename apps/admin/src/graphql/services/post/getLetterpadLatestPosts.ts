@@ -35,11 +35,18 @@ export const getLetterpadLatestPosts = async (
           equals: "",
         },
       },
-      title: {
-        not: {
-          equals: "Coming Soon",
+      NOT: [
+        {
+          title: {
+            equals: "",
+          },
         },
-      },
+        {
+          title: {
+            equals: "Coming Soon",
+          },
+        },
+      ],
     },
     skip: cursor.cursor?.id ?? 0 > 0 ? 1 : 0,
     take: 13,

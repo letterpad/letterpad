@@ -38,29 +38,30 @@ export const Card: FC<Props> = ({
       : document.location.origin;
   const reading_time = stats?.reading_time?.replace("1 mins", "1 min");
 
+  const avatar = author?.avatar
+    ? author.avatar
+    : "https://www.gravatar.com/avatar/";
   return (
     <div
       key={slug}
       className="w-full py-10 border-b border-slate-100 dark:border-slate-800"
     >
       <div className="flex items-center justify-between flex-row">
-        {author?.avatar && (
-          <Link
-            className="flex items-center justify-left flex-row gap-2"
-            href={new URL(`@${author?.username}`, origin).toString()}
-          >
-            <div className="rounded-full flex-none">
-              <img
-                src={author?.avatar}
-                alt={author?.name}
-                className="w-7 h-7 object-cover rounded-full"
-              />
-            </div>
-            <span className="text-gray-800 dark:text-gray-200">
-              {author?.name}
-            </span>
-          </Link>
-        )}
+        <Link
+          className="flex items-center justify-left flex-row gap-2"
+          href={new URL(`@${author?.username}`, origin).toString()}
+        >
+          <div className="rounded-full flex-none">
+            <img
+              src={avatar}
+              alt={author?.name}
+              className="w-7 h-7 object-cover rounded-full"
+            />
+          </div>
+          <span className="text-gray-800 dark:text-gray-200">
+            {author?.name}
+          </span>
+        </Link>
       </div>
       <Link
         href={link}
