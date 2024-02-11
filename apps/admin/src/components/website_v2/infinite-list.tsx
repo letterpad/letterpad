@@ -14,14 +14,6 @@ interface Props {
 export const InfiniteList: FC<Props> = ({ cursor, tag }) => {
   const [data, setData] = useState<Post[]>([]);
 
-  useEffect(() => {
-    getLetterpadPosts({ filters: { cursor, tag } }).then((res) => {
-      if (res?.letterpadLatestPosts.__typename === "PostsNode") {
-        setData(res.letterpadLatestPosts.rows as any);
-      }
-    });
-  }, [cursor, tag]);
-
   const loadMore = () => {
     getLetterpadPosts({
       filters: { cursor: data[data.length - 1]?.id, tag },

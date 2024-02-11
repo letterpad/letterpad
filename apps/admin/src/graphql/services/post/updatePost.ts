@@ -53,6 +53,8 @@ export const updatePost = async (
       args.data.status === PostStatusOptions.Published &&
       existingPost.status !== PostStatusOptions.Published;
 
+    const nowPublished = args.data.status === PostStatusOptions.Published;
+
     const author = await prisma.author.findFirst({
       where: { id: existingPost.author_id },
     });
@@ -147,8 +149,11 @@ export const updatePost = async (
         Math.ceil((args.data.stats?.words ?? 200) / 200) + "" ?? "2";
     }
 
-    if (args.data.status === PostStatusOptions.Published) {
+    if (nowPublished) {
       newPostArgs.data.html = await formatHtml(existingPost.html_draft ?? "");
+    }
+
+    if (isFirstPublish) {
       newPostArgs.data.publishedAt = new Date();
     }
 
@@ -165,8 +170,6 @@ export const updatePost = async (
       };
     }
     const updatedPost = await prisma.post.update(newPostArgs);
-
-    const nowPublished = args.data.status === PostStatusOptions.Published;
 
     if (nowPublished) {
       revalidateTag("letterpadLatestPosts");
