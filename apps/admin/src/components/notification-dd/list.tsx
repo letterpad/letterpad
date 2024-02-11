@@ -70,6 +70,9 @@ export const NotificationDropdown = () => {
         dir="right"
       >
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          {notifications.length === 0 && (
+            <div className="font-bold py-10">No notifications yet.</div>
+          )}
           {notifications.map((notification) => {
             if (isPostLikeMeta(notification.meta)) {
               return (
