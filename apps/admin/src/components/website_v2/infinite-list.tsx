@@ -1,31 +1,36 @@
 "use client";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { Card } from "./card";
 import { getLetterpadPosts } from "./data";
 import { Post } from "../../../__generated__server/__types__";
 
-export const InfiniteList = ({ cursor }) => {
+interface Props {
+  cursor: number;
+  tag?: string;
+}
+
+export const InfiniteList: FC<Props> = ({ cursor, tag }) => {
   const [data, setData] = useState<Post[]>([]);
 
   useEffect(() => {
-    getLetterpadPosts({ filters: { cursor } }).then((res) => {
+    getLetterpadPosts({ filters: { cursor, tag } }).then((res) => {
       if (res?.letterpadLatestPosts.__typename === "PostsNode") {
         setData(res.letterpadLatestPosts.rows as any);
       }
     });
-  }, [cursor]);
+  }, [cursor, tag]);
 
   const loadMore = () => {
-    getLetterpadPosts({ filters: { cursor: data[data.length - 1]?.id } }).then(
-      (res) => {
-        if (res?.letterpadLatestPosts.__typename === "PostsNode") {
-          const newRows = res.letterpadLatestPosts.rows;
-          setData((data) => [...data, ...(newRows as any)]);
-        }
+    getLetterpadPosts({
+      filters: { cursor: data[data.length - 1]?.id, tag },
+    }).then((res) => {
+      if (res?.letterpadLatestPosts.__typename === "PostsNode") {
+        const newRows = res.letterpadLatestPosts.rows;
+        setData((data) => [...data, ...(newRows as any)]);
       }
-    );
+    });
   };
 
   return (
