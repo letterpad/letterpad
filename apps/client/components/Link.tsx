@@ -4,6 +4,7 @@ import { AnchorHTMLAttributes, DetailedHTMLProps } from 'react';
 
 const CustomLink = ({
   href,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ref,
   ...rest
 }: DetailedHTMLProps<

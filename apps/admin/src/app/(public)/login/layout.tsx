@@ -1,11 +1,15 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
   title: "Login",
   description: "Login to Letterpad",
-  viewport: "width=device-width",
   robots: "follow, index",
+};
+
+export const viewport: Viewport = {
+  themeColor: "black",
+  width: "device-width",
 };
 
 const LoginLayout = ({ children }) => {

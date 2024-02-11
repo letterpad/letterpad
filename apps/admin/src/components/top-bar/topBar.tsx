@@ -30,7 +30,9 @@ export const TopBar = () => {
           </a>
         </Button>
         <FeedbackForm />
-        <ThemeSwitcher />
+        <div className="px-2 flex items-center">
+          <ThemeSwitcher />
+        </div>
         <NotificationDropdown />
         <ProfileDropdown sessionPath="/api/auth/session" />
       </div>

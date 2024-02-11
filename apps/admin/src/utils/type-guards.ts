@@ -1,11 +1,7 @@
 import {
-  DefinitionNode,
-  DocumentNode,
-  ExecutableDefinitionNode,
   Kind,
   OperationDefinitionNode,
 } from "graphql";
-import { Operation } from "urql";
 
 import {
   Author,
@@ -14,7 +10,7 @@ import {
   Setting,
   Stats,
   TagsNode,
-} from "../../__generated__/__types__";
+} from "@/__generated__/__types__";
 
 export function isPostsNode(data: any): data is PostsNode {
   return data?.__typename === "PostsNode";

@@ -342,6 +342,7 @@ query Notification {
           notification_id
           author_id
           createdAt
+          is_read
           meta {
             ... on PostLikeMeta {
               post_id
@@ -357,24 +358,24 @@ query Notification {
               author_name
               author_avatar
               author_username
-               __typename
+              __typename
             }
             ... on FollowerNewMeta {
               follower_id
               follower_name
               follower_username
               follower_avatar
-               __typename
+              __typename
             }
-            ... on SubscriberNewMeta{
+            ... on SubscriberNewMeta {
               subscriber_email
-               __typename
+              __typename
             }
-            ... on SystemMeta{
+            ... on SystemMeta {
               message
               url
               slug
-               __typename
+              __typename
             }
           }
         }

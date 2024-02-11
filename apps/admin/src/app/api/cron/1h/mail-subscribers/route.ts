@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     },
     where: {
       status: PostStatusOptions.Published,
-      mail_status: MailStatus.Sent,
+      mail_status: MailStatus.Active,
     },
   });
 

@@ -37,7 +37,7 @@ const ThemeSwitcher = () => {
   return (
     <>
       <div
-        className="wrapper"
+        className="flex items-center cursor-pointer"
         onClick={() => switchTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "dark" ? (
@@ -46,14 +46,6 @@ const ThemeSwitcher = () => {
           <BsMoonStars size={20} />
         )}
       </div>
-
-      <style jsx global>{`
-        .wrapper {
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-        }
-      `}</style>
     </>
   );
 };

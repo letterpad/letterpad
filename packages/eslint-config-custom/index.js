@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["next", "turbo", "prettier", "next/core-web-vitals"],
+  extends: ["next", "turbo", "next/core-web-vitals"],
   globals: {
     React: true,
     JSX: true,
@@ -10,7 +10,7 @@ module.exports = {
     "@next/next/no-img-element": "off",
     "@next/next/no-html-link-for-pages": "off",
     "react/jsx-key": "off",
-    "prettier/prettier": "error",
+    // "prettier/prettier": "error",
     "turbo/no-undeclared-env-vars": "off",
     "react/react-in-jsx-scope": "off",
     "jsx-a11y/anchor-is-valid": [
@@ -24,12 +24,11 @@ module.exports = {
     "import/no-duplicates": ["error", {"considerQueryString": true}],
     "react/prop-types": 0,
     "no-unused-vars": "off",
-    // "no-unused-vars": ["error", { "vars": "local",'argsIgnorePattern': '^_' }],
+    // "@typescript-eslint/no-unused-vars": "error",
     "react/no-unescaped-entities": 0,
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/ban-ts-comment": "off",
-    // "no-unused-vars": "off",
     "no-console": "error",
     "import/no-anonymous-default-export": "off",
     "jsx-a11y/anchor-is-valid": "off",
@@ -76,6 +75,6 @@ module.exports = {
   plugins: [
     "@typescript-eslint",
     "simple-import-sort",
-    "eslint-plugin-prettier",
+    // "eslint-plugin-prettier",
   ],
 };

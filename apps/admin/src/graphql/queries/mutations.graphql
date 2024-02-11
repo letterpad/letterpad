@@ -283,3 +283,9 @@ mutation UnLikePost($postId: Int!) {
     message
   }
 }
+
+mutation MarkNotificationsRead {
+  markAllAsRead {
+    ok
+  }
+}
