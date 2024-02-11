@@ -16,6 +16,10 @@ import { getRootUrl } from "@/shared/getRootUrl";
 import { isPasswordValid } from "@/utils/bcrypt";
 
 import { isBlackListed } from "./blacklist";
+import { getAuthCookieName } from "../../../utils/authCookie";
+
+const { host, protocol } = new URL(process.env.ROOT_URL);
+const useSecureCookies = protocol === "https:";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -55,8 +59,8 @@ const providers = (): NextAuthOptions["providers"] => [
           return authenticated
             ? author
             : Promise.reject(
-              new Error("Incorrect password. Please try again.")
-            );
+                new Error("Incorrect password. Please try again.")
+              );
         } else {
           return Promise.reject(
             new Error("The email you provided is not registered.")
@@ -165,6 +169,18 @@ export const options = (): NextAuthOptions => ({
     signIn: `${basePath}/login`,
   },
   secret: process.env.SECRET_KEY,
+  cookies: {
+    sessionToken: {
+      name: getAuthCookieName(),
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: `.${host}`,
+        secure: useSecureCookies,
+      },
+    },
+  },
 });
 
 const auth = (req: NextApiRequest, res: NextApiResponse) =>

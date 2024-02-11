@@ -17,11 +17,13 @@ export async function slugify(
   slug = textToSlug(slug);
   const result = await PostModel.findFirst({
     where: {
-      slug: slug, author: { id: author_id }, id: {
+      slug: slug,
+      author: { id: author_id },
+      id: {
         not: {
-          equals: postId
-        }
-      }
+          equals: postId,
+        },
+      },
     },
   });
   if (result === null) {
@@ -33,11 +35,13 @@ export async function slugify(
   async function recursiveFindUniqueSlug() {
     const result = await PostModel.findFirst({
       where: {
-        slug: slug + count, author: { id: author_id }, id: {
+        slug: slug + count,
+        author: { id: author_id },
+        id: {
           not: {
-            equals: postId
-          }
-        }
+            equals: postId,
+          },
+        },
       },
     });
 

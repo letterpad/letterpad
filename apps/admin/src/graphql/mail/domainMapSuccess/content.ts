@@ -48,7 +48,10 @@ export async function getdomainMapSuccessContent(
       "domain_name",
       `<a href="https://${author.domain.name}">${author.domain.name}</a>`
     )
-    .replaceAll("{{ company_name }}", `<a href="https://letterpad.app">Letterpad</a>`)
+    .replaceAll(
+      "{{ company_name }}",
+      `<a href="https://letterpad.app">Letterpad</a>`
+    )
     .replaceAll("{{ full_name }}", author?.name);
 
   return {

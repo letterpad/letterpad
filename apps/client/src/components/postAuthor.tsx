@@ -14,14 +14,14 @@ export const PostAuthor = ({ settings, post }) => {
     >
       <div className="flex w-full items-center text-sm text-gray-900 dark:text-white gap-2">
         {author.avatar && (
-          <div className="max-h-16 max-w-16">
+          <div className="h-16 w-16 flex-none">
             <img
               src={author.avatar}
               width={64}
               height={64}
               alt={author.name}
               style={{ objectFit: 'cover' }}
-              className="w-full h-full rounded-full dark:bg-slate-800 bg-slate-200 p-2 object-cover"
+              className="w-full h-full rounded-full dark:bg-slate-800 bg-slate-200 p-1 object-cover"
             />
           </div>
         )}

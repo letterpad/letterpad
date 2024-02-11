@@ -23,7 +23,6 @@ export const getAuthor = cache(
       if (avatar && avatar.startsWith("/")) {
         avatar = new URL(avatar, getRootUrl()).href;
       }
-
       return {
         ...author,
         register_step: author.register_step as RegisterStep,
@@ -34,6 +33,7 @@ export const getAuthor = cache(
         analytics_uuid: author.analytics_uuid || undefined,
         stripe_customer_id: author.stripe_customer_id || undefined,
         stripe_subscription_id: author.stripe_subscription_id || undefined,
+        signature: author.signature || undefined,
         __typename: "Author",
       };
     }

@@ -11,7 +11,6 @@ import {
   EmailTemplates,
   NextApiRequestWithFormData,
 } from "../../graphql/types";
-import { NotificationMeta } from "../../../__generated__/__types__";
 
 import { VerifySubscriberToken } from "@/types";
 

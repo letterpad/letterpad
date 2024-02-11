@@ -8,8 +8,9 @@ import {
   useState,
 } from "react";
 
+import { useGetSettings } from "@/app/settings/_feature/api.client";
+
 import { PostContextType } from "./types";
-import { useGetSettings } from "../../../settings/_feature/api.client";
 
 export const PostContext = createContext<PostContextType>(
   {} as PostContextType

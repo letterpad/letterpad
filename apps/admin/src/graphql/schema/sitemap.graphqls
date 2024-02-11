@@ -1,6 +1,6 @@
 type SiteMapNode {
   route: String!
-  priority: Int!
+  priority: Float!
   changefreq: String
   lastmod: String
 }

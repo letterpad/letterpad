@@ -1,9 +1,9 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "ui";
 
-import { removeTypenames } from "@/shared/utils";
+import { SaveButton } from "@/components/save-button";
 
-import { SaveButton } from "../../../../components/save-button";
+import { removeTypenames } from "@/shared/utils";
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 

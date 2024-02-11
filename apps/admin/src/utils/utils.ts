@@ -1,11 +1,10 @@
-const CATEGORY_PARSER_REGEX = /_\d{0,2}_/;
-
-export const isCategory = (tag: string): boolean => {
-  const category = tag.split(CATEGORY_PARSER_REGEX)[1];
-  return !!category;
+const convertInitialsToUpperCase = (sentence: string) => {
+  return sentence
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 };
 
-export const tryToParseCategoryName = (tag: string): string => {
-  const category = tag.split(CATEGORY_PARSER_REGEX)[1];
-  return category || tag;
+export const isSqliteDb = () => {
+  return process.env.DATABASE_URL?.startsWith("file");
 };

@@ -204,6 +204,15 @@ export type FollowAuthorResponse = {
   ok: Scalars["Boolean"];
 };
 
+export type FollowerNewMeta = {
+  __typename?: "FollowerNewMeta";
+  followed_id?: Maybe<Scalars["Int"]>;
+  follower_avatar?: Maybe<Scalars["String"]>;
+  follower_id?: Maybe<Scalars["Int"]>;
+  follower_name?: Maybe<Scalars["String"]>;
+  follower_username?: Maybe<Scalars["String"]>;
+};
+
 export type Forbidden = LetterpadError & {
   __typename?: "Forbidden";
   message: Scalars["String"];
@@ -328,6 +337,7 @@ export type InputUpdateMedia = {
 export type InputUpdatePost = {
   cover_image?: InputMaybe<InputImage>;
   excerpt?: InputMaybe<Scalars["String"]>;
+  exclude_from_home?: InputMaybe<Scalars["Boolean"]>;
   featured?: InputMaybe<Scalars["Boolean"]>;
   html?: InputMaybe<Scalars["String"]>;
   html_draft?: InputMaybe<Scalars["String"]>;
@@ -460,6 +470,8 @@ export type Mutation = {
   forgotPassword: ForgotPasswordResponse;
   likePost: ToggleLikePostResponse;
   login?: Maybe<LoginResponse>;
+  markAllAsRead: NotificationUpdateResult;
+  markAsRead: NotificationUpdateResult;
   removeDomain: RemoveDomainResponse;
   resetPassword: ForgotPasswordResponse;
   unFollowAuthor: FollowAuthorResponse;
@@ -510,6 +522,10 @@ export type MutationLikePostArgs = {
 
 export type MutationLoginArgs = {
   data?: InputMaybe<LoginData>;
+};
+
+export type MutationMarkAsReadArgs = {
+  notification_id: Scalars["String"];
 };
 
 export type MutationResetPasswordArgs = {
@@ -563,9 +579,78 @@ export enum NavigationType {
   Tag = "tag",
 }
 
+export type NewAuthorResponse = {
+  __typename?: "NewAuthorResponse";
+  authors: Array<Maybe<Author>>;
+  ok: Scalars["Boolean"];
+};
+
 export type NotFound = LetterpadError & {
   __typename?: "NotFound";
   message: Scalars["String"];
+};
+
+export type Notification = {
+  __typename?: "Notification";
+  author_id?: Maybe<Scalars["Int"]>;
+  createdAt: Scalars["Date"];
+  is_read?: Maybe<Scalars["Boolean"]>;
+  mail_sent?: Maybe<Scalars["Boolean"]>;
+  meta?: Maybe<NotificationMeta>;
+  notification_id?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["Date"];
+};
+
+export type NotificationAddResult = {
+  __typename?: "NotificationAddResult";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
+export type NotificationDeleteResult = {
+  __typename?: "NotificationDeleteResult";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
+export type NotificationFilters = {
+  cursor?: InputMaybe<Scalars["Int"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+  is_read?: InputMaybe<Scalars["Boolean"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  mail_sent?: InputMaybe<Scalars["Boolean"]>;
+  page?: InputMaybe<Scalars["Int"]>;
+  post_id?: InputMaybe<Scalars["Int"]>;
+  sender_id?: InputMaybe<Scalars["Int"]>;
+};
+
+export type NotificationMeta =
+  | FollowerNewMeta
+  | PostLikeMeta
+  | PostNewMeta
+  | SubscriberNewMeta
+  | SystemMeta;
+
+export type NotificationNode = {
+  __typename?: "NotificationNode";
+  count: Scalars["Int"];
+  rows: Array<Maybe<Notification>>;
+};
+
+export type NotificationResponse = NotificationNode | UnAuthorized;
+
+export enum NotificationType {
+  FollowerNew = "FOLLOWER_NEW",
+  PostLike = "POST_LIKE",
+  PostNew = "POST_NEW",
+  SubscriberNew = "SUBSCRIBER_NEW",
+  System = "SYSTEM",
+}
+
+export type NotificationUpdateResult = {
+  __typename?: "NotificationUpdateResult";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
 };
 
 export enum Permissions {
@@ -576,12 +661,20 @@ export enum Permissions {
   ReadOnlyPosts = "READ_ONLY_POSTS",
 }
 
+export type PopularTagsResponse = {
+  __typename?: "PopularTagsResponse";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+  rows?: Maybe<Array<Maybe<Tag>>>;
+};
+
 export type Post = {
   __typename?: "Post";
   author?: Maybe<AuthorResponse>;
   cover_image: Image;
   createdAt: Scalars["Date"];
   excerpt?: Maybe<Scalars["String"]>;
+  exclude_from_home?: Maybe<Scalars["Boolean"]>;
   featured: Scalars["Boolean"];
   html?: Maybe<Scalars["String"]>;
   html_draft?: Maybe<Scalars["String"]>;
@@ -623,6 +716,26 @@ export type PostFilters = {
   slug?: InputMaybe<Scalars["String"]>;
   status?: InputMaybe<PostStatusOptions>;
   type?: InputMaybe<PostTypes>;
+};
+
+export type PostLikeMeta = {
+  __typename?: "PostLikeMeta";
+  author_avatar?: Maybe<Scalars["String"]>;
+  author_name?: Maybe<Scalars["String"]>;
+  author_username?: Maybe<Scalars["String"]>;
+  post_id?: Maybe<Scalars["Int"]>;
+  post_slug?: Maybe<Scalars["String"]>;
+  post_title?: Maybe<Scalars["String"]>;
+};
+
+export type PostNewMeta = {
+  __typename?: "PostNewMeta";
+  author_avatar?: Maybe<Scalars["String"]>;
+  author_name?: Maybe<Scalars["String"]>;
+  author_username?: Maybe<Scalars["String"]>;
+  post_id?: Maybe<Scalars["Int"]>;
+  post_slug?: Maybe<Scalars["String"]>;
+  post_title?: Maybe<Scalars["String"]>;
 };
 
 export type PostResponse =
@@ -698,6 +811,9 @@ export type Query = {
   letterpadLatestPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;
   media: MediaResponse;
+  newAuthors?: Maybe<NewAuthorResponse>;
+  notifications: NotificationResponse;
+  popularTags: PopularTagsResponse;
   post: PostResponse;
   posts: PostsResponse;
   settings: SettingResponse;
@@ -735,8 +851,20 @@ export type QueryLetterpadLatestPostArgs = {
   filters?: InputMaybe<LetterpadPostFilters>;
 };
 
+export type QueryLetterpadLatestPostsArgs = {
+  cursor?: InputMaybe<Scalars["Int"]>;
+};
+
 export type QueryMediaArgs = {
   filters?: InputMaybe<MediaFilters>;
+};
+
+export type QueryNewAuthorsArgs = {
+  limit?: InputMaybe<Scalars["Int"]>;
+};
+
+export type QueryNotificationsArgs = {
+  filters?: InputMaybe<NotificationFilters>;
 };
 
 export type QueryPostArgs = {
@@ -918,6 +1046,11 @@ export type SubscriberError = {
   message?: Maybe<Scalars["String"]>;
 };
 
+export type SubscriberNewMeta = {
+  __typename?: "SubscriberNewMeta";
+  subscriber_email?: Maybe<Scalars["String"]>;
+};
+
 export type SubscriberResponse = Subscriber | SubscriberError;
 
 export type SubscribersAddResult = {
@@ -949,8 +1082,17 @@ export type Subscription = {
   updated_at: Scalars["String"];
 };
 
+export type SystemMeta = {
+  __typename?: "SystemMeta";
+  message?: Maybe<Scalars["String"]>;
+  slug?: Maybe<Scalars["String"]>;
+  url?: Maybe<Scalars["String"]>;
+};
+
 export type Tag = {
   __typename?: "Tag";
+  category?: Maybe<Scalars["String"]>;
+  count?: Maybe<Scalars["Int"]>;
   id: Scalars["String"];
   name: Scalars["String"];
   posts?: Maybe<PostsResponse>;
@@ -1027,6 +1169,7 @@ export type MeQuery = {
   me?:
     | {
         __typename: "Author";
+        id: number;
         name: string;
         bio?: string | null;
         occupation?: string | null;
@@ -1066,6 +1209,7 @@ export type MeQuery = {
 
 export type MeFragmentFragment = {
   __typename: "Author";
+  id: number;
   name: string;
   bio?: string | null;
   occupation?: string | null;
@@ -1148,6 +1292,7 @@ export type MeAndSettingsQuery = {
   me?:
     | {
         __typename: "Author";
+        id: number;
         name: string;
         bio?: string | null;
         occupation?: string | null;
@@ -1433,6 +1578,7 @@ export type PostPageQuery = {
   me?:
     | {
         __typename: "Author";
+        id: number;
         name: string;
         bio?: string | null;
         occupation?: string | null;
@@ -1819,6 +1965,7 @@ export const MeFragmentFragmentDoc = `
     fragment meFragment on Author {
   ... on Author {
     __typename
+    id
     name
     bio
     occupation

@@ -1,4 +1,5 @@
 import { NextApiResponse } from "next";
+import { revalidateTag } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 
@@ -39,6 +40,7 @@ const Verify = async (
           where: { id: token.author_id },
         });
       }
+      revalidateTag("newAuthors");
       update = author;
     }
     if (!update) {

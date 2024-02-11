@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
 import { EmailTemplateResponse, NewFollowerProps } from "@/graphql/types";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
-import { getRootUrl } from "../../../shared/getRootUrl";
 
 export async function getNewFollowerContent(
   data: NewFollowerProps,

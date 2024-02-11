@@ -1,10 +1,12 @@
 import { Prisma } from "@prisma/client";
+import { revalidateTag } from "next/cache";
+
+import { mail } from "@/lib/mail";
 
 import { report } from "@/components/error";
 
 import {
   MutationUpdatePostArgs,
-  NotificationMeta,
   PostStatusOptions,
   PostTypes,
   ResolversTypes,
@@ -12,14 +14,12 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { slugify } from "@/graphql/resolvers/helpers";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+import { convertNotificationMetaIn } from "@/graphql/resolvers/utils/dbTypeCheck";
 import { formatHtml } from "@/graphql/resolvers/utils/formatHtml";
 import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
-
-import { convertNotificationMetaIn } from "../../resolvers/utils/dbTypeCheck";
-import { mail } from "../../../lib/mail";
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,
@@ -52,6 +52,8 @@ export const updatePost = async (
     const isFirstPublish =
       args.data.status === PostStatusOptions.Published &&
       existingPost.status !== PostStatusOptions.Published;
+
+    const nowPublished = args.data.status === PostStatusOptions.Published;
 
     const author = await prisma.author.findFirst({
       where: { id: existingPost.author_id },
@@ -147,8 +149,11 @@ export const updatePost = async (
         Math.ceil((args.data.stats?.words ?? 200) / 200) + "" ?? "2";
     }
 
-    if (args.data.status === PostStatusOptions.Published) {
+    if (nowPublished) {
       newPostArgs.data.html = await formatHtml(existingPost.html_draft ?? "");
+    }
+
+    if (isFirstPublish) {
       newPostArgs.data.publishedAt = new Date();
     }
 
@@ -166,7 +171,10 @@ export const updatePost = async (
     }
     const updatedPost = await prisma.post.update(newPostArgs);
 
-    const nowPublished = args.data.status === PostStatusOptions.Published;
+    if (nowPublished) {
+      revalidateTag("letterpadLatestPosts");
+      revalidateTag("categories");
+    }
     if (!author.first_post_published && nowPublished) {
       await prisma.author.update({
         data: { first_post_published: true },

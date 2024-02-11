@@ -3,5 +3,4 @@ Hello {{ following_name }},
 Congratulations! You have got a new follower.
 
 <strong>{{ follower_profile_link }}</strong> is now following you.
-If you share the same interests, you can follow them back. This will help you to stay 
-updated with their activities.
+If you share the same interests, you can follow them back. This will help you to stay updated with their activities.

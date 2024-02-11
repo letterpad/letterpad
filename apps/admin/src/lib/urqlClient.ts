@@ -1,7 +1,8 @@
-import { Client, createClient, fetchExchange } from "@urql/core";
+// import { Client, createClient, fetchExchange } from "@urql/core";
+import { Client, createClient, fetchExchange, mapExchange } from "@urql/core";
 import { cacheExchange } from "@urql/exchange-graphcache";
-import { mapExchange } from "urql";
 
+import { getRootUrl } from "../shared/getRootUrl";
 import schema from "../../schema.json";
 
 let _client: Client | null = null;
@@ -19,14 +20,19 @@ export const cache = cacheExchange({
     Stats: () => null,
     PostCountsByStatus: () => null,
     PostStats: () => null,
-    // Author: () => null,
-    // PostsNode: () => null,
+    Author: () => null,
+    PostsNode: () => null,
   },
 });
+
+const url =
+  typeof document === "undefined"
+    ? `${getRootUrl()}/api/graphql`
+    : "/api/graphql";
 const makeClient = () => {
   if (_client) return _client;
   _client = createClient({
-    url: "/api/graphql",
+    url,
     maskTypename: true,
     exchanges: [
       cache,

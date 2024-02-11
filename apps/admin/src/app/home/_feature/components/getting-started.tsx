@@ -6,9 +6,8 @@ import { Button, Content, PageHeader } from "ui";
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { setIntroDimissed } from "@/app/home/_feature/components/visibility";
+import { useUpdateAuthor } from "@/app/posts/_feature/api.client";
 import { ChangeUsername } from "@/app/profile/_feature/components/change-username";
-
-import { useUpdateAuthor } from "../../../posts/_feature/api.client";
 
 import { PageProps } from "@/types";
 

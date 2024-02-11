@@ -1,31 +1,36 @@
 import { SettingsFragmentFragment } from 'letterpad-sdk';
+import Head from 'next/head';
 import Script from 'next/script';
 import { FC } from 'react';
 
+import Fonts from './fonts/fonts';
 // import { generateGoogleFontsLink } from './fonts';
 import { generateGoogleFontsVariables } from './fonts/fontsCssLink';
-import Fonts from './fonts/fonts';
 
 export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   settings,
 }) => {
   const { srcs, content } = extractScriptInfo(settings?.scripts ?? '');
   return (
-    <head>
+    <>
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preload" as="image" href={settings.banner?.src!} />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin={'anonymous'}
+        />
+
+        <Fonts
+          fonts={[
+            settings.design?.primary_font,
+            settings.design?.secondary_font,
+            'Roboto_Mono',
+          ]}
+        />
+      </Head>
       <Script strategy="afterInteractive" src={'/static/prism.js'} async />
-      <style>
-        {`
-          html {
-            --accent: ${settings?.design?.brand_color ?? '#d93097'};
-            ${generateGoogleFontsVariables([
-              settings.design?.primary_font,
-              settings.design?.secondary_font,
-              'Roboto_Mono',
-              'Inter',
-            ])}
-          }
-          `}
-      </style>
       {srcs.map((src) => (
         <Script strategy="afterInteractive" src={src} key={src} async />
       ))}
@@ -36,14 +41,7 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           __html: content,
         }}
       />
-      <Fonts
-        fonts={[
-          settings.design?.primary_font,
-          settings.design?.secondary_font,
-          'Roboto_Mono',
-        ]}
-      />
-    </head>
+    </>
   );
 };
 

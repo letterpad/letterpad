@@ -2,9 +2,8 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input, Label, TextArea } from "ui";
 
+import { SaveButton } from "@/components/save-button";
 import { Upload } from "@/components/upload";
-
-import { SaveButton } from "../../../../components/save-button";
 
 export const Basic = () => {
   const { register, watch, control } = useFormContext();

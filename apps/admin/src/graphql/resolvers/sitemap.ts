@@ -93,23 +93,15 @@ const Query: QueryResolvers<ResolverContext> = {
     const rows = posts.map((post) => ({
       route: `${siteUrl}/${post.type}/${post.slug}`,
       lastmod: new Date(post.updatedAt || "").toISOString(),
-      priority: 1,
+      priority: 0.8,
       changefreq: "daily",
     }));
 
-    if (setting.show_about_page) {
-      rows.push({
-        route: `${siteUrl}/about`,
-        lastmod: new Date().toISOString(),
-        priority: 1,
-        changefreq: "yearly",
-      });
-    }
     if (setting.show_tags_page) {
       rows.push({
         route: `${siteUrl}/tags`,
         lastmod: new Date().toISOString(),
-        priority: 1,
+        priority: 0.8,
         changefreq: "monthly",
       });
     }
@@ -117,7 +109,7 @@ const Query: QueryResolvers<ResolverContext> = {
       route: `${siteUrl}`,
       lastmod: new Date().toISOString(),
       priority: 1,
-      changefreq: "monthly",
+      changefreq: "always",
     });
 
     return { message: "", rows, __typename: "SiteMapList" };

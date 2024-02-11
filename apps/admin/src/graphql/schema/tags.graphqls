@@ -8,6 +8,7 @@ type Tag {
   slug: String!
   posts: PostsResponse
   type: TagType!
+  category: String
   id: String!
 }
 
@@ -33,6 +34,18 @@ union TagResponse = Exception | Tag | UnAuthorized
 union UpdateTagsResponse = EditTaxResponse | UnAuthorized
 union DeleteTagsResponse = DeleteTagsResult | UnAuthorized
 
+type Tag {
+  name: String
+  count: Int
+  slug: String
+}
+
+type PopularTagsResponse {
+  rows: [Tag]
+  ok: Boolean!
+  message: String
+}
+
 input InputTags {
   name: String!
   old_name: String
@@ -47,6 +60,7 @@ type TagsNode {
 type Query {
   tags(filters: TagsFilters): TagsResponse!
   tag(slug: String!): TagResponse!
+  popularTags: PopularTagsResponse!
 }
 
 type Mutation {

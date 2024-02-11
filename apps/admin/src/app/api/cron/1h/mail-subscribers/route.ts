@@ -3,7 +3,11 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { mail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
-import { getQueuedSubscriberEmails } from "@/lib/redis";
+import {
+  delQueuedSubscriberEmails,
+  getKeyForEmailSubscription,
+  getQueuedSubscriberEmails,
+} from "@/lib/redis";
 
 import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 import { getTemplate } from "@/graphql/mail/template";
@@ -38,9 +42,9 @@ type Variables = Subscribers | Followers;
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    // return new Response("Unauthorized", {
-    //   status: 401,
-    // });
+    return new Response("Unauthorized", {
+      status: 401,
+    });
   }
 
   const posts = await prisma.post.findMany({
@@ -49,17 +53,17 @@ export async function GET(request: NextRequest) {
     },
     where: {
       status: PostStatusOptions.Published,
-      mail_status: MailStatus.Active,
+      mail_status: MailStatus.Sent,
     },
   });
 
-  const emailsPerPost: Variables[] = await Promise.all(
+  const allEmails: Variables[] = await Promise.all(
     posts.map((post) => getQueuedSubscriberEmails(post.id))
   );
-
   const template = await getTemplate(EmailTemplates.NewPost);
 
-  const mails = emailsPerPost.map(async (variable) => {
+  const mailSentIds: number[] = [];
+  const mails = allEmails.flat().map(async (variable) => {
     const subject = template.subject.replaceAll(
       "{{ blog_name }}",
       variable.site_title
@@ -81,33 +85,65 @@ export async function GET(request: NextRequest) {
       )
       .replaceAll("{{ author_name }}", variable.author_name);
 
-    return new Promise<SMTPTransport.SentMessageInfo>(async (resolve) => {
-      const unSubscribeLink = await getUnsubscribeText({
-        recipient_email: variable.to,
-        author_id: variable.author_id,
-        subcriber_id:
-          variable.__typename === "Subscribers" ? variable.subscriber_id : 0,
-      });
+    return new Promise<SMTPTransport.SentMessageInfo | void>(
+      async (resolve) => {
+        const unSubscribeLink = await getUnsubscribeText({
+          recipient_email: variable.to,
+          author_id: variable.author_id,
+          subcriber_id:
+            variable.__typename === "Subscribers" ? variable.subscriber_id : 0,
+        });
 
-      const html = baseTemplate
-        .replaceAll("{{ content }}", addLineBreaks(body))
-        .replaceAll("{{ unsubscribe_link }}", unSubscribeLink);
+        const html = baseTemplate
+          .replaceAll("{{ content }}", addLineBreaks(body))
+          .replaceAll("{{ unsubscribe_link }}", unSubscribeLink)
+          .replaceAll("{{ signature }}", "");
 
-      const toName =
-        variable.__typename === "Subscribers" ? "Reader" : variable.author_name;
-      const res = await mail(
-        {
-          from: `"Letterpad" <admin@letterpad.app>`,
-          replyTo: `"No-Reply" <admin@letterpad.app>`,
-          to: `"${toName}" <${variable.to}>`,
-          subject,
-          html,
-        },
-        false
-      );
-      resolve(res);
-    });
+        const toName =
+          variable.__typename === "Subscribers"
+            ? "Reader"
+            : variable.author_name;
+        const res = await mail(
+          {
+            from: `"Letterpad" <admin@letterpad.app>`,
+            replyTo: `"No-Reply" <admin@letterpad.app>`,
+            to: `"${toName}" <${variable.to}>`,
+            subject,
+            html,
+          },
+          false
+        ).catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(`Failed to send email to ${variable.to}`);
+        });
+        mailSentIds.push(variable.post_id);
+        resolve(res);
+      }
+    );
   });
+  await Promise.all(mails).catch((e) => {
+    // eslint-disable-next-line no-console
+    console.log("Failed to send one or more emails", e);
+  });
+  await prisma.post
+    .updateMany({
+      where: {
+        id: {
+          in: mailSentIds,
+        },
+      },
+      data: {
+        mail_status: MailStatus.Sent,
+      },
+    })
+    .catch((e) => {
+      // eslint-disable-next-line no-console
+      console.log(`Failed to update mail status for one or more post`);
+    });
+
+  await delQueuedSubscriberEmails(
+    ...posts.map((post) => getKeyForEmailSubscription(post.id)).flat()
+  );
 
   return Response.json({ success: true });
 }

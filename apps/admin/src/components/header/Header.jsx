@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
 
+import { ProfileDropdown } from "@/components/profile-dd";
+import ThemeSwitcher from "@/components/theme-switcher";
+import { Search } from "@/components/website_v2/search";
+
 import { EventAction, track } from "@/track";
 
 import Logo from "/public/website/logo.png";
-import { ProfileDropdown } from "@/components/profile-dd";
-import ThemeSwitcher from "@/components/theme-switcher";
 
 function Header() {
   return (
@@ -24,12 +26,16 @@ function Header() {
                 Letterpad
               </span>
             </Link>
-            
           </div>
 
           <nav className="flex grow">
-            <ul className="flex grow flex-wrap items-center justify-end gap-4">
-            <li><ThemeSwitcher/></li>
+            <ul className="flex grow flex-wrap items-center justify-end gap-6">
+              <li>
+                <Search />
+              </li>
+              <li>
+                <ThemeSwitcher />
+              </li>
               <li>
                 <ProfileDropdown
                   sessionPath="/api/auth/session"

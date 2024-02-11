@@ -3,36 +3,65 @@ import { Prisma } from "@prisma/client";
 import {
   PostStatusOptions,
   PostTypes,
+  QueryLetterpadLatestPostsArgs,
   ResolversTypes,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadLatestPosts = async (
-  _args: unknown,
+  args: Partial<QueryLetterpadLatestPostsArgs>,
   { prisma }: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
+  const cursor = args.filters?.cursor
+    ? {
+        cursor: {
+          id: args.filters.cursor,
+        },
+      }
+    : {};
+
   const condition: Prisma.PostFindManyArgs = {
     where: {
-      status: PostStatusOptions.Published,
-      type: PostTypes.Post,
-      title: {
-        not: {
-          equals: "Welcome to Letterpad",
+      tags: {
+        some: {
+          slug: args.filters?.tag,
         },
       },
+      status: PostStatusOptions.Published,
+      type: PostTypes.Post,
+      excerpt: {
+        not: {
+          equals: "",
+        },
+      },
+      NOT: [
+        {
+          title: {
+            equals: "",
+          },
+        },
+        {
+          title: {
+            equals: "Coming Soon",
+          },
+        },
+      ],
     },
-    take: 20,
+    skip: cursor.cursor?.id ?? 0 > 0 ? 1 : 0,
+    take: 13,
+    ...cursor,
     orderBy: {
-      updatedAt: "desc",
+      publishedAt: "desc",
     },
   };
   try {
     const posts = await prisma.post.findMany(condition);
-
     return {
       __typename: "PostsNode",
-      rows: posts.map(mapPostToGraphql),
+      rows: posts
+        .map(mapPostToGraphql)
+        .filter((row) => (row.html?.length ?? 0) > 800),
       count: await prisma.post.count({ where: condition.where }),
     };
   } catch (e: any) {

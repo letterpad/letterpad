@@ -11,8 +11,7 @@ import {
   usePostsQuery,
   useStatsQuery,
 } from "@/__generated__/src/graphql/queries/queries.graphql";
-
-import { isAuthor, isPostsNode, isStats } from "../../../utils/type-guards";
+import { isAuthor, isPostsNode, isStats } from "@/utils/type-guards";
 
 export const useUpdateAuthor = () => {
   const [{ data, fetching, error }, updateAuthor] = useUpdateAuthorMutation();

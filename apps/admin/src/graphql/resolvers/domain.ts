@@ -2,6 +2,7 @@ import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
 import { getDomain, removeDomain } from "../services/domain";
+import { check } from "../services/domain/check";
 
 import { Optional } from "@/types";
 
@@ -74,6 +75,8 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
         author_id: context.session.user.id,
       },
     });
+
+    await check(domain);
     // await enqueueEmailAndSend({
     //   author_id: context.session.user.id,
     //   template_id: EmailTemplates.DomainMapSuccess,

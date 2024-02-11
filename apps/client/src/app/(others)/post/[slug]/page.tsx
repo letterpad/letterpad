@@ -5,8 +5,8 @@ import { Suspense } from 'react';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-import { BlogPost } from '../../../../features/post/blogPost';
-import { Skeleton } from '../../../../features/post/skeleton';
+import { BlogPost } from '@/features/post/blogPost';
+import { Skeleton } from '@/features/post/skeleton';
 
 export default async function Post(props) {
   return (

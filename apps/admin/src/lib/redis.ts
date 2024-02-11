@@ -14,6 +14,23 @@ export const getPageViewsForPost = async (postId: string): Promise<number> => {
   return count;
 };
 
+export const getAllPageViews = async () => {
+  const [cursor, keys] = await client.scan(0, { count: 50, match: "views*" });
+  return await Promise.all(
+    keys.map((key) => {
+      return new Promise<{ key: string; count: number }>(
+        async (resolve, reject) => {
+          resolve({ key, count: await client.scard(key) });
+        }
+      );
+    })
+  );
+};
+
+export const delAllPageViews = async (...keys) => {
+  return await client.del(...keys);
+};
+
 export const queueSubscribeEmails = async (
   postId: number,
   data: Array<any>
@@ -23,16 +40,20 @@ export const queueSubscribeEmails = async (
   });
 };
 
-export const removePostFromSubscribeEmail = async (postId: number) => {
-  await client.json.del(getKeyForEmailSubscription(postId));
-};
+// export const removePostFromSubscribeEmail = async (postId: number) => {
+//   await client.json.del(getKeyForEmailSubscription(postId));
+// };
 
 export const getQueuedSubscriberEmails = async (postId: number) => {
   return await client.json.get(getKeyForEmailSubscription(postId));
 };
 
-export const getKeyForViews = (type: string, id: string) => {
-  return `${type}:${id}:views`;
+export const delQueuedSubscriberEmails = async (...keys) => {
+  return await client.del(...keys);
+};
+
+export const getKeyForViews = (type: string, id: string | number) => {
+  return `views:${type}:${id}`;
 };
 
 export const getKeyForEmailSubscription = (id: number) => {

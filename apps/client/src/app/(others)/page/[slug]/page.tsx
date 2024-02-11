@@ -4,10 +4,11 @@ import { Metadata } from 'next';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
+import { Post } from '@/features/post/post';
 import Creative from '@/layouts/Creative';
-import Custom404 from '../../../not-found';
+
 import { StructuredData } from '../../../../components/structured-data';
-import { Post } from '../../../../features/post/post';
+import Custom404 from '../../../not-found';
 
 export default async function Page(props) {
   const [post, data] = await Promise.all([
