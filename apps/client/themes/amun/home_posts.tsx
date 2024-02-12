@@ -2,9 +2,9 @@ import { NavigationType, PostsFragmentFragment } from 'letterpad-sdk';
 import { FC, ReactNode } from 'react';
 
 import { Card, HorizontalCard } from './commons/card';
+import { SectionContainer } from '../../src/components/section';
 import { getPostsByTag, getTagsData } from '../../src/data';
 import { HomePostsProps } from '../../types/pageTypes';
-import { SectionContainer } from '../../src/components/section';
 
 const pickThreePostsMax = (posts: PostsFragmentFragment['rows']) => {
   if (posts.length >= 3) return posts.slice(0, 3);
