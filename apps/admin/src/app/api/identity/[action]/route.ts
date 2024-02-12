@@ -5,6 +5,7 @@ import { decode } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 
 import { getAuthCookieName } from "@/utils/authCookie";
+const { host } = new URL(process.env.ROOT_URL);
 
 export async function GET(
   req: NextRequest,
@@ -46,7 +47,7 @@ export async function GET(
     cookies().delete(getAuthCookieName());
     requestHeaders.set(
       "set-cookie",
-      `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
+      `${getAuthCookieName()}=; Max-Age=-1; path=/; secure; HttpOnly; SameSite=Lax; domain=.${host}`
     );
     const response = NextResponse.redirect(
       `${serviceUrl}?source=${sourceUrl}`,
