@@ -8,7 +8,7 @@ const Privacy = () => {
           Updated on January 17, 2021 · Effective from January 17, 2021
         </time>
       </div>
-      <div className="prose dark:prose-dark max-w-2xl mx-auto mt-10">
+      <div className="prose dark:prose-dark max-w-3xl mx-auto mt-10">
         <p>
           Letterpad ("Letterpad," "we," or "our"), recognizes the importance of
           your personal privacy. Therefore, we have created this Privacy Policy

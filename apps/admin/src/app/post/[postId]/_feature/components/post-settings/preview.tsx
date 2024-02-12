@@ -17,7 +17,7 @@ export const Preview: FC<Props> = ({
 }) => {
   return (
     <>
-      <div className="p-1 max-w-2xl mx-auto mt-8 bg-white dark:bg-neutral-800 shadow-md rounded-md flex flex-row gap-2">
+      <div className="p-1 max-w-3xl mx-auto mt-8 bg-white dark:bg-neutral-800 shadow-md rounded-md flex flex-row gap-2">
         {image && (
           <img
             src={image}

@@ -26,7 +26,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
   return (
     <SectionContainer>
       <ScrollTop />
-      <div className="mx-auto flex w-full  max-w-2xl justify-between pt-10 flex-col">
+      <div className="mx-auto flex w-full  max-w-3xl justify-between pt-10 flex-col">
         <article className="post format-blue dark:format-invert mx-auto w-full">
           <header className={'mb-4 lg:mb-4'}>
             <PageTitle className="leading-10">{title}</PageTitle>
