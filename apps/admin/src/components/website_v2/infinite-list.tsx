@@ -11,12 +11,12 @@ interface Props {
   tag?: string;
 }
 
-export const InfiniteList: FC<Props> = ({ tag }) => {
+export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
   const [data, setData] = useState<Post[]>([]);
 
   const loadMore = () => {
     getLetterpadPosts({
-      filters: { cursor: data[data.length - 1]?.id, tag },
+      filters: { cursor: data[data.length - 1]?.id ?? cursor, tag },
     }).then((res) => {
       if (res?.letterpadLatestPosts.__typename === "PostsNode") {
         const newRows = res.letterpadLatestPosts.rows;
