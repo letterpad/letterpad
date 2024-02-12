@@ -169,18 +169,18 @@ export const options = (): NextAuthOptions => ({
     signIn: `${basePath}/login`,
   },
   secret: process.env.SECRET_KEY,
-  cookies: {
-    sessionToken: {
-      name: getAuthCookieName(),
-      options: {
-        httpOnly: useSecureCookies,
-        sameSite: "lax",
-        path: "/",
-        domain: `.${host}`,
-        secure: useSecureCookies,
-      },
-    },
-  },
+  // cookies: {
+  //   sessionToken: {
+  //     name: getAuthCookieName(),
+  //     options: {
+  //       httpOnly: useSecureCookies,
+  //       sameSite: "lax",
+  //       path: "/",
+  //       domain: `.${host}`,
+  //       secure: useSecureCookies,
+  //     },
+  //   },
+  // },
 });
 
 const auth = (req: NextApiRequest, res: NextApiResponse) =>
