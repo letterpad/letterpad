@@ -20,7 +20,6 @@ import {
 import { FileExplorer } from "@/components/file-explorer";
 import ThemeSwitcher from "@/components/theme-switcher";
 
-import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
 const TryCreatives = () => {

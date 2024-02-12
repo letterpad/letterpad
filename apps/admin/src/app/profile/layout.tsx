@@ -1,4 +1,3 @@
-import { gql } from "graphql-request";
 import { Metadata } from "next";
 import React from "react";
 

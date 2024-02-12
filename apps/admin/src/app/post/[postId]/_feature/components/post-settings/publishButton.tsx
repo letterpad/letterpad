@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Message, Modal } from "ui";
 
 import {
@@ -11,11 +11,7 @@ import { EventAction, track } from "@/track";
 import { isTagsNode } from "@/utils/type-guards";
 
 import { Heading } from "./heading";
-import {
-  PageNotLinkedWithNavigation,
-  TagNotLinkedWithNavigation,
-  WarnNoTags,
-} from "./warnings";
+import { PageNotLinkedWithNavigation, WarnNoTags } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
 
 interface Props {

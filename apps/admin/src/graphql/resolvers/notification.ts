@@ -1,7 +1,4 @@
-import {
-  MutationResolvers,
-  QueryResolvers,
-} from "@/__generated__/__types__";
+import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 
 import { convertNotificationMetaOut } from "./utils/dbTypeCheck";
 import { ResolverContext } from "../context";
@@ -71,8 +68,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
   markAllAsRead: async (_, args, { prisma, session }) => {
     if (!session?.user.id) {
       return {
-        ok: false
-      }
+        ok: false,
+      };
     }
     const notifications = await prisma.notifications.findMany({
       where: {
@@ -88,8 +85,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
         },
         where: {
           notification_id: {
-            in: notifications.map((n) => n.notification_id)
-          }
+            in: notifications.map((n) => n.notification_id),
+          },
         },
       });
     }

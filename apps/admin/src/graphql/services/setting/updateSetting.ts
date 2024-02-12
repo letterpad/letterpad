@@ -5,7 +5,6 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
-import { ValueOf } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
 

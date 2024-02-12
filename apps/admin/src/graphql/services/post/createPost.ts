@@ -7,7 +7,6 @@ import {
   PostTypes,
   ResolversTypes,
 } from "@/__generated__/__types__";
-import siteConfig from "@/config/site.config";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";

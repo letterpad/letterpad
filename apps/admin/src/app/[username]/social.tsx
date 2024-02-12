@@ -30,13 +30,12 @@ export const SocialIcons = ({ social }: { social: Social }) => {
       <SocialIcon
         icon={<FaInstagram className="h-5 w-5" />}
         href={social?.twitter}
-        size={5}
       />
     </div>
   );
 };
 
-const SocialIcon = ({ icon, href, size = 8 }) => {
+const SocialIcon = ({ icon, href }) => {
   if (!href) {
     return null;
   }

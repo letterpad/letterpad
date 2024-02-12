@@ -13,4 +13,4 @@ config:
   withComponent: false
   withHooks: false
   # skipTypename: false
-  content: '//@ts-nocheck'
+  content: "//@ts-nocheck"

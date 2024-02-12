@@ -1,7 +1,6 @@
-import Head from "next/head";
 import Link from "next/link";
 import { FC, useEffect } from "react";
-import { Button, Content, PageHeader } from "ui";
+import { Button } from "ui";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
@@ -58,7 +57,6 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
                 .
               </p>
               <Button
-                variant="dark"
                 size="small"
                 onClick={() => updateStatus("profile_updated")}
                 className="mt-2"
@@ -77,7 +75,6 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
                 .
               </p>
               <Button
-                variant="dark"
                 size="small"
                 onClick={() => updateStatus("settings_updated")}
                 className="mt-2"

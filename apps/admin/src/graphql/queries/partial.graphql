@@ -55,7 +55,7 @@ fragment PostWithAuthorAndTags on Post {
   tags {
     __typename
     ... on TagsNode {
-    __typename
+      __typename
       rows {
         name
         slug

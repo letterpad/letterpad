@@ -18,7 +18,6 @@ export const QuickMenu: FC<Props> = ({
   postHash,
   showDrawer,
   showPreview,
-  id,
 }) => {
   const openPreview = () => {
     track({

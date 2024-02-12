@@ -8,7 +8,7 @@ import { getRootUrl } from "@/shared/getRootUrl";
 export const getAuthor = cache(
   async (
     _: any,
-    { session, prisma, client_author_id, dataloaders }: ResolverContext
+    { session, client_author_id, dataloaders }: ResolverContext
   ): Promise<ResolversTypes["AuthorResponse"]> => {
     const authorId = client_author_id || session?.user.id;
     if (!authorId) {

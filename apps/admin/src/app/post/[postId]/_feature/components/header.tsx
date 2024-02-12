@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { BsArrowLeft } from "react-icons/bs";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";

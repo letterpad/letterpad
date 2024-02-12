@@ -3,7 +3,6 @@ import { cache } from "react";
 import {
   QueryTagArgs,
   ResolversTypes,
-  Tag,
   TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";

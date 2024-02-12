@@ -1,5 +1,5 @@
 "use client";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { Card } from "./card";
@@ -11,7 +11,7 @@ interface Props {
   tag?: string;
 }
 
-export const InfiniteList: FC<Props> = ({ cursor, tag }) => {
+export const InfiniteList: FC<Props> = ({ tag }) => {
   const [data, setData] = useState<Post[]>([]);
 
   const loadMore = () => {

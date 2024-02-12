@@ -15,24 +15,11 @@ interface Props {
   settings: SettingsFragmentFragment;
   me: MeFragmentFragment;
 }
-export default function Creative({ site_name, data, settings, me }: Props) {
+export default function Creative({ data, settings, me }: Props) {
   if (settings.__typename !== 'Setting') return null;
   if (me?.__typename !== 'Author' || data.author?.__typename !== 'Author')
     return null;
-  const authorDetails = [
-    {
-      name: data.author.name,
-      avatar: data.author.avatar,
-      occupation: me.occupation,
-      company: me.company_name,
-      email: settings.site_email,
-      twitter: me.social?.twitter,
-      linkedin: me.social?.linkedin,
-      github: me.social?.github,
-      banner: settings.banner?.src,
-      logo: settings.site_logo?.src,
-    },
-  ];
+
   return (
     <>
       <ScrollTop />

@@ -3,7 +3,7 @@ import { CopyToClipboard } from "@/components/clipboard";
 export const MapDomain: React.FC<{
   domain: string;
   validate: JSX.Element;
-}> = ({ domain, validate }) => {
+}> = ({ validate }) => {
   return (
     <div>
       Please add the below A record in your Domain under DNS configuration to

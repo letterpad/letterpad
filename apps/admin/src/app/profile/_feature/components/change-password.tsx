@@ -8,7 +8,7 @@ import { ResetPasswordMutationVariables } from "@/graphql/queries/mutations.grap
 interface Props {
   id: number;
 }
-export const ChangePassword: React.FC<Props> = ({ id }) => {
+export const ChangePassword: React.FC<Props> = () => {
   const {
     register,
     formState: { errors },

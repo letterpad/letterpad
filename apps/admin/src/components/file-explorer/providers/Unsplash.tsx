@@ -76,6 +76,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   };
   useEffect(() => {
     searchUnsplash("random");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const jsxElements = useMemo(() => renderer(data), [data, renderer]);

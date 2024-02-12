@@ -5,7 +5,6 @@ import { decode } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 
 import { getAuthCookieName } from "@/utils/authCookie";
-const { host } = new URL(process.env.ROOT_URL);
 
 export async function GET(
   req: NextRequest,
@@ -36,7 +35,7 @@ export async function GET(
       select: { id: true },
       where: { email: decodedToken.email! },
     });
-    const deleted = await prisma.session.deleteMany({
+    await prisma.session.deleteMany({
       where: {
         author_id: author?.id!,
       },

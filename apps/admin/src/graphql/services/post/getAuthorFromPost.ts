@@ -3,7 +3,7 @@ import { ResolverContext } from "@/graphql/context";
 
 export const getAuthorFromPost = async (
   id: number,
-  { prisma, dataloaders }: ResolverContext
+  { dataloaders }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
   // const post = await prisma.post.findFirst({
   //   where: { id },

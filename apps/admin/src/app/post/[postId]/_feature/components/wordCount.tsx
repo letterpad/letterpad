@@ -22,7 +22,7 @@ export const WordCount = () => {
   useEffect(() => {
     if (!editor || active) return;
     storeStats();
-    editor?.on("SelectionChange", function (e) {
+    editor?.on("SelectionChange", function (_e) {
       storeStats();
     });
     setActive(true);

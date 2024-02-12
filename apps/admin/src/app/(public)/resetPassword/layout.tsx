@@ -1,7 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
-
-import ThemeSwitcher from "@/components/theme-switcher";
+import React from "react";
 
 const LoginLayout = ({ children }) => {
   return (

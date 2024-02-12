@@ -24,7 +24,14 @@ module.exports = {
     "import/no-duplicates": ["error", {"considerQueryString": true}],
     "react/prop-types": 0,
     "no-unused-vars": "off",
-    // "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // or "error"
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
     "react/no-unescaped-entities": 0,
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-var-requires": "off",

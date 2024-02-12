@@ -6,7 +6,6 @@ import {
   PostStatusOptions,
   QueryTagsArgs,
   ResolversTypes,
-  Tag,
   TagType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";

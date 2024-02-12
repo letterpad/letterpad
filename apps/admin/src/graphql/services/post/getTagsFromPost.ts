@@ -4,7 +4,7 @@ import { ResolverContext } from "../../context";
 
 export const getTagsFromPost = async (
   id: number,
-  { prisma, dataloaders }: ResolverContext
+  { dataloaders }: ResolverContext
 ): Promise<ResolversParentTypes["TagsResponse"]> => {
   const tags = await dataloaders.tagsByPostId.load(id);
   const tagsWithSlug = tags

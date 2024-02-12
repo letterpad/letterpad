@@ -99,7 +99,7 @@ export const updateAuthor = async (
       }
       dataToUpdate.verified = false;
     }
-    const { id, ...data } = dataToUpdate;
+    const { id: _id, ...data } = dataToUpdate;
     const author = await prisma.author.update({
       data: { ...data },
       where: { id: args.author.id },

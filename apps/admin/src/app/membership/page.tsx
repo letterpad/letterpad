@@ -7,16 +7,11 @@ import Link from "next/link";
 import { FC } from "react";
 import { Button, Content, PageHeader, Table } from "ui";
 
-import { prisma } from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
-
 import { formatAmountForDisplay } from "@/components/payments/utils";
 
 import { basePath } from "@/constants";
 import { SessionData } from "@/graphql/types";
 import { getReadableDate } from "@/shared/utils";
-
-import { getServerSession } from "../../graphql/context";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -26,15 +21,15 @@ type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
-const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
-  const handleClick = async (event) => {
+const Payments: FC<P & Props> = ({ customer, charges, active }) => {
+  const handleClick = async (_event) => {
     const res = await fetch("/api/checkout_session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     }).then((res) => res.json());
     const stripe = await stripePromise;
 
-    const result = await stripe?.redirectToCheckout({
+    await stripe?.redirectToCheckout({
       sessionId: res.id,
     });
   };
@@ -42,7 +37,7 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
   const deleteSubscription = async () => {
     const id = customer?.subscriptions?.data[0]?.id;
     if (!id) return;
-    const result = fetch(basePath + "/api/cancelSubscription", {
+    fetch(basePath + "/api/cancelSubscription", {
       method: "POST",
       body: JSON.stringify({ subscription_id: id }),
       headers: { "Content-Type": "application/json" },
@@ -85,6 +80,7 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
         </div>
         {active && (
           <Table
+            loading={false}
             columns={[
               {
                 key: "date",

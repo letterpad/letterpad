@@ -6,7 +6,7 @@ interface Props {
   site_name: string;
 }
 
-export const Brand: FC<Props> = ({ site_name }) => (
+export const Brand: FC<Props> = () => (
   <div className="sidebar-header flex items-center">
     <div className="inline-flex">
       <a href="#" className="inline-flex flex-row items-center">

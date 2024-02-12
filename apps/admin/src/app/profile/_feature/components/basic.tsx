@@ -60,7 +60,7 @@ export const Basic = () => {
           <Controller
             name="avatar"
             control={control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <Upload
                 className="h-28 w-28"
                 url={watch("avatar")}

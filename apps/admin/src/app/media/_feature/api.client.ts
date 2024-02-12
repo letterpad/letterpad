@@ -1,7 +1,4 @@
-import { Media } from "@/__generated__/__types__";
 import {
-  DeleteMediaDocument,
-  UpdateMediaDocument,
   useDeleteMediaMutation,
   useUpdateMediaMutation,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";

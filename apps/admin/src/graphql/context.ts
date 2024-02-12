@@ -115,7 +115,7 @@ const batchTags = async (keys: readonly number[]) => {
 
   const postTags: Record<number, (typeof tags)[0][]> = [];
 
-  tags.forEach((tag, index) => {
+  tags.forEach((tag) => {
     tag.posts.forEach((post) => {
       if (!postTags[post.id]) {
         postTags[post.id] = [];

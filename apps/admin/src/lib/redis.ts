@@ -15,14 +15,12 @@ export const getPageViewsForPost = async (postId: string): Promise<number> => {
 };
 
 export const getAllPageViews = async () => {
-  const [cursor, keys] = await client.scan(0, { count: 50, match: "views*" });
+  const [, keys] = await client.scan(0, { count: 50, match: "views*" });
   return await Promise.all(
     keys.map((key) => {
-      return new Promise<{ key: string; count: number }>(
-        async (resolve, reject) => {
-          resolve({ key, count: await client.scard(key) });
-        }
-      );
+      return new Promise<{ key: string; count: number }>(async (resolve) => {
+        resolve({ key, count: await client.scard(key) });
+      });
     })
   );
 };

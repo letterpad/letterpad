@@ -10,7 +10,7 @@ export const Dropdown: FC<Props> = ({ label, options, testId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    function handleClose(e) {
+    function handleClose(_e) {
       setIsDropdownOpen(false);
     }
 
@@ -26,10 +26,6 @@ export const Dropdown: FC<Props> = ({ label, options, testId }) => {
       e.stopPropagation();
       setIsDropdownOpen(true);
     }
-  };
-
-  const handleTogglerClick = () => {
-    setIsDropdownOpen((prevState) => !prevState);
   };
 
   return (

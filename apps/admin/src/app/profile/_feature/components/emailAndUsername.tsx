@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Button, Input } from "ui";
+import { Input } from "ui";
 
 import { SaveButton } from "@/components/save-button";
 
@@ -14,7 +14,7 @@ interface Props {
 
 export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
   const [emailError, setEmailError] = useState("");
-  const { register, watch, getFieldState } = useFormContext();
+  const { register, getFieldState } = useFormContext();
   const onEmailChange = (email: string) => {
     if (
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(

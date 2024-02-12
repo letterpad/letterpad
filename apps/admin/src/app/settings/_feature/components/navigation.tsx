@@ -5,7 +5,7 @@ import NavigationBuilder from "@/components/navigation-builder";
 import { Navigation } from "@/__generated__/__types__";
 
 const NavigationPanel = () => {
-  const { control, setValue, watch, getValues } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
 
   const updateMenu = (menu: Navigation[]) => {
     if (

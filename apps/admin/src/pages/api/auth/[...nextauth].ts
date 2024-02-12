@@ -16,10 +16,6 @@ import { getRootUrl } from "@/shared/getRootUrl";
 import { isPasswordValid } from "@/utils/bcrypt";
 
 import { isBlackListed } from "./blacklist";
-import { getAuthCookieName } from "../../../utils/authCookie";
-
-const { host, protocol } = new URL(process.env.ROOT_URL);
-const useSecureCookies = protocol === "https:";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -59,8 +55,8 @@ const providers = (): NextAuthOptions["providers"] => [
           return authenticated
             ? author
             : Promise.reject(
-              new Error("Incorrect password. Please try again.")
-            );
+                new Error("Incorrect password. Please try again.")
+              );
         } else {
           return Promise.reject(
             new Error("The email you provided is not registered.")
@@ -89,7 +85,7 @@ export const options = (): NextAuthOptions => ({
       }
       return getRootUrl(baseUrl) + "/posts";
     },
-    jwt: async ({ token, trigger, session, user }) => {
+    jwt: async ({ token, trigger, session }) => {
       if (trigger === "update") {
         return { ...token, user: { ...session.user } };
       }
@@ -109,7 +105,7 @@ export const options = (): NextAuthOptions => ({
       try {
         // If the user logins with google or github, create their letterpad account
         if (!author && token.sub && token.name) {
-          const newAuthor = await createAuthorWithSettings(
+          await createAuthorWithSettings(
             {
               email: token.email,
               name: token.name,

@@ -3,7 +3,7 @@ import { Button, Input, Message } from "ui";
 
 import { useAddDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
-export const NewDomain = ({ refetch }) => {
+export const NewDomain = () => {
   const [domain, setDomain] = useState("");
 
   const [{ fetching: loading }, addDomain] = useAddDomainMutation();
