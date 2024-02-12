@@ -8,7 +8,7 @@ const Terms = () => {
           Updated on January 17, 2021 · Effective from January 17, 2021
         </time>
       </div>
-      <div className="prose max-w-2xl mx-auto dark:prose-dark mt-10">
+      <div className="prose max-w-3xl mx-auto dark:prose-dark mt-10">
         <p>Welcome to Letterpad ("Letterpad," "we," or "our").</p>
 
         <p>

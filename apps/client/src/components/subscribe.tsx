@@ -39,7 +39,7 @@ export const Subscribe = () => {
         <h2 className="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl dark:text-white">
           Subscribe to my newsletter
         </h2>
-        <p className="mx-auto mb-8 max-w-2xl font-light text-gray-500 md:mb-12 sm:text-xl dark:text-gray-400">
+        <p className="mx-auto mb-8 max-w-3xl font-light text-gray-500 md:mb-12 sm:text-xl dark:text-gray-400">
           To stay up to date with our announcements and posts, sign up with your
           email.
         </p>
