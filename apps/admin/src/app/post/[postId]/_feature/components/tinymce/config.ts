@@ -152,6 +152,7 @@ export const blogEditorConfig = ({
     { text: "HTML/XML", value: "markup" },
     { text: "Java", value: "java" },
     { text: "JavaScript", value: "javascript" },
+    { text: "Kotlin", value: "kotlin" },
     { text: "Markdown", value: "markdown" },
     { text: "PHP", value: "php" },
     { text: "Python", value: "python" },
