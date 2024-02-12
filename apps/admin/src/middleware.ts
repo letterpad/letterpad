@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse, userAgent } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { decode } from "next-auth/jwt";
 
 import { getAuthCookieName } from "./utils/authCookie";
@@ -48,7 +48,7 @@ interface Props {
   source: string;
   user?: any;
 }
-function handleAuth({ request, source, user }: Props) {
+function handleAuth({ request, source }: Props) {
   const sourceURL = new URL(source);
   const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
   const adminURL = new URL(process.env.ROOT_URL!);

@@ -15,7 +15,7 @@ export const useGetPost = (
   filters: PostFilters,
   requestPolicy?: RequestPolicy
 ) => {
-  const [{ data, error, fetching }, refetch] = usePostQuery({
+  const [{ data, fetching }, refetch] = usePostQuery({
     variables: {
       filters,
     },

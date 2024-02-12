@@ -1,13 +1,13 @@
 import { MeFragmentFragment } from 'letterpad-sdk';
-import SocialIcon from '../../components/social-icons';
 import {
+  FaFacebook,
   FaGithub,
+  FaInstagram,
   FaLinkedin,
   FaTwitter,
-  FaFacebook,
-  FaInstagram,
-  FaRss,
 } from 'react-icons/fa';
+
+import SocialIcon from '../../components/social-icons';
 
 export const SocialIcons = ({ me }: { me: MeFragmentFragment }) => {
   return (
@@ -31,7 +31,6 @@ export const SocialIcons = ({ me }: { me: MeFragmentFragment }) => {
       <SocialIcon
         icon={<FaInstagram className="h-5 w-5" />}
         href={me.social?.twitter}
-        size={5}
       />
     </div>
   );

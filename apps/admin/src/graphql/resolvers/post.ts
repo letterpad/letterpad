@@ -2,7 +2,6 @@ import { report } from "@/components/error";
 
 import {
   MutationResolvers,
-  NotificationMeta,
   PostResolvers,
   QueryResolvers,
 } from "@/__generated__/__types__";

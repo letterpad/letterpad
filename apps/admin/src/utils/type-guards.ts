@@ -1,7 +1,4 @@
-import {
-  Kind,
-  OperationDefinitionNode,
-} from "graphql";
+import { Kind, OperationDefinitionNode } from "graphql";
 
 import {
   Author,

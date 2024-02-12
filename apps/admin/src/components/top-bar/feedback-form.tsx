@@ -4,7 +4,6 @@ import { Button, Message, Modal, TextArea } from "ui";
 
 import { basePath } from "@/constants";
 
-const key = "feedback";
 const FeedbackForm = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [feedback, setFeedback] = useState("");

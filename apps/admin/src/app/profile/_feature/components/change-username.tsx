@@ -14,7 +14,7 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
   const [error, setError] = useState<string | null>(null);
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(true);
 
-  const { updateAuthor, fetching } = useUpdateAuthor();
+  const { updateAuthor } = useUpdateAuthor();
 
   const tryUpdateAuthor = async () => {
     setError(null);

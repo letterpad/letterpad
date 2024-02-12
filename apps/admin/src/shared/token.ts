@@ -51,7 +51,7 @@ function sign(payload: any, validityInHours = "2h"): Promise<string> {
 
   return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-    .setExpirationTime("2h")
+    .setExpirationTime(validityInHours)
     .setIssuedAt(iat)
     .setNotBefore(iat)
     .sign(new TextEncoder().encode(process.env.SECRET_KEY));

@@ -1,5 +1,3 @@
-import { Message } from "ui";
-
 import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { useMeQuery } from "@/__generated__/src/graphql/queries/queries.graphql";

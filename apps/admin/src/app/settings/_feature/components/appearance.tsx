@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Button, Input, Label, Select, TextArea } from "ui";
+import { Button, Label, Select, TextArea } from "ui";
 
 import { fontItemsSans, fontItemsSerif, fonts } from "@/components/fonts";
 import { SaveButton } from "@/components/save-button";

@@ -1,7 +1,5 @@
 import React from "react";
 
-import FeaturesImage from "/public/website/features.svg";
-
 function Features() {
   return (
     <section>

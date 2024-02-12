@@ -31,8 +31,7 @@ export const deleteAuthor = () =>
   client.mutation<DeleteAuthorMutation>(DeleteAuthorDocument, {});
 
 export const useUpdateSettings = () => {
-  const [{ data, error, fetching }, updateSettings] =
-    useUpdateOptionsMutation();
+  const [{ error, fetching }, updateSettings] = useUpdateOptionsMutation();
 
   return {
     updateSettings,
@@ -41,7 +40,7 @@ export const useUpdateSettings = () => {
   };
 };
 export const useGetSettings = () => {
-  const [{ data, error, fetching }] = useSettingsQuery();
+  const [{ data, fetching }] = useSettingsQuery();
   const settings = isSettings(data?.settings) ? data?.settings : undefined;
 
   return {

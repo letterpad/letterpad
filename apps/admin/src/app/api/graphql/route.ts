@@ -1,7 +1,3 @@
-import {
-  createInMemoryCache,
-  useResponseCache as ResponseCache,
-} from "@graphql-yoga/plugin-response-cache";
 import { createSchema, createYoga } from "graphql-yoga";
 
 import { context } from "@/graphql/context";
@@ -11,10 +7,6 @@ import { resolversArr } from "@/graphql/resolvers";
 import { typeDefsList } from "@/graphql/schema";
 
 import cors from "../_cors";
-
-// const cache = createInMemoryCache()
-
-// export const runtime = "edge";
 
 export const setupYoga = (context) => {
   return createYoga({
@@ -29,24 +21,6 @@ export const setupYoga = (context) => {
     context,
     graphqlEndpoint: "/api/graphql",
     fetchAPI: { Response },
-    // plugins: [
-    //   ResponseCache({
-    //     session: (request) => {
-    //       const cookie = getHeader(request.headers, "cookie");
-    //       const host = getHeader(request.headers, "host");
-    //       const authorization = getHeader(request.headers, "authorization");
-    //       const identifier = getHeader(request.headers, "identifier");
-    //       if(authorization || identifier) {
-    //         return `${authorization}-${identifier}`;
-    //       }
-    //       if (cookie) {
-    //         return cookie;
-    //       }
-    //       return host;
-    //     },
-    //     includeExtensionMetadata: true,
-    //   })
-    // ]
   });
 };
 

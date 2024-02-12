@@ -78,11 +78,3 @@ export const GalleryModal: FC<Props> = ({
     </div>
   );
 };
-
-const Description = ({ description }) => {
-  return (
-    <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-80 p-2 py-8 text-white">
-      {description}
-    </div>
-  );
-};

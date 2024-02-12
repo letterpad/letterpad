@@ -1,4 +1,4 @@
-const SocialIcon = ({ icon, href, size = 8 }) => {
+const SocialIcon = ({ icon, href }) => {
   if (!href) {
     return null;
   }

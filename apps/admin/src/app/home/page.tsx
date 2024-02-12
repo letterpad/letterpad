@@ -8,7 +8,7 @@ import { Feature } from "@/app/home/_feature";
 
 import { PageProps } from "@/types";
 
-const Home: FC<PageProps> = ({ settings }) => {
+const Home: FC<PageProps> = () => {
   return (
     <>
       <Head>

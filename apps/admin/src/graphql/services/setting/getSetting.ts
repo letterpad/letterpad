@@ -7,7 +7,7 @@ import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 export const getSetting = cache(
   async (
     _args: unknown,
-    { session, client_author_id, prisma, dataloaders }: ResolverContext
+    { session, client_author_id, dataloaders }: ResolverContext
   ): Promise<ResolversTypes["SettingResponse"]> => {
     const authorId = session?.user.id || client_author_id;
 

@@ -28,8 +28,8 @@ export const useGetTags = (
 };
 
 export const useUpdateTags = () => {
-  const [{ data, fetching, error }, updateTags] = useUpdateTagsMutation();
-  const { refetch } = useGetTags({}, { skip: true });
+  const [{ fetching, error }, updateTags] = useUpdateTagsMutation();
+  useGetTags({}, { skip: true });
   return {
     fetching,
     error,

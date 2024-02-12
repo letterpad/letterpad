@@ -1,48 +1,53 @@
 enum NotificationType {
-    POST_NEW
-    POST_LIKE
-    FOLLOWER_NEW
-    SUBSCRIBER_NEW
-    SYSTEM
+  POST_NEW
+  POST_LIKE
+  FOLLOWER_NEW
+  SUBSCRIBER_NEW
+  SYSTEM
 }
 
 type PostNewMeta {
-    post_id: Int
-    post_title: String
-    post_slug: String
-    author_name: String
-    author_username: String
-    author_avatar: String
+  post_id: Int
+  post_title: String
+  post_slug: String
+  author_name: String
+  author_username: String
+  author_avatar: String
 }
 
 type FollowerNewMeta {
-    follower_id: Int
-    follower_name: String
-    follower_username: String
-    follower_avatar: String
-    followed_id: Int
+  follower_id: Int
+  follower_name: String
+  follower_username: String
+  follower_avatar: String
+  followed_id: Int
 }
 
 type SubscriberNewMeta {
-    subscriber_email: String
+  subscriber_email: String
 }
 
 type PostLikeMeta {
-    post_id: Int
-    post_title: String
-    post_slug: String
-    author_name: String
-    author_username: String
-    author_avatar: String
+  post_id: Int
+  post_title: String
+  post_slug: String
+  author_name: String
+  author_username: String
+  author_avatar: String
 }
 
 type SystemMeta {
-    message: String
-    url: String
-    slug: String
+  message: String
+  url: String
+  slug: String
 }
 
-union NotificationMeta = PostNewMeta | FollowerNewMeta | SubscriberNewMeta | PostLikeMeta | SystemMeta
+union NotificationMeta =
+  | PostNewMeta
+  | FollowerNewMeta
+  | SubscriberNewMeta
+  | PostLikeMeta
+  | SystemMeta
 
 type Notification {
   notification_id: String
@@ -94,5 +99,5 @@ type Query {
 type Mutation {
   markAsRead(notification_id: String!): NotificationUpdateResult!
   markAllAsRead: NotificationUpdateResult!
-#   addNotification(data: InputNotification): NotificationAddResult!
+  #   addNotification(data: InputNotification): NotificationAddResult!
 }

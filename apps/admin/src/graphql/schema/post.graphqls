@@ -216,7 +216,7 @@ type PostTrashed {
 }
 
 union PostResponse =
-    Post
+  | Post
   | UnAuthorized
   | NotFound
   | InvalidArguments

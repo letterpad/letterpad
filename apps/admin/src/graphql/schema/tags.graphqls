@@ -56,7 +56,6 @@ type TagsNode {
   rows: [Tag!]!
 }
 
-
 type Query {
   tags(filters: TagsFilters): TagsResponse!
   tag(slug: String!): TagResponse!

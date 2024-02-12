@@ -16,7 +16,7 @@ import { Social } from "./components/social";
 
 export const Feature = () => {
   const { data, fetching } = useGetAuthor();
-  const { updateAuthor, fetching: saving } = useUpdateAuthor();
+  const { updateAuthor } = useUpdateAuthor();
 
   const searchParams = useSearchParams();
   const methods = useForm<Author | {}>({

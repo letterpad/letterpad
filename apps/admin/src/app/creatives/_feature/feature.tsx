@@ -11,7 +11,6 @@ import {
   PostsFilters,
   PostStatusOptions,
   PostTypes,
-  SortBy,
 } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import Filters from "@/app/posts/_feature/filters";
@@ -25,7 +24,7 @@ export const Feature = () => {
     ...DEFAULT_FILTERS,
     type: PostTypes.Page,
   });
-  const [{ data, fetching: loading, error }, refetch] = usePostsQuery({
+  const [{ data, fetching: loading, error }] = usePostsQuery({
     variables: { filters },
   });
   const router = useRouter();
@@ -43,7 +42,7 @@ export const Feature = () => {
       <Filters
         showTags={false}
         showPageTypes={true}
-        onChange={(filters) => {
+        onChange={(_filters) => {
           //   setFilters({ ...filters, type: PostTypes.Page });
           //   refetch({ filters: { ...filters, type: PostTypes.Page } });
         }}

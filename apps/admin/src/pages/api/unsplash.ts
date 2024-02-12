@@ -8,7 +8,7 @@ const unsplash = async (req, res) => {
   }
   if (downloadLocation) {
     // if the photo is inserted, trigger downloadlocation url
-    const download = await fetch(downloadLocation, {
+    await fetch(downloadLocation, {
       headers: {
         Authorization: `Client-ID ${clientId}`,
       },

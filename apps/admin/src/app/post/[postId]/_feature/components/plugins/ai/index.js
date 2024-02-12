@@ -61,22 +61,6 @@ tinymce.PluginManager.add("ai", function (editor) {
   editor.on("keyup", handleKeyup);
 });
 
-function getPreviousBlocks(editor, currentBlock) {
-  const previousBlocks = [];
-  let sibling = currentBlock.previousSibling;
-  const parentElement = currentBlock.parentElement;
-
-  while (sibling) {
-    if (sibling.nodeType === 1) {
-      // Check if the node is an element node (excluding text nodes, etc.)
-      previousBlocks.unshift(sibling);
-    }
-    sibling = sibling.previousSibling;
-  }
-
-  return previousBlocks;
-}
-
 async function openAiCompletion(prompt) {
   const response = await fetch("/api/generate", {
     method: "POST",

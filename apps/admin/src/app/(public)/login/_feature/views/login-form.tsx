@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEventHandler, useState } from "react";
+import { useState } from "react";
 import { Message } from "ui";
 
 import { EventAction, track } from "@/track";

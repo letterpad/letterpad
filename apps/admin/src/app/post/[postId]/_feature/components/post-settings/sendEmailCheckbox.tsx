@@ -1,21 +1,13 @@
 import { ChangeEvent, FC, useState } from "react";
 
-import {
-  MailStatus,
-  PostStats,
-  PostStatusOptions,
-} from "@/__generated__/__types__";
+import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 
 interface Props {
   mail_status: MailStatus;
   post_status: PostStatusOptions;
   onChange: (mail_status: MailStatus) => void;
 }
-export const SendEmailCheckbox: FC<Props> = ({
-  mail_status,
-  post_status,
-  onChange,
-}) => {
+export const SendEmailCheckbox: FC<Props> = ({ mail_status, onChange }) => {
   const [mailStatus, setMailStatus] = useState(mail_status);
   return (
     <div className="flex items-center mb-4">

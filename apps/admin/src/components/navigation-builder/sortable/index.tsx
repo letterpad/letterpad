@@ -15,7 +15,7 @@ import {
 } from "@dnd-kit/sortable";
 import { FC, useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import { Button, Message } from "ui";
+import { Button } from "ui";
 
 import { Collection } from "@/components/navigation-builder/types";
 import { SaveButton } from "@/components/save-button";
@@ -161,11 +161,4 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
       />
     </DndContext>
   );
-};
-
-const generareId = (menu: IMenuWithError[]) => {
-  const ids = menu.map((item) => item.id) as number[];
-  const id = Math.max.apply(null, ids);
-
-  return id + 1;
 };

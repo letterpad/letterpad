@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
               html,
             },
             false
-          ).catch((e) => {
+          ).catch((_e) => {
             // eslint-disable-next-line no-console
             console.log(`Failed to send email to ${recipient.email}`);
           });
@@ -132,7 +132,7 @@ export async function GET(request: NextRequest) {
         mail_sent: true,
       },
     })
-    .catch((e) => {
+    .catch((_e) => {
       // eslint-disable-next-line no-console
       console.log(`Failed to update mail status for one or more post`);
     });

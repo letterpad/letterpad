@@ -45,7 +45,7 @@ export const Feature = () => {
   return (
     <>
       <Filters
-        onChange={(filters) => {
+        onChange={() => {
           refetch();
         }}
         filters={filters}

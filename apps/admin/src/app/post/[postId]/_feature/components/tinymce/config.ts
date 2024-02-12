@@ -22,7 +22,7 @@ export const subTitleEditorConfig: IProps["init"] = {
         main?.focus();
       }
     });
-    ed.on("keypress", function (e) {
+    ed.on("keypress", function (_e) {
       const length = ed.getContent({ format: "text" }).length;
       if (length > 140) return false;
     });

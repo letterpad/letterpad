@@ -30,7 +30,6 @@ input MediaFilters {
   authorId: Int
 }
 
-
 union MediaResponse = MediaNode | UnAuthorized
 
 type Query {

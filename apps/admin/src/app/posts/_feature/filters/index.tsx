@@ -114,6 +114,7 @@ export const Filters = ({
             id="filters-tags"
             onChange={(key) => {
               if (key === "all") {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { tagSlug, ...rest } = filters;
                 return setFilters({
                   ...rest,
@@ -142,6 +143,7 @@ export const Filters = ({
             id="filters-pagetypes"
             onChange={(key) => {
               if (key === "all") {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { tagSlug, page_type, ...rest } = filters;
                 return setFilters({
                   ...rest,

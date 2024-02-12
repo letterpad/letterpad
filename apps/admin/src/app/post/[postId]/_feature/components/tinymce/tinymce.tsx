@@ -1,6 +1,6 @@
 import { GrammarlyEditorPlugin } from "@grammarly/editor-sdk-react";
 import { Editor } from "@tinymce/tinymce-react";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef } from "react";
 import "./core";
 
 import { FileExplorer } from "@/components/file-explorer";
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const LpEditor: React.FC<Props> = memo(
-  ({ text, onChange, style, hasAiKey }) => {
+  ({ text, onChange, hasAiKey }) => {
     const {
       onMediaBrowse,
       fileExplorerOpen,

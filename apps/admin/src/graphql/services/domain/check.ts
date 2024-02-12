@@ -28,7 +28,6 @@ export const check = async (domain: string) => {
   /**
    * If domain is not verified, we try to verify now
    */
-  let verificationResponse = null;
   if (!domainJson.verified) {
     const verificationRes = await fetch(
       `https://api.vercel.com/v9/projects/${process.env.VERCEL_PROJECT_ID}/domains/${domain}/verify?teamId=${process.env.VERCEL_TEAM_ID}`,
@@ -40,7 +39,7 @@ export const check = async (domain: string) => {
         },
       }
     );
-    verificationResponse = await verificationRes.json();
+    await verificationRes.json();
   }
 
   if (domainResponse.status !== 200) {

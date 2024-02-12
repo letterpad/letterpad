@@ -1,5 +1,5 @@
 import { print } from "graphql";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { gql } from "urql";
 

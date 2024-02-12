@@ -25,7 +25,7 @@ import { EmailTemplates } from "../types";
 import { getRootUrl } from "../../shared/getRootUrl";
 
 const Author: AuthorResolvers<ResolverContext> = {
-  avatar: async ({ avatar }, _args, context) => {
+  avatar: async ({ avatar }, _args) => {
     const _avatar = avatar?.startsWith("/")
       ? new URL(avatar, getRootUrl()).href
       : avatar;

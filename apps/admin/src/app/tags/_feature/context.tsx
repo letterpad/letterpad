@@ -28,18 +28,14 @@ export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
 export const TagsProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const {
-    data = [],
-    fetching: loading,
-    refetch: refetchTags,
-  } = useGetTags({ active: true });
+  const { data = [], fetching: loading } = useGetTags({ active: true });
   const [tags, setTags] = useState<TagRow[]>([]);
   const [editTagId, setEditTagId] = useState<React.Key | null>(null);
   const postsQuery = useGetPosts({}, { skip: true });
   const statsQuery = useGetStats({}, { skip: true });
 
-  const { updateTags, fetching: saving } = useUpdateTags();
-  const { deleteTags, fetching: deleting } = useDeleteTags();
+  const { updateTags } = useUpdateTags();
+  const { deleteTags } = useDeleteTags();
 
   const computedTags = useMemo(() => data ?? [], [data]);
 

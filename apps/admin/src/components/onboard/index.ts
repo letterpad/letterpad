@@ -100,7 +100,7 @@ export async function createAuthorWithSettings(
   rolename: ROLES = ROLES.AUTHOR
 ) {
   const {
-    token,
+    token: _token,
     verified = false,
     avatar = "https://res.cloudinary.com/abhisheksaha/image/upload/v1672944041/blog-images/6611482_account_avatar_basic_person_user_icon_eisadm.png",
     ...authorData

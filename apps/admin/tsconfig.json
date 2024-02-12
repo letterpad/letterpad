@@ -5,41 +5,22 @@
     "module": "commonjs",
     "skipLibCheck": true,
     "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/pages/*": [
-        "src/pages/*"
-      ],
-      "@/__generated__/*": [
-        "__generated__/src/graphql/*",
-        "__generated__/*"
-      ],
-      "@/config/*": [
-        "config/*"
-      ],
-      "@/graphql/db/models": [
-        "src/graphql/db/models"
-      ],
-      "@/graphql/schema": [
-        "src/graphql/schema"
-      ],
-      "@/graphql/*": [
-        "src/graphql/*"
-      ],
-      "@/utils": [
-        "src/utils/*"
-      ],
-      "@/*": [
-        "src/*"
-      ]
+      "@/components/*": ["src/components/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
+      "@/config/*": ["config/*"],
+      "@/graphql/db/models": ["src/graphql/db/models"],
+      "@/graphql/schema": ["src/graphql/schema"],
+      "@/graphql/*": ["src/graphql/*"],
+      "@/utils": ["src/utils/*"],
+      "@/*": ["src/*"],
     },
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
   },
   "include": [
     "src/**/*",
@@ -51,9 +32,7 @@
     "src/graphqls.d.ts",
     "public/website/css",
     "src/graphql/schema/index.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
   ],
-  "exclude": [
-    "__generated__/**/*.tsx"
-  ]
+  "exclude": ["__generated__/**/*.tsx"],
 }

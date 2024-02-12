@@ -20,7 +20,6 @@ interface Session {
 
 export const ProfileDropdown = ({
   sessionPath = `/api/client/session`,
-  renderSign,
 }: {
   sessionPath?: string;
   renderSign?: ReactNode;
@@ -50,7 +49,7 @@ export const ProfileDropdown = ({
     })
       .then((res) => res.json())
       .then((session) => setSession(session.user));
-  }, []);
+  }, [sessionPath]);
 
   return (
     <div className="relative w-max mx-auto" ref={ref}>

@@ -222,5 +222,3 @@ export const UpdateProfile = () => {
 };
 
 export default UpdateProfile;
-
-const isInteger = (num) => /^-?[0-9]+$/.test(num + "");

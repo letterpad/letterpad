@@ -1,5 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useRef } from "react";
 import "./tinymce/core";
 
 import { titleEditorConfig, titleId } from "./tinymce/config";

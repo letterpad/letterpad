@@ -31,16 +31,6 @@ const uploadsSourceDir = path.join(ROOT_DIR, "graphql/db/seed/uploads");
 function absPath(p) {
   return p;
 }
-const tags = [
-  {
-    name: "home",
-    slug: "home",
-  },
-  {
-    name: "first-post",
-    slug: "first-post",
-  },
-];
 
 export async function seed(folderCheck = true) {
   if (process.env.DATABASE_URL.includes("connect.psdb")) {

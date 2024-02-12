@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
             },
           },
         })
-        .catch((e) => {
+        .catch((_e) => {
           // eslint-disable-next-line no-console
           console.log(`pageView home error for author_id: ${author_id}`);
         });
@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
             },
           },
         })
-        .catch((e) => {
+        .catch((_e) => {
           // eslint-disable-next-line no-console
           console.log(`pageView profile error for author_id: ${author_id}`);
         });
@@ -140,7 +140,7 @@ export async function GET(request: NextRequest) {
             },
           },
         })
-        .catch((e) => {
+        .catch((_e) => {
           // eslint-disable-next-line no-console
           console.log(`pageView post error for post_id: ${post_id}`);
         });

@@ -4,8 +4,6 @@ import Script from 'next/script';
 import { FC } from 'react';
 
 import Fonts from './fonts/fonts';
-// import { generateGoogleFontsLink } from './fonts';
-import { generateGoogleFontsVariables } from './fonts/fontsCssLink';
 
 export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   settings,
