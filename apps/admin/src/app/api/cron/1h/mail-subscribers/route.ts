@@ -141,9 +141,11 @@ export async function GET(request: NextRequest) {
       console.log(`Failed to update mail status for one or more post`);
     });
 
-  await delQueuedSubscriberEmails(
-    ...posts.map((post) => getKeyForEmailSubscription(post.id)).flat()
-  );
+  if (posts.length > 0) {
+    await delQueuedSubscriberEmails(
+      ...posts.map((post) => getKeyForEmailSubscription(post.id)).flat()
+    );
+  }
 
   return Response.json({ success: true });
 }

@@ -69,21 +69,21 @@ export const Filters = ({
       <div className="flex flex-row gap-2 text-sm">
         <Badge
           label="Published"
-          count={statsData.published}
+          count={statsData?.published ?? 0}
           active={filters.status?.includes(PostStatusOptions.Published)}
           onClick={() => onBadgeClick(PostStatusOptions.Published)}
           fetching={fetching}
         />
         <Badge
           label="Drafts"
-          count={statsData.drafts}
+          count={statsData?.drafts ?? 0}
           active={filters.status?.includes(PostStatusOptions.Draft)}
           onClick={() => onBadgeClick(PostStatusOptions.Draft)}
           fetching={fetching}
         />
         <Badge
           label="Trashed"
-          count={statsData.trashed}
+          count={statsData?.trashed ?? 0}
           active={filters.status?.includes(PostStatusOptions.Trashed)}
           onClick={() => onBadgeClick(PostStatusOptions.Trashed)}
           fetching={fetching}
