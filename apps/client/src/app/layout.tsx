@@ -168,10 +168,7 @@ const Layout = async ({ children }) => {
         </style>
         <SessionProvider>
           <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
-            <FontPageWrapper
-              primary_font={settings.design?.primary_font!}
-              secondary_font={settings.design?.secondary_font!}
-            >
+            <FontPageWrapper primary_font={settings.design?.primary_font!}>
               <main className="mb-auto">{children}</main>
               <div className="border-b-[1px] dark:border-gray-700">
                 <Footer author={me} settings={settings} />
