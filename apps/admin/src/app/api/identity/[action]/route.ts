@@ -44,10 +44,9 @@ export async function GET(
     const requestHeaders = new Headers(req.headers);
     req.cookies.delete(getAuthCookieName());
     requestHeaders.delete("cookie");
-    cookies().delete(getAuthCookieName());
     requestHeaders.set(
       "set-cookie",
-      `${getAuthCookieName()}=; Max-Age=-1; path=/; secure; HttpOnly; SameSite=Lax; domain=.${host}`
+      `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
     );
     const response = NextResponse.redirect(
       `${serviceUrl}?source=${sourceUrl}`,

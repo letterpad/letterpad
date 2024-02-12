@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthCookieName } from '../lib/utils/authCookie';
 import { getApiRootUrl } from '../lib/utils/url';
 
-const { host } = new URL(getApiRootUrl()!);
 export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   const requestUrl = new URL(request.url);
@@ -54,7 +53,7 @@ function clearCookieAndRedirect(request: NextRequest) {
   const sourceUrl = new URL(request.nextUrl.searchParams.get('source')!);
   requestHeaders.set(
     'set-cookie',
-    `${getAuthCookieName()}=; Max-Age=-1; path=/; secure; HttpOnly; SameSite=Lax; domain=.${host}`
+    `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
   );
   return NextResponse.redirect(sourceUrl, { headers: requestHeaders });
 }
