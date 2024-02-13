@@ -15,6 +15,7 @@ import {
   getTags,
   updateTags,
 } from "../services/tag";
+import { beautifyTopic, TOPIC_PREFIX } from "../../shared/utils";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, context) {
@@ -25,14 +26,15 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async popularTags(_root, args, { prisma }) {
     const tags: Tag[] =
-      await prisma.$queryRaw`SELECT count(*) as count, T.name, T.slug FROM _PostToTag 
-    INNER JOIN Tag T ON B = T.name
-    group by T.name HAVING count > 5 order by count DESC`;
-
+      await prisma.$queryRaw`SELECT count(*) as count, T.name, T.slug  FROM _PostToTag
+        INNER JOIN Tag T ON B = T.name 
+        INNER JOIN Post P ON A = P.id 
+        WHERE T.name LIKE ${`${TOPIC_PREFIX}%`} AND P.title != 'Coming Soon' AND P.title != "" AND P.excerpt != "" AND P.status = 'published' AND P.type = 'post'
+        GROUP by T.name HAVING count > 2 ORDER BY count DESC`;
     return {
       ok: true,
       rows: tags.map((tag) => ({
-        name: tag.name,
+        name: beautifyTopic(tag.name),
         slug: tag.name,
         count: Number(tag.count),
         id: tag.name,

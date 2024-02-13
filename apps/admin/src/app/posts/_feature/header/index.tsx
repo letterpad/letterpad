@@ -92,9 +92,9 @@ export const postsColumns = ({ changeStatus }) => [
     title: "Tags",
     dataIndex: "tags",
     key: "tags",
-    className: "hidden lg:table-cell",
+    className: "hidden lg:table-cell max-w-sm",
     render: (tags: TagsNode) => {
-      return tags.rows.map((tag) => tag.name).join(", ");
+      return <span>{tags.rows.map((tag) => tag.name).join(", ")}</span>;
     },
   },
   {

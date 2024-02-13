@@ -252,6 +252,7 @@ type Query {
   stats: StatsResponse
   isPostLiked(postId: Int!): IsPostLikedResponse!
   letterpadLatestPosts(filters: LetterpadPostsFilters): PostsResponse!
+  letterpadFeaturedPosts: PostsResponse!
   letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
 }
 

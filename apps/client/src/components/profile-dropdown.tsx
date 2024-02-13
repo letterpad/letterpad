@@ -1,23 +1,17 @@
 'use client';
 import { animated, useSpring } from '@react-spring/web';
 import classNames from 'classnames';
-import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
+import { IoMdPerson } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuLogIn, LuLogOut } from 'react-icons/lu';
-import { RxAvatar } from 'react-icons/rx';
 
 import { useOnClickOutside } from '@/hooks/useOnClickOutisde';
 
 import { useSession } from '../../context/SessionProvider';
 import { getApiRootUrl } from '../../lib/utils/url';
-
-interface Session {
-  name: string;
-  avatar: string;
-}
 
 export const ProfileDropdown = () => {
   const [show, setShow] = useState(false);
@@ -40,7 +34,7 @@ export const ProfileDropdown = () => {
       <button
         type="button"
         className={classNames(
-          'flex items-center rounded-full text-[#333] text-sm font-semibold border-2 dark:border-gray-800 border-gray-300 outline-none bg-gray-100 dark:bg-slate-800 dark:text-gray-200',
+          'p-1 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 rounded-full h-10 w-10 flex justify-center items-center',
           {
             'p-1': session,
           }
@@ -51,10 +45,10 @@ export const ProfileDropdown = () => {
           <img
             src={session.user.avatar}
             alt={session.user.name}
-            className="h-6 w-6 rounded-full shrink-0 object-cover"
-          ></img>
+            className="h-6 w-6 rounded-full shrink-0 object-cover bg-white p-1"
+          />
         ) : (
-          <RxAvatar className="h-6 w-6 md:h-8 md:w-8 rounded-full shrink-0 object-cover" />
+          <IoMdPerson className="h-6 w-6 md:h-6 md:w-6 rounded-full shrink-0 object-cover" />
         )}
       </button>
       <animated.ul
@@ -98,7 +92,7 @@ export const ProfileDropdown = () => {
               />
               <MenuItem
                 label="Start Publishing"
-                icon={<CgProfile size={18} />}
+                icon={<IoMdPerson size={18} />}
                 path="/register"
               />
             </>

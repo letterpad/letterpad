@@ -1,12 +1,12 @@
 import { Metadata, Viewport } from "next";
-import { cookies } from "next/headers";
 
-import { Website } from "../components/website";
+// import { cookies } from "next/headers";
+// import { Website } from "../components/website";
 import { Website as WebsiteV2 } from "../components/website_v2";
 import { getRootUrl } from "../shared/getRootUrl";
 
 const Home = () => {
-  const isNewHome = !!cookies().get("homev2")?.value;
+  // const isNewHome = !!cookies().get("homev2")?.value;
   return (
     <>
       <script
@@ -23,7 +23,7 @@ const Home = () => {
           __html: JSON.stringify(letterpadBreadCrumb),
         }}
       />
-      {isNewHome ? <WebsiteV2 /> : <Website />}
+      <WebsiteV2 />
     </>
   );
 };

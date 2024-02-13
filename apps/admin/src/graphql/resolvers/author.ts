@@ -32,7 +32,7 @@ const Author: AuthorResolvers<ResolverContext> = {
     if (_avatar) {
       return `https://res.cloudinary.com/abhisheksaha/image/fetch/${_avatar}`;
     }
-    return ``;
+    return "https://www.gravatar.com/avatar/";
   },
   role: async ({ id }, _args, context) => getRoleFromAuthor(id, context),
   permissions: async ({ id }, _args, context) =>

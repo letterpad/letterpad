@@ -20,6 +20,7 @@ import { useGetPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
+import { TOPIC_PREFIX } from "../../../shared/utils";
 
 export const Feature = () => {
   const router = useRouter();
@@ -53,7 +54,7 @@ export const Feature = () => {
       />
       <Table
         columns={postsColumns({ changeStatus })}
-        dataSource={data?.map((item) => ({ ...item, key: item.id }))}
+        dataSource={data}
         loading={fetching}
         onRowClick={(row) => router.push("/post/" + row.id)}
       />

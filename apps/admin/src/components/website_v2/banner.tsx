@@ -1,4 +1,10 @@
-export const Banner = () => {
+import { getServerSession } from "next-auth";
+
+import { options } from "../../pages/api/auth/[...nextauth]";
+
+export const Banner = async () => {
+  const data = await getServerSession(options());
+
   return (
     <div className="w-full py-20 bg-black text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 justify-between flex-col md:flex-row flex md:items-center md:space-y-0 space-y-10">
@@ -9,14 +15,16 @@ export const Banner = () => {
             connected. Its free.
           </p>
         </div>
-        <div className="flex items-center">
-          <a
-            href="#"
-            className="bg-blue-600 text-white font-semibold py-2.5 px-6 rounded hover:bg-blue-800 transition duration-300 ease-in-out"
-          >
-            Sign Up
-          </a>
-        </div>
+        {!data?.user?.username && (
+          <div className="flex items-center">
+            <a
+              href="#"
+              className="bg-blue-600 text-white font-semibold py-2.5 px-6 rounded hover:bg-blue-800 transition duration-300 ease-in-out"
+            >
+              Sign Up
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

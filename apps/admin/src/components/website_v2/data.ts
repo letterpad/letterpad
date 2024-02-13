@@ -3,6 +3,9 @@ import { print } from "graphql";
 
 import { client } from "../../lib/urqlClient";
 import {
+  LetterpadFeaturedPostsDocument,
+  LetterpadFeaturedPostsQuery,
+  LetterpadFeaturedPostsQueryVariables,
   LetterpadLatestPostsDocument,
   LetterpadLatestPostsQuery,
   LetterpadLatestPostsQueryVariables,
@@ -111,4 +114,23 @@ export async function getNewAuthors() {
     }
   );
   return res.data?.newAuthors?.authors || [];
+}
+
+export async function getFeaturedPosts() {
+  "use server";
+  const res = await client.query<LetterpadFeaturedPostsQuery, LetterpadFeaturedPostsQueryVariables>(
+    LetterpadFeaturedPostsDocument,
+    {},
+    {
+      requestPolicy: "network-only",
+      fetch,
+      fetchOptions: {
+        next: {
+          tags: ["featuredPosts"],
+        },
+        cache: "force-cache",
+      },
+    }
+  );
+  return res.data?.letterpadFeaturedPosts.__typename === "PostsNode" ? res.data.letterpadFeaturedPosts.rows : [];
 }

@@ -1,6 +1,12 @@
 import classNames from "classnames";
 import Link from "next/link";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { CgSpinner } from "react-icons/cg";
 import { Drawer, Input, Switch, TextArea } from "ui";
 
@@ -16,13 +22,14 @@ import {
 } from "@/utils/slug";
 
 import { getPostHash } from "./api";
+import { tags } from "./constants";
 import { ExcludeFromHome } from "./excludeFromHome";
 import { Heading } from "./heading";
 import { Preview } from "./preview";
 import PublishButton from "./publishButton";
 import { QuickMenu } from "./quickmenu";
 import { SendEmailCheckbox } from "./sendEmailCheckbox";
-import Tags from "./tags";
+import { PrimaryTag, Tags } from "./tags";
 import { useUpdatePost } from "../../api.client";
 
 interface IProps {
@@ -144,6 +151,26 @@ const Actions = ({ post }: IProps) => {
                   )}
                 </div>
               </div>
+              {isPost && (
+                <PrimaryTag
+                  selected={
+                    post.tags?.__typename === "TagsNode"
+                      ? post.tags.rows.find((t) => tags.includes(t.name))
+                          ?.name ?? ""
+                      : ""
+                  }
+                  onSelect={(value: string) => {
+                    const tag = { slug: value, name: value };
+                    updatePost({
+                      id: post.id,
+                      tags:
+                        post.tags?.__typename === "TagsNode"
+                          ? [...post.tags.rows, tag]
+                          : [tag],
+                    });
+                  }}
+                />
+              )}
               {isPost && (
                 <Tags
                   key={!fetching ? +new Date() : null}

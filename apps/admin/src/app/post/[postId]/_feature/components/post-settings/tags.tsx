@@ -3,8 +3,11 @@ import ReactTags from "react-tag-autocomplete";
 
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useGetTags } from "@/app/tags/_feature/api.client";
+import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
+import { tags } from "./constants";
+import { Heading } from "./heading";
 import { useUpdatePost } from "../../api.client";
 
 interface IProps {
@@ -18,9 +21,11 @@ interface Tag {
   slug: string;
 }
 
-const Tags = ({ post, header }: IProps) => {
+export const Tags = ({ post, header }: IProps) => {
   const initialTags =
-    post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
+    post.tags?.__typename === "TagsNode"
+      ? post.tags.rows.filter((t) => !t.name.startsWith(TOPIC_PREFIX))
+      : [];
   const [tags, setTags] = useState<Tag[]>(addTagsWithId(initialTags));
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const { updatePost } = useUpdatePost();
@@ -72,6 +77,10 @@ const Tags = ({ post, header }: IProps) => {
       ...tag,
       name: textToSlug(removeCount(tag.name)),
     };
+    if (tag.name.startsWith(TOPIC_PREFIX)) {
+      alert(`${TOPIC_PREFIX} is reserved for system use`);
+      return;
+    }
     const _tags = [...tags, { ...tag, id: removeCount(tag.name) }];
     setTags(_tags);
     saveTags(_tags);
@@ -247,8 +256,6 @@ const Tags = ({ post, header }: IProps) => {
   );
 };
 
-export default Tags;
-
 function addTagsWithId(tags: { name: string; slug: string }[]) {
   return tags?.map((tag) => ({
     name: tag.name,
@@ -260,3 +267,29 @@ function addTagsWithId(tags: { name: string; slug: string }[]) {
 function removeCount(str: string) {
   return str.replace(/\([^)]*\)/, "").trim();
 }
+
+export const PrimaryTag = ({ selected, onSelect }) => {
+  return (
+    <div>
+      <Heading
+        heading="Topic"
+        subheading={
+          "Choose the relevant topic for this post. This will be used to categorize your post."
+        }
+      />
+      <select
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+          e.target.value && onSelect(e.target.value)
+        }
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option value="">Select</option>
+        {tags.map((tag) => (
+          <option key={tag} value={tag} selected={tag === selected}>
+            {beautifyTopic(tag)}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};

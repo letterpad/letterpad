@@ -7,6 +7,7 @@ import {
   getLetterpadPosts,
   getNewAuthors,
 } from "./data";
+import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
 
@@ -23,7 +24,13 @@ export const Website = async () => {
       <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-900 dark:text-gray-100 text-black/60">
         <Header />
         <Banner />
+
         <main className="grow">
+          <div className="border-b dark:border-slate-800 mb-10">
+            <div className="max-w-6xl mx-auto py-10 md:py-20 p-4 gap-4 flex flex-col">
+              <Featured />
+            </div>
+          </div>
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:gap-8">
             <section className="w-full mb-5 flex flex-col overflow-hidden">
               {rows.map((item) => {
@@ -81,9 +88,7 @@ export const Website = async () => {
                   {categories?.popularTags?.rows?.map((category) => {
                     return (
                       <li className="text-md truncate" key={category.slug}>
-                        <Link href={`${category.slug!}`}>
-                          {category.name} ({category.count})
-                        </Link>
+                        <Link href={`${category.slug!}`}>{category.name}</Link>
                       </li>
                     );
                   })}
