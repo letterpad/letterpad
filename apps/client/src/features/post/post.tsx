@@ -72,13 +72,14 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           {settings.display_author_info && !isPage && author.bio && (
             <div className="my-20 flex flex-col">
               <span className="mb-2">Author</span>
-              <div className="inline-flex items-center mr-3 text-gray-900 dark:text-white py-4 border-t dark:border-slate-800">
+              <div className="inline-flex mr-3 text-gray-900 dark:text-white py-4 border-t dark:border-slate-800">
                 <Link
                   href={new URL(
                     `@${author.username}`,
                     getApiRootUrl()
                   ).toString()}
                   rel={author.name}
+                  className="contents"
                 >
                   <img
                     className="mr-4 w-16 h-16 rounded-full"
@@ -98,7 +99,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                     {author.name}
                   </Link>
                   <p className="text-gray-500 dark:text-gray-200 text-md">
-                    {author.bio}
+                    {author.signature}
                   </p>
                 </div>
               </div>
