@@ -13,33 +13,10 @@ import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { EmailTemplates, ROLES } from "@/graphql/types";
 import { encryptEmail } from "@/shared/clientToken";
-import { textToSlug } from "@/utils/slug";
 
 export const onBoardUser = async (id: number) => {
   const newAuthor = await prisma.author.findUnique({ where: { id } });
   if (newAuthor && newAuthor.verified) {
-    // create new tag for author
-    const newTag = {
-      name: siteConfig.default_tag,
-      slug: siteConfig.default_tag,
-    };
-
-    const welcomeContent = getWelcomePost(newAuthor.name);
-    await prisma.post.create({
-      data: {
-        ...welcomeContent.post,
-        author: {
-          connect: { id: newAuthor.id },
-        },
-        tags: {
-          connectOrCreate: {
-            create: { name: newTag.name },
-            where: { name: newTag.name },
-          },
-        },
-      },
-    });
-
     await enqueueEmailAndSend({
       author_id: newAuthor.id,
       template_id: EmailTemplates.WelcomeUser,
@@ -55,40 +32,6 @@ export const onBoardUser = async (id: number) => {
     };
   }
 };
-
-function getWelcomePost(name: string) {
-  const post_cover =
-    "https://images.unsplash.com/photo-1625992865747-d814b125ab22?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2970&q=80";
-
-  const html = `This is ${name}. I am starting a brand new site and I am excited to see how this goes. Please visit me after few days to see what I have written or subscribe to my newsletter to get notified when I publish a new post.`;
-  const title = "Coming Soon";
-
-  const excerpt = `This is ${name}. I am starting a brand new site and I am excited to see how this goes.`;
-  const post = {
-    title,
-    html: html,
-    excerpt,
-    cover_image: post_cover,
-    cover_image_width: 1500,
-    cover_image_height: 900,
-    type: PostTypes.Post,
-    status: PostStatusOptions.Published,
-    slug: textToSlug(title),
-    createdAt: new Date(),
-    publishedAt: new Date(),
-    reading_time: "1 min",
-    stats: JSON.stringify({
-      words: html.split(" ").length,
-      reading_time: 1,
-      characters: html.length,
-      spaceless_characters: html.split(" ").length - 30,
-    }),
-    page_data: JSON.stringify({ rows: [] }),
-    page_type: "default",
-  };
-
-  return { post };
-}
 
 export async function createAuthorWithSettings(
   data: InputCreateAuthor & {
