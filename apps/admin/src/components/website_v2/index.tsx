@@ -88,9 +88,7 @@ export const Website = async () => {
                   {categories?.popularTags?.rows?.map((category) => {
                     return (
                       <li className="text-md truncate" key={category.slug}>
-                        <Link href={`${category.slug!}`}>
-                          {category.name} ({category.count})
-                        </Link>
+                        <Link href={`${category.slug!}`}>{category.name}</Link>
                       </li>
                     );
                   })}
