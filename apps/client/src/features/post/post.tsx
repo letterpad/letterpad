@@ -57,12 +57,12 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           <div className={`prose pb-4 pt-4 dark:prose-dark`}>
             <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
           </div>
-          <div className="pb-4 flex gap-2">
+          <div className="pb-4 flex gap-2 flex-wrap leading-11">
             {tags?.__typename === 'TagsNode' &&
               tags.rows.map(({ name }) => (
                 <Link
                   href={`/tag/${kebabCase(name)}`}
-                  key={name}
+                  key={name.replace('_topic_', '')}
                   className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white"
                 >
                   {name.split(' ').join('-')}
