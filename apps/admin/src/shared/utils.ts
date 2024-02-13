@@ -110,3 +110,8 @@ export const mapFileListToArray = (files: FileList) => {
 
   return array;
 };
+
+export const TOPIC_PREFIX = "_topic_"
+export const replaceLpTopicTagPrefix = (str: string) => {
+  return str.replace(TOPIC_PREFIX, "");
+}

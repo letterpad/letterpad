@@ -1,4 +1,3 @@
-import { GrammarlyEditorPlugin } from "@grammarly/editor-sdk-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef } from "react";
 import "./core";
@@ -52,24 +51,23 @@ export const LpEditor: React.FC<Props> = memo(
 
     return (
       <div>
-        <GrammarlyEditorPlugin clientId="client_BuJhZ29Gc2ovQLpvEUvjJ8">
-          <Editor
-            id={id}
-            onInit={async (_evt, editor) => {
-              if (editor) {
-                editorRef.current = editor;
-                setHelpers && setHelpers(editor);
-              }
-            }}
-            initialValue={textRef.current}
-            onEditorChange={(newHtml) => {
-              if (allowEditorChange) {
-                onChange(newHtml);
-              }
-            }}
-            init={blogEditorConfig({ isDark, editorRef, hasAiKey })}
-          />
-        </GrammarlyEditorPlugin>
+        <Editor
+          id={id}
+          onInit={async (_evt, editor) => {
+            if (editor) {
+              editorRef.current = editor;
+              setHelpers && setHelpers(editor);
+            }
+          }}
+          initialValue={textRef.current}
+          onEditorChange={(newHtml) => {
+            if (allowEditorChange) {
+              onChange(newHtml);
+            }
+          }}
+          init={blogEditorConfig({ isDark, editorRef, hasAiKey })}
+        />
+
         <FileExplorer
           multi={true}
           isVisible={!!fileExplorerOpen}

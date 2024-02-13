@@ -43,6 +43,7 @@ export const WarnNoTags = ({ postId }) => {
 
   useEffect(() => {
     return () => {
+      if (selected.length === 0) return;
       updatePost({
         id: postId,
         tags: selected.map((tag) => ({ name: tag, slug: tag })),

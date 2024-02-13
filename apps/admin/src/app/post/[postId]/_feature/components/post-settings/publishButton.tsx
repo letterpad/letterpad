@@ -8,8 +8,8 @@ import {
   PostTypes,
 } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
-import { isTagsNode } from "@/utils/type-guards";
 
+// import { isTagsNode } from "@/utils/type-guards";
 import { Heading } from "./heading";
 import { PageNotLinkedWithNavigation, WarnNoTags } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
@@ -36,15 +36,13 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
     const isPost = post.type === PostTypes.Post;
 
     const navigationPages = getPagesFromMenu(menu);
-    const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
+    // const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
 
     const navLinkedWithPages = navigationPages?.find(
       (page) => page === post.slug?.replace("/page/", "").toLowerCase()
     );
 
-    if (postTags.length === 0 && isPost) {
-      setError(NotPublished.NoTags);
-    } else if (!navLinkedWithPages && !isPost) {
+    if (!navLinkedWithPages && !isPost) {
       setError(NotPublished.PageNotLinkedWithNav);
     } else {
       publishOrUnpublish(true);
