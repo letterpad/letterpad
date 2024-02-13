@@ -5,6 +5,8 @@ import React from "react";
 import Header from "@/components/header/Header";
 import { getLetterpadCategories } from "@/components/website_v2/data";
 
+import { replaceLpTopicTagPrefix } from "@/shared/utils";
+
 export const metadata: Metadata = {
   title: "Tag",
 };
@@ -15,7 +17,9 @@ const Layout = async ({ children, ...p }) => {
     <>
       <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-900 dark:text-gray-100 text-black/60">
         <Header />
-        <Banner tag={p.params.name} />
+        <Banner
+          tag={decodeURIComponent(replaceLpTopicTagPrefix(p.params.name))}
+        />
         <main className="grow">
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:gap-8">
             <section className="w-full mb-5 flex flex-col overflow-hidden">

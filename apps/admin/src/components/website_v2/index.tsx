@@ -2,14 +2,18 @@ import Link from "next/link";
 
 import { Banner } from "./banner";
 import { Card } from "./card";
-import { getLetterpadPosts, getNewAuthors } from "./data";
+import {
+  getLetterpadCategories,
+  getLetterpadPosts,
+  getNewAuthors,
+} from "./data";
 import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
 
 export const Website = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: 0 } });
-  // const categories = await getLetterpadCategories();
+  const categories = await getLetterpadCategories();
   const newAuthors = await getNewAuthors();
   const rows =
     data?.letterpadLatestPosts.__typename === "PostsNode"
@@ -78,7 +82,7 @@ export const Website = async () => {
                   })}
                 </ul>
               </section>
-              {/* <section className="">
+              <section className="">
                 <h3 className="font-bold text-lg pb-2">Recommended Topics</h3>
                 <ul className="flex flex-col gap-2">
                   {categories?.popularTags?.rows?.map((category) => {
@@ -91,7 +95,7 @@ export const Website = async () => {
                     );
                   })}
                 </ul>
-              </section> */}
+              </section>
             </div>
           </div>
         </main>

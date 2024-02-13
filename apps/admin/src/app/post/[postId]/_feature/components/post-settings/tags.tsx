@@ -3,7 +3,7 @@ import ReactTags from "react-tag-autocomplete";
 
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useGetTags } from "@/app/tags/_feature/api.client";
-import { replaceLpTopicTagPrefix, TOPIC_PREFIX } from "@/shared/utils";
+import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
 import { tags } from "./constants";
@@ -286,11 +286,7 @@ export const PrimaryTag = ({ selected, onSelect }) => {
         <option value="">Select</option>
         {tags.map((tag) => (
           <option key={tag} value={tag} selected={tag === selected}>
-            {replaceLpTopicTagPrefix(tag)
-              .replaceAll("-", " ")
-              .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-                letter.toUpperCase()
-              )}
+            {beautifyTopic(tag)}
           </option>
         ))}
       </select>
