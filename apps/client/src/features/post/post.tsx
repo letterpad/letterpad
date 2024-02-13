@@ -15,6 +15,7 @@ import { PublishedAt } from '../../components/published-at';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
 import { PageTitle } from '../../components/title';
+import { getApiRootUrl } from '../../../lib/utils/url';
 import { PostProps } from '../../../types/pageTypes';
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
@@ -56,52 +57,50 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           <div className={`prose pb-4 pt-4 dark:prose-dark`}>
             <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
           </div>
-          <div className="pb-4">
+          <div className="pb-4 flex gap-2">
             {tags?.__typename === 'TagsNode' &&
               tags.rows.map(({ name }) => (
                 <Link
                   href={`/tag/${kebabCase(name)}`}
                   key={name}
-                  className="mr-1 bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300"
+                  className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white"
                 >
                   {name.split(' ').join('-')}
                 </Link>
               ))}
           </div>
           {settings.display_author_info && !isPage && author.bio && (
-            <div
-              className={
-                'my-10 mr-3 flex items-center rounded-lg border bg-gray-100 p-4 text-sm text-gray-900 shadow-sm dark:border-gray-900 dark:bg-black dark:bg-opacity-20 dark:text-white'
-              }
-            >
-              <div className="mr-4 hidden md:block">
-                {author.avatar && (
-                  <Image
-                    src={author.avatar}
-                    width={100}
-                    height={100}
-                    alt={author.name}
-                    className="rounded-full border-2 dark:border-gray-800"
-                    style={{
-                      objectFit: 'cover',
-                      maxWidth: 100,
-                      padding: 4,
-                      height: 100,
-                    }}
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-2">
+            <div className="my-20 flex flex-col">
+              <span className="mb-2">Author</span>
+              <div className="inline-flex items-center mr-3 text-gray-900 dark:text-white py-4 border-t dark:border-slate-800">
                 <Link
-                  href="/about"
-                  rel="author"
-                  className="font-sans text-xl font-extrabold text-gray-900 dark:text-white "
+                  href={new URL(
+                    `@${author.username}`,
+                    getApiRootUrl()
+                  ).toString()}
+                  rel={author.name}
                 >
-                  {author.name}
+                  <img
+                    className="mr-4 w-16 h-16 rounded-full"
+                    src={author.avatar!}
+                    alt="Jese Leos"
+                  />
                 </Link>
-                <p className="text-md font-medium leading-5 text-gray-500 dark:text-gray-300">
-                  {author.signature}
-                </p>
+                <div>
+                  <Link
+                    href={new URL(
+                      `@${author.username}`,
+                      getApiRootUrl()
+                    ).toString()}
+                    rel={author.name}
+                    className="text-xl font-bold text-gray-900 dark:text-white"
+                  >
+                    {author.name}
+                  </Link>
+                  <p className="text-gray-500 dark:text-gray-200 text-md">
+                    {author.bio}
+                  </p>
+                </div>
               </div>
             </div>
           )}

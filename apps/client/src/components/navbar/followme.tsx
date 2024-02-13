@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { IoMdPersonAdd } from 'react-icons/io';
+import { IoPersonRemove } from 'react-icons/io5';
 import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
 import { Button, Modal } from 'ui';
 
@@ -43,11 +45,11 @@ export const FollowMe = ({ username }) => {
       >
         {following ? (
           <>
-            <RiUserUnfollowLine size={18} />
+            <IoPersonRemove size={18} />
           </>
         ) : (
           <>
-            <RiUserFollowLine size={18} /> <span>Follow</span>
+            <IoMdPersonAdd size={18} /> <span>Follow</span>
           </>
         )}
       </button>
