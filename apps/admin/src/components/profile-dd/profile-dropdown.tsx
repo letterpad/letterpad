@@ -6,9 +6,9 @@ import { signOut } from "next-auth/react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
+import { IoMdPerson } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuLogIn, LuLogOut } from "react-icons/lu";
-import { RxAvatar } from "react-icons/rx";
 import { VscDebugStart } from "react-icons/vsc";
 
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
@@ -52,11 +52,11 @@ export const ProfileDropdown = ({
   }, [sessionPath]);
 
   return (
-    <div className="relative w-max mx-auto" ref={ref}>
+    <div className="relative w-max mx-auto">
       <button
         type="button"
         className={classNames(
-          "flex items-center rounded-full text-[#333] text-sm font-semibold outline-none bg-gray-100 dark:bg-slate-600 dark:text-gray-200",
+          "p-1 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 rounded-full h-10 w-10 flex justify-center items-center",
           {
             "p-1": session,
           }
@@ -67,15 +67,16 @@ export const ProfileDropdown = ({
           <img
             src={session?.avatar}
             alt={session?.name}
-            className="w-6 h-6 rounded-full shrink-0 object-cover"
+            className="h-8 w-8 rounded-full shrink-0 object-cover bg-gray-200"
           />
         ) : (
-          <RxAvatar size={32} />
+          <IoMdPerson className="h-6 w-6 md:h-6 md:w-6 rounded-full shrink-0 object-cover" />
         )}
       </button>
       <animated.ul
         style={style}
-        className="mt-1 w-52 absolute shadow-lg bg-white dark:bg-slate-800 py-2 z-[1000] rounded-lg max-h-96 overflow-auto"
+        className="mt-1 w-52 absolute shadow-lg bg-white dark:bg-slate-800 py-2 z-[1000] rounded-lg max-h-96 overflow-auto -ml-2"
+        ref={ref}
       >
         {show &&
           (session ? (
@@ -112,7 +113,7 @@ export const ProfileDropdown = ({
                 path={`/api/identity/login?source=${document.location.href}`}
               />
               <MenuItem
-                label="Get started"
+                label="Get Started"
                 icon={<VscDebugStart size={18} />}
                 path="/register"
               />

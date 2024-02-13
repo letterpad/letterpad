@@ -2,17 +2,14 @@ import Link from "next/link";
 
 import { Banner } from "./banner";
 import { Card } from "./card";
-import {
-  getLetterpadCategories,
-  getLetterpadPosts,
-  getNewAuthors,
-} from "./data";
+import { getLetterpadPosts, getNewAuthors } from "./data";
+import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
 
 export const Website = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: 0 } });
-  const categories = await getLetterpadCategories();
+  // const categories = await getLetterpadCategories();
   const newAuthors = await getNewAuthors();
   const rows =
     data?.letterpadLatestPosts.__typename === "PostsNode"
@@ -23,7 +20,13 @@ export const Website = async () => {
       <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-900 dark:text-gray-100 text-black/60">
         <Header />
         <Banner />
+
         <main className="grow">
+          <div className="border-b dark:border-slate-800 mb-10">
+            <div className="max-w-6xl mx-auto py-10 md:py-20 p-4 gap-4 flex flex-col">
+              <Featured />
+            </div>
+          </div>
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:gap-8">
             <section className="w-full mb-5 flex flex-col overflow-hidden">
               {rows.map((item) => {
@@ -75,7 +78,7 @@ export const Website = async () => {
                   })}
                 </ul>
               </section>
-              <section className="">
+              {/* <section className="">
                 <h3 className="font-bold text-lg pb-2">Recommended Topics</h3>
                 <ul className="flex flex-col gap-2">
                   {categories?.popularTags?.rows?.map((category) => {
@@ -88,7 +91,7 @@ export const Website = async () => {
                     );
                   })}
                 </ul>
-              </section>
+              </section> */}
             </div>
           </div>
         </main>

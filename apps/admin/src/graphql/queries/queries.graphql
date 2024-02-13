@@ -449,3 +449,43 @@ query NewAuthors {
     }
   }
 }
+
+query LetterpadFeaturedPosts {
+  letterpadFeaturedPosts {
+    __typename
+    ... on PostsNode {
+      rows {
+        id
+        title
+        slug
+        sub_title
+        publishedAt
+        excerpt
+        cover_image {
+          src
+          width
+          height
+        }
+        stats {
+          reading_time
+        }
+        author {
+          ... on Author {
+            name
+            username
+            avatar
+            __typename
+          }
+        }
+        tags {
+          ... on TagsNode {
+            rows {
+              name
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+}
