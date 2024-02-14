@@ -16,13 +16,6 @@ const Home = () => {
           __html: JSON.stringify(letterpadStructuredData),
         }}
       />
-      <script
-        key="structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(letterpadBreadCrumb),
-        }}
-      />
       <WebsiteV2 />
     </>
   );
@@ -36,7 +29,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Letterpad - Create a beautiful blog.",
+  title: "Letterpad - A blog publishing platform",
   description:
     "Letterpad simplifies blogging, making it easy to start your online writing journey.",
   openGraph: {
@@ -92,35 +85,4 @@ const letterpadStructuredData = {
   },
   description:
     "Letterpad simplifies blogging, making it easy to start your online writing journey.",
-};
-
-const letterpadBreadCrumb = {
-  "@context": "http://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: getRootUrl(),
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Register",
-      item: getRootUrl() + "/register",
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: "Login",
-      item: getRootUrl() + "/login",
-    },
-    {
-      "@type": "ListItem",
-      position: 4,
-      name: "Documentation",
-      item: "https://docs.letterpad.app",
-    },
-  ],
 };
