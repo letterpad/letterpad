@@ -62,7 +62,7 @@ export const Like: FC<Props> = ({ postId, likes }) => {
         content: 'You must be logged in to like this event',
       });
     }
-    const url = new URL(path, getApiRootUrl());
+    const url = new URL(path, window.location.href);
     const params = new URLSearchParams({
       id: postId.toString(),
       type: 'post',

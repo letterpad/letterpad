@@ -82,7 +82,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                   className="contents"
                 >
                   <img
-                    className="mr-4 w-16 h-16 rounded-full"
+                    className="mr-4 w-16 h-16 rounded-full object-cover"
                     src={author.avatar!}
                     alt="Jese Leos"
                   />

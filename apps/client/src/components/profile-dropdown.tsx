@@ -45,7 +45,7 @@ export const ProfileDropdown = () => {
           <img
             src={session.user.avatar}
             alt={session.user.name}
-            className="h-6 w-6 rounded-full shrink-0 object-cover bg-white p-1"
+            className="h-8 w-8 rounded-full shrink-0 object-cover bg-white"
           />
         ) : (
           <IoMdPerson className="h-6 w-6 md:h-6 md:w-6 rounded-full shrink-0 object-cover" />
@@ -53,7 +53,7 @@ export const ProfileDropdown = () => {
       </button>
       <animated.ul
         style={style}
-        className="mt-1 w-52 absolute shadow-lg bg-white dark:bg-slate-800 py-2 z-[1000] rounded-lg max-h-96 overflow-auto -ml-48 md:-ml-20"
+        className="mt-1 w-52 absolute shadow-lg bg-white dark:bg-slate-800 py-2 z-[1000] rounded-lg max-h-96 overflow-auto -ml-48"
         ref={ref}
       >
         {show &&
