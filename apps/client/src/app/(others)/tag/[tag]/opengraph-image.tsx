@@ -2,7 +2,7 @@
 // import { Inter } from 'next/font/google';
 import { ImageResponse } from 'next/og';
 
-import { getAuthorAndSettingsData } from '../../../data';
+import { getAuthorAndSettingsData } from '../../../../data';
 
 // export const inter = Inter({
 //   subsets: ['latin'],

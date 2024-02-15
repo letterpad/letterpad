@@ -4,7 +4,7 @@ import {
   PageFragmentFragment,
   SettingsFragmentFragment,
 } from 'letterpad-sdk';
-import { BuilderContext, Layout } from 'ui';
+import { BuilderContext, StaticLayout } from 'ui';
 
 import './creatives.css';
 
@@ -31,7 +31,7 @@ export default function Creative({ data, settings, me }: Props) {
           FileExplorer={() => null}
           previewMode={true}
         >
-          <Layout editable={false} />
+          <StaticLayout />
         </BuilderContext>
       </article>
     </>
