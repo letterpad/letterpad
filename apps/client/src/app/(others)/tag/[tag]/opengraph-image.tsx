@@ -1,9 +1,9 @@
-// export const runtime = 'edge';
+export const runtime = 'edge';
 export const revalidate = 60;
 import { Inter } from 'next/font/google';
 import { ImageResponse } from 'next/og';
 
-import { getPostsByTag } from '../../../../data';
+import { getAuthorAndSettingsData } from '../../../../data';
 
 export const inter = Inter({
   subsets: ['latin'],
@@ -12,9 +12,9 @@ export const inter = Inter({
 
 export default async function AboutOG(props) {
   const image = 'https://picsum.photos/seed/picsum/1200/627';
-  const data = await getPostsByTag(props.params.tag);
+  const data = await getAuthorAndSettingsData();
   if (!data) return {};
-  const { settings, me, tagName } = data;
+  const { settings, me } = data;
   return new ImageResponse(
     (
       <div tw="flex  h-full w-full bg-white flex-col" style={font('Inter 300')}>
@@ -32,7 +32,7 @@ export default async function AboutOG(props) {
                 tw="flex text-[58px] font-bolder mb-7 leading-1"
                 style={inter.style}
               >
-                Posts tagged with #{tagName}
+                Posts tagged with #{props.params.tag}
               </div>
               <div
                 tw="flex mb-5 flex"
