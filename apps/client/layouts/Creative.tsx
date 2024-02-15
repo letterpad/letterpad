@@ -4,7 +4,6 @@ import {
   PageFragmentFragment,
   SettingsFragmentFragment,
 } from 'letterpad-sdk';
-import Head from 'next/head';
 import { BuilderContext, Layout } from 'ui';
 
 import './creatives.css';

@@ -4,9 +4,9 @@ import { Metadata } from 'next';
 
 import { getPostsByTag } from '@/data';
 
-import { List } from '../../../../components/list';
-import { SectionContainer } from '../../../../components/section';
-import Custom404 from '../../../not-found';
+import { List } from '../../list';
+import { SectionContainer } from '../../section';
+import Custom404 from '../../../app/not-found';
 
 export default async function Tag(props) {
   const data = await getPostsByTag(props.params.tag);
