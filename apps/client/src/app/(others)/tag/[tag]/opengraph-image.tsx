@@ -3,7 +3,7 @@ export const revalidate = 60;
 import { Inter } from 'next/font/google';
 import { ImageResponse } from 'next/og';
 
-import { getPostData, getPostsByTag } from '../../../../data';
+import { getPostsByTag } from '../../../../data';
 
 export const inter = Inter({
   subsets: ['latin'],
@@ -14,7 +14,7 @@ export default async function AboutOG(props) {
   const image = 'https://picsum.photos/seed/picsum/1200/627';
   const data = await getPostsByTag(props.params.tag);
   if (!data) return {};
-  const { posts, settings, me, tagName } = data;
+  const { settings, me, tagName } = data;
   return new ImageResponse(
     (
       <div tw="flex  h-full w-full bg-white flex-col" style={font('Inter 300')}>
@@ -63,13 +63,6 @@ export default async function AboutOG(props) {
             </div>
           </div>
         </main>
-
-        {/* <footer
-          tw="flex w-full justify-center text-2xl text-gray-500 p-10"
-          style={font('Roboto Mono 400')}
-        >
-          {me.name}
-        </footer> */}
       </div>
     ),
     {
@@ -80,28 +73,17 @@ export default async function AboutOG(props) {
           name: 'PT Sans',
           data: (await fetchAndConvertFont()) as ArrayBuffer,
         },
-        // {
-        //   name: 'Inter 500',
-        //   data: await inter500,
-        // },
-        // {
-        //   name: 'Roboto Mono 400',
-        //   data: await robotoMono400,
-        // },
       ],
     }
   );
 }
 
-// lil helper for more succinct styles
 function font(fontFamily: string) {
   return { fontFamily };
 }
-// Define the Google Fonts CSS URL
 const cssUrl =
   'https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap';
 
-// Function to extract the font URL from the Google Fonts CSS
 function extractFontUrl(cssText) {
   const matches = cssText.match(/url\((.*?)\)/);
   if (matches && matches.length > 1) {
