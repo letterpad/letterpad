@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import Head from "next/head";
 import { cookies } from "next/headers";
 import Script from "next/script";
 import { decode } from "next-auth/jwt";
@@ -10,13 +9,14 @@ import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
 import "../../public/css/theme-variables.css";
 import "ui/css/editor.css";
-import "../../public/website/css/style.css";
 
-import { FontPageWrapper } from "@/components/fonts";
+// import "../../public/website/css/style.css";
+// import { FontPageWrapper } from "@/components/fonts";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
 
+import { generateFontLink } from "../components/fonts/fonts";
 import { getRootUrl } from "../shared/getRootUrl";
 import { getAuthCookieName } from "../utils/authCookie";
 
@@ -82,10 +82,31 @@ const RootLayout = async ({ children }) => {
   const userId = await getUserFromCookie(cookies());
   return (
     <html lang="en" data-color-scheme={theme} className={theme + "-theme"}>
-      <Head>
+      <head>
         <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
         <script src={basePath + `/prism/prism.js`} async />
-      </Head>
+        <link
+          rel="stylesheet"
+          data-name="google-fonts"
+          href={generateFontLink(["Noto_Sans", "Roboto"])}
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          .prose {
+            font-family: "Noto Sans", sans-serif;
+          }
+        `,
+          }}
+        />
+      </head>
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 ${theme}`}
       >
@@ -103,11 +124,7 @@ const RootLayout = async ({ children }) => {
           gtag('config', '${gaTrackingId}',{'user_id': '${userId}'});
           `}
         </Script>
-        <Providers>
-          <FontPageWrapper primary_font={"Noto_Sans"} secondary_font="Roboto">
-            {children}
-          </FontPageWrapper>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

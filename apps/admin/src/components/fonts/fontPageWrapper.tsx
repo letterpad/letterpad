@@ -19,11 +19,11 @@ export const FontPageWrapper: FC<PropsWithChildren<Props>> = ({
   return (
     <div
       className={classNames(
-        className,
-        fonts[primary_font].className,
-        fonts[primary_font].variable,
-        fonts[secondary_font].variable,
-        fonts["Roboto_Mono"].variable // for codeblocks
+        className
+        // fonts[primary_font]?.className,
+        // fonts[primary_font]?.variable,
+        // fonts[secondary_font]?.variable,
+        // fonts["Roboto_Mono"]?.variable // for codeblocks
       )}
     >
       {children}

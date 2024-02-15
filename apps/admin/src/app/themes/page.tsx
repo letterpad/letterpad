@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
@@ -8,9 +7,6 @@ import { Feature } from "./_feature";
 const Themes = () => {
   return (
     <>
-      <Head>
-        <title>Themes</title>
-      </Head>
       <PageHeader className="site-page-header" title="Themes">
         <span className="help-text">
           Select the theme you want to use for your site. Remember that few

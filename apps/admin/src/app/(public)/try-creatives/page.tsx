@@ -10,7 +10,8 @@ import {
   useBuilderContext,
 } from "ui";
 
-import { CreativesHead } from "@/components/creatives";
+import "./creatives.css";
+
 import {
   introData,
   paintingData,
@@ -135,7 +136,7 @@ const Builder = () => {
           <ThemeSwitcher />
         </div>
       </div>
-      <Layout editable={false} head={<CreativesHead />} />
+      <Layout editable={false} />
     </>
   );
 };

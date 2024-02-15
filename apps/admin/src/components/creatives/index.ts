@@ -1,1 +1,0 @@
-export { CreativesHead } from "./head";

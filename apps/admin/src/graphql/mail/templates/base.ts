@@ -113,7 +113,7 @@ export const baseTemplate = `<!DOCTYPE html>
         font-weight: 600;
         line-height: 1.4;
         margin: 0;
-        margin-bottom: 30px;
+        margin-bottom: 8px;
       }
 
       h1 {
@@ -131,7 +131,6 @@ export const baseTemplate = `<!DOCTYPE html>
       p,
       ul,
       ol {
-        font-size: 14px;
         font-weight: normal;
         margin: 0;
         margin-bottom: 15px;
@@ -173,7 +172,6 @@ export const baseTemplate = `<!DOCTYPE html>
         color: #ffffff;
         cursor: pointer;
         display: inline;
-        font-size: 14px;
         margin: 0;
         padding: 8px 16px;
         text-decoration: none;
@@ -366,7 +364,94 @@ export const baseTemplate = `<!DOCTYPE html>
                   >
                     <tr>
                       <td>
-                        {{ content }}
+                      <p>
+                        <img src="https://letterpad.app/logo/logo.png" alt="Letterpad" width="60">
+                      </p>
+                      <p>
+                        Hello {{ name }},<p>
+                        As we move into the new year, we are excited to announce a
+                        few new features that we have added to the Letterpad platform.
+                        These features have been asked by the community and we are
+                        happy to bring them to you.</p>
+
+                        <strong>🧑‍🤝‍🧑 Followers:</strong>
+                        <p>
+                          Now you can follow your favourite
+                          authors. You will be notified when they publish new
+                          articles.
+                        </p>
+
+                        <strong>❤️ Like Button:</strong>
+                        <p>
+                          All articles now have a like button. You can now
+                          show your appreciation to the authors by liking their
+                          articles.
+                        </p>
+
+                        <strong>👦 New Profile Page:</strong>
+                        <p>
+                          The new redesigned profile page is now more
+                          engaging and is more informative. 
+                        </p>
+
+                        <strong>📙 Improved Search:</strong>
+                        <p>
+                          The global search functionality has been improved. Now it is
+                          faster and more accurate.
+                        </p>
+
+                        <strong>⭐ Featured Posts:</strong>
+                        <p>
+                          We have added a new section to the homepage that will
+                          showcase the featured posts. Every week we will feature
+                          six best articles from the platform.
+                        </p>
+                        
+                        <strong>💅 New Homepage and Design:</strong>
+                        <p>
+                          The new redesigned homepage now displays your articles for better discoverability.
+                        </p>
+
+                        <strong>🔑 Single Sign On:</strong>
+                        <p>
+                          Now you can interact with other Author's posts using your
+                          own platform credentials.
+                        </p>
+
+                        <strong>🤺 Improved Performance:</strong>
+                        <p>
+                          We have improved the performance of the platform. Now it is
+                          faster and more reliable.
+                        </p>
+
+                        <strong>🔭 Improved SEO:</strong>
+                        <p>
+                          With improved SEO, your articles will rank better in search engines.
+                        </p>
+
+                        <strong>🤖 Generative AI:</strong>
+                        <p>
+                          We have added a new feature that allows AI completion. You will have to use your own API key from OpenAI to use this feature.
+                        </p>
+                        <p>
+                        And lastly, don't forget to check out our new website - 
+                        <a href="https://letterpad.app">https://letterpad.app</a>.
+                        </p>
+
+                        <strong>🎉 Links:</strong>
+                        <p></p>
+                        <p>
+                          <a href="https://{{ username }}.letterpad.app" class="btn">Your site</a> 
+                          <a href="https://letterpad.app/@{{ username }}" class="btn">Your profile</a> 
+                          <a href="https://letterpad.app/login" class="btn">Login</a>
+                        </p>
+                        <hr>
+                        <p>
+                          If you have any questions, please feel free to reach out to us. Thank you for being a part of the Letterpad community.
+                        </p>
+
+                        
+                        </p>
                       </td>
                     </tr>
                     <tr>

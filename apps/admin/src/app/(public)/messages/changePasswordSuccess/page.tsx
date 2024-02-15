@@ -1,5 +1,4 @@
 "use client";
-import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { Button, Result } from "ui";
 
@@ -11,9 +10,6 @@ const ChangePasswordSuccess = () => {
   };
   return (
     <>
-      <Head>
-        <title>Success - Password Changed</title>
-      </Head>
       <Result
         status="success"
         title="Password Changed"

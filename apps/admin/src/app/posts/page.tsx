@@ -1,4 +1,3 @@
-import Head from "next/head";
 import React from "react";
 
 import { Content } from "@/components/client-wrapper";
@@ -11,9 +10,6 @@ import { Feature } from "./_feature/feature";
 async function Posts() {
   return (
     <>
-      <Head>
-        <title>Posts</title>
-      </Head>
       <Header type={PostTypes.Post} title="Posts">
         <span className="help-text">
           Here you will find the list of posts for your blog.

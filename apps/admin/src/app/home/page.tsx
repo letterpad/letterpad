@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { FC } from "react";
 import { PageHeader } from "ui/isomorphic";
 
@@ -11,9 +10,6 @@ import { PageProps } from "@/types";
 const Home: FC<PageProps> = () => {
   return (
     <>
-      <Head>
-        <title>Home</title>
-      </Head>
       <PageHeader title="Welcome to your blog! 🎉" className="site-page-header">
         <span className="help-text">
           Thank you for trying out Letterpad. We encourage you to update the

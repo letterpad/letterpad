@@ -13,7 +13,7 @@ const LoginLayout = ({ children }) => {
   }, []);
   return (
     <>
-      <title>Letterpad Register</title>
+      <title>Letterpad - Register</title>
       <div className="">{children}</div>
       <div className="p-6">Letterpad ©2023, An Open Source Project</div>
     </>

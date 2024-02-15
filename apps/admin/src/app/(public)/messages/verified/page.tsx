@@ -1,5 +1,4 @@
 "use client";
-import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { Button, Result } from "ui";
 
@@ -18,9 +17,6 @@ const Verified = () => {
   }
   return (
     <>
-      <Head>
-        <title>Email Verified</title>
-      </Head>
       <Result
         status="success"
         title="Email Verified"

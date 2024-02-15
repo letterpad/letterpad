@@ -45,7 +45,7 @@ export const ProfileDropdown = () => {
           <img
             src={session.user.avatar}
             alt={session.user.name}
-            className="h-8 w-8 rounded-full shrink-0 object-cover bg-white"
+            className="h-7 w-7 rounded-full shrink-0 object-cover bg-white p-1"
           />
         ) : (
           <IoMdPerson className="h-6 w-6 md:h-6 md:w-6 rounded-full shrink-0 object-cover" />

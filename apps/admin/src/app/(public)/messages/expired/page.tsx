@@ -1,14 +1,9 @@
 "use client";
-
-import Head from "next/head";
 import { Result } from "ui";
 
 const Expired = () => {
   return (
     <>
-      <Head>
-        <title>Letterpad Verification Expired</title>
-      </Head>
       <Result
         status="error"
         title="Link Expired"
