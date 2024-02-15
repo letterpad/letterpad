@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 export const revalidate = 60;
 import { Inter } from 'next/font/google';
 import { ImageResponse } from 'next/og';
