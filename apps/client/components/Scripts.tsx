@@ -2,8 +2,6 @@ import { SettingsFragmentFragment } from 'letterpad-sdk';
 import Script from 'next/script';
 import { FC } from 'react';
 
-import Fonts from './fonts/fonts';
-
 export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   settings,
 }) => {
@@ -17,13 +15,6 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin={'anonymous'}
-        />
-        <Fonts
-          fonts={[
-            settings.design?.primary_font,
-            settings.design?.secondary_font,
-            'Roboto_Mono',
-          ]}
         />
       </head>
       <Script strategy="afterInteractive" src={'/static/prism.js'} async />

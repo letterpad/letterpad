@@ -30,7 +30,7 @@ export const WordCount = () => {
 
   if (!words) return null;
   return (
-    <div className="fixed bottom-0 z-10 flex h-8 w-full cursor-pointer items-center justify-center rounded-md bg-white dark:bg-gray-800">
+    <div className="fixed bottom-0 left-0 z-10 flex h-8 w-full cursor-pointer items-center justify-center rounded-md bg-white dark:bg-gray-800">
       {!editor ? (
         <LinePlaceholder />
       ) : (

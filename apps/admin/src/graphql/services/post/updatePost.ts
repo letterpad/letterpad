@@ -21,6 +21,8 @@ import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnT
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
+import { TOPIC_PREFIX } from "../../../shared/utils";
+
 export const updatePost = async (
   args: MutationUpdatePostArgs,
   { prisma, session }: ResolverContext
@@ -40,6 +42,9 @@ export const updatePost = async (
     }
     const existingPost = await prisma.post.findFirst({
       where: { id: args.data.id },
+      include: {
+        tags: true,
+      }
     });
 
     if (!existingPost) {
@@ -168,8 +173,39 @@ export const updatePost = async (
           };
         }),
       };
+
+      // const newTopic = args.data.tags.find((tag) => tag.name?.startsWith(TOPIC_PREFIX));
+      // if (newTopic) {
+      //   const deleteTags = existingPost.tags
+      //     .filter(tag => tag.name?.startsWith(TOPIC_PREFIX))
+      //     .map((tag) => tag.name);
+
+      //   console.log(deleteTags)
+
+      //   await prisma.tag.deleteMany({
+      //     where: {
+      //       name: {
+      //         in: deleteTags
+      //       },
+      //       posts: {
+      //         every: {
+      //           id: existingPost.id
+      //         }
+      //       }
+      //     }
+      //   }).catch(console.log)
+      // await prisma.post.update({
+      //   where: { id: existingPost.id },
+      //   data: {
+      //     tags: {
+      //       delete: deleteTags
+      //     },
+      //   },
+      // }).catch(console.log)
+      // }
     }
     const updatedPost = await prisma.post.update(newPostArgs);
+
 
     if (nowPublished) {
       revalidateTag("letterpadLatestPosts");

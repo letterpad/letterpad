@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { Metadata } from "next";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { cookies } from "next/headers";
@@ -10,13 +11,11 @@ import "../../public/css/globals.css";
 import "../../public/css/theme-variables.css";
 import "ui/css/editor.css";
 
-// import "../../public/website/css/style.css";
-// import { FontPageWrapper } from "@/components/fonts";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
 
-import { generateFontLink } from "../components/fonts/fonts";
+import { fonts } from "../components/fonts";
 import { getRootUrl } from "../shared/getRootUrl";
 import { getAuthCookieName } from "../utils/authCookie";
 
@@ -81,27 +80,30 @@ const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme")?.value ?? "light";
   const userId = await getUserFromCookie(cookies());
   return (
-    <html lang="en" data-color-scheme={theme} className={theme + "-theme"}>
+    <html
+      lang="en"
+      data-color-scheme={theme}
+      className={classNames(
+        theme + "-theme",
+        fonts.lora.variable,
+        fonts.robotoMono.variable,
+        fonts.ptSerif.variable
+      )}
+    >
       <head>
         <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
         <script src={basePath + `/prism/prism.js`} async />
-        <link
-          rel="stylesheet"
-          data-name="google-fonts"
-          href={generateFontLink(["Noto_Sans", "Roboto"])}
-        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-
         <style
           dangerouslySetInnerHTML={{
             __html: `
-          .prose {
-            font-family: "Noto Sans", sans-serif;
+          h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading)
           }
         `,
           }}

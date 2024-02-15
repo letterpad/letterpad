@@ -3,7 +3,7 @@
 
 .prose {
   word-break: break-word;
-  font-family: inherit !important;
+  font-family: var(--font-paragraph);
 
   .mce-content-body {
     outline: none;
@@ -12,6 +12,10 @@
   ::selection {
     background: yellow;
     color: #000;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 
   @media only screen and (max-width: 600px) {
@@ -34,7 +38,7 @@
 
   pre {
     font-size: 0.7em;
-    font-family: var(--font-roboto-mono), monospace !important;
+    font-family: var(--font-code), monospace !important;
     padding: 0.8rem !important;
     opacity: 0.9;
     line-height: 1.8!important;
