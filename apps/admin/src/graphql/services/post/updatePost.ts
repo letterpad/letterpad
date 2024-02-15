@@ -173,36 +173,6 @@ export const updatePost = async (
           };
         }),
       };
-
-      // const newTopic = args.data.tags.find((tag) => tag.name?.startsWith(TOPIC_PREFIX));
-      // if (newTopic) {
-      //   const deleteTags = existingPost.tags
-      //     .filter(tag => tag.name?.startsWith(TOPIC_PREFIX))
-      //     .map((tag) => tag.name);
-
-      //   console.log(deleteTags)
-
-      //   await prisma.tag.deleteMany({
-      //     where: {
-      //       name: {
-      //         in: deleteTags
-      //       },
-      //       posts: {
-      //         every: {
-      //           id: existingPost.id
-      //         }
-      //       }
-      //     }
-      //   }).catch(console.log)
-      // await prisma.post.update({
-      //   where: { id: existingPost.id },
-      //   data: {
-      //     tags: {
-      //       delete: deleteTags
-      //     },
-      //   },
-      // }).catch(console.log)
-      // }
     }
     const updatedPost = await prisma.post.update(newPostArgs);
 
