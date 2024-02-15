@@ -34,6 +34,7 @@ module.exports = {
       fontFamily: {
         "heading": "var(--font-heading)",
         "paragraph": "var(--font-paragraph)",
+        "body": "var(--font-body)",
         "code": "var(--font-code)",
       },
       fontSize: {
@@ -78,7 +79,7 @@ module.exports = {
           css: {
             fontSize: theme('fontSize.prose'),
             color: theme('colors.gray.700'),
-            fontFamily: theme('fontFamily.serif'),
+            fontFamily: theme('fontFamily.body'),
             maxWidth: 'inherit',
             a: {
               color: theme('colors.primary.500'),
@@ -87,8 +88,8 @@ module.exports = {
               },
               code: { color: theme('colors.primary.400') },
             },
-            'h1, h2, h3, h4, h5, h6': {
-              fontFamily: 'sans-serif'
+            'h1, h2, h3': {
+              fontFamily: theme('fontFamily.heading')
             },
             h1: {
               fontWeight: '700',
@@ -112,7 +113,7 @@ module.exports = {
               fontSize: theme('fontSize.md'),
               backgroundColor: '#6fd7535c',
               fontWeight: 'initial',
-              fontFamily: theme('fontFamily.roboto_mono'),
+              fontFamily: theme('fontFamily.code'),
               padding: '0.1rem 0.2rem',
               borderRadius: '0.25rem',
             },

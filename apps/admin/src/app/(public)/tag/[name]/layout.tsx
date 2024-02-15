@@ -27,7 +27,7 @@ const Layout = async ({ children, ...p }) => {
             </section>
             <div className="hidden md:block md:ml-10 md:min-w-52 py-10">
               <section className="">
-                <h3 className="font-bold text-lg pb-2">Recommended Topics</h3>
+                <h3 className="font-bold text-lg pb-2">Topics</h3>
                 <ul className="flex flex-col gap-2">
                   {categories?.popularTags?.rows?.map((category) => {
                     return (

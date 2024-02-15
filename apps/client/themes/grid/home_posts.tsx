@@ -52,9 +52,9 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, settings }) => {
                       </time>
                     </span>
 
-                    <h2 className={classNames('mb-2 mt-2 font-bold leading-5')}>
+                    <h4 className={classNames('mb-2 mt-2 font-bold leading-5')}>
                       {title}
-                    </h2>
+                    </h4>
                     <p className="text-base tracking-tight text-gray-600 dark:text-gray-300">
                       {excerpt}
                     </p>

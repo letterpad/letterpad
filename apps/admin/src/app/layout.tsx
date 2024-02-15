@@ -87,7 +87,8 @@ const RootLayout = async ({ children }) => {
         theme + "-theme",
         fonts.lora.variable,
         fonts.robotoMono.variable,
-        fonts.ptSerif.variable
+        fonts.ptSerif.variable,
+        fonts.openSans.variable
       )}
     >
       <head>
@@ -98,15 +99,6 @@ const RootLayout = async ({ children }) => {
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
-        />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-          h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-heading)
-          }
-        `,
-          }}
         />
       </head>
       <body
