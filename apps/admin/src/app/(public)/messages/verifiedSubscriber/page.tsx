@@ -1,13 +1,9 @@
 "use client";
-import Head from "next/head";
 import { Result } from "ui";
 
 const VerifiedSubscriber = () => {
   return (
     <>
-      <Head>
-        <title>Email Verified</title>
-      </Head>
       <Result
         status="success"
         title="Email Verified"

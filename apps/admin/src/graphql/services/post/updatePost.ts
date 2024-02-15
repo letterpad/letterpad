@@ -21,6 +21,8 @@ import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnT
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
+import { TOPIC_PREFIX } from "../../../shared/utils";
+
 export const updatePost = async (
   args: MutationUpdatePostArgs,
   { prisma, session }: ResolverContext
@@ -40,6 +42,9 @@ export const updatePost = async (
     }
     const existingPost = await prisma.post.findFirst({
       where: { id: args.data.id },
+      include: {
+        tags: true,
+      }
     });
 
     if (!existingPost) {
@@ -170,6 +175,7 @@ export const updatePost = async (
       };
     }
     const updatedPost = await prisma.post.update(newPostArgs);
+
 
     if (nowPublished) {
       revalidateTag("letterpadLatestPosts");

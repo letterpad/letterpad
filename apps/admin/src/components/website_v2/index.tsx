@@ -55,7 +55,7 @@ export const Website = async () => {
             </section>
             <div className="hidden md:block md:ml-10 md:min-w-52 py-10">
               <section className="mb-10">
-                <h3 className="font-bold text-lg pb-2">New Authors</h3>
+                <h4 className="font-bold text-lg pb-2">New Authors</h4>
                 <ul className="flex flex-col gap-4 py-2">
                   {newAuthors?.map((author) => {
                     return (
@@ -69,7 +69,7 @@ export const Website = async () => {
                               <img
                                 src={author?.avatar}
                                 alt={author?.name}
-                                className="w-7 h-7 object-cover rounded-full"
+                                className="w-6 h-6 object-cover rounded-full"
                               />
                             </div>
                             <span className="text-gray-800 dark:text-gray-200 truncate">
@@ -83,7 +83,7 @@ export const Website = async () => {
                 </ul>
               </section>
               <section className="">
-                <h3 className="font-bold text-lg pb-2">Recommended Topics</h3>
+                <h4 className="font-bold text-lg pb-2">Topics</h4>
                 <ul className="flex flex-col gap-2">
                   {categories?.popularTags?.rows?.map((category) => {
                     return (

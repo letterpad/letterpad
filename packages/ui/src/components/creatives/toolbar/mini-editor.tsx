@@ -1,6 +1,6 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { useEffect, useRef, useState } from "react";
-
+import "./tinymce"
 interface Props {
   text: string;
   onChange: (_html: string) => void;

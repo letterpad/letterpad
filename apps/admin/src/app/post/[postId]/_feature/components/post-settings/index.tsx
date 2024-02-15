@@ -14,7 +14,7 @@ import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/app/settings/_feature/api.client";
 import { PageType } from "@/graphql/types";
-import { debounce } from "@/shared/utils";
+import { debounce, TOPIC_PREFIX } from "@/shared/utils";
 import {
   createPathWithPrefix,
   getLastPartFromPath,
@@ -165,7 +165,12 @@ const Actions = ({ post }: IProps) => {
                       id: post.id,
                       tags:
                         post.tags?.__typename === "TagsNode"
-                          ? [...post.tags.rows, tag]
+                          ? [
+                              ...post.tags.rows.filter(
+                                (tag) => !tag.name.startsWith(TOPIC_PREFIX)
+                              ),
+                              tag,
+                            ]
                           : [tag],
                     });
                   }}
@@ -245,23 +250,25 @@ const Actions = ({ post }: IProps) => {
                   }
                 />
               </div>
-              <div>
-                <Heading
-                  heading="Exclude this post from home page"
-                  subheading={
-                    "If you want to display this post under a different menu item, tag it with the menu item name and make sure, that tag is added in navigation menu"
-                  }
-                />
-                <ExcludeFromHome
-                  status={!!post.exclude_from_home}
-                  onChange={(exclude_from_home) =>
-                    debounceUpdatePost({
-                      id: post.id,
-                      exclude_from_home,
-                    })
-                  }
-                />
-              </div>
+              {isPost && (
+                <div>
+                  <Heading
+                    heading="Exclude this post from home page"
+                    subheading={
+                      "If you want to display this post under a different menu item, tag it with the menu item name and make sure, that tag is added in navigation menu"
+                    }
+                  />
+                  <ExcludeFromHome
+                    status={!!post.exclude_from_home}
+                    onChange={(exclude_from_home) =>
+                      debounceUpdatePost({
+                        id: post.id,
+                        exclude_from_home,
+                      })
+                    }
+                  />
+                </div>
+              )}
               <div>
                 <Heading
                   heading="Story Preview"

@@ -1,5 +1,3 @@
-import Head from "next/head";
-
 import { Content } from "@/components/client-wrapper";
 
 import { PostTypes } from "@/__generated__/__types__";
@@ -10,9 +8,6 @@ import { Feature } from "./_feature";
 function Pages() {
   return (
     <>
-      <Head>
-        <title>Creatives</title>
-      </Head>
       <Header type={PostTypes.Page} title="Creatives">
         <div className="flex flex-row items-center justify-start">
           <span className="help-text">

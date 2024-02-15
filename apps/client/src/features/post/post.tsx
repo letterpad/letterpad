@@ -123,14 +123,14 @@ export default function PostSubTitle({ text, className }: Props) {
   if (!text) return null;
   const textColor = className ?? 'text-gray-400 dark:text-slate-400';
   return (
-    <h1
+    <h4
       className={classNames(
-        'py-2 text-lg font-medium  leading-7',
+        'py-2 text-lg font-medium  leading-7 font-body',
         className,
         textColor
       )}
     >
       {text}
-    </h1>
+    </h4>
   );
 }

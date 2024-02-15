@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { BuilderContext, Layout as LayoutBuilder } from "ui";
 
-import { CreativesHead } from "@/components/creatives";
+import "./creatives.css";
+
 import { FileExplorer } from "@/components/file-explorer";
 
 import { Post } from "@/__generated__/__types__";
 
 import { useUpdatePost } from "../api.client";
 import { Title } from "../components/title";
-
 interface Props {
   post?: Post;
 }
@@ -37,7 +37,7 @@ export const Creatives: FC<Props> = ({ post }) => {
         }
         FileExplorer={FileExplorer}
       >
-        <LayoutBuilder head={<CreativesHead />} />
+        <LayoutBuilder />
       </BuilderContext>
     </div>
   );

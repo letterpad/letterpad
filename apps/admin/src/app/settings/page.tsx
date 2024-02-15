@@ -1,4 +1,3 @@
-import Head from "next/head";
 import React from "react";
 import { PageHeader } from "ui/isomorphic";
 
@@ -15,9 +14,6 @@ const Page = async () => {
 
   return (
     <>
-      <Head>
-        <title>Settings</title>
-      </Head>
       <PageHeader className="site-page-header" title="Settings">
         <span className="help-text">
           Here you can customize your blog&apos;s settings.

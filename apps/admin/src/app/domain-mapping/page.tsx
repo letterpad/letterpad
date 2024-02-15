@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { PageHeader } from "ui/isomorphic";
 
 import { Content } from "@/components/client-wrapper";
@@ -12,9 +11,6 @@ interface Props {
 const DomainMapping: React.FC<Props> = () => {
   return (
     <>
-      <Head>
-        <title>Domain Mapping</title>
-      </Head>
       <PageHeader className="site-page-header" title="Domain Mapping">
         <span className="help-text">
           Link your custom domain with Letterpad

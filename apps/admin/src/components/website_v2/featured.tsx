@@ -53,9 +53,9 @@ export const Featured = async () => {
                         className="flex items-center gap-2 mb-2"
                         href={link}
                       >
-                        <h3 className="text-base font-semibold text-wrap break-words line-clamp-2">
+                        <span className="text-base font-semibold text-wrap break-words line-clamp-2">
                           {article.title}
-                        </h3>
+                        </span>
                       </Link>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">

@@ -1,12 +1,12 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 import { Metadata } from 'next';
 
 import { getPostsByTag } from '@/data';
 
-import Custom404 from '../../../not-found';
-import { SectionContainer } from '../../../../components/section';
 import { List } from '../../../../components/list';
+import { SectionContainer } from '../../../../components/section';
+import Custom404 from '../../../not-found';
 
 export default async function Tag(props) {
   const data = await getPostsByTag(props.params.tag);

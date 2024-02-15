@@ -1,8 +1,6 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 import { getData } from '@/data';
-
-import Creative from '@/layouts/Creative';
 
 import Custom404 from './not-found';
 import { Navbar } from '../components/navbar';

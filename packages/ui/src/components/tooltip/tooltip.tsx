@@ -68,6 +68,7 @@ export const Tooltip = ({
                 left: x ?? "",
                 maxWidth: "400px",
                 padding: "8px",
+                zIndex: 99999
               },
             })}
           >

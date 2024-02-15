@@ -59,17 +59,17 @@ export const HomePosts: FC<Props> = ({ posts }) => {
 
   return (
     <SectionContainer className="mx-auto max-w-7xl md:px-20">
-      <h2 className="mb-4 mt-10 text-base font-medium uppercase tracking-wider">
+      <h4 className="mb-4 mt-10 text-base font-medium uppercase tracking-wider">
         Featured Posts
-      </h2>
+      </h4>
       <div className="flex flex-wrap gap-10 xl:flex-nowrap ">
         {featuredThreePosts}
       </div>
       {hasLatestPosts ? (
         <>
-          <h2 className="mb-4 mt-32 text-base font-medium uppercase tracking-wider">
+          <h4 className="mb-4 mt-32 text-base font-medium uppercase tracking-wider">
             Latest Posts
-          </h2>
+          </h4>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
             {posts.rows.map((post, index) =>
               index >= featuredPostsCount ? <Card post={post} /> : null
@@ -108,7 +108,7 @@ const Card: FC<{
           </span>
         </div>
       </div>
-      <h2
+      <h4
         className={classNames('mt-4 text-xl font-bold leading-snug', {
           'sm:text-2xl': size === 'sm',
           'sm:text-4xl': size === 'md',
@@ -117,7 +117,7 @@ const Card: FC<{
         <Link className="block" href={post.slug!}>
           {post.title}
         </Link>
-      </h2>
+      </h4>
       <p
         className={classNames('mt-4 font-normal opacity-80', {
           'sm:text-md': size === 'sm',

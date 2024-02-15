@@ -1,5 +1,6 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
+import classNames from 'classnames';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
@@ -8,14 +9,13 @@ import 'ui/css/editor.css';
 
 import { getData } from '@/data';
 
-import { FontPageWrapper } from '@/components/fonts';
 import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
 import Custom404 from './not-found';
+import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
-import { generateGoogleFontsVariables } from '../../components/fonts/fontsCssLink';
 import { SessionProvider } from '../../context/SessionProvider';
 import ThemeProvider from '../../context/ThemeProvider';
 
@@ -147,33 +147,41 @@ const Layout = async ({ children }) => {
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${theme}`}
       style={{ colorScheme: theme }}
+      className={classNames(
+        `scroll-smooth ${theme}`,
+        theme + '-theme',
+        fonts.lora.variable,
+        fonts.robotoMono.variable,
+        fonts.ptSerif.variable,
+        fonts.openSans.variable
+      )}
     >
       <Css css={settings.css} />
       <HeadMeta settings={settings} />
       <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <style>
-          {`
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           html {
             --accent: ${settings?.design?.brand_color ?? '#d93097'};
-            ${generateGoogleFontsVariables([
-              settings.design?.primary_font,
-              settings.design?.secondary_font,
-              'Roboto_Mono',
-              'Inter',
-            ])}
+            font-family: var(--font-body);
           }
-        `}
-        </style>
+          .prose {
+            font-family: var(--font-paragraph) !important;
+          }
+          h1, h2, h3 {
+            font-family: var(--font-heading) !important;
+          }
+        `,
+          }}
+        />
         <SessionProvider>
           <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
-            <FontPageWrapper primary_font={settings.design?.primary_font!}>
-              <main className="mb-auto">{children}</main>
-              <div className="border-b-[1px] dark:border-gray-700">
-                <Footer author={me} settings={settings} />
-              </div>
-            </FontPageWrapper>
+            <main className="mb-auto">{children}</main>
+            <div className="border-b-[1px] dark:border-gray-700">
+              <Footer author={me} settings={settings} />
+            </div>
           </ThemeProvider>
           <div id="modal-creatives" />
           <PrismHighlight />

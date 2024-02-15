@@ -9,7 +9,7 @@ export const EditSwitch = () => {
       variant="primary"
       size="small"
       onClick={() => setPreview(!preview)}
-      className="btn flex h-full flex-row items-center justify-end gap-1 px-4"
+      className="btn flex h-full flex-row items-center justify-end gap-2 px-4"
     >
       {preview ? (
         <>

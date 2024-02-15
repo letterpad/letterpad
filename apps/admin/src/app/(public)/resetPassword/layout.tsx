@@ -1,6 +1,8 @@
-"use client";
 import React from "react";
 
+export const metadata = {
+  title: "Letterpad - Reset Password",
+};
 const LoginLayout = ({ children }) => {
   return (
     <>
