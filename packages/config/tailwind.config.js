@@ -83,9 +83,6 @@ module.exports = {
             maxWidth: 'inherit',
             a: {
               color: theme('colors.primary.500'),
-              '&:hover': {
-                color: `${theme('colors.primary.600')} !important`,
-              },
               code: { color: theme('colors.primary.400') },
             },
             'h1, h2, h3': {
@@ -157,9 +154,6 @@ module.exports = {
             color: theme('colors.slate.300'),
             a: {
               color: theme('colors.primary.500'),
-              '&:hover': {
-                color: `${theme('colors.accent.50')} !important`,
-              },
               code: { color: theme('colors.primary.400') },
             },
             h1: {
