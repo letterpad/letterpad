@@ -1,4 +1,4 @@
-import { NavigationType, PostsFragmentFragment } from 'letterpad-sdk';
+import { PostsFragmentFragment } from 'letterpad-sdk';
 import { FC, ReactNode } from 'react';
 
 import { Card, HorizontalCard } from './commons/card';
@@ -93,13 +93,8 @@ const OlderPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
 const SidePosts = async () => {
   const data = await getTagsData();
   if (!data) return null;
-  const { tags, settings } = data;
-  const defaultHomeTag =
-    settings?.menu[0].type === NavigationType.Tag ? settings.menu[0] : null;
-  const tagsWithoutHome = tags.rows.filter(
-    (item) => item.slug !== defaultHomeTag?.slug
-  );
-  const tag = getRandom(tagsWithoutHome);
+  const { tags } = data;
+  const tag = getRandom(tags.rows);
 
   const postsTag = await getPostsByTag(tag.slug);
   if (!postsTag?.posts) return null;
