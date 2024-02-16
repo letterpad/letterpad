@@ -91,7 +91,7 @@ export const Card: FC<Props> = ({
             loading="lazy"
             height={cover_image.height}
             width={cover_image.width}
-            className="h-36 w-36 object-cover rounded-xl"
+            className="h-36 w-36 object-cover rounded-xl hidden md:block"
           />
         )}
       </Link>
