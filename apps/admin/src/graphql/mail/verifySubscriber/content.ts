@@ -41,7 +41,7 @@ export async function getVerifySubscriberEmailContent(
   }
 
   const subject = template.subject.replaceAll(
-    "blog_name",
+    "{{ blog_name }}",
     author.setting?.site_title ?? ""
   );
 
