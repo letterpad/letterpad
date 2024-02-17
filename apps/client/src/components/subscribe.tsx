@@ -15,6 +15,9 @@ export const Subscribe = () => {
     if (email.length === 0) {
       return setError('Please enter your email');
     }
+    if (!isValidEmail(email)) {
+      return setError('Please enter a valid email');
+    }
     const resp = await fetch('/api/subscribe', {
       method: 'POST',
       headers: {
@@ -104,3 +107,8 @@ export const Subscribe = () => {
     </div>
   );
 };
+
+function isValidEmail(email) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}
