@@ -38,7 +38,6 @@ function Header() {
               </li>
               <li>
                 <ProfileDropdown
-                  sessionPath="/api/auth/session"
                   renderSign={<SignInNavItems />}
                 />
               </li>

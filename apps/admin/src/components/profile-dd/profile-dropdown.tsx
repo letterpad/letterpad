@@ -3,7 +3,7 @@ import { animated, useSpring } from "@react-spring/web";
 import classNames from "classnames";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
 import { IoMdPerson } from "react-icons/io";
@@ -11,21 +11,14 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { LuLogIn, LuLogOut } from "react-icons/lu";
 import { VscDebugStart } from "react-icons/vsc";
 
+import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
+
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
 
-interface Session {
-  name: string;
-  avatar: string;
-}
-
-export const ProfileDropdown = ({
-  sessionPath = `/api/client/session`,
-}: {
-  sessionPath?: string;
-  renderSign?: ReactNode;
-}) => {
+export const ProfileDropdown = () => {
+  const [{ data }] = useHomeQueryQuery();
   const [show, setShow] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
+  const author = data?.me?.__typename === "Author" ? data.me : null;
   const ref = useRef(null);
 
   const handleClickOutside = () => {
@@ -41,16 +34,6 @@ export const ProfileDropdown = ({
     opacity: show ? 1 : 0,
   });
 
-  useEffect(() => {
-    fetch(`${sessionPath}`, {
-      headers: {
-        siteurl: document.location.origin,
-      },
-    })
-      .then((res) => res.json())
-      .then((session) => setSession(session.user));
-  }, [sessionPath]);
-
   return (
     <div className="relative w-max mx-auto">
       <button
@@ -58,15 +41,15 @@ export const ProfileDropdown = ({
         className={classNames(
           "p-1 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 rounded-full h-10 w-10 flex justify-center items-center",
           {
-            "p-1": session,
+            "p-1": author,
           }
         )}
         onClick={() => setShow(!show)}
       >
-        {session?.avatar ? (
+        {author?.avatar ? (
           <img
-            src={session?.avatar}
-            alt={session?.name}
+            src={author.avatar}
+            alt={author.name}
             className="h-7 w-7 rounded-full shrink-0 object-cover bg-gray-200 p-1"
           />
         ) : (
@@ -79,7 +62,7 @@ export const ProfileDropdown = ({
         ref={ref}
       >
         {show &&
-          (session ? (
+          (author ? (
             <>
               <MenuItem
                 label="New Story"
@@ -123,7 +106,6 @@ export const ProfileDropdown = ({
     </div>
   );
 };
-
 const MenuItem = ({
   label,
   icon,
