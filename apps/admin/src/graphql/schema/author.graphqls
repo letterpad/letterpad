@@ -44,8 +44,6 @@ type Author {
   settings_updated: Boolean
   profile_updated: Boolean
   register_step: RegisterStep
-  stripe_customer_id: String
-  stripe_subscription_id: String
   createdAt: String
 }
 
@@ -88,8 +86,6 @@ input InputAuthor {
   first_post_published: Boolean
   settings_updated: Boolean
   profile_updated: Boolean
-  stripe_customer_id: String
-  stripe_subscription_id: String
 }
 
 input InputCreateAuthor {

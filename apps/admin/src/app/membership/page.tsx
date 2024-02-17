@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button, Content, PageHeader, Table } from "ui";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
@@ -21,12 +21,31 @@ type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
-const Payments: FC<P & Props> = ({ customer, charges, active }) => {
+const Payments: FC<P & Props> = () => {
+  const [membership, setMembership] = useState<any>({});
+
+  const { customer, charges, active } = membership;
+
+  useEffect(() => {
+    fetch("/api/membership")
+      .then((res) => res.json())
+      .then(setMembership);
+  }, []);
+
   const handleClick = async (_event) => {
-    const res = await fetch("/api/checkout_session", {
+    const body = {
+      interval: "month",
+      amount: 2000,
+      plan: "Monthly",
+      planDescription: "Subscribe for $20 per month",
+    };
+
+    const res = await fetch("/api/checkout_sessions", {
       method: "POST",
+      body: JSON.stringify(body, null),
       headers: { "Content-Type": "application/json" },
     }).then((res) => res.json());
+
     const stripe = await stripePromise;
 
     await stripe?.redirectToCheckout({
@@ -37,7 +56,7 @@ const Payments: FC<P & Props> = ({ customer, charges, active }) => {
   const deleteSubscription = async () => {
     const id = customer?.subscriptions?.data[0]?.id;
     if (!id) return;
-    fetch(basePath + "/api/cancelSubscription", {
+    fetch(basePath + "/api/cancel-membership", {
       method: "POST",
       body: JSON.stringify({ subscription_id: id }),
       headers: { "Content-Type": "application/json" },
@@ -58,18 +77,21 @@ const Payments: FC<P & Props> = ({ customer, charges, active }) => {
         <input type="hidden" name="priceId" value="price_G0FvDp6vZvdwRZ" />
         <div className="flex items-center justify-between">
           <p>
-            Status:{" "}
-            <span
-              className={classNames("font-medium", {
-                "text-green-600": active,
-                "text-red-500": !active,
-              })}
-            >
-              {active ? "Active" : "Inactive"}
+            <span className="font-bold">Status:</span>
+            <span className={classNames("font-medium ml-1")}>
+              {active ? (
+                <span className="text-white bg-green-600 text-xs px-2 py-1 rounded-md">
+                  Active
+                </span>
+              ) : (
+                <span className="text-white bg-red-600 text-xs px-2 py-1 rounded-md">
+                  Inactive
+                </span>
+              )}
             </span>
           </p>
           {active ? (
-            <Button onClick={deleteSubscription} variant="danger">
+            <Button onClick={deleteSubscription} variant="outline" size="small">
               Cancel Subscription
             </Button>
           ) : (
@@ -93,15 +115,25 @@ const Payments: FC<P & Props> = ({ customer, charges, active }) => {
                 dataIndex: "ammount",
               },
               {
+                key: "plan",
+                title: "Plan",
+                dataIndex: "plan",
+                render: () => {
+                  return (
+                    <span className="text-white bg-green-600 text-xs px-2.5 py-1 rounded-md">
+                      PRO
+                    </span>
+                  );
+                },
+              },
+              {
                 key: "receipt_url",
                 title: "Receipt",
                 dataIndex: "receipt_url",
                 render: (url) => {
                   return (
-                    <Link href={url}>
-                      <a target="_blank" className="text-blue-600">
-                        Receipt
-                      </a>
+                    <Link href={url} target="_blank" className="text-blue-600">
+                      Receipt
                     </Link>
                   );
                 },
@@ -126,39 +158,3 @@ const Payments: FC<P & Props> = ({ customer, charges, active }) => {
 };
 
 export default Payments;
-
-// export async function getServerSideProps({ req, res }) {
-//   const _session = await getServerSession({ req: req });
-//   const session = _session as unknown as { user: SessionData };
-//   //   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
-//   const author = await prisma.author.findFirst({
-//     where: { id: session.user.id },
-//   });
-//   if (!author || !author.stripe_customer_id) {
-//     return {
-//       props: {
-//         active: false,
-//       },
-//     };
-//   }
-
-//   const details = async () => {
-//     const customer = await stripe.customers.retrieve(
-//       author?.stripe_customer_id!,
-//       {
-//         expand: ["subscriptions"], // 2
-//       }
-//     );
-//     if (!customer.deleted) {
-//       const charges = await stripe.charges.list({
-//         customer: author?.stripe_customer_id!,
-//         limit: 3,
-//       });
-//       return { customer, charges };
-//     }
-//     return { customer: null, charges: null };
-//   };
-//   const { customer, charges } = await details();
-//   const active = customer?.subscriptions?.data[0]?.status === "active";
-//   return { props: { customer, charges, active } };
-// }

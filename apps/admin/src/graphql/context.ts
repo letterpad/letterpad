@@ -158,7 +158,7 @@ export const getServerSession = async ({ req }) => {
       headers: { cookie: getHeader(headers, "cookie") },
     });
     const session = await res.json();
-    return session.user ? session : null;
+    return session.user ? session as { user: SessionData } : null;
   } catch (e) {
     // eslint-disable-next-line no-console
   }

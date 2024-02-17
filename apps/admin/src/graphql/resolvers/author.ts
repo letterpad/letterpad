@@ -117,8 +117,6 @@ const Query: QueryResolvers<ResolverContext> = {
       createdAt: author.createdAt?.toISOString(),
       analytics_id: author.analytics_id || undefined,
       analytics_uuid: author.analytics_uuid || undefined,
-      stripe_customer_id: author.stripe_customer_id || undefined,
-      stripe_subscription_id: author.stripe_subscription_id || undefined,
       signature: author.signature || undefined,
     }));
     return {
