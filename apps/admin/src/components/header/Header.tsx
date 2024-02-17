@@ -31,6 +31,15 @@ function Header() {
           <nav className="flex grow">
             <ul className="flex grow flex-wrap items-center justify-end gap-6">
               <li>
+                <Link href="#">About</Link>
+              </li>
+              <li>
+                <Link href="#">Community</Link>
+              </li>
+              <li>
+                <Link href="#">Membership</Link>
+              </li>
+              <li>
                 <Search />
               </li>
               <li>
