@@ -391,6 +391,11 @@ export type LetterpadPostFilters = {
   username: Scalars["String"];
 };
 
+export type LetterpadPostsFilters = {
+  cursor?: InputMaybe<Scalars["Int"]>;
+  tag?: InputMaybe<Scalars["String"]>;
+};
+
 export type Like = {
   __typename?: "Like";
   avatar?: Maybe<Scalars["String"]>;
@@ -807,6 +812,7 @@ export type Query = {
   feed: FeedResponse;
   isFollowing: IsFollowingResponse;
   isPostLiked: IsPostLikedResponse;
+  letterpadFeaturedPosts: PostsResponse;
   letterpadLatestPost: PostResponse;
   letterpadLatestPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;
@@ -852,7 +858,7 @@ export type QueryLetterpadLatestPostArgs = {
 };
 
 export type QueryLetterpadLatestPostsArgs = {
-  cursor?: InputMaybe<Scalars["Int"]>;
+  filters?: InputMaybe<LetterpadPostsFilters>;
 };
 
 export type QueryMediaArgs = {
@@ -997,7 +1003,7 @@ export type SiteMapNode = {
   __typename?: "SiteMapNode";
   changefreq?: Maybe<Scalars["String"]>;
   lastmod?: Maybe<Scalars["String"]>;
-  priority: Scalars["Int"];
+  priority: Scalars["Float"];
   route: Scalars["String"];
 };
 

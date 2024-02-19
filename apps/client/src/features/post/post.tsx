@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import Image from 'next/image';
 import { FC } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';

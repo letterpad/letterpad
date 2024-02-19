@@ -13,6 +13,7 @@ import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
 import Custom404 from './not-found';
+import { PageInteractionTime } from './pageInteraction';
 import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
@@ -188,6 +189,7 @@ const Layout = async ({ children }) => {
           <div id="modal-root" />
           <div id="message" />
         </SessionProvider>
+        <PageInteractionTime />
       </body>
     </html>
   );

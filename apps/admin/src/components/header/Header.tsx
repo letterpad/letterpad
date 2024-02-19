@@ -7,6 +7,8 @@ import { Search } from "@/components/website_v2/search";
 
 import { EventAction, track } from "@/track";
 
+import { ResourceDropdown } from "./resources-dropdown";
+
 import Logo from "/public/website/logo.png";
 
 function Header() {
@@ -31,13 +33,10 @@ function Header() {
           <nav className="flex grow">
             <ul className="flex grow flex-wrap items-center justify-end gap-6">
               <li>
-                <Link href="#">About</Link>
+                <ResourceDropdown />
               </li>
               <li>
-                <Link href="#">Community</Link>
-              </li>
-              <li>
-                <Link href="#">Membership</Link>
+                <Link href="/membership">Membership</Link>
               </li>
               <li>
                 <Search />
