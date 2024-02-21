@@ -169,6 +169,7 @@ model Post {
   exclude_from_home  Boolean        @default(false)
   views              PageViews[]
   featured_weeks     FeaturedWeek[]
+  pageTimeLog        PageTimeLog[]
 
   @@index([author_id])
   @@index([status, mail_status])
@@ -306,6 +307,21 @@ model SubscribersDelivery {
   delivered     Boolean
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
+}
+
+model PageTimeLog {
+  id        String    @id @default(uuid())
+  ip        String
+  post_id   Int
+  post      Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  snapshot  String
+  page_time Int       @default(0)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@unique([ip, post_id])
+  @@index([post_id])
+  @@index([ip, post_id])
 }
 
 model EmailTemplates {
