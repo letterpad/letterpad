@@ -146,6 +146,9 @@ module.exports = {
             },
             'figcaption a': {
               color: theme('colors.green.500'),
+            },
+            '.prose': {
+              fontFamily: theme('fontFamily.paragraph'),
             }
           },
         },

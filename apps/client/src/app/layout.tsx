@@ -165,13 +165,6 @@ const Layout = async ({ children }) => {
             __html: `
           html {
             --accent: ${settings?.design?.brand_color ?? '#d93097'};
-            font-family: var(--font-body);
-          }
-          .prose {
-            font-family: var(--font-paragraph) !important;
-          }
-          h1, h2, h3 {
-            font-family: var(--font-heading) !important;
           }
         `,
           }}
