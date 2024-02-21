@@ -5,6 +5,7 @@ import { decodeJWTToken } from "@/shared/token";
 
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import { EmailTemplates } from "../types";
+import { isValidEmail } from "../../utils/utils";
 
 import { VerifySubscriberToken } from "@/types";
 
@@ -58,7 +59,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "A valid owner of the blog you subscribed was not found",
       };
     }
-
+    if (!isValidEmail(args.email)) {
+      return {
+        ok: false,
+        message: "Invalid email",
+      };
+    }
     const subscribers = await prisma.subscriber.findMany({
       where: { email: args.email, author_id: client_author_id },
     });

@@ -85,10 +85,10 @@ const RootLayout = async ({ children }) => {
       data-color-scheme={theme}
       className={classNames(
         theme + "-theme",
-        fonts.lora.variable,
-        fonts.robotoMono.variable,
-        fonts.ptSerif.variable,
-        fonts.openSans.variable
+        fonts.paragraph.variable,
+        fonts.code.variable,
+        fonts.heading.variable,
+        fonts.sans.variable
       )}
     >
       <head>

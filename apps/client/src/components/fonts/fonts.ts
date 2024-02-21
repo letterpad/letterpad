@@ -1,23 +1,24 @@
-import { Lora, Nunito, PT_Serif, Roboto_Mono } from 'next/font/google';
+import { DM_Sans, Nunito, Outfit, Roboto_Mono } from 'next/font/google';
 
-const lora = Lora({
+const paragraph = DM_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
   variable: '--font-paragraph',
 });
-const robotoMono = Roboto_Mono({
+const code = Roboto_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
   variable: '--font-code',
 });
-const ptSerif = PT_Serif({
+const heading = Outfit({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-heading',
 });
-const openSans = Nunito({
+const sans = Nunito({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-body',
+  variable: '--font-sans',
 });
-export const fonts = { lora, robotoMono, ptSerif, openSans };
+
+export const fonts = { paragraph, code, heading, sans };
