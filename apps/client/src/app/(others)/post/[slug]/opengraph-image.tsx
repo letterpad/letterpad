@@ -1,25 +1,16 @@
 // export const revalidate = 60;
 import { ImageResponse } from 'next/og';
+
 // export const runtime = 'edge';
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
-// const fetchNotoSansMedium = fetch(
-//   new URL('../../../../public/fonts/NotoSans-Medium.ttf', import.meta.url).href
-// ).then((res) => res.arrayBuffer());
-
-// const fetchNotoSansBold = fetch(
-//   new URL('../../../../public/fonts/NotoSans-Bold.ttf', import.meta.url).href
-// ).then((res) => res.arrayBuffer());
-
 export default async function AboutOG(props) {
-  // const NotoSansBold = await fetchNotoSansBold;
-  // const NotoSansMedium = await fetchNotoSansMedium;
   const post = await getPostData(props.params.slug);
   const data = await getAuthorAndSettingsData();
 
   if (!data?.settings || !data?.me) return {};
 
-  const { settings, me } = data;
+  const { settings } = data;
 
   const image =
     'https://images.unsplash.com/photo-1550100136-e092101726f4?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
@@ -39,6 +30,7 @@ export default async function AboutOG(props) {
             src={post.cover_image.src ?? image}
             tw="flex w-full h-full object-cover"
             style={{ objectFit: 'cover' }}
+            alt="Post cover image"
           />
         </div>
         <div
@@ -54,7 +46,8 @@ export default async function AboutOG(props) {
           </div>
           <div tw="flex items-center flex-row">
             <img
-              src="https://res.cloudinary.com/abhisheksaha/image/upload/v1696722571/blog-images/ykyfykt7tgxehmsojmhc.jpg"
+              alt={post.author.name}
+              src={post.author.avatar}
               style={{ objectFit: 'cover' }}
               tw="w-16 h-16 rounded-full object-cover"
             />
@@ -65,16 +58,6 @@ export default async function AboutOG(props) {
           </div>
         </div>
       </div>
-      // {
-      //   fonts: [
-      //     {
-      //       name: 'Noto Sans',
-      //       data: NotoSansBold,
-      //       style: 'normal',
-      //       weight: 700,
-      //     },
-      //   ],
-      // }
     )
   );
 }

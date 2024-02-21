@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import Image from 'next/image';
 import { FC } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
@@ -14,6 +13,7 @@ import { PrismHighlight } from '../../components/prism-highlight';
 import { PublishedAt } from '../../components/published-at';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
+import { TimeSpent } from '../../components/time-spent';
 import { PageTitle } from '../../components/title';
 import { getApiRootUrl } from '../../../lib/utils/url';
 import { PostProps } from '../../../types/pageTypes';
@@ -54,7 +54,10 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
               />
             )}
           </header>
-          <div className={`prose pb-4 pt-4 dark:prose-dark`}>
+          <div
+            className={`prose pb-4 pt-4 dark:prose-dark`}
+            id="article-content"
+          >
             <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
           </div>
           <div className="pb-4 flex gap-2 flex-wrap leading-11">
@@ -110,6 +113,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
       </div>
       <PrismHighlight />
       {!isPage && <PageView id={id} type="post" />}
+      <TimeSpent id={id} type="post" />
     </SectionContainer>
   );
 };

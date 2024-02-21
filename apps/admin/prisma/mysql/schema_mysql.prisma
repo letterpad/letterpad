@@ -163,6 +163,7 @@ model Post {
   exclude_from_home  Boolean        @default(false)
   views              PageViews[]
   featured_weeks     FeaturedWeek[]
+  pageTimeLog        PageTimeLog[]
 
   @@index([author_id])
   @@index([status, mail_status])
@@ -319,6 +320,21 @@ model EmailTemplates {
   template String @unique
   subject  String
   body     String @db.VarChar(2000)
+}
+
+model PageTimeLog {
+  id        String    @id @default(uuid())
+  ip        String    @db.VarChar(20)
+  post_id   Int
+  post      Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  snapshot  String    @db.VarChar(500)
+  page_time Int       @default(0)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@unique([ip, post_id])
+  @@index([post_id])
+  @@index([ip, post_id])
 }
 
 enum MailStatus {
