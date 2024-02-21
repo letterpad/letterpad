@@ -9,8 +9,6 @@ export async function GET(req: Request) {
   const head = headers();
   const params = new URL(req.url).searchParams;
   const id = params.get("id");
-  const type = params.get("type");
-  const time = params.get("time");
 
   let ipAddress = head.get("x-real-ip") as string;
 
@@ -19,12 +17,12 @@ export async function GET(req: Request) {
     ipAddress = forwardedFor?.split(",").at(0) ?? "Unknown";
   }
 
-  if (ipAddress && type && id) {
+  if (ipAddress && id) {
 
     const log = await prisma.pageTimeLog.findUnique({
       select: {
         updatedAt: true,
-        snapshot: true,
+        page_time: true,
       },
       where: {
         ip_post_id: {
@@ -41,7 +39,8 @@ export async function GET(req: Request) {
     await prisma.pageTimeLog.upsert({
       create: {
         ip: ipAddress,
-        snapshot: `${time}`,
+        page_time: 10,
+        snapshot: "",
         post: {
           connect: {
             id: Number(id)
@@ -49,7 +48,7 @@ export async function GET(req: Request) {
         }
       },
       update: {
-        snapshot: `${log?.snapshot},${time}`
+        page_time: (log?.page_time ?? 0) + 10
       },
       where: {
         ip_post_id: {

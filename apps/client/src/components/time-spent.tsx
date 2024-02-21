@@ -26,7 +26,6 @@ export const TimeSpent: FC<Props> = memo(
   ({ id, type, idleTimeMs = IDLE_TIMEOUT * 1000 }) => {
     const nodeRef = useRef<HTMLDivElement | null>(null);
     const isIntersecting = useIntersectionObserver(nodeRef, {});
-    const timeRef = useRef(Date.now());
     const isIdle = useIdle(idleTimeMs);
     const heartBeatRef = useRef<NodeJS.Timeout>();
     const endRef = useRef<HTMLDivElement>(null);
@@ -37,13 +36,11 @@ export const TimeSpent: FC<Props> = memo(
         const res = await sendEvent({
           id,
           type,
-          time: Date.now() - timeRef.current,
         });
         if (!res.continue) {
           setEndCookie(id);
           stopTimer();
         }
-        timeRef.current = Date.now();
       }, EVENT_INTERVAL * 1000);
     }, [id, type]);
 
@@ -70,7 +67,6 @@ export const TimeSpent: FC<Props> = memo(
         stopTimer();
         return;
       }
-      timeRef.current = Date.now();
       startTimer();
     }, [isIdle, isIntersecting, startTimer, id]);
 
