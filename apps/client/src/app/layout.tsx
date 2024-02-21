@@ -13,7 +13,6 @@ import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
 import Custom404 from './not-found';
-import { PageInteractionTime } from './pageInteraction';
 import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
@@ -152,10 +151,10 @@ const Layout = async ({ children }) => {
       className={classNames(
         `scroll-smooth ${theme}`,
         theme + '-theme',
-        fonts.lora.variable,
-        fonts.robotoMono.variable,
-        fonts.ptSerif.variable,
-        fonts.openSans.variable
+        fonts.heading.variable,
+        fonts.code.variable,
+        fonts.paragraph.variable,
+        fonts.sans.variable
       )}
     >
       <Css css={settings.css} />
@@ -189,7 +188,6 @@ const Layout = async ({ children }) => {
           <div id="modal-root" />
           <div id="message" />
         </SessionProvider>
-        <PageInteractionTime />
       </body>
     </html>
   );
