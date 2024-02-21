@@ -6,6 +6,9 @@ import { NextResponse } from "next/server";
 import { getKeyForViews, incrementPageViews } from "@/lib/redis";
 
 export async function GET(req: Request) {
+  if (!process.env.REDIS_URL) {
+    return NextResponse.json({ ok: false }, { status: 500 });
+  }
   const head = headers();
   const params = new URL(req.url).searchParams;
   const id = params.get("id");

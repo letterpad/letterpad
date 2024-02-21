@@ -151,10 +151,10 @@ const Layout = async ({ children }) => {
       className={classNames(
         `scroll-smooth ${theme}`,
         theme + '-theme',
-        fonts.lora.variable,
-        fonts.robotoMono.variable,
-        fonts.ptSerif.variable,
-        fonts.openSans.variable
+        fonts.heading.variable,
+        fonts.code.variable,
+        fonts.paragraph.variable,
+        fonts.sans.variable
       )}
     >
       <Css css={settings.css} />
@@ -165,13 +165,6 @@ const Layout = async ({ children }) => {
             __html: `
           html {
             --accent: ${settings?.design?.brand_color ?? '#d93097'};
-            font-family: var(--font-body);
-          }
-          .prose {
-            font-family: var(--font-paragraph) !important;
-          }
-          h1, h2, h3 {
-            font-family: var(--font-heading) !important;
           }
         `,
           }}
