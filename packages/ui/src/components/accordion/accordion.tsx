@@ -107,7 +107,7 @@ const Header: FC<any> = ({
       >
         <span className="flex w-full flex-col justify-between">
           <span className="text-base-1 font-normal">{label}</span>
-          <span className="text-muted">{description}</span>
+          <span className="text-slate-400 dark:text-slate-500">{description}</span>
         </span>
         {isActive ? <CgMathMinus size={24} /> : <BiPlus size={24} />}
       </button>
