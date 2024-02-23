@@ -47,7 +47,7 @@ model Author {
   likes                  Likes[]
   notifications          Notifications[]
   views                  PageViews[]
-  comment                Comment[]
+  comments               Comment[]
 
   @@index([role_id])
 }
