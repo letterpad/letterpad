@@ -21,7 +21,6 @@ import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnT
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
-import { TOPIC_PREFIX } from "../../../shared/utils";
 
 export const updatePost = async (
   args: MutationUpdatePostArgs,

@@ -4,6 +4,8 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
+import { convertNotificationMetaIn } from "./utils/dbTypeCheck";
+
 const Query: QueryResolvers<ResolverContext> = {
   async comments(_root, args, { prisma }) {
     const comments = await prisma.comment.findMany({
@@ -53,7 +55,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
       connect: {
         id: parent_id
       }
-    } : {}
+    } : {};
+
     const createdComment = await prisma.comment.create({
       data: {
         post: {
@@ -71,19 +74,60 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
     });
 
-    const comment = await prisma.comment.findUnique({
-      where: {
-        id: createdComment.id
-      },
-      include: {
-        replies: {
-          include: {
-            author: true
-          }
+    const [comment, existingPost] = await Promise.all([
+      prisma.comment.findUnique({
+        where: {
+          id: createdComment.id
         },
-        author: true,
-      },
-    });
+        include: {
+          replies: {
+            include: {
+              author: true
+            }
+          },
+          author: true,
+        },
+      }),
+      prisma.post.findUnique({
+        where: {
+          id: post_id
+        },
+        include: {
+          author: true,
+          comments: {
+            where: {
+              NOT: {
+                author: {
+                  id: session.user.id
+                }
+              }
+            }
+          }
+        }
+      })
+    ])
+
+    if (existingPost?.comments) {
+      await Promise.all(
+        existingPost.comments.map((participant) => {
+          return prisma.notifications.create({
+            data: {
+              author_id: participant.author_id,
+              meta: convertNotificationMetaIn({
+                __typename: "CommentNewMeta",
+                commenter_avatar: session.user.avatar,
+                commenter_name: session.user.username,
+                commenter_username: session.user.username,
+                post_id: existingPost.id,
+                post_slug: existingPost.slug,
+                post_title: existingPost.title,
+                post_author_username: existingPost.author?.username,
+              }),
+            },
+          });
+        })
+      );
+    }
 
     if (!comment) {
       return {

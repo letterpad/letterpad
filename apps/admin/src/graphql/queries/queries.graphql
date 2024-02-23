@@ -360,6 +360,16 @@ query Notification {
               author_username
               __typename
             }
+            ... on CommentNewMeta {
+              post_id
+              post_slug
+              post_title
+              commenter_name
+              commenter_avatar
+              commenter_username
+              post_author_username
+              __typename
+            }
             ... on FollowerNewMeta {
               follower_id
               follower_name
