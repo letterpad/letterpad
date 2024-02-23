@@ -20,7 +20,6 @@ import { useGetPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
-import { TOPIC_PREFIX } from "../../../shared/utils";
 
 export const Feature = () => {
   const router = useRouter();

@@ -1,34 +1,16 @@
+import dayjs from "dayjs";
+
 import { basePath } from "@/constants";
 import { IMediaUploadResult } from "@/graphql/types";
 
 import { IUploadFileProps } from "../types";
 import { getAuthCookieName } from "../utils/authCookie";
-
-export const getReadableDate = (timestamp: Date | number) => {
-  return new Date(timestamp).toLocaleString("en-us", {
-    month: "short",
-    year: "2-digit",
-    day: "numeric",
-  });
+export const getReadableDate = (timestamp: Date | number | string) => {
+  return dayjs(timestamp).format('MMM D, YYYY')
 };
 
 export const getDateTime = (d?: Date) => {
-  const m = d ? new Date(d) : new Date();
-
-  const dateString =
-    m.getUTCFullYear() +
-    "-" +
-    ("0" + (m.getUTCMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + m.getUTCDate()).slice(-2) +
-    " " +
-    ("0" + m.getUTCHours()).slice(-2) +
-    ":" +
-    ("0" + m.getUTCMinutes()).slice(-2) +
-    ":" +
-    ("0" + m.getUTCSeconds()).slice(-2);
-
-  return dateString;
+  return dayjs(d).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
 };
 
 export function debounce<Params extends any[]>(

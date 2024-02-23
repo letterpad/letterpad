@@ -47,6 +47,7 @@ model Author {
   likes                  Likes[]
   notifications          Notifications[]
   views                  PageViews[]
+  comment                Comment[]
 
   @@index([role_id])
 }
@@ -100,8 +101,9 @@ model Likes {
 }
 
 model Comment {
-  id        String    @id @default(uuid())
-  content   String
+  id      String @id @default(uuid())
+  content String
+
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
@@ -113,8 +115,12 @@ model Comment {
 
   replies Comment[] @relation("ParentComment")
 
+  author    Author @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id Int
+
   @@index([post_id])
   @@index([parent_id])
+  @@index([author_id])
 }
 
 model Session {

@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
-import Comments from '@/components/comments';
+import { Comments } from '@/components/comments';
 import Link from '@/components/Link';
 
 import { Like } from '../../components/like';
@@ -108,7 +108,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
               </div>
             </div>
           )}
-          {type === 'post' && <Comments provider="utterances" />}
+          {type === 'post' && <Comments postId={post.id} />}
         </article>
       </div>
       <PrismHighlight />

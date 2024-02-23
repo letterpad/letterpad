@@ -10,11 +10,20 @@ const Query: QueryResolvers<ResolverContext> = {
       where: {
         post: {
           id: args.post_id
-        }
+        },
+        parent_id: null
       },
       include: {
-        replies: true,
+        replies: {
+          include: {
+            author: true
+          }
+        },
+        author: true,
       },
+      orderBy: {
+        createdAt: "desc"
+      }
     });
     return comments
   },
@@ -27,7 +36,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "You must be logged in to comment",
       }
     }
-    const comment = await prisma.comment.create({
+    const parent = parent_id ? {
+      connect: {
+        id: parent_id
+      }
+    } : {}
+    const createdComment = await prisma.comment.create({
       data: {
         post: {
           connect: {
@@ -35,15 +49,40 @@ const Mutation: MutationResolvers<ResolverContext> = {
           }
         },
         content: content,
-        parent: {
+        parent,
+        author: {
           connect: {
-            id: parent_id
+            id: session.user.id
           }
         }
       }
-    })
+    });
 
-    return comment;
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: createdComment.id
+      },
+      include: {
+        replies: {
+          include: {
+            author: true
+          }
+        },
+        author: true,
+      },
+    });
+
+    if (!comment) {
+      return {
+        message: "Comment not found"
+      }
+    }
+
+    return {
+      ...comment,
+      __typename: "Comment"
+    }
+
   },
 
   async updateComment(_root, args, { prisma, session }) {
@@ -52,7 +91,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "You must be logged in to comment",
       }
     }
-    const comment = await prisma.comment.update({
+    const updatedComment = await prisma.comment.update({
       where: {
         id: args.comment_id
       },
@@ -60,7 +99,27 @@ const Mutation: MutationResolvers<ResolverContext> = {
         content: args.content
       }
     })
-    return comment;
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: updatedComment.id
+      },
+      include: {
+        replies: {
+          include: {
+            author: true
+          }
+        },
+        author: true,
+      },
+    });
+
+    if (!comment) {
+      return {
+        message: "Comment not found"
+      }
+    }
+
+    return comment
   },
 };
 export default { Query, Mutation };
