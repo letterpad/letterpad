@@ -16,6 +16,7 @@ import { getRootUrl } from "@/shared/getRootUrl";
 import { isPasswordValid } from "@/utils/bcrypt";
 
 import { isBlackListed } from "./blacklist";
+import { SessionData } from "../../../graphql/types";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -55,8 +56,8 @@ const providers = (): NextAuthOptions["providers"] => [
           return authenticated
             ? author
             : Promise.reject(
-                new Error("Incorrect password. Please try again.")
-              );
+              new Error("Incorrect password. Please try again.")
+            );
         } else {
           return Promise.reject(
             new Error("The email you provided is not registered.")
@@ -99,6 +100,7 @@ export const options = (): NextAuthOptions => ({
         where: { email: token.email },
         include: {
           role: true,
+          membership: true
         },
       });
 
@@ -125,6 +127,7 @@ export const options = (): NextAuthOptions => ({
             where: { email: token.email },
             include: {
               role: true,
+              membership: true
             },
           });
         }
@@ -139,23 +142,17 @@ export const options = (): NextAuthOptions => ({
             avatar,
             image: avatar,
             role: author.role.name,
+            membership: author.membership?.status ?? "free",
             register_step,
           } as any;
+          return session as SessionData;
         }
       } catch (e: any) {
         report.error(e);
         throw new Error("Could not create a valid session");
       }
 
-      const ses = session;
-      if (author && ses.user) {
-        //update the session data
-        ses.user.username = author.username;
-        ses.user.avatar = author.avatar;
-        ses.user.name = author.name;
-        ses.user.register_step = author.register_step as RegisterStep;
-      }
-      return ses;
+      return null as any;
     },
   },
   jwt: {

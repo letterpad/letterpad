@@ -47,7 +47,7 @@ model Author {
   likes                  Likes[]
   notifications          Notifications[]
   views                  PageViews[]
-  membership             Membership[]
+  membership             Membership?
 
   @@index([role_id])
   @@index([username])

@@ -1,6 +1,9 @@
 import { ChangeEvent, FC, useState } from "react";
 
+import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+
 import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
+import { isMembershipFeatureActive } from "@/shared/utils";
 
 interface Props {
   mail_status: MailStatus;
@@ -9,6 +12,9 @@ interface Props {
 }
 export const SendEmailCheckbox: FC<Props> = ({ mail_status, onChange }) => {
   const [mailStatus, setMailStatus] = useState(mail_status);
+  const isPaidMember = useIsPaidMember();
+  const membershipActive = isMembershipFeatureActive();
+
   return (
     <div className="flex items-center mb-4">
       <input
@@ -26,7 +32,11 @@ export const SendEmailCheckbox: FC<Props> = ({ mail_status, onChange }) => {
           );
         }}
         id="mail-status"
-        disabled={mail_status === MailStatus.Sent}
+        disabled={
+          !isPaidMember && membershipActive
+            ? true
+            : mail_status === MailStatus.Sent
+        }
         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
       />
       <label

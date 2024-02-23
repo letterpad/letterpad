@@ -1,25 +1,40 @@
 "use client";
 import { animated, useSpring } from "@react-spring/web";
 import classNames from "classnames";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { ReactNode, useRef, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
+import { BsEnvelope } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiEdit2 } from "react-icons/fi";
 import { IoMdPerson } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuLogIn, LuLogOut } from "react-icons/lu";
+import { TfiNewWindow } from "react-icons/tfi";
 import { VscDebugStart } from "react-icons/vsc";
 
 import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
+import { MenuItem } from "./menu-item";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
+import { isAuthor, isSettings } from "../../utils/type-guards";
 
-export const ProfileDropdown = () => {
-  const [{ data }] = useHomeQueryQuery();
+export const ProfileDropdown = ({
+  adminPage = false,
+}: {
+  adminPage?: boolean;
+}) => {
+  const [{ data }, refetchHomeQuery] = useHomeQueryQuery();
+  const { data: session } = useSession();
   const [show, setShow] = useState(false);
-  const author = data?.me?.__typename === "Author" ? data.me : null;
+  const author = isAuthor(data?.me) ? data.me : null;
+  const settings = isSettings(data?.settings) ? data.settings : null;
   const ref = useRef(null);
+
+  useEffect(() => {
+    if (session?.user?.username) {
+      refetchHomeQuery();
+    }
+  }, [session?.user?.username, refetchHomeQuery]);
 
   const handleClickOutside = () => {
     setShow(false);
@@ -64,22 +79,41 @@ export const ProfileDropdown = () => {
         {show &&
           (author ? (
             <>
+              {adminPage ? (
+                <>
+                  <MenuItem
+                    label="View Site"
+                    icon={<TfiNewWindow size={18} />}
+                    path={settings?.site_url}
+                    target="_blank"
+                  />
+                </>
+              ) : (
+                <>
+                  <MenuItem
+                    label="Posts"
+                    icon={<BsEnvelope size={18} />}
+                    path="/posts"
+                  />
+                  <MenuItem
+                    label="New Story"
+                    icon={<FiEdit2 size={18} />}
+                    path="/api/create?type=post"
+                  />
+                  <MenuItem
+                    label="Edit Profile"
+                    icon={<CgProfile size={18} />}
+                    path="/profile"
+                  />
+                  <MenuItem
+                    label="Settings"
+                    icon={<IoSettingsOutline size={18} />}
+                    path="/settings"
+                  />
+                </>
+              )}
               <MenuItem
-                label="New Story"
-                icon={<FiEdit2 size={18} />}
-                path="/api/create?type=post"
-              />
-              <MenuItem
-                label="Edit Profile"
-                icon={<CgProfile size={18} />}
-                path="/profile"
-              />
-              <MenuItem
-                label="Settings"
-                icon={<IoSettingsOutline size={18} />}
-                path="/settings"
-              />
-              <MenuItem
+                className="text-red-500 dark:text-red-400"
                 label="Logout"
                 icon={<LuLogOut size={18} />}
                 onClick={(e) => {
@@ -104,25 +138,5 @@ export const ProfileDropdown = () => {
           ))}
       </animated.ul>
     </div>
-  );
-};
-const MenuItem = ({
-  label,
-  icon,
-  path = "#",
-  onClick,
-}: {
-  label: string;
-  icon: ReactNode;
-  path?: string;
-  onClick?: (e: any) => void;
-}) => {
-  return (
-    <li className="py-2.5 px-4  hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer ">
-      <Link className="flex items-center gap-2" href={path} onClick={onClick}>
-        <span>{icon}</span>
-        <span>{label}</span>
-      </Link>
-    </li>
   );
 };

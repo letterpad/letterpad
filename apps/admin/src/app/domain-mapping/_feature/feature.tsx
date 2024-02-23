@@ -48,7 +48,7 @@ export const Feature = () => {
 
   return (
     <>
-      {!hasDomain(data) && <NewDomain refetch={refetch} />}
+      {!hasDomain(data) && <NewDomain />}
 
       {hasDomain(data) && (
         <div className="flex justify-end">

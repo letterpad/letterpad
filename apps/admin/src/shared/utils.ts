@@ -123,3 +123,7 @@ export const beautifyTopic = (str: string) => {
       letter.toUpperCase()
     )
 }
+
+export const isMembershipFeatureActive = () => {
+  return process.env.NEXT_PUBLIC_PAYMENTS_ACTIVE === "true"
+}

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { ChangeEvent, forwardRef, HTMLProps, useRef } from "react";
+import { ChangeEvent, forwardRef, HTMLProps, ReactNode, useRef } from "react";
 
 const classes = {
   base: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
@@ -17,7 +17,7 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
   labelClassName?: string;
   error?: boolean;
   limit?: number;
-  help?:string
+  help?:string | ReactNode
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {

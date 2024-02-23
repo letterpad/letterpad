@@ -34,7 +34,7 @@ export const TopBar = () => {
           <ThemeSwitcher />
         </div>
         <NotificationDropdown />
-        <ProfileDropdown />
+        <ProfileDropdown adminPage={true} />
       </div>
     </div>
   );
