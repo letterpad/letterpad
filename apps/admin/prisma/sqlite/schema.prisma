@@ -99,6 +99,24 @@ model Likes {
   @@index([post_id])
 }
 
+model Comment {
+  id        String    @id @default(uuid())
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  post    Post @relation(fields: [post_id], references: [id])
+  post_id Int
+
+  parent    Comment? @relation("ParentComment", fields: [parent_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  parent_id String?
+
+  replies Comment[] @relation("ParentComment")
+
+  @@index([post_id])
+  @@index([parent_id])
+}
+
 model Session {
   id        Int       @id @default(autoincrement())
   domain    String
@@ -170,6 +188,7 @@ model Post {
   views              PageViews[]
   featured_weeks     FeaturedWeek[]
   pageTimeLog        PageTimeLog[]
+  comments           Comment[]
 
   @@index([author_id])
   @@index([status, mail_status])

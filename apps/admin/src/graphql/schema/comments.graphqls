@@ -1,0 +1,29 @@
+type Comment {
+  id: String!
+  content: String!
+  createdAt: Date!
+  #   parent: Comment
+  replies: [Comment]
+}
+
+type CommentError {
+  message: String!
+}
+
+union CreateCommentResponse = Comment | CommentError
+
+union UpdateCommentResponse = Comment | CommentError
+
+type Query {
+  comments(post_id: Int!): [Comment]!
+}
+
+type Mutation {
+  createComment(
+    post_id: Int!
+    content: String!
+    parent_id: String
+  ): CreateCommentResponse!
+
+  updateComment(comment_id: String!, content: String!): UpdateCommentResponse!
+}

@@ -1,4 +1,5 @@
 import Author from "./author";
+import Comment from "./comment";
 import Domain from "./domain";
 import Media from "./media";
 import Notification from "./notification";
@@ -18,4 +19,5 @@ export const resolversArr = [
   Domain,
   Sitemap,
   Notification,
+  Comment
 ];
