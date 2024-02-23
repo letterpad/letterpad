@@ -254,7 +254,6 @@ model Setting {
   site_url            String
   site_footer         String
   site_description    String
-  subscribe_embed     String
   display_author_info Boolean   @default(false)
   cloudinary_key      String
   cloudinary_name     String
@@ -268,7 +267,6 @@ model Setting {
   site_favicon        String    @default("{}") @db.VarChar(300)
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
-  graphcomment_id     String    @default("")
   intro_dismissed     Boolean
   show_about_page     Boolean   @default(true)
   show_tags_page      Boolean   @default(false)
