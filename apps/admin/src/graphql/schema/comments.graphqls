@@ -37,4 +37,6 @@ type Mutation {
   ): CreateCommentResponse!
 
   updateComment(comment_id: String!, content: String!): UpdateCommentResponse!
+
+  deleteComment(comment_id: String!): Boolean!
 }

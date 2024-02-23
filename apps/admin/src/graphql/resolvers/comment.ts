@@ -30,6 +30,19 @@ const Query: QueryResolvers<ResolverContext> = {
 }
 
 const Mutation: MutationResolvers<ResolverContext> = {
+  async deleteComment(_root, { comment_id }, { prisma, session }) {
+    if (!session?.user.id) {
+      return false
+    }
+
+    await prisma.comment.delete({
+      where: {
+        id: comment_id
+      }
+    });
+
+    return true;
+  },
   async createComment(_root, { parent_id, content, post_id }, { prisma, session }) {
     if (!session?.user.id) {
       return {
