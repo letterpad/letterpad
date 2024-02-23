@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Content, Table } from "ui";
 
+import { TOPIC_PREFIX } from "@/shared/utils";
+
 import { useTagsContext } from "../context";
 import { TagRow } from "../types";
 
@@ -14,7 +16,7 @@ const TagsTable = () => {
 
   useEffect(() => {
     if (tags) {
-      setDataSource(tags);
+      setDataSource(tags.filter((tag) => !tag.name.startsWith(TOPIC_PREFIX)));
     }
   }, [tags]);
 
