@@ -1,8 +1,10 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";
 
 import {
+  CommentNewMeta,
   FollowerNewMeta,
   NotificationNode,
   PostLikeMeta,
@@ -22,6 +24,7 @@ const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
 export const NotificationDropdown = () => {
   const [show, setShow] = useState(false);
   const [read, setRead] = useState(true);
+  const { data: session } = useSession();
   const [{ data }] = useNotificationQuery();
   const [, markAllAsRead] = useMarkNotificationsReadMutation();
   const ref = useRef(null);
@@ -155,6 +158,32 @@ export const NotificationDropdown = () => {
               );
             }
 
+            if (isCommentNewMeta(notification.meta)) {
+              const ownPost =
+                notification.meta.post_author_username ===
+                session?.user?.username;
+              return (
+                <NotificationItem
+                  key={notification.notification_id}
+                  link={
+                    new URL(
+                      `post/${notification.meta.post_slug!}`,
+                      `https://${notification.meta.post_author_username}.letterpad.app`
+                    ).href
+                  }
+                  avatar={notification.meta.commenter_avatar}
+                  time={notification.createdAt}
+                  message={
+                    <>
+                      <Bold>{notification.meta.commenter_name}</Bold> commented
+                      on {ownPost ? "your" : "the"} post -
+                      <Bold>{notification.meta.post_title}</Bold>.
+                    </>
+                  }
+                />
+              );
+            }
+
             if (isSystemMeta(notification.meta)) {
               return (
                 <NotificationItem
@@ -191,6 +220,10 @@ function isFollowerNewMeta(meta: any): meta is FollowerNewMeta {
 
 function isSubscriberNewMeta(meta: any): meta is SubscriberNewMeta {
   return meta.__typename === "SubscriberNewMeta";
+}
+
+function isCommentNewMeta(meta: any): meta is CommentNewMeta {
+  return meta.__typename === "CommentNewMeta";
 }
 
 function isSystemMeta(meta: any): meta is SystemMeta {

@@ -3,15 +3,12 @@
 import { useEffect, useState } from 'react';
 import { IoMdPersonAdd } from 'react-icons/io';
 import { IoPersonRemove } from 'react-icons/io5';
-import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
-import { Button, Modal } from 'ui';
 
 import { doFollow, doUnFollow, getIsFollowing } from '../../graphql';
 import { useSession } from '../../../context/SessionProvider';
 
 export const FollowMe = ({ username }) => {
   const session = useSession();
-  const [show, setShow] = useState(false);
   const [following, setFollowing] = useState(false);
 
   useEffect(() => {
@@ -22,7 +19,7 @@ export const FollowMe = ({ username }) => {
 
   const doFollowOrUnfollow = async () => {
     if (!session?.user?.avatar) {
-      setShow(true);
+      session.showLogin(true);
       return;
     }
     if (!!following) {
@@ -53,27 +50,6 @@ export const FollowMe = ({ username }) => {
           </>
         )}
       </button>
-      <Modal
-        show={show}
-        toggle={() => setShow(false)}
-        header="You need to Login"
-        footer={[
-          <Button key="back" onClick={() => setShow(false)} variant="ghost">
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            onClick={() => {
-              setShow(false);
-              window.location.href = `/api/identity/login?source=${document.location.href}`;
-            }}
-          >
-            Login
-          </Button>,
-        ]}
-      >
-        You need to be logged into Letterpad for this action.
-      </Modal>
     </>
   );
 };

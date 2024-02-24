@@ -23,6 +23,16 @@ type FollowerNewMeta {
   followed_id: Int
 }
 
+type CommentNewMeta {
+  post_id: Int
+  post_title: String
+  post_slug: String
+  post_author_username: String
+  commenter_name: String
+  commenter_username: String
+  commenter_avatar: String
+}
+
 type SubscriberNewMeta {
   subscriber_email: String
 }
@@ -48,6 +58,7 @@ union NotificationMeta =
   | SubscriberNewMeta
   | PostLikeMeta
   | SystemMeta
+  | CommentNewMeta
 
 type Notification {
   notification_id: String

@@ -1,4 +1,5 @@
 import author from "./author.graphqls";
+import comments from "./comments.graphqls";
 import directives from "./directives.graphqls";
 import domains from "./domains.graphqls";
 import emails from "./emails.graphqls";
@@ -27,5 +28,6 @@ export const typeDefsList = [
   subscriptions,
   tags,
   notifications,
+  comments,
   defs,
 ];

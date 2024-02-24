@@ -1,9 +1,8 @@
 import classNames from 'classnames';
-import { FC } from 'react';
+import { FC, lazy, Suspense } from 'react';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
-import Comments from '@/components/comments';
 import Link from '@/components/Link';
 
 import { Like } from '../../components/like';
@@ -17,6 +16,8 @@ import { TimeSpent } from '../../components/time-spent';
 import { PageTitle } from '../../components/title';
 import { getApiRootUrl } from '../../../lib/utils/url';
 import { PostProps } from '../../../types/pageTypes';
+
+const Comments = lazy(() => import('@/components/comments'));
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
   const { title, tags, author, type, sub_title, id } = post;
@@ -108,7 +109,11 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
               </div>
             </div>
           )}
-          {type === 'post' && <Comments provider="utterances" />}
+          {type === 'post' && (
+            <Suspense fallback={<div>Loading Comments...</div>}>
+              <Comments postId={post.id} />
+            </Suspense>
+          )}
         </article>
       </div>
       <PrismHighlight />

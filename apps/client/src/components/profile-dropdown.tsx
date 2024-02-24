@@ -41,7 +41,7 @@ export const ProfileDropdown = () => {
         )}
         onClick={() => setShow(!show)}
       >
-        {session?.user.avatar ? (
+        {session?.user?.avatar ? (
           <img
             src={session.user.avatar}
             alt={session.user.name}
@@ -57,7 +57,7 @@ export const ProfileDropdown = () => {
         ref={ref}
       >
         {show &&
-          (session ? (
+          (session?.user?.username ? (
             <>
               <MenuItem
                 target="_blank"

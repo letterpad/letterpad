@@ -1,28 +1,72 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { CommentBox, SingleComment, useIntersectionObserver } from 'ui';
 
-import { CommentProviders } from './types';
+import { useSession } from '../../context/SessionProvider';
+import { getComments, postComment } from '../../src/graphql';
 
 interface Props {
-  provider: CommentProviders;
+  postId: number;
 }
 
-import DisqusComponent from '@/components/comments/Disqus';
-import GiscusComponent from '@/components/comments/Giscus';
-import UtterancesComponent from '@/components/comments/Utterances';
+export const Comments: FC<Props> = ({ postId }) => {
+  const [comments, setComments] = useState<any[]>([]);
+  const [replyTo, setReplyTo] = useState<string | undefined>(undefined);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { isIntersecting } = useIntersectionObserver(ref, {});
+  const session = useSession();
+  const fetchComments = useCallback(async () => {
+    const res = await getComments(postId);
+    setComments(res?.comments);
+  }, [postId]);
 
-const Comments: FC<Props> = ({ provider }) => {
-  const term =
-    typeof window !== 'undefined'
-      ? window.location?.origin + window.location.pathname
-      : '';
+  useEffect(() => {
+    if (isIntersecting) {
+      fetchComments();
+    }
+    setReplyTo(undefined);
+  }, [fetchComments, isIntersecting]);
+
+  const onSubmit = (text: string, child?: boolean) => {
+    if (!session?.user?.name) {
+      return session.showLogin(true);
+    }
+    if (child && !replyTo) return;
+    if (!text) return alert('Please enter a comment');
+    postComment(postId, text, child ? replyTo : undefined).then(fetchComments);
+  };
+
+  const total =
+    comments.reduce((acc, comment) => {
+      return acc + comment.replies.length;
+    }, 0) + comments.length;
 
   return (
-    <div id="comment">
-      {provider === 'giscus' && <GiscusComponent mapping={term} />}
-      {provider === 'utterances' && <UtterancesComponent issueTerm={term} />}
-      {provider === 'disqus' && <DisqusComponent />}
+    <div id="comment" ref={ref}>
+      <section className="py-4 lg:py-8 antialiased">
+        <div className="mx-auto ">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
+              Discussion ({total})
+            </h2>
+          </div>
+          {isIntersecting && <CommentBox onSubmit={onSubmit} />}
+        </div>
+        <div className="flex gap-3 flex-col">
+          {comments.map((comment) => {
+            return (
+              <SingleComment
+                {...comment}
+                key={comment.id}
+                setReplyTo={setReplyTo}
+                replyToCommentId={replyTo}
+                onSubmitReply={(text) => onSubmit(text, true)}
+              />
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 };
