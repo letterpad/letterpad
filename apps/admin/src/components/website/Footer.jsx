@@ -4,7 +4,7 @@ import Logo from "/public/website/logo.png";
 
 function Footer() {
   return (
-    <footer className="bg-white rounded-lg shadow dark:bg-neutral-900">
+    <footer className="rounded-lg shadow ">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <div className="sm:flex sm:items-center sm:justify-between">
           <Link className="inline-flex" href="/" aria-label="Letterpad">
@@ -37,7 +37,7 @@ function Footer() {
             </li>
           </ul>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-800 lg:my-8" />
+        <hr className="border-t-0 my-6 border-b-gray-200 sm:mx-auto dark:border-b-neutral-800 lg:my-8 border-b" />
         <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
           © 2024{" "}
           <a href="https://letterpad.app/" className="hover:underline">
