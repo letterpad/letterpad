@@ -25,11 +25,11 @@ const IDLE_TIMEOUT = 10;
 export const TimeSpent: FC<Props> = memo(
   ({ id, type, idleTimeMs = IDLE_TIMEOUT * 1000 }) => {
     const nodeRef = useRef<HTMLDivElement | null>(null);
-    const isIntersecting = useIntersectionObserver(nodeRef, {});
+    const { isIntersecting } = useIntersectionObserver(nodeRef, {});
     const isIdle = useIdle(idleTimeMs);
     const heartBeatRef = useRef<NodeJS.Timeout>();
     const endRef = useRef<HTMLDivElement>(null);
-    const isEnd = useIntersectionObserver(endRef, {});
+    const { isIntersecting: isEnd } = useIntersectionObserver(endRef, {});
 
     const startTimer = useCallback(() => {
       heartBeatRef.current = setInterval(async () => {

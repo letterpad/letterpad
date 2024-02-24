@@ -282,7 +282,7 @@ export async function insertPost(postData, author_id) {
       type: postData.type,
       status: postData.status,
       slug: slug,
-      publishedAt: new Date(getDateTime()).toISOString(),
+      publishedAt: new Date(getDateTime()),
       reading_time: "5 mins",
       stats: JSON.stringify({
         characters: 1000,
@@ -290,7 +290,7 @@ export async function insertPost(postData, author_id) {
         spaceless_characters: 800,
         words: 200,
       }),
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       author: {
         connect: {
           id: author_id,
