@@ -25,7 +25,6 @@ type Setting {
   site_url: String!
   site_footer: String
   site_description: String
-  subscribe_embed: String
   display_author_info: Boolean!
   intro_dismissed: Boolean!
   show_about_page: Boolean
@@ -71,7 +70,6 @@ input SettingInputType {
   site_url: String
   site_footer: String
   site_description: String
-  subscribe_embed: String
   display_author_info: Boolean
   cloudinary_key: String
   cloudinary_name: String

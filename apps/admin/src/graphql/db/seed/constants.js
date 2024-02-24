@@ -5,7 +5,6 @@ module.exports.defaultSettings = {
   site_url: "",
   site_footer: "Powered by Letterpad",
   site_description: "",
-  subscribe_embed: "",
   display_author_info: true,
   site_logo: JSON.stringify({
     src: "",

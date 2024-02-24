@@ -169,18 +169,18 @@ const Layout = async ({ children }) => {
         `,
           }}
         />
-        <SessionProvider>
-          <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
+        <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
+          <SessionProvider>
             <main className="mb-auto">{children}</main>
             <div className="border-b-[1px] dark:border-gray-700">
               <Footer author={me} settings={settings} />
             </div>
-          </ThemeProvider>
-          <div id="modal-creatives" />
-          <PrismHighlight />
-          <div id="modal-root" />
-          <div id="message" />
-        </SessionProvider>
+            <div id="modal-creatives" />
+            <PrismHighlight />
+            <div id="modal-root" />
+            <div id="message" />
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

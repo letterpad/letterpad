@@ -20,18 +20,18 @@ export async function GET(request: Request) {
       select: { id: true },
       where: { email: session?.email! },
     });
-    const siteUrl = request.headers.get("siteurl")!;
-    const found = await prisma.session
-      .findFirst({
-        where: {
-          author_id: author?.id,
-          domain: siteUrl,
-        },
-      })
-      .catch(() => null);
-    if (!found) {
-      return NextResponse.json(null, { status: 200 });
-    }
+    // const siteUrl = request.headers.get("siteurl")!;
+    // const found = await prisma.session
+    //   .findFirst({
+    //     where: {
+    //       author_id: author?.id,
+    //       domain: siteUrl,
+    //     },
+    //   })
+    //   .catch(() => null);
+    // if (!found) {
+    //   return NextResponse.json(null, { status: 200 });
+    // }
     const user = await prisma.author.findFirst({
       select: {
         name: true,

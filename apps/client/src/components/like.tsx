@@ -49,18 +49,16 @@ export const Like: FC<Props> = ({ postId, likes }) => {
   }, [postId]);
 
   useEffect(() => {
-    if (!session?.user.name) {
+    if (!session?.user?.name) {
       return;
     }
     checkIfLiked().then(setLiked);
   }, [checkIfLiked, session]);
 
   const sendRequest = async (path: string) => {
-    if (!session?.user.name) {
+    if (!session?.user?.name) {
       setLiked(false);
-      return Message().error({
-        content: 'You must be logged in to like this event',
-      });
+      session.showLogin(true);
     }
     const url = new URL(path, window.location.href);
     const params = new URLSearchParams({
@@ -81,7 +79,7 @@ export const Like: FC<Props> = ({ postId, likes }) => {
         setLiked(false);
       } else {
         setLikesArr((likes) => [
-          { avatar: session?.user.avatar, username: session?.user.name },
+          { avatar: session?.user?.avatar, username: session?.user?.name },
           ...likes,
         ]);
       }

@@ -60,6 +60,7 @@ model Author {
   notifications        Notifications[]
   views                PageViews[]
   membership           Membership?
+  comments             Comment[]
 
   @@index([role_id])
   @@index([username])
@@ -91,6 +92,29 @@ model Follows {
 
   @@unique([follower_id, following_id])
   @@index([following_id])
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  content String @db.VarChar(300)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  post    Post @relation(fields: [post_id], references: [id])
+  post_id Int
+
+  parent    Comment? @relation("ParentComment", fields: [parent_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  parent_id String?
+
+  replies Comment[] @relation("ParentComment")
+
+  author    Author @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id Int
+
+  @@index([post_id])
+  @@index([parent_id])
+  @@index([author_id])
 }
 
 model Likes {
@@ -180,6 +204,7 @@ model Post {
   views              PageViews[]
   featured_weeks     FeaturedWeek[]
   pageTimeLog        PageTimeLog[]
+  comments           Comment[]
 
   @@index([author_id])
   @@index([status, mail_status])
@@ -245,7 +270,6 @@ model Setting {
   site_url            String
   site_footer         String
   site_description    String
-  subscribe_embed     String
   display_author_info Boolean   @default(false)
   cloudinary_key      String
   cloudinary_name     String
@@ -259,7 +283,6 @@ model Setting {
   site_favicon        String    @default("{}") @db.VarChar(300)
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
-  graphcomment_id     String    @default("")
   intro_dismissed     Boolean
   show_about_page     Boolean   @default(true)
   show_tags_page      Boolean   @default(false)

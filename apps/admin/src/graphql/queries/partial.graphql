@@ -72,7 +72,6 @@ fragment SettingsFragment on Setting {
   site_url
   site_footer
   site_description
-  subscribe_embed
   display_author_info
   scripts
   cloudinary_key

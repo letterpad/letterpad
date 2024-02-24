@@ -282,7 +282,7 @@ export async function insertPost(postData, author_id) {
       type: postData.type,
       status: postData.status,
       slug: slug,
-      publishedAt: new Date(getDateTime()).toISOString(),
+      publishedAt: new Date().toISOString(),
       reading_time: "5 mins",
       stats: JSON.stringify({
         characters: 1000,

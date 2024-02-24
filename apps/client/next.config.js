@@ -12,7 +12,6 @@ const ContentSecurityPolicy = `
   media-src 'none';
   connect-src *;
   font-src 'self' https://fonts.gstatic.com;
-  frame-src giscus.app utteranc.es
 `;
 
 const securityHeaders = [
@@ -147,6 +146,5 @@ module.exports = withAxiom({
     NEXT_PUBLIC_API_URL: process.env.API_URL,
     GRAPHQL_URL: process.env.API_URL,
     CLIENT_ID: process.env.CLIENT_ID,
-    NEXT_PUBLIC_UTTERANCES_REPO: process.env.NEXT_PUBLIC_UTTERANCES_REPO,
   },
 });

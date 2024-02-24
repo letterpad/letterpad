@@ -2,6 +2,8 @@ import className from "classnames";
 
 import { PostStatusOptions, TagsNode } from "@/__generated__/__types__";
 
+import { getReadableDate } from "../../../../shared/utils";
+
 const titleColumn = {
   title: "Title",
   dataIndex: "title",
@@ -24,16 +26,7 @@ const updatedAtColumn = {
   key: "updatedAt",
   className: "hidden lg:table-cell",
   render: (date: string) => {
-    const d = new Date(date);
-    const ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
-    const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
-    const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
-
-    return (
-      <span>
-        {da} {mo}, {ye}
-      </span>
-    );
+    return <span>{getReadableDate(date)}</span>;
   },
 };
 

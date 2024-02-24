@@ -1,0 +1,42 @@
+type Commenter {
+  id: Int!
+  username: String!
+  avatar: String
+  name: String
+}
+
+type Comment {
+  id: String!
+  content: String!
+  createdAt: Date!
+  #   parent: Comment
+  replies: [Comment]
+  author: Commenter!
+}
+
+type CommentError {
+  message: String!
+}
+
+type CommentResponse {
+  comment: Comment
+}
+union CreateCommentResponse = Comment | CommentError
+
+union UpdateCommentResponse = Comment | CommentError
+
+type Query {
+  comments(post_id: Int!): [Comment]!
+}
+
+type Mutation {
+  createComment(
+    post_id: Int!
+    content: String!
+    parent_id: String
+  ): CreateCommentResponse!
+
+  updateComment(comment_id: String!, content: String!): UpdateCommentResponse!
+
+  deleteComment(comment_id: String!): Boolean!
+}
