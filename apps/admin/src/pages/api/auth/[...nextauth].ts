@@ -16,7 +16,6 @@ import { getRootUrl } from "@/shared/getRootUrl";
 import { isPasswordValid } from "@/utils/bcrypt";
 
 import { isBlackListed } from "./blacklist";
-import { SessionData } from "../../../graphql/types";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
@@ -144,21 +143,14 @@ export const options = (): NextAuthOptions => ({
             membership: author.membership?.status ?? "free",
             register_step,
           } as any;
+
+          return session;
         }
       } catch (e: any) {
         report.error(e);
         throw new Error("Could not create a valid session");
       }
-
-      if (author && session.user) {
-        //update the session data
-        session.user.username = author.username;
-        session.user.avatar = author.avatar;
-        session.user.name = author.name;
-        session.user.register_step = author.register_step as RegisterStep;
-      }
-      return session;
-
+      throw new Error("Could not create a valid session");
     },
   },
   jwt: {
