@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 
 import ThemeSwitcher from "@/components/theme-switcher";
 
+import Footer from "../../../components/website/Footer";
+
 const LoginLayout = ({ children }) => {
   useEffect(() => {
     if (typeof localStorage !== "undefined") {
@@ -15,7 +17,7 @@ const LoginLayout = ({ children }) => {
     <>
       <title>Letterpad - Register</title>
       <div className="">{children}</div>
-      <div className="p-6">Letterpad ©2023, An Open Source Project</div>
+      <Footer />
     </>
   );
 };

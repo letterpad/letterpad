@@ -1,6 +1,6 @@
 import { BiLogOut } from "react-icons/bi";
 import { BsEnvelope, BsImages, BsTags } from "react-icons/bs";
-import { CiSettings } from "react-icons/ci";
+import { CiBadgeDollar, CiSettings } from "react-icons/ci";
 import { HiOutlineUsers, HiTemplate } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
@@ -52,8 +52,13 @@ export const items = (stats) => [
     key: "/domain-mapping",
   },
   {
+    label: "Membership",
+    icon: <CiBadgeDollar size={18} />,
+    key: "/membership",
+  },
+  {
     label: "Settings",
-    icon: <CiSettings size={16} />,
+    icon: <CiSettings size={18} />,
     key: "/settings",
   },
   {

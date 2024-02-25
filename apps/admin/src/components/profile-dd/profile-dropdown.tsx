@@ -23,8 +23,10 @@ export const ProfileDropdown = ({
 }: {
   adminPage?: boolean;
 }) => {
-  const [{ data }, refetchHomeQuery] = useHomeQueryQuery();
   const { data: session } = useSession();
+  const [{ data }, refetchHomeQuery] = useHomeQueryQuery({
+    pause: !session?.user?.id,
+  });
   const [show, setShow] = useState(false);
   const author = isAuthor(data?.me) ? data.me : null;
   const settings = isSettings(data?.settings) ? data.settings : null;

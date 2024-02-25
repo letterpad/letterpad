@@ -44,9 +44,7 @@ function Header() {
                 <ThemeSwitcher />
               </li>
               <li>
-                <ProfileDropdown
-                  renderSign={<SignInNavItems />}
-                />
+                <ProfileDropdown />
               </li>
             </ul>
           </nav>
@@ -57,46 +55,3 @@ function Header() {
 }
 
 export default Header;
-
-const SignInNavItems = () => {
-  return (
-    <>
-      <li>
-        <Link
-          className="flex items-center px-3 py-2 font-medium text-gray-400 transition duration-150 ease-in-out hover:text-blue-500 lg:px-5"
-          href="/login"
-        >
-          <span
-            onClick={() => {
-              track({
-                eventAction: EventAction.Click,
-                eventCategory: "navbar",
-                eventLabel: `login`,
-              });
-            }}
-          >
-            Sign in
-          </span>
-        </Link>
-      </li>
-      <li className="ml-3">
-        <a
-          className="btn-sm group w-full bg-gradient-to-t from-blue-600 to-blue-400 text-white shadow-lg hover:to-blue-500"
-          href="/register"
-          onClick={() => {
-            track({
-              eventAction: EventAction.Click,
-              eventCategory: "navbar",
-              eventLabel: `register`,
-            });
-          }}
-        >
-          Get Started{" "}
-          <span className="ml-1 font-inter tracking-normal text-blue-200 transition-transform duration-150 ease-in-out group-hover:translate-x-0.5">
-            -&gt;
-          </span>
-        </a>
-      </li>
-    </>
-  );
-};

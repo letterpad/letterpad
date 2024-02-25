@@ -59,8 +59,6 @@ export type Author = {
   settings_updated?: Maybe<Scalars["Boolean"]>;
   signature?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
-  stripe_customer_id?: Maybe<Scalars["String"]>;
-  stripe_subscription_id?: Maybe<Scalars["String"]>;
   username: Scalars["String"];
   verified?: Maybe<Scalars["Boolean"]>;
 };
@@ -71,6 +69,46 @@ export type AuthorResponse =
   | Failed
   | NotFound
   | UnAuthorized;
+
+export type Comment = {
+  __typename?: "Comment";
+  author: Commenter;
+  content: Scalars["String"];
+  createdAt: Scalars["Date"];
+  id: Scalars["String"];
+  replies?: Maybe<Array<Maybe<Comment>>>;
+};
+
+export type CommentError = {
+  __typename?: "CommentError";
+  message: Scalars["String"];
+};
+
+export type CommentNewMeta = {
+  __typename?: "CommentNewMeta";
+  commenter_avatar?: Maybe<Scalars["String"]>;
+  commenter_name?: Maybe<Scalars["String"]>;
+  commenter_username?: Maybe<Scalars["String"]>;
+  post_author_username?: Maybe<Scalars["String"]>;
+  post_id?: Maybe<Scalars["Int"]>;
+  post_slug?: Maybe<Scalars["String"]>;
+  post_title?: Maybe<Scalars["String"]>;
+};
+
+export type CommentResponse = {
+  __typename?: "CommentResponse";
+  comment?: Maybe<Comment>;
+};
+
+export type Commenter = {
+  __typename?: "Commenter";
+  avatar?: Maybe<Scalars["String"]>;
+  id: Scalars["Int"];
+  name?: Maybe<Scalars["String"]>;
+  username: Scalars["String"];
+};
+
+export type CreateCommentResponse = Comment | CommentError;
 
 export type CreatePostResponse = Post | PostError;
 
@@ -248,8 +286,6 @@ export type InputAuthor = {
   settings_updated?: InputMaybe<Scalars["Boolean"]>;
   signature?: InputMaybe<Scalars["String"]>;
   social?: InputMaybe<InputSocial>;
-  stripe_customer_id?: InputMaybe<Scalars["String"]>;
-  stripe_subscription_id?: InputMaybe<Scalars["String"]>;
   username?: InputMaybe<Scalars["String"]>;
 };
 
@@ -467,8 +503,10 @@ export type Mutation = {
   addDomain: AddDomainResponse;
   addSubscriber?: Maybe<SubscribersAddResult>;
   createAuthor?: Maybe<AuthorResponse>;
+  createComment: CreateCommentResponse;
   createPost: CreatePostResponse;
   deleteAuthor?: Maybe<DeleteAuthorResponse>;
+  deleteComment: Scalars["Boolean"];
   deleteMedia?: Maybe<MediaDeleteResponse>;
   deleteTags: DeleteTagsResponse;
   followAuthor: FollowAuthorResponse;
@@ -482,6 +520,7 @@ export type Mutation = {
   unFollowAuthor: FollowAuthorResponse;
   unLikePost: ToggleLikePostResponse;
   updateAuthor?: Maybe<AuthorResponse>;
+  updateComment: UpdateCommentResponse;
   updateMedia?: Maybe<MediaUpdateResponse>;
   updateOptions?: Maybe<SettingResponse>;
   updatePost: UpdatePostResponse;
@@ -501,8 +540,18 @@ export type MutationCreateAuthorArgs = {
   data: InputCreateAuthor;
 };
 
+export type MutationCreateCommentArgs = {
+  content: Scalars["String"];
+  parent_id?: InputMaybe<Scalars["String"]>;
+  post_id: Scalars["Int"];
+};
+
 export type MutationCreatePostArgs = {
   data?: InputMaybe<InputCreatePost>;
+};
+
+export type MutationDeleteCommentArgs = {
+  comment_id: Scalars["String"];
 };
 
 export type MutationDeleteMediaArgs = {
@@ -548,6 +597,11 @@ export type MutationUnLikePostArgs = {
 
 export type MutationUpdateAuthorArgs = {
   author: InputAuthor;
+};
+
+export type MutationUpdateCommentArgs = {
+  comment_id: Scalars["String"];
+  content: Scalars["String"];
 };
 
 export type MutationUpdateMediaArgs = {
@@ -630,6 +684,7 @@ export type NotificationFilters = {
 };
 
 export type NotificationMeta =
+  | CommentNewMeta
   | FollowerNewMeta
   | PostLikeMeta
   | PostNewMeta
@@ -805,6 +860,7 @@ export type Query = {
   __typename?: "Query";
   aboutStats: AboutStatsResponse;
   certs: Scalars["Boolean"];
+  comments: Array<Maybe<Comment>>;
   createSubscription: CreateSubscriptionResponse;
   domain: DomainResponse;
   email: EmailResponse;
@@ -835,6 +891,10 @@ export type Query = {
 
 export type QueryAboutStatsArgs = {
   username: Scalars["String"];
+};
+
+export type QueryCommentsArgs = {
+  post_id: Scalars["Int"];
 };
 
 export type QueryCreateSubscriptionArgs = {
@@ -952,7 +1012,6 @@ export type Setting = {
   site_tagline?: Maybe<Scalars["String"]>;
   site_title: Scalars["String"];
   site_url: Scalars["String"];
-  subscribe_embed?: Maybe<Scalars["String"]>;
   theme?: Maybe<Scalars["String"]>;
 };
 
@@ -983,7 +1042,6 @@ export type SettingInputType = {
   site_tagline?: InputMaybe<Scalars["String"]>;
   site_title?: InputMaybe<Scalars["String"]>;
   site_url?: InputMaybe<Scalars["String"]>;
-  subscribe_embed?: InputMaybe<Scalars["String"]>;
   theme?: InputMaybe<Scalars["String"]>;
 };
 
@@ -1151,6 +1209,8 @@ export type Unexpected = LetterpadError & {
   __typename?: "Unexpected";
   message: Scalars["String"];
 };
+
+export type UpdateCommentResponse = Comment | CommentError;
 
 export type UpdateDomainResponse = {
   __typename?: "UpdateDomainResponse";

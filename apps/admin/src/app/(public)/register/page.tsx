@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import Cookie from "js-cookie";
+import React, { useEffect } from "react";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import { RegisterForm } from "@/app/(public)/register/_feature";
@@ -16,6 +17,14 @@ const Register = () => {
 };
 
 const Page = () => {
+  useEffect(() => {
+    if (
+      new URLSearchParams(document.location.search).get("sourcePage") ===
+      "pricing"
+    ) {
+      Cookie.set("loginRedirect", "pricing");
+    }
+  }, []);
   const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_KEY;
   if (!recaptchaKey) return <Register />;
   return (
