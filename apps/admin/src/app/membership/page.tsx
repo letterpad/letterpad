@@ -1,13 +1,15 @@
 "use client";
+import confetti from "canvas-confetti";
 import { InferGetServerSidePropsType } from "next";
-import Head from "next/head";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Content, PageHeader, TablePlaceholder } from "ui";
 
 import { SessionData } from "@/graphql/types";
 
 import { ActiveMember } from "./active-member";
 import { PricingTable } from "../(public)/pricing/pricing-table";
+
+confetti.Promise = Promise;
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
@@ -17,6 +19,7 @@ const Payments: FC<P & Props> = () => {
   const [membership, setMembership] = useState<any>({});
   const [fetching, setFetching] = useState(true);
   const { active } = membership;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     fetch("/api/membership")
@@ -26,11 +29,30 @@ const Payments: FC<P & Props> = () => {
       .catch(() => setFetching(false));
   }, []);
 
+  useEffect(() => {
+    const node = canvasRef.current;
+    if (!active || !node) return;
+    node.style.display = "block";
+    const myConfetti = confetti.create(canvasRef.current, {
+      resize: true,
+      useWorker: true,
+    });
+    myConfetti({
+      particleCount: 100,
+      spread: 160,
+      // any other options from the global
+      // confetti function
+    }).then(() => {
+      node.style.display = "none";
+    });
+  }, [active]);
+
   return (
     <>
-      <Head>
-        <title>Membership</title>
-      </Head>
+      <canvas
+        ref={canvasRef}
+        className="absolute h-full w-full left-0 top-0 hidden"
+      ></canvas>
       <PageHeader className="site-page-header" title="Membership">
         <span className="help-text">
           Get the most out of letterpad with a membership. Get access to all
