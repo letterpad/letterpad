@@ -21,7 +21,7 @@ export const Sidebar = () => {
       <div className=" h-full flex-1 p-4">
         <Brand site_name={settings?.site_title ?? ""} />
         <div
-          className="sidebar-content  my-6 overflow-y-auto"
+          className="sidebar-content  my-6 overflow-y-auto font-paragraph"
           style={{ height: "calc(100vh - 152px)" }}
         >
           <Menu

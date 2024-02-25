@@ -20,7 +20,7 @@ import {
 import { postsColumns } from "@/app/posts/_feature/header";
 import { isMembershipFeatureActive } from "@/shared/utils";
 
-import { useGetPosts } from "./api.client";
+import { useGetPosts, useGetStats } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
@@ -34,6 +34,7 @@ export const Feature = () => {
   useRedirectToOnboard();
   const isPaidMember = useIsPaidMember();
   const membershipActive = isMembershipFeatureActive();
+  const { data: stats } = useGetStats();
 
   const changeStatus = (id: number, status: PostStatusOptions) => {
     updatePost({ id, status });
@@ -52,8 +53,9 @@ export const Feature = () => {
     <>
       {!isPaidMember && membershipActive && (
         <div className="p-2 dark:border-slate-800 border-slate-200 border-[1px] rounded mb-4 border-l-4 dark:border-l-yellow-500">
-          You have {10 - data.length} posts left in the free version. To enjoy
-          unlimited posts and many other features, <UpgradeLabel />.
+          You have {10 - (stats?.posts.published ?? 0)} posts left in the free
+          version. To enjoy unlimited posts and many other features,{" "}
+          <UpgradeLabel />.
         </div>
       )}
       <Filters

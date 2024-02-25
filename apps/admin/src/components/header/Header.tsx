@@ -5,7 +5,8 @@ import { ProfileDropdown } from "@/components/profile-dd";
 import ThemeSwitcher from "@/components/theme-switcher";
 import { Search } from "@/components/website_v2/search";
 
-// import { ResourceDropdown } from "./resources-dropdown";
+import { ResourceDropdown } from "./resources-dropdown";
+
 import Logo from "/public/logo/logo-full.png";
 
 function Header() {
@@ -26,12 +27,12 @@ function Header() {
 
           <nav className="flex grow">
             <ul className="flex grow flex-wrap items-center justify-end gap-6">
-              {/* <li>
+              <li>
                 <ResourceDropdown />
               </li>
               <li>
-                <Link href="/membership">Membership</Link>
-              </li> */}
+                <Link href="/pricing">Pricing</Link>
+              </li>
               <li>
                 <Search />
               </li>

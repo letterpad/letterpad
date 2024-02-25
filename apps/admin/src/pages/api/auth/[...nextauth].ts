@@ -103,7 +103,6 @@ export const options = (): NextAuthOptions => ({
           membership: true
         },
       });
-
       try {
         // If the user logins with google or github, create their letterpad account
         if (!author && token.sub && token.name) {
@@ -145,14 +144,21 @@ export const options = (): NextAuthOptions => ({
             membership: author.membership?.status ?? "free",
             register_step,
           } as any;
-          return session as SessionData;
         }
       } catch (e: any) {
         report.error(e);
         throw new Error("Could not create a valid session");
       }
 
-      return null as any;
+      if (author && session.user) {
+        //update the session data
+        session.user.username = author.username;
+        session.user.avatar = author.avatar;
+        session.user.name = author.name;
+        session.user.register_step = author.register_step as RegisterStep;
+      }
+      return session;
+
     },
   },
   jwt: {

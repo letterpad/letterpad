@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BsInfoCircleFill } from "react-icons/bs";
 
 import { isMembershipFeatureActive } from "../../shared/utils";
@@ -22,20 +23,13 @@ export const UpgradeBanner = () => {
         pro plan.
       </div>
       <div className="flex">
-        <button
+        <Link
+          href={"/membership"}
           type="button"
           className="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Upgrade Now
-        </button>
-        <button
-          type="button"
-          className="text-blue-800 bg-transparent border border-blue-800 hover:bg-blue-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-blue-600 dark:border-blue-600 dark:text-blue-400 dark:hover:text-white dark:focus:ring-blue-800"
-          data-dismiss-target="#alert-additional-content-1"
-          aria-label="Close"
-        >
-          Dismiss
-        </button>
+        </Link>
       </div>
     </div>
   );
