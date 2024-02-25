@@ -5,10 +5,8 @@ import { ProfileDropdown } from "@/components/profile-dd";
 import ThemeSwitcher from "@/components/theme-switcher";
 import { Search } from "@/components/website_v2/search";
 
-import { EventAction, track } from "@/track";
-
 // import { ResourceDropdown } from "./resources-dropdown";
-import Logo from "/public/website/logo.png";
+import Logo from "/public/logo/logo-full.png";
 
 function Header() {
   return (
@@ -19,13 +17,10 @@ function Header() {
             <Link className="flex gap-2" href="/" aria-label="Letterpad">
               <img
                 className="mx-auto md:max-w-none"
-                width={40}
+                width={160}
                 src={Logo.src}
                 alt="Letterpad"
               />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                Letterpad
-              </span>
             </Link>
           </div>
 
