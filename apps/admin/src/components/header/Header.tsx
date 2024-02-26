@@ -23,8 +23,7 @@ function Header() {
             </button>
             <Link className="flex gap-2" href="/" aria-label="Letterpad">
               <img
-                className="mx-auto md:max-w-none"
-                width={160}
+                className="mx-auto md:max-w-none w-28 md:w-36"
                 src={Logo.src}
                 alt="Letterpad"
               />
