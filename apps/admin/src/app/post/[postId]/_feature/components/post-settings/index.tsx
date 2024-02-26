@@ -16,7 +16,11 @@ import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/app/settings/_feature/api.client";
 import { PageType } from "@/graphql/types";
-import { debounce, TOPIC_PREFIX } from "@/shared/utils";
+import {
+  debounce,
+  isMembershipFeatureActive,
+  TOPIC_PREFIX,
+} from "@/shared/utils";
 import {
   createPathWithPrefix,
   getLastPartFromPath,
@@ -42,7 +46,7 @@ const Actions = ({ post }: IProps) => {
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
   const excerptRef = useRef<HTMLTextAreaElement>(null);
-
+  const membershipActive = isMembershipFeatureActive();
   const { data: settings } = useGetSettings();
   const [slug, setSlug] = useState(post.slug || "");
   const [busy, setBusy] = useState(false);
@@ -202,8 +206,12 @@ const Actions = ({ post }: IProps) => {
                     subheading={
                       <>
                         Notify your email subscribers and followers when you
-                        publish this post. <UpgradeLabel /> to enable this
-                        feature.
+                        publish this post.{" "}
+                        {membershipActive ? (
+                          <>
+                            <UpgradeLabel /> to enable this feature.
+                          </>
+                        ) : null}
                       </>
                     }
                   />

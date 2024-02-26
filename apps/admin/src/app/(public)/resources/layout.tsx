@@ -4,16 +4,16 @@ import Header from "@/components/header/Header";
 import Footer from "@/components/website/Footer";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions",
+  title: "Resources",
+  description:
+    "Helpful guides for getting started and getting the most out of Letterpad.",
 };
 
 const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <div className="px-4 md:px-0">
-        <div className="flex flex-col justify-between">{children}</div>
-      </div>
+      <div className="mb-20">{children}</div>
       <Footer />
     </>
   );
