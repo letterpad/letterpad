@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import Link from "next/link";
+import { useState } from "react";
 import { Button, Table } from "ui";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
@@ -9,17 +10,21 @@ import { getReadableDate } from "@/shared/utils";
 import { checkout } from "./checkout";
 import { basePath } from "../../constants";
 
-export const ActiveMember = ({ membership }) => {
+export const ActiveMember = ({ membership, onCancel }) => {
   const { customer, charges, active } = membership;
+  const [cancelling, setCancelling] = useState(false);
 
   const deleteSubscription = async () => {
     const id = customer?.subscriptions?.data[0]?.id;
     if (!id) return;
-    fetch(basePath + "/api/cancel-membership", {
+    setCancelling(true);
+    await fetch(basePath + "/api/cancel-membership", {
       method: "POST",
       body: JSON.stringify({ subscription_id: id }),
       headers: { "Content-Type": "application/json" },
     }).then((res) => res.json());
+    setCancelling(false);
+    onCancel();
   };
   return (
     <>
@@ -39,7 +44,12 @@ export const ActiveMember = ({ membership }) => {
           </span>
         </p>
         {active ? (
-          <Button onClick={deleteSubscription} variant="outline" size="small">
+          <Button
+            onClick={deleteSubscription}
+            variant="outline"
+            size="small"
+            disabled={cancelling}
+          >
             Cancel Subscription
           </Button>
         ) : (

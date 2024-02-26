@@ -63,7 +63,12 @@ const Payments: FC<P & Props> = () => {
         {fetching ? (
           <TablePlaceholder loading={true} />
         ) : active ? (
-          <ActiveMember membership={membership} />
+          <ActiveMember
+            membership={membership}
+            onCancel={() => {
+              setMembership({ ...membership, active: false });
+            }}
+          />
         ) : (
           <div className="py-8 px-4 mx-auto max-w-screen-md lg:py-16 lg:px-6">
             <PricingTable hasSession={true} showFreeTier={false} />

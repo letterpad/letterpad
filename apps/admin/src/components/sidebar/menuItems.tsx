@@ -55,6 +55,7 @@ export const items = (stats) => [
     label: "Membership",
     icon: <CiBadgeDollar size={18} />,
     key: "/membership",
+    hidden: process.env.NEXT_PUBLIC_PAYMENTS_ACTIVE !== "true",
   },
   {
     label: "Settings",
@@ -66,11 +67,6 @@ export const items = (stats) => [
     icon: <HiOutlineUsers size={16} />,
     key: "/subscribers",
   },
-  // {
-  //   label: "Membership",
-  //   icon: <CiSettings size={16}/>,
-  //   key: "/membership",
-  // },
   {
     label: "Logout",
     icon: <BiLogOut size={16} />,
