@@ -10,6 +10,8 @@ import React, {
 import { CgSpinner } from "react-icons/cg";
 import { Drawer, Input, Switch, TextArea } from "ui";
 
+import { UpgradeLabel } from "@/components/upgrade-plan-banner";
+
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/app/settings/_feature/api.client";
@@ -196,11 +198,12 @@ const Actions = ({ post }: IProps) => {
               {isPost && (
                 <div>
                   <Heading
-                    heading="Email Subscribers"
+                    heading="Email Subscribers and Followers"
                     subheading={
                       <>
-                        Notify your email subscribers when you publish this
-                        post.
+                        Notify your email subscribers and followers when you
+                        publish this post. <UpgradeLabel /> to enable this
+                        feature.
                       </>
                     }
                   />

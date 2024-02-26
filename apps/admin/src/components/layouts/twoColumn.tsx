@@ -3,9 +3,10 @@
 import React from "react";
 import { TwoColumnLayout as Layout } from "ui";
 
-import { SiteFooter } from "@/components/layouts/site-footer";
 import { Sidebar } from "@/components/sidebar";
 import { TopBar } from "@/components/top-bar";
+
+import Footer from "../website/Footer";
 
 export const TwoColumnLayout = ({ children }) => {
   return (
@@ -15,7 +16,7 @@ export const TwoColumnLayout = ({ children }) => {
         <div className="flex h-screen flex-col justify-between px-4 md:px-6">
           <TopBar />
           <div className="mb-auto">{children}</div>
-          <SiteFooter />
+          <Footer />
         </div>
       }
     />

@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { FC, useState } from "react";
 import { Button, Input } from "ui";
 
@@ -11,6 +12,7 @@ interface Props {
 
 export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
   const [_username, setUsername] = useState(username);
+  const { update, data } = useSession();
   const [error, setError] = useState<string | null>(null);
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(true);
 
@@ -22,6 +24,8 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
     if (result.data?.updateAuthor?.__typename === "Failed") {
       setError(result.data.updateAuthor.message);
       setSaveButtonEnabled(false);
+    } else if (data) {
+      update({ ...data, user: { ...data.user, username: _username } });
     }
   };
 

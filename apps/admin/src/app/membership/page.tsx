@@ -1,124 +1,78 @@
 "use client";
-import { loadStripe } from "@stripe/stripe-js";
-import classNames from "classnames";
+import confetti from "canvas-confetti";
 import { InferGetServerSidePropsType } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { FC } from "react";
-import { Button, Content, PageHeader, Table } from "ui";
+import { FC, useEffect, useRef, useState } from "react";
+import { Content, PageHeader, TablePlaceholder } from "ui";
 
-import { formatAmountForDisplay } from "@/components/payments/utils";
-
-import { basePath } from "@/constants";
 import { SessionData } from "@/graphql/types";
-import { getReadableDate } from "@/shared/utils";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+import { ActiveMember } from "./active-member";
+import { PricingTable } from "../(public)/pricing/pricing-table";
+
+confetti.Promise = Promise;
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
-const Payments: FC<P & Props> = ({ customer, charges, active }) => {
-  const handleClick = async (_event) => {
-    const res = await fetch("/api/checkout_session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    }).then((res) => res.json());
-    const stripe = await stripePromise;
+const Payments: FC<P & Props> = () => {
+  const [membership, setMembership] = useState<any>({});
+  const [fetching, setFetching] = useState(true);
+  const { active } = membership;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    await stripe?.redirectToCheckout({
-      sessionId: res.id,
+  useEffect(() => {
+    fetch("/api/membership")
+      .then((res) => res.json())
+      .then(setMembership)
+      .then(() => setFetching(false))
+      .catch(() => setFetching(false));
+  }, []);
+
+  useEffect(() => {
+    const node = canvasRef.current;
+    if (!active || !node) return;
+    node.style.display = "block";
+    const myConfetti = confetti.create(canvasRef.current, {
+      resize: true,
+      useWorker: true,
     });
-  };
-
-  const deleteSubscription = async () => {
-    const id = customer?.subscriptions?.data[0]?.id;
-    if (!id) return;
-    fetch(basePath + "/api/cancelSubscription", {
-      method: "POST",
-      body: JSON.stringify({ subscription_id: id }),
-      headers: { "Content-Type": "application/json" },
-    }).then((res) => res.json());
-  };
+    myConfetti({
+      particleCount: 100,
+      spread: 160,
+      // any other options from the global
+      // confetti function
+    }).then(() => {
+      node.style.display = "none";
+    });
+  }, [active]);
 
   return (
     <>
-      <Head>
-        <title>Membership</title>
-      </Head>
+      <canvas
+        ref={canvasRef}
+        className="absolute h-full w-full left-0 top-0 hidden"
+      ></canvas>
       <PageHeader className="site-page-header" title="Membership">
         <span className="help-text">
-          This is where you can manage your payments.
+          Get the most out of letterpad with a membership. Get access to all
+          features and priority support.
         </span>
       </PageHeader>
       <Content>
-        <input type="hidden" name="priceId" value="price_G0FvDp6vZvdwRZ" />
-        <div className="flex items-center justify-between">
-          <p>
-            Status:{" "}
-            <span
-              className={classNames("font-medium", {
-                "text-green-600": active,
-                "text-red-500": !active,
-              })}
-            >
-              {active ? "Active" : "Inactive"}
-            </span>
-          </p>
-          {active ? (
-            <Button onClick={deleteSubscription} variant="danger">
-              Cancel Subscription
-            </Button>
-          ) : (
-            <Button type="submit" onClick={handleClick}>
-              Subscribe
-            </Button>
-          )}
-        </div>
-        {active && (
-          <Table
-            loading={false}
-            columns={[
-              {
-                key: "date",
-                title: "Date",
-                dataIndex: "date",
-              },
-              {
-                key: "ammount",
-                title: "Ammount",
-                dataIndex: "ammount",
-              },
-              {
-                key: "receipt_url",
-                title: "Receipt",
-                dataIndex: "receipt_url",
-                render: (url) => {
-                  return (
-                    <Link href={url}>
-                      <a target="_blank" className="text-blue-600">
-                        Receipt
-                      </a>
-                    </Link>
-                  );
-                },
-              },
-              {
-                key: "status",
-                title: "Status",
-                dataIndex: "status",
-              },
-            ]}
-            dataSource={charges?.data.map((item) => ({
-              date: getReadableDate(item.created * 1000),
-              status: item.status === "succeeded" ? "Paid" : "Failed",
-              receipt_url: item.receipt_url,
-              ammount: formatAmountForDisplay(item.amount, item.currency),
-            }))}
+        {fetching ? (
+          <TablePlaceholder loading={true} />
+        ) : active ? (
+          <ActiveMember
+            membership={membership}
+            onCancel={() => {
+              setMembership({ ...membership, active: false });
+            }}
           />
+        ) : (
+          <div className="py-8 px-4 mx-auto max-w-screen-md lg:py-16 lg:px-6">
+            <PricingTable hasSession={true} showFreeTier={false} />
+          </div>
         )}
       </Content>
     </>
@@ -126,39 +80,3 @@ const Payments: FC<P & Props> = ({ customer, charges, active }) => {
 };
 
 export default Payments;
-
-// export async function getServerSideProps({ req, res }) {
-//   const _session = await getServerSession({ req: req });
-//   const session = _session as unknown as { user: SessionData };
-//   //   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
-//   const author = await prisma.author.findFirst({
-//     where: { id: session.user.id },
-//   });
-//   if (!author || !author.stripe_customer_id) {
-//     return {
-//       props: {
-//         active: false,
-//       },
-//     };
-//   }
-
-//   const details = async () => {
-//     const customer = await stripe.customers.retrieve(
-//       author?.stripe_customer_id!,
-//       {
-//         expand: ["subscriptions"], // 2
-//       }
-//     );
-//     if (!customer.deleted) {
-//       const charges = await stripe.charges.list({
-//         customer: author?.stripe_customer_id!,
-//         limit: 3,
-//       });
-//       return { customer, charges };
-//     }
-//     return { customer: null, charges: null };
-//   };
-//   const { customer, charges } = await details();
-//   const active = customer?.subscriptions?.data[0]?.status === "active";
-//   return { props: { customer, charges, active } };
-// }

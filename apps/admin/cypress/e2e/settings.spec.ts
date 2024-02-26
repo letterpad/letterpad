@@ -18,7 +18,7 @@ describe("Settings", () => {
 
     cy.getTestId("siteEmail").type("site email");
 
-    cy.getTestId("footerDescription").type("footer description").tab();
+    cy.getTestId("css").type("css stuff").tab();
     cy.getTestId("save-seo").click();
     cy.wait("@UpdateOptionsMutation");
   });
@@ -50,7 +50,7 @@ describe("Settings", () => {
   });
 });
 
-export {};
+export { };
 
 // cy.url().then((url) => {
 //   const saveLocation = `cypress/results/data/${Cypress.spec.name}.location.txt`;

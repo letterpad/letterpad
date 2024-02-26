@@ -247,7 +247,7 @@ async function insertAuthors() {
       company_name: "Letterpad",
       bio: "You can write some information about yourself for the world to know you a little better.",
       avatar:
-        "https://res.cloudinary.com/abhisheksaha/image/upload/v1672944041/blog-images/6611482_account_avatar_basic_person_user_icon_eisadm.png",
+        "https://res.cloudinary.com/abhisheksaha/image/upload/v1708881374/avatar.png",
     },
   });
 }
@@ -317,6 +317,7 @@ export const cleanupDatabase = async () => {
   await prisma.tag.deleteMany();
   await prisma.upload.deleteMany();
   await prisma.emailTemplates.deleteMany();
+  await prisma.membership.deleteMany();
 };
 
 function getTemplates(rootFolder, templates) {

@@ -35,12 +35,22 @@ export async function middleware(request: NextRequest) {
     } catch (e) {
       // return NextResponse.redirect(ROOT_URL + "/login");
     }
+
+    if (request.nextUrl.pathname === "/posts") {
+      const isPricing = request.cookies.get('loginRedirect')?.value === "pricing";
+      if (isPricing) {
+        return NextResponse.redirect(ROOT_URL + "/membership", {
+          headers: new Headers({ "Set-Cookie": "loginRedirect=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT" })
+        })
+      }
+    }
   }
   if (source) {
     return handleAuth({ request, source });
   }
   const nextUrl = request.nextUrl;
   return NextResponse.rewrite(nextUrl);
+
 }
 
 interface Props {

@@ -1,13 +1,18 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Button, Label, TextArea } from "ui";
 
+import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+
 import { SaveButton } from "@/components/save-button";
+import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 import { Upload } from "@/components/upload";
 
-import { removeTypenames } from "@/shared/utils";
+import { isMembershipFeatureActive, removeTypenames } from "@/shared/utils";
 
 const Appearance = () => {
   const data = useFormContext();
+  const membershipFeatureActive = isMembershipFeatureActive();
+  const isPaidMember = useIsPaidMember();
   return (
     <div className="grid gap-8">
       <div className="flex flex-col gap-4">
@@ -101,7 +106,14 @@ const Appearance = () => {
         autoGrow={true}
         maxLength={200}
         data-testid="footerDescription"
-        help="This will appear in the footer of your site."
+        help={
+          <>
+            <span>This will appear in the footer of your site. </span>
+            <UpgradeLabel />
+          </>
+        }
+        // help={<span>hello</span>}
+        disabled={!isPaidMember && membershipFeatureActive}
       />
       <div>
         <Controller
@@ -113,11 +125,12 @@ const Appearance = () => {
               onChange={onChange}
               placeholder="Add css to customise your website"
               style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
+                fontFamily: "monospace",
                 fontSize: 13,
                 minHeight: 200,
               }}
               value={data?.watch("css") ?? ""}
+              data-testid="css"
             />
           )}
         />

@@ -34,7 +34,7 @@ export const TopBar = () => {
           <ThemeSwitcher />
         </div>
         <NotificationDropdown />
-        <ProfileDropdown sessionPath="/api/auth/session" />
+        <ProfileDropdown adminPage={true} />
       </div>
     </div>
   );

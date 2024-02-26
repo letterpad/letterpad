@@ -9,8 +9,8 @@ interface Props {
 export const Brand: FC<Props> = () => (
   <div className="sidebar-header flex items-center">
     <div className="inline-flex">
-      <a href="#" className="inline-flex flex-row items-center">
-        <Logo width={32} isDarkBg={true} />
+      <a href="/" className="inline-flex flex-row items-center">
+        <Logo width={140} isDarkBg={true} />
       </a>
     </div>
   </div>

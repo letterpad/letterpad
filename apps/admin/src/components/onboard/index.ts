@@ -102,7 +102,7 @@ export async function createAuthorWithSettings(
   const {
     token: _token,
     verified = false,
-    avatar = "https://res.cloudinary.com/abhisheksaha/image/upload/v1672944041/blog-images/6611482_account_avatar_basic_person_user_icon_eisadm.png",
+    avatar = "https://res.cloudinary.com/abhisheksaha/image/upload/v1708881374/avatar.png",
     ...authorData
   } = data;
 
@@ -119,8 +119,6 @@ export async function createAuthorWithSettings(
         verified,
         bio: "",
         occupation: "",
-        stripe_customer_id: "",
-        stripe_subscription_id: "",
         company_name: "",
         social: JSON.stringify({
           twitter: "",

@@ -7,15 +7,13 @@ import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.g
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
-import ProfileInfo from "./profile-info";
-import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
+import { isSettings, isStats } from "../../utils/type-guards";
 
 export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();
   const pathname = usePathname();
   const { isMobileOrTablet, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
-  const me = isAuthor(data?.me) ? data?.me : null;
   const stats = isStats(data?.stats) ? data?.stats : null;
 
   return (
@@ -23,7 +21,7 @@ export const Sidebar = () => {
       <div className=" h-full flex-1 p-4">
         <Brand site_name={settings?.site_title ?? ""} />
         <div
-          className="sidebar-content  my-6 overflow-y-auto"
+          className="sidebar-content  my-6 overflow-y-auto font-paragraph"
           style={{ height: "calc(100vh - 152px)" }}
         >
           <Menu
@@ -48,11 +46,6 @@ export const Sidebar = () => {
           />
         </div>
       </div>
-      <ProfileInfo
-        name={me?.name ?? ""}
-        avatar={me?.avatar}
-        site_url={settings?.site_url}
-      />
     </div>
   );
 };

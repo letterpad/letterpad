@@ -63,7 +63,9 @@ export const UpdateProfile = () => {
           ...session.data,
           user: {
             ...session.data?.user,
-            register_step: RegisterStep.Registered,
+            username: updatedAuthor.username,
+            name: updatedAuthor.name,
+            register_step: RegisterStep.SiteInfo,
           },
         });
         router.push(registrationPaths[updatedAuthor.register_step]);

@@ -39,7 +39,7 @@ export const getPost = cache(
         if (post) {
           return {
             ...mapPostToGraphql(post),
-            html_draft: post.html_draft ?? "",
+            html: post.html_draft ?? "",
             __typename: "Post",
           };
         }

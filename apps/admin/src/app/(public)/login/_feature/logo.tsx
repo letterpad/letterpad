@@ -5,7 +5,7 @@ interface Props {
   isDarkBg?: boolean;
   width?: number;
 }
-export const Logo: FC<Props> = ({ width = 50, isDarkBg }) => {
+export const Logo: FC<Props> = ({ width = 150, isDarkBg }) => {
   const theme =
     (typeof localStorage !== "undefined" && localStorage?.theme) ?? "light";
 
@@ -16,7 +16,7 @@ export const Logo: FC<Props> = ({ width = 50, isDarkBg }) => {
     logo = "/logo/lp_logo_white.svg";
   }
 
-  logo = "/logo/logo.png";
+  logo = "/logo/logo-full.png";
 
   return <Image src={logo} width={width} height={width} alt="Letterpad" />;
 };

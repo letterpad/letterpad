@@ -8,6 +8,7 @@ interface Item {
   key: string;
   badge?: string;
   testid?: string;
+  hidden?: boolean;
 }
 interface Props {
   items: Item[];
@@ -34,7 +35,7 @@ export const Menu: FC<Props> = ({
 }) => {
   return (
     <ul className="flex w-full flex-col">
-      {items.map((item) => {
+      {items.filter(item=> !item.hidden).map((item) => {
         if (item.group) {
           return (
             <li className="my-px" key={item.key}>

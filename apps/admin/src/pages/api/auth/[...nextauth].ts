@@ -55,8 +55,8 @@ const providers = (): NextAuthOptions["providers"] => [
           return authenticated
             ? author
             : Promise.reject(
-                new Error("Incorrect password. Please try again.")
-              );
+              new Error("Incorrect password. Please try again.")
+            );
         } else {
           return Promise.reject(
             new Error("The email you provided is not registered.")
@@ -99,9 +99,9 @@ export const options = (): NextAuthOptions => ({
         where: { email: token.email },
         include: {
           role: true,
+          membership: true
         },
       });
-
       try {
         // If the user logins with google or github, create their letterpad account
         if (!author && token.sub && token.name) {
@@ -125,6 +125,7 @@ export const options = (): NextAuthOptions => ({
             where: { email: token.email },
             include: {
               role: true,
+              membership: true
             },
           });
         }
@@ -139,23 +140,17 @@ export const options = (): NextAuthOptions => ({
             avatar,
             image: avatar,
             role: author.role.name,
+            membership: author.membership?.status ?? "free",
             register_step,
           } as any;
+
+          return session;
         }
       } catch (e: any) {
         report.error(e);
         throw new Error("Could not create a valid session");
       }
-
-      const ses = session;
-      if (author && ses.user) {
-        //update the session data
-        ses.user.username = author.username;
-        ses.user.avatar = author.avatar;
-        ses.user.name = author.name;
-        ses.user.register_step = author.register_step as RegisterStep;
-      }
-      return ses;
+      throw new Error("Could not create a valid session");
     },
   },
   jwt: {
