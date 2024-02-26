@@ -76,7 +76,7 @@ export const fetchPostsOfClient = async () => {
     });
     const data = await req.json();
     return data?.data?.posts.rows.filter(post => parseInt(post.title)) as {
-        title: string, html: string, sub_title: string, excerpt: string, slug: string, cover_image: {
+        title: string, html: string, sub_title: string, excerpt: string, slug: string, author: { name: string, avatar: string }, cover_image: {
             src: string,
             width: number,
             height: number
