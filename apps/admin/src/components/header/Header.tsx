@@ -32,6 +32,9 @@ function Header() {
           <nav className="flex grow">
             <ul className="flex grow flex-wrap items-center justify-end gap-6">
               <li className="hidden md:block">
+                <Link href="/resources/monetise">Monetise</Link>
+              </li>
+              <li className="hidden md:block">
                 {/* <ResourceDropdown /> */}
                 <Link href="/resources">Resources</Link>
               </li>
@@ -61,7 +64,10 @@ function Header() {
         className="w-64"
       >
         <ul className="flex flex-col grow flex-wrap justify-end items-center gap-4 text-md mt-10">
-          <li className="hidden">
+          <li>
+            <Link href="/resources">Earn</Link>
+          </li>
+          <li>
             <Link href="/resources">Resources</Link>
           </li>
           {process.env.NEXT_PUBLIC_PAYMENTS_ACTIVE && (

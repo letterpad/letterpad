@@ -5,7 +5,9 @@ import { FC } from 'react';
 export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
   settings,
 }) => {
-  const { srcs, content } = extractScriptInfo(settings?.scripts ?? '');
+  const { srcs, content, metatags } = extractScriptInfo(
+    settings?.scripts ?? ''
+  );
   return (
     <>
       <head>
@@ -16,6 +18,9 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           href="https://fonts.gstatic.com"
           crossOrigin={'anonymous'}
         />
+        {metatags.map((meta) => (
+          <meta name={meta.name} content={meta.content} key={meta.name} />
+        ))}
       </head>
       <Script strategy="afterInteractive" src={'/static/prism.js'} async />
       {srcs.map((src) => (
@@ -33,9 +38,10 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
 };
 
 function extractScriptInfo(inputString) {
-  const scriptInfo: any = {
-    srcs: [],
+  const scriptInfo = {
+    srcs: [] as string[],
     content: '',
+    metatags: [] as { name: string; content: string }[],
   };
 
   // Regular expression to match <script> tags
@@ -61,6 +67,28 @@ function extractScriptInfo(inputString) {
         .trim();
       if (content.length > 0) {
         scriptInfo.content = content;
+      }
+    });
+  }
+
+  // Regular expression to match <meta> tags
+  const metaTagRegex = /<meta(?:\s[^>]*)?>/gi;
+
+  // Regular expression to match name and content attributes in a <meta> tag
+  const nameContentAttributeRegex =
+    /name=["']([^"']+)["']\s+content=["']([^"']+)["']/i;
+
+  // Extracting <meta> tags from the input string
+  const metaTags = inputString.match(metaTagRegex);
+
+  if (metaTags) {
+    metaTags.forEach((metaTag: string) => {
+      const nameContentMatch = nameContentAttributeRegex.exec(metaTag);
+      if (nameContentMatch && nameContentMatch[1] && nameContentMatch[2]) {
+        scriptInfo.metatags.push({
+          name: nameContentMatch[1],
+          content: nameContentMatch[2],
+        });
       }
     });
   }

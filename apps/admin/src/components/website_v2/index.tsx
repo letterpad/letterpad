@@ -10,6 +10,7 @@ import {
 import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
+import Footer from "../website/Footer";
 
 export const Website = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: 0 } });
@@ -21,7 +22,7 @@ export const Website = async () => {
       : [];
   return (
     <>
-      <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-900 dark:text-gray-100 text-black/60">
+      <div className="flex min-h-screen flex-col overflow-hidden">
         <Header />
         <Banner />
 
@@ -97,6 +98,7 @@ export const Website = async () => {
             </div>
           </div>
         </main>
+        <Footer />
       </div>
     </>
   );

@@ -50,11 +50,14 @@ const Integrations: React.FC<Props> = ({ cloudinaryEnabledByAdmin }) => {
           />
         </div>
         <div>
-          <Label label="Add Scripts" className="mb-4 text-md font-bold" />
+          <Label
+            label="Add Scripts or Meta Tags"
+            className="mb-4 text-md font-bold"
+          />
           <p className="mb-4 dark:text-gray-400">
             <span>
-              You can add scripts to your website. This can be used to add
-              analytics, monitoring, alerts, etc.
+              You can add scripts or metatags to your website. This can be used
+              to add analytics or to site verification.
             </span>
           </p>
 
@@ -65,6 +68,7 @@ const Integrations: React.FC<Props> = ({ cloudinaryEnabledByAdmin }) => {
               <TextArea
                 onChange={onChange}
                 value={data?.watch("scripts") ?? ""}
+                placeholder="eg. <script src='https://example.com/script.js'></script> or <meta name='description' content='This is a description'>"
               />
             )}
           />

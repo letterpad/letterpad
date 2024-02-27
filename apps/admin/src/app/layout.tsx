@@ -21,24 +21,24 @@ import { getAuthCookieName } from "../utils/authCookie";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getRootUrl()),
-  title: "Letterpad - A blogging platform",
+  title: "Letterpad - A blog publishing platform",
   description:
-    "Publish stories, build subscribers, follow other publishers and stay connected. Its free.",
+    "On Letterpad, you can publish your work, engage with readers, connect with other authors, and earn.",
   // viewport: "width=device-width",
   robots: "follow, index",
   openGraph: {
     type: "website",
     url: "https://letterpad.app/",
-    title: "Letterpad - A free blog publishing platform",
+    title: "Letterpad - A blog publishing platform",
     description:
-      "Publish stories, build subscribers, follow other publishers and stay connected. Its free.",
-    siteName: "Letterpad - A free blog publishing platform",
+      "On Letterpad, you can publish your work, engage with readers, connect with other authors, and earn.",
+    siteName: "Letterpad - A blog publishing platform",
     images: [
       {
         url: "/website/theme-1.png",
         width: 1200,
         height: 630,
-        alt: "Letterpad - A free blog publishing platform",
+        alt: "Letterpad - A blog publishing platform",
       },
     ],
   },
@@ -46,14 +46,14 @@ export const metadata: Metadata = {
     site: "@__abhisaha",
     card: "summary_large_image",
     description:
-      "Publish stories, build subscribers, follow other publishers and stay connected. Its free.",
-    title: "Letterpad - A free blog publishing platform",
+      "On Letterpad, you can publish your work, engage with readers, connect with other authors, and earn.",
+    title: "Letterpad - A blog publishing platform",
     images: [
       {
         url: "/website/theme-1.png",
         width: 1200,
         height: 630,
-        alt: "Letterpad - A free blog publishing platform",
+        alt: "Letterpad - A blog publishing platform",
       },
     ],
     creator: "Abhishek Saha",
