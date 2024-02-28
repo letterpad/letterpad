@@ -37,7 +37,7 @@ export const PostFooter: FC<Props> = ({ author, likes = [], share }) => {
       className={`bottom-0 left-0 w-full border-t-[1px] dark:border-neutral-900/50 bg-gray-100 dark:bg-black  ${hide ? 'translate-y-20' : 'translate-y-0'} fixed transition-transform duration-500 ease-in-out z-10`}
     >
       <div className="flex flex-col md:flex-row justify-between p-2 md:p-4 md:px-40">
-        <div className="font-heading hidden md:block">
+        <div className="font-heading hidden md:flex items-center">
           Written by <span className="font-bold">{author.name}</span>
         </div>
         <div className="flex items-center gap-2 md:gap-6 justify-center">
