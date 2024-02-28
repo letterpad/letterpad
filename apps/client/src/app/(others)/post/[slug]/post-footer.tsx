@@ -18,14 +18,16 @@ interface Props {
 }
 
 export const PostFooter: FC<Props> = ({ author, likes = [], share }) => {
-  const ref = useRef<HTMLElement | null>();
+  const ref = useRef<HTMLElement | null>(null);
   const { isIntersecting } = useIntersectionObserver(ref, {});
   const [hide, setHide] = useState(true);
   const { liked, onLike } = useLikeContext();
 
   useEffect(() => {
-    const node = document.getElementById('like-bar');
-    ref.current = node;
+    if (ref.current) {
+      const node = document.getElementById('like-bar');
+      ref.current = node;
+    }
   }, []);
 
   useEffect(() => {
