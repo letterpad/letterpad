@@ -1,7 +1,9 @@
 'use client';
 
 import { FC, useState } from 'react';
+import { LuMailPlus } from 'react-icons/lu';
 import { Modal } from 'ui';
+
 import { Subscribe } from './subscribe';
 
 interface Props {
@@ -14,10 +16,10 @@ export const SubscribeModal: FC<Props> = ({ settings }) => {
     <>
       <button
         type="button"
-        className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 "
+        className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm p-2 text-center me-2 mb-2 "
         onClick={() => setShowModal(true)}
       >
-        Subscribe
+        <LuMailPlus />
       </button>
 
       <Modal
