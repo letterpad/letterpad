@@ -35,12 +35,7 @@ export const PostAuthor = ({ settings, post }) => {
             >
               {author.name}
             </a>
-            <Share
-              title={title}
-              summary={excerpt}
-              url={postUrl}
-              className="hidden md:flex"
-            />
+            <Share title={title} summary={excerpt} url={postUrl} />
           </div>
           <p className="text-md font-normal text-gray-500 dark:text-gray-300">
             {author.occupation}

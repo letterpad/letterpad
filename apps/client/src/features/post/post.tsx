@@ -5,7 +5,9 @@ import kebabCase from '@/lib/utils/kebabCase';
 
 import Link from '@/components/Link';
 
-import { Like } from '../../components/like';
+import { LikeProvider } from '../like/context';
+import { Like } from '../like/like';
+import { PostFooter } from '../../app/(others)/post/[slug]/post-footer';
 import { PageView } from '../../components/pageView';
 import { PostAuthor } from '../../components/postAuthor';
 import { PrismHighlight } from '../../components/prism-highlight';
@@ -14,6 +16,7 @@ import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
 import { TimeSpent } from '../../components/time-spent';
 import { PageTitle } from '../../components/title';
+import { Share } from '../../../components/share';
 import { getApiRootUrl } from '../../../lib/utils/url';
 import { PostProps } from '../../../types/pageTypes';
 
@@ -28,97 +31,120 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
   return (
     <SectionContainer>
       <ScrollTop />
-      <div className="mx-auto flex w-full  max-w-3xl justify-between pt-10 flex-col">
-        <article className="post format-blue dark:format-invert mx-auto w-full">
-          <header className={'mb-4 lg:mb-4'}>
-            <PageTitle className="leading-10">{title}</PageTitle>
-            <PostSubTitle text={sub_title} />
-            <div className="flex flex-col py-4">
-              <PostAuthor settings={settings} post={post} />
+      <LikeProvider likes={post.likes} postId={post.id}>
+        <div className="mx-auto flex w-full  max-w-3xl justify-between pt-10 flex-col">
+          <article className="post format-blue dark:format-invert mx-auto w-full">
+            <header className={'mb-4 lg:mb-4'}>
+              <PageTitle className="leading-10">{title}</PageTitle>
+              <PostSubTitle text={sub_title} />
+              <div className="flex flex-col py-4">
+                <PostAuthor settings={settings} post={post} />
+              </div>
+              <div
+                id="like-bar"
+                className="flex justify-between border-t border-b border-slate-200 dark:border-slate-800 py-2 my-4 px-2"
+              >
+                <PublishedAt
+                  publishedAt={post.publishedAt}
+                  reading_time={post.reading_time!}
+                  className="flex-row flex gap-2 justify-center text-sm items-center"
+                  separator={<span className="">•</span>}
+                />
+                {!isPage && <Like />}
+              </div>
+              {post.cover_image.src && (
+                <img
+                  src={post.cover_image.src}
+                  loading="lazy"
+                  alt={post.title}
+                  className="py-4"
+                  style={{ minHeight: 200, width: '100%' }}
+                />
+              )}
+            </header>
+            <div
+              className={`prose pb-4 pt-4 dark:prose-dark`}
+              id="article-content"
+            >
+              <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
             </div>
-            <div className="flex justify-between border-t border-b border-slate-200 dark:border-slate-800 py-2 my-4 px-2">
-              <PublishedAt
-                publishedAt={post.publishedAt}
-                reading_time={post.reading_time!}
-                className="flex-row flex gap-2 justify-center text-sm md:text-md items-center"
-                separator={<span className="">•</span>}
-              />
-              {!isPage && <Like postId={id} likes={post.likes} />}
+            <div className="pb-4 flex gap-2 flex-wrap leading-11">
+              {tags?.__typename === 'TagsNode' &&
+                tags.rows.map(({ name }) => (
+                  <Link
+                    href={`/tag/${kebabCase(name)}`}
+                    key={name.replace('_topic_', '')}
+                    className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white"
+                  >
+                    {name.split(' ').join('-')}
+                  </Link>
+                ))}
             </div>
-            {post.cover_image.src && (
-              <img
-                src={post.cover_image.src}
-                loading="lazy"
-                alt={post.title}
-                className="py-4"
-                style={{ minHeight: 200, width: '100%' }}
-              />
-            )}
-          </header>
-          <div
-            className={`prose pb-4 pt-4 dark:prose-dark`}
-            id="article-content"
-          >
-            <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
-          </div>
-          <div className="pb-4 flex gap-2 flex-wrap leading-11">
-            {tags?.__typename === 'TagsNode' &&
-              tags.rows.map(({ name }) => (
-                <Link
-                  href={`/tag/${kebabCase(name)}`}
-                  key={name.replace('_topic_', '')}
-                  className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white"
-                >
-                  {name.split(' ').join('-')}
-                </Link>
-              ))}
-          </div>
-          {settings.display_author_info && !isPage && author.bio && (
-            <div className="my-20 flex flex-col">
-              <span className="mb-2">Author</span>
-              <div className="inline-flex mr-3 text-gray-900 dark:text-white py-4 border-t dark:border-slate-800">
-                <Link
-                  href={new URL(
-                    `@${author.username}`,
-                    getApiRootUrl()
-                  ).toString()}
-                  rel={author.name}
-                  className="contents"
-                >
-                  <img
-                    className="mr-4 w-16 h-16 rounded-full object-cover"
-                    src={author.avatar!}
-                    alt="Jese Leos"
-                  />
-                </Link>
-                <div>
+            {settings.display_author_info && !isPage && author.bio && (
+              <div className="my-20 flex flex-col">
+                <span className="mb-2">Author</span>
+                <div className="inline-flex mr-3 text-gray-900 dark:text-white py-4 border-t dark:border-slate-800">
                   <Link
                     href={new URL(
                       `@${author.username}`,
                       getApiRootUrl()
                     ).toString()}
                     rel={author.name}
-                    className="text-xl font-bold text-gray-900 dark:text-white"
+                    className="contents"
                   >
-                    {author.name}
+                    <img
+                      className="mr-4 w-16 h-16 rounded-full object-cover"
+                      src={author.avatar!}
+                      alt="Jese Leos"
+                    />
                   </Link>
-                  <p className="text-gray-500 dark:text-gray-200 text-md">
-                    {author.signature}
-                  </p>
+                  <div>
+                    <Link
+                      href={new URL(
+                        `@${author.username}`,
+                        getApiRootUrl()
+                      ).toString()}
+                      rel={author.name}
+                      className="text-xl font-bold text-gray-900 dark:text-white"
+                    >
+                      {author.name}
+                    </Link>
+                    <p className="text-gray-500 dark:text-gray-200 text-md">
+                      {author.signature}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          {type === 'post' && (
-            <Suspense fallback={<div>Loading Comments...</div>}>
-              <Comments postId={post.id} />
-            </Suspense>
-          )}
-        </article>
-      </div>
-      <PrismHighlight />
-      {!isPage && <PageView id={id} type="post" />}
-      <TimeSpent id={id} type="post" />
+            )}
+            {type === 'post' && (
+              <Suspense fallback={<div>Loading Comments...</div>}>
+                <Comments postId={post.id} />
+              </Suspense>
+            )}
+          </article>
+        </div>
+        <PrismHighlight />
+        {!isPage && <PageView id={id} type="post" />}
+        <TimeSpent id={id} type="post" />
+
+        {!isPage && (
+          <PostFooter
+            author={{
+              name: author.name,
+              avatar: author.avatar!,
+            }}
+            likes={post.likes}
+            postId={post.id}
+            share={
+              <Share
+                title={title}
+                summary={sub_title}
+                url={`${settings.site_url}${post.slug}`}
+              />
+            }
+          />
+        )}
+      </LikeProvider>
     </SectionContainer>
   );
 };

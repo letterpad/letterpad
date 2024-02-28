@@ -1,41 +1,67 @@
 'use client';
-import { GrReddit } from 'react-icons/gr';
-import { ImLinkedin2, ImTwitter } from 'react-icons/im';
-import { RiShareFill } from 'react-icons/ri';
+import { useRef, useState } from 'react';
+import { CiTwitter } from 'react-icons/ci';
+import { FcReddit } from 'react-icons/fc';
+import { PiShareFat } from 'react-icons/pi';
+import { RiLinkedinLine } from 'react-icons/ri';
 import {
   LinkedinShareButton,
   RedditShareButton,
   TwitterShareButton,
 } from 'react-share';
+import { Button } from 'ui';
 
-const iconClass =
-  'p-1.5 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 hover:rounded-full flex justify-center items-center';
+import { useOnClickOutside } from '../../src/hooks/useOnClickOutisde';
 
-export const Share = ({ title, summary, url, className }) => {
+const iconClass = 'p-1.5 gap-2 flex justify-center items-center';
+
+export const Share = ({ title, summary, url }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  const handleClickOutside = () => {
+    setOpen(false);
+  };
+
+  useOnClickOutside(ref, handleClickOutside);
+
   return (
-    <div
-      className={'flex flex-row items-center justify-start gap-2 ' + className}
-    >
-      <span className="text-md">
-        <RiShareFill size={18} />
-      </span>
-      <div className="flex gap-4 text-sm text-gray-600 hover:bg-slate-200 transition dark:text-gray-300  dark:bg-slate-800 bg-slate-100 py-1.5 px-2 rounded-full">
-        <LinkedinShareButton title={title} summary={summary} url={url}>
-          <div className={iconClass}>
-            <ImLinkedin2 className="h-4 w-4" />
-          </div>
-        </LinkedinShareButton>
-        <TwitterShareButton title={summary} url={url}>
-          <div className={iconClass}>
-            <ImTwitter className="h-4 w-4" />
-          </div>
-        </TwitterShareButton>
-        <RedditShareButton title={title} url={url}>
-          <div className={iconClass}>
-            <GrReddit className="h-4 w-4" />
-          </div>
-        </RedditShareButton>
-      </div>
+    <div className="relative" ref={ref}>
+      <Button
+        className="flex items-center gap-1 font-paragraph text-sm"
+        variant="ghost"
+        size="small"
+        onClick={() => setOpen(!open)}
+      >
+        <PiShareFat size={18} />
+        <span>Share</span>
+      </Button>
+      {open && (
+        <div
+          id="dropdownTop"
+          className="absolute origin-bottom rounded-md mt-2 w-fit p-2 bottom-full flex flex-col items-start -translate-x-4 font-medium bg-white shadow-md dark:bg-gray-800 dark:text-white dark:border-gray-700 border border-gray-100 text-sm z-20"
+          onClick={() => setOpen(false)}
+        >
+          <LinkedinShareButton title={title} summary={summary} url={url}>
+            <div className={iconClass}>
+              <RiLinkedinLine className="h-4 w-4" />
+              LinkedIn
+            </div>
+          </LinkedinShareButton>
+          <TwitterShareButton title={summary} url={url}>
+            <div className={iconClass}>
+              <CiTwitter className="h-4 w-4" />
+              Twitter
+            </div>
+          </TwitterShareButton>
+          <RedditShareButton title={title} url={url}>
+            <div className={iconClass}>
+              <FcReddit className="h-4 w-4" />
+              Reddit
+            </div>
+          </RedditShareButton>
+        </div>
+      )}
     </div>
   );
 };
