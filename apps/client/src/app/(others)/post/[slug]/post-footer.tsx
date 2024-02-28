@@ -24,10 +24,8 @@ export const PostFooter: FC<Props> = ({ author, likes = [], share }) => {
   const { liked, onLike } = useLikeContext();
 
   useEffect(() => {
-    if (ref.current) {
-      const node = document.getElementById('like-bar');
-      ref.current = node;
-    }
+    const node = document.getElementById('like-bar');
+    ref.current = node;
   }, []);
 
   useEffect(() => {
