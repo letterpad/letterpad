@@ -8,6 +8,8 @@ import { ProfileDropdown } from "@/components/profile-dd";
 import ThemeSwitcher from "@/components/theme-switcher";
 import { Search } from "@/components/website_v2/search";
 
+import { isMembershipFeatureActive } from "../../shared/utils";
+
 // import { ResourceDropdown } from "./resources-dropdown";
 import Logo from "/public/logo/logo-full.png";
 
@@ -38,7 +40,7 @@ function Header() {
                 {/* <ResourceDropdown /> */}
                 <Link href="/resources">Resources</Link>
               </li>
-              {process.env.NEXT_PUBLIC_PAYMENTS_ACTIVE && (
+              {isMembershipFeatureActive() && (
                 <li className="hidden md:block">
                   <Link href="/pricing">Pricing</Link>
                 </li>
@@ -70,7 +72,7 @@ function Header() {
           <li>
             <Link href="/resources">Resources</Link>
           </li>
-          {process.env.NEXT_PUBLIC_PAYMENTS_ACTIVE && (
+          {isMembershipFeatureActive() && (
             <li>
               <Link href="/pricing">Pricing</Link>
             </li>

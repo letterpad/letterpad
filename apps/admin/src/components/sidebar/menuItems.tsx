@@ -6,6 +6,8 @@ import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 import { VscDebugDisconnect } from "react-icons/vsc";
 
+import { isMembershipFeatureActive } from "../../shared/utils";
+
 export const items = (stats) => [
   {
     label: "Posts",
@@ -55,7 +57,7 @@ export const items = (stats) => [
     label: "Membership",
     icon: <CiBadgeDollar size={18} />,
     key: "/membership",
-    hidden: process.env.NEXT_PUBLIC_PAYMENTS_ACTIVE !== "true",
+    hidden: isMembershipFeatureActive(),
   },
   {
     label: "Settings",
