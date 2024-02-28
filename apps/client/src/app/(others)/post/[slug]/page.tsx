@@ -16,10 +16,7 @@ export default async function Post(props) {
   );
 }
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}): Promise<Metadata> {
+export async function generateMetadata({ params }): Promise<Metadata> {
   const [post, data] = await Promise.all([
     getPostData(params.slug),
     getAuthorAndSettingsData(),

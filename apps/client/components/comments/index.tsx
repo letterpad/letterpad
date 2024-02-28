@@ -3,6 +3,7 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { CommentBox, SingleComment, useIntersectionObserver } from 'ui';
 
+import { totalComments } from './utils';
 import { useSession } from '../../context/SessionProvider';
 import { getComments, postComment } from '../../src/graphql';
 
@@ -15,6 +16,8 @@ export const Comments: FC<Props> = ({ postId }) => {
   const [replyTo, setReplyTo] = useState<string | undefined>(undefined);
   const ref = useRef<HTMLDivElement | null>(null);
   const { isIntersecting } = useIntersectionObserver(ref, {});
+  const [seen, setSeen] = useState(false);
+
   const session = useSession();
   const fetchComments = useCallback(async () => {
     const res = await getComments(postId);
@@ -23,6 +26,7 @@ export const Comments: FC<Props> = ({ postId }) => {
 
   useEffect(() => {
     if (isIntersecting) {
+      setSeen(true);
       fetchComments();
     }
     setReplyTo(undefined);
@@ -37,21 +41,16 @@ export const Comments: FC<Props> = ({ postId }) => {
     postComment(postId, text, child ? replyTo : undefined).then(fetchComments);
   };
 
-  const total =
-    comments.reduce((acc, comment) => {
-      return acc + comment.replies.length;
-    }, 0) + comments.length;
-
   return (
     <div id="comment" ref={ref}>
       <section className="py-4 lg:py-8 antialiased">
         <div className="mx-auto ">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
-              Discussion ({total})
+              Discussion ({totalComments(comments)})
             </h2>
           </div>
-          {isIntersecting && <CommentBox onSubmit={onSubmit} />}
+          {seen && <CommentBox onSubmit={onSubmit} />}
         </div>
         <div className="flex gap-3 flex-col">
           {comments.map((comment) => {

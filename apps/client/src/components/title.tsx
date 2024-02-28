@@ -6,11 +6,10 @@ interface Props {
 }
 
 export function PageTitle({ children, className }: Props) {
-  const textColor = className ?? 'text-gray-900 dark:text-gray-100';
   return (
     <h1
       className={
-        'py-2 pb-4 text-4xl font-extrabold leading-12 tracking-tight md:text-5xl md:leading-12' +
+        'py-2 pb-4 text-3xl font-bold leading-12 tracking-tight md:text-4xl md:leading-12' +
         ' ' +
         className
       }

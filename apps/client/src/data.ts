@@ -2,7 +2,6 @@
 import {
   Letterpad,
   MeFragmentFragment,
-  NavigationType,
   PageFragmentFragment,
   PostsFragmentFragment,
   SettingsFragmentFragment,
