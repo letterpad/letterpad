@@ -22,6 +22,8 @@ export const cache = cacheExchange({
     PostStats: () => null,
     Author: () => null,
     PostsNode: () => null,
+    // Notification: () => null,
+
   },
 });
 
