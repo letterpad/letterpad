@@ -26,11 +26,11 @@ export const SocialIcons = ({ me }: { me: MeFragmentFragment }) => {
       />
       <SocialIcon
         icon={<FaFacebook className="h-5 w-5" />}
-        href={me.social?.twitter}
+        href={me.social?.facebook}
       />
       <SocialIcon
         icon={<FaInstagram className="h-5 w-5" />}
-        href={me.social?.twitter}
+        href={me.social?.instagram}
       />
     </div>
   );
