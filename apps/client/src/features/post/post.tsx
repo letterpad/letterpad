@@ -14,6 +14,7 @@ import { PrismHighlight } from '../../components/prism-highlight';
 import { PublishedAt } from '../../components/published-at';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
+import { SubscribeToMyBlogPopup } from '../../components/subscribePopup';
 import { TimeSpent } from '../../components/time-spent';
 import { PageTitle } from '../../components/title';
 import { Share } from '../../../components/share';
@@ -116,6 +117,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                 </div>
               </div>
             )}
+            {!isPage && <SubscribeToMyBlogPopup />}
             {type === 'post' && (
               <Suspense fallback={<div>Loading Comments...</div>}>
                 <Comments postId={post.id} />

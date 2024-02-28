@@ -2,7 +2,7 @@
 
 import classNames from 'classnames';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
@@ -143,7 +143,6 @@ const Layout = async ({ children }) => {
   }
   const theme = cookies().get(THEME_STORAGE_KEY)?.value;
   const { settings, me } = data;
-
   return (
     <html
       lang="en"

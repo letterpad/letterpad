@@ -19,18 +19,28 @@ interface Props {
 
 export const PostFooter: FC<Props> = ({ author, likes = [], share }) => {
   const ref = useRef<HTMLElement | null>(null);
+  const footerRef = useRef<HTMLElement | null>(null);
   const { isIntersecting } = useIntersectionObserver(ref, {});
+  const { isIntersecting: footerIntersecting } = useIntersectionObserver(
+    footerRef,
+    {}
+  );
   const [hide, setHide] = useState(true);
   const { liked, onLike } = useLikeContext();
 
   useEffect(() => {
     const node = document.getElementById('like-bar');
+    const siteFooter = document.getElementById('site-footer');
     ref.current = node;
+    footerRef.current = siteFooter;
   }, []);
 
   useEffect(() => {
     setHide(isIntersecting);
-  }, [isIntersecting]);
+    if (footerIntersecting) {
+      setHide(true);
+    }
+  }, [footerIntersecting, isIntersecting]);
 
   return (
     <div

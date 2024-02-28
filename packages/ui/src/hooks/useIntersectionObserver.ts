@@ -7,7 +7,6 @@ export const useIntersectionObserver = (ref: React.RefObject<HTMLElement>, optio
     useEffect(() => {
         const node = ref.current;
         const observer = new IntersectionObserver(([entry]) => {
-            setHasLoaded(true);
             setIsIntersecting(entry.isIntersecting);
         }, options);
 
@@ -21,6 +20,12 @@ export const useIntersectionObserver = (ref: React.RefObject<HTMLElement>, optio
             }
         };
     }, [ref, options]);
+
+    useEffect(() => {
+        if (isIntersecting) {
+            setHasLoaded(true);
+        }
+    }, [isIntersecting])
 
     return { isIntersecting, hasLoaded };
 };
