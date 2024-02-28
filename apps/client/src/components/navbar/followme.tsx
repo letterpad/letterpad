@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { IoMdPersonAdd } from 'react-icons/io';
 import { IoPersonRemove } from 'react-icons/io5';
@@ -9,7 +10,7 @@ import { useSession } from '../../../context/SessionProvider';
 
 export const FollowMe = ({ username }) => {
   const session = useSession();
-  const [following, setFollowing] = useState(false);
+  const [following, setFollowing] = useState(true);
 
   useEffect(() => {
     getIsFollowing(username).then((res) => {
@@ -37,7 +38,10 @@ export const FollowMe = ({ username }) => {
     <>
       <button
         type="button"
-        className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm px-5 py-2 text-center flex gap-1 items-center"
+        className={classNames(
+          'text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm text-center flex gap-1 items-center',
+          { 'px-5 py-2': !following, 'p-1.5': following }
+        )}
         onClick={doFollowOrUnfollow}
       >
         {following ? (

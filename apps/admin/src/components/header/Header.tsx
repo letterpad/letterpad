@@ -65,7 +65,7 @@ function Header() {
       >
         <ul className="flex flex-col grow flex-wrap justify-end items-center gap-4 text-md mt-10">
           <li>
-            <Link href="/resources">Earn</Link>
+            <Link href="/resources/monetise">Monetise</Link>
           </li>
           <li>
             <Link href="/resources">Resources</Link>
