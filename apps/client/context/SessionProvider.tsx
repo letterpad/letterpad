@@ -11,6 +11,7 @@ import {
 import { Button, Modal } from 'ui';
 
 import { getApiRootUrl } from '../lib/utils/url';
+import { Subscribe } from '../src/components/subscribe';
 interface Session {
   user?: {
     avatar: string;
@@ -18,12 +19,17 @@ interface Session {
     username: string;
   };
   showLogin: Dispatch<SetStateAction<boolean>>;
+  showSubscribe: Dispatch<SetStateAction<boolean>>;
 }
 const Context = createContext<Session>({} as Session);
 
 export function SessionProvider({ children }: any) {
   const [show, showLogin] = useState(false);
-  const [session, setSession] = useState<Session>({ showLogin });
+  const [showSubscribe, setShowSubscribe] = useState(false);
+  const [session, setSession] = useState<Session>({
+    showLogin,
+    showSubscribe: setShowSubscribe,
+  });
 
   useEffect(() => {
     fetch(`/redirect-api/client/session`, {
@@ -33,7 +39,7 @@ export function SessionProvider({ children }: any) {
     })
       .then((res) => res.json())
       .then((data) => {
-        setSession({ ...data, showLogin });
+        setSession({ ...data, showLogin, showSubscribe: setShowSubscribe });
       });
   }, []);
 
@@ -64,6 +70,15 @@ export function SessionProvider({ children }: any) {
         <div className="text-sm">
           You need to be logged into Letterpad for this action.
         </div>
+      </Modal>
+      <Modal
+        toggle={() => setShowSubscribe(false)}
+        show={showSubscribe}
+        header={`Subscribe`}
+        className="bg-white dark:bg-gray-700"
+        footer={[]}
+      >
+        <Subscribe />
       </Modal>
     </Context.Provider>
   );

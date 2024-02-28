@@ -1,9 +1,9 @@
 module.exports.defaultSettings = {
   site_title: "Letterpad",
   site_tagline: "",
-  site_email: "admin@letterpad.app",
+  site_email: "",
   site_url: "",
-  site_footer: "Powered by Letterpad",
+  site_footer: "Powered by <a href='https://letterpad.app' class='underline'>Letterpad</a>",
   site_description: "",
   display_author_info: true,
   site_logo: JSON.stringify({
