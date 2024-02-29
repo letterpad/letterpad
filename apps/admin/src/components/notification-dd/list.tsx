@@ -84,7 +84,7 @@ export const NotificationDropdown = () => {
                   link={
                     new URL(
                       `post/${notification.meta.post_slug!}`,
-                      `https://${notification.meta.author_name}.letterpad.app`
+                      `https://${session?.user?.username}.letterpad.app`
                     ).href
                   }
                   avatar={notification.meta.author_avatar}
