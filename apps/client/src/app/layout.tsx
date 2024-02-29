@@ -171,7 +171,7 @@ const Layout = async ({ children }) => {
         `,
           }}
         />
-        {process.env.NODE_ENV === 'production' && (
+        {/* {process.env.NODE_ENV === 'production' && (
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
           />
@@ -184,7 +184,7 @@ const Layout = async ({ children }) => {
           
           gtag('config', "${trackingId}",{transport_url: '${new URL('/analytics', settings.site_url).toString()}'});
           `}
-        </Script>
+        </Script> */}
         <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
           <SessionProvider>
             <main className="mb-auto">{children}</main>
