@@ -2,7 +2,8 @@
 
 import classNames from 'classnames';
 import { Metadata } from 'next';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
+import Script from 'next/script';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
@@ -18,12 +19,14 @@ import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
 import { SessionProvider } from '../../context/SessionProvider';
 import ThemeProvider from '../../context/ThemeProvider';
+import { getApiRootUrl } from '../../lib/utils/url';
 
 const THEME_STORAGE_KEY = 'theme-preference';
 
 export const viewport = {
   themeColor: 'black',
 };
+const trackingId = 'G-7WT72D7TKW';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -168,6 +171,20 @@ const Layout = async ({ children }) => {
         `,
           }}
         />
+        {process.env.NODE_ENV === 'production' && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
+          />
+        )}
+        <Script id="google-analytics" async={true}>
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          
+          gtag('config', "${trackingId}",{transport_url: '${new URL('/analytics', settings.site_url).toString()}'});
+          `}
+        </Script>
         <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
           <SessionProvider>
             <main className="mb-auto">{children}</main>
