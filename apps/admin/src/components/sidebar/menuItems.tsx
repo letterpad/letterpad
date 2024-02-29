@@ -57,7 +57,7 @@ export const items = (stats) => [
     label: "Membership",
     icon: <CiBadgeDollar size={18} />,
     key: "/membership",
-    hidden: isMembershipFeatureActive(),
+    hidden: !isMembershipFeatureActive(),
   },
   {
     label: "Settings",
