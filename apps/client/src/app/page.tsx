@@ -70,7 +70,7 @@ export default async function Home() {
 
 const AboutMe = ({ me }) => {
   return (
-    <div className="rounded text-center text-gray-500 p-8 md:px-0 dark:bg-slate-800 bg-slate-100 shadow-inner">
+    <div className="rounded text-center text-gray-500 dark:text-gray-200 p-8 md:px-0 dark:bg-slate-800 bg-slate-100 shadow-inner">
       <img
         className="w-20 h-20 rounded-full mx-auto border-[1px] object-cover"
         src={me.avatar}
@@ -86,7 +86,7 @@ const AboutMe = ({ me }) => {
         <p>{me.occupation}</p>
       </div>
 
-      <p className="mt-2 text-sm text-gray-900">{me.signature}</p>
+      <p className="mt-2 text-sm">{me.signature}</p>
     </div>
   );
 };
