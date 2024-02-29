@@ -171,7 +171,7 @@ const Layout = async ({ children }) => {
         `,
           }}
         />
-        {process.env.NODE_ENV !== 'production' && (
+        {process.env.NODE_ENV === 'production' && (
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
           />
