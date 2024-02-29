@@ -58,7 +58,7 @@ const API_URL = process.env.API_URL?.replace('/api/graphql', '');
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
 module.exports = withAxiom({
-  async rewrites() {
+  async redirects() {
     return [
       {
         source: '/analytics/:path*',
