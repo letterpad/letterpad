@@ -171,7 +171,7 @@ const Layout = async ({ children }) => {
         `,
           }}
         />
-        {process.env.NODE_ENV === 'production' && (
+        {process.env.NODE_ENV !== 'production' && (
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
           />
@@ -182,7 +182,7 @@ const Layout = async ({ children }) => {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           
-          gtag('config', "${trackingId}",{transport_url: '${new URL('/analytics', settings.site_url).toString()}'});
+          gtag('config', "${trackingId}",{transport_url: window.location.origin + '/analytics'});
           `}
         </Script>
         <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>

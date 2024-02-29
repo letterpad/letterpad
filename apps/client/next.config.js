@@ -61,16 +61,12 @@ module.exports = withAxiom({
   async rewrites() {
     return [
       {
-        source: '/analytics/:path*',
-        destination: `https://region1.analytics.google.com/:path*`,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
         source: '/redirect-api/:path*',
         destination: `${API_URL}/api/:path*`,
+      },
+      {
+        source: '/analytics/:path*',
+        destination: `https://region1.analytics.google.com/:path*`,
       },
     ];
   },
