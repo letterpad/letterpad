@@ -12,7 +12,7 @@ const applyPreference = (theme) => {
   root.style.colorScheme = theme;
 };
 
-export const getPreference = (storageKey) => {
+export const getPreference = (storageKey = 'theme-preference') => {
   if (typeof window === 'undefined') return THEME_DARK;
   const cookie = getCookie(storageKey);
 

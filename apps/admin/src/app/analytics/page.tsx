@@ -47,10 +47,15 @@ const Payments: FC<P & Props> = () => {
 
   const doFetch = () => {
     setFetching(true);
+    const day = 1;
     fetch(
       "/api/analytics?" + new URLSearchParams(dateRange as any).toString(),
       {
         cache: "force-cache",
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
+        },
       }
     )
       .then((res) => res.json())
@@ -308,15 +313,17 @@ const Payments: FC<P & Props> = () => {
         </span>
       </PageHeader>
       <Content>
-        <div className="flex justify-end py-4">
-          <DateRangeSelector onChange={setDateRange} />
+        <div className="relative">
+          <div className="flex justify-end py-4 sticky">
+            <DateRangeSelector onChange={setDateRange} />
+          </div>
         </div>
         <div className="pb-20">
           <div className="min-w-0 gap-2 flex flex-col">
             <div className="min-w-0 gap-2 flex flex-col">
               <TotalStats data={data.total} loading={fetching} />
               <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-              <div className="justify-center py-10 grid grid-cols-2">
+              <div className="justify-center py-10 grid md:grid-cols-2 grid-cols-1 gap-10 md:gap-2">
                 <UsersPerDayChart ref={chartContainer} loading={fetching} />
                 <DeviceChart ref={deviceContainer} loading={fetching} />
               </div>

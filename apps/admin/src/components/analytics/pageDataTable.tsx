@@ -6,6 +6,7 @@ export interface PageDataItem {
   pagePath: string;
   pageViews: number;
   duration: number;
+  pageTitle: string;
 }
 
 export function PageDataTable({

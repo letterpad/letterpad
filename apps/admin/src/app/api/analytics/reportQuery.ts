@@ -48,6 +48,7 @@ export const reportViewPerPage: any = (siteUrl: string) => ({
         },
         { name: 'userEngagementDuration' },
     ],
+    limit: 100
 })
 
 export const reportViewPerPage1: any = (siteUrl: string) => ({
@@ -93,6 +94,7 @@ export const reportReferral = (siteUrl: string) => ({
             }
         }
     },
+    limit: 30
 })
 
 export const reportCountry = (siteUrl: string) => ({

@@ -2,9 +2,7 @@
 
 import classNames from 'classnames';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import Script from 'next/script';
-import { getTheme, ThemeProvider } from 'ui';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
@@ -14,11 +12,13 @@ import { getData } from '@/data';
 import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
+import { ClientThemeProvider } from './ClientThemeProvider';
 import Custom404 from './not-found';
 import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
 import { SessionProvider } from '../../context/SessionProvider';
+import { getPreference } from '../../lib/utils/theme.helper';
 
 export const viewport = {
   themeColor: 'black',
@@ -142,7 +142,7 @@ const Layout = async ({ children }) => {
   if (!data) {
     return <Custom404 />;
   }
-  const theme = getTheme();
+  const theme = getPreference();
   const { settings, me } = data;
   return (
     <html
@@ -183,8 +183,9 @@ const Layout = async ({ children }) => {
           gtag('config', "${trackingId}",{ 'user_id': ${me.id}, transport_url: window.location.origin + '/analytics'});
           `}
         </Script>
-        <ThemeProvider theme={theme}>
-          <SessionProvider>
+
+        <SessionProvider>
+          <ClientThemeProvider>
             <main className="mb-auto">{children}</main>
             <div className="border-b-[1px] dark:border-gray-700">
               <Footer author={me} settings={settings} />
@@ -193,8 +194,8 @@ const Layout = async ({ children }) => {
             <PrismHighlight />
             <div id="modal-root" />
             <div id="message" />
-          </SessionProvider>
-        </ThemeProvider>
+          </ClientThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
