@@ -1,9 +1,18 @@
+import { ListPlaceholder } from "ui";
+
 export interface ReferralItem {
   referrer: string;
   views: number;
 }
 
-export function ReferrerTable({ data }: { data: ReferralItem[] }) {
+export function ReferrerTable({
+  data,
+  loading,
+}: {
+  data: ReferralItem[];
+  loading: boolean;
+}) {
+  if (loading) return <ListPlaceholder />;
   return (
     <div className="flex justify-center">
       <div className="flex-none min-w-full px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-80">

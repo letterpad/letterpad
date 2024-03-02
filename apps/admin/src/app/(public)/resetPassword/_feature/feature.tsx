@@ -1,10 +1,8 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Message } from "ui";
-
-import ThemeSwitcher from "@/components/theme-switcher";
 
 import { Logo } from "@/app/(public)/login/_feature";
 import { EventAction, track } from "@/track";
@@ -17,14 +15,6 @@ export const Feature = () => {
   const [newPassword, setNewPassword] = useState("");
   const { resetPassword } = useResetPassword();
   const token = params.get("token");
-
-  useEffect(() => {
-    if (typeof localStorage !== "undefined") {
-      if (localStorage.theme === "dark") {
-        ThemeSwitcher.switch("dark");
-      }
-    }
-  }, []);
 
   const onResetPassword = async () => {
     if (newPassword.length === 0) {

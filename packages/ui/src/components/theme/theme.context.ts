@@ -10,10 +10,10 @@ interface Props {
 export const ThemeContext = createContext({
   theme: undefined,
   color: undefined,
-  setTheme: () => {},
-  toggleTheme: () => {},
+  setTheme: () => { },
+  toggleTheme: () => { },
 } as Props);
 
-export default function useTheme() {
+export function useTheme() {
   return useContext(ThemeContext);
 }

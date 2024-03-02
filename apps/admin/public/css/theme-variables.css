@@ -1,6 +1,6 @@
 /* Few variables are not taken care by antd. Lets take care of them here. */
 
-html .light {
+html {
   --sidebar-bg: 20, 20, 24;
   --content-bg: 255, 255, 255;
   --section-bg: 250, 250, 250;
@@ -9,7 +9,7 @@ html .light {
   --color-border: 217, 217, 217;
 }
 
-html .dark {
+html.dark {
   --sidebar-bg: 20, 20, 24;
   --content-bg: 21, 22, 26;
   --section-bg: 27, 27, 34;

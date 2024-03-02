@@ -1,6 +1,5 @@
 "use client";
 import Chart, { ChartConfiguration } from "chart.js/auto";
-import classNames from "classnames";
 import { InferGetServerSidePropsType } from "next";
 import { FC, useEffect, useRef, useState } from "react";
 import { Content, PageHeader, useTheme } from "ui";
@@ -8,10 +7,13 @@ import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
 import { SessionData } from "@/graphql/types";
 
+import { AllDateRanges, DateRangeSelector } from "../api/analytics/dateRange";
 import { CountryChart } from "../../components/analytics/countryChart";
+import { DeviceChart } from "../../components/analytics/deviceChart";
 import { PageDataTable } from "../../components/analytics/pageDataTable";
 import { ReferrerTable } from "../../components/analytics/referrerTable";
 import { TotalStats } from "../../components/analytics/totalStats";
+import { UsersPerDayChart } from "../../components/analytics/usersPerDayChart";
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
@@ -26,6 +28,7 @@ const Payments: FC<P & Props> = () => {
     referals: [],
     countries: [],
     total: {},
+    nextData: [],
   });
   const [fetching, setFetching] = useState(true);
   const chartContainer = useRef<HTMLCanvasElement>(null);
@@ -35,13 +38,28 @@ const Payments: FC<P & Props> = () => {
   const deviceInstance = useRef<Chart>();
   const countryInstance = useRef<Chart>();
 
-  useEffect(() => {
-    fetch("/api/analytics")
+  const [dateRange, setDateRange] = useState<AllDateRanges>({
+    startDate: "7daysAgo",
+    endDate: "today",
+    prevStartDate: "15daysAgo",
+    prevEndDate: "8daysAgo",
+  });
+
+  const doFetch = () => {
+    setFetching(true);
+    fetch(
+      "/api/analytics?" + new URLSearchParams(dateRange as any).toString(),
+      {
+        cache: "force-cache",
+      }
+    )
       .then((res) => res.json())
       .then(setData)
       .then(() => setFetching(false))
       .catch(() => setFetching(false));
-  }, []);
+  };
+
+  useEffect(doFetch, [dateRange]);
 
   useEffect(() => {
     if (chartContainer.current) {
@@ -51,8 +69,8 @@ const Payments: FC<P & Props> = () => {
       }
 
       // Extract dates and page views from data
-      const dates = data.data.map((entry) => entry.date);
-      const pageViews = data.data.map((entry) => entry.pageViews);
+      const dates = data?.nextData?.map((entry) => entry.date);
+      const pageViews = data?.nextData?.map((entry) => entry.pageViews);
 
       const ctx = chartContainer.current.getContext("2d");
       if (ctx) {
@@ -74,6 +92,14 @@ const Payments: FC<P & Props> = () => {
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  color: theme === "dark" ? "#eee" : "#333",
+                },
+              },
+            },
             scales: {
               x: {
                 ticks: {
@@ -122,7 +148,7 @@ const Payments: FC<P & Props> = () => {
         chartInstance.current.destroy();
       }
     };
-  }, [data.data, theme]);
+  }, [data.nextData, theme]);
 
   useEffect(() => {
     if (deviceContainer.current) {
@@ -282,21 +308,26 @@ const Payments: FC<P & Props> = () => {
         </span>
       </PageHeader>
       <Content>
+        <div className="flex justify-end py-4">
+          <DateRangeSelector onChange={setDateRange} />
+        </div>
         <div className="pb-20">
           <div className="min-w-0 gap-2 flex flex-col">
             <div className="min-w-0 gap-2 flex flex-col">
-              <TotalStats data={data.total} />
+              <TotalStats data={data.total} loading={fetching} />
               <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <ReferrerTable data={data.referals} />
-                <CountryChart ref={countryContainer} />
+              <div className="justify-center py-10 grid grid-cols-2">
+                <UsersPerDayChart ref={chartContainer} loading={fetching} />
+                <DeviceChart ref={deviceContainer} loading={fetching} />
               </div>
               <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-              <PageDataTable data={data.data} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <ReferrerTable data={data.referals} loading={fetching} />
+                <CountryChart ref={countryContainer} loading={fetching} />
+              </div>
+              <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+              <PageDataTable data={data.data} loading={fetching} />
             </div>
-            {/* <div className="flex justify-center">
-              <canvas ref={chartContainer}></canvas>
-            </div> */}
           </div>
         </div>
       </Content>

@@ -24,9 +24,6 @@ import ThemeSwitcher from "@/components/theme-switcher";
 import { EventAction, track } from "@/track";
 
 const TryCreatives = () => {
-  useEffect(() => {
-    ThemeSwitcher.switch("dark");
-  }, []);
   return (
     <BuilderContext
       data={introData}

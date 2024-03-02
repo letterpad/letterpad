@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
+import { getTheme, ThemeProvider } from 'ui';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
@@ -18,10 +19,6 @@ import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
 import { SessionProvider } from '../../context/SessionProvider';
-import ThemeProvider from '../../context/ThemeProvider';
-import { getApiRootUrl } from '../../lib/utils/url';
-
-const THEME_STORAGE_KEY = 'theme-preference';
 
 export const viewport = {
   themeColor: 'black',
@@ -38,7 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       metadataBase: new URL(settings.site_url),
       title: {
-        default: settings.site_title,
+        default:
+          settings.site_title === 'Letterpad' ? me.name : settings.site_title,
         template: `%s | by ${me.name}`,
       },
       description,
@@ -144,7 +142,7 @@ const Layout = async ({ children }) => {
   if (!data) {
     return <Custom404 />;
   }
-  const theme = cookies().get(THEME_STORAGE_KEY)?.value;
+  const theme = getTheme();
   const { settings, me } = data;
   return (
     <html
@@ -182,10 +180,10 @@ const Layout = async ({ children }) => {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           
-          gtag('config', "${trackingId}",{transport_url: window.location.origin + '/analytics'});
+          gtag('config', "${trackingId}",{ 'user_id': ${me.id}, transport_url: window.location.origin + '/analytics'});
           `}
         </Script>
-        <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
+        <ThemeProvider theme={theme}>
           <SessionProvider>
             <main className="mb-auto">{children}</main>
             <div className="border-b-[1px] dark:border-gray-700">

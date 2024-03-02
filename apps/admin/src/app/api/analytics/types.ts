@@ -10,6 +10,11 @@ export interface ProcessedReportData {
     duration: number;
 }
 
+export interface ProcessedReportData1 {
+    date: string;
+    pageViews: number;
+}
+
 export interface ProcessedReferralData {
     referrer: string;
     views: number;
@@ -17,6 +22,10 @@ export interface ProcessedReferralData {
 
 export interface ProcessedCountryData {
     country: string;
+    views: number;
+}
+export interface ProcessedDeviceData {
+    device: string;
     views: number;
 }
 

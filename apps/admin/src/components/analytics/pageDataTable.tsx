@@ -1,3 +1,5 @@
+import { ListPlaceholder } from "ui";
+
 import { secondsToMinutes } from "../../app/api/analytics/helper";
 
 export interface PageDataItem {
@@ -6,7 +8,14 @@ export interface PageDataItem {
   duration: number;
 }
 
-export function PageDataTable({ data }: { data: PageDataItem[] }) {
+export function PageDataTable({
+  data,
+  loading,
+}: {
+  data: PageDataItem[];
+  loading: boolean;
+}) {
+  if (loading) return <ListPlaceholder className="w-full" />;
   return (
     <div className="flex-none min-w-full px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-96">
       <table className="w-full table-responsive text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">

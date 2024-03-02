@@ -22,6 +22,7 @@ export * from "./src/components/switch";
 export * from "./src/components/table";
 export * from "./src/components/tabs";
 export * from "./src/components/textarea";
+export * from "./src/components/theme";
 export * from "./src/components/tooltip";
 export { useIdle } from "./src/hooks/useIdle";
 export { useIntersectionObserver } from "./src/hooks/useIntersectionObserver";

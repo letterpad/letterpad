@@ -26,7 +26,6 @@ export const totalAll = (siteUrl: string) => ({
 });
 export const reportViewPerPage: any = (siteUrl: string) => ({
     dimensions: [
-
         {
             name: 'pagePath',
         },
@@ -49,6 +48,29 @@ export const reportViewPerPage: any = (siteUrl: string) => ({
         },
         { name: 'userEngagementDuration' },
     ],
+})
+
+export const reportViewPerPage1: any = (siteUrl: string) => ({
+    dimensions: [
+        {
+            name: 'date',
+        },
+    ],
+    dimensionFilter: {
+        filter: {
+            fieldName: "pageLocation",
+            stringFilter: {
+                matchType: "BEGINS_WITH",
+                value: new URL("/", siteUrl)
+            }
+        }
+    },
+    metrics: [
+        {
+            name: 'activeUsers',
+        },
+    ],
+    limit: 30
 })
 
 export const reportReferral = (siteUrl: string) => ({

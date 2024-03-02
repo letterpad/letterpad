@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { IoEyeOutline, IoSettingsOutline } from "react-icons/io5";
+import { useTheme } from "ui";
 
 import { Dropdown } from "@/components/dropdown/dropdown";
-import ThemeSwitcher from "@/components/theme-switcher";
 
 import { EventAction, track } from "@/track";
 
@@ -19,6 +19,7 @@ export const QuickMenu: FC<Props> = ({
   showDrawer,
   showPreview,
 }) => {
+  const { theme, setTheme } = useTheme();
   const openPreview = () => {
     track({
       eventAction: EventAction.Change,
@@ -47,7 +48,7 @@ export const QuickMenu: FC<Props> = ({
           },
           {
             name: "Switch Theme",
-            onClick: ThemeSwitcher.toggle,
+            onClick: () => setTheme(theme === "dark" ? "light" : "dark"),
             icon: IoEyeOutline,
           },
         ]}

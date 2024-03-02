@@ -45,9 +45,12 @@
   },
   "packageManager": "bun@1.0.21",
   "dependencies": {
+    "@google-analytics/data": "^4.4.0",
     "@react-spring/web": "^9.7.3",
     "@upstash/redis": "^1.28.2",
     "axios": "^1.2.0",
+    "chart.js": "^4.4.2",
+    "chartjs-adapter-dayjs-4": "^1.0.4",
     "class-variance-authority": "^0.7.0",
     "dayjs": "^1.11.10",
     "hashids": "^2.3.0",
