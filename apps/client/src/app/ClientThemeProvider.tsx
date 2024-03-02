@@ -1,3 +1,4 @@
+'use client';
 import { getTheme, ThemeProvider } from 'ui';
 
 export const ClientThemeProvider = ({ children }) => {
