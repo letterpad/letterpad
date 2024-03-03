@@ -2,7 +2,6 @@
 
 import classNames from 'classnames';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import Script from 'next/script';
 
 import 'ui/css/tailwind.css';
@@ -13,15 +12,13 @@ import { getData } from '@/data';
 import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
+import { ClientThemeProvider } from './ClientThemeProvider';
 import Custom404 from './not-found';
 import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { PrismHighlight } from '../components/prism-highlight';
 import { SessionProvider } from '../../context/SessionProvider';
-import ThemeProvider from '../../context/ThemeProvider';
-import { getApiRootUrl } from '../../lib/utils/url';
-
-const THEME_STORAGE_KEY = 'theme-preference';
+import { getPreference } from '../../lib/utils/theme.helper';
 
 export const viewport = {
   themeColor: 'black',
@@ -38,7 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       metadataBase: new URL(settings.site_url),
       title: {
-        default: settings.site_title,
+        default:
+          settings.site_title === 'Letterpad' ? me.name : settings.site_title,
         template: `%s | by ${me.name}`,
       },
       description,
@@ -144,48 +142,48 @@ const Layout = async ({ children }) => {
   if (!data) {
     return <Custom404 />;
   }
-  const theme = cookies().get(THEME_STORAGE_KEY)?.value;
+  const theme = getPreference();
   const { settings, me } = data;
   return (
-    <html
-      lang="en"
-      style={{ colorScheme: theme }}
-      className={classNames(
-        `scroll-smooth ${theme}`,
-        theme + '-theme',
-        fonts.heading.variable,
-        fonts.code.variable,
-        fonts.paragraph.variable,
-        fonts.sans.variable
-      )}
-    >
-      <Css css={settings.css} />
-      <HeadMeta settings={settings} />
-      <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
+    <ClientThemeProvider>
+      <html
+        lang="en"
+        style={{ colorScheme: theme }}
+        className={classNames(
+          `scroll-smooth ${theme}`,
+          fonts.heading.variable,
+          fonts.code.variable,
+          fonts.paragraph.variable,
+          fonts.sans.variable
+        )}
+      >
+        <Css css={settings.css} />
+        <HeadMeta settings={settings} />
+        <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
           html {
             --accent: ${settings?.design?.brand_color ?? '#d93097'};
           }
         `,
-          }}
-        />
-        {process.env.NODE_ENV === 'production' && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
+            }}
           />
-        )}
-        <Script id="google-analytics" async={true}>
-          {`
+          {process.env.NODE_ENV === 'production' && (
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
+            />
+          )}
+          <Script id="google-analytics" async={true}>
+            {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           
-          gtag('config', "${trackingId}",{transport_url: window.location.origin + '/analytics'});
+          gtag('config', "${trackingId}",{ 'user_id': ${me.id}, transport_url: window.location.origin + '/analytics'});
           `}
-        </Script>
-        <ThemeProvider storageKey={THEME_STORAGE_KEY} theme={theme}>
+          </Script>
+
           <SessionProvider>
             <main className="mb-auto">{children}</main>
             <div className="border-b-[1px] dark:border-gray-700">
@@ -196,9 +194,9 @@ const Layout = async ({ children }) => {
             <div id="modal-root" />
             <div id="message" />
           </SessionProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClientThemeProvider>
   );
 };
 

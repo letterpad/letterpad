@@ -1,9 +1,12 @@
-import { eraseCookie, getCookie, setCookie } from '@/lib/utils/cookie';
+import Cookie from "js-cookie";
+
+import { THEME_STORAGE_KEY } from "./constants";
+
 
 const THEME_DARK = 'dark';
 const THEME_LIGHT = 'light';
 
-const applyPreference = (theme) => {
+const applyClass = (theme: string) => {
   if (typeof document === 'undefined') return;
   const root = document.documentElement;
   if (!root) return;
@@ -12,9 +15,10 @@ const applyPreference = (theme) => {
   root.style.colorScheme = theme;
 };
 
-export const getPreference = (storageKey = 'theme-preference') => {
+export const getTheme = (storageKey: string = THEME_STORAGE_KEY) => {
   if (typeof window === 'undefined') return THEME_DARK;
-  const cookie = getCookie(storageKey);
+  const cookie = Cookie.get(storageKey)
+
 
   if (cookie) {
     return cookie;
@@ -25,10 +29,10 @@ export const getPreference = (storageKey = 'theme-preference') => {
     : THEME_LIGHT;
 };
 
-export const setPreference = (storageKey, theme) => {
-  eraseCookie(storageKey);
-  setCookie(storageKey, theme, 365);
-  applyPreference(theme);
+export const setTheme = (storageKey: string = THEME_STORAGE_KEY, theme: string) => {
+  applyClass(theme);
+  Cookie.remove(storageKey);
+  Cookie.set(storageKey, theme, { expires: 365 });
 };
 
 export const getColors = () => ({ dark: THEME_DARK, light: THEME_LIGHT });

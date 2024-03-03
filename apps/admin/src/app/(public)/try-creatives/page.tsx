@@ -7,6 +7,7 @@ import {
   Button,
   EditSwitch,
   Layout,
+  ThemeSwitcher,
   useBuilderContext,
 } from "ui";
 
@@ -19,14 +20,10 @@ import {
   weddingData,
 } from "@/components/creatives-data";
 import { FileExplorer } from "@/components/file-explorer";
-import ThemeSwitcher from "@/components/theme-switcher";
 
 import { EventAction, track } from "@/track";
 
 const TryCreatives = () => {
-  useEffect(() => {
-    ThemeSwitcher.switch("dark");
-  }, []);
   return (
     <BuilderContext
       data={introData}

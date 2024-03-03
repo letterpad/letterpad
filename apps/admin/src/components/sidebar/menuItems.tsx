@@ -4,7 +4,7 @@ import { CiBadgeDollar, CiSettings } from "react-icons/ci";
 import { HiOutlineUsers, HiTemplate } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
-import { VscDebugDisconnect } from "react-icons/vsc";
+import { VscDebugDisconnect, VscGraphLine } from "react-icons/vsc";
 
 import { isMembershipFeatureActive } from "../../shared/utils";
 
@@ -63,6 +63,11 @@ export const items = (stats) => [
     label: "Settings",
     icon: <CiSettings size={18} />,
     key: "/settings",
+  },
+  {
+    label: "Analytics",
+    icon: <VscGraphLine size={18} />,
+    key: "/analytics",
   },
   {
     label: "Subscribers",

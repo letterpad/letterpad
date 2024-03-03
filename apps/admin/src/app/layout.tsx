@@ -77,14 +77,14 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({ children }) => {
-  const theme = cookies().get("theme")?.value ?? "light";
+  const theme = cookies().get("theme-preference")?.value ?? "light";
   const userId = await getUserFromCookie(cookies());
   return (
     <html
       lang="en"
       data-color-scheme={theme}
       className={classNames(
-        theme + "-theme",
+        theme,
         fonts.paragraph.variable,
         fonts.code.variable,
         fonts.heading.variable,
@@ -102,7 +102,7 @@ const RootLayout = async ({ children }) => {
         />
       </head>
       <body
-        className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 ${theme}`}
+        className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100`}
       >
         {process.env.NODE_ENV === "production" && (
           <Script
@@ -118,7 +118,7 @@ const RootLayout = async ({ children }) => {
           gtag('config', '${gaTrackingId}',{'user_id': '${userId}'});
           `}
         </Script>
-        <Providers>{children}</Providers>
+        <Providers theme={theme}>{children}</Providers>
       </body>
     </html>
   );

@@ -1,11 +1,10 @@
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
-import { Button, useResponsiveLayout } from "ui";
+import { Button, ThemeSwitcher, useResponsiveLayout } from "ui";
 
 import FeedbackForm from "./feedback-form";
 import { NotificationDropdown } from "../notification-dd/list";
 import { ProfileDropdown } from "../profile-dd";
-import ThemeSwitcher from "../theme-switcher";
 
 export const TopBar = () => {
   const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
