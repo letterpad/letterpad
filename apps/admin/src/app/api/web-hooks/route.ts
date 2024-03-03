@@ -81,7 +81,7 @@ export async function POST(req: Request) {
                         },
                         data: {
                             stripe_subscription_id: null,
-                            status: 'canceled',
+                            status: subscription.status,
                         },
                     })
                 }
@@ -102,6 +102,7 @@ export async function POST(req: Request) {
                                     data: {
                                         stripe_customer_id: customer.id,
                                         stripe_subscription_id: subscription.id,
+                                        status: subscription.status,
                                     },
                                     where: {
                                         author_id: author.id
@@ -114,6 +115,7 @@ export async function POST(req: Request) {
                                     create: {
                                         stripe_customer_id: customer.id,
                                         stripe_subscription_id: subscription.id,
+                                        status: subscription.status,
                                     }
                                 }
                             }
