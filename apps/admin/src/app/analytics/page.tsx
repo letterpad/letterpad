@@ -54,10 +54,10 @@ const Analytics: FC<P & Props> = () => {
     fetch(
       "/api/analytics?" + new URLSearchParams(dateRange as any).toString(),
       {
-        cache: "force-cache",
+        // cache: "force-cache",
         headers: {
           "Content-Type": "application/json",
-          "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
+          // "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
         },
       }
     )

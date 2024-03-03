@@ -5,13 +5,17 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"
 
 import { getServerSession } from "@/graphql/context";
+import { getRootUrl } from '@/shared/getRootUrl';
 
 import { reportCountry, reportDevice, reportReferral, reportViewPerPage, reportViewPerPage1, totalAll } from './reportQuery';
 import { processCountryData, processDeviceData, processReferralData, processReportData, processReportData1, processTotalData } from './utils';
-import { getRootUrl } from '../../../shared/getRootUrl';
 
-const analyticsDataClient = new BetaAnalyticsDataClient();
-
+const analyticsDataClient = new BetaAnalyticsDataClient({
+    credentials: {
+        client_email: process.env.GA_CLIENT_EMAIL!,
+        private_key: process.env.GA_PRIVATE_KEY!,
+    },
+});
 
 function getDateRanges() {
     return [{
@@ -29,6 +33,26 @@ function getPrevDateRanges() {
 
 
 export async function GET(req: Request) {
+    const session = await getServerSession({ req });
+    if (!session?.user.email) {
+        return NextResponse.redirect(new URL("login", getRootUrl()).toString());
+    }
+
+    const setting = await prisma.setting.findFirst({
+        where: {
+            author: {
+                id: session.user.id
+            }
+        },
+        select: {
+            site_url: true
+        }
+    });
+    let site_url = setting?.site_url!;
+    if (!setting?.site_url) {
+        site_url = `https://${session.user.username}.letterpad.app`;
+    }
+    site_url = "https://letterpad.app"
     const params = new URL(req.url).searchParams;
     const startDate = params.get("startDate");
     const endDate = params.get("endDate");
@@ -47,9 +71,7 @@ export async function GET(req: Request) {
             endDate: prevEndDate,
         }];
     }
-
-    const res = await runReportSingle(dateRanges);
-    const [response, nextRes] = await Promise.all([runReport(dateRanges, prevDateRanges), runReportSingle(dateRanges)]);
+    const [response, nextRes] = await Promise.all([runReport(dateRanges, prevDateRanges, site_url), runReportSingle(dateRanges, site_url)]);
     const { data, referals, countries, total } = processReports(response);
     const { device, nextData } = processReports1(nextRes);
 
@@ -58,32 +80,28 @@ export async function GET(req: Request) {
 
 
 
-async function runReport(dateRanges: any, prevDateRanges: any) {
-    console.time("Running Report");
+async function runReport(dateRanges: any, prevDateRanges: any, site_url: string) {
     const response = await analyticsDataClient.batchRunReports({
         property: `properties/316753652`,
         requests: [
-            { ...reportViewPerPage("https://letterpad.app"), dateRanges },
-            { ...reportReferral("https://letterpad.app"), dateRanges },
-            { ...reportCountry("https://letterpad.app"), dateRanges },
-            { ...totalAll("https://letterpad.app"), dateRanges },
-            { ...totalAll("https://letterpad.app"), dateRanges: prevDateRanges },
+            { ...reportViewPerPage(site_url), dateRanges },
+            { ...reportReferral(site_url), dateRanges },
+            { ...reportCountry(site_url), dateRanges },
+            { ...totalAll(site_url), dateRanges },
+            { ...totalAll(site_url), dateRanges: prevDateRanges },
         ],
     }).catch(console.log);
-    console.timeEnd("Running Report");
     return response;
 }
 
-async function runReportSingle(dateRanges: any) {
-    console.time("Running Report");
+async function runReportSingle(dateRanges: any, site_url: string) {
     const response = await analyticsDataClient.batchRunReports({
         property: `properties/316753652`,
         requests: [
-            { ...reportViewPerPage1("https://letterpad.app"), dateRanges },
-            { ...reportDevice("https://letterpad.app"), dateRanges },
+            { ...reportViewPerPage1(site_url), dateRanges },
+            { ...reportDevice(site_url), dateRanges },
         ],
     }).catch(console.log);
-    console.timeEnd("Running Report");
     return response;
 }
 

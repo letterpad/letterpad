@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";
+import { Drawer } from "ui";
 
 import {
   CommentNewMeta,
@@ -15,7 +16,6 @@ import {
 import { useNotificationQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { NotificationItem } from "./notification";
-import { Drawer } from "../client-wrapper";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
 import { useMarkNotificationsReadMutation } from "../../../__generated__/src/graphql/queries/mutations.graphql";
 

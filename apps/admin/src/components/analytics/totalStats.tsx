@@ -22,9 +22,9 @@ export function TotalStats({
 }) {
   return (
     <div className="grid lg:grid-cols-4 grid-cols-2 gap-6 w-full max-w-4xl">
-      {loading && [1, 2, 3, 4].map(() => <MetricPlaceholder />)}
+      {loading && [1, 2, 3, 4].map((key) => <MetricPlaceholder key={key} />)}
       {!loading &&
-        Object.keys(data).map((key) => {
+        Object.keys(data ?? {}).map((key) => {
           const metricKey = key as keyof TotalStatsData;
           return (
             <div className="flex items-center p-4 rounded" key={metricKey}>
