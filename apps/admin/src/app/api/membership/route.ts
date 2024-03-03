@@ -16,7 +16,6 @@ export async function GET(req: Request) {
             author: {
                 id: session.user.id
             },
-            status: "active"
         },
     });
     if (!author || !author.stripe_customer_id) {
@@ -25,7 +24,7 @@ export async function GET(req: Request) {
 
     const details = async () => {
         const customer = await stripe.customers.retrieve(
-            author?.stripe_customer_id!,
+            author.stripe_customer_id!,
             {
                 expand: ["subscriptions"], // 2
             }

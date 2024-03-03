@@ -12,7 +12,8 @@ enum StripeWebhooks {
     SubscriptionUpdated = 'customer.subscription.updated',
     SubscriptionCreated = 'customer.subscription.created',
     PaymentSucceeded = 'payment_intent.succeeded',
-    InvoiceSucceeded = 'invoice.payment_succeeded'
+    InvoiceSucceeded = 'invoice.payment_succeeded',
+    ChargeSucceeded = 'charge.succeeded',
 }
 
 export async function POST(req: Request) {
@@ -39,8 +40,24 @@ export async function POST(req: Request) {
     try {
         switch (event.type) {
             case StripeWebhooks.PaymentSucceeded:
+            case StripeWebhooks.ChargeSucceeded:
             case StripeWebhooks.InvoiceSucceeded: {
-                const session = event.data.object as Stripe.Charge;
+                const charge = event.data.object as Stripe.Charge;
+                const subscription = await stripe.subscriptions.retrieve(charge.id);
+                const customer = await stripe.customers.retrieve(
+                    charge.customer as string,
+                ) as Stripe.Customer;
+                const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
+                if (author) {
+                    await prisma.membership.update({
+                        where: {
+                            author_id: author.id
+                        },
+                        data: {
+                            status: subscription.status as string,
+                        },
+                    })
+                }
                 break;
             }
             case StripeWebhooks.PaymentFailed:
@@ -65,7 +82,20 @@ export async function POST(req: Request) {
                 break;
             case StripeWebhooks.Completed: {
                 const session = event.data.object as Stripe.Checkout.Session;
-                const subscriptionId = session.subscription as string;
+                const customer = await stripe.customers.retrieve(
+                    session.customer as string,
+                ) as Stripe.Customer;
+                const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
+                if (author) {
+                    await prisma.membership.update({
+                        where: {
+                            author_id: author.id
+                        },
+                        data: {
+                            status: session.status as string,
+                        },
+                    })
+                }
                 break;
             }
             case StripeWebhooks.SubscriptionDeleted: {
