@@ -39,15 +39,20 @@ export async function POST(req: Request) {
 
     try {
         switch (event.type) {
-            case StripeWebhooks.PaymentSucceeded:
-            case StripeWebhooks.ChargeSucceeded:
+            // case StripeWebhooks.PaymentSucceeded:
+            // case StripeWebhooks.ChargeSucceeded:
             case StripeWebhooks.InvoiceSucceeded: {
-                const charge = event.data.object as Stripe.Charge;
-                const subscription = await stripe.subscriptions.retrieve(charge.id);
-                const customer = await stripe.customers.retrieve(
-                    charge.customer as string,
-                ) as Stripe.Customer;
-                const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
+                const invoice = event.data.object as Stripe.Invoice;
+                const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
+                const author = await prisma.author.findFirst({
+                    where: {
+                        email: invoice.customer_email as string
+                    },
+                    select: { id: true }
+                });
+                if (!author) {
+                    break;
+                }
                 if (author) {
                     await prisma.membership.update({
                         where: {
