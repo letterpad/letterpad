@@ -17,6 +17,7 @@ import {
 import { SessionData } from "@/graphql/types";
 
 import { AllDateRanges, DateRangeSelector } from "../api/analytics/dateRange";
+import { ApiResponseData } from "../api/analytics/types";
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
@@ -25,12 +26,12 @@ interface Props {
 
 const Analytics: FC<P & Props> = () => {
   const { theme } = useTheme();
-  const [data, setData] = useState<any>({
+  const [data, setData] = useState<ApiResponseData>({
     device: [],
     data: [],
     referals: [],
     countries: [],
-    total: {},
+    total: null,
     nextData: [],
   });
   const [fetching, setFetching] = useState(true);
@@ -308,6 +309,7 @@ const Analytics: FC<P & Props> = () => {
     };
   }, [data.countries, theme]);
 
+  const display = data.total && Number(data.total.Users?.value) > 10;
   return (
     <>
       <PageHeader className="site-page-header" title="Analytics">
@@ -322,23 +324,29 @@ const Analytics: FC<P & Props> = () => {
           </div>
         </div>
         <div className="pb-20">
-          <div className="min-w-0 gap-2 flex flex-col">
+          {display ? (
             <div className="min-w-0 gap-2 flex flex-col">
-              <TotalStats data={data.total} loading={fetching} />
-              <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-              <div className="justify-center py-10 grid md:grid-cols-2 grid-cols-1 gap-10 md:gap-2">
-                <UsersPerDayChart ref={chartContainer} loading={fetching} />
-                <DeviceChart ref={deviceContainer} loading={fetching} />
+              <div className="min-w-0 gap-2 flex flex-col">
+                <TotalStats data={data.total} loading={fetching} />
+                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                <div className="justify-center py-10 grid md:grid-cols-2 grid-cols-1 gap-10 md:gap-2">
+                  <UsersPerDayChart ref={chartContainer} loading={fetching} />
+                  <DeviceChart ref={deviceContainer} loading={fetching} />
+                </div>
+                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <ReferrerTable data={data.referals} loading={fetching} />
+                  <CountryChart ref={countryContainer} loading={fetching} />
+                </div>
+                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                <PageDataTable data={data.data} loading={fetching} />
               </div>
-              <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <ReferrerTable data={data.referals} loading={fetching} />
-                <CountryChart ref={countryContainer} loading={fetching} />
-              </div>
-              <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-              <PageDataTable data={data.data} loading={fetching} />
             </div>
-          </div>
+          ) : (
+            <span className="dark:text-gray-400 text-gray-700">
+              There is not enough data to display metrics.
+            </span>
+          )}
         </div>
       </Content>
     </>

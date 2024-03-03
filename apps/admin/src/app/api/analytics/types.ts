@@ -43,3 +43,12 @@ export interface ProcessedMetricData {
     percentage: number;
     positive: boolean;
 }
+
+export interface ApiResponseData {
+    data: ProcessedReportData[];
+    referals: ProcessedReferralData[];
+    countries: ProcessedCountryData[];
+    total: ProcessedTotalData | null;
+    device: ProcessedDeviceData[];
+    nextData: ProcessedReportData1[];
+}

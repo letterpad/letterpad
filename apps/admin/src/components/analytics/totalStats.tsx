@@ -1,9 +1,10 @@
+import classNames from "classnames";
 import { MetricPlaceholder } from "ui";
 
 import { ProcessedTotalData } from "../../app/api/analytics/types";
 
 type TotalStatsDataValue = {
-  value: number;
+  value: number | string;
   positive: boolean;
   percentage?: number;
 };
@@ -17,15 +18,17 @@ export function TotalStats({
   data,
   loading,
 }: {
-  data: TotalStatsData;
+  data: TotalStatsData | null;
   loading: boolean;
 }) {
   return (
     <div className="grid lg:grid-cols-4 grid-cols-2 gap-6 w-full max-w-4xl">
       {loading && [1, 2, 3, 4].map((key) => <MetricPlaceholder key={key} />)}
       {!loading &&
+        data &&
         Object.keys(data ?? {}).map((key) => {
           const metricKey = key as keyof TotalStatsData;
+          const hasDiff = data[metricKey].percentage;
           return (
             <div className="flex items-center p-4 rounded" key={metricKey}>
               <div className="flex-grow flex flex-col ml-4">
@@ -37,11 +40,11 @@ export function TotalStats({
                     {metricKey}
                   </span>
                   <span
-                    className={`text-xs font-semibold ml-2 ${
-                      data[metricKey].positive
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}
+                    className={classNames("text-xs font-semibold ml-2", {
+                      "text-green-500": data[metricKey].positive,
+                      "text-red-500": !data[metricKey].positive,
+                      hidden: !hasDiff,
+                    })}
                   >
                     {data[metricKey].positive ? "+" : ""}
                     {data[metricKey].percentage?.toFixed(2)}%

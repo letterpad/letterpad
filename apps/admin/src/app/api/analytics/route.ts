@@ -8,6 +8,7 @@ import { getServerSession } from "@/graphql/context";
 import { getRootUrl } from '@/shared/getRootUrl';
 
 import { reportCountry, reportDevice, reportReferral, reportViewPerPage, reportViewPerPage1, totalAll } from './reportQuery';
+import { ProcessedCountryData, ProcessedReferralData, ProcessedReportData, ProcessedTotalData } from './types';
 import { processCountryData, processDeviceData, processReferralData, processReportData, processReportData1, processTotalData } from './utils';
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
@@ -104,7 +105,12 @@ async function runReportSingle(dateRanges: any, site_url: string) {
     return response;
 }
 
-function processReports(response: any) {
+function processReports(response: any): {
+    data: ProcessedReportData[];
+    referals: ProcessedReferralData[];
+    countries: ProcessedCountryData[];
+    total: ProcessedTotalData | {};
+} {
     if (!response) {
         return { data: [], referals: [], countries: [], total: {} };
     }
