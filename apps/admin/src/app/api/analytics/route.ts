@@ -33,26 +33,26 @@ function getPrevDateRanges() {
 
 
 export async function GET(req: Request) {
-    // const session = await getServerSession({ req });
-    // if (!session?.user.email) {
-    //     return NextResponse.redirect(new URL("login", getRootUrl()).toString());
-    // }
+    const session = await getServerSession({ req });
+    if (!session?.user.email) {
+        throw new Error("Unauthorized");
+    }
 
-    // const setting = await prisma.setting.findFirst({
-    //     where: {
-    //         author: {
-    //             id: session.user.id
-    //         }
-    //     },
-    //     select: {
-    //         site_url: true
-    //     }
-    // });
-    // let site_url = setting?.site_url!;
-    // if (!setting?.site_url) {
-    //     site_url = `https://${session.user.username}.letterpad.app`;
-    // }
-    const site_url = "https://letterpad.app"
+    const setting = await prisma.setting.findFirst({
+        where: {
+            author: {
+                id: session.user.id
+            }
+        },
+        select: {
+            site_url: true
+        }
+    });
+    let site_url = setting?.site_url!;
+    if (!setting?.site_url) {
+        site_url = `https://${session.user.username}.letterpad.app`;
+    }
+    site_url = "https://letterpad.app"
     const params = new URL(req.url).searchParams;
     const startDate = params.get("startDate");
     const endDate = params.get("endDate");
