@@ -2,11 +2,12 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+import { prisma } from '@/lib/prisma';
 import { stripe } from "@/lib/stripe";
 
 enum StripeWebhooks {
     Completed = 'checkout.session.completed',
-    PaymentFailed = 'checkout.session.async_payment_failed',
+    PaymentFailed = 'invoice.payment_failed',
     SubscriptionDeleted = 'customer.subscription.deleted',
     SubscriptionUpdated = 'customer.subscription.updated',
     SubscriptionCreated = 'customer.subscription.created',
@@ -43,9 +44,22 @@ export async function POST(req: Request) {
                 break;
             }
             case StripeWebhooks.PaymentFailed:
-                const session = event.data.object as Stripe.Checkout.Session;
-                // TODO: handle this properly
-                // onPaymentFailed(session);
+                const invoice = event.data.object as Stripe.Invoice;
+                const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
+                const author = await prisma.author.findFirst({
+                    where: {
+                        email: invoice.customer_email as string
+                    },
+                    select: { id: true }
+                });
+                if (!author) {
+                    break;
+                }
+                await prisma.membership.update({
+                    where: { stripe_customer_id: invoice.customer as string, author_id: author.id },
+                    data: { status: subscription.status },
+                });
+                //todo: send email to the user
                 break;
             case StripeWebhooks.SubscriptionUpdated:
                 break;
@@ -59,9 +73,9 @@ export async function POST(req: Request) {
                 const customer = await stripe.customers.retrieve(
                     subscription.customer as string,
                 ) as Stripe.Customer;
-                const author = await prisma?.author.findUnique({ where: { email: customer.email as string } });
+                const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
                 if (author) {
-                    await prisma?.membership.update({
+                    await prisma.membership.update({
                         where: {
                             author_id: author.id
                         },
