@@ -5,22 +5,25 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Content, PageHeader, useTheme } from "ui";
 import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
+import {
+  CountryChart,
+  DeviceChart,
+  PageDataTable,
+  ReferrerTable,
+  TotalStats,
+  UsersPerDayChart,
+} from "@/components/analytics";
+
 import { SessionData } from "@/graphql/types";
 
 import { AllDateRanges, DateRangeSelector } from "../api/analytics/dateRange";
-import { CountryChart } from "../../components/analytics/countryChart";
-import { DeviceChart } from "../../components/analytics/deviceChart";
-import { PageDataTable } from "../../components/analytics/pageDataTable";
-import { ReferrerTable } from "../../components/analytics/referrerTable";
-import { TotalStats } from "../../components/analytics/totalStats";
-import { UsersPerDayChart } from "../../components/analytics/usersPerDayChart";
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
 
-const Payments: FC<P & Props> = () => {
+const Analytics: FC<P & Props> = () => {
   const { theme } = useTheme();
   const [data, setData] = useState<any>({
     device: [],
@@ -34,9 +37,9 @@ const Payments: FC<P & Props> = () => {
   const chartContainer = useRef<HTMLCanvasElement>(null);
   const deviceContainer = useRef<HTMLCanvasElement>(null);
   const countryContainer = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<Chart>();
-  const deviceInstance = useRef<Chart>();
-  const countryInstance = useRef<Chart>();
+  const chartInstance = useRef<Chart<"bar">>();
+  const deviceInstance = useRef<Chart<"pie">>();
+  const countryInstance = useRef<Chart<"bar">>();
 
   const [dateRange, setDateRange] = useState<AllDateRanges>({
     startDate: "7daysAgo",
@@ -342,4 +345,4 @@ const Payments: FC<P & Props> = () => {
   );
 };
 
-export default Payments;
+export default Analytics;
