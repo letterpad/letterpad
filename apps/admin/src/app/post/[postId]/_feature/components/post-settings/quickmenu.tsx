@@ -19,7 +19,7 @@ export const QuickMenu: FC<Props> = ({
   showDrawer,
   showPreview,
 }) => {
-  const { theme, setTheme } = useTheme();
+  const { toggleTheme } = useTheme();
   const openPreview = () => {
     track({
       eventAction: EventAction.Change,
@@ -48,7 +48,7 @@ export const QuickMenu: FC<Props> = ({
           },
           {
             name: "Switch Theme",
-            onClick: () => setTheme(theme === "dark" ? "light" : "dark"),
+            onClick: toggleTheme,
             icon: IoEyeOutline,
           },
         ]}
