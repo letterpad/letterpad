@@ -145,47 +145,46 @@ const Layout = async ({ children }) => {
   const theme = getPreference();
   const { settings, me } = data;
   return (
-    <html
-      lang="en"
-      style={{ colorScheme: theme }}
-      className={classNames(
-        `scroll-smooth ${theme}`,
-        theme + '-theme',
-        fonts.heading.variable,
-        fonts.code.variable,
-        fonts.paragraph.variable,
-        fonts.sans.variable
-      )}
-    >
-      <Css css={settings.css} />
-      <HeadMeta settings={settings} />
-      <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
+    <ClientThemeProvider>
+      <html
+        lang="en"
+        style={{ colorScheme: theme }}
+        className={classNames(
+          `scroll-smooth ${theme}`,
+          fonts.heading.variable,
+          fonts.code.variable,
+          fonts.paragraph.variable,
+          fonts.sans.variable
+        )}
+      >
+        <Css css={settings.css} />
+        <HeadMeta settings={settings} />
+        <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
           html {
             --accent: ${settings?.design?.brand_color ?? '#d93097'};
           }
         `,
-          }}
-        />
-        {process.env.NODE_ENV === 'production' && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
+            }}
           />
-        )}
-        <Script id="google-analytics" async={true}>
-          {`
+          {process.env.NODE_ENV === 'production' && (
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
+            />
+          )}
+          <Script id="google-analytics" async={true}>
+            {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           
           gtag('config', "${trackingId}",{ 'user_id': ${me.id}, transport_url: window.location.origin + '/analytics'});
           `}
-        </Script>
+          </Script>
 
-        <SessionProvider>
-          <ClientThemeProvider>
+          <SessionProvider>
             <main className="mb-auto">{children}</main>
             <div className="border-b-[1px] dark:border-gray-700">
               <Footer author={me} settings={settings} />
@@ -194,10 +193,10 @@ const Layout = async ({ children }) => {
             <PrismHighlight />
             <div id="modal-root" />
             <div id="message" />
-          </ClientThemeProvider>
-        </SessionProvider>
-      </body>
-    </html>
+          </SessionProvider>
+        </body>
+      </html>
+    </ClientThemeProvider>
   );
 };
 

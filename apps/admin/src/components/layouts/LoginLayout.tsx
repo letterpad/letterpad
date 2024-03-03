@@ -1,13 +1,4 @@
-// import ThemeSwitcher from "../theme-switcher";
-
 const LoginLayout = ({ children }) => {
-  // useEffect(() => {
-  //   if (typeof localStorage !== "undefined") {
-  //     if (localStorage.theme === "dark") {
-  //       ThemeSwitcher.switch("dark");
-  //     }
-  //   }
-  // }, []);
   return (
     <>
       <div className="">{children}</div>

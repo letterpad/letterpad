@@ -2,10 +2,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
-import { Drawer } from "ui";
+import { Drawer, ThemeSwitcher } from "ui";
 
 import { ProfileDropdown } from "@/components/profile-dd";
-import ThemeSwitcher from "@/components/theme-switcher";
 import { Search } from "@/components/website_v2/search";
 
 import { isMembershipFeatureActive } from "../../shared/utils";

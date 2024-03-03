@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { FC } from 'react';
+import { ThemeSwitcher } from 'ui';
 
 import Link from '@/components/Link';
 
@@ -7,7 +8,6 @@ import { CollapsableMenu } from './collapsable-menu';
 import { FollowMe } from './followme';
 import { SocialIcons } from '../social-icons';
 import { SubscribeModal } from '../subscribe-modal';
-import ThemeSwitch from '../theme-switch';
 import { Menu } from '../../components/menu';
 import { ProfileDropdown } from '../../components/profile-dropdown';
 import { LogoOrTitle } from '../../components/site-logo';
@@ -52,7 +52,7 @@ export const Navbar: FC<Props> = ({
             </div>
             <div className="lp-header-right flex items-center text-base leading-5 gap-4">
               <FollowMe username={me.username} />
-              <ThemeSwitch />
+              <ThemeSwitcher />
               <ProfileDropdown />
             </div>
           </header>

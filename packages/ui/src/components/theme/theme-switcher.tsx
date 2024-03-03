@@ -1,12 +1,10 @@
-"use client";
+import { CiDark, CiLight } from 'react-icons/ci';
 
-import { CiDark, CiLight } from "react-icons/ci";
-import { getColors, useTheme } from "ui";
+import { useTheme } from './theme.context';
 
-const { dark } = getColors();
 
-const ThemeSwitcher = () => {
-  const { toggleTheme, theme } = useTheme();
+export const ThemeSwitcher = () => {
+  const { theme, toggleTheme } = useTheme();
   return (
     <button
       aria-label="Toggle Dark Mode"
@@ -14,7 +12,7 @@ const ThemeSwitcher = () => {
       className="p-1 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 rounded-full h-10 w-10 flex justify-center items-center"
       onClick={toggleTheme}
     >
-      {theme === dark ? (
+      {theme === 'dark' ? (
         <CiLight className="h-6 w-6 md:h-7 md:w-7" />
       ) : (
         <CiDark className="h-6 w-6 md:h-7 md:w-7" />
@@ -22,4 +20,3 @@ const ThemeSwitcher = () => {
     </button>
   );
 };
-export default ThemeSwitcher;
