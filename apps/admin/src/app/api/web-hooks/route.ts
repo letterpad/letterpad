@@ -87,6 +87,7 @@ export async function POST(req: Request) {
                                 update: {
                                     data: {
                                         stripe_customer_id: customer.id,
+                                        stripe_subscription_id: subscription.id,
                                     },
                                     where: {
                                         author_id: author.id
@@ -98,6 +99,7 @@ export async function POST(req: Request) {
                                     },
                                     create: {
                                         stripe_customer_id: customer.id,
+                                        stripe_subscription_id: subscription.id,
                                     }
                                 }
                             }

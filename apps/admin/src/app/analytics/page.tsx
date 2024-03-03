@@ -309,7 +309,7 @@ const Analytics: FC<P & Props> = () => {
     };
   }, [data.countries, theme]);
 
-  const display = data.total && Number(data.total.Users?.value) > 10;
+  const display = data.total && Number(data.total.Users?.value) > 5;
   return (
     <>
       <PageHeader className="site-page-header" title="Analytics">
