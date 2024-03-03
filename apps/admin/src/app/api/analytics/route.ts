@@ -35,7 +35,7 @@ function getPrevDateRanges() {
 export async function GET(req: Request) {
     const session = await getServerSession({ req });
     if (!session?.user.email) {
-        throw new Error("Unauthorized");
+        return NextResponse.json({ error: "You are not authorized" }, { status: 401 });
     }
 
     const setting = await prisma.setting.findFirst({
@@ -82,7 +82,7 @@ export async function GET(req: Request) {
 
 async function runReport(dateRanges: any, prevDateRanges: any, site_url: string) {
     const response = await analyticsDataClient.batchRunReports({
-        property: `properties/316753652`,
+        property: `properties/${process.env.GA_PROPERTY_ID}`,
         requests: [
             { ...reportViewPerPage(site_url), dateRanges },
             { ...reportReferral(site_url), dateRanges },
@@ -96,7 +96,7 @@ async function runReport(dateRanges: any, prevDateRanges: any, site_url: string)
 
 async function runReportSingle(dateRanges: any, site_url: string) {
     const response = await analyticsDataClient.batchRunReports({
-        property: `properties/316753652`,
+        property: `properties/${process.env.GA_PROPERTY_ID}`,
         requests: [
             { ...reportViewPerPage1(site_url), dateRanges },
             { ...reportDevice(site_url), dateRanges },
