@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import { FC } from 'react';
-import { ThemeSwitcher } from 'ui';
 
 import Link from '@/components/Link';
 
 import { CollapsableMenu } from './collapsable-menu';
 import { FollowMe } from './followme';
+import { ThemeSwitcher } from './theme-switcher';
 import { SocialIcons } from '../social-icons';
 import { SubscribeModal } from '../subscribe-modal';
 import { Menu } from '../../components/menu';
