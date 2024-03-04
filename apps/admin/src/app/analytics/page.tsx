@@ -7,17 +7,22 @@ import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
 import {
   CountryChart,
+  DateRangeSelector,
   DeviceChart,
   PageDataTable,
   ReferrerTable,
   TotalStats,
   UsersPerDayChart,
 } from "@/components/analytics";
+import { getDateRanges } from "@/components/analytics/utils";
 
 import { SessionData } from "@/graphql/types";
 
-import { AllDateRanges, DateRangeSelector } from "../api/analytics/dateRange";
-import { ApiResponseData } from "../api/analytics/types";
+import {
+  ApiResponseData,
+  DateRange,
+  DateRangeEnum,
+} from "../api/analytics/types";
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
@@ -42,20 +47,17 @@ const Analytics: FC<P & Props> = () => {
   const deviceInstance = useRef<Chart<"pie">>();
   const countryInstance = useRef<Chart<"bar">>();
 
-  const [dateRange, setDateRange] = useState<AllDateRanges>({
-    startDate: "7daysAgo",
-    endDate: "today",
-    prevStartDate: "15daysAgo",
-    prevEndDate: "8daysAgo",
-  });
+  const [dateRange, setDateRange] = useState<DateRange>(
+    getDateRanges(DateRangeEnum.last7Days)
+  );
 
   const doFetch = () => {
     setFetching(true);
-    const day = 1;
+    const day = 1 / 4;
     fetch(
       "/api/analytics?" + new URLSearchParams(dateRange as any).toString(),
       {
-        cache: "force-cache",
+        cache: "default",
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
@@ -309,7 +311,8 @@ const Analytics: FC<P & Props> = () => {
     };
   }, [data.countries, theme]);
 
-  const display = data.total && Number(data.total.Users?.value) > 5;
+  const display =
+    fetching || (data.total && Number(data.total.Users?.value) >= 1);
   return (
     <>
       <PageHeader className="site-page-header" title="Analytics">

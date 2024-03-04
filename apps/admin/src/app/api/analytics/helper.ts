@@ -23,7 +23,7 @@ export function processMetricData(value?: string, prevValue?: string): Processed
         value: intValue,
         prevValue: prevIntValue,
         diff: intValue - prevIntValue,
-        percentage: ((intValue - prevIntValue) / prevIntValue) * 100,
+        percentage: prevIntValue === 0 ? 100 : ((intValue - prevIntValue) / prevIntValue) * 100,
         positive: (intValue - prevIntValue) > 0
     };
 }
