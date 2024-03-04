@@ -28,7 +28,7 @@ export function TotalStats({
         data &&
         Object.keys(data ?? {}).map((key) => {
           const metricKey = key as keyof TotalStatsData;
-          const hasDiff = data[metricKey].percentage;
+          const hasDiff = !!data[metricKey].percentage;
           return (
             <div className="flex items-center p-4 rounded" key={metricKey}>
               <div className="flex-grow flex flex-col ml-4">

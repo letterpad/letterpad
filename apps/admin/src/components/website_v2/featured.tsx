@@ -10,10 +10,13 @@ export const Featured = async () => {
   const posts = await getFeaturedPosts();
   return (
     <>
-      <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+      <h2 className="text-lg font-semibold flex items-center gap-2">
         <IoStar className="dark:text-yellow-500 text-yellow-500" />
         Featured
       </h2>
+      <h4 className="mb-4">
+        Find new, handpicked stories you'll love, updated weekly.
+      </h4>
 
       <div className="flex flex-row justify-between md:gap-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-10 w-full">

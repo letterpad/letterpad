@@ -19,8 +19,8 @@ export function getHeaders({ tags, deleteTag, editTag }) {
         tags.length >= 1 ? (
           <div className="flex gap-2">
             <Button
-              variant="primary"
-              size="small"
+              variant="secondary"
+              size="extrasmall"
               onClick={() => editTag(record.key)}
               className="items-center gap-1"
             >
@@ -33,8 +33,8 @@ export function getHeaders({ tags, deleteTag, editTag }) {
               onConfirm={() => deleteTag(record.key)}
             >
               <Button
-                variant="danger"
-                size="small"
+                variant="ghost"
+                size="extrasmall"
                 className="items-center gap-1"
               >
                 <BiUnlink size={16} />
