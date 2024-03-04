@@ -1,5 +1,4 @@
 "use client";
-import Head from "next/head";
 import { useParams } from "next/navigation";
 
 import { useGetSettings } from "@/app/settings/_feature/api.client";
@@ -19,8 +18,6 @@ export const Feature = () => {
   if (loading) return <div></div>;
   return (
     <div style={{ minHeight: "100vh" }}>
-      <title>Editing - {post?.title.replace(/(<([^>]+)>)/g, "")}</title>
-
       {post && <Header post={post} />}
       {post?.page_type === PageType["Default"] && (
         <DefaultPost settings={settings} post={post} loading={loading} />
