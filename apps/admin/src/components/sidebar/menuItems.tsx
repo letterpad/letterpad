@@ -53,12 +53,12 @@ export const items = (stats) => [
     icon: <VscDebugDisconnect size={16} />,
     key: "/domain-mapping",
   },
-  // {
-  //   label: "Membership",
-  //   icon: <CiBadgeDollar size={18} />,
-  //   key: "/membership",
-  //   hidden: !isMembershipFeatureActive(),
-  // },
+  {
+    label: "Membership",
+    icon: <CiBadgeDollar size={18} />,
+    key: "/membership",
+    hidden: !isMembershipFeatureActive(),
+  },
   {
     label: "Settings",
     icon: <CiSettings size={18} />,
