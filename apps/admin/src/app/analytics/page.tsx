@@ -1,6 +1,7 @@
 "use client";
 import Chart, { ChartConfiguration } from "chart.js/auto";
 import { InferGetServerSidePropsType } from "next";
+import Image from "next/image";
 import { FC, useEffect, useRef, useState } from "react";
 import { Content, useTheme } from "ui";
 import { PageHeader } from "ui/isomorphic";
@@ -16,6 +17,7 @@ import {
   UsersPerDayChart,
 } from "@/components/analytics";
 import { getDateRanges } from "@/components/analytics/utils";
+import { UpgradeBanner } from "@/components/upgrade-plan-banner";
 
 import { SessionData } from "@/graphql/types";
 
@@ -24,13 +26,17 @@ import {
   DateRange,
   DateRangeEnum,
 } from "../api/analytics/types";
+import { useIsPaidMember } from "../../hooks/useIsPaidMember";
+import { isMembershipFeatureActive } from "../../shared/utils";
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
 const Analytics: FC<P & Props> = () => {
+  const isPaidMemeber = useIsPaidMember();
   const { theme } = useTheme();
+  const isMember = isMembershipFeatureActive() && isPaidMemeber;
   const [data, setData] = useState<ApiResponseData>({
     device: [],
     data: [],
@@ -39,7 +45,7 @@ const Analytics: FC<P & Props> = () => {
     total: null,
     sessionsPerDay: [],
   });
-  const [fetching, setFetching] = useState(true);
+  const [fetching, setFetching] = useState(isMember);
   const chartContainer = useRef<HTMLCanvasElement>(null);
   const deviceContainer = useRef<HTMLCanvasElement>(null);
   const countryContainer = useRef<HTMLCanvasElement>(null);
@@ -52,6 +58,9 @@ const Analytics: FC<P & Props> = () => {
   );
 
   const doFetch = () => {
+    if (!isMember) {
+      return;
+    }
     setFetching(true);
     const day = 1 / 4;
     fetch(
@@ -74,7 +83,7 @@ const Analytics: FC<P & Props> = () => {
       .catch(() => setFetching(false));
   };
 
-  useEffect(doFetch, [dateRange]);
+  useEffect(doFetch, [dateRange, isMember]);
 
   useEffect(() => {
     if (!data?.sessionsPerDay) return;
@@ -318,7 +327,8 @@ const Analytics: FC<P & Props> = () => {
   }, [data?.countries, theme]);
 
   const display =
-    fetching || (data?.total && Number(data.total.Users?.value) >= 1);
+    isMember &&
+    (fetching || (data?.total && Number(data.total.Users?.value) >= 1));
   return (
     <>
       <PageHeader className="site-page-header" title="Analytics">
@@ -327,11 +337,24 @@ const Analytics: FC<P & Props> = () => {
         </span>
       </PageHeader>
       <Content>
-        <div className="relative">
-          <div className="flex justify-end py-4 sticky">
-            <DateRangeSelector onChange={setDateRange} />
+        <UpgradeBanner />
+        {!isMember && (
+          <div className="hidden md:block relative w-full h-[100vh]">
+            <Image
+              src="/images/analytics.png"
+              alt="Analytics"
+              fill={true}
+              objectFit="contain"
+            />
           </div>
-        </div>
+        )}
+        {isMember && (
+          <div className="relative">
+            <div className="flex justify-end py-4 sticky">
+              <DateRangeSelector onChange={setDateRange} />
+            </div>
+          </div>
+        )}
         <div className="pb-20">
           {display && data ? (
             <div className="min-w-0 gap-2 flex flex-col">
@@ -353,7 +376,7 @@ const Analytics: FC<P & Props> = () => {
             </div>
           ) : (
             <span className="dark:text-gray-400 text-gray-700">
-              There is not enough data to display metrics.
+              {isMember && "There is not enough data to display metrics."}
             </span>
           )}
         </div>

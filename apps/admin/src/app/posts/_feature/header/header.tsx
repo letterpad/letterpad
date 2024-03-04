@@ -12,6 +12,9 @@ import { isPost } from "@/utils/type-guards";
 
 import { useCreatePost, useGetPosts } from "../api.client";
 import { DEFAULT_FILTERS } from "../constants";
+import { UpgradeLabel } from "../../../../components/upgrade-plan-banner";
+import { useIsPaidMember } from "../../../../hooks/useIsPaidMember";
+import { isMembershipFeatureActive } from "../../../../shared/utils";
 
 interface IProps {
   type: PostTypes;
@@ -21,6 +24,8 @@ interface IProps {
 
 export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
+  const isPaidMemeber = useIsPaidMember();
+  const isMember = isMembershipFeatureActive() && isPaidMemeber;
   const [showModal, setShowModal] = useState(false);
   const { createPost } = useCreatePost();
   const { refetch } = useGetPosts({ ...DEFAULT_FILTERS, type }, { skip: true });
@@ -49,24 +54,37 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   };
 
   const buttonLabel = `New ${type === "page" ? "Creative" : "Post"}`;
-
+  const displayBtn = (isMember && type === "page") || type === "post";
   return (
     <>
       <PageHeader
         className="site-page-header"
         title={title}
-        extra={[
-          <Button
-            size="normal"
-            key="1"
-            data-testid="createPostBtn"
-            onClick={() => onNewClick()}
-            className="flex items-center gap-1"
-          >
-            <BiPlus size={16} />
-            {buttonLabel}
-          </Button>,
-        ]}
+        extra={
+          displayBtn
+            ? [
+                <Button
+                  size="normal"
+                  key="1"
+                  data-testid="createPostBtn"
+                  onClick={() => onNewClick()}
+                  className="flex items-center gap-1"
+                >
+                  <BiPlus size={16} />
+                  {buttonLabel}
+                </Button>,
+              ]
+            : [
+                <Button
+                  size="normal"
+                  key="1"
+                  className="flex items-center gap-1"
+                  variant="secondary"
+                >
+                  <UpgradeLabel /> to publish creatives
+                </Button>,
+              ]
+        }
       >
         {children}
       </PageHeader>

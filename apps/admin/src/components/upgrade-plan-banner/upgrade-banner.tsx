@@ -1,11 +1,14 @@
+"use client";
 import Link from "next/link";
 import { BsInfoCircleFill } from "react-icons/bs";
 
+import { useIsPaidMember } from "../../hooks/useIsPaidMember";
 import { isMembershipFeatureActive } from "../../shared/utils";
 
 export const UpgradeBanner = () => {
+  const isPaidMember = useIsPaidMember();
   const membershipFeatureActive = isMembershipFeatureActive();
-  if (!membershipFeatureActive) return null;
+  if (!membershipFeatureActive || isPaidMember) return null;
 
   return (
     <div
