@@ -8,7 +8,7 @@ export const totalAll = (siteUrl: string) => ({
             name: 'sessions',
         },
         {
-            name: 'bounceRate',
+            name: 'newUsers',
         },
         {
             name: 'userEngagementDuration',
@@ -68,7 +68,7 @@ export const reportViewPerPage1: any = (siteUrl: string) => ({
     },
     metrics: [
         {
-            name: 'activeUsers',
+            name: 'totalUsers',
         },
     ],
     limit: 30
@@ -82,7 +82,7 @@ export const reportReferral = (siteUrl: string) => ({
     ],
     metrics: [
         {
-            name: 'activeUsers'
+            name: 'totalUsers'
         }
     ],
     dimensionFilter: {
@@ -105,7 +105,7 @@ export const reportCountry = (siteUrl: string) => ({
     ],
     metrics: [
         {
-            name: 'activeUsers'
+            name: 'totalUsers'
         },
     ],
     dimensionFilter: {
@@ -129,7 +129,7 @@ export const reportDevice = (siteUrl: string) => ({
     ],
     metrics: [
         {
-            name: 'activeUsers'
+            name: 'totalUsers'
         },
     ],
     dimensionFilter: {

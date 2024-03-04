@@ -32,7 +32,7 @@ export interface ProcessedDeviceData {
 export interface ProcessedTotalData {
     Users: ProcessedMetricData;
     Sessions: ProcessedMetricData;
-    Bounce: ProcessedMetricData;
+    "New Users": ProcessedMetricData;
     "Avg. Time": ProcessedMetricData;
 }
 
@@ -51,4 +51,19 @@ export interface ApiResponseData {
     total: ProcessedTotalData | null;
     device: ProcessedDeviceData[];
     nextData: ProcessedReportData1[];
+}
+
+export interface DateRange {
+    startDate: string;
+    endDate: string;
+    prevStartDate: string;
+    prevEndDate: string;
+}
+
+export enum DateRangeEnum {
+    today = "today",
+    yesterday = "yesterday",
+    last7Days = "last7Days",
+    last30Days = "last30Days",
+    last90Days = "last90Days",
 }

@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"
 
 import { getServerSession } from "@/graphql/context";
-import { getRootUrl } from '@/shared/getRootUrl';
 
 import { reportCountry, reportDevice, reportReferral, reportViewPerPage, reportViewPerPage1, totalAll } from './reportQuery';
 import { ProcessedCountryData, ProcessedReferralData, ProcessedReportData, ProcessedTotalData } from './types';
@@ -17,21 +16,6 @@ const analyticsDataClient = new BetaAnalyticsDataClient({
         private_key: process.env.GA_PRIVATE_KEY!,
     },
 });
-
-function getDateRanges() {
-    return [{
-        startDate: "7daysAgo",
-        endDate: "today",
-    }];
-}
-
-function getPrevDateRanges() {
-    return [{
-        startDate: "15daysAgo",
-        endDate: "8daysAgo",
-    }];
-}
-
 
 export async function GET(req: Request) {
     const session = await getServerSession({ req });
@@ -59,18 +43,17 @@ export async function GET(req: Request) {
     const prevStartDate = params.get("prevStartDate");
     const prevEndDate = params.get("prevEndDate");
 
-    let dateRanges = getDateRanges();
-    let prevDateRanges = getPrevDateRanges();
-    if (startDate && endDate && prevStartDate && prevEndDate) {
-        dateRanges = [{
-            startDate,
-            endDate,
-        }];
-        prevDateRanges = [{
-            startDate: prevStartDate,
-            endDate: prevEndDate,
-        }];
-    }
+
+    const dateRanges = [{
+        startDate,
+        endDate,
+    }];
+
+    const prevDateRanges = [{
+        startDate: prevStartDate,
+        endDate: prevEndDate,
+    }];
+
     const [response, nextRes] = await Promise.all([runReport(dateRanges, prevDateRanges, site_url), runReportSingle(dateRanges, site_url)]);
     const { data, referals, countries, total } = processReports(response);
     const { device, nextData } = processReports1(nextRes);

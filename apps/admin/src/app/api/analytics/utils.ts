@@ -51,7 +51,7 @@ export function processTotalData(report: { rows?: Row[] }, prevReport: { rows?: 
         return {
             "Users": getValues(0),
             "Sessions": getValues(1),
-            "Bounce": getValues(2),
+            "New Users": getValues(2),
             "Avg. Time": {
                 ...avgTime,
                 value: secondsToMinutes(Number(avgTime.value ?? 0) / parseInt(row.metricValues?.[1].value ?? "0"))
