@@ -48,7 +48,7 @@ export const Featured = async () => {
                             author?.avatar ?? "https://www.gravatar.com/avatar/"
                           }
                           alt={article.title}
-                          className="w-4 h-4 rounded-full"
+                          className="w-6 h-6 rounded-full object-cover"
                         />
                         <span className="text-sm">{author?.name ?? ""}</span>
                       </Link>
@@ -56,7 +56,7 @@ export const Featured = async () => {
                         className="flex items-center gap-2 mb-2"
                         href={link}
                       >
-                        <span className="text-base font-semibold text-wrap break-words line-clamp-2">
+                        <span className="text-base font-bold text-wrap break-words line-clamp-2 font-heading">
                           {article.title}
                         </span>
                       </Link>

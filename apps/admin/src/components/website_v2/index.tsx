@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { IoRocketOutline } from "react-icons/io5";
+import { TfiAnnouncement } from "react-icons/tfi";
 
 import { Banner } from "./banner";
 import { Card } from "./card";
@@ -11,29 +13,47 @@ import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
 import Footer from "../website/Footer";
+import { fetchPostsByTag, fetchPostsOfClient } from "../../resourceFetcher";
 
 export const Website = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: 0 } });
   const categories = await getLetterpadCategories();
   const newAuthors = await getNewAuthors();
+  const posts = await fetchPostsByTag();
   const rows =
     data?.letterpadLatestPosts.__typename === "PostsNode"
       ? data.letterpadLatestPosts.rows
       : [];
   return (
     <>
-      <div className="flex min-h-screen flex-col overflow-hidden">
+      <div className="flex min-h-screen flex-col">
         <Header />
         <Banner />
-
+        <div className=" bg-slate-800 sticky top-0 border-t border-gray-800 ">
+          <div className="overflow-x-auto max-w-6xl mx-auto py-4 p-2 relative">
+            {/* <h2 className="font-bold mb-6 text-md">Topics:</h2> */}
+            <div className="flex space-x-8 ">
+              {categories?.popularTags?.rows?.map((category) => {
+                return (
+                  <div
+                    className="text-sm whitespace-nowrap hover:text-white text-gray-100"
+                    key={category.slug}
+                  >
+                    <Link href={`${category.slug!}`}>{category.name}</Link>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
         <main className="grow">
           <div className="border-b dark:border-slate-800 mb-10">
             <div className="max-w-6xl mx-auto py-10 md:py-20 p-4 gap-4 flex flex-col">
               <Featured />
             </div>
           </div>
-          <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:gap-8">
-            <section className="w-full mb-5 flex flex-col overflow-hidden">
+          <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:space-x-8 divide-x-[1px] dark:divide-slate-800 divide-slate-200">
+            <section className="w-full mb-5 flex flex-col">
               {rows.map((item) => {
                 const author =
                   item.author?.__typename === "Author" ? item.author : null;
@@ -54,42 +74,70 @@ export const Website = async () => {
               })}
               <InfiniteList cursor={rows?.[rows.length - 1]?.id} />
             </section>
-            <div className="hidden md:block md:ml-10 md:min-w-52 py-10">
-              <section className="mb-10">
-                <h4 className="font-bold text-lg pb-2">New Authors</h4>
-                <ul className="flex flex-col gap-4 py-2">
-                  {newAuthors?.map((author) => {
+            <div className="hidden md:block pl-8 md:min-w-64 py-10 top-0 space-y-16">
+              <section className="">
+                <h4 className="font-bold text-lg pb-2 flex items-center gap-2 font-heading">
+                  <TfiAnnouncement className="text-sky-500" />
+                  Announcements
+                </h4>
+                <ul className="flex flex-col divide-y dark:divide-slate-700 divide-slate-100">
+                  {posts.map((post) => {
                     return (
-                      <li className="text-md" key={author.id}>
-                        <div className="flex items-center justify-between flex-row">
-                          <Link
-                            className="flex items-center justify-left flex-row gap-2"
-                            href={`/@${author?.username}`}
-                          >
-                            <div className="rounded-full flex-none">
-                              <img
-                                src={author?.avatar}
-                                alt={author?.name}
-                                className="w-6 h-6 object-cover rounded-full"
-                              />
-                            </div>
-                            <span className="text-gray-800 dark:text-gray-200 truncate">
-                              {author?.name}
-                            </span>
-                          </Link>
-                        </div>
+                      <li
+                        className="text-gray-900 truncate dark:text-white  py-2 "
+                        key={post.slug}
+                      >
+                        <Link
+                          href={new URL(
+                            post.slug,
+                            "https://blog.letterpad.app"
+                          ).toString()}
+                          className="text-sm"
+                          target="_blank"
+                        >
+                          {post.title}
+                        </Link>
+                        <p className="text-xs truncate opacity-80">
+                          {post.sub_title}
+                        </p>
                       </li>
                     );
                   })}
-                </ul>
-              </section>
-              <section className="">
-                <h4 className="font-bold text-lg pb-2">Topics</h4>
-                <ul className="flex flex-col gap-2">
-                  {categories?.popularTags?.rows?.map((category) => {
+                  {/* {categories?.popularTags?.rows?.map((category) => {
                     return (
                       <li className="text-md truncate" key={category.slug}>
                         <Link href={`${category.slug!}`}>{category.name}</Link>
+                      </li>
+                    );
+                  })} */}
+                </ul>
+              </section>
+              <section>
+                <h4 className="font-bold text-lg pb-2 font-heading flex items-center gap-2">
+                  <IoRocketOutline className="text-sky-500" />
+                  Popular Authors
+                </h4>
+                <ul className="max-w-md">
+                  {newAuthors?.map((author) => {
+                    return (
+                      <li className="py-1 sm:py-2" key={author.id}>
+                        <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                          <div className="flex-shrink-0">
+                            <img
+                              className="w-8 h-8 rounded-full bg-gray-200"
+                              src={author?.avatar}
+                              alt="Neil image"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate dark:text-white capitalize">
+                              {author?.name.toLowerCase()}
+                            </p>
+                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                              @{author.username}
+                            </p>
+                          </div>
+                        </div>
                       </li>
                     );
                   })}

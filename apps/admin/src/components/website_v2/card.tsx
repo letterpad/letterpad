@@ -67,14 +67,14 @@ export const Card: FC<Props> = ({
         href={link}
         target="_blank"
         rel="noreferrer"
-        className="flex flex-row justify-between"
+        className="flex flex-row justify-between gap-2"
       >
-        <div className="flex flex-col gap-y-2  justify-between py-2">
+        <div className="flex flex-col gap-y-2 justify-between py-2">
           <div className="flex flex-col gap-1">
-            <p className="text-lg font-bold block capitalize text-ellipsis text-gray-800 dark:text-gray-200">
+            <p className="font-heading text-lg font-bold block capitalize text-ellipsis text-gray-800 dark:text-gray-200">
               {title}
             </p>
-            <span className="text-gray-800 mr-3 dark:text-gray-400">
+            <span className="text-gray-800 mr-3 dark:text-gray-400 line-clamp-2">
               {excerpt ?? sub_title}
             </span>
           </div>
