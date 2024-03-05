@@ -55,7 +55,7 @@ export const Card: FC<Props> = ({
             <img
               src={avatar}
               alt={author?.name}
-              className="w-7 h-7 object-cover rounded-full"
+              className="w-7 h-7 object-cover rounded-full bg-slate-200"
             />
           </div>
           <span className="text-gray-800 dark:text-gray-200">

@@ -115,7 +115,7 @@ export const Website = async () => {
               <section>
                 <h4 className="font-bold text-lg pb-2 font-heading flex items-center gap-2">
                   <IoRocketOutline className="text-sky-500" />
-                  Popular Authors
+                  New Authors
                 </h4>
                 <ul className="max-w-md">
                   {newAuthors?.map((author) => {
