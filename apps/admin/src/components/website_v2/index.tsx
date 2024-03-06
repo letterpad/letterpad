@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 
-import { BanButton } from "./banButton";
+import { AdminActions } from "./adminActions";
 import { Banner } from "./banner";
 import { Card } from "./card";
 import {
@@ -68,7 +68,12 @@ export const Website = async () => {
 
                 return (
                   <div>
-                    <BanButton id={item.id} />
+                    <AdminActions
+                      id={item.id}
+                      banned={!!item.banned}
+                      isFavourite={!!author?.favourite}
+                      authorId={item.id!}
+                    />
                     <Card
                       key={item.id}
                       {...item}
