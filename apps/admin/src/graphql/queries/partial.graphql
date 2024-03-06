@@ -116,8 +116,7 @@ fragment MeFragment on Author {
   id
   name
   username
-  analytics_id
-  analytics_uuid
+  favourite
   register_step
   social {
     __typename

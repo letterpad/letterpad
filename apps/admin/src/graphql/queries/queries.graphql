@@ -448,8 +448,8 @@ query PopularTags {
   }
 }
 
-query NewAuthors {
-  newAuthors {
+query FavAuthors {
+  favAuthors {
     authors {
       id
       name

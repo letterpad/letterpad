@@ -7,9 +7,9 @@ import { BanButton } from "./banButton";
 import { Banner } from "./banner";
 import { Card } from "./card";
 import {
+  getfavAuthors,
   getLetterpadCategories,
   getLetterpadPosts,
-  getNewAuthors,
 } from "./data";
 import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
@@ -21,7 +21,7 @@ import { fetchPostsByTag } from "../../resourceFetcher";
 export const Website = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: 0 } });
   const categories = await getLetterpadCategories();
-  const newAuthors = await getNewAuthors();
+  const favAuthors = await getfavAuthors();
   const posts = await fetchPostsByTag();
   const rows =
     data?.letterpadLatestPosts.__typename === "PostsNode"
@@ -83,14 +83,14 @@ export const Website = async () => {
             </section>
             <div
               className={classNames(
-                "hidden md:min-w-80 py-10 top-0 space-y-16 md:pl-10",
+                "hidden md:min-w-80 py-10 top-0 space-y-8 md:pl-10",
                 {
                   "md:block": posts.length > 0,
                 }
               )}
             >
               <section className="">
-                <h4 className="font-bold text-lg pb-2 flex items-center gap-2 font-heading">
+                <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
                   <TfiAnnouncement className="text-sky-500" />
                   Announcements
                 </h4>
@@ -133,12 +133,12 @@ export const Website = async () => {
                 </ul>
               </section>
               <section>
-                <h4 className="font-bold text-lg pb-2 font-heading flex items-center gap-2">
+                <h4 className="font-bold text-md pb-2 font-heading flex items-center gap-2">
                   <IoRocketOutline className="text-sky-500" />
-                  New Authors
+                  Our Favourite Authors
                 </h4>
                 <ul className="max-w-md">
-                  {newAuthors?.map((author) => {
+                  {favAuthors?.map((author) => {
                     return (
                       <li className="py-1 sm:py-2" key={author.id}>
                         <div className="flex items-center space-x-4 rtl:space-x-reverse">

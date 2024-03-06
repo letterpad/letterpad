@@ -97,7 +97,7 @@ const Query: QueryResolvers<ResolverContext> = {
   async me(_parent, _args, context) {
     return getAuthor(_args, context);
   },
-  async newAuthors(_parent, _args, { prisma }) {
+  async favAuthors(_parent, _args, { prisma }) {
     const authors = await prisma.author.findMany({
       take: 10,
       where: {
@@ -105,6 +105,7 @@ const Query: QueryResolvers<ResolverContext> = {
         name: {
           not: "",
         },
+        favourite: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -115,8 +116,6 @@ const Query: QueryResolvers<ResolverContext> = {
       register_step: author.register_step as RegisterStep,
       social: getSocialLink(JSON.parse(author.social as string)),
       createdAt: author.createdAt?.toISOString(),
-      analytics_id: author.analytics_id || undefined,
-      analytics_uuid: author.analytics_uuid || undefined,
       signature: author.signature || undefined,
     }));
     return {
