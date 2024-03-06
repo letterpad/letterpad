@@ -96,7 +96,7 @@ export const updatePost = async (
         data: { banned: args.data.banned },
         where: { id: args.data.id },
       });
-
+      revalidateTag("letterpadLatestPosts");
       return {
         ...mapPostToGraphql({ ...existingPost, banned: args.data.banned! }),
       };;
@@ -223,9 +223,6 @@ export const updatePost = async (
       };
     }
 
-    if (isBanned) {
-      revalidateTag("letterpadLatestPosts");
-    }
     if (isFirstPublish) {
       const followers = await prisma.follows.findMany({
         where: {
