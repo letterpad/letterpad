@@ -2,6 +2,7 @@ import Link from "next/link";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 
+import { BanButton } from "./banButton";
 import { Banner } from "./banner";
 import { Card } from "./card";
 import {
@@ -59,18 +60,22 @@ export const Website = async () => {
                 const author =
                   item.author?.__typename === "Author" ? item.author : null;
 
-                const link = new URL(
-                  item.slug ?? "",
-                  `https://${author?.username}.letterpad.app`
-                ).toString();
+                const link = getLink({
+                  slug: item.slug!,
+                  username: author?.username!,
+                });
+
                 return (
-                  <Card
-                    key={item.id}
-                    {...item}
-                    link={link}
-                    slug={link}
-                    author={author!}
-                  />
+                  <div>
+                    <BanButton id={item.id} />
+                    <Card
+                      key={item.id}
+                      {...item}
+                      link={link}
+                      slug={link}
+                      author={author!}
+                    />
+                  </div>
                 );
               })}
               <InfiniteList cursor={rows?.[rows.length - 1]?.id} />
@@ -158,3 +163,7 @@ export const Website = async () => {
     </>
   );
 };
+
+function getLink({ slug, username }: { slug: string; username: string }) {
+  return new URL(slug ?? "", `https://${username}.letterpad.app`).toString();
+}

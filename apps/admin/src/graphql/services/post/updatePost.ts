@@ -90,9 +90,16 @@ export const updatePost = async (
         message: "Post deleted successfully",
       };
     }
+    const isBanned = isAdmin && typeof args.data.banned !== "undefined"
+    if (isBanned) {
+      await prisma.post.update({
+        data: { banned: args.data.banned },
+        where: { id: args.data.id },
+      });
 
-    if (isAdmin && typeof args.data.banned !== "undefined") {
-      newPostArgs.data.banned = args.data.banned;
+      return {
+        ...mapPostToGraphql({ ...existingPost, banned: args.data.banned! }),
+      };;
     }
     if (args.data.title?.trim() || args.data.title === "") {
       newPostArgs.data.title = args.data.title.trim();
@@ -216,6 +223,9 @@ export const updatePost = async (
       };
     }
 
+    if (isBanned) {
+      revalidateTag("letterpadLatestPosts");
+    }
     if (isFirstPublish) {
       const followers = await prisma.follows.findMany({
         where: {
