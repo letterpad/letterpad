@@ -6,5 +6,8 @@ export async function GET() {
   revalidateTag("newAuthors");
   revalidateTag("featuredPosts");
   revalidateTag("categories");
+  revalidateTag("resources");
+  revalidateTag("resource");
+  revalidateTag("announcement");
   return NextResponse.json({});
 }

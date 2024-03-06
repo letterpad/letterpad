@@ -9,7 +9,10 @@ export const fetchResource = async (slug: string) => {
             Authorization:
                 `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
         },
-        cache: "no-cache",
+        cache: "force-cache",
+        next: {
+            tags: ["resource"],
+        },
         body: JSON.stringify({
             query: `
             query {
@@ -45,7 +48,10 @@ export const fetchPostsOfClient = async () => {
             Authorization:
                 `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
         },
-        cache: "no-cache",
+        cache: "force-cache",
+        next: {
+            tags: ["resources"],
+        },
         body: JSON.stringify({
             query: `
             query {
@@ -95,7 +101,10 @@ export const fetchPostsByTag = async () => {
             Authorization:
                 `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
         },
-        cache: "no-cache",
+        cache: "force-cache",
+        next: {
+            tags: ["announcement"],
+        },
         body: JSON.stringify({
             query: `
             query {

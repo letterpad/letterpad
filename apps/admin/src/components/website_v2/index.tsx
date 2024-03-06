@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
@@ -80,7 +81,14 @@ export const Website = async () => {
               })}
               <InfiniteList cursor={rows?.[rows.length - 1]?.id} />
             </section>
-            <div className="hidden md:block md:min-w-80 py-10 top-0 space-y-16 md:pl-10">
+            <div
+              className={classNames(
+                "hidden md:min-w-80 py-10 top-0 space-y-16 md:pl-10",
+                {
+                  "md:block": posts.length > 0,
+                }
+              )}
+            >
               <section className="">
                 <h4 className="font-bold text-lg pb-2 flex items-center gap-2 font-heading">
                   <TfiAnnouncement className="text-sky-500" />
