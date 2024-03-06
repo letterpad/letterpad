@@ -5,6 +5,7 @@ import { IMediaUploadResult } from "@/graphql/types";
 
 import { IUploadFileProps } from "../types";
 import { getAuthCookieName } from "../utils/authCookie";
+
 export const getReadableDate = (timestamp: Date | number | string) => {
   return dayjs(timestamp).format('MMM D, YYYY')
 };

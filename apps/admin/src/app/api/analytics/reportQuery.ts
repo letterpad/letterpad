@@ -46,7 +46,7 @@ export const reportViewPerPage: any = (siteUrl: string) => ({
         {
             name: 'sessions',
         },
-        { name: 'userEngagementDuration' },
+        { name: 'userEngagementDuration' }
     ],
     limit: 100
 })
@@ -129,7 +129,7 @@ export const reportDevice = (siteUrl: string) => ({
     ],
     metrics: [
         {
-            name: 'totalUsers'
+            name: 'sessions'
         },
     ],
     dimensionFilter: {

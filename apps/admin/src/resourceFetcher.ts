@@ -114,6 +114,7 @@ export const fetchPostsByTag = async () => {
                             sub_title
                             excerpt
                             slug
+                            publishedAt
                           }
                         }
                       }
@@ -129,6 +130,7 @@ export const fetchPostsByTag = async () => {
             src: string,
             width: number,
             height: number
-        }
+        },
+        publishedAt: Date
     }[];
 }

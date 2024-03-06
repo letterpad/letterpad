@@ -13,7 +13,8 @@ import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
 import Footer from "../website/Footer";
-import { fetchPostsByTag, fetchPostsOfClient } from "../../resourceFetcher";
+import { timeAgo } from "../../lib/timeAgo";
+import { fetchPostsByTag } from "../../resourceFetcher";
 
 export const Website = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: 0 } });
@@ -52,8 +53,8 @@ export const Website = async () => {
               <Featured />
             </div>
           </div>
-          <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:space-x-8 divide-x-[1px] dark:divide-slate-800 divide-slate-200">
-            <section className="w-full mb-5 flex flex-col">
+          <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 divide-x-[1px] dark:divide-slate-800 divide-slate-200">
+            <section className="w-full mb-5 flex flex-col md:pr-10">
               {rows.map((item) => {
                 const author =
                   item.author?.__typename === "Author" ? item.author : null;
@@ -74,7 +75,7 @@ export const Website = async () => {
               })}
               <InfiniteList cursor={rows?.[rows.length - 1]?.id} />
             </section>
-            <div className="hidden md:block pl-8 md:min-w-64 py-10 top-0 space-y-16">
+            <div className="hidden md:block md:min-w-80 py-10 top-0 space-y-16 md:pl-10">
               <section className="">
                 <h4 className="font-bold text-lg pb-2 flex items-center gap-2 font-heading">
                   <TfiAnnouncement className="text-sky-500" />
@@ -95,11 +96,17 @@ export const Website = async () => {
                           className="text-sm"
                           target="_blank"
                         >
-                          {post.title}
+                          <span className="font-[500]">{post.title}</span>
+
+                          <p className="text-xs truncate opacity-80">
+                            {post.sub_title}
+                          </p>
                         </Link>
-                        <p className="text-xs truncate opacity-80">
-                          {post.sub_title}
-                        </p>
+                        <div className="mt-1">
+                          <time className="block text-[0.68rem] text-blue-500">
+                            {timeAgo(post.publishedAt)}
+                          </time>
+                        </div>
                       </li>
                     );
                   })}
