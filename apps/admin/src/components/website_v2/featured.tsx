@@ -42,6 +42,7 @@ export const Featured = async () => {
                           `@${author?.username}`,
                           getRootUrl()
                         ).toString()}
+                        target="_blank"
                       >
                         <img
                           src={
@@ -55,6 +56,7 @@ export const Featured = async () => {
                       <Link
                         className="flex items-center gap-2 mb-2"
                         href={link}
+                        target="_blank"
                       >
                         <span className="text-base font-bold text-wrap break-words line-clamp-2 font-heading">
                           {article.title}

@@ -17,6 +17,7 @@ import Header from "../header/Header";
 import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
 import { fetchPostsByTag } from "../../resourceFetcher";
+import { getRootUrl } from "../../shared/getRootUrl";
 
 export const Website = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: 0 } });
@@ -128,13 +129,6 @@ export const Website = async () => {
                       </li>
                     );
                   })}
-                  {/* {categories?.popularTags?.rows?.map((category) => {
-                    return (
-                      <li className="text-md truncate" key={category.slug}>
-                        <Link href={`${category.slug!}`}>{category.name}</Link>
-                      </li>
-                    );
-                  })} */}
                 </ul>
               </section>
               <section>
@@ -156,10 +150,26 @@ export const Website = async () => {
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate dark:text-white capitalize">
-                              {author?.name.toLowerCase()}
+                              <Link
+                                target="_blank"
+                                href={new URL(
+                                  `/@${author.username}`,
+                                  getRootUrl()
+                                ).toString()}
+                              >
+                                {author?.name.toLowerCase()}
+                              </Link>
                             </p>
                             <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                              @{author.username}
+                              <Link
+                                target="_blank"
+                                href={new URL(
+                                  `/@${author.username}`,
+                                  getRootUrl()
+                                ).toString()}
+                              >
+                                @{author.username}
+                              </Link>
                             </p>
                           </div>
                         </div>
