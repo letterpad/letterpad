@@ -15,5 +15,6 @@ declare global {
     gtag: any;
     ga: any;
     rg4js: (fn: string, params: Record<string, any>) => void;
+    Prism: any
   }
 }

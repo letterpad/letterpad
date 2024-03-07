@@ -29,8 +29,6 @@ export const getAuthor = cache(
         social: getSocialLink(JSON.parse(author.social as string)),
         avatar,
         createdAt: author.createdAt?.toISOString(),
-        analytics_id: author.analytics_id || undefined,
-        analytics_uuid: author.analytics_uuid || undefined,
         signature: author.signature || undefined,
         __typename: "Author",
       };

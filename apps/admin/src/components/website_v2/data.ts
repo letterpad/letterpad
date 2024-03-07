@@ -3,15 +3,15 @@ import { print } from "graphql";
 
 import { client } from "../../lib/urqlClient";
 import {
+  FavAuthorsDocument,
+  FavAuthorsQuery,
+  FavAuthorsQueryVariables,
   LetterpadFeaturedPostsDocument,
   LetterpadFeaturedPostsQuery,
   LetterpadFeaturedPostsQueryVariables,
   LetterpadLatestPostsDocument,
   LetterpadLatestPostsQuery,
   LetterpadLatestPostsQueryVariables,
-  NewAuthorsDocument,
-  NewAuthorsQuery,
-  NewAuthorsQueryVariables,
   PopularTagsDocument,
   PopularTagsQuery,
   PostsDocument,
@@ -97,10 +97,10 @@ export async function doOmniSearch(search: string) {
   return res.data?.posts.__typename === "PostsNode" ? res.data.posts.rows : [];
 }
 
-export async function getNewAuthors() {
+export async function getfavAuthors() {
   "use server";
-  const res = await client.query<NewAuthorsQuery, NewAuthorsQueryVariables>(
-    NewAuthorsDocument,
+  const res = await client.query<FavAuthorsQuery, FavAuthorsQueryVariables>(
+    FavAuthorsDocument,
     {},
     {
       requestPolicy: "network-only",
@@ -113,7 +113,7 @@ export async function getNewAuthors() {
       },
     }
   );
-  return res.data?.newAuthors?.authors || [];
+  return res.data?.favAuthors?.authors || [];
 }
 
 export async function getFeaturedPosts() {

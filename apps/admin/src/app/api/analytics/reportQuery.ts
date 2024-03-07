@@ -19,7 +19,7 @@ export const totalAll = (siteUrl: string) => ({
             fieldName: "pageLocation",
             stringFilter: {
                 matchType: "BEGINS_WITH",
-                value: new URL("/", siteUrl)
+                value: new URL("", siteUrl)
             }
         }
     },
@@ -44,9 +44,9 @@ export const reportViewPerPage: any = (siteUrl: string) => ({
     },
     metrics: [
         {
-            name: 'totalUsers',
+            name: 'sessions',
         },
-        { name: 'userEngagementDuration' },
+        { name: 'userEngagementDuration' }
     ],
     limit: 100
 })
@@ -62,7 +62,7 @@ export const reportViewPerPage1: any = (siteUrl: string) => ({
             fieldName: "pageLocation",
             stringFilter: {
                 matchType: "BEGINS_WITH",
-                value: new URL("/", siteUrl)
+                value: new URL("", siteUrl)
             }
         }
     },
@@ -82,7 +82,7 @@ export const reportReferral = (siteUrl: string) => ({
     ],
     metrics: [
         {
-            name: 'totalUsers'
+            name: 'sessions'
         }
     ],
     dimensionFilter: {
@@ -105,7 +105,7 @@ export const reportCountry = (siteUrl: string) => ({
     ],
     metrics: [
         {
-            name: 'totalUsers'
+            name: 'sessions'
         },
     ],
     dimensionFilter: {
@@ -129,7 +129,7 @@ export const reportDevice = (siteUrl: string) => ({
     ],
     metrics: [
         {
-            name: 'totalUsers'
+            name: 'sessions'
         },
     ],
     dimensionFilter: {

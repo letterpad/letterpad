@@ -9,7 +9,10 @@ export const fetchResource = async (slug: string) => {
             Authorization:
                 `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
         },
-        cache: "no-cache",
+        cache: "force-cache",
+        next: {
+            tags: ["resource"],
+        },
         body: JSON.stringify({
             query: `
             query {
@@ -45,7 +48,10 @@ export const fetchPostsOfClient = async () => {
             Authorization:
                 `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
         },
-        cache: "no-cache",
+        cache: "force-cache",
+        next: {
+            tags: ["resources"],
+        },
         body: JSON.stringify({
             query: `
             query {
@@ -81,5 +87,59 @@ export const fetchPostsOfClient = async () => {
             width: number,
             height: number
         }
+    }[];
+}
+
+export const fetchPostsByTag = async () => {
+    if (!process.env.LETTERPAD_BLOG_KEY) {
+        throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
+    }
+    const req = await fetch(new URL('api/graphql', 'https://letterpad.app').toString(), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization:
+                `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
+        },
+        cache: "force-cache",
+        next: {
+            tags: ["announcement"],
+        },
+        body: JSON.stringify({
+            query: `
+            query {
+                tag(slug:"announcement"){
+                    __typename
+                    ...on Tag{
+                      posts {
+                          ...on PostsNode {
+                          rows{
+                            title
+                            cover_image {
+                                src
+                                width
+                                height
+                            }
+                            sub_title
+                            excerpt
+                            slug
+                            publishedAt
+                          }
+                        }
+                      }
+                    }
+                  }
+            }
+            `,
+        }),
+    });
+    const data = await req.json();
+    return data?.data?.tag?.posts?.rows as {
+        title: string, html: string, sub_title: string, excerpt: string, slug: string, author: { name: string, avatar: string }, cover_image: {
+            src: string,
+            width: number,
+            height: number
+        },
+        publishedAt: Date
     }[];
 }

@@ -36,12 +36,9 @@ type Author {
   avatar: String
   verified: Boolean
   accessToken: String @maskIfUnauth
-  analytics_id: Int
-    @deprecated(reason: "Use google_analytics instead from settings")
-  analytics_uuid: String
-    @deprecated(reason: "Umami is no longer supported for performance reasons")
   first_post_published: Boolean
   settings_updated: Boolean
+  favourite: Boolean
   profile_updated: Boolean
   register_step: RegisterStep
   createdAt: String
@@ -86,6 +83,7 @@ input InputAuthor {
   first_post_published: Boolean
   settings_updated: Boolean
   profile_updated: Boolean
+  favourite: Boolean
 }
 
 input InputCreateAuthor {
@@ -137,7 +135,7 @@ type AboutStatsResponse {
   ok: Boolean!
 }
 
-type NewAuthorResponse {
+type favAuthorResponse {
   authors: [Author]!
   ok: Boolean!
 }
@@ -146,7 +144,7 @@ type Query {
   me: AuthorResponse
   isFollowing(username: String!): IsFollowingResponse!
   aboutStats(username: String!): AboutStatsResponse!
-  newAuthors(limit: Int): NewAuthorResponse
+  favAuthors(limit: Int): favAuthorResponse
 }
 
 type Mutation {

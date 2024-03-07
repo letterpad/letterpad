@@ -6,11 +6,12 @@ import {
   RegisterStep,
   RequireFields,
   ResolversTypes,
+  Role,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
-import { EmailTemplates } from "@/graphql/types";
+import { EmailTemplates, ROLES } from "@/graphql/types";
 import { sanitizeUsername } from "@/shared/utils";
 import { getHashedPassword } from "@/utils/bcrypt";
 
@@ -32,6 +33,8 @@ export const updateAuthor = async (
       message: "You are not authorized to update this author",
     };
   }
+  const isFavourite = session.user.role === Role.Admin && typeof args.author.favourite !== "undefined";
+
   const exisitingAuthor = await prisma.author.findFirst({
     where: {
       id: session.user.id,
@@ -40,6 +43,17 @@ export const updateAuthor = async (
       setting: true,
     },
   });
+
+  if (exisitingAuthor && isFavourite) {
+    await prisma.author.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        favourite: args.author.favourite
+      }
+    })
+  }
   try {
     const dataToUpdate = { ...args.author } as InputAuthorForDb & {
       verified?: boolean;

@@ -412,6 +412,7 @@ query LetterpadLatestPosts($filters: LetterpadPostsFilters) {
           width
           height
         }
+        banned
         stats {
           reading_time
         }
@@ -420,6 +421,7 @@ query LetterpadLatestPosts($filters: LetterpadPostsFilters) {
             name
             username
             avatar
+            favourite
             __typename
           }
         }
@@ -448,8 +450,8 @@ query PopularTags {
   }
 }
 
-query NewAuthors {
-  newAuthors {
+query FavAuthors {
+  favAuthors {
     authors {
       id
       name

@@ -55,7 +55,7 @@ export const Card: FC<Props> = ({
             <img
               src={avatar}
               alt={author?.name}
-              className="w-7 h-7 object-cover rounded-full"
+              className="w-7 h-7 object-cover rounded-full bg-slate-200"
             />
           </div>
           <span className="text-gray-800 dark:text-gray-200">
@@ -67,14 +67,14 @@ export const Card: FC<Props> = ({
         href={link}
         target="_blank"
         rel="noreferrer"
-        className="flex flex-row justify-between"
+        className="flex flex-row justify-between md:gap-6"
       >
-        <div className="flex flex-col gap-y-2  justify-between py-2">
+        <div className="flex flex-col gap-y-2 justify-between py-2">
           <div className="flex flex-col gap-1">
-            <p className="text-lg font-bold block capitalize text-ellipsis text-gray-800 dark:text-gray-200">
+            <p className="font-heading text-lg font-[600] block text-ellipsis text-gray-800 dark:text-gray-200">
               {title}
             </p>
-            <span className="text-gray-800 mr-3 dark:text-gray-400">
+            <span className="text-gray-800 mr-3 dark:text-gray-400 line-clamp-2">
               {excerpt ?? sub_title}
             </span>
           </div>

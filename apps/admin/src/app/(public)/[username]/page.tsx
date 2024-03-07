@@ -7,7 +7,6 @@ import { TfiNewWindow } from "react-icons/tfi";
 import { prisma } from "@/lib/prisma";
 
 import { AboutStats } from "@/components/about-stats";
-import { PageView } from "@/components/pageView";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { getTagsLinkedWithPosts } from "@/graphql/services/tag/getTags";
@@ -262,7 +261,6 @@ const About = async ({ params }: { params: { username: string } }) => {
             </div>
           )}
         </div>
-        <PageView type="profile" id={author.id} />
       </div>
     </>
   );

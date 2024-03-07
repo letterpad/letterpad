@@ -38,8 +38,6 @@ model Author {
   createdAt            DateTime?       @default(now())
   updatedAt            DateTime?       @updatedAt
   verify_attempt_left  Int?            @default(3)
-  analytics_id         Int?
-  analytics_uuid       String?
   role_id              Int
   login_type           String          @default("credentials")
   last_seen            DateTime?
@@ -53,6 +51,7 @@ model Author {
   first_post_published Boolean         @default(false)
   settings_updated     Boolean         @default(false)
   profile_updated      Boolean         @default(false)
+  favourite            Boolean         @default(false)
   session              Session[]
   followers            Follows[]       @relation("following")
   following            Follows[]       @relation("follower")
@@ -201,6 +200,7 @@ model Post {
   likes              Likes[]
   mail_status        MailStatus     @default(INACTIVE)
   exclude_from_home  Boolean        @default(false)
+  banned             Boolean        @default(false)
   views              PageViews[]
   featured_weeks     FeaturedWeek[]
   pageTimeLog        PageTimeLog[]

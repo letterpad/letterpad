@@ -50,6 +50,49 @@ export const titleEditorConfig: IProps["init"] = {
   },
 };
 
+function modifyElements(node: Element) {
+  if (node.tagName === 'IMG') {
+    node.removeAttribute('srcset');
+  }
+  if (node.getAttribute('data-mce-bogus') || node.tagName === "BUTTON") {
+    node.parentNode?.removeChild(node)
+  }
+  let parentElem = node.parentElement;
+  while (parentElem) {
+    if (parentElem.nodeName === 'PRE') {
+      const childEle = parentElem.children[0] as HTMLElement;
+      const parentClass = parentElem.getAttribute('class');
+      const childClass = childEle?.getAttribute('class');
+
+      if (!parentClass?.startsWith("language")) {
+        if (childClass?.startsWith("language")) {
+          parentElem.setAttribute('class', childClass)
+        } else {
+          parentElem.setAttribute('class', "language-javascript")
+        }
+      }
+      const lang = parentClass?.split('-')[1] || childClass?.split('-')[1] || 'plain';
+      parentElem.innerHTML = parentElem.innerHTML?.replaceAll('<br>', '\n');
+      const code = parentElem.innerText?.replaceAll('\n', '\r\n');
+      if (code) {
+        const highlight = window.Prism.highlight(code, window.Prism.languages[lang], lang);
+        parentElem.innerHTML = `<code class="language-javascript">${highlight}</code>`
+      }
+      return; // Exit the loop if a <pre> element is found
+    }
+    parentElem = parentElem.parentElement;
+  }
+  while (node.attributes.length > 0) {
+    node.removeAttribute(node.attributes[0].name);
+  }
+
+
+  // Recursively process child nodes
+  const childNodes = Array.from(node.children);
+  childNodes.forEach(child => modifyElements(child));
+}
+
+
 export const blogEditorConfig = ({
   isDark,
   editorRef,
@@ -61,7 +104,19 @@ export const blogEditorConfig = ({
   paste_preprocess: function (pl, o) {
     o.content = o.content
       .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")
-      .replace(/(.*?)<br\s?\/?>/gi, "<p>$1</p>");
+    // .replace(/(.*?)<br\s?\/?>/gi, "<p>$1</p>");
+
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = o.content;
+
+    const nodes = Array.from(tempElement.children);
+    nodes.forEach(elem => modifyElements(elem));
+    let content = nodes.map(node => node.outerHTML).join('');
+
+    pl.execCommand('mceInsertContent', false, content);
+
+    // Cancel the paste event to prevent default behavior
+    o.preventDefault();
   },
   min_height: 300,
   menubar: false,
@@ -133,13 +188,6 @@ export const blogEditorConfig = ({
         },
       });
     }
-    // editor.on("init", function () {
-    //   setTimeout(() => {
-    //     editor.dom.doc
-    //       ?.querySelectorAll("img")
-    //       .forEach((e) => e.removeAttribute("srcset"));
-    //   }, 1000);
-    // });
   },
   entity_encoding: "raw",
   codesample_global_prismjs: true,

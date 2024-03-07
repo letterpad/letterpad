@@ -8,14 +8,12 @@ import Link from '@/components/Link';
 import { LikeProvider } from '../like/context';
 import { Like } from '../like/like';
 import { PostFooter } from '../../app/(others)/post/[slug]/post-footer';
-import { PageView } from '../../components/pageView';
 import { PostAuthor } from '../../components/postAuthor';
 import { PrismHighlight } from '../../components/prism-highlight';
 import { PublishedAt } from '../../components/published-at';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
 import { SubscribeToMyBlogPopup } from '../../components/subscribePopup';
-import { TimeSpent } from '../../components/time-spent';
 import { PageTitle } from '../../components/title';
 import { Share } from '../../../components/share';
 import { getApiRootUrl } from '../../../lib/utils/url';
@@ -24,7 +22,7 @@ import { PostProps } from '../../../types/pageTypes';
 const Comments = lazy(() => import('@/components/comments'));
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
-  const { title, tags, author, type, sub_title, id } = post;
+  const { title, tags, author, type, sub_title } = post;
 
   if (author?.__typename !== 'Author') return null;
 
@@ -126,8 +124,6 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           </article>
         </div>
         <PrismHighlight />
-        {!isPage && <PageView id={id} type="post" />}
-        <TimeSpent id={id} type="post" />
 
         {!isPage && (
           <PostFooter

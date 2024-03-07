@@ -2,6 +2,7 @@
 import { FC, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { AdminActions } from "./adminActions";
 import { Card } from "./card";
 import { getLetterpadPosts } from "./data";
 import { Post } from "../../../__generated__server/__types__";
@@ -35,18 +36,19 @@ export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
       className="w-full mb-5 flex flex-col overflow-hidden"
     >
       {data.map((item) => {
-        const username =
-          item.author?.__typename === "Author" ? item.author.username : "";
-        const link = `https://${username}.letterpad.app/${item.slug}`;
+        const author =
+          item.author?.__typename === "Author" ? item.author : undefined;
+        const link = `https://${author?.username}.letterpad.app/${item.slug}`;
         return (
-          <Card
-            {...item}
-            link={link}
-            slug={link}
-            author={
-              item.author?.__typename === "Author" ? item.author : undefined
-            }
-          />
+          <div>
+            <AdminActions
+              id={item.id}
+              banned={item.banned!}
+              isFavourite={author?.favourite!}
+              authorId={item.id!}
+            />
+            <Card {...item} link={link} slug={link} author={author} />
+          </div>
         );
       })}
     </InfiniteScroll>
