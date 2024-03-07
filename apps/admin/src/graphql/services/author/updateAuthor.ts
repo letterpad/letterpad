@@ -11,7 +11,7 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
-import { EmailTemplates, ROLES } from "@/graphql/types";
+import { EmailTemplates } from "@/graphql/types";
 import { sanitizeUsername } from "@/shared/utils";
 import { getHashedPassword } from "@/utils/bcrypt";
 
@@ -83,7 +83,7 @@ export const updateAuthor = async (
           username: args.author.username,
           id: {
             not: {
-              equals: args.author.id,
+              equals: session.user.id,
             },
           },
         },
@@ -103,7 +103,7 @@ export const updateAuthor = async (
           email: args.author.email,
           id: {
             not: {
-              equals: args.author.id,
+              equals: session.user.id,
             },
           },
         },
@@ -120,7 +120,7 @@ export const updateAuthor = async (
     const { id: _id, ...data } = dataToUpdate;
     const author = await prisma.author.update({
       data: { ...data },
-      where: { id: args.author.id },
+      where: { id: session.user.id },
     });
 
     //@todo:the date difference is to make sure users dont receive another email.
