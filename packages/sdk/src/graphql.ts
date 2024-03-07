@@ -37,15 +37,12 @@ export type AddDomainResponse = Domain | DomainError;
 export type Author = {
   __typename?: "Author";
   accessToken?: Maybe<Scalars["String"]>;
-  /** @deprecated Use google_analytics instead from settings */
-  analytics_id?: Maybe<Scalars["Int"]>;
-  /** @deprecated Umami is no longer supported for performance reasons */
-  analytics_uuid?: Maybe<Scalars["String"]>;
   avatar?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
   company_name?: Maybe<Scalars["String"]>;
   createdAt?: Maybe<Scalars["String"]>;
   email: Scalars["String"];
+  favourite?: Maybe<Scalars["Boolean"]>;
   first_post_published?: Maybe<Scalars["Boolean"]>;
   followers?: Maybe<Array<Maybe<FollowAuthor>>>;
   following?: Maybe<Array<Maybe<FollowAuthor>>>;
@@ -205,6 +202,12 @@ export type Failed = LetterpadError & {
   type?: Maybe<Failed>;
 };
 
+export type FavAuthorResponse = {
+  __typename?: "FavAuthorResponse";
+  authors: Array<Maybe<Author>>;
+  ok: Scalars["Boolean"];
+};
+
 export type Feed = {
   __typename?: "Feed";
   rows: Array<FeedNode>;
@@ -275,6 +278,7 @@ export type InputAuthor = {
   bio?: InputMaybe<Scalars["String"]>;
   company_name?: InputMaybe<Scalars["String"]>;
   email?: InputMaybe<Scalars["String"]>;
+  favourite?: InputMaybe<Scalars["Boolean"]>;
   first_post_published?: InputMaybe<Scalars["Boolean"]>;
   id: Scalars["Int"];
   name?: InputMaybe<Scalars["String"]>;
@@ -371,6 +375,7 @@ export type InputUpdateMedia = {
 };
 
 export type InputUpdatePost = {
+  banned?: InputMaybe<Scalars["Boolean"]>;
   cover_image?: InputMaybe<InputImage>;
   excerpt?: InputMaybe<Scalars["String"]>;
   exclude_from_home?: InputMaybe<Scalars["Boolean"]>;
@@ -638,12 +643,6 @@ export enum NavigationType {
   Tag = "tag",
 }
 
-export type NewAuthorResponse = {
-  __typename?: "NewAuthorResponse";
-  authors: Array<Maybe<Author>>;
-  ok: Scalars["Boolean"];
-};
-
 export type NotFound = LetterpadError & {
   __typename?: "NotFound";
   message: Scalars["String"];
@@ -731,6 +730,7 @@ export type PopularTagsResponse = {
 export type Post = {
   __typename?: "Post";
   author?: Maybe<AuthorResponse>;
+  banned?: Maybe<Scalars["Boolean"]>;
   cover_image: Image;
   createdAt: Scalars["Date"];
   excerpt?: Maybe<Scalars["String"]>;
@@ -831,6 +831,7 @@ export enum PostTypes {
 
 export type PostsFilters = {
   author?: InputMaybe<Scalars["String"]>;
+  banned?: InputMaybe<Scalars["Boolean"]>;
   cursor?: InputMaybe<Scalars["Int"]>;
   featured?: InputMaybe<Scalars["Boolean"]>;
   id?: InputMaybe<Scalars["Int"]>;
@@ -865,6 +866,7 @@ export type Query = {
   domain: DomainResponse;
   email: EmailResponse;
   emails: Array<Maybe<Email>>;
+  favAuthors?: Maybe<FavAuthorResponse>;
   feed: FeedResponse;
   isFollowing: IsFollowingResponse;
   isPostLiked: IsPostLikedResponse;
@@ -873,7 +875,6 @@ export type Query = {
   letterpadLatestPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;
   media: MediaResponse;
-  newAuthors?: Maybe<NewAuthorResponse>;
   notifications: NotificationResponse;
   popularTags: PopularTagsResponse;
   post: PostResponse;
@@ -905,6 +906,10 @@ export type QueryEmailArgs = {
   template_id?: InputMaybe<Scalars["String"]>;
 };
 
+export type QueryFavAuthorsArgs = {
+  limit?: InputMaybe<Scalars["Int"]>;
+};
+
 export type QueryIsFollowingArgs = {
   username: Scalars["String"];
 };
@@ -923,10 +928,6 @@ export type QueryLetterpadLatestPostsArgs = {
 
 export type QueryMediaArgs = {
   filters?: InputMaybe<MediaFilters>;
-};
-
-export type QueryNewAuthorsArgs = {
-  limit?: InputMaybe<Scalars["Int"]>;
 };
 
 export type QueryNotificationsArgs = {
@@ -1242,8 +1243,8 @@ export type MeQuery = {
         signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
-        analytics_uuid?: string | null;
         username: string;
+        favourite?: boolean | null;
         createdAt?: string | null;
         followers?: Array<{
           __typename?: "FollowAuthor";
@@ -1282,8 +1283,8 @@ export type MeFragmentFragment = {
   signature?: string | null;
   avatar?: string | null;
   company_name?: string | null;
-  analytics_uuid?: string | null;
   username: string;
+  favourite?: boolean | null;
   createdAt?: string | null;
   followers?: Array<{
     __typename?: "FollowAuthor";
@@ -1365,8 +1366,8 @@ export type MeAndSettingsQuery = {
         signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
-        analytics_uuid?: string | null;
         username: string;
+        favourite?: boolean | null;
         createdAt?: string | null;
         followers?: Array<{
           __typename?: "FollowAuthor";
@@ -1651,8 +1652,8 @@ export type PostPageQuery = {
         signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
-        analytics_uuid?: string | null;
         username: string;
+        favourite?: boolean | null;
         createdAt?: string | null;
         followers?: Array<{
           __typename?: "FollowAuthor";
@@ -2038,8 +2039,8 @@ export const MeFragmentFragmentDoc = `
     signature
     avatar
     company_name
-    analytics_uuid
     username
+    favourite
     followers {
       name
       avatar

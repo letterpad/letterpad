@@ -23,7 +23,7 @@ export const cache = cacheExchange({
     Author: () => null,
     PostsNode: () => null,
     Notification: () => null,
-    NewAuthorResponse: () => null,
+    FavAuthorResponse: () => null,
   },
 });
 
