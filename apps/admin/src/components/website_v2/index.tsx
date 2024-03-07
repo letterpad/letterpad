@@ -143,9 +143,9 @@ export const Website = async () => {
                         <div className="flex items-center space-x-4 rtl:space-x-reverse">
                           <div className="flex-shrink-0">
                             <img
-                              className="w-8 h-8 rounded-full bg-gray-200"
+                              className="w-8 h-8 rounded-full bg-gray-200 object-cover"
                               src={author?.avatar}
-                              alt="Neil image"
+                              alt={author.name}
                             />
                           </div>
                           <div className="flex-1 min-w-0">
