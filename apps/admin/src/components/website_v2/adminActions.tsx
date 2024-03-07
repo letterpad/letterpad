@@ -28,7 +28,8 @@ export const AdminActions = ({
   const favAuthor = async () => {
     updateAuthor({ id: authorId, favourite: true });
   };
-  if (data?.user && data.user.role !== ROLES.ADMIN) return null;
+  if (!data?.user?.role) return null;
+  if (data.user.role !== ROLES.ADMIN) return null;
   return (
     <div className="flex gap-2">
       <Button
