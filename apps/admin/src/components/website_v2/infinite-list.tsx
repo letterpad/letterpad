@@ -45,7 +45,7 @@ export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
               id={item.id}
               banned={item.banned!}
               isFavourite={author?.favourite!}
-              authorId={item.id!}
+              authorId={author?.id!}
             />
             <Card {...item} link={link} slug={link} author={author} />
           </div>
