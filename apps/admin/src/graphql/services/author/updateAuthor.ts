@@ -47,7 +47,7 @@ export const updateAuthor = async (
   if (exisitingAuthor && isFavourite) {
     await prisma.author.update({
       where: {
-        id: session.user.id,
+        id: args.author.id,
       },
       data: {
         favourite: args.author.favourite
