@@ -419,6 +419,7 @@ query LetterpadLatestPosts($filters: LetterpadPostsFilters) {
         author {
           ... on Author {
             name
+            id
             username
             avatar
             favourite
@@ -486,6 +487,7 @@ query LetterpadFeaturedPosts {
             name
             username
             avatar
+            id
             __typename
           }
         }

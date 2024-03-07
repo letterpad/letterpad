@@ -2,7 +2,8 @@
 import { useRouter } from "next/navigation";
 import { MouseEvent, ReactNode, useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import { Button, Modal, PageHeader } from "ui";
+import { Button, Modal } from "ui";
+import { PageHeader } from "ui/isomorphic";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";

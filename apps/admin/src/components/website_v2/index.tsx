@@ -72,7 +72,7 @@ export const Website = async () => {
                       id={item.id}
                       banned={!!item.banned}
                       isFavourite={!!author?.favourite}
-                      authorId={item.id!}
+                      authorId={author?.id!}
                     />
                     <Card
                       key={item.id}

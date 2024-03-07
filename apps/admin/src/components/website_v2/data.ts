@@ -41,27 +41,7 @@ export async function getLetterpadPosts(
   });
   const data = await resp.json();
   return data.data as LetterpadLatestPostsQuery;
-  // const res = await client.query<
-  //   LetterpadLatestPostsQuery,
-  //   LetterpadLatestPostsQueryVariables
-  // >(
-  //   LetterpadLatestPostsDocument,
-  //   {
-  //     filters: {
-  //       cursor,
-  //     },
-  //   },
-  //   {
-  //     fetch: fetch,
-  //     fetchOptions: {
-  //       next: {
-  //         tags: ["letterpadLatestPosts"],
-  //       },
-  //       cache: "force-cache",
-  //     },
-  //   }
-  // );
-  // return res.data;
+
 }
 
 export async function getLetterpadCategories() {

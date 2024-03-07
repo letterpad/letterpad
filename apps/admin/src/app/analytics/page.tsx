@@ -2,7 +2,8 @@
 import Chart, { ChartConfiguration } from "chart.js/auto";
 import { InferGetServerSidePropsType } from "next";
 import { FC, useEffect, useRef, useState } from "react";
-import { Content, PageHeader, useTheme } from "ui";
+import { Content, useTheme } from "ui";
+import { PageHeader } from "ui/isomorphic";
 import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
 import {

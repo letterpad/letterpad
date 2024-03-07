@@ -53,6 +53,10 @@ export const updateAuthor = async (
         favourite: args.author.favourite
       }
     })
+    return {
+      __typename: "Author",
+      ...mapAuthorToGraphql({ ...exisitingAuthor, favourite: args.author.favourite! }),
+    };
   }
   try {
     const dataToUpdate = { ...args.author } as InputAuthorForDb & {
