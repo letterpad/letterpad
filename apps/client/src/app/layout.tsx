@@ -1,5 +1,4 @@
 // export const runtime = 'edge';
-
 import classNames from 'classnames';
 import { Metadata } from 'next';
 import Script from 'next/script';
@@ -170,19 +169,27 @@ const Layout = async ({ children }) => {
             }}
           />
           {process.env.NODE_ENV === 'production' && (
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
-            />
-          )}
-          <Script id="google-analytics" async={true}>
-            {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          
-          gtag('config', "${trackingId}",{ 'user_id': ${me.id}, transport_url: window.location.origin + '/analytics'});
+            <Script id="google-analytics" async={true}>
+              {`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://ping.letterpad.app/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-557WRD5R')
           `}
-          </Script>
+            </Script>
+          )}
+
+          {process.env.NODE_ENV === 'production' && (
+            <noscript>
+              <iframe
+                src="https://ping.letterpad.app/ns.html?id=GTM-557WRD5R"
+                height="0"
+                width="0"
+                className="hidden"
+              ></iframe>
+            </noscript>
+          )}
 
           <SessionProvider>
             <main className="mb-auto">{children}</main>

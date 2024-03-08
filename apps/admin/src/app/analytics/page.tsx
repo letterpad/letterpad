@@ -20,7 +20,7 @@ import { getDateRanges } from "@/components/analytics/utils";
 import { SessionData } from "@/graphql/types";
 
 import {
-  ApiResponseData,
+  type ApiResponseData,
   DateRange,
   DateRangeEnum,
 } from "../api/analytics/types";
@@ -29,7 +29,6 @@ type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
-
 const Analytics: FC<P & Props> = () => {
   const { theme } = useTheme();
   const [data, setData] = useState<ApiResponseData>({
@@ -38,7 +37,7 @@ const Analytics: FC<P & Props> = () => {
     referals: [],
     countries: [],
     total: null,
-    nextData: [],
+    sessionsPerDay: [],
   });
   const [fetching, setFetching] = useState(true);
   const chartContainer = useRef<HTMLCanvasElement>(null);
@@ -58,15 +57,19 @@ const Analytics: FC<P & Props> = () => {
     fetch(
       "/api/analytics?" + new URLSearchParams(dateRange as any).toString(),
       {
-        cache: "default",
+        cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
+          // "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
         },
       }
     )
       .then((res) => res.json())
-      .then(setData)
+      .then((res) => {
+        if (res) {
+          setData(res);
+        }
+      })
       .then(() => setFetching(false))
       .catch(() => setFetching(false));
   };
@@ -74,15 +77,15 @@ const Analytics: FC<P & Props> = () => {
   useEffect(doFetch, [dateRange]);
 
   useEffect(() => {
+    if (!data?.sessionsPerDay) return;
     if (chartContainer.current) {
       // Destroy existing chart to prevent memory leaks
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
-
       // Extract dates and page views from data
-      const dates = data?.nextData?.map((entry) => entry.date);
-      const pageViews = data?.nextData?.map((entry) => entry.pageViews);
+      const dates = data.sessionsPerDay?.map((entry) => entry.date);
+      const pageViews = data.sessionsPerDay?.map((entry) => entry.sessions);
 
       const ctx = chartContainer.current.getContext("2d");
       if (ctx) {
@@ -92,7 +95,7 @@ const Analytics: FC<P & Props> = () => {
             labels: dates,
             datasets: [
               {
-                label: "Page Views",
+                label: "Sessions",
                 backgroundColor:
                   theme === "dark" ? "rgb(255, 99, 132)" : "rgb(75, 192, 192)",
                 data: pageViews,
@@ -139,7 +142,7 @@ const Analytics: FC<P & Props> = () => {
                 },
                 title: {
                   display: true,
-                  text: "Page Views",
+                  text: "Sessions",
                   color: theme === "dark" ? "#eee" : "#333",
                 },
                 grid: {
@@ -160,9 +163,10 @@ const Analytics: FC<P & Props> = () => {
         chartInstance.current.destroy();
       }
     };
-  }, [data.nextData, theme]);
+  }, [data?.sessionsPerDay, theme]);
 
   useEffect(() => {
+    if (!data?.device) return;
     if (deviceContainer.current) {
       // Destroy existing chart to prevent memory leaks
       if (deviceInstance.current) {
@@ -172,7 +176,7 @@ const Analytics: FC<P & Props> = () => {
       // Extract dates and page views from data
       // Extract labels and data values from the data
       const labels = data.device.map((item) => item.device);
-      const values = data.device.map((item) => item.views);
+      const values = data.device.map((item) => item.sessions);
 
       const ctx = deviceContainer.current.getContext("2d");
       if (ctx) {
@@ -182,7 +186,7 @@ const Analytics: FC<P & Props> = () => {
             labels: labels,
             datasets: [
               {
-                label: "Views by Device",
+                label: "sessions by Device",
                 data: values,
                 backgroundColor: [
                   "rgba(49, 137, 106, 0.8)",
@@ -242,9 +246,10 @@ const Analytics: FC<P & Props> = () => {
         deviceInstance.current.destroy();
       }
     };
-  }, [data.device, theme]);
+  }, [data?.device, theme]);
 
   useEffect(() => {
+    if (!data?.countries) return;
     if (countryContainer.current) {
       // Destroy existing chart to prevent memory leaks
       if (countryInstance.current) {
@@ -252,7 +257,7 @@ const Analytics: FC<P & Props> = () => {
       }
 
       const countryNames = data.countries.map((country) => country.country);
-      const views = data.countries.map((country) => country.views);
+      const sessions = data.countries.map((country) => country.sessions);
 
       const ctx = countryContainer.current.getContext("2d");
       if (ctx) {
@@ -262,8 +267,8 @@ const Analytics: FC<P & Props> = () => {
             labels: countryNames,
             datasets: [
               {
-                label: "Views",
-                data: views,
+                label: "Sessions",
+                data: sessions,
                 backgroundColor: "rgba(54, 162, 235, 0.5)", // Blue color
                 borderColor: "rgba(54, 162, 235, 1)",
                 borderWidth: 1,
@@ -310,10 +315,10 @@ const Analytics: FC<P & Props> = () => {
         countryInstance.current.destroy();
       }
     };
-  }, [data.countries, theme]);
+  }, [data?.countries, theme]);
 
   const display =
-    fetching || (data.total && Number(data.total.Users?.value) >= 1);
+    fetching || (data?.total && Number(data.total.Users?.value) >= 1);
   return (
     <>
       <PageHeader className="site-page-header" title="Analytics">
@@ -328,7 +333,7 @@ const Analytics: FC<P & Props> = () => {
           </div>
         </div>
         <div className="pb-20">
-          {display ? (
+          {display && data ? (
             <div className="min-w-0 gap-2 flex flex-col">
               <div className="min-w-0 gap-2 flex flex-col">
                 <TotalStats data={data.total} loading={fetching} />

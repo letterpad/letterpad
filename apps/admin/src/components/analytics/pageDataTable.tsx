@@ -1,19 +1,13 @@
 import { ListPlaceholder } from "ui";
 
 import { secondsToMinutes } from "../../app/api/analytics/helper";
-
-export interface PageDataItem {
-  pagePath: string;
-  pageViews: number;
-  duration: number;
-  pageTitle: string;
-}
+import { ProcessedReportData } from "../../app/api/analytics/types";
 
 export function PageDataTable({
   data,
   loading,
 }: {
-  data: PageDataItem[];
+  data: ProcessedReportData[];
   loading: boolean;
 }) {
   if (loading) return <ListPlaceholder className="w-full" />;
@@ -26,7 +20,10 @@ export function PageDataTable({
               Page Path
             </th>
             <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
-              Page Views
+              Sessions
+            </th>
+            <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
+              Avg. Engagement Rate
             </th>
             <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
               Avg. Engagement Time
@@ -50,6 +47,9 @@ export function PageDataTable({
               </td>
               <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
                 {item.pageViews}
+              </td>
+              <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
+                {item.engagementRate}
               </td>
               <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
                 {secondsToMinutes(item.duration / item.pageViews)}
