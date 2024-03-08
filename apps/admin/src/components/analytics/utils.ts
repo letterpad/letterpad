@@ -22,6 +22,12 @@ export const getDateRanges = (value: DateRangeEnum): DateRange => {
             prevStartDate = today.subtract(2, "day");
             prevEndDate = today.subtract(2, "day");
             break;
+        case DateRangeEnum.last3Days:
+            startDate = today.subtract(3, "day");
+            endDate = today.subtract(1, "day");
+            prevStartDate = dayjs(startDate).subtract(3, "day");
+            prevEndDate = dayjs(startDate).subtract(1, "day");
+            break;
         case DateRangeEnum.last7Days:
             startDate = today.subtract(7, "day");
             endDate = today.subtract(1, "day");
