@@ -95,7 +95,7 @@ export const Website = async () => {
                 }
               )}
             >
-              <section className="">
+              <section className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-sky-50 dark:bg-sky-500/20 p-4 border">
                 <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
                   <TfiAnnouncement className="text-sky-500" />
                   Announcements
