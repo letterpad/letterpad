@@ -36,6 +36,7 @@ export const queueSubscribeEmails = async (
   postId: number,
   data: Array<any>
 ) => {
+  if (!data.length) return;
   await client?.json.set(getKeyForEmailSubscription(postId), "$", data, {
     nx: true,
   });
@@ -46,7 +47,7 @@ export const queueSubscribeEmails = async (
 // };
 
 export const getQueuedSubscriberEmails = async (postId: number) => {
-  return await client?.json.get(getKeyForEmailSubscription(postId));
+  return await client?.json.get<any>(getKeyForEmailSubscription(postId));
 };
 
 export const delQueuedSubscriberEmails = async (...keys) => {

@@ -42,21 +42,23 @@ export const Featured = async () => {
                           `@${author?.username}`,
                           getRootUrl()
                         ).toString()}
+                        target="_blank"
                       >
                         <img
                           src={
                             author?.avatar ?? "https://www.gravatar.com/avatar/"
                           }
                           alt={article.title}
-                          className="w-4 h-4 rounded-full"
+                          className="w-6 h-6 rounded-full object-cover"
                         />
                         <span className="text-sm">{author?.name ?? ""}</span>
                       </Link>
                       <Link
                         className="flex items-center gap-2 mb-2"
                         href={link}
+                        target="_blank"
                       >
-                        <span className="text-base font-semibold text-wrap break-words line-clamp-2">
+                        <span className="text-base font-bold text-wrap break-words line-clamp-2 font-heading">
                           {article.title}
                         </span>
                       </Link>

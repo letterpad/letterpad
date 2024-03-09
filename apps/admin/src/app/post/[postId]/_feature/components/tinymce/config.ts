@@ -60,13 +60,23 @@ function modifyElements(node: Element) {
   let parentElem = node.parentElement;
   while (parentElem) {
     if (parentElem.nodeName === 'PRE') {
-      if (!parentElem.getAttribute('class')?.startsWith("language")) {
-        const childClass = parentElem.firstElementChild?.getAttribute('class');
+      const childEle = parentElem.children[0] as HTMLElement;
+      const parentClass = parentElem.getAttribute('class');
+      const childClass = childEle?.getAttribute('class');
+
+      if (!parentClass?.startsWith("language")) {
         if (childClass?.startsWith("language")) {
           parentElem.setAttribute('class', childClass)
         } else {
           parentElem.setAttribute('class', "language-javascript")
         }
+      }
+      const lang = parentClass?.split('-')[1] || childClass?.split('-')[1] || 'plain';
+      parentElem.innerHTML = parentElem.innerHTML?.replaceAll('<br>', '\n');
+      const code = parentElem.innerText?.replaceAll('\n', '\r\n');
+      if (code) {
+        const highlight = window.Prism.highlight(code, window.Prism.languages[lang], lang);
+        parentElem.innerHTML = `<code class="language-javascript">${highlight}</code>`
       }
       return; // Exit the loop if a <pre> element is found
     }
@@ -94,7 +104,7 @@ export const blogEditorConfig = ({
   paste_preprocess: function (pl, o) {
     o.content = o.content
       .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")
-      .replace(/(.*?)<br\s?\/?>/gi, "<p>$1</p>");
+    // .replace(/(.*?)<br\s?\/?>/gi, "<p>$1</p>");
 
     const tempElement = document.createElement('div');
     tempElement.innerHTML = o.content;

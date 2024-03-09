@@ -15,10 +15,10 @@ export const getLetterpadLatestPosts = async (
 ): Promise<ResolversTypes["PostsResponse"]> => {
   const cursor = args.filters?.cursor
     ? {
-        cursor: {
-          id: args.filters.cursor,
-        },
-      }
+      cursor: {
+        id: args.filters.cursor,
+      },
+    }
     : {};
 
   const condition: Prisma.PostFindManyArgs = {
@@ -35,6 +35,7 @@ export const getLetterpadLatestPosts = async (
           equals: "",
         },
       },
+      banned: false,
       NOT: [
         {
           title: {

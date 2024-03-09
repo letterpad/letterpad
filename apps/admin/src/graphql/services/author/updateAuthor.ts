@@ -6,6 +6,7 @@ import {
   RegisterStep,
   RequireFields,
   ResolversTypes,
+  Role,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
@@ -32,6 +33,8 @@ export const updateAuthor = async (
       message: "You are not authorized to update this author",
     };
   }
+  const isFavourite = session.user.role === Role.Admin && typeof args.author.favourite !== "undefined";
+
   const exisitingAuthor = await prisma.author.findFirst({
     where: {
       id: session.user.id,
@@ -40,6 +43,21 @@ export const updateAuthor = async (
       setting: true,
     },
   });
+
+  if (exisitingAuthor && isFavourite) {
+    await prisma.author.update({
+      where: {
+        id: args.author.id,
+      },
+      data: {
+        favourite: args.author.favourite
+      }
+    })
+    return {
+      __typename: "Author",
+      ...mapAuthorToGraphql({ ...exisitingAuthor, favourite: args.author.favourite! }),
+    };
+  }
   try {
     const dataToUpdate = { ...args.author } as InputAuthorForDb & {
       verified?: boolean;
@@ -65,7 +83,7 @@ export const updateAuthor = async (
           username: args.author.username,
           id: {
             not: {
-              equals: args.author.id,
+              equals: session.user.id,
             },
           },
         },
@@ -85,7 +103,7 @@ export const updateAuthor = async (
           email: args.author.email,
           id: {
             not: {
-              equals: args.author.id,
+              equals: session.user.id,
             },
           },
         },
@@ -102,7 +120,7 @@ export const updateAuthor = async (
     const { id: _id, ...data } = dataToUpdate;
     const author = await prisma.author.update({
       data: { ...data },
-      where: { id: args.author.id },
+      where: { id: session.user.id },
     });
 
     //@todo:the date difference is to make sure users dont receive another email.

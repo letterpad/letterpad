@@ -6,9 +6,9 @@ import { prisma } from "@/lib/prisma"
 
 import { getServerSession } from "@/graphql/context";
 
-import { reportCountry, reportDevice, reportReferral, reportViewPerPage, reportViewPerPage1, totalAll } from './reportQuery';
-import { ProcessedCountryData, ProcessedReferralData, ProcessedReportData, ProcessedTotalData } from './types';
-import { processCountryData, processDeviceData, processReferralData, processReportData, processReportData1, processTotalData } from './utils';
+import { reportCountry, reportDevice, reportReferral, reportSessionPerDay, reportViewPerPage, totalAll } from './reportQuery';
+import { ProcessedCountryData, ProcessedDeviceData, ProcessedReferralData, ProcessedReportData, ProcessedSessionsPerDayData } from './types';
+
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
     credentials: {
@@ -37,6 +37,7 @@ export async function GET(req: Request) {
     if (!setting?.site_url) {
         site_url = `https://${session.user.username}.letterpad.app`;
     }
+    // site_url = 'https://digital.letterpad.app'
     const params = new URL(req.url).searchParams;
     const startDate = params.get("startDate");
     const endDate = params.get("endDate");
@@ -54,79 +55,57 @@ export async function GET(req: Request) {
         endDate: prevEndDate,
     }];
 
-    const [response, nextRes] = await Promise.all([runReport(dateRanges, prevDateRanges, site_url), runReportSingle(dateRanges, site_url)]);
-    const { data, referals, countries, total } = processReports(response);
-    const { device, nextData } = processReports1(nextRes);
-
-    return NextResponse.json({ total, data, referals, countries, device, nextData });
+    const [response, nextRes] = await Promise.all([
+        runReport1(dateRanges, site_url),
+        runReport2(dateRanges, prevDateRanges, site_url)
+    ]);
+    return NextResponse.json({ ...response, ...nextRes });
 }
 
 
 
-async function runReport(dateRanges: any, prevDateRanges: any, site_url: string) {
+const queries = [reportViewPerPage, reportReferral, reportCountry, reportSessionPerDay, reportDevice]
+export async function runReport1(dateRanges: any, site_url: string) {
+
     const response = await analyticsDataClient.batchRunReports({
         property: `properties/${process.env.GA_PROPERTY_ID}`,
         requests: [
-            { ...reportViewPerPage(site_url), dateRanges },
-            { ...reportReferral(site_url), dateRanges },
-            { ...reportCountry(site_url), dateRanges },
-            { ...totalAll(site_url), dateRanges },
-            { ...totalAll(site_url), dateRanges: prevDateRanges },
+            ...queries.map((query) => ({ ...query(site_url).query, dateRanges })),
+
         ],
     }).catch(console.log);
-    return response;
+
+    if (!response || !response[0].reports) {
+        return null
+    }
+    const [{ reports }] = response;
+
+    const result = queries.map((query, index) => query(site_url).parser(reports[index]))
+    type L = typeof result extends Array<infer R> ? R : Record<string, any>;
+    return Object.assign({}, ...result) as {
+        data: ProcessedReportData[];
+        referals: ProcessedReferralData[];
+        countries: ProcessedCountryData[];
+        sessionsPerDay: ProcessedSessionsPerDayData[];
+        device: ProcessedDeviceData[];
+    }
 }
 
-async function runReportSingle(dateRanges: any, site_url: string) {
+
+
+export async function runReport2(dateRanges: any, prevDateRanges: any, site_url: string) {
     const response = await analyticsDataClient.batchRunReports({
         property: `properties/${process.env.GA_PROPERTY_ID}`,
         requests: [
-            { ...reportViewPerPage1(site_url), dateRanges },
-            { ...reportDevice(site_url), dateRanges },
+            { ...totalAll(site_url).query, dateRanges },
+            { ...totalAll(site_url).query, dateRanges: prevDateRanges },
         ],
     }).catch(console.log);
-    return response;
-}
 
-function processReports(response: any): {
-    data: ProcessedReportData[];
-    referals: ProcessedReferralData[];
-    countries: ProcessedCountryData[];
-    total: ProcessedTotalData | {};
-} {
-    if (!response) {
-        return { data: [], referals: [], countries: [], total: {} };
+
+    if (!response || !response[0].reports) {
+        return null;
     }
     const [{ reports }] = response;
-    const report1 = reports?.[0];
-    const report2 = reports?.[1];
-    const report3 = reports?.[2];
-    const report4 = reports?.[3];
-    const report5 = reports?.[4];
-
-    const data = processReportData(report1);
-    const referals = processReferralData(report2);
-    const countries = processCountryData(report3);
-    const total = processTotalData(report4, report5)[0];
-
-    return { data, referals, countries, total };
+    return { ...totalAll(site_url).parser(reports[0], reports[1]) };
 }
-
-function processReports1(response: any) {
-    if (!response) {
-        return { device: [], nextData: [] };
-    }
-    const [{ reports }] = response;
-    const report1 = reports?.[0];
-    const report2 = reports?.[1];
-
-    const nextData = processReportData1(report1);
-    const device = processDeviceData(report2);
-
-    return { device, nextData };
-}
-
-
-
-
-

@@ -2,7 +2,8 @@
 import confetti from "canvas-confetti";
 import { InferGetServerSidePropsType } from "next";
 import { FC, useEffect, useRef, useState } from "react";
-import { Content, PageHeader, TablePlaceholder } from "ui";
+import { Content, TablePlaceholder } from "ui";
+import { PageHeader } from "ui/isomorphic";
 
 import { SessionData } from "@/graphql/types";
 

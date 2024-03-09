@@ -49,7 +49,7 @@ export const MiniEditor: React.FC<Props> = ({
           quickbars_insert_toolbar: false,
           fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
           quickbars_selection_toolbar:
-            formats + " styles" ??
+            formats ? formats + " styles":
             "styles fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright | codesample code forecolor custom_button",
           inline: true,
           browser_spellcheck: false,

@@ -45,6 +45,7 @@ type Post {
   likes: [Like]
   mail_status: MailStatus
   exclude_from_home: Boolean
+  banned: Boolean
 }
 
 enum MailStatus {
@@ -128,6 +129,7 @@ input PostsFilters {
   sortBy: SortBy
   page_type: String
   search: String
+  banned: Boolean
 }
 
 type PostsNode {
@@ -201,6 +203,7 @@ input InputUpdatePost {
   publishOptions: InputPublishOptions
   mail_status: MailStatus
   exclude_from_home: Boolean
+  banned: Boolean
 }
 
 type PostError implements LetterpadError {

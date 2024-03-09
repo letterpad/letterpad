@@ -10,6 +10,7 @@ import {
   PostStatusOptions,
   PostTypes,
   ResolversTypes,
+  Role,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { slugify } from "@/graphql/resolvers/helpers";
@@ -52,6 +53,7 @@ export const updatePost = async (
         message: "Current post not found to update",
       };
     }
+    const isAdmin = session.user.role === Role.Admin;
 
     const isFirstPublish =
       args.data.status === PostStatusOptions.Published &&
@@ -88,7 +90,17 @@ export const updatePost = async (
         message: "Post deleted successfully",
       };
     }
-
+    const isBanned = isAdmin && typeof args.data.banned !== "undefined"
+    if (isBanned) {
+      await prisma.post.update({
+        data: { banned: args.data.banned },
+        where: { id: args.data.id },
+      });
+      revalidateTag("letterpadLatestPosts");
+      return {
+        ...mapPostToGraphql({ ...existingPost, banned: args.data.banned! }),
+      };;
+    }
     if (args.data.title?.trim() || args.data.title === "") {
       newPostArgs.data.title = args.data.title.trim();
     }

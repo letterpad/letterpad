@@ -18,8 +18,8 @@ fragment meFragment on Author {
     signature
     avatar
     company_name
-    analytics_uuid
     username
+    favourite
     followers {
       name
       avatar

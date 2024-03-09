@@ -35,6 +35,7 @@ export const getPosts = cache(
     const condition: Partial<Prisma.PostFindManyArgs> = {
       where: {
         html: {},
+        banned: args.filters.banned,
         author_id: authorId,
         exclude_from_home: undefined,
         featured: args.filters?.featured,

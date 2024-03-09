@@ -14,8 +14,6 @@ export const getAuthorFromPost = async (
       createdAt: author.createdAt?.toISOString() || undefined,
       signature: author.signature || undefined,
       register_step: author.register_step as ResolversTypes["RegisterStep"],
-      analytics_id: author.analytics_id || undefined,
-      analytics_uuid: author.analytics_uuid || undefined,
       social: JSON.parse(author.social),
     };
   }

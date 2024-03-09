@@ -60,10 +60,12 @@ export async function GET(request: NextRequest) {
   const allEmails: Variables[] = await Promise.all(
     posts.map((post) => getQueuedSubscriberEmails(post.id))
   );
+  const flatEmails = allEmails.flat().filter(email => email)
+
   const template = await getTemplate(EmailTemplates.NewPost);
 
   const mailSentIds: number[] = [];
-  const mails = allEmails.flat().map(async (variable) => {
+  const mails = flatEmails.map(async (variable) => {
     const subject = template.subject.replaceAll(
       "{{ blog_name }}",
       variable.site_title

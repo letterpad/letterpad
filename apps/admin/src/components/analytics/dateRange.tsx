@@ -40,6 +40,12 @@ export const DateRangeSelector: React.FC<Props> = ({ onChange }) => {
         Yesterday
       </option>
       <option
+        value={DateRangeEnum.last3Days}
+        selected={selectedOption === DateRangeEnum.last3Days}
+      >
+        Last 3 days
+      </option>
+      <option
         value={DateRangeEnum.last7Days}
         selected={selectedOption === DateRangeEnum.last7Days}
       >
