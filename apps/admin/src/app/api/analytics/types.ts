@@ -32,12 +32,12 @@ export interface ProcessedDeviceData {
     sessions: number;
 }
 
-// export interface ProcessedTotalData {
-//     Users: ProcessedMetricData;
-//     Sessions: ProcessedMetricData;
-//     "New Users": ProcessedMetricData;
-//     "Avg. Time": ProcessedMetricData;
-// }
+export interface ProcessedTotalData {
+    Users: ProcessedMetricData;
+    Sessions: ProcessedMetricData;
+    "New Users": ProcessedMetricData;
+    "Avg. Time": ProcessedMetricData;
+}
 
 export interface ProcessedMetricData {
     value: number | string;

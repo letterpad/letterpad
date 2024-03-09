@@ -89,58 +89,58 @@ export interface Template {
 }
 
 export interface EmailVerifyNewUserProps {
-  author_id: number;
+  author_id: string;
   template_id: EmailTemplates.VerifyNewUser;
 }
 
 export interface DomainMapSuccessProps {
-  author_id: number;
+  author_id: string;
   template_id: EmailTemplates.DomainMapSuccess;
 }
 
 export interface EmailVerifyNewEmailProps {
-  author_id: number;
+  author_id: string;
   template_id: EmailTemplates.VerifyChangedEmail;
 }
 
 export interface EmailChangeSuccessProps {
-  author_id: number;
+  author_id: string;
   template_id: EmailTemplates.EmailChangeSuccess;
 }
 export interface PasswordChangeSuccessProps {
-  author_id: number;
+  author_id: string;
   template_id: EmailTemplates.PasswordChangeSuccess;
 }
 
 export interface EmailVerifySubscriberProps {
-  author_id: number;
+  author_id: string;
   subscriber_id: number;
   template_id: EmailTemplates.VerifySubscriber;
 }
 export interface EmailSubscriberVerifiedProps {
-  author_id: number;
+  author_id: string;
   subscriber_id: number;
   template_id: EmailTemplates.SubscriberVerified;
 }
 
 export interface NewFollowerProps {
-  follower_id: number;
-  following_id: number;
+  follower_id: string;
+  following_id: string;
   template_id: EmailTemplates.NewFollower;
 }
 
 export interface EmailForgotPasswordProps {
-  author_id: number;
+  author_id: string;
   template_id: EmailTemplates.ForgotPassword;
 }
 
 export interface EmailWelcomeUserProps {
-  author_id: number;
+  author_id: string;
   template_id: EmailTemplates.WelcomeUser;
 }
 
 export interface NewPostProps {
-  post_id: number;
+  post_id: string;
   template_id: EmailTemplates.NewPost;
 }
 

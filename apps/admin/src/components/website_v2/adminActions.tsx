@@ -14,10 +14,10 @@ export const AdminActions = ({
   isFavourite,
   authorId,
 }: {
-  id: number;
+  id: string;
   banned: boolean;
   isFavourite: boolean;
-  authorId: number;
+  authorId: string;
 }) => {
   const { updatePost, fetching } = useUpdatePost();
   const { updateAuthor, fetching: updatingAuthor } = useUpdateAuthor();

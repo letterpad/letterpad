@@ -1,4 +1,4 @@
-import type { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 import { queueSubscribeEmails } from "@/lib/redis";
@@ -6,8 +6,8 @@ import { queueSubscribeEmails } from "@/lib/redis";
 import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 
 interface Base {
-  post_id: number;
-  author_id: number;
+  post_id: string;
+  author_id: string;
   to: string;
   title: string;
   excerpt: string;
@@ -130,9 +130,9 @@ export async function GET(request: NextRequest) {
 
   await Promise.all(
     Object.keys(variables).map(async (post_id) => {
-      return queueSubscribeEmails(Number(post_id), variables[post_id]);
+      return queueSubscribeEmails(post_id, variables[post_id]);
     })
   );
 
-  return Response.json({ success: true });
+  return NextResponse.json({ success: true });
 }

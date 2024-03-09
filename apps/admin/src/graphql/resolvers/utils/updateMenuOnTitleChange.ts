@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 
 interface UpdateMenuProps {
-  authorId: number;
+  authorId: string;
   isPage: boolean;
   slug: string;
   originalName?: string;

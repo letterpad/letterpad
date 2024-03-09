@@ -20,7 +20,7 @@ import { fetchPostsByTag } from "../../resourceFetcher";
 import { getRootUrl } from "../../shared/getRootUrl";
 
 export const Website = async () => {
-  const data = await getLetterpadPosts({ filters: { cursor: 0 } });
+  const data = await getLetterpadPosts({ filters: { cursor: "" } });
   const categories = await getLetterpadCategories();
   const favAuthors = await getfavAuthors();
   const posts = await fetchPostsByTag();

@@ -73,7 +73,7 @@ export async function getTagsLinkedWithPosts({
   status,
 }: {
   name?: string;
-  id: number;
+  id: string;
   status?: PostStatusOptions;
 }) {
   const tags = await prisma.tag.findMany({

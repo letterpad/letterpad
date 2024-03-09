@@ -7,7 +7,7 @@ import { sanitizeUsername } from "@/shared/utils";
 
 interface Props {
   username: string;
-  author_id: number;
+  author_id: string;
 }
 
 export const ChangeUsername: FC<Props> = ({ username, author_id }) => {

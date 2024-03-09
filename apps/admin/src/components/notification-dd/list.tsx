@@ -37,8 +37,10 @@ export const NotificationDropdown = () => {
 
   const notifications = useMemo(
     () =>
-      isNotificationNode(data?.notifications) ? data.notifications.rows : [],
-    [data?.notifications]
+      data && isNotificationNode(data?.notifications)
+        ? data.notifications.rows
+        : [],
+    [data]
   );
 
   const onShow = () => {

@@ -42,11 +42,11 @@ describe("Test author", () => {
 
     const { posts } = await API({
       query: PostsDocument,
-      sessionId: author?.id as number,
+      sessionId: author?.id,
     });
 
     expect(posts.count).toBe(3);
   });
 });
 
-export {};
+export { };

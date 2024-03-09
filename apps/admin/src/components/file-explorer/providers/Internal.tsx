@@ -70,10 +70,10 @@ const fetchMedia = async (page: number) => {
     { filters: { page } },
     { requestPolicy: "network-only" }
   );
-
+  const media = data?.media.__typename === "MediaNode" ? data.media : undefined;
   const images = {
-    rows: data?.media.rows ?? [],
-    count: data?.media.count ?? 0,
+    rows: media?.rows ?? [],
+    count: media?.count ?? 0,
   };
   return images;
 };

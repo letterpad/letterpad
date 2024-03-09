@@ -6,7 +6,7 @@ import { baseTemplate } from "./templates/base";
 export const bodyDecorator = async (
   html: string,
   recipient_email: string,
-  author_id: number,
+  author_id: string,
   subcriber_id: number
 ) => {
   const token = await getUnsubscribeToken({

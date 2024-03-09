@@ -101,7 +101,7 @@ const uploadApi = async (
   res.json(output);
 };
 
-export async function upsertMedia(result: IMediaUploadResult, id: number) {
+export async function upsertMedia(result: IMediaUploadResult, id: string) {
   let media = await prisma.upload.findFirst({
     where: {
       url: result.src,
@@ -131,7 +131,7 @@ export async function upsertMedia(result: IMediaUploadResult, id: number) {
   }
 }
 
-async function getCloudinaryCreds(author_id: number) {
+async function getCloudinaryCreds(author_id: string) {
   // if the creds has been set globally with env variables, then return that.
   if (
     process.env.CLOUDINARY_KEY &&

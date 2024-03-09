@@ -11,7 +11,7 @@ interface Props {
   postHash: string;
   showDrawer: () => void;
   showPreview?: boolean;
-  id: number;
+  id: string;
 }
 export const QuickMenu: FC<Props> = ({
   siteUrl,

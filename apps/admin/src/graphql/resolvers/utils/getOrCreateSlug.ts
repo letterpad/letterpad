@@ -1,25 +1,24 @@
-import { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 import { getLastPartFromPath, textToSlug } from "@/utils/slug";
 
 import { slugify } from "../helpers";
 
 export async function getOrCreateSlug(
-  postModel: Prisma.PostDelegate<false>,
-  id: number,
+  id: string,
   newSlug?: string | null,
   newTitle?: string
 ) {
-  const existingPost = await postModel.findFirst({ where: { id } });
+  const existingPost = await prisma.post.findFirst({ where: { id } });
 
   if (!existingPost) return "";
   // slug already exist for this post, but user updated the slug
   if (existingPost?.slug && newSlug) {
     newSlug = getLastPartFromPath(newSlug);
     newSlug = await slugify(
-      postModel,
       textToSlug(newSlug),
-      existingPost.author_id
+      existingPost.author_id,
+      existingPost.id
     );
     return newSlug;
   }
@@ -31,15 +30,15 @@ export async function getOrCreateSlug(
     (existingPost?.slug.startsWith("untitled") || !existingPost?.slug)
   ) {
     newSlug = await slugify(
-      postModel,
       textToSlug(newTitle),
-      existingPost.author_id
+      existingPost.author_id,
+      existingPost.id
     );
     return newSlug;
   }
 
   if (!existingPost.title && !newTitle && !newSlug) {
-    newSlug = await slugify(postModel, "untitled", existingPost.author_id);
+    newSlug = await slugify("untitled", existingPost.author_id, existingPost.id);
     return newSlug;
   }
 

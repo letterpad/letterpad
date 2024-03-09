@@ -1,5 +1,4 @@
 "use client";
-import Head from "next/head";
 import { useParams } from "next/navigation";
 
 import { useGetSettings } from "@/app/settings/_feature/api.client";
@@ -13,7 +12,7 @@ import { DefaultPost } from "./views/default";
 export const Feature = () => {
   const { postId } = useParams();
 
-  const { data: post, fetching: loading } = useGetPost({ id: Number(postId) });
+  const { data: post, fetching: loading } = useGetPost({ id: String(postId) });
   const { data: settings } = useGetSettings();
 
   if (loading) return <div></div>;
