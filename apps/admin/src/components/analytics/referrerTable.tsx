@@ -12,7 +12,7 @@ export function ReferrerTable({
   if (loading) return <ListPlaceholder />;
   return (
     <div className="flex justify-center">
-      <div className="flex-none min-w-full px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-80">
+      <div className="flex-auto px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-80">
         <table className="w-full table-responsive text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
           <thead className="">
             <tr>

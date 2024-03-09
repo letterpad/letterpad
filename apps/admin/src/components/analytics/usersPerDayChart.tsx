@@ -11,8 +11,10 @@ export const UsersPerDayChart = forwardRef<
 >(({ loading }, ref) => {
   if (loading) return <WidgetPlaceholder className="w-full" />;
   return (
-    <div className="flex justify-center flex-1 min-h-60 md:min-h-0 md:w-full">
-      <canvas ref={ref} style={{ height: 300 }}></canvas>
+    <div className="flex justify-center flex-auto min-h-60 md:min-h-0 md:w-full min-w-0">
+      <div className="relative">
+        <canvas ref={ref} style={{ height: 300 }}></canvas>
+      </div>
     </div>
   );
 });

@@ -37,7 +37,6 @@ export async function GET(req: Request) {
     if (!setting?.site_url) {
         site_url = `https://${session.user.username}.letterpad.app`;
     }
-    // site_url = 'https://digital.letterpad.app'
     const params = new URL(req.url).searchParams;
     const startDate = params.get("startDate");
     const endDate = params.get("endDate");

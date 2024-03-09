@@ -22,7 +22,7 @@ export function TotalStats({
   loading: boolean;
 }) {
   return (
-    <div className="grid lg:grid-cols-4 grid-cols-2 gap-6 w-full max-w-4xl">
+    <div className="grid lg:grid-cols-4 grid-cols-2 gap-6 w-full max-w-5xl">
       {loading && [1, 2, 3, 4].map((key) => <MetricPlaceholder key={key} />)}
       {!loading &&
         data &&
