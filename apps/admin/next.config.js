@@ -1,5 +1,24 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
-const basePath = "/";
+
+const securityHeaders = [
+  {
+    key: 'Referrer-Policy',
+    value: 'strict-origin-when-cross-origin',
+  },
+  {
+    key: 'X-Frame-Options',
+    value: 'DENY',
+  },
+  {
+    key: 'X-Content-Type-Options',
+    value: 'nosniff',
+  },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=31536000; includeSubDomains',
+  },
+];
+
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -15,6 +34,14 @@ const nextConfig = {
   swcMinify: true,
   typescript: {
     ignoreBuildErrors: true,
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: securityHeaders,
+      },
+    ];
   },
   images: {
     remotePatterns: [

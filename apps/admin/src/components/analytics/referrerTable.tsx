@@ -1,15 +1,12 @@
 import { ListPlaceholder } from "ui";
 
-export interface ReferralItem {
-  referrer: string;
-  views: number;
-}
+import { ProcessedReferralData } from "../../app/api/analytics/types";
 
 export function ReferrerTable({
   data,
   loading,
 }: {
-  data: ReferralItem[];
+  data: ProcessedReferralData[];
   loading: boolean;
 }) {
   if (loading) return <ListPlaceholder />;
@@ -43,7 +40,7 @@ export function ReferrerTable({
                   </div>
                 </td>
                 <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
-                  {item.views}
+                  {item.sessions}
                 </td>
               </tr>
             ))}
