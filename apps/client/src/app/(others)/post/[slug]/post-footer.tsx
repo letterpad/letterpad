@@ -13,7 +13,7 @@ interface Props {
     avatar: string;
   };
   likes: PageFragmentFragment['likes'] | null;
-  postId: number;
+  postId: string;
   share: ReactNode;
 }
 

@@ -27,7 +27,7 @@ const initial = {
 const Context = createContext<ContextProps>(initial);
 
 interface Props {
-  postId: number;
+  postId: string;
   likes: PageFragmentFragment['likes'];
   children: React.ReactNode;
 }

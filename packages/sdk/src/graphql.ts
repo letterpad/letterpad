@@ -46,7 +46,7 @@ export type Author = {
   first_post_published?: Maybe<Scalars["Boolean"]>;
   followers?: Maybe<Array<Maybe<FollowAuthor>>>;
   following?: Maybe<Array<Maybe<FollowAuthor>>>;
-  id: Scalars["Int"];
+  id: Scalars["String"];
   name: Scalars["String"];
   occupation?: Maybe<Scalars["String"]>;
   permissions?: Maybe<Array<Permissions>>;
@@ -87,7 +87,7 @@ export type CommentNewMeta = {
   commenter_name?: Maybe<Scalars["String"]>;
   commenter_username?: Maybe<Scalars["String"]>;
   post_author_username?: Maybe<Scalars["String"]>;
-  post_id?: Maybe<Scalars["Int"]>;
+  post_id?: Maybe<Scalars["String"]>;
   post_slug?: Maybe<Scalars["String"]>;
   post_title?: Maybe<Scalars["String"]>;
 };
@@ -100,7 +100,7 @@ export type CommentResponse = {
 export type Commenter = {
   __typename?: "Commenter";
   avatar?: Maybe<Scalars["String"]>;
-  id: Scalars["Int"];
+  id: Scalars["String"];
   name?: Maybe<Scalars["String"]>;
   username: Scalars["String"];
 };
@@ -247,9 +247,9 @@ export type FollowAuthorResponse = {
 
 export type FollowerNewMeta = {
   __typename?: "FollowerNewMeta";
-  followed_id?: Maybe<Scalars["Int"]>;
+  followed_id?: Maybe<Scalars["String"]>;
   follower_avatar?: Maybe<Scalars["String"]>;
-  follower_id?: Maybe<Scalars["Int"]>;
+  follower_id?: Maybe<Scalars["String"]>;
   follower_name?: Maybe<Scalars["String"]>;
   follower_username?: Maybe<Scalars["String"]>;
 };
@@ -280,7 +280,7 @@ export type InputAuthor = {
   email?: InputMaybe<Scalars["String"]>;
   favourite?: InputMaybe<Scalars["Boolean"]>;
   first_post_published?: InputMaybe<Scalars["Boolean"]>;
-  id: Scalars["Int"];
+  id: Scalars["String"];
   name?: InputMaybe<Scalars["String"]>;
   occupation?: InputMaybe<Scalars["String"]>;
   password?: InputMaybe<Scalars["String"]>;
@@ -382,7 +382,7 @@ export type InputUpdatePost = {
   featured?: InputMaybe<Scalars["Boolean"]>;
   html?: InputMaybe<Scalars["String"]>;
   html_draft?: InputMaybe<Scalars["String"]>;
-  id: Scalars["Int"];
+  id: Scalars["String"];
   mail_status?: InputMaybe<MailStatus>;
   page_data?: InputMaybe<Scalars["String"]>;
   page_type?: InputMaybe<Scalars["String"]>;
@@ -433,7 +433,7 @@ export type LetterpadPostFilters = {
 };
 
 export type LetterpadPostsFilters = {
-  cursor?: InputMaybe<Scalars["Int"]>;
+  cursor?: InputMaybe<Scalars["String"]>;
   tag?: InputMaybe<Scalars["String"]>;
 };
 
@@ -463,7 +463,7 @@ export enum MailStatus {
 
 export type Media = {
   __typename?: "Media";
-  authorId?: Maybe<Scalars["Int"]>;
+  authorId?: Maybe<Scalars["String"]>;
   createdAt: Scalars["Date"];
   description?: Maybe<Scalars["String"]>;
   height: Scalars["Int"];
@@ -481,7 +481,7 @@ export type MediaDeleteResult = {
 };
 
 export type MediaFilters = {
-  authorId?: InputMaybe<Scalars["Int"]>;
+  authorId?: InputMaybe<Scalars["String"]>;
   cursor?: InputMaybe<Scalars["Int"]>;
   id?: InputMaybe<Scalars["Int"]>;
   limit?: InputMaybe<Scalars["Int"]>;
@@ -548,7 +548,7 @@ export type MutationCreateAuthorArgs = {
 export type MutationCreateCommentArgs = {
   content: Scalars["String"];
   parent_id?: InputMaybe<Scalars["String"]>;
-  post_id: Scalars["Int"];
+  post_id: Scalars["String"];
 };
 
 export type MutationCreatePostArgs = {
@@ -576,7 +576,7 @@ export type MutationForgotPasswordArgs = {
 };
 
 export type MutationLikePostArgs = {
-  postId: Scalars["Int"];
+  postId: Scalars["String"];
 };
 
 export type MutationLoginArgs = {
@@ -597,7 +597,7 @@ export type MutationUnFollowAuthorArgs = {
 };
 
 export type MutationUnLikePostArgs = {
-  postId: Scalars["Int"];
+  postId: Scalars["String"];
 };
 
 export type MutationUpdateAuthorArgs = {
@@ -650,7 +650,7 @@ export type NotFound = LetterpadError & {
 
 export type Notification = {
   __typename?: "Notification";
-  author_id?: Maybe<Scalars["Int"]>;
+  author_id?: Maybe<Scalars["String"]>;
   createdAt: Scalars["Date"];
   is_read?: Maybe<Scalars["Boolean"]>;
   mail_sent?: Maybe<Scalars["Boolean"]>;
@@ -672,14 +672,14 @@ export type NotificationDeleteResult = {
 };
 
 export type NotificationFilters = {
-  cursor?: InputMaybe<Scalars["Int"]>;
+  cursor?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["Int"]>;
   is_read?: InputMaybe<Scalars["Boolean"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   mail_sent?: InputMaybe<Scalars["Boolean"]>;
   page?: InputMaybe<Scalars["Int"]>;
-  post_id?: InputMaybe<Scalars["Int"]>;
-  sender_id?: InputMaybe<Scalars["Int"]>;
+  post_id?: InputMaybe<Scalars["String"]>;
+  sender_id?: InputMaybe<Scalars["String"]>;
 };
 
 export type NotificationMeta =
@@ -738,7 +738,7 @@ export type Post = {
   featured: Scalars["Boolean"];
   html?: Maybe<Scalars["String"]>;
   html_draft?: Maybe<Scalars["String"]>;
-  id: Scalars["Int"];
+  id: Scalars["String"];
   likes?: Maybe<Array<Maybe<Like>>>;
   mail_status?: Maybe<MailStatus>;
   page_data?: Maybe<Scalars["String"]>;
@@ -771,7 +771,7 @@ export type PostError = LetterpadError & {
 
 export type PostFilters = {
   featured?: InputMaybe<Scalars["Boolean"]>;
-  id?: InputMaybe<Scalars["Int"]>;
+  id?: InputMaybe<Scalars["String"]>;
   previewHash?: InputMaybe<Scalars["String"]>;
   slug?: InputMaybe<Scalars["String"]>;
   status?: InputMaybe<PostStatusOptions>;
@@ -783,7 +783,7 @@ export type PostLikeMeta = {
   author_avatar?: Maybe<Scalars["String"]>;
   author_name?: Maybe<Scalars["String"]>;
   author_username?: Maybe<Scalars["String"]>;
-  post_id?: Maybe<Scalars["Int"]>;
+  post_id?: Maybe<Scalars["String"]>;
   post_slug?: Maybe<Scalars["String"]>;
   post_title?: Maybe<Scalars["String"]>;
 };
@@ -793,7 +793,7 @@ export type PostNewMeta = {
   author_avatar?: Maybe<Scalars["String"]>;
   author_name?: Maybe<Scalars["String"]>;
   author_username?: Maybe<Scalars["String"]>;
-  post_id?: Maybe<Scalars["Int"]>;
+  post_id?: Maybe<Scalars["String"]>;
   post_slug?: Maybe<Scalars["String"]>;
   post_title?: Maybe<Scalars["String"]>;
 };
@@ -832,9 +832,9 @@ export enum PostTypes {
 export type PostsFilters = {
   author?: InputMaybe<Scalars["String"]>;
   banned?: InputMaybe<Scalars["Boolean"]>;
-  cursor?: InputMaybe<Scalars["Int"]>;
+  cursor?: InputMaybe<Scalars["String"]>;
   featured?: InputMaybe<Scalars["Boolean"]>;
-  id?: InputMaybe<Scalars["Int"]>;
+  id?: InputMaybe<Scalars["String"]>;
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
   page?: InputMaybe<Scalars["Int"]>;
@@ -895,7 +895,7 @@ export type QueryAboutStatsArgs = {
 };
 
 export type QueryCommentsArgs = {
-  post_id: Scalars["Int"];
+  post_id: Scalars["String"];
 };
 
 export type QueryCreateSubscriptionArgs = {
@@ -915,7 +915,7 @@ export type QueryIsFollowingArgs = {
 };
 
 export type QueryIsPostLikedArgs = {
-  postId: Scalars["Int"];
+  postId: Scalars["String"];
 };
 
 export type QueryLetterpadLatestPostArgs = {
@@ -947,7 +947,7 @@ export type QuerySubscriberArgs = {
 };
 
 export type QuerySubscribersArgs = {
-  author_id?: InputMaybe<Scalars["Int"]>;
+  author_id?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryTagArgs = {
@@ -998,7 +998,7 @@ export type Setting = {
   css?: Maybe<Scalars["String"]>;
   design?: Maybe<Design>;
   display_author_info: Scalars["Boolean"];
-  id: Scalars["Int"];
+  id: Scalars["String"];
   intro_dismissed: Scalars["Boolean"];
   menu: Array<Navigation>;
   openai_key?: Maybe<Scalars["String"]>;
@@ -1099,7 +1099,7 @@ export type StatsResponse = Stats | StatsError;
 
 export type Subscriber = {
   __typename?: "Subscriber";
-  author_id: Scalars["Int"];
+  author_id: Scalars["String"];
   createdAt: Scalars["Date"];
   email: Scalars["String"];
   id: Scalars["Int"];
@@ -1134,17 +1134,6 @@ export type SubscribersUpdateResult = {
   __typename?: "SubscribersUpdateResult";
   message?: Maybe<Scalars["String"]>;
   ok: Scalars["Boolean"];
-};
-
-export type Subscription = {
-  __typename?: "Subscription";
-  created_at: Scalars["String"];
-  customer_id: Scalars["Int"];
-  id: Scalars["Int"];
-  plan_id: Scalars["Int"];
-  status: Scalars["String"];
-  subscription_id: Scalars["Int"];
-  updated_at: Scalars["String"];
 };
 
 export type SystemMeta = {
@@ -1236,7 +1225,7 @@ export type MeQuery = {
   me?:
     | {
         __typename: "Author";
-        id: number;
+        id: string;
         name: string;
         bio?: string | null;
         occupation?: string | null;
@@ -1276,7 +1265,7 @@ export type MeQuery = {
 
 export type MeFragmentFragment = {
   __typename: "Author";
-  id: number;
+  id: string;
   name: string;
   bio?: string | null;
   occupation?: string | null;
@@ -1359,7 +1348,7 @@ export type MeAndSettingsQuery = {
   me?:
     | {
         __typename: "Author";
-        id: number;
+        id: string;
         name: string;
         bio?: string | null;
         occupation?: string | null;
@@ -1458,7 +1447,7 @@ export type PostQuery = {
     | { __typename: "NotFound"; message: string }
     | {
         __typename: "Post";
-        id: number;
+        id: string;
         slug?: string | null;
         title: string;
         sub_title?: string | null;
@@ -1493,7 +1482,7 @@ export type PostQuery = {
         author?:
           | {
               __typename: "Author";
-              id: number;
+              id: string;
               name: string;
               avatar?: string | null;
               occupation?: string | null;
@@ -1518,7 +1507,7 @@ export type PostQuery = {
 
 export type PageFragmentFragment = {
   __typename?: "Post";
-  id: number;
+  id: string;
   slug?: string | null;
   title: string;
   sub_title?: string | null;
@@ -1553,7 +1542,7 @@ export type PageFragmentFragment = {
   author?:
     | {
         __typename: "Author";
-        id: number;
+        id: string;
         name: string;
         avatar?: string | null;
         occupation?: string | null;
@@ -1586,7 +1575,7 @@ export type PostPageQuery = {
     | { __typename: "NotFound"; message: string }
     | {
         __typename: "Post";
-        id: number;
+        id: string;
         slug?: string | null;
         title: string;
         sub_title?: string | null;
@@ -1621,7 +1610,7 @@ export type PostPageQuery = {
         author?:
           | {
               __typename: "Author";
-              id: number;
+              id: string;
               name: string;
               avatar?: string | null;
               occupation?: string | null;
@@ -1645,7 +1634,7 @@ export type PostPageQuery = {
   me?:
     | {
         __typename: "Author";
-        id: number;
+        id: string;
         name: string;
         bio?: string | null;
         occupation?: string | null;
@@ -1746,7 +1735,7 @@ export type PostsQuery = {
         count: number;
         rows: Array<{
           __typename?: "Post";
-          id: number;
+          id: string;
           title: string;
           sub_title?: string | null;
           slug?: string | null;
@@ -1796,7 +1785,7 @@ export type PostsFragmentFragment = {
   count: number;
   rows: Array<{
     __typename?: "Post";
-    id: number;
+    id: string;
     title: string;
     sub_title?: string | null;
     slug?: string | null;
@@ -1998,7 +1987,7 @@ export type TagsQuery = {
                 count: number;
                 rows: Array<{
                   __typename?: "Post";
-                  id: number;
+                  id: string;
                   title: string;
                   slug?: string | null;
                   excerpt?: string | null;
@@ -2008,7 +1997,7 @@ export type TagsQuery = {
                   author?:
                     | {
                         __typename: "Author";
-                        id: number;
+                        id: string;
                         name: string;
                         avatar?: string | null;
                         occupation?: string | null;
