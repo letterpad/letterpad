@@ -45,7 +45,7 @@ const Analytics: FC<P & Props> = () => {
     total: null,
     sessionsPerDay: [],
   });
-  const [fetching, setFetching] = useState(isMember);
+  const [fetching, setFetching] = useState(true);
   const chartContainer = useRef<HTMLCanvasElement>(null);
   const deviceContainer = useRef<HTMLCanvasElement>(null);
   const countryContainer = useRef<HTMLCanvasElement>(null);
@@ -287,7 +287,7 @@ const Analytics: FC<P & Props> = () => {
           options: {
             indexAxis: "y",
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             scales: {
               y: {
                 ticks: {
@@ -337,8 +337,8 @@ const Analytics: FC<P & Props> = () => {
         </span>
       </PageHeader>
       <Content>
-        <UpgradeBanner />
-        {!isMember && (
+        {!fetching && <UpgradeBanner />}
+        {!fetching && !isMember && (
           <div className="hidden md:block relative w-full h-[100vh]">
             <Image
               src="/images/analytics.png"
