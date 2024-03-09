@@ -33,7 +33,7 @@ export const getPost = cache(
     const { previewHash, id, slug } = args.filters;
 
     if (previewHash) {
-      const postId = decrypt(previewHash);
+      const postId = previewHash;
       if (postId) {
         const post = await prisma.post.findFirst({ where: { id: postId } });
         if (post) {
