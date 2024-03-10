@@ -15,6 +15,7 @@ fragment postsFragment on PostsNode {
     title
     sub_title
     slug
+    featured
     likes {
       avatar
       username

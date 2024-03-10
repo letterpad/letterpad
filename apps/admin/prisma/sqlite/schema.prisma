@@ -73,6 +73,7 @@ model FeaturedWeek {
   post_id     String
   week_number Int
 
+  @@unique([post_id])
   @@index([post_id])
 }
 
