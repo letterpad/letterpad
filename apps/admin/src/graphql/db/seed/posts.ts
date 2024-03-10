@@ -1,5 +1,6 @@
 export const postsList = [
   {
+    id: "1",
     title: "Another sunny day",
     type: "post",
     status: "published",
@@ -16,6 +17,7 @@ export const postsList = [
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
   },
   {
+    id: "2",
     title: "A walk through time",
     type: "post",
     status: "published",
@@ -32,6 +34,7 @@ export const postsList = [
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
   },
   {
+    id: "3",
     title: "Best practices for successful prototypes",
     type: "post",
     status: "published",

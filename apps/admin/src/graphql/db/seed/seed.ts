@@ -270,6 +270,7 @@ export async function insertPost(postData, author_id) {
 
   return prisma.post.create({
     data: {
+      id: postData.id,
       title: postData.title,
       html: html,
       page_type: "default",
