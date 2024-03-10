@@ -121,6 +121,8 @@ export const blogEditorConfig = ({
     // @ts-ignore
     o.preventDefault();
   },
+  valid_ids: false,
+  inline_styles: false,
   min_height: 300,
   menubar: false,
   link_title: false,
@@ -192,6 +194,7 @@ export const blogEditorConfig = ({
       });
     }
   },
+  // valid_elements: '*[*]',
   entity_encoding: "raw",
   codesample_global_prismjs: true,
   codesample_languages: [

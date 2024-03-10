@@ -1,24 +1,7 @@
-"use client";
+import { EditPost } from "./features";
 
-import { PostProvider } from "./_feature/context";
-import { Feature } from "./_feature/feature";
-
-function EditPost() {
-  return (
-    <PostProvider>
-      <Feature />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-    </PostProvider>
-  );
+function Page() {
+  return <EditPost />;
 }
 
-export default EditPost;
+export default Page;
