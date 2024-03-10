@@ -11,7 +11,7 @@ import {
   CountryChart,
   DateRangeSelector,
   DeviceChart,
-  PageDataTable,
+  PostsReadTable,
   ReferrerTable,
   TotalStats,
   UsersPerDayChart,
@@ -44,6 +44,8 @@ const Analytics: FC<P & Props> = () => {
     countries: [],
     total: null,
     sessionsPerDay: [],
+    reads: [],
+    allTimeReads: 0,
   });
   const [fetching, setFetching] = useState(true);
   const chartContainer = useRef<HTMLCanvasElement>(null);
@@ -328,7 +330,7 @@ const Analytics: FC<P & Props> = () => {
 
   const display =
     isMember &&
-    (fetching || (data?.total && Number(data.total.Users?.value) >= 1));
+    (fetching || (data?.total && Number(data.total.Sessions?.value) >= 1));
   return (
     <>
       <PageHeader className="site-page-header" title="Analytics">
@@ -359,7 +361,11 @@ const Analytics: FC<P & Props> = () => {
           {display && data ? (
             <div className="min-w-0 gap-2 flex flex-col">
               <div className="min-w-0 gap-2 flex flex-col">
-                <TotalStats data={data.total} loading={fetching} />
+                <TotalStats
+                  data={data.total}
+                  loading={fetching}
+                  allTimeReads={data.allTimeReads}
+                />
                 <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
                 <div className="justify-center py-10 grid md:grid-cols-2 grid-cols-1 gap-10 md:gap-2">
                   <UsersPerDayChart ref={chartContainer} loading={fetching} />
@@ -371,7 +377,7 @@ const Analytics: FC<P & Props> = () => {
                   <CountryChart ref={countryContainer} loading={fetching} />
                 </div>
                 <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                <PageDataTable data={data.data} loading={fetching} />
+                <PostsReadTable data={data.data} loading={fetching} />
               </div>
             </div>
           ) : (

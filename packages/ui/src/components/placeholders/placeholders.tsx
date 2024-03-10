@@ -174,18 +174,18 @@ export const MetricPlaceholder:FC<{className?: string}> = ({className}) => (
   <div
     role="status"
     className={classNames(
-      "p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700",
+      "p-4 border border-gray-200 rounded shadow animate-pulse md:p-4 dark:border-gray-700",
       className
     )}
   >
     <div className="flex items-center justify-between mb-4">
-      <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
     </div>
     <div className="flex flex-row gap-4">
-      <div className="w-full bg-gray-200 rounded-lg h-20 dark:bg-gray-700"></div>
+      <div className="w-full bg-gray-200 rounded-lg h-8 dark:bg-gray-700"></div>
     </div>
     <div className="flex items-center justify-between mt-4">
-      <div className="w-20 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      <div className="w-20 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
     </div>
     <span className="sr-only">Loading...</span>
   </div>

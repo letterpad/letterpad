@@ -6,8 +6,9 @@ import { prisma } from "@/lib/prisma"
 
 import { getServerSession } from "@/graphql/context";
 
-import { reportCountry, reportDevice, reportReferral, reportSessionPerDay, reportViewPerPage, totalAll } from './reportQuery';
-import { ProcessedCountryData, ProcessedDeviceData, ProcessedReferralData, ProcessedReportData, ProcessedSessionsPerDayData } from './types';
+import { reportAllTimeReads, reportCountry, reportDevice, reportReads, reportReferral, reportSessionPerDay, reportViewPerPage, totalAll } from './reportQuery';
+import { DateRangeEnum, ProcessedCountryData, ProcessedDeviceData, ProcessedReferralData, ProcessedReportData, ProcessedSessionsPerDayData } from './types';
+import { getDateRanges } from '../../../components/analytics/utils';
 
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
@@ -54,10 +55,15 @@ export async function GET(req: Request) {
         endDate: prevEndDate,
     }];
 
-    const [response, nextRes] = await Promise.all([
+    let [response, nextRes] = await Promise.all([
         runReport1(dateRanges, site_url),
         runReport2(dateRanges, prevDateRanges, site_url)
     ]);
+    if (response?.data) {
+        response.data = response?.data.map((item) => {
+            return { ...item, reads: nextRes?.reads?.find((read) => read.pagePath === item.pagePath)?.reads || 0 }
+        })
+    }
     return NextResponse.json({ ...response, ...nextRes });
 }
 
@@ -80,7 +86,6 @@ export async function runReport1(dateRanges: any, site_url: string) {
     const [{ reports }] = response;
 
     const result = queries.map((query, index) => query(site_url).parser(reports[index]))
-    type L = typeof result extends Array<infer R> ? R : Record<string, any>;
     return Object.assign({}, ...result) as {
         data: ProcessedReportData[];
         referals: ProcessedReferralData[];
@@ -93,11 +98,18 @@ export async function runReport1(dateRanges: any, site_url: string) {
 
 
 export async function runReport2(dateRanges: any, prevDateRanges: any, site_url: string) {
+    const range30Days = getDateRanges(DateRangeEnum.last90Days)
+    const dateRanges30 = [{
+        startDate: range30Days.startDate,
+        endDate: range30Days.endDate,
+    }];
     const response = await analyticsDataClient.batchRunReports({
         property: `properties/${process.env.GA_PROPERTY_ID}`,
         requests: [
             { ...totalAll(site_url).query, dateRanges },
             { ...totalAll(site_url).query, dateRanges: prevDateRanges },
+            { ...reportReads(site_url).query, dateRanges },
+            { ...reportAllTimeReads(site_url).query, dateRanges: dateRanges30 },
         ],
     }).catch(console.log);
 
@@ -106,5 +118,10 @@ export async function runReport2(dateRanges: any, prevDateRanges: any, site_url:
         return null;
     }
     const [{ reports }] = response;
-    return { ...totalAll(site_url).parser(reports[0], reports[1]) };
+    const result = {
+        ...totalAll(site_url).parser(reports[0], reports[1]),
+        ...reportReads(site_url).parser(reports[2]),
+        ...reportAllTimeReads(site_url).parser(reports[3]),
+    };
+    return result;
 }
