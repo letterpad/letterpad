@@ -270,14 +270,14 @@ mutation UnFollowAuthor($username: String!) {
   }
 }
 
-mutation LikePost($postId: Int!) {
+mutation LikePost($postId: String!) {
   likePost(postId: $postId) {
     ok
     message
   }
 }
 
-mutation UnLikePost($postId: Int!) {
+mutation UnLikePost($postId: String!) {
   unLikePost(postId: $postId) {
     ok
     message

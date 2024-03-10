@@ -36,7 +36,9 @@ export const Search = () => {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            const ele = e.currentTarget.querySelector(`#${searchId}`);
+            const ele = e.currentTarget.querySelector(
+              `#${searchId}`
+            ) as HTMLInputElement;
             setLoading(true);
             const result = await doOmniSearch(ele?.value);
             setLoading(false);

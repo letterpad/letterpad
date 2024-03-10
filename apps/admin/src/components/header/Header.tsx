@@ -9,7 +9,7 @@ import { Search } from "@/components/website_v2/search";
 
 import { isMembershipFeatureActive } from "../../shared/utils";
 
-// import { ResourceDropdown } from "./resources-dropdown";
+// @ts-ignore
 import Logo from "/public/logo/logo-full.png";
 
 function Header() {

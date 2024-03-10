@@ -1,5 +1,5 @@
 type Commenter {
-  id: Int!
+  id: String!
   username: String!
   avatar: String
   name: String
@@ -26,12 +26,12 @@ union CreateCommentResponse = Comment | CommentError
 union UpdateCommentResponse = Comment | CommentError
 
 type Query {
-  comments(post_id: Int!): [Comment]!
+  comments(post_id: String!): [Comment]!
 }
 
 type Mutation {
   createComment(
-    post_id: Int!
+    post_id: String!
     content: String!
     parent_id: String
   ): CreateCommentResponse!

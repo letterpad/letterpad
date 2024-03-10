@@ -21,13 +21,17 @@ export const getLetterpadLatestPosts = async (
     }
     : {};
 
+  const tags = args.filters?.tag ? {
+    tags: {
+      some: {
+        slug: args.filters?.tag,
+      },
+    },
+  } : {};
+
   const condition: Prisma.PostFindManyArgs = {
     where: {
-      tags: {
-        some: {
-          slug: args.filters?.tag,
-        },
-      },
+      ...tags,
       status: PostStatusOptions.Published,
       type: PostTypes.Post,
       excerpt: {

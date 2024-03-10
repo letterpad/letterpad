@@ -92,6 +92,7 @@ const Members = () => {
               <div>Variables: @name, @username, @email, @profile_link</div>
               <div className="shadow-md">
                 <Editor
+                  hasAiKey={false}
                   onChange={setHtml}
                   text={html}
                   style={`body {padding: 4px 8px !important;font-size: } p,i,a,div {font-size: 1rem !important;}`}
@@ -112,6 +113,7 @@ const Members = () => {
           </Tabs.Tab>
           <Tabs.Tab label="Recent Users" id={AdminUsersType.RECENT_USERS}>
             <Table
+              loading={false}
               columns={[
                 {
                   title: "Name",
@@ -129,6 +131,7 @@ const Members = () => {
           </Tabs.Tab>
           <Tabs.Tab label="Top Users" id={AdminUsersType.TOP_USERS}>
             <Table
+              loading={false}
               columns={[
                 {
                   title: "Name",
@@ -156,6 +159,7 @@ const Members = () => {
           </Tabs.Tab>
           <Tabs.Tab id={AdminUsersType.DOMAIN_MAPPED} label="Domain Mapped">
             <Table
+              loading={false}
               columns={[
                 {
                   title: "Name",

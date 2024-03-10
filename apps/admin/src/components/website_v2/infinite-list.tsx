@@ -8,7 +8,7 @@ import { getLetterpadPosts } from "./data";
 import { Post } from "../../../__generated__server/__types__";
 
 interface Props {
-  cursor: number;
+  cursor: string;
   tag?: string;
 }
 

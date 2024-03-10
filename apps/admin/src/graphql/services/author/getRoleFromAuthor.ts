@@ -2,7 +2,7 @@ import { Role } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
 export const getRoleFromAuthor = async (
-  id: number,
+  id: string,
   { prisma, dataloaders }: ResolverContext
 ): Promise<Role> => {
   const author = await dataloaders.author.load(id);

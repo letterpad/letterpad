@@ -42,8 +42,16 @@ const Post: PostResolvers<ResolverContext> = {
       height: cover_image_height,
     };
   },
+  featured: async (attrs, _args, { prisma }) => {
+    const isFeatured = await prisma.featuredWeek.findUnique({
+      where: {
+        post_id: attrs.id,
+      }
+    });
+    return !!isFeatured;
+  },
   author: async (attrs, _args, context) => {
-    return getAuthorFromPost(attrs.author_id, context);
+    return getAuthorFromPost(attrs['author_id'], context);
   },
   tags: async ({ id }, _args, context) => {
     return getTagsFromPost(id, context);

@@ -2,10 +2,10 @@ import { NextApiResponse } from "next";
 
 import { prisma } from "@/lib/prisma";
 
+import { getServerSession } from "@/graphql/context";
 import { NextApiRequestWithFormData } from "@/graphql/types";
 
 import { triggerMail } from "./mail";
-import { getServerSession } from "../../graphql/context";
 
 const users = async (req: NextApiRequestWithFormData, res: NextApiResponse) => {
   const session = await getServerSession({ req });
@@ -59,10 +59,10 @@ const getActiveUsers = async () => {
     await prisma.$queryRaw`SELECT COUNT(*) as total, author_id, Author.id as id, username,email, full_name from Post INNER JOIN Author ON Author.id = Post.author_id WHERE Post.status = 'published' GROUP by author_id ORDER BY total DESC`;
   return users as {
     total: number;
-    author_id: number;
+    author_id: string;
     username: string;
     email: string;
     full_name: string;
-    id: number;
+    id: string;
   }[];
 };

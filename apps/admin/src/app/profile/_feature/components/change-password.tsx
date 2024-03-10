@@ -6,7 +6,7 @@ import { SaveButton } from "@/components/save-button";
 import { ResetPasswordMutationVariables } from "@/graphql/queries/mutations.graphql";
 
 interface Props {
-  id: number;
+  id: string;
 }
 export const ChangePassword: React.FC<Props> = () => {
   const {

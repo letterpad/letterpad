@@ -4,7 +4,7 @@ import { InfiniteList } from "@/components/website_v2/infinite-list";
 
 const Tag = async ({ params }: { params: { name: string } }) => {
   const data = await getLetterpadPosts({
-    filters: { tag: decodeURIComponent(params.name), cursor: 0 },
+    filters: { tag: decodeURIComponent(params.name), cursor: "" },
   });
   const rows =
     data?.letterpadLatestPosts.__typename === "PostsNode"
