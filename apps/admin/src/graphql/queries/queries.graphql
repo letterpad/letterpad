@@ -407,6 +407,7 @@ query LetterpadLatestPosts($filters: LetterpadPostsFilters) {
         createdAt
         publishedAt
         excerpt
+        featured
         cover_image {
           src
           width

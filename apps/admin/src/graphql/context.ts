@@ -91,6 +91,9 @@ const batchPosts = async (keys: readonly string[]) => {
     where: {
       id: { in: [...keys] },
     },
+    include: {
+      featured_weeks: true,
+    }
   });
 
   const postsMap: Record<string, (typeof posts)[0]> = {};

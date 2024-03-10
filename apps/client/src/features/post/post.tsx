@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { FC, lazy, Suspense } from 'react';
+import { SlBadge } from 'react-icons/sl';
 
 import kebabCase from '@/lib/utils/kebabCase';
 
@@ -22,7 +23,7 @@ import { PostProps } from '../../../types/pageTypes';
 const Comments = lazy(() => import('@/components/comments'));
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
-  const { title, tags, author, type, sub_title } = post;
+  const { title, tags, author, type, sub_title, featured } = post;
 
   if (author?.__typename !== 'Author') return null;
 
@@ -34,6 +35,12 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
         <div className="mx-auto flex w-full  max-w-3xl justify-between pt-10 flex-col">
           <article className="post format-blue dark:format-invert mx-auto w-full">
             <header className={'mb-4 lg:mb-4'}>
+              {featured && (
+                <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 inline-flex items-center gap-1">
+                  <SlBadge />
+                  Featured
+                </span>
+              )}
               <PageTitle className="leading-10">{title}</PageTitle>
               <PostSubTitle text={sub_title} />
               <div className="flex flex-col py-4">

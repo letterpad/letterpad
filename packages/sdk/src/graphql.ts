@@ -1452,6 +1452,7 @@ export type PostQuery = {
         title: string;
         sub_title?: string | null;
         reading_time?: string | null;
+        featured: boolean;
         page_type?: string | null;
         page_data?: string | null;
         html?: string | null;
@@ -1512,6 +1513,7 @@ export type PageFragmentFragment = {
   title: string;
   sub_title?: string | null;
   reading_time?: string | null;
+  featured: boolean;
   page_type?: string | null;
   page_data?: string | null;
   html?: string | null;
@@ -1580,6 +1582,7 @@ export type PostPageQuery = {
         title: string;
         sub_title?: string | null;
         reading_time?: string | null;
+        featured: boolean;
         page_type?: string | null;
         page_data?: string | null;
         html?: string | null;
@@ -1739,6 +1742,7 @@ export type PostsQuery = {
           title: string;
           sub_title?: string | null;
           slug?: string | null;
+          featured: boolean;
           publishedAt?: any | null;
           reading_time?: string | null;
           excerpt?: string | null;
@@ -1789,6 +1793,7 @@ export type PostsFragmentFragment = {
     title: string;
     sub_title?: string | null;
     slug?: string | null;
+    featured: boolean;
     publishedAt?: any | null;
     reading_time?: string | null;
     excerpt?: string | null;
@@ -2077,6 +2082,7 @@ export const PageFragmentFragmentDoc = `
   title
   sub_title
   reading_time
+  featured
   stats {
     words
     reading_time
@@ -2136,6 +2142,7 @@ export const PostsFragmentFragmentDoc = `
     title
     sub_title
     slug
+    featured
     likes {
       avatar
       username

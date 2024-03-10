@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
+import { SlBadge } from "react-icons/sl";
 
 import { getReadableDate } from "@/shared/utils";
 
@@ -20,6 +21,7 @@ interface Props {
   author?: Omit<Author, "email" | "id">;
   stats?: PostStats;
   publishedAt?: string;
+  featured?: boolean;
 }
 export const Card: FC<Props> = ({
   slug,
@@ -31,6 +33,7 @@ export const Card: FC<Props> = ({
   author,
   stats,
   publishedAt,
+  featured,
 }) => {
   const origin =
     typeof window === "undefined"
@@ -61,6 +64,12 @@ export const Card: FC<Props> = ({
           <span className="text-gray-800 dark:text-gray-200">
             {author?.name}
           </span>
+          {featured && (
+            <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1">
+              <SlBadge />
+              Featured
+            </span>
+          )}
         </Link>
       </div>
       <Link
@@ -78,7 +87,7 @@ export const Card: FC<Props> = ({
               {excerpt ?? sub_title}
             </span>
           </div>
-          <div className="flex gap-2 text-slate-600 dark:text-gray-400">
+          <div className="flex gap-2 text-slate-600 dark:text-gray-400 font-heading">
             {getReadableDate(new Date(publishedAt!))}
             <span>·</span>
             <span className="">{reading_time}</span>

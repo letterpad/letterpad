@@ -16,35 +16,39 @@ export const ForgotPassword = ({
   hideSelf: () => void;
 }) => {
   const router = useRouter();
+  const [waiting, setWaiting] = useState(false);
   const [email, setEmail] = useState("");
   const { forgotPassword } = useForgotPassword();
 
   const tryForgotPassword = async () => {
+    setWaiting(true);
     track({
       eventAction: EventAction.Click,
       eventCategory: "forgot-password",
       eventLabel: `before-request`,
     });
 
-    const sanitisedLoginEmail = email.trim();
-    if (sanitisedLoginEmail.length > 0) {
-      const { data } = await forgotPassword({ email });
-
-      if (data?.forgotPassword.ok) {
-        Message().success({
-          content: "Check your email to reset your password!",
-        });
-        router.push("/login");
+    try {
+      const sanitisedLoginEmail = email.trim();
+      if (sanitisedLoginEmail.length > 0) {
+        const { data } = await forgotPassword({ email });
+        if (data?.forgotPassword.ok) {
+          Message().success({
+            content: "Check your email to reset your password!",
+          });
+          router.push("/login");
+        } else {
+          Message().warn({
+            content:
+              data?.forgotPassword.message ||
+              "Something wrong hapenned. Please try again.",
+          });
+        }
       } else {
-        Message().warn({
-          content:
-            data?.forgotPassword.message ||
-            "Something wrong hapenned. Please try again.",
-        });
+        Message().warn({ content: "Email field is mandatory" });
       }
-    } else {
-      Message().warn({ content: "Email field is mandatory" });
-    }
+    } catch (e) {}
+    setWaiting(false);
   };
 
   if (!isVisible) return null;
@@ -102,6 +106,7 @@ export const ForgotPassword = ({
               <button
                 className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
                 data-testid="loginBtn"
+                disabled={waiting}
                 onClick={tryForgotPassword}
               >
                 Reset Password

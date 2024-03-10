@@ -25,7 +25,7 @@ export const PublishedAt: FC<Props> = ({
     {separator}
     <span className="flex items-center gap-1">
       <IconBook />
-      {reading_time} read
+      {reading_time.replace('read', '')} read
     </span>
   </dl>
 );

@@ -28,6 +28,7 @@ fragment pageFragment on Post {
   title
   sub_title
   reading_time
+  featured
   stats{
     words
     reading_time
