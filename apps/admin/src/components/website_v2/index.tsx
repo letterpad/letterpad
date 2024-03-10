@@ -4,7 +4,7 @@ import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 
 import { AdminActions } from "./adminActions";
-import { Banner } from "./banner";
+import { SignupBanner } from "./banner/signupBanner";
 import { Card } from "./card";
 import {
   getfavAuthors,
@@ -32,7 +32,7 @@ export const Website = async () => {
     <>
       <div className="flex min-h-screen flex-col">
         <Header />
-        <Banner />
+        <SignupBanner />
         <div className=" bg-slate-800 sticky top-0 border-t border-gray-800 ">
           <div className="overflow-x-auto max-w-6xl mx-auto py-4 p-2 relative">
             {/* <h2 className="font-bold mb-6 text-md">Topics:</h2> */}
