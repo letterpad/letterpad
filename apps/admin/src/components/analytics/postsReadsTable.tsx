@@ -3,7 +3,7 @@ import { ListPlaceholder } from "ui";
 import { secondsToMinutes } from "../../app/api/analytics/helper";
 import { ProcessedReportData } from "../../app/api/analytics/types";
 
-export function PageDataTable({
+export function PostsReadTable({
   data,
   loading,
 }: {
@@ -23,10 +23,10 @@ export function PageDataTable({
               Sessions
             </th>
             <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
-              Avg. Engagement Rate
+              Reads
             </th>
             <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
-              Avg. Engagement Time
+              Engagement Time
             </th>
           </tr>
         </thead>
@@ -49,7 +49,7 @@ export function PageDataTable({
                 {item.pageViews}
               </td>
               <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
-                {item.engagementRate}
+                {item.reads}
               </td>
               <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
                 {secondsToMinutes(item.duration / item.pageViews)}

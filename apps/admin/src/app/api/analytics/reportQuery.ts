@@ -50,7 +50,7 @@ export const totalAll = (siteUrl: string) => {
 
                 const avgTime = getValues(3);
                 return {
-                    "Users": getValues(0),
+                    // "Users": getValues(0),
                     "Sessions": getValues(1),
                     "New Users": getValues(2),
                     "Avg. Time": {
@@ -242,6 +242,106 @@ export const reportCountry = (siteUrl: string) => {
     }
 };
 
+export const reportAllTimeReads = (siteUrl: string) => {
+    return {
+        query: {
+            dimensionFilter: {
+                andGroup: {
+                    expressions: [
+                        {
+                            filter: {
+                                stringFilter: {
+                                    value: new URL(siteUrl).host,
+                                    matchType: "EXACT"
+                                },
+                                fieldName: "hostName"
+
+                            }
+                        },
+                        {
+                            filter: {
+                                stringFilter: {
+                                    value: 'scroll',
+                                    matchType: "EXACT"
+                                },
+                                fieldName: "eventName"
+
+                            }
+                        }
+                    ]
+                }
+            },
+            metrics: [
+                {
+                    name: 'sessions',
+                },
+            ]
+        } as Query,
+        parser: function processDeviceData(report: Query1) {
+            return {
+                allTimeReads: report?.rows?.map(row => ({
+                    reads: parseInt(row.metricValues?.[0].value ?? "0"),
+                })).pop()?.reads ?? 0
+            };
+        }
+    }
+}
+
+export const reportReads = (siteUrl: string) => {
+    return {
+        query: {
+            dimensions: [
+                {
+                    name: 'eventName',
+                },
+                {
+                    name: 'pagePath',
+                },
+            ],
+            dimensionFilter: {
+                andGroup: {
+                    expressions: [
+                        {
+                            filter: {
+                                stringFilter: {
+                                    value: new URL(siteUrl).host,
+                                    matchType: "EXACT"
+                                },
+                                fieldName: "hostName"
+
+                            }
+                        },
+                        {
+                            filter: {
+                                stringFilter: {
+                                    value: 'read',
+                                    matchType: "EXACT"
+                                },
+                                fieldName: "eventName"
+
+                            }
+                        }
+                    ]
+                }
+            },
+            metrics: [
+                {
+                    name: 'sessions',
+                },
+            ],
+            limit: 10
+        } as Query,
+        parser: function processDeviceData(report: Query1) {
+            return {
+                reads: report?.rows?.map(row => ({
+                    pagePath: row.dimensionValues?.[1].value ?? "",
+                    reads: parseInt(row.metricValues?.[0].value ?? "0"),
+                })) || []
+            };
+        }
+    }
+
+}
 
 export const reportDevice = (siteUrl: string) => {
     return {

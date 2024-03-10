@@ -17,13 +17,27 @@ export type TotalStatsData = {
 export function TotalStats({
   data,
   loading,
+  allTimeReads,
 }: {
   data: TotalStatsData | null;
   loading: boolean;
+  allTimeReads: number;
 }) {
   return (
     <div className="grid lg:grid-cols-4 grid-cols-2 gap-6 w-full max-w-5xl">
-      {loading && [1, 2, 3, 4].map((key) => <MetricPlaceholder key={key} />)}
+      <div className="flex items-center p-4 rounded">
+        <div className="flex-grow flex flex-col ml-4">
+          <span className="text-4xl font-bold dark:text-slate-200">
+            {allTimeReads}
+          </span>
+          <div className="flex items-center justify-start gap-4">
+            <span className="text-slate-600 dark:text-slate-300 text-sm">
+              All time reads
+            </span>
+          </div>
+        </div>
+      </div>
+      {loading && [1, 2, 3].map((key) => <MetricPlaceholder key={key} />)}
       {!loading &&
         data &&
         Object.keys(data ?? {}).map((key) => {

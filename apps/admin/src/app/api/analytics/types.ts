@@ -11,6 +11,7 @@ export interface ProcessedReportData {
     pageViews: number;
     duration: number;
     engagementRate: string;
+    reads: number;
 }
 
 export interface ProcessedSessionsPerDayData {
@@ -33,7 +34,7 @@ export interface ProcessedDeviceData {
 }
 
 export interface ProcessedTotalData {
-    Users: ProcessedMetricData;
+    // Users: ProcessedMetricData;
     Sessions: ProcessedMetricData;
     "New Users": ProcessedMetricData;
     "Avg. Time": ProcessedMetricData;
