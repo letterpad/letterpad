@@ -111,7 +111,7 @@ export const blogEditorConfig = ({
 
     const nodes = Array.from(tempElement.children);
     nodes.forEach(elem => modifyElements(elem));
-    let content = nodes.map(node => node.outerHTML).join('');
+    let content = nodes.map(node => node.outerHTML).join('') ?? tempElement.innerHTML;
 
     pl.execCommand('mceInsertContent', false, content);
 
