@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { mail } from "@/lib/mail";
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
     },
     where: {
       id: {
-        in: Object.keys(notificationsArrByAuthorId).map(Number),
+        in: Object.keys(notificationsArrByAuthorId),
       },
     },
   });
@@ -57,10 +58,10 @@ export async function GET(request: NextRequest) {
   authorsData.forEach((author) => {
     authorsLookup[author.id] = author;
   });
-  const mailSentAuthorIds: number[] = [];
+  const mailSentAuthorIds: string[] = [];
   const mails = Object.keys(notificationsArrByAuthorId).map(
     async (authorId) => {
-      const recipient = authorsLookup[Number(authorId)];
+      const recipient = authorsLookup[authorId];
       const updates = notificationsArrByAuthorId[authorId];
       const emailContent: string[] = [];
 
@@ -107,7 +108,7 @@ export async function GET(request: NextRequest) {
             console.log(`Failed to send email to ${recipient.email}`);
           });
           resolve(res);
-          mailSentAuthorIds.push(Number(authorId));
+          mailSentAuthorIds.push(authorId);
         }
       );
     }
@@ -133,5 +134,5 @@ export async function GET(request: NextRequest) {
       console.log(`Failed to update mail status for one or more post`);
     });
 
-  return Response.json({ success: true });
+  return NextResponse.json({ success: true });
 }

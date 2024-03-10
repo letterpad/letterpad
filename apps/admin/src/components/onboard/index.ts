@@ -15,7 +15,7 @@ import { EmailTemplates, ROLES } from "@/graphql/types";
 import { encryptEmail } from "@/shared/clientToken";
 import { textToSlug } from "@/utils/slug";
 
-export const onBoardUser = async (id: number) => {
+export const onBoardUser = async (id: string) => {
   const newAuthor = await prisma.author.findUnique({ where: { id } });
   if (newAuthor && newAuthor.verified) {
     // create new tag for author

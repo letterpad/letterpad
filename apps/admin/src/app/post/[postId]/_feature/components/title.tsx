@@ -5,7 +5,7 @@ import "./tinymce/core";
 import { titleEditorConfig, titleId } from "./tinymce/config";
 
 interface Props {
-  postId?: number;
+  postId?: string;
   title: string;
   onTitleChange: (title: string) => void;
 }

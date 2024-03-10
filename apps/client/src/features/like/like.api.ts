@@ -2,7 +2,7 @@ import { print } from 'graphql';
 import gql from 'graphql-tag';
 
 const query = gql`
-  query isPostLiked($postId: Int!) {
+  query isPostLiked($postId: String!) {
     isPostLiked(postId: $postId) {
       ok
       liked
@@ -11,7 +11,7 @@ const query = gql`
   }
 `;
 
-export const hasLiked = async (postId) => {
+export const hasLiked = async (postId: string) => {
   const url = new URL('/redirect-api/graphql', window.location.href);
   const req = await fetch(url.href, {
     method: 'POST',
@@ -32,7 +32,7 @@ export const hasLiked = async (postId) => {
   return data?.data?.isPostLiked?.liked;
 };
 
-export const likePost = async (postId: number) => {
+export const likePost = async (postId: string) => {
   const url = new URL('/redirect-api/events/like', window.location.href);
   const params = new URLSearchParams({
     id: postId.toString(),

@@ -32,7 +32,7 @@ export const Feature = () => {
   if (error) {
     return <ErrorMessage description={error} title="Error" />;
   }
-  const changeStatus = (id: number, status: PostStatusOptions) => {
+  const changeStatus = (id: string, status: PostStatusOptions) => {
     updatePost({ id, status });
   };
 

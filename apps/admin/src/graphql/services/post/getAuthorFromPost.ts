@@ -2,7 +2,7 @@ import { ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
 export const getAuthorFromPost = async (
-  id: number,
+  id: string,
   { dataloaders }: ResolverContext
 ): Promise<ResolversTypes["AuthorResponse"]> => {
 

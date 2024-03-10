@@ -3,7 +3,7 @@ import { ResolversParentTypes, TagType } from "@/__generated__/__types__";
 import { ResolverContext } from "../../context";
 
 export const getTagsFromPost = async (
-  id: number,
+  id: string,
   { dataloaders }: ResolverContext
 ): Promise<ResolversParentTypes["TagsResponse"]> => {
   const tags = await dataloaders.tagsByPostId.load(id);

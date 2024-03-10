@@ -99,7 +99,7 @@ query Media($filters: MediaFilters) {
   }
 }
 
-query Subscribers($author_id: Int) {
+query Subscribers($author_id: String) {
   subscribers(author_id: $author_id) {
     count
     rows {

@@ -29,7 +29,7 @@ export const Feature = () => {
   const { updatePost } = useUpdatePost();
   useRedirectToOnboard();
 
-  const changeStatus = (id: number, status: PostStatusOptions) => {
+  const changeStatus = (id: string, status: PostStatusOptions) => {
     updatePost({ id, status });
   };
 

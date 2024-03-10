@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { gql } from "urql";
 
 const like = gql`
-  mutation LikePost($postId: Int!) {
+  mutation LikePost($postId: String!) {
     likePost(postId: $postId) {
       ok
       message
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     body: JSON.stringify({
       query: print(like),
       variables: {
-        postId: Number(id),
+        postId: id,
         type,
       },
     }),

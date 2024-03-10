@@ -15,7 +15,7 @@ import { PageNotLinkedWithNavigation, WarnNoTags } from "./warnings";
 import { useGetPost, useUpdatePost } from "../../api.client";
 
 interface Props {
-  postId: number;
+  postId: string;
   menu: Navigation[];
 }
 

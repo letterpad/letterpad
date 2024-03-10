@@ -8,16 +8,15 @@ import { EventAction, track } from "@/track";
 
 interface Props {
   siteUrl: string;
-  postHash: string;
   showDrawer: () => void;
   showPreview?: boolean;
-  id: number;
+  id: string;
 }
 export const QuickMenu: FC<Props> = ({
   siteUrl,
-  postHash,
   showDrawer,
   showPreview,
+  id,
 }) => {
   const { toggleTheme } = useTheme();
   const openPreview = () => {
@@ -26,7 +25,7 @@ export const QuickMenu: FC<Props> = ({
       eventCategory: "setting",
       eventLabel: "preview",
     });
-    window.open(siteUrl + "/preview/" + postHash);
+    window.open(siteUrl + "/preview/" + id);
   };
   return (
     <div className="flex items-center gap-6">

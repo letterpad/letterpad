@@ -33,7 +33,7 @@ export const getPost = cache(
     const { previewHash, id, slug } = args.filters;
 
     if (previewHash) {
-      const postId = parseInt(decrypt(previewHash));
+      const postId = previewHash;
       if (postId) {
         const post = await prisma.post.findFirst({ where: { id: postId } });
         if (post) {
@@ -76,7 +76,7 @@ export const getPost = cache(
     if (slug) {
       const post = await prisma.post.findFirst({
         where: {
-          author_id: client_author_id,
+          author_id: client_author_id!,
           status: PostStatusOptions.Published,
           slug: slug?.split("/").pop(),
         },

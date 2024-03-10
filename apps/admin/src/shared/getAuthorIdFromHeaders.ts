@@ -5,7 +5,7 @@ import { decryptEmail } from "./clientToken";
 interface P {
   identifierHeader: string | null;
   authHeader: string | null;
-  authorId: number | null;
+  authorId: string | null;
 }
 export async function findEmailFromToken({ authHeader, ...rest }: P) {
   if (!authHeader) {

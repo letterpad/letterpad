@@ -7,7 +7,7 @@ interface IArgs {
   mutation?: any;
   variables?: any;
   token?: string;
-  sessionId?: number;
+  sessionId?: string;
 }
 
 const demoToken = encryptEmail("demo@demo.com");

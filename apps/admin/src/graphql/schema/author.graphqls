@@ -20,7 +20,7 @@ type FollowAuthor {
 }
 
 type Author {
-  id: Int!
+  id: String!
   email: String!
   username: String!
   name: String!
@@ -44,16 +44,6 @@ type Author {
   createdAt: String
 }
 
-type Subscription {
-  id: Int!
-  customer_id: Int!
-  subscription_id: Int!
-  plan_id: Int!
-  status: String!
-  created_at: String!
-  updated_at: String!
-}
-
 input LoginData {
   email: String!
   password: String!
@@ -67,7 +57,7 @@ input InputSocial {
   linkedin: String
 }
 input InputAuthor {
-  id: Int!
+  id: String!
   email: String
   name: String
   bio: String

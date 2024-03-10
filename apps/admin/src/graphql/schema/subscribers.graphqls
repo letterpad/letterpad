@@ -1,7 +1,7 @@
 type Subscriber {
   id: Int!
   email: String!
-  author_id: Int!
+  author_id: String!
   verified: Boolean!
   createdAt: Date!
 }
@@ -27,7 +27,7 @@ type SubscriberError {
 union SubscriberResponse = Subscriber | SubscriberError
 
 type Query {
-  subscribers(author_id: Int): SubscribersNode!
+  subscribers(author_id: String): SubscribersNode!
   subscriber(subscriber_id: Int): SubscriberResponse!
 }
 

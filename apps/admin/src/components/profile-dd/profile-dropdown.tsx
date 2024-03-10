@@ -28,8 +28,8 @@ export const ProfileDropdown = ({
     pause: !session?.user?.id,
   });
   const [show, setShow] = useState(false);
-  const author = isAuthor(data?.me) ? data.me : null;
-  const settings = isSettings(data?.settings) ? data.settings : null;
+  const author = data && isAuthor(data?.me) ? data.me : null;
+  const settings = data && isSettings(data?.settings) ? data.settings : null;
   const ref = useRef(null);
 
   useEffect(() => {

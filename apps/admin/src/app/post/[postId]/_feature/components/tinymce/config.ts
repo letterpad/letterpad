@@ -115,7 +115,7 @@ export const blogEditorConfig = ({
 
     pl.execCommand('mceInsertContent', false, content);
 
-    // Cancel the paste event to prevent default behavior
+    // @ts-ignore
     o.preventDefault();
   },
   min_height: 300,

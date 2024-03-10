@@ -11,10 +11,10 @@ export const convertNotificationMetaIn = (
   meta: NotificationMeta
 ): typeof notificationMetaType => {
   return (
-    notificationMetaType === "String" ? JSON.stringify(meta) : meta
+    notificationMetaType === "Json" ? meta : JSON.stringify(meta)
   ) as typeof notificationMetaType;
 };
 
 export const convertNotificationMetaOut = (meta: any): NotificationMeta => {
-  return notificationMetaType === "String" ? JSON.parse(meta) : meta;
+  return notificationMetaType === "Json" ? meta : JSON.parse(meta);
 };
