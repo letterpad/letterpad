@@ -111,7 +111,10 @@ export const blogEditorConfig = ({
 
     const nodes = Array.from(tempElement.children);
     nodes.forEach(elem => modifyElements(elem));
-    let content = nodes.map(node => node.outerHTML).join('') ?? tempElement.innerHTML;
+    let content = nodes.map(node => node.outerHTML).join('');
+    if (content === '<meta>') {
+      content = tempElement.innerText;
+    }
 
     pl.execCommand('mceInsertContent', false, content);
 
