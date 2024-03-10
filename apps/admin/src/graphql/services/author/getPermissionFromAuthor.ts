@@ -2,7 +2,7 @@ import { Permissions } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
 export const getPermissionFromAuthor = async (
-  id: number,
+  id: string,
   { prisma, dataloaders }: ResolverContext
 ): Promise<Permissions[]> => {
   const author = await dataloaders.author.load(id);

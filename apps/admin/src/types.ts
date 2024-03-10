@@ -11,7 +11,7 @@ declare module "next-auth" {
       username: string;
       avatar: string;
       name: string;
-      id: number;
+      id: string;
       role: ROLES;
       register_step: RegisterStep;
       membership: "free" | "paid";
@@ -88,18 +88,18 @@ export interface ForgotPasswordToken {
 
 export interface UnsubscribeToken {
   email: string;
-  author_id: number;
+  author_id: string;
   subscriber_id: number;
 }
 
 export interface VerifyUserToken {
   email: string;
-  author_id: number;
+  author_id: string;
 }
 
 export interface VerifySubscriberToken {
   email: string;
-  author_id: number;
+  author_id: string;
   subscriber_id: number;
 }
 

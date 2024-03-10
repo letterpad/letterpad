@@ -9,7 +9,7 @@ interface Props {
   subject: string;
   username: string;
   html: string;
-  author_id: number;
+  author_id: string;
 }
 export const triggerMail = async ({
   html,
@@ -38,7 +38,7 @@ interface Props2 {
   html: string;
   subject: string;
   to: string;
-  author_id: number;
+  author_id: string;
   author_name: string;
 }
 async function send({ html, subject, to, author_id, author_name }: Props2) {

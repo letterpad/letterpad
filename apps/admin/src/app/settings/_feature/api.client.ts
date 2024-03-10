@@ -4,13 +4,13 @@ import { SettingInputType } from "@/__generated__/__types__";
 import {
   UpdateOptionsMutation,
   UpdateOptionsMutationVariables,
+  useUpdateOptionsMutation,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { useSettingsQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 import {
   DeleteAuthorDocument,
   DeleteAuthorMutation,
   UpdateOptionsDocument,
-  useUpdateOptionsMutation,
 } from "@/graphql/queries/mutations.graphql";
 import { isSettings } from "@/utils/type-guards";
 

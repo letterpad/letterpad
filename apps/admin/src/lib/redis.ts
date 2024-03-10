@@ -33,7 +33,7 @@ export const delAllPageViews = async (...keys) => {
 };
 
 export const queueSubscribeEmails = async (
-  postId: number,
+  postId: string,
   data: Array<any>
 ) => {
   if (!data.length) return;
@@ -42,11 +42,7 @@ export const queueSubscribeEmails = async (
   });
 };
 
-// export const removePostFromSubscribeEmail = async (postId: number) => {
-//   await client?.json.del(getKeyForEmailSubscription(postId));
-// };
-
-export const getQueuedSubscriberEmails = async (postId: number) => {
+export const getQueuedSubscriberEmails = async (postId: string) => {
   return await client?.json.get<any>(getKeyForEmailSubscription(postId));
 };
 
@@ -58,6 +54,6 @@ export const getKeyForViews = (type: string, id: string | number) => {
   return `views:${type}:${id}`;
 };
 
-export const getKeyForEmailSubscription = (id: number) => {
+export const getKeyForEmailSubscription = (id: string) => {
   return `mail:post:${id}`;
 };

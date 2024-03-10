@@ -31,7 +31,7 @@ const stats = gql`
 
 const createCommentQuery = gql`
   mutation createComment(
-    $post_id: Int!
+    $post_id: String!
     $content: String!
     $parent_id: String
   ) {
@@ -66,7 +66,7 @@ const createCommentQuery = gql`
 `;
 
 const comments = gql`
-  query Comments($post_id: Int!) {
+  query Comments($post_id: String!) {
     comments(post_id: $post_id) {
       id
       content
@@ -147,7 +147,7 @@ export const getIsFollowing = async (username: string) => {
 };
 
 export const postComment = async (
-  post_id: number,
+  post_id: string,
   content: string,
   parent_id: string = ''
 ) => {
@@ -170,7 +170,7 @@ export const postComment = async (
   return data.data;
 };
 
-export const getComments = async (post_id: number) => {
+export const getComments = async (post_id: string) => {
   const url = new URL('/redirect-api/graphql', window.location.href);
   const req = await fetch(url.href, {
     method: 'POST',

@@ -16,7 +16,7 @@ import { getHeader } from "../utils/headers";
 
 const isTest = process.env.NODE_ENV === "test";
 
-const cache: Record<string, number> = {};
+const cache: Record<string, string> = {};
 
 export const getResolverContext = async (request: Request) => {
   const authHeader = getHeader(request.headers, "authorization");
@@ -55,12 +55,12 @@ export const getResolverContext = async (request: Request) => {
   return { client_author_id: authorId, session: null };
 };
 
-const batchAuthors = async (keys: readonly number[]) => {
+const batchAuthors = async (keys: readonly string[]) => {
   const authors = await prisma?.author.findMany({
     where: { id: { in: [...keys] } },
   });
 
-  const authorMap: Record<number, (typeof authors)[0]> = {};
+  const authorMap: Record<string, (typeof authors)[0]> = {};
 
   authors?.forEach((author) => {
     authorMap[author.id] = author;
@@ -68,7 +68,7 @@ const batchAuthors = async (keys: readonly number[]) => {
   return keys.map((key) => authorMap[key]);
 };
 
-const batchSettings = async (keys: readonly number[]) => {
+const batchSettings = async (keys: readonly string[]) => {
   const settings = await prisma?.setting.findMany({
     where: {
       author: {
@@ -77,7 +77,7 @@ const batchSettings = async (keys: readonly number[]) => {
     },
   });
 
-  const settingsMap: Record<number, (typeof settings)[0]> = {};
+  const settingsMap: Record<string, (typeof settings)[0]> = {};
 
   settings?.forEach((setting) => {
     settingsMap[keys[0]] = setting;
@@ -86,14 +86,14 @@ const batchSettings = async (keys: readonly number[]) => {
   return keys.map((key) => settingsMap[key]);
 };
 
-const batchPosts = async (keys: readonly number[]) => {
+const batchPosts = async (keys: readonly string[]) => {
   const posts = await prisma?.post.findMany({
     where: {
       id: { in: [...keys] },
     },
   });
 
-  const postsMap: Record<number, (typeof posts)[0]> = {};
+  const postsMap: Record<string, (typeof posts)[0]> = {};
 
   posts?.forEach((post) => {
     postsMap[post.id] = post;
@@ -101,7 +101,7 @@ const batchPosts = async (keys: readonly number[]) => {
 
   return keys.map((key) => postsMap[key]);
 };
-const batchTags = async (keys: readonly number[]) => {
+const batchTags = async (keys: readonly string[]) => {
   const tags = await prisma.tag.findMany({
     where: {
       posts: {
@@ -113,7 +113,7 @@ const batchTags = async (keys: readonly number[]) => {
     },
   });
 
-  const postTags: Record<number, (typeof tags)[0][]> = [];
+  const postTags = [] as Record<string, (typeof tags)[0][]>[];
 
   tags.forEach((tag) => {
     tag.posts.forEach((post) => {
@@ -139,7 +139,7 @@ export const context = async ({ request }) => {
     dataloaders: {
       author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
       setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
-      post: new DataLoader<Readonly<number>, Post>(
+      post: new DataLoader<Readonly<string>, Post>(
         batchPosts,
         dataLoaderOptions
       ),

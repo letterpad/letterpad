@@ -8,7 +8,7 @@ import { useSession } from '../../context/SessionProvider';
 import { getComments, postComment } from '../../src/graphql';
 
 interface Props {
-  postId: number;
+  postId: string;
 }
 
 export const Comments: FC<Props> = ({ postId }) => {

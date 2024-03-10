@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
 import { load } from "cheerio";
+
+import { prisma } from "@/lib/prisma";
 
 import { Social } from "@/__generated__/__types__";
 import logger from "@/shared/logger";
@@ -9,13 +9,12 @@ import { textToSlug } from "@/utils/slug";
 const slugOfUntitledPost = "untitled";
 
 export async function slugify(
-  PostModel: Prisma.PostDelegate<DefaultArgs>,
   slug: string = slugOfUntitledPost,
-  author_id: number,
-  postId: number
+  author_id: string,
+  postId: string
 ): Promise<string> {
   slug = textToSlug(slug);
-  const result = await PostModel.findFirst({
+  const result = await prisma.post.findFirst({
     where: {
       slug: slug,
       author: { id: author_id },
@@ -33,7 +32,7 @@ export async function slugify(
   slug += "-";
 
   async function recursiveFindUniqueSlug() {
-    const result = await PostModel.findFirst({
+    const result = await prisma.post.findFirst({
       where: {
         slug: slug + count,
         author: { id: author_id },

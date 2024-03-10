@@ -1,6 +1,6 @@
 type Media {
   id: Int!
-  authorId: Int
+  authorId: String
   url: String!
   createdAt: Date!
   name: String!
@@ -27,7 +27,7 @@ input MediaFilters {
   cursor: Int
   limit: Int
   page: Int
-  authorId: Int
+  authorId: String
 }
 
 union MediaResponse = MediaNode | UnAuthorized

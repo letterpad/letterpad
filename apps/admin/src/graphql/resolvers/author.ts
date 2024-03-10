@@ -156,10 +156,10 @@ const Query: QueryResolvers<ResolverContext> = {
     const b = await prisma.follows.findFirst({
       where: {
         follower: {
-          id: Number(session?.user?.id),
+          id: session?.user?.id,
         },
         following: {
-          id: Number(a?.id),
+          id: a?.id,
         },
       },
     });

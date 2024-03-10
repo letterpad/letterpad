@@ -18,7 +18,7 @@ type Design {
 }
 
 type Setting {
-  id: Int!
+  id: String!
   site_title: String!
   site_tagline: String
   site_email: String!

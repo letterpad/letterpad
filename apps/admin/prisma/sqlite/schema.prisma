@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Author {
-  id                   Int             @id @default(autoincrement())
+  id                   String          @id @default(uuid())
   name                 String
   username             String          @unique
   email                String          @unique
@@ -55,7 +55,7 @@ model Author {
 
 model Membership {
   id                     String    @id @default(uuid())
-  author_id              Int       @unique
+  author_id              String    @unique
   stripe_customer_id     String?
   stripe_subscription_id String?
   status                 String    @default("active")
@@ -68,9 +68,9 @@ model Membership {
 }
 
 model FeaturedWeek {
-  id          Int  @id @default(autoincrement())
-  post        Post @relation(fields: [post_id], references: [id])
-  post_id     Int
+  id          Int    @id @default(autoincrement())
+  post        Post   @relation(fields: [post_id], references: [id])
+  post_id     String
   week_number Int
 
   @@index([post_id])
@@ -78,7 +78,7 @@ model FeaturedWeek {
 
 model Notifications {
   notification_id String    @id @default(uuid())
-  author_id       Int
+  author_id       String
   meta            String    @default("{}")
   is_read         Boolean   @default(false)
   mail_sent       Boolean   @default(false)
@@ -90,9 +90,9 @@ model Notifications {
 }
 
 model Follows {
-  follower_id  Int
+  follower_id  String
   follower     Author    @relation("follower", fields: [follower_id], references: [id])
-  following_id Int
+  following_id String
   following    Author    @relation("following", fields: [following_id], references: [id])
   createdAt    DateTime? @default(now())
   updatedAt    DateTime? @updatedAt
@@ -102,8 +102,8 @@ model Follows {
 }
 
 model Likes {
-  post_id   Int
-  liked_by  Int
+  post_id   String
+  liked_by  String
   createdAt DateTime? @default(now())
   count     Int       @default(0)
   updatedAt DateTime? @updatedAt
@@ -122,8 +122,8 @@ model Comment {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  post    Post @relation(fields: [post_id], references: [id])
-  post_id Int
+  post    Post   @relation(fields: [post_id], references: [id])
+  post_id String
 
   parent    Comment? @relation("ParentComment", fields: [parent_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
   parent_id String?
@@ -131,7 +131,7 @@ model Comment {
   replies Comment[] @relation("ParentComment")
 
   author    Author @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  author_id Int
+  author_id String
 
   @@index([post_id])
   @@index([parent_id])
@@ -141,7 +141,7 @@ model Comment {
 model Session {
   id        Int       @id @default(autoincrement())
   domain    String
-  author_id Int
+  author_id String
   token     String
   author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
   expiresAt DateTime?
@@ -179,7 +179,7 @@ model Permission {
 }
 
 model Post {
-  id                 Int            @id @default(autoincrement())
+  id                 String         @id @default(uuid())
   title              String         @default("")
   sub_title          String         @default("")
   html               String         @default("")
@@ -197,7 +197,7 @@ model Post {
   scheduledAt        DateTime?
   updatedAt          DateTime?      @updatedAt
   createdAt          DateTime?      @default(now())
-  author_id          Int
+  author_id          String
   author             Author?        @relation(fields: [author_id], references: [id], onDelete: Cascade)
   tags               Tag[]
   page_type          String         @default("default")
@@ -241,8 +241,8 @@ model Role {
 
 model PageViews {
   id        String    @id @default(uuid())
-  post_id   Int?
-  author_id Int?
+  post_id   String?
+  author_id String?
   view_type String
   count     Int       @default(0)
   createdAt DateTime? @default(now())
@@ -259,7 +259,7 @@ model PageViews {
 }
 
 model Setting {
-  id                  Int       @id @default(autoincrement())
+  id                  String    @id @default(uuid())
   site_title          String
   site_tagline        String
   site_email          String
@@ -285,14 +285,14 @@ model Setting {
   design              String    @default("{}")
   scripts             String    @default("")
   openai_key          String    @default("")
-  author_id           Int       @unique
+  author_id           String    @unique
   author              Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 
 model Subscriber {
   id                  Int       @id @default(autoincrement())
   email               String
-  author_id           Int
+  author_id           String
   verified            Boolean   @default(false)
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
@@ -322,7 +322,7 @@ model Upload {
   description String    @default("")
   updatedAt   DateTime? @updatedAt
   createdAt   DateTime? @default(now())
-  author_id   Int
+  author_id   String
   author      Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
 
   @@index([author_id])
@@ -335,14 +335,14 @@ model Domain {
   ssl       Boolean
   updatedAt DateTime? @updatedAt
   createdAt DateTime? @default(now())
-  author_id Int       @unique
+  author_id String    @unique
   author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 
 model SubscribersDelivery {
   id            Int       @id @default(autoincrement())
   subscriber_id String?
-  post_id       Int
+  post_id       String
   delivered     Boolean
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
@@ -351,7 +351,7 @@ model SubscribersDelivery {
 model PageTimeLog {
   id        String    @id @default(uuid())
   ip        String
-  post_id   Int
+  post_id   String
   post      Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
   snapshot  String
   page_time Int       @default(0)

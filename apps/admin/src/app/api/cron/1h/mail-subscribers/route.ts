@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { mail } from "@/lib/mail";
@@ -18,8 +19,8 @@ import { getRootUrl } from "@/shared/getRootUrl";
 import { getUnsubscribeToken } from "@/shared/token";
 
 interface Base {
-  post_id: number;
-  author_id: number;
+  post_id: string;
+  author_id: string;
   to: string;
   title: string;
   excerpt: string;
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
 
   const template = await getTemplate(EmailTemplates.NewPost);
 
-  const mailSentIds: number[] = [];
+  const mailSentIds: string[] = [];
   const mails = flatEmails.map(async (variable) => {
     const subject = template.subject.replaceAll(
       "{{ blog_name }}",
@@ -149,7 +150,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  return Response.json({ success: true });
+  return NextResponse.json({ success: true });
 }
 
 async function getUnsubscribeText({

@@ -1,6 +1,6 @@
 type Post {
   # Primary key
-  id: Int!
+  id: String!
   # Title of the post
   title: String!
   # Sub Title of the post
@@ -86,7 +86,7 @@ enum PostStatusOptions {
 }
 
 input PostFilters {
-  id: Int
+  id: String
   slug: String
   featured: Boolean
   previewHash: String
@@ -110,7 +110,7 @@ enum SortBy {
 }
 
 input PostsFilters {
-  id: Int
+  id: String
   type: PostTypes
   slug: String
   featured: Boolean
@@ -122,7 +122,7 @@ input PostsFilters {
   tagSlug: String
   # name of a tag.
   tag: String
-  cursor: Int
+  cursor: String
   page: Int
   offset: Int
   limit: Int
@@ -182,7 +182,7 @@ input InputPublishOptions {
 }
 
 input InputUpdatePost {
-  id: Int!
+  id: String!
   title: String
   sub_title: String
   html: String
@@ -245,7 +245,7 @@ type IsPostLikedResponse {
 }
 
 input LetterpadPostsFilters {
-  cursor: Int
+  cursor: String
   tag: String
 }
 
@@ -253,7 +253,7 @@ type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
   stats: StatsResponse
-  isPostLiked(postId: Int!): IsPostLikedResponse!
+  isPostLiked(postId: String!): IsPostLikedResponse!
   letterpadLatestPosts(filters: LetterpadPostsFilters): PostsResponse!
   letterpadFeaturedPosts: PostsResponse!
   letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
@@ -262,6 +262,6 @@ type Query {
 type Mutation {
   createPost(data: InputCreatePost): CreatePostResponse!
   updatePost(data: InputUpdatePost): UpdatePostResponse!
-  likePost(postId: Int!): ToggleLikePostResponse!
-  unLikePost(postId: Int!): ToggleLikePostResponse!
+  likePost(postId: String!): ToggleLikePostResponse!
+  unLikePost(postId: String!): ToggleLikePostResponse!
 }

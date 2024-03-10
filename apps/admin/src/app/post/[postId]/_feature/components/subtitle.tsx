@@ -6,7 +6,7 @@ import { subTitleEditorConfig, subTitleId } from "./tinymce/config";
 import { useActivateEditorChangeAfterClick } from "../hooks";
 
 interface Props {
-  postId?: number;
+  postId?: string;
   sub_title: string;
   onSubtitleChange: (sub_title: string) => void;
 }

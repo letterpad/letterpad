@@ -27,7 +27,6 @@ import {
   textToSlug,
 } from "@/utils/slug";
 
-import { getPostHash } from "./api";
 import { tags } from "./constants";
 import { ExcludeFromHome } from "./excludeFromHome";
 import { Heading } from "./heading";
@@ -44,7 +43,6 @@ interface IProps {
 
 const Actions = ({ post }: IProps) => {
   const [visible, setVisible] = useState(false);
-  const [postHash, setPostHash] = useState("");
   const excerptRef = useRef<HTMLTextAreaElement>(null);
   const membershipActive = isMembershipFeatureActive();
   const { data: settings } = useGetSettings();
@@ -57,10 +55,6 @@ const Actions = ({ post }: IProps) => {
     () => debounce((data) => updatePost(data), 500),
     [updatePost]
   );
-
-  useEffect(() => {
-    getPostHash(post.id).then(setPostHash);
-  }, [post.id]);
 
   useEffect(() => {
     if (post.slug) setSlug(post.slug);
@@ -115,7 +109,6 @@ const Actions = ({ post }: IProps) => {
       <QuickMenu
         showPreview={post.page_type !== PageType["Story Builder"]}
         siteUrl={settings?.site_url ?? ""}
-        postHash={postHash}
         showDrawer={showDrawer}
         id={post.id}
       />

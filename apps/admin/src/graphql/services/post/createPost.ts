@@ -79,7 +79,6 @@ export const createPost = async (
     });
 
     const newSlug = await getOrCreateSlug(
-      prisma.post,
       newPost.id,
       slug,
       args.data.title
