@@ -55,13 +55,13 @@ export const ProfileCard: FC<Props> = ({
           {showProLabel && (
             <span
               className={classNames(
-                " bg-blue-500 text-white  rounded-sm font-bold",
                 {
                   "py-0.5 px-1.5 text-[0.5rem]": size === "xs",
                   "py-0.5 px-1.5 text-[0.6rem]": size === "sm",
                   "py-1 px-2 text-[0.7rem]": size === "md",
-                  "py-1 px-2 text-[0.8rem]": size === "lg",
-                }
+                  "py-1 px-2 text-[0.8rem] !rounded-md": size === "lg",
+                },
+                " bg-blue-500 text-white rounded-sm font-bold"
               )}
             >
               PRO
