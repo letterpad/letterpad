@@ -6,6 +6,7 @@ import { Banner } from "./banner";
 
 export const SignupBanner = () => {
   const data = useSession();
+
   return (
     <Banner
       title="What's your story today?"
@@ -15,7 +16,7 @@ export const SignupBanner = () => {
       <div className="flex items-center">
         {!data?.data?.user?.id && (
           <a
-            href={`/api/identity/login?source=${document.location.href}`}
+            href="/register?ref=signup-banner"
             className="bg-blue-600 text-white font-semibold py-2.5 px-6 rounded hover:bg-blue-800 transition duration-300 ease-in-out"
           >
             Sign Up
