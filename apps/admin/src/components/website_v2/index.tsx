@@ -1,9 +1,11 @@
 import classNames from "classnames";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 
 import { AdminActions } from "./adminActions";
+import { BannerAd } from "./banner/bannerAd";
 import { SignupBanner } from "./banner/signupBanner";
 import { Card } from "./card";
 import {
@@ -16,6 +18,7 @@ import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
 import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
+import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
 import { getRootUrl } from "../../shared/getRootUrl";
 
@@ -24,6 +27,8 @@ export const Website = async () => {
   const categories = await getLetterpadCategories();
   const favAuthors = await getfavAuthors();
   const posts = await fetchPostsByTag();
+  const session = await getServerSession(options());
+  const hasSession = !!session?.user?.id;
   const rows =
     data?.letterpadLatestPosts.__typename === "PostsNode"
       ? data.letterpadLatestPosts.rows
@@ -32,7 +37,8 @@ export const Website = async () => {
     <>
       <div className="flex min-h-screen flex-col">
         <Header />
-        <SignupBanner />
+        <BannerAd hasSession={hasSession} />
+        {/* <SignupBanner hasSession={hasSession} /> */}
         <div className=" bg-slate-800 sticky top-0 border-t border-gray-800 ">
           <div className="overflow-x-auto max-w-6xl mx-auto py-4 p-2 relative">
             {/* <h2 className="font-bold mb-6 text-md">Topics:</h2> */}

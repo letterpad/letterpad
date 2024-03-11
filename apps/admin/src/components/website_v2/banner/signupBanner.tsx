@@ -4,8 +4,7 @@ import { useSession } from "next-auth/react";
 
 import { Banner } from "./banner";
 
-export const SignupBanner = () => {
-  const data = useSession();
+export const SignupBanner = ({ hasSession }) => {
   return (
     <Banner
       title="What's your story today?"
@@ -13,7 +12,7 @@ export const SignupBanner = () => {
       connected. Its free."
     >
       <div className="flex items-center">
-        {!data?.data?.user?.id && (
+        {!hasSession && (
           <a
             href={`/api/identity/login?source=${document.location.href}`}
             className="bg-blue-600 text-white font-semibold py-2.5 px-6 rounded hover:bg-blue-800 transition duration-300 ease-in-out"

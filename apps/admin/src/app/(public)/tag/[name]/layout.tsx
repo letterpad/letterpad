@@ -17,9 +17,19 @@ const Layout = async ({ children, ...p }) => {
   const tag = decodeURIComponent(replaceLpTopicTagPrefix(p.params.name));
   return (
     <>
-      <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-900 dark:text-gray-100 text-black/60">
+      <div className="flex min-h-screen flex-col overflow-hidden dark:bg-gray-950 dark:text-gray-100 text-black/60">
         <Header />
-        <Banner title={`Posts tagged with #{${tag}}`} description="" />
+        <Banner
+          title={
+            <>
+              Posts tagged with{" "}
+              <span className={"font-body " + getTailwindColorClass(tag)}>
+                {tag}
+              </span>
+            </>
+          }
+          description=""
+        />
         <main className="grow">
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 md:gap-8">
             <section className="w-full mb-5 flex flex-col overflow-hidden">
@@ -48,15 +58,32 @@ const Layout = async ({ children, ...p }) => {
 
 export default Layout;
 
-// const Banner = ({ tag }) => {
-//   return (
-//     <div className="w-full py-20 bg-black text-white">
-//       <div className="mx-auto max-w-6xl px-4 sm:px-6 justify-between flex-col md:flex-row flex md:items-center md:space-y-0 space-y-10">
-//         <div className="">
-//           <h2 className="text-3xl font-bold mb-4">Posts tagged with #{tag}</h2>
-//           <p className="text-lg"></p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+function getTailwindColorClass(keyword: string) {
+  const colors = [
+    "text-red-600",
+    "text-red-400",
+    "text-orange-600",
+    "text-orange-400",
+    "text-yellow-600",
+    "text-green-600",
+    "text-green-400",
+    "text-teal-600",
+    "text-teal-400",
+    "text-blue-600",
+    "text-blue-400",
+    "text-indigo-600",
+    "text-purple-600",
+    "text-purple-400",
+    "text-pink-600",
+  ];
+
+  // Convert keyword to a numeric value
+  let hash = 0;
+  for (let i = 0; i < keyword.length; i++) {
+    hash = keyword.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Map the numeric value to a color
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
+}

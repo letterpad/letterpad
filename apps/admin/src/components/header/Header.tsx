@@ -15,7 +15,7 @@ import Logo from "/public/logo/logo-full.png";
 function Header() {
   const [show, setShow] = useState(false);
   return (
-    <header className="z-30 w-full">
+    <header className="z-30 w-full bg-slate-950 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <div className="mr-4 shrink-0 flex gap-2">
