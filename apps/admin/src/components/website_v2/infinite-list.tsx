@@ -40,7 +40,7 @@ export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
           item.author?.__typename === "Author" ? item.author : undefined;
         const link = `https://${author?.username}.letterpad.app/${item.slug}`;
         return (
-          <div>
+          <div key={item.id}>
             <AdminActions
               id={item.id}
               banned={item.banned!}

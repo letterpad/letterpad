@@ -6,22 +6,29 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadFeaturedPosts = async (
   _args,
-  { prisma }: ResolverContext
+  { prisma, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
   try {
-    const posts = await prisma.featuredWeek.findMany({
+    const postIds = await prisma.featuredWeek.findMany({
       where: {
         week_number: getWeekNumber(),
       },
       include: {
-        post: true
+        post: {
+          select: {
+            id: true
+          }
+        }
       }
     });
+    const posts = await dataloaders.post.loadMany(
+      postIds.map((p) => p.post_id)
+    );
+
     return {
       __typename: "PostsNode",
-      rows: posts
-        .map(p => mapPostToGraphql(p.post)),
-      count: posts.length
+      rows: posts.map(mapPostToGraphql),
+      count: posts.length,
     };
   } catch (e: any) {
     // eslint-disable-next-line no-console
