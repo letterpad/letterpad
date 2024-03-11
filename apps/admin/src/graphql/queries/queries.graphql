@@ -57,6 +57,8 @@ query Posts($filters: PostsFilters) {
               facebook
               linkedin
             }
+            site_url
+            is_paid_member
             bio
             occupation
             company_name
@@ -424,6 +426,8 @@ query LetterpadLatestPosts($filters: LetterpadPostsFilters) {
             username
             avatar
             favourite
+            site_url
+            is_paid_member
             __typename
           }
         }
@@ -460,6 +464,8 @@ query FavAuthors {
       username
       avatar
       createdAt
+      site_url
+      is_paid_member
     }
   }
 }
@@ -489,6 +495,8 @@ query LetterpadFeaturedPosts {
             username
             avatar
             id
+            site_url
+            is_paid_member
             __typename
           }
         }

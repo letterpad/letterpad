@@ -137,4 +137,6 @@ fragment MeFragment on Author {
   settings_updated
   profile_updated
   createdAt
+  site_url
+  is_paid_member
 }

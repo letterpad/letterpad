@@ -16,6 +16,7 @@ import {
 import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
+import { ProfileCard } from "../profile-card";
 import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";
@@ -41,7 +42,7 @@ export const Website = async () => {
         <Header />
         <BannerAd hasSession={hasSession} />
         {/* <SignupBanner hasSession={hasSession} /> */}
-        <div className=" bg-slate-800 sticky top-0 border-t border-gray-800 ">
+        <div className=" bg-slate-800 sticky top-0 border-t border-gray-800 z-10">
           <div className="overflow-x-auto max-w-6xl mx-auto py-4 p-2 relative">
             {/* <h2 className="font-bold mb-6 text-md">Topics:</h2> */}
             <div className="flex space-x-8 ">
@@ -70,13 +71,13 @@ export const Website = async () => {
                 const author =
                   item.author?.__typename === "Author" ? item.author : null;
 
-                const link = getLink({
-                  slug: item.slug!,
-                  username: author?.username!,
-                });
+                const link = new URL(
+                  item.slug ?? "",
+                  author?.site_url
+                ).toString();
 
                 return (
-                  <div>
+                  <div key={item.id}>
                     <AdminActions
                       id={item.id}
                       banned={!!item.banned}
@@ -103,12 +104,12 @@ export const Website = async () => {
                 }
               )}
             >
-              <section className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-sky-50 dark:bg-sky-500/20 p-4 border">
+              <section className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-sky-50 dark:bg-blue-500/20 p-4 border">
                 <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
                   <TfiAnnouncement className="text-sky-500" />
                   Announcements
                 </h4>
-                <ul className="flex flex-col divide-y dark:divide-slate-700 divide-slate-100">
+                <ul className="flex flex-col divide-y dark:divide-blue-500/30 divide-slate-100">
                   {posts.map((post) => {
                     return (
                       <li
@@ -146,41 +147,21 @@ export const Website = async () => {
                 </h4>
                 <ul className="max-w-md">
                   {favAuthors?.map((author) => {
+                    const authorLink = new URL(
+                      `/@${author.username}`,
+                      getRootUrl()
+                    ).toString();
+
                     return (
                       <li className="py-1 sm:py-2" key={author.id}>
-                        <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                          <div className="flex-shrink-0">
-                            <img
-                              className="w-8 h-8 rounded-full bg-gray-200 object-cover"
-                              src={author?.avatar}
-                              alt={author.name}
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate dark:text-white capitalize">
-                              <Link
-                                target="_blank"
-                                href={new URL(
-                                  `/@${author.username}`,
-                                  getRootUrl()
-                                ).toString()}
-                              >
-                                {author?.name.toLowerCase()}
-                              </Link>
-                            </p>
-                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                              <Link
-                                target="_blank"
-                                href={new URL(
-                                  `/@${author.username}`,
-                                  getRootUrl()
-                                ).toString()}
-                              >
-                                @{author.username}
-                              </Link>
-                            </p>
-                          </div>
-                        </div>
+                        <ProfileCard
+                          link={authorLink}
+                          avatar={author?.avatar!}
+                          name={author?.name!}
+                          showProLabel={author?.is_paid_member!}
+                          line2={author?.username!}
+                          size="xs"
+                        />
                       </li>
                     );
                   })}
@@ -194,7 +175,3 @@ export const Website = async () => {
     </>
   );
 };
-
-function getLink({ slug, username }: { slug: string; username: string }) {
-  return new URL(slug ?? "", `https://${username}.letterpad.app`).toString();
-}

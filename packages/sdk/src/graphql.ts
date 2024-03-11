@@ -47,6 +47,7 @@ export type Author = {
   followers?: Maybe<Array<Maybe<FollowAuthor>>>;
   following?: Maybe<Array<Maybe<FollowAuthor>>>;
   id: Scalars["String"];
+  is_paid_member?: Maybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   occupation?: Maybe<Scalars["String"]>;
   permissions?: Maybe<Array<Permissions>>;
@@ -55,6 +56,7 @@ export type Author = {
   role?: Maybe<Role>;
   settings_updated?: Maybe<Scalars["Boolean"]>;
   signature?: Maybe<Scalars["String"]>;
+  site_url?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
   username: Scalars["String"];
   verified?: Maybe<Scalars["Boolean"]>;

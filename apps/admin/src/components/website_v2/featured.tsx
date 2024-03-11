@@ -2,6 +2,7 @@ import Link from "next/link";
 import { IoStar } from "react-icons/io5";
 
 import { getFeaturedPosts } from "./data";
+import { ProfileCard } from "../profile-card";
 import { getRootUrl } from "../../shared/getRootUrl";
 import { getReadableDate } from "../../shared/utils";
 import { Author } from "../../../__generated__server/__types__";
@@ -24,8 +25,13 @@ export const Featured = async () => {
             const author = isAuthor(article.author) ? article.author : null;
             const link = new URL(
               article.slug ?? "",
-              `https://${author?.username}.letterpad.app`
+              author?.site_url
             ).toString();
+            const authorLink = new URL(
+              `@${author?.username}`,
+              getRootUrl()
+            ).toString();
+
             return (
               <div key={article.id} className="flex mb-4 flex-col gap-2">
                 <div className="flex items-center">
@@ -36,23 +42,13 @@ export const Featured = async () => {
                   />
                   <div className="flex flex-col justify-between h-full py-1">
                     <div>
-                      <Link
-                        className="flex items-center gap-2 mb-2"
-                        href={new URL(
-                          `@${author?.username}`,
-                          getRootUrl()
-                        ).toString()}
-                        target="_blank"
-                      >
-                        <img
-                          src={
-                            author?.avatar ?? "https://www.gravatar.com/avatar/"
-                          }
-                          alt={article.title}
-                          className="w-6 h-6 rounded-full object-cover"
-                        />
-                        <span className="text-sm">{author?.name ?? ""}</span>
-                      </Link>
+                      <ProfileCard
+                        link={authorLink}
+                        avatar={author?.avatar!}
+                        name={author?.name!}
+                        showProLabel={author?.is_paid_member!}
+                        size="xs"
+                      />
                       <Link
                         className="flex items-center gap-2 mb-2"
                         href={link}

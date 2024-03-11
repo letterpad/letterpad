@@ -43,6 +43,20 @@ const Author: AuthorResolvers<ResolverContext> = {
     }
     return social;
   },
+  site_url: async ({ id, username }, _args, { dataloaders }) => {
+    const setting = await dataloaders.setting.load(id);
+    const host = new URL(getRootUrl()).host;
+    const site_url = setting?.site_url ?? `https://${username}.${host}`;
+    return `https://${site_url.replace(/https?:\/\//, "")}`
+  },
+  is_paid_member: async ({ id }, _args, { prisma }) => {
+    const membership = await prisma.membership.findFirst({
+      where: {
+        author_id: id
+      }
+    });
+    return membership?.status === "complete";
+  },
   followers: async ({ id }, _args, { prisma }) => {
     const followers = await prisma.follows.findMany({
       where: {

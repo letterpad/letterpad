@@ -42,6 +42,8 @@ type Author {
   profile_updated: Boolean
   register_step: RegisterStep
   createdAt: String
+  site_url: String
+  is_paid_member: Boolean
 }
 
 input LoginData {

@@ -17,10 +17,7 @@ const Tag = async ({ params }: { params: { name: string } }) => {
           const author =
             item.author?.__typename === "Author" ? item.author : null;
           try {
-            const link = new URL(
-              item.slug ?? "",
-              `https://${author?.username}.letterpad.app`
-            ).toString();
+            const link = new URL(item.slug ?? "", author?.site_url).toString();
             return (
               <Card
                 key={item.id}

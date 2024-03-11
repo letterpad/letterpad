@@ -50,7 +50,7 @@ export const FollowMe = ({ username }) => {
     <>
       <button
         type="button"
-        className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm px-5 py-2 text-center flex gap-1 items-center"
+        className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-xs md:text-sm px-2.5 py-1.5 md:px-5 md:py-2 text-center flex gap-1 items-center"
         onClick={doFollowOrUnfollow}
       >
         {data?.isFollowing.following ? (

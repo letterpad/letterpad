@@ -1,6 +1,7 @@
 "use server";
 import { print } from "graphql";
 
+import { MeDocument, MeQuery, MeQueryVariables } from "../../graphql/queries/queries.graphql";
 import { client } from "../../lib/urqlClient";
 import {
   FavAuthorsDocument,
