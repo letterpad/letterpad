@@ -133,21 +133,24 @@ const batchTags = async (keys: readonly string[]) => {
 const dataLoaderOptions = {
   batchScheduleFn: (callback) => setTimeout(callback, 20),
 };
+
+const createDataLoaders = () => ({
+  author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
+  setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
+  post: new DataLoader<Readonly<string>, Post>(
+    batchPosts,
+    dataLoaderOptions
+  ),
+  tagsByPostId: new DataLoader<any, Tag[]>(batchTags, dataLoaderOptions),
+})
+
 export const context = async ({ request }) => {
   const resolverContext = await getResolverContext(request);
 
   return {
     ...resolverContext,
     prisma,
-    dataloaders: {
-      author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
-      setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
-      post: new DataLoader<Readonly<string>, Post>(
-        batchPosts,
-        dataLoaderOptions
-      ),
-      tagsByPostId: new DataLoader<any, Tag[]>(batchTags, dataLoaderOptions),
-    },
+    dataloaders: createDataLoaders(),
   };
 };
 
