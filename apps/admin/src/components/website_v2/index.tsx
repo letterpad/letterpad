@@ -20,10 +20,12 @@ import { fetchPostsByTag } from "../../resourceFetcher";
 import { getRootUrl } from "../../shared/getRootUrl";
 
 export const Website = async () => {
-  const data = await getLetterpadPosts({ filters: { cursor: "" } });
-  const categories = await getLetterpadCategories();
-  const favAuthors = await getfavAuthors();
-  const posts = await fetchPostsByTag();
+  const [data, categories, favAuthors, posts] = await Promise.all([
+    getLetterpadPosts({ filters: { cursor: "" } }),
+    getLetterpadCategories(),
+    getfavAuthors(),
+    fetchPostsByTag(),
+  ]);
   const rows =
     data?.letterpadLatestPosts.__typename === "PostsNode"
       ? data.letterpadLatestPosts.rows

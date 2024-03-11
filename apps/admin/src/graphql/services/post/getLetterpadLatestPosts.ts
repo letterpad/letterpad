@@ -11,7 +11,7 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadLatestPosts = async (
   args: Partial<QueryLetterpadLatestPostsArgs>,
-  { prisma }: ResolverContext
+  { prisma, dataloaders }: ResolverContext
 ): Promise<ResolversTypes["PostsResponse"]> => {
   const cursor = args.filters?.cursor
     ? {
@@ -59,9 +59,17 @@ export const getLetterpadLatestPosts = async (
     orderBy: {
       publishedAt: "desc",
     },
+    select: {
+      id: true,
+    },
   };
   try {
-    const posts = await prisma.post.findMany(condition);
+    // const posts = await prisma.post.findMany(condition);
+    const postIds = await prisma.post.findMany(condition);
+    const posts = await dataloaders.post.loadMany(
+      postIds.map((p) => p.id)
+    );
+
     return {
       __typename: "PostsNode",
       rows: posts
