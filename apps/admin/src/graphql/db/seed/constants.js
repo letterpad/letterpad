@@ -35,4 +35,5 @@ module.exports.defaultSettings = {
   show_about_page: false,
   show_tags_page: false,
   openai_key: "",
+  paypal_email: "",
 };

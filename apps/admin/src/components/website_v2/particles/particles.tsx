@@ -14,7 +14,7 @@ interface ParticlesProps {
 export default function Particles({
   className = "",
   quantity = 30,
-  staticity = 50,
+  staticity = 90,
   ease = 50,
 }: ParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -229,9 +229,9 @@ export default function Particles({
 
 function generateRandomRGBA(alpha = 1) {
   // Generate random values for red, green, and blue components
-  const red = Math.floor(Math.random() * 156); // 100-255 range for brightness
-  const green = Math.floor(Math.random() * 156);
-  const blue = Math.floor(Math.random() * 156);
+  const red = Math.floor(Math.random() * (255 - 100 + 1)) + 10; // 100-255 range for brightness
+  const green = Math.floor(Math.random() * (255 - 100 + 1)) + 20;
+  const blue = Math.floor(Math.random() * (255 - 100 + 1)) + 50;
 
   // Return the RGBA color string
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;

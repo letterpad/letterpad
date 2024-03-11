@@ -24,6 +24,7 @@ import Appearance from "./components/appearance";
 import Integrations from "./components/integrations";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
+import Paypal from "./components/paypal";
 import SeoSettings from "./components/seo";
 import { SaveButton } from "../../../components/save-button";
 
@@ -89,25 +90,11 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               <SeoSettings />
             </AccordionItem>
             <AccordionItem
-              label="PayPal"
-              id="paypal"
+              label="Payment Information"
+              id="payment"
               description="Your earnings will be trasferred to this account"
             >
-              <div className="mb-8 flex flex-1 gap-10 flex-col">
-                <div className="font-heading">
-                  We will trasfer your earning to this account. Please make sure
-                  to add the correct email id.
-                </div>
-                <Input
-                  label="Paypal email id"
-                  value={data.client_token}
-                  id="paypal_email"
-                  className="w-96"
-                />
-                <div>
-                  <SaveButton />
-                </div>
-              </div>
+              <Paypal />
             </AccordionItem>
             <AccordionItem
               label="Open AI"
