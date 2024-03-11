@@ -6,7 +6,7 @@ import { TfiAnnouncement } from "react-icons/tfi";
 
 import { AdminActions } from "./adminActions";
 import { BannerAd } from "./banner/bannerAd";
-import { SignupBanner } from "./banner/signupBanner";
+// import { SignupBanner } from "./banner/signupBanner";
 import { Card } from "./card";
 import {
   getfavAuthors,

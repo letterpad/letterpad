@@ -1,7 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-
 import { Banner } from "./banner";
 
 export const SignupBanner = ({ hasSession }) => {
@@ -14,7 +12,7 @@ export const SignupBanner = ({ hasSession }) => {
       <div className="flex items-center">
         {!hasSession && (
           <a
-            href={`/api/identity/login?source=${document.location.href}`}
+            href="/register?ref=signup-banner"
             className="bg-blue-600 text-white font-semibold py-2.5 px-6 rounded hover:bg-blue-800 transition duration-300 ease-in-out"
           >
             Sign Up

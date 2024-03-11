@@ -3,7 +3,7 @@ import React, { FC } from "react";
 
 import { fetchResource } from "@/resourceFetcher";
 
-import { Banner } from "../banner";
+import { Banner } from "../../../../components/website_v2/banner/banner";
 
 export const metadata: Metadata = {
   title: "Tag",
@@ -18,7 +18,7 @@ const Layout: FC<Props> = async ({ children, params }) => {
   return (
     <>
       <div className="flex min-h-screen flex-col overflow-hidden ">
-        <Banner title={post.title} subTitle={post.sub_title} />
+        <Banner title={post.title} description={post.sub_title} />
         <main className="grow">
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-0 md:gap-8">
             <section className="w-full mb-5 flex flex-col overflow-hidden">

@@ -24,7 +24,7 @@ export const Banner: FC<Props> = ({
       />
       <div className="mx-auto max-w-6xl px-4 sm:px-6 justify-between flex-col md:flex-row flex md:items-center md:space-y-0 space-y-10 font-paragraph">
         <div className={!!rightReactNode ? "md:w-1/2 hidden md:block" : ""}>
-          <h2 className="text-3xl font-bold mb-4">{title}</h2>
+          <h2 className="text-3xl font-bold mb-2">{title}</h2>
           <p className="text-lg">{description}</p>
           {children}
         </div>

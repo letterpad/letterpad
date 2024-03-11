@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Banner } from "./banner";
+import { Banner } from "../../../components/website_v2/banner/banner";
 import { fetchPostsOfClient } from "../../../resourceFetcher";
 import { getRootUrl } from "../../../shared/getRootUrl";
 
@@ -10,7 +10,7 @@ const Resources = async () => {
     <>
       <Banner
         title="Resources"
-        subTitle="Helpful guides for getting started and getting the most out of
+        description="Helpful guides for getting started and getting the most out of
           Letterpad"
       />
       <div className="max-w-5xl mx-auto mt-10">
