@@ -150,6 +150,7 @@ const Analytics: FC<P & Props> = () => {
               y: {
                 ticks: {
                   color: theme === "dark" ? "#eee" : "#333",
+                  stepSize: 1,
                 },
                 title: {
                   display: true,

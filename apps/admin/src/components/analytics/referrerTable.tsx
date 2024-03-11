@@ -20,7 +20,7 @@ export function ReferrerTable({
                 Referrer
               </th>
               <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
-                Views
+                Sessions
               </th>
             </tr>
           </thead>

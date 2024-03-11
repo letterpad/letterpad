@@ -6,6 +6,7 @@ import {
   Accordion,
   AccordionItem,
   Button,
+  Input,
   Message,
   PopConfirm,
   TextArea,
@@ -24,6 +25,7 @@ import Integrations from "./components/integrations";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
 import SeoSettings from "./components/seo";
+import { SaveButton } from "../../../components/save-button";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
@@ -85,6 +87,27 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               description="Basic details and metadata of your site"
             >
               <SeoSettings />
+            </AccordionItem>
+            <AccordionItem
+              label="PayPal"
+              id="paypal"
+              description="Your earnings will be trasferred to this account"
+            >
+              <div className="mb-8 flex flex-1 gap-10 flex-col">
+                <div className="font-heading">
+                  We will trasfer your earning to this account. Please make sure
+                  to add the correct email id.
+                </div>
+                <Input
+                  label="Paypal email id"
+                  value={data.client_token}
+                  id="paypal_email"
+                  className="w-96"
+                />
+                <div>
+                  <SaveButton />
+                </div>
+              </div>
             </AccordionItem>
             <AccordionItem
               label="Open AI"
