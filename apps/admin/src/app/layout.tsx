@@ -15,6 +15,7 @@ import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
 
+import { CookieBanner } from "../components/cookie-banner";
 import { fonts } from "../components/fonts";
 import { getRootUrl } from "../shared/getRootUrl";
 import { getAuthCookieName } from "../utils/authCookie";
@@ -119,6 +120,7 @@ const RootLayout = async ({ children }) => {
           `}
         </Script>
         <Providers theme={theme}>{children}</Providers>
+        <CookieBanner />
       </body>
     </html>
   );
