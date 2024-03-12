@@ -92,6 +92,8 @@ const RootLayout = async ({ children }) => {
         <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
         <script src={basePath + `/prism/prism.js`} async />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
@@ -104,6 +106,8 @@ const RootLayout = async ({ children }) => {
         {process.env.NODE_ENV === "production" && (
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+            async={true}
+            strategy="afterInteractive"
           />
         )}
         <Script id="google-analytics" async={true}>

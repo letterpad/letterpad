@@ -10,7 +10,6 @@ import { LikeProvider } from '../like/context';
 import { Like } from '../like/like';
 import { PostFooter } from '../../app/(others)/post/[slug]/post-footer';
 import { PostAuthor } from '../../components/postAuthor';
-import { PrismHighlight } from '../../components/prism-highlight';
 import { PublishedAt } from '../../components/published-at';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
@@ -130,7 +129,6 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
             )}
           </article>
         </div>
-        <PrismHighlight />
 
         {!isPage && (
           <PostFooter
