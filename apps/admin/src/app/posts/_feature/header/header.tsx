@@ -54,7 +54,9 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   };
 
   const buttonLabel = `New ${type === "page" ? "Creative" : "Post"}`;
-  const displayBtn = (!isMember && type === "page") || type === "post";
+  const displayBtn =
+    ((!isMembershipFeatureActive() || isPaidMemeber) && type === "page") ||
+    type === "post";
   return (
     <>
       <PageHeader
