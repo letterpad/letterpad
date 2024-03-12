@@ -125,13 +125,17 @@ const About = async ({ params }: { params: { username: string } }) => {
       />
       <div className="h-96">
         <img
-          src={JSON.parse(setting?.banner ?? "{}")?.src}
+          src={
+            JSON.parse(setting?.banner ?? "{}")?.src ||
+            "https://images.unsplash.com/photo-1579547621706-1a9c79d5c9f1?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          }
           alt={setting?.site_title}
           className="w-full h-96 object-cover absolute object-bottom"
+          loading="lazy"
         />
       </div>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 md:-mt-64 -mt-72">
-        <div className="z-10 relative bg-black/50 p-4 md:p-10 rounded-lg mb-28">
+        <div className="z-10 relative bg-black/50 p-4 md:p-10 rounded-lg mb-28 text-white">
           <div className="flex flex-row items-start justify-center md:justify-between">
             <ProfileCard
               link={"/"}

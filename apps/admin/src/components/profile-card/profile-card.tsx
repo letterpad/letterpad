@@ -43,7 +43,7 @@ export const ProfileCard: FC<Props> = ({
         />
       </div>
 
-      <div className="text-gray-800 dark:text-gray-200">
+      <div>
         <div
           className={classNames("gap-2 items-center flex", {
             "text-sm": size === "xs",
