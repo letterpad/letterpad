@@ -1,18 +1,19 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BiCalendar, BiPencil } from "react-icons/bi";
-import { TfiNewWindow } from "react-icons/tfi";
+import { Suspense } from "react";
+import { BiCalendar } from "react-icons/bi";
 
 import { prisma } from "@/lib/prisma";
 
 import { AboutStats } from "@/components/about-stats";
 
-import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
+import { PostStatusOptions } from "@/__generated__/__types__";
 import { getTagsLinkedWithPosts } from "@/graphql/services/tag/getTags";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";
 
+import { Feed } from "./feature/feed";
 import { FollowMe } from "./followme";
 import { SocialIcons } from "./social";
 import { ProfileCard } from "../../../components/profile-card";
@@ -78,17 +79,7 @@ const About = async ({ params }: { params: { username: string } }) => {
   });
 
   if (!author) return notFound();
-  const feed = await prisma.post.findMany({
-    where: {
-      author: {
-        id: author.id,
-      },
-      status: PostStatusOptions.Published,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+
   const data = await getTagsLinkedWithPosts({
     id: author.id,
     status: PostStatusOptions.Published,
@@ -186,37 +177,9 @@ const About = async ({ params }: { params: { username: string } }) => {
             ></p>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className="mt-10">
-              <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-xl py-4">
-                Feed
-              </h3>
-              <ol className="relative border-s border-gray-200 dark:border-gray-700">
-                {feed.length === 0 && "No posts yet :("}
-                {feed?.map((row) => {
-                  return (
-                    <li className="mb-10 ms-4">
-                      <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                      <time className="mb-1 text-sm font-normal leading-none text-gray-500 dark:text-gray-500 flex gap-4">
-                        {getReadableDate(new Date(row.publishedAt!))}{" "}
-                        <span className="flex gap-1">
-                          <BiPencil />
-                          {row.type === PostTypes.Post ? "Article" : "Page"}
-                        </span>
-                      </time>
-                      <p className="text-base font-normal text-gray-500 dark:text-gray-400"></p>
-                      <h3 className="text-[0.9rem] font-semibold text-gray-900 dark:text-white">
-                        <Link
-                          href={
-                            new URL(`post/${row.slug}`, setting?.site_url).href
-                          }
-                          target="_blank"
-                        >
-                          {row.title}
-                        </Link>
-                      </h3>
-                    </li>
-                  );
-                })}
-              </ol>
+              <Suspense fallback={<div>Loading...</div>}>
+                <Feed authorId={author.id} site_url={setting?.site_url} />
+              </Suspense>
             </div>
           </div>
 
