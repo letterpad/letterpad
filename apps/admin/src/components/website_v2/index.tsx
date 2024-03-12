@@ -6,7 +6,7 @@ import { TfiAnnouncement } from "react-icons/tfi";
 
 import { AdminActions } from "./adminActions";
 import { BannerAd } from "./banner/bannerAd";
-// import { SignupBanner } from "./banner/signupBanner";
+import { SignupBanner } from "./banner/signupBanner";
 import { Card } from "./card";
 import {
   getfavAuthors,
@@ -22,6 +22,7 @@ import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
 import { getRootUrl } from "../../shared/getRootUrl";
+import { isMembershipFeatureActive } from "../../shared/utils";
 
 export const Website = async () => {
   const [data, categories, favAuthors, posts] = await Promise.all([
@@ -30,6 +31,7 @@ export const Website = async () => {
     getfavAuthors(),
     fetchPostsByTag(),
   ]);
+  const isMemberFeatActive = isMembershipFeatureActive();
   const session = await getServerSession(options());
   const hasSession = !!session?.user?.id;
   const rows =
@@ -40,8 +42,12 @@ export const Website = async () => {
     <>
       <div className="flex min-h-screen flex-col">
         <Header />
-        <BannerAd hasSession={hasSession} />
-        {/* <SignupBanner hasSession={hasSession} /> */}
+        {isMemberFeatActive ? (
+          <BannerAd hasSession={hasSession} />
+        ) : (
+          <SignupBanner hasSession={hasSession} />
+        )}
+
         <div className=" bg-slate-800 sticky top-0 border-t border-gray-800 z-10">
           <div className="overflow-x-auto max-w-6xl mx-auto py-4 p-2 relative">
             {/* <h2 className="font-bold mb-6 text-md">Topics:</h2> */}
