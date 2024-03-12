@@ -25,7 +25,7 @@ interface IProps {
 export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   const isPaidMemeber = useIsPaidMember();
-  const isMember = isMembershipFeatureActive() && isPaidMemeber;
+  const isMember = isMembershipFeatureActive() || isPaidMemeber;
   const [showModal, setShowModal] = useState(false);
   const { createPost } = useCreatePost();
   const { refetch } = useGetPosts({ ...DEFAULT_FILTERS, type }, { skip: true });
@@ -54,7 +54,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   };
 
   const buttonLabel = `New ${type === "page" ? "Creative" : "Post"}`;
-  const displayBtn = (isMember && type === "page") || type === "post";
+  const displayBtn = (!isMember && type === "page") || type === "post";
   return (
     <>
       <PageHeader
