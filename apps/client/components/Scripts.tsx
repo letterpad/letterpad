@@ -22,7 +22,6 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           <meta name={meta.name} content={meta.content} key={meta.name} />
         ))}
       </head>
-      <Script strategy="afterInteractive" src={'/static/prism.js'} async />
       {srcs.map((src) => (
         <Script strategy="afterInteractive" src={src} key={src} async />
       ))}

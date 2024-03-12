@@ -271,6 +271,7 @@ model Setting {
   cloudinary_key      String
   cloudinary_name     String
   cloudinary_secret   String
+  paypal_email        String    @default("")
   menu                String    @default("[]")
   css                 String
   theme               String

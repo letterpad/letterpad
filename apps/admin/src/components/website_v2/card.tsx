@@ -5,6 +5,7 @@ import { SlBadge } from "react-icons/sl";
 
 import { getReadableDate } from "@/shared/utils";
 
+import { ProfileCard } from "../profile-card";
 import { Author, PostStats } from "../../../__generated__server/__types__";
 
 interface Props {
@@ -44,33 +45,21 @@ export const Card: FC<Props> = ({
   const avatar = author?.avatar
     ? author.avatar
     : "https://www.gravatar.com/avatar/";
+
+  const authorLink = new URL(`@${author?.username}`, origin).toString();
   return (
     <div
       key={slug}
       className="w-full py-10 border-b border-slate-100 dark:border-slate-800"
     >
       <div className="flex items-center justify-between flex-row">
-        <Link
-          className="flex items-center justify-left flex-row gap-2"
-          href={new URL(`@${author?.username}`, origin).toString()}
-        >
-          <div className="rounded-full flex-none">
-            <img
-              src={avatar}
-              alt={author?.name}
-              className="w-7 h-7 object-cover rounded-full bg-slate-200"
-            />
-          </div>
-          <span className="text-gray-800 dark:text-gray-200">
-            {author?.name}
-          </span>
-          {featured && (
-            <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1">
-              <SlBadge />
-              Featured
-            </span>
-          )}
-        </Link>
+        <ProfileCard
+          link={authorLink}
+          avatar={avatar}
+          name={author?.name!}
+          showProLabel={author?.is_paid_member!}
+          size="sm"
+        />
       </div>
       <Link
         href={link}
@@ -91,11 +80,25 @@ export const Card: FC<Props> = ({
             {getReadableDate(new Date(publishedAt!))}
             <span>·</span>
             <span className="">{reading_time}</span>
+            {featured && (
+              <>
+                <span>·</span>
+                <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1">
+                  <SlBadge />
+                  Featured
+                </span>
+              </>
+            )}
           </div>
         </div>
         {cover_image.src && (
           <Image
-            src={cover_image.src!}
+            src={
+              cover_image.src?.replace(
+                "image/upload",
+                "image/upload/c_scale,w_200"
+              )!
+            }
             alt="Product"
             loading="lazy"
             height={cover_image.height}

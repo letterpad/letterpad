@@ -261,7 +261,7 @@ export const reportAllTimeReads = (siteUrl: string) => {
                         {
                             filter: {
                                 stringFilter: {
-                                    value: 'scroll',
+                                    value: 'read',
                                     matchType: "EXACT"
                                 },
                                 fieldName: "eventName"

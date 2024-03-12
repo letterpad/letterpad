@@ -15,7 +15,6 @@ import { ClientThemeProvider } from './ClientThemeProvider';
 import Custom404 from './not-found';
 import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
-import { PrismHighlight } from '../components/prism-highlight';
 import { SessionProvider } from '../../context/SessionProvider';
 import { getPreference } from '../../lib/utils/theme.helper';
 
@@ -169,7 +168,7 @@ const Layout = async ({ children }) => {
             }}
           />
           {process.env.NODE_ENV === 'production' && (
-            <Script id="google-analytics" async={true}>
+            <Script id="google-analytics" strategy="afterInteractive">
               {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -197,7 +196,6 @@ const Layout = async ({ children }) => {
               <Footer author={me} settings={settings} />
             </div>
             <div id="modal-creatives" />
-            <PrismHighlight />
             <div id="modal-root" />
             <div id="message" />
           </SessionProvider>

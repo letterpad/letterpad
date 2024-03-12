@@ -1,14 +1,15 @@
 import { BiLogOut } from "react-icons/bi";
 import { BsEnvelope, BsImages, BsTags } from "react-icons/bs";
-import { CiBadgeDollar, CiSettings } from "react-icons/ci";
+import { CiSettings } from "react-icons/ci";
 import { HiOutlineUsers, HiTemplate } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
+import { SlBadge } from "react-icons/sl";
 import { VscDebugDisconnect, VscGraphLine } from "react-icons/vsc";
 
 import { isMembershipFeatureActive } from "../../shared/utils";
 
-export const items = (stats) => [
+export const items = (stats, activePlan: boolean) => [
   {
     label: "Posts",
     icon: <BsEnvelope size={16} />,
@@ -55,7 +56,7 @@ export const items = (stats) => [
   },
   {
     label: "Membership",
-    icon: <CiBadgeDollar size={18} />,
+    icon: <SlBadge size={16} className={activePlan ? "fill-green-500" : ""} />,
     key: "/membership",
     hidden: !isMembershipFeatureActive(),
   },

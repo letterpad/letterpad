@@ -65,7 +65,11 @@ export const ProfileDropdown = ({
       >
         {author?.avatar ? (
           <img
-            src={author.avatar}
+            src={author.avatar?.replace(
+              "image/upload",
+              "image/upload/c_scale,w_200"
+            )}
+            loading="lazy"
             alt={author.name}
             className="h-7 w-7 rounded-full shrink-0 object-cover bg-gray-200"
           />

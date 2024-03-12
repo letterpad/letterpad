@@ -82,6 +82,7 @@ fragment SettingsFragment on Setting {
   show_about_page
   show_tags_page
   openai_key
+  paypal_email
   design {
     brand_color
     primary_font
@@ -136,4 +137,6 @@ fragment MeFragment on Author {
   settings_updated
   profile_updated
   createdAt
+  site_url
+  is_paid_member
 }

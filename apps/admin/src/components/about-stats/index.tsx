@@ -21,11 +21,11 @@ export const AboutStats = ({ username }) => {
 
 const MetricItem = ({ title, value }) => {
   return (
-    <div className="flex items-center gap-2 mt-3">
-      <p className="block antialiased text-base leading-relaxed text-inherit  font-bold">
+    <div className="flex items-center gap-2 text-sm md:text-base">
+      <p className="block antialiased leading-relaxed text-inherit  font-bold">
         {value}
       </p>
-      <p className="block antialiased text-base leading-relaxed text-inherit font-normal">
+      <p className="block antialiased leading-relaxed text-inherit font-normal">
         {title}
       </p>
     </div>

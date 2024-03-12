@@ -4,7 +4,6 @@ import { getData } from '@/data';
 
 import Custom404 from './not-found';
 import { Navbar } from '../components/navbar';
-import { PrismHighlight } from '../components/prism-highlight';
 import { StructuredData } from '../components/structured-data';
 import { getApiRootUrl } from '../../lib/utils/url';
 import { SectionContainer } from '../../src/components/section';
@@ -51,7 +50,6 @@ export default async function Home() {
       <Navbar settings={settings} isHome={true} me={me} />
       <StructuredData data={jsonLd} />
       <div>
-        <PrismHighlight />
         <SectionContainer>
           {isEmpty && (
             <span className="py-16 text-gray-400">

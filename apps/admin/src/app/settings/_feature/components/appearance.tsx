@@ -109,7 +109,7 @@ const Appearance = () => {
         help={
           <>
             <span>This will appear in the footer of your site. </span>
-            <UpgradeLabel />
+            {!isPaidMember && membershipFeatureActive && <UpgradeLabel />}
           </>
         }
         // help={<span>hello</span>}

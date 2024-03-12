@@ -42,6 +42,7 @@ type Setting {
   design: Design
   client_token: String! @maskIfUnauth
   openai_key: String @maskIfUnauth
+  paypal_email: String @maskIfUnauth
 }
 
 input InputNavigation {
@@ -86,6 +87,7 @@ input SettingInputType {
   show_about_page: Boolean
   show_tags_page: Boolean
   openai_key: String
+  paypal_email: String
 }
 
 type SettingError implements LetterpadError {

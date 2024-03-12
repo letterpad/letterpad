@@ -47,6 +47,7 @@ export type Author = {
   followers?: Maybe<Array<Maybe<FollowAuthor>>>;
   following?: Maybe<Array<Maybe<FollowAuthor>>>;
   id: Scalars["String"];
+  is_paid_member?: Maybe<Scalars["Boolean"]>;
   name: Scalars["String"];
   occupation?: Maybe<Scalars["String"]>;
   permissions?: Maybe<Array<Permissions>>;
@@ -55,6 +56,7 @@ export type Author = {
   role?: Maybe<Role>;
   settings_updated?: Maybe<Scalars["Boolean"]>;
   signature?: Maybe<Scalars["String"]>;
+  site_url?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
   username: Scalars["String"];
   verified?: Maybe<Scalars["Boolean"]>;
@@ -1002,6 +1004,7 @@ export type Setting = {
   intro_dismissed: Scalars["Boolean"];
   menu: Array<Navigation>;
   openai_key?: Maybe<Scalars["String"]>;
+  paypal_email?: Maybe<Scalars["String"]>;
   scripts?: Maybe<Scalars["String"]>;
   show_about_page?: Maybe<Scalars["Boolean"]>;
   show_tags_page?: Maybe<Scalars["Boolean"]>;
@@ -1032,6 +1035,7 @@ export type SettingInputType = {
   intro_dismissed?: InputMaybe<Scalars["Boolean"]>;
   menu?: InputMaybe<Array<InputNavigation>>;
   openai_key?: InputMaybe<Scalars["String"]>;
+  paypal_email?: InputMaybe<Scalars["String"]>;
   scripts?: InputMaybe<Scalars["String"]>;
   show_about_page?: InputMaybe<Scalars["Boolean"]>;
   show_tags_page?: InputMaybe<Scalars["Boolean"]>;

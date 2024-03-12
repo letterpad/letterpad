@@ -7,7 +7,7 @@ import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.g
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
-import { isSettings, isStats } from "../../utils/type-guards";
+import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
 
 export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();
@@ -15,7 +15,7 @@ export const Sidebar = () => {
   const { isMobileOrTablet, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
   const stats = isStats(data?.stats) ? data?.stats : null;
-
+  const activePlan = isAuthor(data?.me) ? data?.me?.is_paid_member : false;
   return (
     <div className="h-full shadow-lg">
       <div className=" h-full flex-1 p-4">
@@ -42,7 +42,7 @@ export const Sidebar = () => {
               isMobileOrTablet && setSidebarVisible(false);
             }}
             selectedKey={pathname}
-            items={items(stats)}
+            items={items(stats, activePlan)}
           />
         </div>
       </div>

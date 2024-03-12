@@ -1,0 +1,1 @@
+export { CookieBanner } from "./cookieBanner"

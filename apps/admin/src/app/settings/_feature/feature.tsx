@@ -6,6 +6,7 @@ import {
   Accordion,
   AccordionItem,
   Button,
+  Input,
   Message,
   PopConfirm,
   TextArea,
@@ -23,7 +24,9 @@ import Appearance from "./components/appearance";
 import Integrations from "./components/integrations";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
+import Paypal from "./components/paypal";
 import SeoSettings from "./components/seo";
+import { SaveButton } from "../../../components/save-button";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
@@ -85,6 +88,13 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               description="Basic details and metadata of your site"
             >
               <SeoSettings />
+            </AccordionItem>
+            <AccordionItem
+              label="Payment Information"
+              id="payment"
+              description="Your earnings will be trasferred to this account"
+            >
+              <Paypal />
             </AccordionItem>
             <AccordionItem
               label="Open AI"

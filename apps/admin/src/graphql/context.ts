@@ -58,6 +58,18 @@ export const getResolverContext = async (request: Request) => {
 const batchAuthors = async (keys: readonly string[]) => {
   const authors = await prisma?.author.findMany({
     where: { id: { in: [...keys] } },
+    include: {
+      setting: {
+        select: {
+          site_url: true,
+        }
+      },
+      membership: {
+        select: {
+          status: true,
+        }
+      }
+    }
   });
 
   const authorMap: Record<string, (typeof authors)[0]> = {};
@@ -80,7 +92,7 @@ const batchSettings = async (keys: readonly string[]) => {
   const settingsMap: Record<string, (typeof settings)[0]> = {};
 
   settings?.forEach((setting) => {
-    settingsMap[keys[0]] = setting;
+    settingsMap[setting.author_id] = setting;
   });
 
   return keys.map((key) => settingsMap[key]);

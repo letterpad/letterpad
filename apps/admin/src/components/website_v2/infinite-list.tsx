@@ -38,7 +38,7 @@ export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
       {data.map((item) => {
         const author =
           item.author?.__typename === "Author" ? item.author : undefined;
-        const link = `https://${author?.username}.letterpad.app/${item.slug}`;
+        const link = new URL(item.slug ?? "", author?.site_url).toString();
         return (
           <div key={item.id}>
             <AdminActions

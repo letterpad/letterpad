@@ -60,25 +60,23 @@ export const NewDomain = () => {
         </div>
       </div>
 
-      {membershipFeatureActive && isPaidMember && (
-        <div
-          className="flex items-start p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800 mt-10"
-          role="alert"
-        >
-          <BsInfoCircleFill className="me-4 mt-1" />
-          <span className="sr-only">Info</span>
-          <div>
-            <span className="font-extrabold block">Important!</span> Domain
-            mapping is a two step process.
-            <br />
-            <br />
-            1. Verify your domain using a <Bold>TXT record</Bold>
-            <br />
-            2. Add <Bold>CNAME record</Bold> if its a subdomain or{" "}
-            <Bold>A record</Bold> if its an apex domain
-          </div>
+      <div
+        className="flex items-start p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-gray-700 mt-10"
+        role="alert"
+      >
+        <BsInfoCircleFill className="me-4 mt-1" />
+        <span className="sr-only">Info</span>
+        <div>
+          <span className="font-extrabold block">Important!</span> Domain
+          mapping is a two step process.
+          <br />
+          <br />
+          1. Verify your domain using a <Bold>TXT record</Bold>
+          <br />
+          2. Add <Bold>CNAME record</Bold> if its a subdomain or{" "}
+          <Bold>A record</Bold> if its an apex domain
         </div>
-      )}
+      </div>
     </>
   );
 };

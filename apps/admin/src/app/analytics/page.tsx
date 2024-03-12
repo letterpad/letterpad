@@ -29,6 +29,8 @@ import {
 import { useIsPaidMember } from "../../hooks/useIsPaidMember";
 import { isMembershipFeatureActive } from "../../shared/utils";
 
+const activeFeature = isMembershipFeatureActive();
+
 type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
@@ -36,7 +38,7 @@ interface Props {
 const Analytics: FC<P & Props> = () => {
   const isPaidMemeber = useIsPaidMember();
   const { theme } = useTheme();
-  const isMember = isMembershipFeatureActive() && isPaidMemeber;
+  const isMember = activeFeature && isPaidMemeber;
   const [data, setData] = useState<ApiResponseData>({
     device: [],
     data: [],
@@ -60,18 +62,15 @@ const Analytics: FC<P & Props> = () => {
   );
 
   const doFetch = () => {
-    if (!isMember) {
-      return;
-    }
     setFetching(true);
     const day = 1 / 4;
     fetch(
       "/api/analytics?" + new URLSearchParams(dateRange as any).toString(),
       {
-        cache: "no-cache",
+        cache: "force-cache",
         headers: {
           "Content-Type": "application/json",
-          // "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
+          "Cache-Control": `max-age=${60 * 60 * 24 * day}`,
         },
       }
     )
@@ -150,6 +149,7 @@ const Analytics: FC<P & Props> = () => {
               y: {
                 ticks: {
                   color: theme === "dark" ? "#eee" : "#333",
+                  stepSize: 1,
                 },
                 title: {
                   display: true,
@@ -328,9 +328,6 @@ const Analytics: FC<P & Props> = () => {
     };
   }, [data?.countries, theme]);
 
-  const display =
-    isMember &&
-    (fetching || (data?.total && Number(data.total.Sessions?.value) >= 1));
   return (
     <>
       <PageHeader className="site-page-header" title="Analytics">
@@ -339,26 +336,15 @@ const Analytics: FC<P & Props> = () => {
         </span>
       </PageHeader>
       <Content>
-        {!fetching && <UpgradeBanner />}
-        {!fetching && !isMember && (
-          <div className="hidden md:block relative w-full h-[100vh]">
-            <Image
-              src="/images/analytics.png"
-              alt="Analytics"
-              fill={true}
-              objectFit="contain"
-            />
+        <UpgradeBanner />
+        <div className="relative">
+          <div className="flex justify-end py-4 sticky">
+            <DateRangeSelector onChange={setDateRange} />
           </div>
-        )}
-        {isMember && (
-          <div className="relative">
-            <div className="flex justify-end py-4 sticky">
-              <DateRangeSelector onChange={setDateRange} />
-            </div>
-          </div>
-        )}
+        </div>
+
         <div className="pb-20">
-          {display && data ? (
+          {data ? (
             <div className="min-w-0 gap-2 flex flex-col">
               <div className="min-w-0 gap-2 flex flex-col">
                 <TotalStats
@@ -366,18 +352,34 @@ const Analytics: FC<P & Props> = () => {
                   loading={fetching}
                   allTimeReads={data.allTimeReads}
                 />
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                <div className="justify-center py-10 grid md:grid-cols-2 grid-cols-1 gap-10 md:gap-2">
-                  <UsersPerDayChart ref={chartContainer} loading={fetching} />
-                  <DeviceChart ref={deviceContainer} loading={fetching} />
-                </div>
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <ReferrerTable data={data.referals} loading={fetching} />
-                  <CountryChart ref={countryContainer} loading={fetching} />
-                </div>
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                <PostsReadTable data={data.data} loading={fetching} />
+                {!activeFeature || isPaidMemeber ? (
+                  <>
+                    <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                    <div className="justify-center py-10 grid md:grid-cols-2 grid-cols-1 gap-10 md:gap-2">
+                      <UsersPerDayChart
+                        ref={chartContainer}
+                        loading={fetching}
+                      />
+                      <DeviceChart ref={deviceContainer} loading={fetching} />
+                    </div>
+                    <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      <ReferrerTable data={data.referals} loading={fetching} />
+                      <CountryChart ref={countryContainer} loading={fetching} />
+                    </div>
+                    <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                    <PostsReadTable data={data.data} loading={fetching} />
+                  </>
+                ) : (
+                  <div className="hidden md:block relative w-full h-[100vh]">
+                    <Image
+                      src="/images/analytics.png"
+                      alt="Analytics"
+                      fill={true}
+                      objectFit="contain"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ) : (
