@@ -113,7 +113,7 @@ const Appearance = () => {
           </>
         }
         // help={<span>hello</span>}
-        disabled={!isPaidMember && !membershipFeatureActive}
+        disabled={!isPaidMember && membershipFeatureActive}
       />
       <div>
         <Controller
