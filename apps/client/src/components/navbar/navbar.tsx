@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC } from 'react';
+import { ComponentType, FC } from 'react';
 
 import Link from '@/components/Link';
 
@@ -17,12 +17,14 @@ interface Props {
   isHome?: boolean;
   showCollapsedMenu?: boolean;
   me: any;
+  PreHeader?: ComponentType;
 }
 export const Navbar: FC<Props> = ({
   settings,
   isHome = false,
   showCollapsedMenu,
   me,
+  PreHeader,
 }) => {
   const routes = [...settings.menu];
   const logoOrTitle = (
@@ -30,13 +32,20 @@ export const Navbar: FC<Props> = ({
   );
   return (
     <>
-      <div className="bg-accent-50  bg-cover text-white py-4 px-4">
+      <div className="relative bg-accent-50 bg-cover text-white py-4 px-4">
+        {PreHeader && <PreHeader />}
         <div
-          className={classNames('mx-auto  max-w-7xl md:px-20 space-y-10', {
-            'md:space-y-0': !isHome,
-          })}
+          className={classNames(
+            // Because PreHeader can be absolute,
+            // we set this to relative to make sure the menu is not
+            // hidden behind the PreHeader
+            'relative mx-auto z-1 max-w-7xl md:px-20 space-y-10',
+            {
+              'md:space-y-0': !isHome,
+            }
+          )}
         >
-          <header className=" flex items-center justify-between">
+          <header className="flex items-center justify-between">
             <div className="flex gap-4 items-center">
               <CollapsableMenu
                 settings={settings}
