@@ -15,7 +15,7 @@ export default async function Home() {
     return <Custom404 />;
   }
   const { settings, me, posts } = data;
-  const { HomePosts } = getTheme(settings?.theme);
+  const { HomePosts, PreHeader } = getTheme(settings?.theme);
 
   const isEmpty = posts?.__typename === 'PostsNode' && posts.rows.length === 0;
 
@@ -47,7 +47,7 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar settings={settings} isHome={true} me={me} />
+      <Navbar settings={settings} isHome={true} me={me} PreHeader={PreHeader} />
       <StructuredData data={jsonLd} />
       <div>
         <SectionContainer>

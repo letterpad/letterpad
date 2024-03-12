@@ -1,6 +1,7 @@
 // export const runtime = 'edge';
 import classNames from 'classnames';
 import { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import Script from 'next/script';
 
 import 'ui/css/tailwind.css';
@@ -140,10 +141,10 @@ const Layout = async ({ children }) => {
   if (!data) {
     return <Custom404 />;
   }
-  const theme = getPreference();
+  const theme = cookies().get('theme-preference')?.value ?? 'light';
   const { settings, me } = data;
   return (
-    <ClientThemeProvider>
+    <ClientThemeProvider theme={theme}>
       <html
         lang="en"
         style={{ colorScheme: theme }}

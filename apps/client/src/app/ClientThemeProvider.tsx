@@ -1,7 +1,6 @@
 'use client';
-import { getTheme, ThemeProvider } from 'ui';
+import { ThemeProvider } from 'ui';
 
-export const ClientThemeProvider = ({ children }) => {
-  const theme = getTheme();
+export const ClientThemeProvider = ({ theme, children }) => {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
