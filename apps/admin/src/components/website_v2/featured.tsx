@@ -36,7 +36,11 @@ export const Featured = async () => {
               <div key={article.id} className="flex mb-4 flex-col gap-2">
                 <div className="flex items-center">
                   <img
-                    src={article.cover_image.src}
+                    src={article.cover_image.src?.replace(
+                      "image/upload",
+                      "image/upload/c_scale,w_200"
+                    )}
+                    loading="lazy"
                     alt={article.title}
                     className="w-20 h-24 rounded-lg mr-4 object-cover"
                   />

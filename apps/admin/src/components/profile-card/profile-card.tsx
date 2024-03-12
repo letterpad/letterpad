@@ -31,8 +31,9 @@ export const ProfileCard: FC<Props> = ({
     >
       <div className="rounded-full flex-none ">
         <img
-          src={avatar}
+          src={avatar?.replace("image/upload", "image/upload/c_scale,w_200")}
           alt={name}
+          loading="lazy"
           className={classNames("object-cover rounded-full bg-slate-200", {
             "w-6 h-6": size === "xs",
             "w-7 h-7": size === "sm",

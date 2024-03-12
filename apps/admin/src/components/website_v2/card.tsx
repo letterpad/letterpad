@@ -93,7 +93,12 @@ export const Card: FC<Props> = ({
         </div>
         {cover_image.src && (
           <Image
-            src={cover_image.src!}
+            src={
+              cover_image.src?.replace(
+                "image/upload",
+                "image/upload/c_scale,w_200"
+              )!
+            }
             alt="Product"
             loading="lazy"
             height={cover_image.height}
