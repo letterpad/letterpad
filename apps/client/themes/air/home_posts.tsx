@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { PostsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
+import { HomePostsProps } from 'types/pageTypes';
 
 import formatDate from '@/lib/utils/formatDate';
 
@@ -8,13 +9,10 @@ import Link from '@/components/Link';
 
 import Image from '../../components/Image';
 import { SectionContainer } from '../../src/components/section';
-export interface Props {
-  posts: PostsFragmentFragment;
-}
 
 const style = {};
 
-export const HomePosts: FC<Props> = ({ posts }) => {
+export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   let featuredThreePosts;
   let featuredPostsCount = 0;
   if (posts.rows[0]) {
