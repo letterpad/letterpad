@@ -5,7 +5,8 @@ import {
   PostTypes,
   QueryResolvers,
   RegisterStep,
-} from "@/__generated__/__types__";
+} from "graphql-letterpad/dist/graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 import { getSocialLink } from "./helpers";

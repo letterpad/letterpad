@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
+import { Navigation, NavigationType } from "graphql-letterpad/dist/graphql";
 
-import { Navigation, NavigationType } from "@/__generated__/__types__";
+import { prisma } from "@/lib/prisma";
 
 interface UpdateMenuProps {
   authorId: string;

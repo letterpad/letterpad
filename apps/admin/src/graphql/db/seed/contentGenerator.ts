@@ -1,4 +1,5 @@
-import { NavigationType } from "@/__generated__/__types__";
+import { NavigationType } from "graphql-letterpad/dist/graphql";
+
 import { mdToHtml } from "@/shared/converter";
 
 export default function generatePost(type) {

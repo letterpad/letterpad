@@ -2,7 +2,7 @@
   "name": "graphql-letterpad",
   "version": "0.0.1",
   "scripts": {
-    "codegen": "graphql-codegen --config codegen-client.ts && graphql-codegen --config codegen-server.ts",
+    "codegen": "graphql-codegen --config codegen.ts",
     "build.tsc.mjs": "tsc -p tsconfig.json",
     "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
     "build": "bun run codegen"
@@ -10,11 +10,11 @@
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "exports": {
-    "./server": {
-      "import": "./dist/graphql-server.ts"
+    "./graphql": {
+      "import": "./dist/graphql.ts"
     },
-    "./client": {
-      "import": "./dist/graphql-client.ts"
+    "./hooks": {
+      "import": "./dist/hooks.ts"
     }
   },
   "files": [

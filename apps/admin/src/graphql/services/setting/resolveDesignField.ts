@@ -1,8 +1,8 @@
-import { Design, ResolversParentTypes } from "@/__generated__/__types__";
+import { Design } from "graphql-letterpad/dist/graphql";
 
 export const resolveDesignField = async (
   design: Design | string | undefined
-): Promise<ResolversParentTypes["Design"]> => {
+): Promise<Design> => {
   design = parse(design ?? "{}") as Design;
   return {
     ...design,

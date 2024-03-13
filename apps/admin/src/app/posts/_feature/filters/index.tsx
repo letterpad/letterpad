@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { Select } from "ui";
-
 import {
   PostsFilters,
   PostStatusOptions,
   SortBy,
-} from "@/__generated__/__types__";
-import { useHomeQueryQuery } from "@/__generated__/queries/queries.graphql";
+  useHomeQueryQuery,
+} from "graphql-letterpad/dist/graphql";
+import { useEffect, useState } from "react";
+import { Select } from "ui";
+
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";

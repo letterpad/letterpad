@@ -1,4 +1,4 @@
-import { NavigationType } from "@/__generated__/__types__";
+import { NavigationType } from "graphql-letterpad/dist/graphql";
 
 import { IMenuWithError } from "@/types";
 

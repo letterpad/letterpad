@@ -1,4 +1,5 @@
-import { Permissions } from "@/__generated__/__types__";
+import { Permissions } from "graphql-letterpad/dist/graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const getPermissionFromAuthor = async (

@@ -1,5 +1,6 @@
 "use client";
 
+import { SettingInputType } from "graphql-letterpad/dist/graphql";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -15,8 +16,6 @@ import {
 import { getDirtyFields } from "@/lib/react-form";
 
 import { CopyToClipboard } from "@/components/clipboard";
-
-import { SettingInputType } from "@/__generated__/__types__";
 
 import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
 import Ai from "./components/ai";

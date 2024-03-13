@@ -1,13 +1,14 @@
 import {
+  MediaUpdateResponse,
   MutationUpdateMediaArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "graphql-letterpad/dist/graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const updateMedia = async (
   args: MutationUpdateMediaArgs,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["MediaUpdateResponse"]> => {
+): Promise<MediaUpdateResponse> => {
   if (!session?.user.id) {
     return {
       __typename: "UnAuthorized",

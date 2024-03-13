@@ -1,4 +1,5 @@
-import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+import { MutationResolvers, QueryResolvers } from "graphql-letterpad/dist/graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 import { deleteMedia, getMedia, updateMedia } from "../services/media";

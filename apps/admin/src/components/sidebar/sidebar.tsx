@@ -1,9 +1,8 @@
+import { useHomeQueryQuery } from "graphql-letterpad/dist/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Menu, useResponsiveLayout } from "ui";
-
-import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";

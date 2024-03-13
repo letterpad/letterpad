@@ -1,4 +1,4 @@
-import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+import { MutationResolvers, QueryResolvers } from "graphql-letterpad/dist/graphql";
 
 import { convertNotificationMetaOut } from "./utils/dbTypeCheck";
 import { ResolverContext } from "../context";

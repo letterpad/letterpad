@@ -1,3 +1,4 @@
+import { Author, PostStats } from "graphql-letterpad/dist/graphql";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
@@ -6,7 +7,6 @@ import { SlBadge } from "react-icons/sl";
 import { getReadableDate } from "@/shared/utils";
 
 import { ProfileCard } from "../profile-card";
-import { Author, PostStats } from "../../../__generated__server/__types__";
 
 interface Props {
   slug: string;
@@ -19,7 +19,7 @@ interface Props {
     width?: number;
     height?: number;
   };
-  author?: Omit<Author, "email" | "id">;
+  author?: Author;
   stats?: PostStats;
   publishedAt?: string;
   featured?: boolean;

@@ -1,11 +1,10 @@
+import { Post } from "graphql-letterpad/dist/graphql";
 import { FC } from "react";
 import { BuilderContext, Layout as LayoutBuilder } from "ui";
 
 import "./creatives.css";
 
 import { FileExplorer } from "@/components/file-explorer";
-
-import { Post } from "@/__generated__/__types__";
 
 import { useUpdatePost } from "../api.client";
 import { Title } from "../components/title";

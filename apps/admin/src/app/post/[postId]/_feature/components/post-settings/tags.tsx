@@ -1,7 +1,7 @@
+import { PostWithAuthorAndTagsFragment } from "graphql-letterpad/dist/graphql";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
 
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
