@@ -2,21 +2,34 @@
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "dependsOn": [
+        "^build",
+        "graphql-letterpad#codegen"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**"
+      ]
     },
     "lint": {
       "outputs": []
     },
     "dev": {
-      "dependsOn": ["letterpad-sdk#build"],
+      "dependsOn": [
+        "letterpad-sdk#build",
+        "graphql-letterpad#codegen"
+      ],
       "cache": false
     },
     "prisma:generate": {
-      "outputs": ["node_modules/.prisma/client"]
+      "outputs": [
+        "node_modules/.prisma/client"
+      ]
     },
     "test": {
-      "outputs": ["coverage/**"],
+      "outputs": [
+        "coverage/**"
+      ],
       "inputs": [
         "admin/**/*.tsx",
         "admin/**/*.ts",

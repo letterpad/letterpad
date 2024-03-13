@@ -3,7 +3,6 @@ documents:
   - "src/graphql/**/*.graphql"
 plugins:
   - typescript-operations
-  # - typescript-react-apollo
   - typescript-urql
   - add
 cacheDir: __generated__
