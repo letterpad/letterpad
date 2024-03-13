@@ -2,12 +2,11 @@ import Cookie from "js-cookie";
 
 import { THEME_STORAGE_KEY } from "./constants";
 
-
-const THEME_DARK = 'dark';
-const THEME_LIGHT = 'light';
+const THEME_DARK = "dark";
+const THEME_LIGHT = "light";
 
 const applyClass = (theme: string) => {
-  if (typeof document === 'undefined') return;
+  if (typeof document === "undefined") return;
   const root = document.documentElement;
   if (!root) return;
   root.classList.remove(THEME_LIGHT, THEME_DARK);
@@ -16,9 +15,8 @@ const applyClass = (theme: string) => {
 };
 
 export const getTheme = (storageKey: string = THEME_STORAGE_KEY) => {
-  if (typeof window === 'undefined') return THEME_DARK;
-  const cookie = Cookie.get(storageKey)
-
+  if (typeof window === "undefined") return THEME_DARK;
+  const cookie = Cookie.get(storageKey);
 
   if (cookie) {
     return cookie;
@@ -29,7 +27,10 @@ export const getTheme = (storageKey: string = THEME_STORAGE_KEY) => {
     : THEME_LIGHT;
 };
 
-export const setTheme = (storageKey: string = THEME_STORAGE_KEY, theme: string) => {
+export const setTheme = (
+  storageKey: string = THEME_STORAGE_KEY,
+  theme: string
+) => {
   applyClass(theme);
   Cookie.remove(storageKey);
   Cookie.set(storageKey, theme, { expires: 365 });
