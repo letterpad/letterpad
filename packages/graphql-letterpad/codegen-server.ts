@@ -9,7 +9,7 @@ const config: CodegenConfig = {
   documents: [path.join(__dirname, "../../apps/admin/src/graphql/queries/*.graphql")],
   emitLegacyCommonJSImports: false,
   generates: {
-    "./dist/graphql-server.ts": {
+    "./dist/server.ts": {
       plugins: [
         "typescript",
         "typescript-operations",

@@ -9,13 +9,16 @@ const config: CodegenConfig = {
   documents: [path.join(__dirname, "../../apps/admin/src/graphql/queries/*.graphql")],
   emitLegacyCommonJSImports: false,
   generates: {
-    "./dist/graphql-client.ts": {
+    "./dist/client.ts": {
       plugins: [
         "typescript",
         "typescript-operations",
         "typescript-urql",
         // "add"
       ],
+      config: {
+        withHooks: true,
+      }
     },
   },
 
