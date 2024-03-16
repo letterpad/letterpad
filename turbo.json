@@ -3,8 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": [
-        "^build",
-        "graphql-letterpad#codegen"
+        "^build"
       ],
       "outputs": [
         "dist/**",
@@ -17,7 +16,7 @@
     "dev": {
       "dependsOn": [
         "letterpad-sdk#build",
-        "graphql-letterpad#codegen"
+        "graphql-letterpad#build"
       ],
       "cache": false
     },
