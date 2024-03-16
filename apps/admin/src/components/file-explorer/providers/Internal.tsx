@@ -3,7 +3,7 @@ import {
   MediaDocument,
   MediaQuery,
   MediaQueryVariables,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { InfiniteScrollList } from "ui";
 

@@ -1,4 +1,4 @@
-import { Domain } from "graphql-letterpad/dist/graphql";
+import { Domain } from "graphql-letterpad";
 
 export const MappedDomain: React.FC<Domain> = ({ name }) => {
   return (

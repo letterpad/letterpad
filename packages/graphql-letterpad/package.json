@@ -5,16 +5,19 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "build.tsc.mjs": "tsc -p tsconfig.json",
     "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
-    "build": "bun run codegen"
+    "build": "bun run codegen && bun run build.tsc.mjs && bun run build.tsc.cjs"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/mjs/index.js",
+  "main": "dist/cjs/graphql.js",
+  "module": "dist/mjs/graphql.js",
   "exports": {
-    "./graphql": {
-      "import": "./dist/graphql.ts"
+    "./schema": {
+      "import": "./dist/graphql.schema.json"
+    },
+    ".": {
+      "import": "./dist/mjs/graphql.js"
     },
     "./hooks": {
-      "import": "./dist/hooks.ts"
+      "import": "./dist/mjs/hooks.js"
     }
   },
   "files": [
@@ -28,6 +31,7 @@
     "@graphql-codegen/typescript": "^2.8.1",
     "@graphql-codegen/typescript-operations": "^2.5.6",
     "@graphql-codegen/typescript-resolvers": "^2.7.6",
-    "@graphql-codegen/typescript-urql": "^3.7.3"
+    "@graphql-codegen/typescript-urql": "^3.7.3",
+    "@graphql-codegen/introspection": "^4.0.3"
   }
 }

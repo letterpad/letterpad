@@ -1,4 +1,4 @@
-import { PostTypes } from "graphql-letterpad/dist/graphql";
+import { PostTypes } from "graphql-letterpad";
 
 import { Content } from "@/components/client-wrapper";
 

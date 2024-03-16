@@ -1,4 +1,4 @@
-import { SettingsFragmentFragment } from "graphql-letterpad/dist/graphql";
+import { SettingsFragmentFragment } from "graphql-letterpad";
 import { Divider, Switch } from "ui";
 
 import { useUpdateSettings } from "../api.client";

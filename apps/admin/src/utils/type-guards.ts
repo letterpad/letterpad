@@ -6,7 +6,7 @@ import {
   Setting,
   Stats,
   TagsNode,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 export function isPostsNode(data: any): data is PostsNode {
   return data?.__typename === "PostsNode";

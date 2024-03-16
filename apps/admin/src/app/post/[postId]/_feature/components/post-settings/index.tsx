@@ -1,8 +1,5 @@
 import classNames from "classnames";
-import {
-  PostTypes,
-  PostWithAuthorAndTagsFragment,
-} from "graphql-letterpad/dist/graphql";
+import { PostTypes, PostWithAuthorAndTagsFragment } from "graphql-letterpad";
 import Link from "next/link";
 import React, {
   ChangeEvent,

@@ -1,4 +1,4 @@
-import { ForgotPasswordResponse } from "graphql-letterpad/dist/graphql";
+import { ForgotPasswordResponse } from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";

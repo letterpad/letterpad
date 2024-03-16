@@ -1,4 +1,4 @@
-import { MailStatus, PostStatusOptions } from "graphql-letterpad/dist/graphql";
+import { MailStatus, PostStatusOptions } from "graphql-letterpad";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";

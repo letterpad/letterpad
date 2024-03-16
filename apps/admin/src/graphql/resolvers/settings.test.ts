@@ -1,4 +1,4 @@
-import { SettingsDocument, UpdateOptionsDocument } from "graphql-letterpad/dist/graphql";
+import { SettingsDocument, UpdateOptionsDocument } from "graphql-letterpad";
 
 import { prisma } from "@/lib/prisma";
 

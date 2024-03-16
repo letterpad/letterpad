@@ -1,4 +1,4 @@
-import { Author, PostStats } from "graphql-letterpad/dist/graphql";
+import { Author, PostStats } from "graphql-letterpad";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
@@ -19,7 +19,7 @@ interface Props {
     width?: number;
     height?: number;
   };
-  author?: Author;
+  author?: Omit<Author, "email">;
   stats?: PostStats;
   publishedAt?: string;
   featured?: boolean;

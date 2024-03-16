@@ -1,4 +1,4 @@
-import { Author } from "graphql-letterpad/dist/graphql";
+import { Author } from "graphql-letterpad";
 import Link from "next/link";
 import { IoStar } from "react-icons/io5";
 

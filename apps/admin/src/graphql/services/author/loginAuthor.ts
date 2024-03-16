@@ -1,4 +1,4 @@
-import { LoginResponse, MutationLoginArgs } from "graphql-letterpad/dist/graphql";
+import { LoginResponse, MutationLoginArgs } from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";

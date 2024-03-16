@@ -1,4 +1,4 @@
-import { NavigationType } from "graphql-letterpad/dist/graphql";
+import { NavigationType } from "graphql-letterpad";
 
 export interface Collection {
   type: NavigationType.Page;

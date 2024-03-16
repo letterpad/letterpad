@@ -5,7 +5,7 @@ import {
   PostTypes,
   Role,
   UpdatePostResponse,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 import { revalidateTag } from "next/cache";
 
 import { mail } from "@/lib/mail";

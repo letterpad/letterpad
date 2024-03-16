@@ -1,4 +1,4 @@
-import { PostStatusOptions, PostTypes } from "graphql-letterpad/dist/graphql";
+import { PostStatusOptions, PostTypes } from "graphql-letterpad";
 import Link from "next/link";
 import { BiPencil } from "react-icons/bi";
 

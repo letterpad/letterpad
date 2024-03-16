@@ -1,4 +1,4 @@
-import { MailStatus, PostStatusOptions } from "graphql-letterpad/dist/graphql";
+import { MailStatus, PostStatusOptions } from "graphql-letterpad";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import SMTPTransport from "nodemailer/lib/smtp-transport";

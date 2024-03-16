@@ -1,4 +1,4 @@
-import { MeFragmentFragment } from "graphql-letterpad/dist/graphql";
+import { MeFragmentFragment } from "graphql-letterpad";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Input } from "ui";

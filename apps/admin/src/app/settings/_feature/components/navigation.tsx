@@ -1,4 +1,4 @@
-import { Navigation } from "graphql-letterpad/dist/graphql";
+import { Navigation } from "graphql-letterpad";
 import { Controller, useFormContext } from "react-hook-form";
 
 import NavigationBuilder from "@/components/navigation-builder";

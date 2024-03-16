@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Navigation, RegisterStep, SettingsFragmentFragment } from "graphql-letterpad/dist/graphql";
+import { Navigation, RegisterStep, SettingsFragmentFragment } from "graphql-letterpad";
 import { DefaultUser } from "next-auth";
 
 import { ROLES, SessionData } from "@/graphql/types";

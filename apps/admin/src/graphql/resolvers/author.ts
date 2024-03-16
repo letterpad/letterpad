@@ -5,7 +5,7 @@ import {
   PostTypes,
   QueryResolvers,
   RegisterStep,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 

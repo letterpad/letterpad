@@ -1,4 +1,4 @@
-import { PostWithAuthorAndTagsFragment } from "graphql-letterpad/dist/graphql";
+import { PostWithAuthorAndTagsFragment } from "graphql-letterpad";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
 

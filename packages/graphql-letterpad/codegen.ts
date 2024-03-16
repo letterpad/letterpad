@@ -6,9 +6,15 @@ const config: CodegenConfig = {
     __dirname,
     "../../apps/admin/src/graphql/schema/*.graphqls"
   ),
-  documents: [path.join(__dirname, "../../apps/**/*.graphql")],
+  documents: [
+    path.join(__dirname, "../../apps/**/*.graphql"),
+    // path.join(__dirname, "../../packages/**/*.graphql")
+  ],
   emitLegacyCommonJSImports: false,
   generates: {
+    './dist/graphql.schema.json': {
+      plugins: ['introspection'],
+    },
     "./dist/graphql.ts": {
       plugins: [
         "typescript",
@@ -26,6 +32,7 @@ const config: CodegenConfig = {
     "./dist/hooks.ts": {
       plugins: [
         "typescript-urql",
+        "add"
       ],
       preset: 'import-types',
       config: {
@@ -34,7 +41,8 @@ const config: CodegenConfig = {
         documentMode: 'external',
         importDocumentNodeExternallyFrom: './graphql.ts',
         avoidOptionals: false,
-        maybeValue: 'T'
+        maybeValue: 'T',
+        content: "//@ts-nocheck"
       },
       presetConfig: {
         typesPath: "./graphql",

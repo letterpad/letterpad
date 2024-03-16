@@ -1,4 +1,4 @@
-import { MutationResolvers, QueryResolvers } from "graphql-letterpad/dist/graphql";
+import { MutationResolvers, QueryResolvers } from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";

@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Navigation, NavigationType } from "graphql-letterpad/dist/graphql";
+import { Navigation, NavigationType } from "graphql-letterpad";
 import { FC, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
 import { Button, Input as Inputv2, Message } from "ui";

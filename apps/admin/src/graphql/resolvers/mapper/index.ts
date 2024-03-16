@@ -10,7 +10,7 @@ import {
   PostTypes,
   Setting,
   SettingInputType,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 export const mapPostToGraphql = (post: DbPost | Error) => {
   if (post instanceof Error) {

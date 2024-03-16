@@ -1,4 +1,4 @@
-import { Media } from "graphql-letterpad/dist/graphql";
+import { Media } from "graphql-letterpad";
 import Image from "next/image";
 import { Button, Input, Modal, TextArea } from "ui";
 

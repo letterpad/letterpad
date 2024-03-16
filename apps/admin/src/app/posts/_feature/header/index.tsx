@@ -1,5 +1,5 @@
 import className from "classnames";
-import { PostStatusOptions, TagsNode } from "graphql-letterpad/dist/graphql";
+import { PostStatusOptions, TagsNode } from "graphql-letterpad";
 
 import { getReadableDate } from "../../../../shared/utils";
 

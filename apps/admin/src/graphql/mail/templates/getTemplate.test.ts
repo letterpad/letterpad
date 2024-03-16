@@ -5,7 +5,7 @@ import {
   ForgotPasswordDocument,
   UpdateAuthorDocument,
   UpdateSubscriberDocument,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 import { prisma } from "@/lib/prisma";
 

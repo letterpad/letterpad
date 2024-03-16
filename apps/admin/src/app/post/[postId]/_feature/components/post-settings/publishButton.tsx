@@ -3,7 +3,7 @@ import {
   NavigationType,
   PostStatusOptions,
   PostTypes,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 import { useState } from "react";
 import { Button, Message, Modal } from "ui";
 

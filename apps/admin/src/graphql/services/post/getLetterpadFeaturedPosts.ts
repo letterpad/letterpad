@@ -1,6 +1,6 @@
 import {
   PostsResponse,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";

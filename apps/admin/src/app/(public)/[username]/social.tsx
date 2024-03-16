@@ -1,4 +1,4 @@
-import { Social } from "graphql-letterpad/dist/graphql";
+import { Social } from "graphql-letterpad";
 import {
   FaFacebook,
   FaGithub,

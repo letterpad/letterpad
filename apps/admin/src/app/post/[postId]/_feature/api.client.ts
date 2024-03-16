@@ -1,4 +1,4 @@
-import { InputUpdatePost, PostFilters } from "graphql-letterpad/dist/graphql";
+import { InputUpdatePost, PostFilters } from "graphql-letterpad";
 import { usePostQuery, useUpdatePostMutation } from "graphql-letterpad/dist/hooks";
 import { useCallback, useMemo } from "react";
 import { RequestPolicy } from "urql";

@@ -1,4 +1,4 @@
-import { NavigationType } from "graphql-letterpad/dist/graphql";
+import { NavigationType } from "graphql-letterpad";
 import { Button, Divider, Modal } from "ui";
 
 export const SuggestionModal = ({ suggestions, onSelect, isOpen, onClose }) => {

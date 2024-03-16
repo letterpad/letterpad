@@ -1,4 +1,4 @@
-import { Design } from "graphql-letterpad/dist/graphql";
+import { Design } from "graphql-letterpad";
 
 export const resolveDesignField = async (
   design: Design | string | undefined

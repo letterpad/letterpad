@@ -1,4 +1,4 @@
-import { DomainVerification } from "graphql-letterpad/dist/graphql";
+import { DomainVerification } from "graphql-letterpad";
 
 import { CopyToClipboard } from "@/components/clipboard";
 

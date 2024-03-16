@@ -2,7 +2,7 @@ import {
   PostStatusOptions,
   PostTypes,
   StatsResponse,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 

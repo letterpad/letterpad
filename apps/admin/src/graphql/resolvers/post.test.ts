@@ -1,7 +1,7 @@
 import {
   CreatePostDocument,
   PostsDocument, PostStatusOptions, UpdatePostDocument
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 import { API } from "@/../tests/testClient";
 import { createPathWithPrefix, textToSlug } from "@/utils/slug";

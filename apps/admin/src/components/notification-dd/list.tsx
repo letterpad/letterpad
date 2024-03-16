@@ -7,7 +7,7 @@ import {
   PostNewMeta,
   SubscriberNewMeta,
   SystemMeta,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 import {
   useMarkNotificationsReadMutation,
   useNotificationQuery,

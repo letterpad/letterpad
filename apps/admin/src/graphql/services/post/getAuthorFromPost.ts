@@ -1,4 +1,4 @@
-import { AuthorResponse, RegisterStep } from "graphql-letterpad/dist/graphql";
+import { AuthorResponse, RegisterStep } from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 

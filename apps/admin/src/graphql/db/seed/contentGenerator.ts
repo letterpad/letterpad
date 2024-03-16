@@ -1,4 +1,4 @@
-import { NavigationType } from "graphql-letterpad/dist/graphql";
+import { NavigationType } from "graphql-letterpad";
 
 import { mdToHtml } from "@/shared/converter";
 

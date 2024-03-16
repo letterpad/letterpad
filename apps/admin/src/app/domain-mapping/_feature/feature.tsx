@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Domain,
-  DomainQuery,
-  DomainVerification,
-} from "graphql-letterpad/dist/graphql";
+import { Domain, DomainQuery, DomainVerification } from "graphql-letterpad";
 import {
   useDomainQuery,
   useRemoveDomainMutation,

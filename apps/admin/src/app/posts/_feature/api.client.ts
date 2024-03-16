@@ -2,7 +2,7 @@ import {
   InputAuthor,
   InputCreatePost,
   PostsFilters,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 import {
   useCreatePostMutation,
   usePostsQuery,

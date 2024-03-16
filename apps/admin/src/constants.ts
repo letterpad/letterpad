@@ -1,4 +1,4 @@
-import { RegisterStep } from "graphql-letterpad/dist/graphql";
+import { RegisterStep } from "graphql-letterpad";
 
 export const gaTrackingId = "G-D8L4KM499F";
 // export { basePath } from "../next.config";

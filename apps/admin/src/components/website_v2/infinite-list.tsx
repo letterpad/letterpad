@@ -1,5 +1,5 @@
 "use client";
-import { Post } from "graphql-letterpad/dist/graphql";
+import { Post } from "graphql-letterpad";
 import { FC, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 

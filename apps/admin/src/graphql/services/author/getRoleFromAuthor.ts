@@ -1,4 +1,4 @@
-import { Role } from "graphql-letterpad/dist/graphql";
+import { Role } from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 

@@ -1,5 +1,5 @@
 import { load } from "cheerio";
-import { Social } from "graphql-letterpad/dist/graphql";
+import { Social } from "graphql-letterpad";
 
 import { prisma } from "@/lib/prisma";
 

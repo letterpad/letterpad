@@ -1,4 +1,4 @@
-import { PostStatusOptions } from "graphql-letterpad/dist/graphql";
+import { PostStatusOptions } from "graphql-letterpad";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";

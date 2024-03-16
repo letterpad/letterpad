@@ -2,7 +2,7 @@ import {
   AuthorResponse,
   MutationCreateAuthorArgs,
   RegisterStep,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 
 import { createAuthorWithSettings } from "@/components/onboard";
 

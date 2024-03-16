@@ -1,4 +1,4 @@
-import { RemoveDomainResponse } from "graphql-letterpad/dist/graphql";
+import { RemoveDomainResponse } from "graphql-letterpad";
 
 import { ResolverContext } from "@/graphql/context";
 

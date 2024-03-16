@@ -1,4 +1,4 @@
-import { RegisterStep } from "graphql-letterpad/dist/graphql";
+import { RegisterStep } from "graphql-letterpad";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 

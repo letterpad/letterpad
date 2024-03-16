@@ -41,7 +41,7 @@ export const Sidebar = () => {
               isMobileOrTablet && setSidebarVisible(false);
             }}
             selectedKey={pathname}
-            items={items(stats, activePlan)}
+            items={items(stats, !!activePlan)}
           />
         </div>
       </div>

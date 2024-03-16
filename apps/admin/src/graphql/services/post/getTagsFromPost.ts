@@ -1,4 +1,4 @@
-import { TagsResponse, TagType } from "graphql-letterpad/dist/graphql";
+import { TagsResponse, TagType } from "graphql-letterpad";
 
 import { ResolverContext } from "../../context";
 

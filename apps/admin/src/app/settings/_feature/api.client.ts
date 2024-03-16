@@ -1,7 +1,7 @@
 import {
   SettingInputType, UpdateOptionsMutation,
   UpdateOptionsMutationVariables,
-} from "graphql-letterpad/dist/graphql";
+} from "graphql-letterpad";
 import {
   useSettingsQuery, useUpdateOptionsMutation
 } from "graphql-letterpad/dist/hooks";

@@ -1,5 +1,5 @@
 "use client";
-import { PostStatusOptions, PostTypes } from "graphql-letterpad/dist/graphql";
+import { PostStatusOptions, PostTypes } from "graphql-letterpad";
 import { useRouter } from "next/navigation";
 import { MouseEvent, ReactNode, useState } from "react";
 import { BiPlus } from "react-icons/bi";

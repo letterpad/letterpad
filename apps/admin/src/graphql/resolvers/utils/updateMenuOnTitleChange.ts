@@ -1,4 +1,4 @@
-import { Navigation, NavigationType } from "graphql-letterpad/dist/graphql";
+import { Navigation, NavigationType } from "graphql-letterpad";
 
 import { prisma } from "@/lib/prisma";
 

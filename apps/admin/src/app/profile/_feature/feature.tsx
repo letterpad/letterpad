@@ -1,6 +1,6 @@
 "use client";
 
-import { Author, InputAuthor } from "graphql-letterpad/dist/graphql";
+import { Author, InputAuthor } from "graphql-letterpad";
 import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { Accordion, AccordionItem, Message } from "ui";

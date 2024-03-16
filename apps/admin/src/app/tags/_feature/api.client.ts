@@ -1,4 +1,4 @@
-import { TagsQueryVariables } from "graphql-letterpad/dist/graphql";
+import { TagsQueryVariables } from "graphql-letterpad";
 import {
   useDeleteTagsMutation,
   useTagsQuery, useUpdateTagsMutation
