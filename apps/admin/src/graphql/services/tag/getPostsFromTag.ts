@@ -1,7 +1,7 @@
 import {
   PostsResponse,
   PostStatusOptions,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 import { cache } from "react";
 
 import { ResolverContext } from "@/graphql/context";

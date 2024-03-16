@@ -3,7 +3,7 @@ import {
   Post,
   PostTypes,
   Tag,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 import { useEffect, useState } from "react";
 
 import { Collection } from "./types";

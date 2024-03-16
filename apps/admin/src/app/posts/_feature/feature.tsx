@@ -1,7 +1,7 @@
 "use client";
 
-import { PostsFilters, PostStatusOptions } from "graphql-letterpad";
-import { useHomeQueryQuery } from "graphql-letterpad/dist/hooks";
+import { PostsFilters, PostStatusOptions } from "letterpad-graphql";
+import { useHomeQueryQuery } from "letterpad-graphql/dist/hooks";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Table } from "ui";

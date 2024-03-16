@@ -1,4 +1,4 @@
-import { useSubscribersQuery } from "graphql-letterpad/dist/hooks";
+import { useSubscribersQuery } from "letterpad-graphql/dist/hooks";
 
 export const useGetSubscribers = () => {
   const [{ data, fetching, error }, refetch] = useSubscribersQuery();

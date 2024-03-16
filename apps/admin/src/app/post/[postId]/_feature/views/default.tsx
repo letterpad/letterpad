@@ -1,4 +1,4 @@
-import { Post, Setting } from "graphql-letterpad";
+import { Post, Setting } from "letterpad-graphql";
 import { FC } from "react";
 import { PostTitlePlaceholder } from "ui";
 

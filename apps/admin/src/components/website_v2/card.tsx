@@ -1,4 +1,4 @@
-import { Author, PostStats } from "graphql-letterpad";
+import { Author, PostStats } from "letterpad-graphql";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";

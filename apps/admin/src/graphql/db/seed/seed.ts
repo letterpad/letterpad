@@ -3,7 +3,7 @@ require("dotenv/config");
 import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import fs from "fs";
-import { RegisterStep } from "graphql-letterpad";
+import { RegisterStep } from "letterpad-graphql";
 import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";

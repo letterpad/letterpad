@@ -1,4 +1,4 @@
-import { SettingResponse } from "graphql-letterpad";
+import { SettingResponse } from "letterpad-graphql";
 import { cache } from "react";
 
 import { ResolverContext } from "@/graphql/context";

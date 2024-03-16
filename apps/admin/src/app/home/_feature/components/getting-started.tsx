@@ -1,4 +1,4 @@
-import { InputAuthor, MeFragmentFragment } from "graphql-letterpad";
+import { InputAuthor, MeFragmentFragment } from "letterpad-graphql";
 import Link from "next/link";
 import { FC, useEffect } from "react";
 import { Button } from "ui";

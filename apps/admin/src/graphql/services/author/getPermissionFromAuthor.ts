@@ -1,4 +1,4 @@
-import { Permissions } from "graphql-letterpad";
+import { Permissions } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 

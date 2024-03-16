@@ -3,7 +3,7 @@ import {
   QueryTagsArgs,
   TagsResponse,
   TagType,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 import { cache } from "react";
 
 import { prisma } from "@/lib/prisma";

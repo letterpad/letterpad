@@ -1,4 +1,4 @@
-import { DomainResponse } from "graphql-letterpad";
+import { DomainResponse } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 

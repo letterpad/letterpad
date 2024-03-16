@@ -1,4 +1,4 @@
-import { AuthorResponse, RegisterStep } from "graphql-letterpad";
+import { AuthorResponse, RegisterStep } from "letterpad-graphql";
 import { cache } from "react";
 
 import { ResolverContext } from "@/graphql/context";

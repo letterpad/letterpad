@@ -2,7 +2,7 @@ import {
   MutationUpdateOptionsArgs,
   Setting,
   SettingResponse,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";

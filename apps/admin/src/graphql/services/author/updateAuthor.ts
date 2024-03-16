@@ -4,7 +4,7 @@ import {
   MutationUpdateAuthorArgs,
   RegisterStep,
   Role,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { onBoardUser } from "@/components/onboard";
 

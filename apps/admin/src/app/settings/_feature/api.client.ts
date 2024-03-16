@@ -1,10 +1,10 @@
 import {
   SettingInputType, UpdateOptionsMutation,
   UpdateOptionsMutationVariables,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 import {
   useSettingsQuery, useUpdateOptionsMutation
-} from "graphql-letterpad/dist/hooks";
+} from "letterpad-graphql/dist/hooks";
 
 import { client } from "@/lib/urqlClient";
 

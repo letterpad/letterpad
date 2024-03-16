@@ -15,7 +15,7 @@ import {
   PostsDocument,
   PostsQuery,
   PostsQueryVariables,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { client } from "../../lib/urqlClient";
 

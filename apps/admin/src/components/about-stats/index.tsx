@@ -1,6 +1,6 @@
 "use client";
 
-import { useAboutStatsQuery } from "graphql-letterpad/dist/hooks";
+import { useAboutStatsQuery } from "letterpad-graphql/dist/hooks";
 
 export const AboutStats = ({ username }) => {
   const [{ data }] = useAboutStatsQuery({ variables: { username } });

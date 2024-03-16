@@ -7,11 +7,11 @@ import {
   PostNewMeta,
   SubscriberNewMeta,
   SystemMeta,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 import {
   useMarkNotificationsReadMutation,
   useNotificationQuery,
-} from "graphql-letterpad/dist/hooks";
+} from "letterpad-graphql/dist/hooks";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";

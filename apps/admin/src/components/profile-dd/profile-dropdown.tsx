@@ -1,7 +1,7 @@
 "use client";
 import { animated, useSpring } from "@react-spring/web";
 import classNames from "classnames";
-import { useHomeQueryQuery } from "graphql-letterpad/dist/hooks";
+import { useHomeQueryQuery } from "letterpad-graphql/dist/hooks";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { BsEnvelope } from "react-icons/bs";

@@ -1,5 +1,5 @@
-import { InputAuthor } from "graphql-letterpad";
-import { useMeQuery, useUpdateAuthorMutation } from "graphql-letterpad/dist/hooks";
+import { InputAuthor } from "letterpad-graphql";
+import { useMeQuery, useUpdateAuthorMutation } from "letterpad-graphql/dist/hooks";
 
 import { isAuthor } from "@/utils/type-guards";
 

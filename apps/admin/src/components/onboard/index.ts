@@ -4,7 +4,7 @@ import {
   PostTypes,
   RegisterStep,
   SettingInputType,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { prisma } from "@/lib/prisma";
 

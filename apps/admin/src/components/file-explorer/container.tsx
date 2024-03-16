@@ -1,4 +1,4 @@
-import { Media } from "graphql-letterpad";
+import { Media } from "letterpad-graphql";
 import { useCallback, useState } from "react";
 import { FileExplorer } from "ui";
 

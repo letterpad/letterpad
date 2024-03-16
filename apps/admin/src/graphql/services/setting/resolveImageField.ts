@@ -1,4 +1,4 @@
-import { Image } from "graphql-letterpad";
+import { Image } from "letterpad-graphql";
 
 import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";

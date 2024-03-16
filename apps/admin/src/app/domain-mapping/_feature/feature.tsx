@@ -1,10 +1,10 @@
 "use client";
 
-import { Domain, DomainQuery, DomainVerification } from "graphql-letterpad";
+import { Domain, DomainQuery, DomainVerification } from "letterpad-graphql";
 import {
   useDomainQuery,
   useRemoveDomainMutation,
-} from "graphql-letterpad/dist/hooks";
+} from "letterpad-graphql/dist/hooks";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { Button, Message } from "ui";
 

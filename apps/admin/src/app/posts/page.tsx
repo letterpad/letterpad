@@ -1,4 +1,4 @@
-import { PostTypes } from "graphql-letterpad";
+import { PostTypes } from "letterpad-graphql";
 import React from "react";
 
 import { Content } from "@/components/client-wrapper";

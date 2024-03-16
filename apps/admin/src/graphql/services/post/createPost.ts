@@ -3,7 +3,7 @@ import {
   CreatePostResponse,
   MutationCreatePostArgs,
   PostTypes,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { report } from "@/components/error";
 

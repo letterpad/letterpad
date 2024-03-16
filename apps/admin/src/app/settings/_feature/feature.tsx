@@ -1,6 +1,6 @@
 "use client";
 
-import { SettingInputType } from "graphql-letterpad";
+import { SettingInputType } from "letterpad-graphql";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import {

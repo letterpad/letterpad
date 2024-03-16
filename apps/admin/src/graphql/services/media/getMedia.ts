@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { MediaResponse, QueryMediaArgs } from "graphql-letterpad";
+import { MediaResponse, QueryMediaArgs } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 

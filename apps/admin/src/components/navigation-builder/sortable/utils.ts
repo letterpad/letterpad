@@ -1,4 +1,4 @@
-import { NavigationType } from "graphql-letterpad";
+import { NavigationType } from "letterpad-graphql";
 
 import { IMenuWithError } from "@/types";
 

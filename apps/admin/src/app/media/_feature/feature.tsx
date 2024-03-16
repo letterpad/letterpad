@@ -1,7 +1,7 @@
 "use client";
 
-import { Media as IMedia, MediaNode } from "graphql-letterpad";
-import { useMediaQuery } from "graphql-letterpad/dist/hooks";
+import { Media as IMedia, MediaNode } from "letterpad-graphql";
+import { useMediaQuery } from "letterpad-graphql/dist/hooks";
 import { useEffect, useState } from "react";
 import { Button, Message } from "ui";
 

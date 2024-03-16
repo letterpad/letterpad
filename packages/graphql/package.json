@@ -1,5 +1,5 @@
 {
-  "name": "graphql-letterpad",
+  "name": "letterpad-graphql",
   "version": "0.0.1",
   "scripts": {
     "codegen": "graphql-codegen --config codegen.ts",

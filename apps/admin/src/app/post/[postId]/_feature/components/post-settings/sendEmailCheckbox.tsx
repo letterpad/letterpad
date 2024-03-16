@@ -1,4 +1,4 @@
-import { MailStatus, PostStatusOptions } from "graphql-letterpad";
+import { MailStatus, PostStatusOptions } from "letterpad-graphql";
 import { ChangeEvent, FC, useState } from "react";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";

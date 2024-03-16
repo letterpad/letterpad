@@ -1,4 +1,4 @@
-import { Post } from "graphql-letterpad";
+import { Post } from "letterpad-graphql";
 import { FC } from "react";
 import { BuilderContext, Layout as LayoutBuilder } from "ui";
 

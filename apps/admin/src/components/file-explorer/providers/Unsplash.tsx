@@ -1,4 +1,4 @@
-import { Media } from "graphql-letterpad";
+import { Media } from "letterpad-graphql";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { InfiniteScrollList, SearchInput } from "ui";
 

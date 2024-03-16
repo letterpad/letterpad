@@ -1,6 +1,6 @@
 "use client";
 
-import { RegisterStep, SettingInputType } from "graphql-letterpad";
+import { RegisterStep, SettingInputType } from "letterpad-graphql";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";

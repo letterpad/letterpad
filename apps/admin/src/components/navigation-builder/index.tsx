@@ -1,4 +1,4 @@
-import { Navigation as NavigationItemType } from "graphql-letterpad";
+import { Navigation as NavigationItemType } from "letterpad-graphql";
 import React, { useCallback, useMemo } from "react";
 
 import { List } from "@/components/navigation-builder/sortable";

@@ -3,7 +3,7 @@ import {
   PostStatusOptions,
   PostTypes,
   PostWithAuthorAndTagsFragment,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 

@@ -1,4 +1,4 @@
-import { Setting } from "graphql-letterpad";
+import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
 import { Input, TextArea } from "ui";
 

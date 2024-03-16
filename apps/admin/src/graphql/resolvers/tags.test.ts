@@ -2,7 +2,7 @@ import {
   DeleteTagsDocument,
   TagDocument,
   TagsDocument, UpdateTagsDocument
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { API } from "@/../tests/testClient";
 

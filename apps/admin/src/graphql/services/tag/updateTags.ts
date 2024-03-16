@@ -1,7 +1,7 @@
 import {
   MutationUpdateTagsArgs,
   UpdateTagsResponse,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 

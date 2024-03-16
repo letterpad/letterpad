@@ -2,7 +2,7 @@ import {
   MutationResolvers,
   PostResolvers,
   QueryResolvers,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { report } from "@/components/error";
 

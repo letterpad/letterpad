@@ -1,4 +1,4 @@
-import { QueryResolvers } from "graphql-letterpad";
+import { QueryResolvers } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 

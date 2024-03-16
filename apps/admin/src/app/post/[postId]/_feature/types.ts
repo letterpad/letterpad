@@ -1,5 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { Setting } from "graphql-letterpad";
+import { Setting } from "letterpad-graphql";
 
 export type PostContextType = {
   fileExplorerOpen: boolean;

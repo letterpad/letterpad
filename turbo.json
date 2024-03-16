@@ -16,7 +16,7 @@
     "dev": {
       "dependsOn": [
         "letterpad-sdk#build",
-        "graphql-letterpad#build"
+        "letterpad-graphql#build"
       ],
       "cache": false
     },

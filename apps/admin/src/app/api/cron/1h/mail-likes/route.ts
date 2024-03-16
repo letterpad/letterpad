@@ -1,4 +1,4 @@
-import { NotificationMeta } from "graphql-letterpad";
+import { NotificationMeta } from "letterpad-graphql";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import SMTPTransport from "nodemailer/lib/smtp-transport";

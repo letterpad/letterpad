@@ -51,7 +51,7 @@
   ],
   "exclude": [
     "__generated__/**/*.tsx",
-    "graphql-letterpad",
+    "letterpad-graphql",
     "node_modules",
   ],
 }

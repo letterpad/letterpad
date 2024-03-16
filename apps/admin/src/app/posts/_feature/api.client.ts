@@ -2,12 +2,12 @@ import {
   InputAuthor,
   InputCreatePost,
   PostsFilters,
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 import {
   useCreatePostMutation,
   usePostsQuery,
   useStatsQuery, useUpdateAuthorMutation
-} from "graphql-letterpad/dist/hooks";
+} from "letterpad-graphql/dist/hooks";
 
 import { isAuthor, isPostsNode, isStats } from "@/utils/type-guards";
 

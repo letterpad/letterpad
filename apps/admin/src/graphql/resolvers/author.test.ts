@@ -2,7 +2,7 @@ import {
   CreateAuthorDocument,
   LoginDocument,
   PostsDocument
-} from "graphql-letterpad";
+} from "letterpad-graphql";
 
 import { prisma } from "@/lib/prisma";
 

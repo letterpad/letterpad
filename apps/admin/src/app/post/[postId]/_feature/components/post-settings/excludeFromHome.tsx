@@ -1,4 +1,4 @@
-import {} from "graphql-letterpad";
+import {} from "letterpad-graphql";
 import { ChangeEvent, FC, useState } from "react";
 
 interface Props {

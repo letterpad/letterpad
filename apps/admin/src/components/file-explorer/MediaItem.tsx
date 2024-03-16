@@ -1,4 +1,4 @@
-import { Media } from "graphql-letterpad";
+import { Media } from "letterpad-graphql";
 import React from "react";
 
 interface IProps {
