@@ -12,7 +12,6 @@ import { cache } from 'react';
 function getLetterpad() {
   const headersList = headers();
   const host = headersList.get('x-forwarded-host')! ?? headersList.get('host');
-
   return new Letterpad({
     letterpadServer: {
       url: process.env.API_URL!,
