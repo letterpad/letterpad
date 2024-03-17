@@ -1,13 +1,14 @@
 import {
-  ResolversTypes,
-} from "@/__generated__/__types__";
+  PostsResponse,
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadFeaturedPosts = async (
   _args,
   { prisma, dataloaders }: ResolverContext
-): Promise<ResolversTypes["PostsResponse"]> => {
+): Promise<PostsResponse> => {
   try {
     const postIds = await prisma.featuredWeek.findMany({
       where: {

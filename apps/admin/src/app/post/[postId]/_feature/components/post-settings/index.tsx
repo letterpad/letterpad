@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { PostTypes, PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import Link from "next/link";
 import React, {
   ChangeEvent,
@@ -12,8 +13,6 @@ import { Drawer, Input, Switch, TextArea } from "ui";
 
 import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 
-import { PostTypes } from "@/__generated__/__types__";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useGetSettings } from "@/app/settings/_feature/api.client";
 import { PageType } from "@/graphql/types";
 import {
@@ -138,7 +137,7 @@ const Actions = ({ post }: IProps) => {
                     });
                   }}
                   ref={excerptRef}
-                  defaultValue={post.excerpt}
+                  defaultValue={post.excerpt!}
                 />
                 <div className="mt-2">
                   {busy ? (

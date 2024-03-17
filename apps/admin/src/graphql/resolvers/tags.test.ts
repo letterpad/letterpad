@@ -1,12 +1,10 @@
-import { API } from "@/../tests/testClient";
 import {
   DeleteTagsDocument,
-  UpdateTagsDocument,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
   TagDocument,
-  TagsDocument,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
+  TagsDocument, UpdateTagsDocument
+} from "letterpad-graphql";
+
+import { API } from "@/../tests/testClient";
 
 describe("Test Tags Graphql API", () => {
   it("get tags", async () => {
@@ -78,4 +76,4 @@ describe("Test Tags Graphql API", () => {
     expect(result.deleteTags.ok).toBe(true);
   });
 });
-export {};
+export { };

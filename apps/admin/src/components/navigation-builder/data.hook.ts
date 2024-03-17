@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-
 import {
   NavigationType,
   Post,
   PostTypes,
   Tag,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+import { useEffect, useState } from "react";
 
 import { Collection } from "./types";
 import { useGetPosts } from "../../app/posts/_feature/api.client";

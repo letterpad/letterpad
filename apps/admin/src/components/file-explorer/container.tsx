@@ -1,7 +1,7 @@
+import { Media } from "letterpad-graphql";
 import { useCallback, useState } from "react";
 import { FileExplorer } from "ui";
 
-import { Media } from "@/__generated__/__types__";
 import { uploadFile } from "@/shared/utils";
 
 import MediaItem from "./MediaItem";

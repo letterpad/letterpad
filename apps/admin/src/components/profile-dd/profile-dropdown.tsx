@@ -1,6 +1,7 @@
 "use client";
 import { animated, useSpring } from "@react-spring/web";
 import classNames from "classnames";
+import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { BsEnvelope } from "react-icons/bs";
@@ -11,8 +12,6 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { LuLogIn, LuLogOut } from "react-icons/lu";
 import { TfiNewWindow } from "react-icons/tfi";
 import { VscDebugStart } from "react-icons/vsc";
-
-import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { MenuItem } from "./menu-item";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";

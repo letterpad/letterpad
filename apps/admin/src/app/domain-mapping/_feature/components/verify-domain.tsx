@@ -1,6 +1,6 @@
-import { CopyToClipboard } from "@/components/clipboard";
+import { DomainVerification } from "letterpad-graphql";
 
-import { DomainVerification } from "@/__generated__/__types__";
+import { CopyToClipboard } from "@/components/clipboard";
 
 export const VerifyDomain: React.FC<{
   verification?: DomainVerification;

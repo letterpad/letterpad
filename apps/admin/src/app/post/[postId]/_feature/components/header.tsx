@@ -1,9 +1,11 @@
 import classNames from "classnames";
+import {
+  PostStatusOptions,
+  PostTypes,
+  PostWithAuthorAndTagsFragment,
+} from "letterpad-graphql";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
-
-import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 
 import Actions from "./post-settings";
 

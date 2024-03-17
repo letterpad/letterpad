@@ -1,8 +1,8 @@
 import { load } from "cheerio";
+import { Social } from "letterpad-graphql";
 
 import { prisma } from "@/lib/prisma";
 
-import { Social } from "@/__generated__/__types__";
 import logger from "@/shared/logger";
 import { textToSlug } from "@/utils/slug";
 

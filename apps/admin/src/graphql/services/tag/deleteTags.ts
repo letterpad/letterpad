@@ -1,13 +1,14 @@
 import {
+  DeleteTagsResponse,
   MutationDeleteTagsArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const deleteTags = async (
   args: MutationDeleteTagsArgs,
   { session, prisma }: ResolverContext
-): Promise<ResolversTypes["DeleteTagsResponse"]> => {
+): Promise<DeleteTagsResponse> => {
   if (!args.name) {
     return {
       __typename: "UnAuthorized",

@@ -1,6 +1,5 @@
 import className from "classnames";
-
-import { PostStatusOptions, TagsNode } from "@/__generated__/__types__";
+import { PostStatusOptions, TagsNode } from "letterpad-graphql";
 
 import { getReadableDate } from "../../../../shared/utils";
 

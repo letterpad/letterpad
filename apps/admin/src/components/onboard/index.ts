@@ -1,12 +1,13 @@
-import { prisma } from "@/lib/prisma";
-
 import {
   InputCreateAuthor,
   PostStatusOptions,
   PostTypes,
   RegisterStep,
   SettingInputType,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
+import { prisma } from "@/lib/prisma";
+
 import siteConfig from "@/config/site.config";
 import { defaultSettings } from "@/graphql/db/seed/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";

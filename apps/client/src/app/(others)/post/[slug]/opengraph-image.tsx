@@ -28,7 +28,7 @@ export default async function AboutOG(props) {
         <div tw="w-1/3 bg-gray-200 flex h-full">
           <img
             src={post.cover_image.src ?? image}
-            tw="flex w-full h-full object-cover"
+            tw="flex w-full h-full"
             style={{ objectFit: 'cover' }}
             alt="Post cover image"
           />
@@ -42,7 +42,9 @@ export default async function AboutOG(props) {
         >
           <div tw={`flex flex-col`}>
             <p>{settings.site_title}</p>
-            <h1 tw="text-5xl text-bolder">{post.title}</h1>
+            <h1 tw="text-5xl" style={{ fontWeight: 'bolder' }}>
+              {post.title}
+            </h1>
           </div>
           <div tw="flex items-center flex-row">
             <img

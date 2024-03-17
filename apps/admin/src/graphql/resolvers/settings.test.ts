@@ -1,8 +1,8 @@
+import { SettingsDocument, UpdateOptionsDocument } from "letterpad-graphql";
+
 import { prisma } from "@/lib/prisma";
 
 import { API } from "@/../tests/testClient";
-import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-import { UpdateOptionsDocument } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
 describe("Test Settings Graphql API", () => {
   it("get sitename and title", async () => {

@@ -1,12 +1,13 @@
 import { Prisma } from "@prisma/client";
-import { cache } from "react";
-
 import {
+  InputMaybe,
+  PostsResponse,
   PostStatusOptions,
   PostTypes,
   QueryPostsArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+import { cache } from "react";
+
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { isSqliteDb } from "@/utils/utils";
@@ -15,7 +16,7 @@ export const getPosts = cache(
   async (
     args: QueryPostsArgs,
     context: ResolverContext
-  ): Promise<ResolversTypes["PostsResponse"]> => {
+  ): Promise<PostsResponse> => {
     const { session, client_author_id, prisma } = context;
     const session_author_id = session?.user.id;
     const authorId = session_author_id || client_author_id || undefined;
@@ -114,7 +115,7 @@ function getTags({ slug, loggedIn, isPage }: GetTagsProps) {
   return undefined;
 }
 
-function getStatus(session, status?: PostStatusOptions[]) {
+function getStatus(session, status?: InputMaybe<PostStatusOptions>[]) {
   return {
     in: session
       ? status ?? [PostStatusOptions.Published, PostStatusOptions.Draft]

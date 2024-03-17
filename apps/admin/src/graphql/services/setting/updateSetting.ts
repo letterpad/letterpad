@@ -1,8 +1,9 @@
 import {
   MutationUpdateOptionsArgs,
-  ResolversTypes,
   Setting,
-} from "@/__generated__/__types__";
+  SettingResponse,
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 import { getRootUrl } from "@/shared/getRootUrl";
@@ -11,7 +12,7 @@ import logger from "@/shared/logger";
 export const updateSetting = async (
   args: MutationUpdateOptionsArgs,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["SettingResponse"]> => {
+): Promise<SettingResponse> => {
   if (!session?.user.id) {
     return {
       __typename: "UnAuthorized",
@@ -91,8 +92,8 @@ export type ChangeTypeOfKeys<
   Keys extends keyof T,
   NewType,
 > = {
-  // Loop to every key. We gonna check if the key
-  // is assignable to Keys. If yes, change the type.
-  // Else, retain the type.
-  [key in keyof T]: key extends Keys ? NewType : T[key];
-};
+    // Loop to every key. We gonna check if the key
+    // is assignable to Keys. If yes, change the type.
+    // Else, retain the type.
+    [key in keyof T]: key extends Keys ? NewType : T[key];
+  };

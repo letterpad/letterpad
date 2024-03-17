@@ -18,5 +18,5 @@ export const Logo: FC<Props> = ({ width = 150, isDarkBg }) => {
 
   logo = "/logo/logo-full.png";
 
-  return <Image src={logo} width={width} height={width} alt="Letterpad" />;
+  return <Image src={logo} width={width} height={34} alt="Letterpad" />;
 };

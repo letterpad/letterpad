@@ -1,4 +1,5 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { RegisterStep } from "letterpad-graphql";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -10,7 +11,6 @@ import { prisma } from "@/lib/prisma";
 import { report } from "@/components/error";
 import { createAuthorWithSettings } from "@/components/onboard";
 
-import { RegisterStep } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { isPasswordValid } from "@/utils/bcrypt";

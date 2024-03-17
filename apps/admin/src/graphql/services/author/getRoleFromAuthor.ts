@@ -1,4 +1,5 @@
-import { Role } from "@/__generated__/__types__";
+import { Role } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const getRoleFromAuthor = async (

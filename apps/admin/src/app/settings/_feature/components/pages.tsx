@@ -1,6 +1,5 @@
+import { SettingsFragmentFragment } from "letterpad-graphql";
 import { Divider, Switch } from "ui";
-
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 import { useUpdateSettings } from "../api.client";
 

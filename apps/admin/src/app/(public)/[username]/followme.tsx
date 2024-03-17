@@ -1,17 +1,14 @@
 "use client";
+import {
+  useAboutStatsQuery,
+  useFollowAuthorMutation,
+  useIsFollowingQuery,
+  useUnFollowAuthorMutation,
+} from "letterpad-graphql/hooks";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
 import { Button, Modal } from "ui";
-
-import {
-  useFollowAuthorMutation,
-  useUnFollowAuthorMutation,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
-  useAboutStatsQuery,
-  useIsFollowingQuery,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
 
 export const FollowMe = ({ username }) => {
   const session = useSession();

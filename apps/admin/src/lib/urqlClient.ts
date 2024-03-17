@@ -1,9 +1,9 @@
 // import { Client, createClient, fetchExchange } from "@urql/core";
 import { Client, createClient, fetchExchange, mapExchange } from "@urql/core";
 import { cacheExchange } from "@urql/exchange-graphcache";
+import schema from "letterpad-graphql/graphql.schema.json";
 
 import { getRootUrl } from "../shared/getRootUrl";
-import schema from "../../schema.json";
 
 let _client: Client | null = null;
 export const cache = cacheExchange({

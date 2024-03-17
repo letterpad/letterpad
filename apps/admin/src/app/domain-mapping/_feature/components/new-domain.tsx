@@ -1,10 +1,10 @@
+import { useAddDomainMutation } from "letterpad-graphql/hooks";
 import { ChangeEvent, useState } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { Button, Input, Message } from "ui";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
-import { useAddDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { isMembershipFeatureActive } from "@/shared/utils";
 
 export const NewDomain = () => {

@@ -1,16 +1,14 @@
 "use client";
 
+import { Domain, DomainQuery, DomainVerification } from "letterpad-graphql/";
+import {
+  useDomainQuery,
+  useRemoveDomainMutation,
+} from "letterpad-graphql/hooks";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { Button, Message } from "ui";
 
 import { Spinner } from "@/components/loading";
-
-import { Domain, DomainVerification } from "@/__generated__/__types__";
-import { useRemoveDomainMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
-  DomainQuery,
-  useDomainQuery,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { MapDomain } from "./components/map-domain";
 import { MapSubDomain } from "./components/map-subdomain";

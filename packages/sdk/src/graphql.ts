@@ -44,8 +44,8 @@ export type Author = {
   email: Scalars["String"];
   favourite?: Maybe<Scalars["Boolean"]>;
   first_post_published?: Maybe<Scalars["Boolean"]>;
-  followers?: Maybe<Array<Maybe<FollowAuthor>>>;
-  following?: Maybe<Array<Maybe<FollowAuthor>>>;
+  followers?: Maybe<Array<FollowAuthor>>;
+  following?: Maybe<Array<FollowAuthor>>;
   id: Scalars["String"];
   is_paid_member?: Maybe<Scalars["Boolean"]>;
   name: Scalars["String"];
@@ -695,7 +695,7 @@ export type NotificationMeta =
 export type NotificationNode = {
   __typename?: "NotificationNode";
   count: Scalars["Int"];
-  rows: Array<Maybe<Notification>>;
+  rows: Array<Notification>;
 };
 
 export type NotificationResponse = NotificationNode | UnAuthorized;
@@ -1244,13 +1244,13 @@ export type MeQuery = {
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1284,13 +1284,13 @@ export type MeFragmentFragment = {
     name: string;
     avatar?: string | null;
     username: string;
-  } | null> | null;
+  }> | null;
   following?: Array<{
     __typename?: "FollowAuthor";
     name: string;
     avatar?: string | null;
     username: string;
-  } | null> | null;
+  }> | null;
   social?: {
     __typename?: "Social";
     twitter?: string | null;
@@ -1367,13 +1367,13 @@ export type MeAndSettingsQuery = {
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1656,13 +1656,13 @@ export type PostPageQuery = {
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;

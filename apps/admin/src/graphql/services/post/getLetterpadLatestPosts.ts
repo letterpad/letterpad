@@ -1,18 +1,18 @@
 import { Prisma } from "@prisma/client";
-
 import {
+  PostsResponse,
   PostStatusOptions,
   PostTypes,
   QueryLetterpadLatestPostsArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadLatestPosts = async (
   args: Partial<QueryLetterpadLatestPostsArgs>,
   { prisma, dataloaders }: ResolverContext
-): Promise<ResolversTypes["PostsResponse"]> => {
+): Promise<PostsResponse> => {
   const cursor = args.filters?.cursor
     ? {
       cursor: {

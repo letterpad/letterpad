@@ -1,9 +1,8 @@
+import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
 import { TextArea } from "ui";
 
 import { SaveButton } from "@/components/save-button";
-
-import { Setting } from "@/__generated__/__types__";
 
 interface Props {}
 const Ai: React.FC<Props> = () => {

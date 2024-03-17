@@ -1,9 +1,8 @@
+import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Menu, useResponsiveLayout } from "ui";
-
-import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
@@ -42,7 +41,7 @@ export const Sidebar = () => {
               isMobileOrTablet && setSidebarVisible(false);
             }}
             selectedKey={pathname}
-            items={items(stats, activePlan)}
+            items={items(stats, !!activePlan)}
           />
         </div>
       </div>

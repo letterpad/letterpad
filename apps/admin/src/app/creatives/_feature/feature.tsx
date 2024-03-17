@@ -1,4 +1,6 @@
 "use client";
+import { PostsFilters, PostStatusOptions, PostTypes } from "letterpad-graphql";
+import { usePostsQuery } from "letterpad-graphql/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Table } from "ui";
@@ -7,12 +9,6 @@ import { postsStyles } from "@/components/posts.css";
 
 import ErrorMessage from "@/components/ErrorMessage";
 
-import {
-  PostsFilters,
-  PostStatusOptions,
-  PostTypes,
-} from "@/__generated__/__types__";
-import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import Filters from "@/app/posts/_feature/filters";
 import { creativesColumns } from "@/app/posts/_feature/header";
 

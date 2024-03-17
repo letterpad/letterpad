@@ -1,8 +1,5 @@
 "use server";
 import { print } from "graphql";
-
-import { MeDocument, MeQuery, MeQueryVariables } from "../../graphql/queries/queries.graphql";
-import { client } from "../../lib/urqlClient";
 import {
   FavAuthorsDocument,
   FavAuthorsQuery,
@@ -18,7 +15,9 @@ import {
   PostsDocument,
   PostsQuery,
   PostsQueryVariables,
-} from "../../../__generated__server/src/graphql/queries/queries.graphql";
+} from "letterpad-graphql";
+
+import { client } from "../../lib/urqlClient";
 
 export async function getLetterpadPosts(
   filters: LetterpadLatestPostsQueryVariables

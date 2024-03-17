@@ -1,11 +1,11 @@
-import { ResolversParentTypes, TagType } from "@/__generated__/__types__";
+import { TagsResponse, TagType } from "letterpad-graphql";
 
 import { ResolverContext } from "../../context";
 
 export const getTagsFromPost = async (
   id: string,
   { dataloaders }: ResolverContext
-): Promise<ResolversParentTypes["TagsResponse"]> => {
+): Promise<TagsResponse> => {
   const tags = await dataloaders.tagsByPostId.load(id);
   const tagsWithSlug = tags
     .filter((tag) => typeof tag.slug === "string")

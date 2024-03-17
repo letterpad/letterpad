@@ -2,7 +2,7 @@ import {
   PostStatusOptions,
   PostTypes,
   SortBy,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
 
 export const DEFAULT_FILTERS = {
   sortBy: SortBy["Desc"],

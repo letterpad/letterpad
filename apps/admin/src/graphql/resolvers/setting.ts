@@ -4,7 +4,8 @@ import {
   NavigationType,
   QueryResolvers,
   SettingResolvers,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 import {

@@ -1,11 +1,11 @@
 "use client";
+import { Post } from "letterpad-graphql";
 import { FC, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { AdminActions } from "./adminActions";
 import { Card } from "./card";
 import { getLetterpadPosts } from "./data";
-import { Post } from "../../../__generated__server/__types__";
 
 interface Props {
   cursor: string;
@@ -38,7 +38,7 @@ export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
       {data.map((item) => {
         const author =
           item.author?.__typename === "Author" ? item.author : undefined;
-        const link = new URL(item.slug ?? "", author?.site_url).toString();
+        const link = new URL(item.slug ?? "", author?.site_url!).toString();
         return (
           <div key={item.id}>
             <AdminActions

@@ -1,10 +1,9 @@
 "use client";
 
+import { Media as IMedia, MediaNode } from "letterpad-graphql";
+import { useMediaQuery } from "letterpad-graphql/hooks";
 import { useEffect, useState } from "react";
 import { Button, Message } from "ui";
-
-import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
-import { useMediaQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 
 import { useDeleteImage, useUpdateImage } from "./api.client";
 import { MediaUpdateModal } from "./components/mediaUpdateModal";

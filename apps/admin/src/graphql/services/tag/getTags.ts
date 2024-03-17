@@ -1,13 +1,13 @@
+import {
+  PostStatusOptions,
+  QueryTagsArgs,
+  TagsResponse,
+  TagType,
+} from "letterpad-graphql";
 import { cache } from "react";
 
 import { prisma } from "@/lib/prisma";
 
-import {
-  PostStatusOptions,
-  QueryTagsArgs,
-  ResolversTypes,
-  TagType,
-} from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 
@@ -15,7 +15,7 @@ export const getTags = cache(
   async (
     args: QueryTagsArgs,
     { session, client_author_id, prisma }: ResolverContext
-  ): Promise<ResolversTypes["TagsResponse"]> => {
+  ): Promise<TagsResponse> => {
     const authorId = session?.user.id || client_author_id;
 
     if (!authorId) {

@@ -1,5 +1,4 @@
 import { Kind, OperationDefinitionNode } from "graphql";
-
 import {
   Author,
   Post,
@@ -7,7 +6,7 @@ import {
   Setting,
   Stats,
   TagsNode,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
 
 export function isPostsNode(data: any): data is PostsNode {
   return data?.__typename === "PostsNode";

@@ -1,4 +1,5 @@
-import { MutationLoginArgs, ResolversTypes } from "@/__generated__/__types__";
+import { LoginResponse, MutationLoginArgs } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { isPasswordValid } from "@/utils/bcrypt";
@@ -6,7 +7,7 @@ import { isPasswordValid } from "@/utils/bcrypt";
 export const loginAuthor = async (
   args: MutationLoginArgs,
   { prisma }: ResolverContext
-): Promise<ResolversTypes["LoginResponse"]> => {
+): Promise<LoginResponse> => {
   const author = await prisma.author.findFirst({
     where: { email: args.data?.email },
   });

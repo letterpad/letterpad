@@ -1,14 +1,13 @@
+import {
+  Media,
+  MediaDocument,
+  MediaQuery,
+  MediaQueryVariables,
+} from "letterpad-graphql";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { InfiniteScrollList } from "ui";
 
 import { client } from "@/lib/urqlClient";
-
-import { Media } from "@/__generated__/__types__";
-import {
-  MediaDocument,
-  MediaQuery,
-  MediaQueryVariables,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];

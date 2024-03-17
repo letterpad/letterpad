@@ -1,9 +1,8 @@
+import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
 import { Input, TextArea } from "ui";
 
 import { SaveButton } from "@/components/save-button";
-
-import { Setting } from "@/__generated__/__types__";
 
 interface Props {}
 const Paypal: React.FC<Props> = () => {

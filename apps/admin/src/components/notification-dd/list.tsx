@@ -1,9 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { BiBell } from "react-icons/bi";
-import { Drawer } from "ui";
-
 import {
   CommentNewMeta,
   FollowerNewMeta,
@@ -12,12 +7,18 @@ import {
   PostNewMeta,
   SubscriberNewMeta,
   SystemMeta,
-} from "@/__generated__/__types__";
-import { useNotificationQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
+} from "letterpad-graphql";
+import {
+  useMarkNotificationsReadMutation,
+  useNotificationQuery,
+} from "letterpad-graphql/hooks";
+import { useSession } from "next-auth/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { BiBell } from "react-icons/bi";
+import { Drawer } from "ui";
 
 import { NotificationItem } from "./notification";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
-import { useMarkNotificationsReadMutation } from "../../../__generated__/src/graphql/queries/mutations.graphql";
 
 const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
 

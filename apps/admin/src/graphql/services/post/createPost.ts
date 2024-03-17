@@ -1,12 +1,12 @@
 import { Prisma } from "@prisma/client";
+import {
+  CreatePostResponse,
+  MutationCreatePostArgs,
+  PostTypes,
+} from "letterpad-graphql";
 
 import { report } from "@/components/error";
 
-import {
-  MutationCreatePostArgs,
-  PostTypes,
-  ResolversTypes,
-} from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";
@@ -14,7 +14,7 @@ import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";
 export const createPost = async (
   args: MutationCreatePostArgs,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["CreatePostResponse"]> => {
+): Promise<CreatePostResponse> => {
   if (!args.data || !session?.user.id) {
     return {
       __typename: "PostError",

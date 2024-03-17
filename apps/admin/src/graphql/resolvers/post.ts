@@ -1,10 +1,11 @@
-import { report } from "@/components/error";
-
 import {
   MutationResolvers,
   PostResolvers,
   QueryResolvers,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
+import { report } from "@/components/error";
+
 import { ResolverContext } from "@/graphql/context";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { createPathWithPrefix } from "@/utils/slug";

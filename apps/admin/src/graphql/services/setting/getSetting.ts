@@ -1,6 +1,6 @@
+import { SettingResponse } from "letterpad-graphql";
 import { cache } from "react";
 
-import { ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 
@@ -8,7 +8,7 @@ export const getSetting = cache(
   async (
     _args: unknown,
     { session, client_author_id, dataloaders }: ResolverContext
-  ): Promise<ResolversTypes["SettingResponse"]> => {
+  ): Promise<SettingResponse> => {
     const authorId = session?.user.id || client_author_id;
 
     if (authorId) {

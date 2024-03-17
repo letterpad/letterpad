@@ -3,6 +3,7 @@ require("dotenv/config");
 import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import fs from "fs";
+import { RegisterStep } from "letterpad-graphql";
 import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";
@@ -11,7 +12,6 @@ import { prisma } from "@/lib/prisma";
 
 import { createAuthorWithSettings } from "@/components/onboard";
 
-import { RegisterStep } from "@/__generated__/__types__";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";

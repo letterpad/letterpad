@@ -1,7 +1,7 @@
-import { useResetPasswordMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
+import { useResetPasswordMutation } from "letterpad-graphql/hooks";
 
 export const useResetPassword = () => {
-  const [{}, resetPassword] = useResetPasswordMutation();
+  const [{ }, resetPassword] = useResetPasswordMutation();
 
   return {
     resetPassword,

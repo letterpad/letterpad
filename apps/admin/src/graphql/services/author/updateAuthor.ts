@@ -1,13 +1,13 @@
-import { onBoardUser } from "@/components/onboard";
-
 import {
+  AuthorResponse,
   InputAuthor,
   MutationUpdateAuthorArgs,
   RegisterStep,
-  RequireFields,
-  ResolversTypes,
   Role,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
+import { onBoardUser } from "@/components/onboard";
+
 import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
@@ -24,9 +24,9 @@ interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
 const hostname = new URL(getRootUrl()).hostname;
 
 export const updateAuthor = async (
-  args: RequireFields<MutationUpdateAuthorArgs, "author">,
+  args: MutationUpdateAuthorArgs,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["AuthorResponse"]> => {
+): Promise<AuthorResponse> => {
   if (!session?.user.id) {
     return {
       __typename: "UnAuthorized",

@@ -4,7 +4,8 @@ import {
   Tag,
   TagResolvers,
   TagType,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { createPathWithPrefix } from "@/utils/slug";
 

@@ -1,4 +1,4 @@
-import { useForgotPasswordMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
+import { useForgotPasswordMutation } from "letterpad-graphql/hooks";
 
 export const useForgotPassword = () => {
   const [, forgotPassword] = useForgotPasswordMutation();

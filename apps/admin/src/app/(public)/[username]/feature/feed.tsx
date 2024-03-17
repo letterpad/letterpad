@@ -1,9 +1,9 @@
+import { PostStatusOptions, PostTypes } from "letterpad-graphql";
 import Link from "next/link";
 import { BiPencil } from "react-icons/bi";
 
 import { prisma } from "@/lib/prisma";
 
-import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { getReadableDate } from "@/shared/utils";
 
 export const Feed = async ({ authorId, site_url }) => {

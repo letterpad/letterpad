@@ -1,0 +1,39 @@
+{
+  "name": "letterpad-graphql",
+  "version": "0.0.1",
+  "scripts": {
+    "postinstall": "bun run build",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "build.tsc.mjs": "tsc -p tsconfig.json",
+    "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
+    "build": "bun run codegen && bun run build.tsc.mjs && bun run build.tsc.cjs"
+  },
+  "main": "dist/cjs/graphql.js",
+  "module": "dist/mjs/graphql.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/graphql.js"
+    },
+    "./graphql.schema.json": {
+      "import": "./graphql.schema.json"
+    },
+    "./hooks": {
+      "import": "./dist/mjs/hooks.js",
+      "require": "./dist/cjs/hooks.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@graphql-codegen/add": "^5.0.0",
+    "@graphql-codegen/import-types-preset": "^2.2.6",
+    "@graphql-codegen/plugin-helpers": "^2.7.2",
+    "@graphql-codegen/typescript": "^2.8.1",
+    "@graphql-codegen/typescript-operations": "^2.5.6",
+    "@graphql-codegen/typescript-resolvers": "^2.7.6",
+    "@graphql-codegen/typescript-urql": "^3.7.3",
+    "@graphql-codegen/introspection": "^4.0.3"
+  }
+}

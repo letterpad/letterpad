@@ -1,3 +1,4 @@
+import { PostStatusOptions } from "letterpad-graphql";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,7 +9,6 @@ import { prisma } from "@/lib/prisma";
 
 import { AboutStats } from "@/components/about-stats";
 
-import { PostStatusOptions } from "@/__generated__/__types__";
 import { getTagsLinkedWithPosts } from "@/graphql/services/tag/getTags";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";

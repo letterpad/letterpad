@@ -1,14 +1,15 @@
 import {
   PostStatusOptions,
   PostTypes,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+  StatsResponse,
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const getStats = async (
   _,
   { client_author_id, session, prisma, dataloaders }: ResolverContext
-): Promise<ResolversTypes["StatsResponse"]> => {
+): Promise<StatsResponse> => {
   const result = {
     posts: { published: 0, drafts: 0, trashed: 0 },
     pages: { published: 0, drafts: 0, trashed: 0 },

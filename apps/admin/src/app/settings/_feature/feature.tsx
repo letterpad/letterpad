@@ -1,5 +1,7 @@
 "use client";
 
+import { SettingInputType } from "letterpad-graphql";
+import { useDeleteAuthorMutation } from "letterpad-graphql/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -14,9 +16,6 @@ import {
 import { getDirtyFields } from "@/lib/react-form";
 
 import { CopyToClipboard } from "@/components/clipboard";
-
-import { SettingInputType } from "@/__generated__/__types__";
-import { useDeleteAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
 import { updateSetting, useGetSettings } from "./api.client";
 import Ai from "./components/ai";

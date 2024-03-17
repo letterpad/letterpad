@@ -1,4 +1,5 @@
-import { ResolversTypes } from "@/__generated__/__types__";
+import { ForgotPasswordResponse } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { EmailTemplates } from "@/graphql/types";
@@ -10,7 +11,7 @@ import { ForgotPasswordToken } from "@/types";
 export const resetPassword = async (
   args,
   { prisma }: ResolverContext
-): Promise<ResolversTypes["ForgotPasswordResponse"]> => {
+): Promise<ForgotPasswordResponse> => {
   try {
     const token = args.token;
     const isValidToken = await verifyToken(token);

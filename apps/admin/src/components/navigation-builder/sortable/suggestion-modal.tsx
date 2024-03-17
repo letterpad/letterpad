@@ -1,6 +1,5 @@
+import { NavigationType } from "letterpad-graphql";
 import { Button, Divider, Modal } from "ui";
-
-import { NavigationType } from "@/__generated__/__types__";
 
 export const SuggestionModal = ({ suggestions, onSelect, isOpen, onClose }) => {
   return (

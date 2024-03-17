@@ -1,7 +1,6 @@
+import { Post, Setting } from "letterpad-graphql";
 import { FC } from "react";
 import { PostTitlePlaceholder } from "ui";
-
-import { Post, Setting } from "@/__generated__/__types__";
 
 import { useUpdatePost } from "../api.client";
 import { Editor } from "../components/editor";

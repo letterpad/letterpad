@@ -1,4 +1,5 @@
-import { ResolversTypes } from "@/__generated__/__types__";
+import { DomainResponse } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 import { check } from "./check";
@@ -8,7 +9,7 @@ import { check } from "./check";
 export const getDomain = async (
   _args: unknown,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["DomainResponse"]> => {
+): Promise<DomainResponse> => {
   if (!session?.user.id) {
     return {
       __typename: "DomainNotFound",

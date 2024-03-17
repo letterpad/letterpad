@@ -1,4 +1,4 @@
-import { Domain } from "@/__generated__/__types__";
+import { Domain } from "letterpad-graphql";
 
 export const MappedDomain: React.FC<Domain> = ({ name }) => {
   return (

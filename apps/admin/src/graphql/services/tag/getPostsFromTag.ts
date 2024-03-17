@@ -1,9 +1,9 @@
+import {
+  PostsResponse,
+  PostStatusOptions,
+} from "letterpad-graphql";
 import { cache } from "react";
 
-import {
-  PostStatusOptions,
-  ResolversParentTypes,
-} from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
@@ -11,7 +11,7 @@ export const getPostsFromTag = cache(
   async (
     name: string,
     { session, prisma, client_author_id }: ResolverContext
-  ): Promise<ResolversParentTypes["PostsResponse"]> => {
+  ): Promise<PostsResponse> => {
     const authorId = session?.user.id || client_author_id;
     if (!authorId) {
       return {

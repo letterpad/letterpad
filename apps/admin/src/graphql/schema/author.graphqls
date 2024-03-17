@@ -30,8 +30,8 @@ type Author {
   signature: String
   company_name: String
   role: Role
-  followers: [FollowAuthor]
-  following: [FollowAuthor]
+  followers: [FollowAuthor!]
+  following: [FollowAuthor!]
   permissions: [Permissions!]
   avatar: String
   verified: Boolean

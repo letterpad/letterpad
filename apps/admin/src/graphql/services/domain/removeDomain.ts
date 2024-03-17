@@ -1,4 +1,5 @@
-import { ResolversTypes } from "@/__generated__/__types__";
+import { RemoveDomainResponse } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 import { check } from "./check";
@@ -6,7 +7,7 @@ import { check } from "./check";
 export const removeDomain = async (
   _args: unknown,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["RemoveDomainResponse"]> => {
+): Promise<RemoveDomainResponse> => {
   if (!session?.user.id) {
     return {
       ok: false,

@@ -1,5 +1,7 @@
 "use client";
 
+import { PostsFilters, PostStatusOptions } from "letterpad-graphql";
+import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Table } from "ui";
@@ -8,8 +10,6 @@ import { postsStyles } from "@/components/posts.css";
 
 import { useRedirectToOnboard } from "@/components/onboard/useRedirectToOnboard";
 
-import { PostsFilters, PostStatusOptions } from "@/__generated__/__types__";
-import { useHomeQueryQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
 import {
   isIntroDismissed,
   setIntroDimissed,

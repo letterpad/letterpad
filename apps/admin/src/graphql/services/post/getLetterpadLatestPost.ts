@@ -1,14 +1,15 @@
 import {
+  PostResponse,
   QueryLetterpadLatestPostArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadLatestPost = async (
   args: QueryLetterpadLatestPostArgs,
   { prisma }: ResolverContext
-): Promise<ResolversTypes["PostResponse"]> => {
+): Promise<PostResponse> => {
   if (!args.filters) {
     return {
       __typename: "InvalidArguments",
