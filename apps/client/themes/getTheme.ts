@@ -5,6 +5,7 @@ import * as Air from './air';
 import * as Amun from './amun';
 import * as GridDefaultTheme from './grid';
 import * as List from './list';
+import * as Wavique from './wavique';
 
 export interface Theme {
   HomePosts: ComponentType<HomePostsProps>;
@@ -13,8 +14,28 @@ export interface Theme {
 }
 
 export const getTheme: (theme?: string | null) => Theme = (theme) => {
-  if (theme === 'minimal') return { ...GridDefaultTheme, ...List };
-  if (theme === 'air') return { ...GridDefaultTheme, ...Air };
-  if (theme === 'amun') return { ...GridDefaultTheme, ...Amun };
-  return GridDefaultTheme;
+  let selectedTheme: Theme;
+
+  switch (theme) {
+    case 'minimal':
+      selectedTheme = List;
+      break;
+    case 'air':
+      selectedTheme = Air;
+      break;
+    case 'amun':
+      selectedTheme = Amun;
+      break;
+    case 'wavique':
+      selectedTheme = Wavique;
+      break;
+    default:
+      selectedTheme = GridDefaultTheme;
+      break;
+  }
+
+  return {
+    ...GridDefaultTheme,
+    ...selectedTheme,
+  };
 };

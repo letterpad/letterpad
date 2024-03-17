@@ -24,6 +24,7 @@ export const cache = cacheExchange({
     PostsNode: () => null,
     Notification: () => null,
     FavAuthorResponse: () => null,
+    DeleteAuthorResponse: () => null,
   },
 });
 

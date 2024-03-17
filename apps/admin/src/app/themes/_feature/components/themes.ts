@@ -2,6 +2,7 @@
 import Air from "./screenshots/air.png";
 import Grid from "./screenshots/grid.png";
 import List from "./screenshots/list.png";
+import Wavique from "./screenshots/wavique.jpg";
 
 export const themes = () => {
   return [
@@ -17,6 +18,13 @@ export const themes = () => {
       description:
         "A theme with Grid layout. Should have cover images for every post.",
       image: Grid,
+    },
+    {
+      label: "Wavique",
+      value: "wavique",
+      description:
+        "A theme inspired from Oceans and Waves with a minimalistic design.",
+      image: Wavique,
     },
     // {
     //   label: "Air",

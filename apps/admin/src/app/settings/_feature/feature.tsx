@@ -1,6 +1,7 @@
 "use client";
 
 import { SettingInputType } from "letterpad-graphql";
+import { useDeleteAuthorMutation } from "letterpad-graphql/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -16,7 +17,7 @@ import { getDirtyFields } from "@/lib/react-form";
 
 import { CopyToClipboard } from "@/components/clipboard";
 
-import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
+import { updateSetting, useGetSettings } from "./api.client";
 import Ai from "./components/ai";
 import Appearance from "./components/appearance";
 import Integrations from "./components/integrations";
@@ -33,6 +34,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data } = useGetSettings();
+  const [_, deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
     values: data,
   });
@@ -52,7 +54,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   };
 
   const confirm = async () => {
-    await deleteAuthor();
+    await deleteAuthor({});
     router.push("/login?deleted=true");
   };
 
@@ -157,14 +159,15 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               id="account"
               description="Danger Zone"
             >
-              <div className="mb-4 text-gray-500">
+              <div className="mb-4 text-gray-700 dark:text-gray-400 whitespace-normal">
                 If due to some reason you wish to move out of Letterpad, you may
-                delete your account. All data will be deleted and you will not
-                be able to recover it. You will be logged out after this action.
+                delete your account. <br />
+                All data will be deleted and you will not be able to recover it.
+                You will be logged out after this action.
               </div>
               <PopConfirm
-                title="Are you sure you want to delete your account ?"
-                onConfirm={() => confirm}
+                title="Are you sure you want to delete your account?"
+                onConfirm={() => confirm()}
                 okText="Yes"
                 cancelText="No"
               >
