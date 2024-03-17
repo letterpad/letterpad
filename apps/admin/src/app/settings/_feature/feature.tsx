@@ -6,7 +6,6 @@ import {
   Accordion,
   AccordionItem,
   Button,
-  Input,
   Message,
   PopConfirm,
   TextArea,
@@ -17,8 +16,9 @@ import { getDirtyFields } from "@/lib/react-form";
 import { CopyToClipboard } from "@/components/clipboard";
 
 import { SettingInputType } from "@/__generated__/__types__";
+import { useDeleteAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
 
-import { deleteAuthor, updateSetting, useGetSettings } from "./api.client";
+import { updateSetting, useGetSettings } from "./api.client";
 import Ai from "./components/ai";
 import Appearance from "./components/appearance";
 import Integrations from "./components/integrations";
@@ -26,7 +26,6 @@ import Navigation from "./components/navigation";
 import Pages from "./components/pages";
 import Paypal from "./components/paypal";
 import SeoSettings from "./components/seo";
-import { SaveButton } from "../../../components/save-button";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
@@ -36,7 +35,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data } = useGetSettings();
-  // const [deleteAuthor] = useDeleteAuthorMutation();
+  const [_, deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
     values: data,
   });
@@ -56,7 +55,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   };
 
   const confirm = async () => {
-    await deleteAuthor();
+    await deleteAuthor({});
     router.push("/login?deleted=true");
   };
 
@@ -161,14 +160,15 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               id="account"
               description="Danger Zone"
             >
-              <div className="mb-4 text-gray-500">
+              <div className="mb-4 text-gray-700 dark:text-gray-400 whitespace-normal">
                 If due to some reason you wish to move out of Letterpad, you may
-                delete your account. All data will be deleted and you will not
-                be able to recover it. You will be logged out after this action.
+                delete your account. <br />
+                All data will be deleted and you will not be able to recover it.
+                You will be logged out after this action.
               </div>
               <PopConfirm
-                title="Are you sure you want to delete your account ?"
-                onConfirm={() => confirm}
+                title="Are you sure you want to delete your account?"
+                onConfirm={() => confirm()}
                 okText="Yes"
                 cancelText="No"
               >
