@@ -8,7 +8,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "./dist/"
+    "./src/"
   ],
   "exclude": [
     "node_modules",

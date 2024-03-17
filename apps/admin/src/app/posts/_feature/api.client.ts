@@ -7,7 +7,7 @@ import {
   useCreatePostMutation,
   usePostsQuery,
   useStatsQuery, useUpdateAuthorMutation
-} from "letterpad-graphql/dist/hooks";
+} from "letterpad-graphql/hooks";
 
 import { isAuthor, isPostsNode, isStats } from "@/utils/type-guards";
 

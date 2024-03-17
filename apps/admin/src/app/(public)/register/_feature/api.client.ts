@@ -1,4 +1,4 @@
-import { useCreateAuthorMutation } from "letterpad-graphql/dist/hooks";
+import { useCreateAuthorMutation } from "letterpad-graphql/hooks";
 
 export const useCreateAuthor = () => {
   const [{ }, createAuthor] = useCreateAuthorMutation();

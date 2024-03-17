@@ -1,7 +1,7 @@
 import {
   useDeleteMediaMutation,
   useUpdateMediaMutation,
-} from "letterpad-graphql/dist/hooks";
+} from "letterpad-graphql/hooks";
 
 export const useDeleteImage = () => {
   const [, deleteMedia] = useDeleteMediaMutation();

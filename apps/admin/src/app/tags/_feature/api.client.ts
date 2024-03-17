@@ -2,7 +2,7 @@ import { TagsQueryVariables } from "letterpad-graphql";
 import {
   useDeleteTagsMutation,
   useTagsQuery, useUpdateTagsMutation
-} from "letterpad-graphql/dist/hooks";
+} from "letterpad-graphql/hooks";
 
 import { isTagsNode } from "@/utils/type-guards";
 

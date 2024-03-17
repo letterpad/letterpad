@@ -12,10 +12,10 @@ const config: CodegenConfig = {
   ],
   emitLegacyCommonJSImports: false,
   generates: {
-    './dist/graphql.schema.json': {
+    './graphql.schema.json': {
       plugins: ['introspection'],
     },
-    "./dist/graphql.ts": {
+    "./src/graphql.ts": {
       plugins: [
         "typescript",
         "typescript-operations",
@@ -29,7 +29,7 @@ const config: CodegenConfig = {
         maybeValue: 'T'
       }
     },
-    "./dist/hooks.ts": {
+    "./src/hooks.ts": {
       plugins: [
         "typescript-urql",
         "add"

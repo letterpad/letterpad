@@ -1,4 +1,4 @@
-import { PostStatusOptions, Query, QueryResolvers } from "letterpad-graphql";
+import { PostStatusOptions, QueryResolvers } from "letterpad-graphql";
 
 import { prisma } from "@/lib/prisma";
 

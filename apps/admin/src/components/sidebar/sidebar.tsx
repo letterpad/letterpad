@@ -1,4 +1,4 @@
-import { useHomeQueryQuery } from "letterpad-graphql/dist/hooks";
+import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";

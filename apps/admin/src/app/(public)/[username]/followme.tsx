@@ -4,7 +4,7 @@ import {
   useFollowAuthorMutation,
   useIsFollowingQuery,
   useUnFollowAuthorMutation,
-} from "letterpad-graphql/dist/hooks";
+} from "letterpad-graphql/hooks";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";

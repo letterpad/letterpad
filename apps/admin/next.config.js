@@ -1,5 +1,4 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
-
 const securityHeaders = [
   {
     key: 'Referrer-Policy',
@@ -83,20 +82,11 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverActions: true,
-  },
   webpack(config, options) {
     config.module.rules.push({
       test: /\.graphql$/,
       exclude: /node_modules/,
-      use: [options.defaultLoaders.babel, { loader: "graphql-let/loader" }],
-    });
-
-    config.module.rules.push({
-      test: /\.graphqls$/,
-      exclude: /node_modules/,
-      use: ["graphql-let/schema/loader"],
+      use: [options.defaultLoaders.babel, { loader: "graphql-tag/loader" }],
     });
 
     config.module.rules.push({

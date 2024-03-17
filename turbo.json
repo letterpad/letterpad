@@ -13,6 +13,12 @@
     "lint": {
       "outputs": []
     },
+    "prepare": {
+      "dependsOn": [
+        "letterpad-graphql#build"
+      ],
+      "cache": false
+    },
     "dev": {
       "dependsOn": [
         "letterpad-sdk#build",
@@ -64,7 +70,9 @@
       "outputs": []
     },
     "seed": {
-      "outputs": []
+      "outputs": [
+        "dist/**"
+      ]
     }
   }
 }

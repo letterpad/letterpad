@@ -1267,51 +1267,6 @@ export type MeQuery = {
     | null;
 };
 
-export type MeAuthorQueryVariables = Exact<{ [key: string]: never }>;
-
-export type MeAuthorQuery = {
-  __typename?: "Query";
-  me?:
-    | {
-        __typename: "Author";
-        id: string;
-        name: string;
-        bio?: string | null;
-        occupation?: string | null;
-        signature?: string | null;
-        avatar?: string | null;
-        company_name?: string | null;
-        username: string;
-        favourite?: boolean | null;
-        createdAt?: string | null;
-        followers?: Array<{
-          __typename?: "FollowAuthor";
-          name: string;
-          avatar?: string | null;
-          username: string;
-        }> | null;
-        following?: Array<{
-          __typename?: "FollowAuthor";
-          name: string;
-          avatar?: string | null;
-          username: string;
-        }> | null;
-        social?: {
-          __typename?: "Social";
-          twitter?: string | null;
-          facebook?: string | null;
-          github?: string | null;
-          instagram?: string | null;
-          linkedin?: string | null;
-        } | null;
-      }
-    | { __typename: "Exception"; message: string }
-    | { __typename: "Failed"; message: string }
-    | { __typename: "NotFound"; message: string }
-    | { __typename: "UnAuthorized"; message: string }
-    | null;
-};
-
 export type MeFragmentFragment = {
   __typename: "Author";
   id: string;
@@ -2303,17 +2258,6 @@ export const MeDocument = `
   }
 }
     ${MeFragmentFragmentDoc}`;
-export const MeAuthorDocument = `
-    query meAuthor {
-  me {
-    __typename
-    ...meFragment
-    ... on LetterpadError {
-      message
-    }
-  }
-}
-    ${MeFragmentFragmentDoc}`;
 export const FeedDocument = `
     query feed {
   feed {
@@ -2469,16 +2413,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options,
       ) as Promise<MeQuery>;
-    },
-    meAuthor(
-      variables?: MeAuthorQueryVariables,
-      options?: C,
-    ): Promise<MeAuthorQuery> {
-      return requester<MeAuthorQuery, MeAuthorQueryVariables>(
-        MeAuthorDocument,
-        variables,
-        options,
-      ) as Promise<MeAuthorQuery>;
     },
     feed(variables?: FeedQueryVariables, options?: C): Promise<FeedQuery> {
       return requester<FeedQuery, FeedQueryVariables>(

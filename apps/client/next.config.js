@@ -70,9 +70,6 @@ module.exports = withAxiom({
       },
     ];
   },
-  experimental: {
-    // serverActions: true,
-  },
   reactStrictMode: true,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   eslint: {

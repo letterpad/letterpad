@@ -4,7 +4,7 @@ import {
 } from "letterpad-graphql";
 import {
   useSettingsQuery, useUpdateOptionsMutation
-} from "letterpad-graphql/dist/hooks";
+} from "letterpad-graphql/hooks";
 
 import { client } from "@/lib/urqlClient";
 

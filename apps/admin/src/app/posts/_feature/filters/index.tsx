@@ -1,5 +1,5 @@
 import { PostsFilters, PostStatusOptions, SortBy } from "letterpad-graphql";
-import { useHomeQueryQuery } from "letterpad-graphql/dist/hooks";
+import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useEffect, useState } from "react";
 import { Select } from "ui";
 

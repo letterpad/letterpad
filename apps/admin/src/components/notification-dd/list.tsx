@@ -11,7 +11,7 @@ import {
 import {
   useMarkNotificationsReadMutation,
   useNotificationQuery,
-} from "letterpad-graphql/dist/hooks";
+} from "letterpad-graphql/hooks";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";
