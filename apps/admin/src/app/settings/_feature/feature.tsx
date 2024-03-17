@@ -7,7 +7,6 @@ import {
   Accordion,
   AccordionItem,
   Button,
-  Input,
   Message,
   PopConfirm,
   TextArea,
@@ -25,7 +24,6 @@ import Navigation from "./components/navigation";
 import Pages from "./components/pages";
 import Paypal from "./components/paypal";
 import SeoSettings from "./components/seo";
-import { SaveButton } from "../../../components/save-button";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
@@ -35,7 +33,6 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data } = useGetSettings();
-  // const [deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
     values: data,
   });
