@@ -13,7 +13,6 @@ import { prisma } from "@/lib/prisma";
 import { createAuthorWithSettings } from "@/components/onboard";
 
 import logger from "@/shared/logger";
-import { getDateTime } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
 import generatePost from "./contentGenerator";

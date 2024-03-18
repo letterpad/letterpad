@@ -70,7 +70,7 @@ export const getPosts = cache(
     if (!isSqliteDb() && condition.where?.html) {
       condition.where.html.search = args.filters?.search
         ?.replace(/\s\s+/g, " ")
-        .replaceAll(/ /g, " + ");
+        .replaceAll(/ /g, " & ");
     } else if (condition.where?.html) {
       condition.where.html["contains"] = args.filters?.search;
     }

@@ -27,11 +27,11 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async popularTags(_root, args, { prisma }) {
     const tags: Tag[] =
-      await prisma.$queryRaw`SELECT count(*) as count, T.name, T.slug  FROM _PostToTag
+      await prisma.$queryRaw`SELECT count(*) as c, T.name, T.slug  FROM _PostToTag
         INNER JOIN Tag T ON B = T.name 
         INNER JOIN Post P ON A = P.id 
-        WHERE T.name LIKE ${`${TOPIC_PREFIX}%`} AND P.title != 'Coming Soon' AND P.title != "" AND P.excerpt != "" AND P.status = 'published' AND P.type = 'post'
-        GROUP by T.name HAVING count > 2 ORDER BY count DESC`;
+        WHERE T.name LIKE ${`${TOPIC_PREFIX}%`} AND P.title != 'Coming Soon' AND P.title != '' AND P.excerpt != '' AND P.status = 'published' AND P.type = 'post'
+        GROUP by T.name HAVING c > 2 ORDER BY c DESC`;
     return {
       ok: true,
       rows: tags.map((tag) => ({
