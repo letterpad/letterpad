@@ -1,7 +1,6 @@
 import {
   MeFragmentFragment,
   PageFragmentFragment,
-  Post,
   PostsFragmentFragment,
   SettingsFragmentFragment,
 } from 'letterpad-sdk';
@@ -9,8 +8,6 @@ import { ReactNode } from 'react';
 
 import {
   getAbout,
-  getData,
-  getPostData,
   getPostsByTag,
   getPreviewData,
   getTagsData,
