@@ -1,6 +1,6 @@
+import classNames from 'classnames';
 import { PageFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
-import { BiHeart, BiSolidHeart } from 'react-icons/bi';
 
 import { getApiRootUrl } from '@/lib/utils/url';
 
@@ -17,13 +17,38 @@ export const LikeComponent: FC<Props> = ({
 }) => {
   return (
     <>
-      {liked ? (
-        <BiSolidHeart size={20} className="text-red-500" />
-      ) : (
-        <BiHeart size={20} />
-      )}
-      <span>{likesArr!.length}</span>
+      <div className="flex items-center gap-2">
+        <span className={liked ? 'animate heart' : 'heart'}></span>
+        <span>{likesArr!.length}</span>
+      </div>
       {showAvatar && <Avatars likes={likesArr} />}
+      <style jsx>{`
+        .heart {
+          background-image: url('/static/images/web_heart_animation.png');
+          background-repeat: no-repeat;
+          background-size: 2900%;
+          background-position: left;
+          height: 32px;
+          width: 32px;
+          margin: 0 auto;
+          cursor: pointer;
+          transform: scale(2);
+          margin-right: -0.4rem;
+        }
+
+        .animate {
+          animation: heart-burst 0.8s steps(28) forwards;
+        }
+
+        @keyframes heart-burst {
+          0% {
+            background-position: left;
+          }
+          100% {
+            background-position: right;
+          }
+        }
+      `}</style>
     </>
   );
 };
