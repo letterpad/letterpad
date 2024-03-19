@@ -5,7 +5,11 @@ import { getData } from '../../data';
 
 const Layout = async ({ children }) => {
   if (process.env.EDGE_CONFIG) {
-    const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode');
+    const key =
+      process.env.NODE_ENV === 'production'
+        ? 'isInMaintenanceMode'
+        : 'isInMaintenanceModeDev';
+    const isInMaintenanceMode = await get<boolean>(key);
     if (isInMaintenanceMode) {
       return <>{children}</>;
     }
