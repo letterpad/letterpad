@@ -94,7 +94,7 @@ export const fetchPostsByTag = async () => {
     if (!process.env.LETTERPAD_BLOG_KEY) {
         throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
     }
-    const req = await fetch(new URL('api/graphql', 'https://letterpad.app').toString(), {
+    const req = await fetch(new URL('api/graphql', process.env.ROOT_URL).toString(), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

@@ -26,7 +26,11 @@ export const viewport = {
 export async function generateMetadata(): Promise<Metadata> {
   try {
     if (process.env.EDGE_CONFIG) {
-      const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode');
+      const key =
+        process.env.NODE_ENV === 'production'
+          ? 'isInMaintenanceMode'
+          : 'isInMaintenanceModeDev';
+      const isInMaintenanceMode = await get<boolean>(key);
       if (isInMaintenanceMode) {
         return {};
       }
@@ -143,7 +147,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const Layout = async ({ children }) => {
   if (process.env.EDGE_CONFIG) {
-    const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode');
+    const key =
+      process.env.NODE_ENV === 'production'
+        ? 'isInMaintenanceMode'
+        : 'isInMaintenanceModeDev';
+    const isInMaintenanceMode = await get<boolean>(key);
     if (isInMaintenanceMode) {
       return (
         <html>

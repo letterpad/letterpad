@@ -12,7 +12,8 @@ export async function middleware(request: NextRequest) {
 
   try {
     if (process.env.EDGE_CONFIG) {
-      const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode')
+      const key = process.env.NODE_ENV === 'production' ? 'isInMaintenanceMode' : 'isInMaintenanceModeDev'
+      const isInMaintenanceMode = await get<boolean>(key)
       if (isInMaintenanceMode) {
         request.nextUrl.pathname = `/maintenance`
         return NextResponse.rewrite(request.nextUrl)
