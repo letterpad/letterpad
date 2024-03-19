@@ -50,7 +50,7 @@ export async function BlogPost(props) {
     <>
       <StructuredData data={jsonLd} />
       <Post post={post} settings={settings} me={me} />
-      <PrismHighlight />
+      <PrismHighlight id={post.id} />
     </>
   );
 }
