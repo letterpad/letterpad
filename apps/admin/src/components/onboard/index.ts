@@ -13,7 +13,6 @@ import { defaultSettings } from "@/graphql/db/seed/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { EmailTemplates, ROLES } from "@/graphql/types";
-import { encryptEmail } from "@/shared/clientToken";
 import { textToSlug } from "@/utils/slug";
 
 export const onBoardUser = async (id: string) => {
@@ -137,7 +136,6 @@ export async function createAuthorWithSettings(
             ...defaultSettings,
             ...mapSettingToDb(setting),
             site_url: `https://${authorData.username}.letterpad.app`,
-            client_token: encryptEmail(authorData.email),
           },
         },
       },

@@ -21,7 +21,8 @@ const cache: Record<string, string> = {};
 export const getResolverContext = async (request: Request) => {
   const authHeader = getHeader(request.headers, "authorization");
   const identifierHeader = getHeader(request.headers, "identifier");
-
+  console.log('authHeader', authHeader);
+  console.log('identifierHeader', identifierHeader);
   if (cache[`${authHeader}-${identifierHeader}`]) {
     console.log(
       `Found authorId from cache: ${cache[`${authHeader}-${identifierHeader}`]}`
