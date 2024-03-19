@@ -1,9 +1,20 @@
+import { get } from '@vercel/edge-config';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthCookieName } from '../lib/utils/authCookie';
 import { getApiRootUrl } from '../lib/utils/url';
 
 export async function middleware(request: NextRequest) {
+  try {
+    const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode');
+    if (isInMaintenanceMode) {
+      request.nextUrl.pathname = `/maintenance`;
+      return NextResponse.rewrite(request.nextUrl);
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
   const requestHeaders = new Headers(request.headers);
   const requestUrl = new URL(request.url);
   const isSubdomainWww = requestUrl.host.split('.')[0];
