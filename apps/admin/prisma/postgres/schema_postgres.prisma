@@ -206,11 +206,8 @@ model Post {
   featured_weeks     FeaturedWeek[]
   pageTimeLog        PageTimeLog[]
   comments           Comment[]
-  // @@fulltext([html])
-  // search Unsupported("tsvector")?@default(dbgenerated("''::tsvector"))
 
   @@index([author_id])
-  // @@index([status, mail_status])
   @@index([author_id, status, slug])
 }
 
