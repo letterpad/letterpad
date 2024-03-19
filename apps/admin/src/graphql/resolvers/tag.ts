@@ -37,7 +37,7 @@ const Query: QueryResolvers<ResolverContext> = {
       rows: tags.map((tag) => ({
         name: beautifyTopic(tag.name),
         slug: tag.name,
-        count: Number(tag.count),
+        count: parseInt(tag.count?.toString() ?? "0"),
         id: tag.name,
         type: TagType.Tag,
       })),

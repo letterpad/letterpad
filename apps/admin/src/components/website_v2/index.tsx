@@ -38,6 +38,7 @@ export const Website = async () => {
     data?.letterpadLatestPosts.__typename === "PostsNode"
       ? data.letterpadLatestPosts.rows
       : [];
+
   return (
     <>
       <div className="flex min-h-screen flex-col">
@@ -106,7 +107,7 @@ export const Website = async () => {
               className={classNames(
                 "hidden md:min-w-80 py-10 top-0 space-y-8 md:pl-10",
                 {
-                  "md:block": posts.length > 0,
+                  "md:block": posts.length > 0 || favAuthors?.length > 0,
                 }
               )}
             >
