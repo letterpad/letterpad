@@ -9,14 +9,14 @@
       "@/lib/*": ["lib/*"],
       "@/css/*": ["css/*"],
       "@/themes": ["themes"],
-      "@/*": ["src/*"],
+      "@/*": ["src/*"]
     },
     "plugins": [
       {
-        "name": "next",
-      },
+        "name": "next"
+      }
     ],
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", ".next/types/**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", ".next/types/**/*.ts"]
 }
