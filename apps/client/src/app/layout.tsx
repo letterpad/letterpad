@@ -145,7 +145,11 @@ const Layout = async ({ children }) => {
   if (process.env.EDGE_CONFIG) {
     const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode');
     if (isInMaintenanceMode) {
-      return <>{children}</>;
+      return (
+        <html>
+          <body>{children}</body>
+        </html>
+      );
     }
   }
   const data = await getData();
