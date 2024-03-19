@@ -48,6 +48,7 @@
     "@google-analytics/data": "^4.4.0",
     "@react-spring/web": "^9.7.3",
     "@upstash/redis": "^1.28.2",
+    "@vercel/edge-config": "^1.1.0",
     "axios": "^1.2.0",
     "chart.js": "^4.4.2",
     "chartjs-adapter-dayjs-4": "^1.0.4",
