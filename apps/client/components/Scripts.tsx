@@ -32,6 +32,7 @@ export const HeadMeta: FC<{ settings: SettingsFragmentFragment }> = ({
           __html: content,
         }}
       />
+      <Script id="script" strategy="afterInteractive" src="/static/prism.js" />
     </>
   );
 };

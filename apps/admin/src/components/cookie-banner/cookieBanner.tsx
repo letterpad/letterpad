@@ -24,7 +24,7 @@ export const CookieBanner = () => {
       <div className="max-w-xl px-8 py-8 mx-auto flex md:items-center md:gap-x-6 bg-gray-100 dark:bg-slate-800 rounded-lg border dark:border-gray-700 border-gray-200">
         <div className="flex items-start md:items-center gap-x-2">
           <LuCookie size={40} className="fill-blue-500" />
-          <p className="text-gray-700 dark:text-gray-200 font-paragraph">
+          <p className="text-gray-700 dark:text-gray-200">
             We use cookies to enhance your user experience. By continuing to
             visit this site you agree to{" "}
             <a
