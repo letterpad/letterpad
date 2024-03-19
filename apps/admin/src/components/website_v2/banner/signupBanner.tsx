@@ -6,8 +6,7 @@ export const SignupBanner = ({ hasSession }) => {
   return (
     <Banner
       title="What's your story today?"
-      description=" Publish stories, build subscribers, follow other publishers and stay
-      connected."
+      description=" Publish stories, build subscribers, follow other publishers and start earning."
     >
       <div className="flex items-center mt-10">
         {!hasSession && (

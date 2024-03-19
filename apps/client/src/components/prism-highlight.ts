@@ -1,17 +1,14 @@
 'use client';
-import { usePathname } from 'next/navigation';
+import Prism from 'prismjs';
 import { useEffect } from 'react';
-
-export const PrismHighlight = () => {
-  const path = usePathname();
-
+Prism.manual = true;
+export const PrismHighlight = ({ id }) => {
   useEffect(() => {
-    //@ts-ignore
-    if (typeof window.Prism !== 'undefined') {
-      //@ts-ignore
-      window.Prism.highlightAll();
-    }
-  }, [path]);
+    const highlight = async () => {
+      await Prism.highlightAll();
+    };
+    highlight();
+  }, [id]);
 
   return null;
 };

@@ -40,6 +40,7 @@ const Avatars: FC<{ likes: PageFragmentFragment['likes'] }> = ({ likes }) => {
             href={`${getApiRootUrl()}/@${like?.username}`}
             target="_blank"
             rel="noreferrer"
+            key={like?.username}
           >
             <img
               className="block mr-3 h-full w-full rounded-full hover:opacity-80 object-cover"
