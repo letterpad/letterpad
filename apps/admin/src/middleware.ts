@@ -11,10 +11,12 @@ const isPlatform = process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM;
 export async function middleware(request: NextRequest) {
 
   try {
-    const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode')
-    if (isInMaintenanceMode) {
-      request.nextUrl.pathname = `/maintenance`
-      return NextResponse.rewrite(request.nextUrl)
+    if (process.env.EDGE_CONFIG) {
+      const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode')
+      if (isInMaintenanceMode) {
+        request.nextUrl.pathname = `/maintenance`
+        return NextResponse.rewrite(request.nextUrl)
+      }
     }
   } catch (error) {
     // eslint-disable-next-line no-console

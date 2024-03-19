@@ -1,6 +1,5 @@
 import { GraphQLClient } from "graphql-request";
 
-import { encryptEmail } from "@/shared/clientToken";
 
 interface IArgs {
   query?: any;
@@ -10,12 +9,11 @@ interface IArgs {
   sessionId?: string;
 }
 
-const demoToken = encryptEmail("demo@demo.com");
 
-const client = (token = demoToken, sessionId) =>
+const client = (token, sessionId) =>
   new GraphQLClient("http://localhost:3000/api/graphql", {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer 1`,
       sessionId,
     },
   });

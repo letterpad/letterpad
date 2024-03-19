@@ -14,7 +14,6 @@ import {
   updateSetting,
 } from "../services/setting";
 import { resolveDesignField } from "../services/setting/resolveDesignField";
-import { encryptEmail } from "../../shared/clientToken";
 
 import { Optional } from "@/types";
 
@@ -40,7 +39,7 @@ const Setting: SettingResolvers<ResolverContext> = {
   site_favicon: ({ site_favicon }) => resolveImageField(site_favicon),
   design: ({ design }) => resolveDesignField(design),
   client_token: (__, _, { session }) => {
-    return session?.user.email ? encryptEmail(session?.user.email) : "";
+    return session?.user.id!
   },
 };
 

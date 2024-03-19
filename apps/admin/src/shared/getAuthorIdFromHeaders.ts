@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 
-import { decryptEmail } from "./clientToken";
 
 interface P {
   identifierHeader: string | null;
@@ -13,9 +12,8 @@ export async function findEmailFromToken({ authHeader, ...rest }: P) {
   }
   const token = authHeader.split(/\s+/).pop() || "";
   if (token !== "null") {
-    const tokenData = decryptEmail(token);
     const author = await prisma.author.findUnique({
-      where: { email: tokenData },
+      where: { id: token },
     });
     if (author) return { authHeader, ...rest, authorId: author.id };
   }
