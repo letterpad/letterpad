@@ -143,7 +143,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const Layout = async ({ children }) => {
   if (process.env.EDGE_CONFIG) {
-    const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode_dev');
+    const isInMaintenanceMode = await get<boolean>('isInMaintenanceMode');
     if (isInMaintenanceMode) {
       return <>{children}</>;
     }
