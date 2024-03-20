@@ -190,6 +190,7 @@ input InputUpdatePost {
   featured: Boolean
   excerpt: String
   cover_image: InputImage
+  createdAt: Date
   publishedAt: Date
   scheduledAt: Date
   updatedAt: Date

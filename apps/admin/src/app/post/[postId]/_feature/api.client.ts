@@ -39,6 +39,17 @@ export const useUpdatePost = () => {
       const res = await updatePost({
         data: { ...params },
       });
+      if (res.data?.updatePost.__typename.endsWith("Error")) {
+        Message().error({
+          content: (res.data.updatePost as any).message,
+          duration: 3,
+        });
+        return res;
+      }
+      if (res.error) {
+        Message().error({ content: res.error.message, duration: 3 });
+        return res;
+      }
       Message().success({ content: "Saved", duration: 2 });
       return res;
     },

@@ -304,7 +304,10 @@ export const cleanupDatabase = async () => {
   await prisma.follows.deleteMany();
   await prisma.likes.deleteMany();
   await prisma.session.deleteMany();
+  await prisma.comment.deleteMany();
   await prisma.permission.deleteMany();
+  await prisma.featuredWeek.deleteMany();
+  await prisma.notifications.deleteMany();
   await prisma.author.deleteMany();
   await prisma.domain.deleteMany();
   await prisma.email.deleteMany();

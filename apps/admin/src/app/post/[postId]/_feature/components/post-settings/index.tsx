@@ -287,6 +287,48 @@ const Actions = ({ post }: IProps) => {
                   siteTitle={settings?.site_title!}
                 />
               </div>
+
+              {/**
+               * Created At
+               */}
+              <div>
+                <Heading
+                  heading="Created At"
+                  subheading="Change the creation date for a post."
+                />
+                <Input
+                  type="date"
+                  defaultValue={post.createdAt.split("T")[0]}
+                  onChange={(e) => {
+                    debounceUpdatePost({
+                      id: post.id,
+                      createdAt: e.target.value + "T00:00:00Z",
+                    });
+                  }}
+                />
+              </div>
+
+              {/**
+               * Published At
+               */}
+              {post.publishedAt && (
+                <div>
+                  <Heading
+                    heading="Published At"
+                    subheading="Change the creation date for a post."
+                  />
+                  <Input
+                    type="date"
+                    defaultValue={post.publishedAt.split("T")[0]}
+                    onChange={(e) => {
+                      debounceUpdatePost({
+                        id: post.id,
+                        publishedAt: e.target.value + "T00:00:00Z",
+                      });
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
 

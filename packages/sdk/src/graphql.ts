@@ -379,6 +379,7 @@ export type InputUpdateMedia = {
 export type InputUpdatePost = {
   banned?: InputMaybe<Scalars["Boolean"]>;
   cover_image?: InputMaybe<InputImage>;
+  createdAt?: InputMaybe<Scalars["Date"]>;
   excerpt?: InputMaybe<Scalars["String"]>;
   exclude_from_home?: InputMaybe<Scalars["Boolean"]>;
   featured?: InputMaybe<Scalars["Boolean"]>;
