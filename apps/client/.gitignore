@@ -34,3 +34,4 @@ yarn-error.log*
 .env.production.local
 
 lib/graphql.ts
+.env
