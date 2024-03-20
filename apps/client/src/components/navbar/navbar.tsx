@@ -58,37 +58,27 @@ export const Navbar: FC<Props> = ({
           )}
         >
           <header
-            className={classNames('flex items-center justify-between', {
-              hidden: !isHome,
-            })}
+            className={classNames(
+              'flex items-center justify-between flex-col md:flex-row md:gap-0 gap-8',
+              {
+                hidden: !isHome,
+              }
+            )}
           >
             <div className="flex gap-1 items-center">
-              <Link
-                href="/"
-                aria-label={settings.site_title}
-                className="hidden md:block"
-              >
+              <Link href="/" aria-label={settings.site_title}>
                 {logoOrTitle}
               </Link>
             </div>
             <div
               className={classNames(
-                'lp-header-right items-center text-base leading-5 gap-4 hidden md:flex'
+                'lp-header-right items-center text-base leading-5 gap-4 flex'
               )}
             >
               <SubscribeModal settings={settings} />
               <SocialIcons me={me} />
             </div>
           </header>
-          <div className="space-y-8">
-            <Link
-              href="/"
-              aria-label={settings.site_title}
-              className="md:hidden flex justify-center"
-            >
-              {logoOrTitle}
-            </Link>
-          </div>
           {isHome && <Menu routes={routes} />}
         </div>
       </div>

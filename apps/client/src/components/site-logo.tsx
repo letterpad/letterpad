@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import Image from 'next/image';
 
 interface Logo {
@@ -19,8 +20,9 @@ export const LogoOrTitle = ({
   const logoProps = getLogoWidthAndHeight({ ...logo, title });
   const { className, ...props } = logoProps;
   const hasTitle = typeof title === 'string';
+  const logoSrc = logo && logo.src;
   const siteName = hasTitle ? (
-    <span className="lp-title flex items-center text-[1.5rem] font-extrabold md:text-2xl">
+    <span className="lp-title text-[1.5rem] font-extrabold md:text-2xl">
       {title}
     </span>
   ) : (
@@ -34,13 +36,15 @@ export const LogoOrTitle = ({
         className
       }
     >
-      {logo && logo.src && (
+      {logoSrc && (
         <span className="lp-logo mr-2 flex">
-          <Image alt={title} {...props} src={logo.src} />
+          <Image alt={title} {...props} src={logoSrc} />
         </span>
       )}
-      <div className="flex flex-col">
-        <span>{siteName}</span>
+      <div className={classNames('flex flex-col')}>
+        <div className={classNames({ 'text-center md:text-left': !logoSrc })}>
+          {siteName}
+        </div>
         <span className="text-sm">{tagline}</span>
       </div>
     </div>
