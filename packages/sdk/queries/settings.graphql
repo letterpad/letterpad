@@ -47,4 +47,5 @@ fragment settingsFragment on Setting {
     height
   }
   site_footer
+  is_platform
 }

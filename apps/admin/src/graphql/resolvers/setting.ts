@@ -41,6 +41,7 @@ const Setting: SettingResolvers<ResolverContext> = {
   client_token: (__, _, { session }) => {
     return session?.user.id!
   },
+  is_platform: () => process.env.LETTERPAD_PLATFORM === "true",
 };
 
 const Query: QueryResolvers<ResolverContext> = {

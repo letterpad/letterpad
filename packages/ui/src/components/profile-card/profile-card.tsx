@@ -11,7 +11,7 @@ interface Props {
   size?: "xs" | "sm" | "md" | "lg";
   className?: string;
 }
-export const ProfileCard: FC<Props> = ({
+export const ProfileCard:FC<Props> = ({
   link,
   avatar,
   name,
@@ -27,7 +27,7 @@ export const ProfileCard: FC<Props> = ({
         "gap-4": size === "lg",
       })}
       href={link}
-      target="_blank"
+      target="_blank" rel="noreferrer"
     >
       <div className="rounded-full flex-none ">
         <img
@@ -52,7 +52,7 @@ export const ProfileCard: FC<Props> = ({
             "text-3xl": size === "lg",
           })}
         >
-          <span className="">{name}</span>
+          <span className={classNames({ "font-bold": size === "lg" })}>{name}</span>
           {showProLabel && (
             <span
               className={classNames(

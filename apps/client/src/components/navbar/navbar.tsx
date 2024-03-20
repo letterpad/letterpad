@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { SettingsFragmentFragment } from 'letterpad-sdk';
 import { ComponentType, FC } from 'react';
 
 import Link from '@/components/Link';
@@ -6,6 +7,7 @@ import Link from '@/components/Link';
 import { CollapsableMenu } from './collapsable-menu';
 import { FollowMe } from './followme';
 import { ThemeSwitcher } from './theme-switcher';
+import { LetterpadLogo } from '../letterpad-logo';
 import { SocialIcons } from '../social-icons';
 import { SubscribeModal } from '../subscribe-modal';
 import { Menu } from '../../components/menu';
@@ -13,7 +15,7 @@ import { ProfileDropdown } from '../../components/profile-dropdown';
 import { LogoOrTitle } from '../../components/site-logo';
 
 interface Props {
-  settings: any;
+  settings: SettingsFragmentFragment;
   isHome?: boolean;
   showCollapsedMenu?: boolean;
   me: any;
@@ -30,6 +32,7 @@ export const Navbar: FC<Props> = ({
   const logoOrTitle = (
     <LogoOrTitle logo={settings.site_logo} title={settings.site_title} />
   );
+
   return (
     <>
       <div className="relative bg-accent-50 bg-cover text-white py-4 px-4">
@@ -46,18 +49,22 @@ export const Navbar: FC<Props> = ({
           )}
         >
           <header className="flex items-center justify-between">
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-1 items-center">
               <CollapsableMenu
                 settings={settings}
                 forceShow={showCollapsedMenu}
               />
-              <Link
-                href="/"
-                aria-label={settings.site_title}
-                className="hidden md:block"
-              >
-                {logoOrTitle}
-              </Link>
+              {settings.is_platform ? (
+                <LetterpadLogo />
+              ) : (
+                <Link
+                  href="/"
+                  aria-label={settings.site_title}
+                  className="hidden md:block"
+                >
+                  {logoOrTitle}
+                </Link>
+              )}
             </div>
             <div className="lp-header-right flex items-center text-base leading-5 gap-4">
               <FollowMe username={me.username} />
@@ -79,7 +86,6 @@ export const Navbar: FC<Props> = ({
               </p>
             }
           </div>
-
           <div
             className={classNames(
               'flex md:justify-between justify-center items-center',

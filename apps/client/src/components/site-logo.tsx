@@ -18,7 +18,7 @@ export const LogoOrTitle = ({
   const { className, ...props } = logoProps;
   const hasTitle = typeof title === 'string';
   const siteName = hasTitle ? (
-    <span className="lp-title flex items-center text-[2rem] font-extrabold md:text-2xl">
+    <span className="lp-title flex items-center text-[1.5rem] font-extrabold md:text-2xl">
       {title}
     </span>
   ) : (

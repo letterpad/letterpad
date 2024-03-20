@@ -1,13 +1,15 @@
 'use client';
-import { Navigation } from 'letterpad-sdk';
-import React, { FC, useState } from 'react';
-import { Drawer } from 'ui';
-import Link from '../../../components/Link';
-import { IoMenu, IoClose } from 'react-icons/io5';
-import { AiOutlineMenu } from 'react-icons/ai';
-import { LogoOrTitle } from '../site-logo';
 import classNames from 'classnames';
+import { Navigation } from 'letterpad-sdk';
 import { usePathname, useRouter } from 'next/navigation';
+import React, { FC, useState } from 'react';
+import { AiOutlineMenu } from 'react-icons/ai';
+import { IoClose, IoMenu } from 'react-icons/io5';
+import { Drawer } from 'ui';
+
+import { LogoOrTitle } from '../site-logo';
+import Link from '../../../components/Link';
+import { getApiRootUrl } from '../../../lib/utils/url';
 
 interface Props {
   settings: any;
@@ -45,7 +47,7 @@ export const CollapsableMenu: FC<Props> = ({ settings, forceShow = false }) => {
         type="button"
         aria-label="Toggle Menu"
         onClick={onToggleNav}
-        className="h-10 w-10"
+        className="h-10 w-8"
       >
         {navShow ? (
           <IoClose className="h-6 w-6 md:h-8 md:w-8" />
@@ -62,7 +64,7 @@ export const CollapsableMenu: FC<Props> = ({ settings, forceShow = false }) => {
         closeIcon={false}
       >
         <div className="flex items-center justify-between">
-          <Link href="/" aria-label={settings.site_title}>
+          <Link href={getApiRootUrl()} aria-label={settings.site_title}>
             <LogoOrTitle
               logo={settings.site_logo}
               title={settings.site_title}

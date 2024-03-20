@@ -1,10 +1,17 @@
 {
   "extends": "tsconfig/react-library.json",
-  "include": ["."],
+  "include": [
+    "."
+  ],
   "compilerOptions": {
     "lib": [
       "dom",
     ],
-   },
-  "exclude": ["dist", "build", "node_modules"]
+    "jsx": "react-jsx"
+  },
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ]
 }
