@@ -22,7 +22,6 @@ import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnT
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
-
 export const updatePost = async (
   args: MutationUpdatePostArgs,
   { prisma, session }: ResolverContext
@@ -44,7 +43,7 @@ export const updatePost = async (
       where: { id: args.data.id },
       include: {
         tags: true,
-      }
+      },
     });
 
     if (!existingPost) {
@@ -90,7 +89,7 @@ export const updatePost = async (
         message: "Post deleted successfully",
       };
     }
-    const isBanned = isAdmin && typeof args.data.banned !== "undefined"
+    const isBanned = isAdmin && typeof args.data.banned !== "undefined";
     if (isBanned) {
       await prisma.post.update({
         data: { banned: args.data.banned },
@@ -99,7 +98,7 @@ export const updatePost = async (
       revalidateTag("letterpadLatestPosts");
       return {
         ...mapPostToGraphql({ ...existingPost, banned: args.data.banned! }),
-      };;
+      };
     }
     if (args.data.title?.trim() || args.data.title === "") {
       newPostArgs.data.title = args.data.title.trim();
@@ -156,6 +155,39 @@ export const updatePost = async (
         existingPost.id
       );
     }
+    if (args.data.createdAt) {
+      if (new Date(args.data.createdAt) > new Date()) {
+        return {
+          __typename: "PostError",
+          message: "You cannot set a future date",
+        };
+      }
+      newPostArgs.data.createdAt = args.data.createdAt;
+    }
+    if (args.data.publishedAt) {
+      if (new Date(args.data.publishedAt) > new Date()) {
+        return {
+          __typename: "PostError",
+          message: "You cannot set a future date",
+        };
+      }
+      const post = await prisma.post.findFirst({
+        where: { id: args.data.id },
+      });
+      if (post == null) {
+        return {
+          __typename: "PostError",
+          message: "Post not found",
+        };
+      }
+      if (post.createdAt && post.createdAt > new Date(args.data.publishedAt)) {
+        return {
+          __typename: "PostError",
+          message: "Published date cannot be before the created date",
+        };
+      }
+      newPostArgs.data.publishedAt = args.data.publishedAt;
+    }
 
     if (args.data.html_draft) {
       newPostArgs.data.html_draft = args.data.html_draft;
@@ -184,7 +216,6 @@ export const updatePost = async (
       };
     }
     const updatedPost = await prisma.post.update(newPostArgs);
-
 
     if (nowPublished) {
       revalidateTag("letterpadLatestPosts");
