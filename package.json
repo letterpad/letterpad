@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "clean": "turbo run clean --parallel",
     "dev": "turbo run dev --parallel",
     "build": "turbo run build --cache-dir=.turbo",
     "lint": "turbo run lint",

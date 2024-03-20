@@ -3,6 +3,7 @@
   "author": "Abhishek Saha",
   "version": "1.5.1",
   "scripts": {
+    "clean": "rm -rf .next",
     "dev": "next -p 3001",
     "build": "next build",
     "start": "next start -p 3001",

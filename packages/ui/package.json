@@ -17,8 +17,9 @@
   "module": "./dist/index.mjs",
   "license": "MIT",
   "scripts": {
+    "clean": "rm -rf ./dist",
     "build": "tsup index.tsx isomorphic.ts --dts --format cjs,esm --external react,react-dom --treeshake --sourcemap --splitting --tsconfig ./tsconfig.json",
-    "dev": "rm -rf ./dist && tsup index.tsx isomorphic.ts --watch --dts --format cjs,esm --external react,react-dom --treeshake --sourcemap --splitting --tsconfig ./tsconfig.json",
+    "dev": "bun run clean && tsup index.tsx isomorphic.ts --watch --dts --format cjs,esm --external react,react-dom --treeshake --sourcemap --splitting --tsconfig ./tsconfig.json",
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "devDependencies": {
@@ -26,7 +27,7 @@
     "eslint-config-custom": "*",
     "react": "^18.2.0",
     "tsconfig": "*",
-    "tsup": "^8.0.1",
+    "tsup": "^8.0.2",
     "typescript": "^5.1.6",
     "config": "*"
   },
