@@ -20,7 +20,7 @@ const Layout = async ({ children }) => {
   }
   return (
     <>
-      <Navbar settings={data.settings} showCollapsedMenu={true} me={data.me} />
+      <Navbar settings={data.settings} me={data.me} />
       {children}
     </>
   );

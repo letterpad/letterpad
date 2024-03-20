@@ -4,7 +4,6 @@ import { ComponentType, FC } from 'react';
 
 import Link from '@/components/Link';
 
-import { CollapsableMenu } from './collapsable-menu';
 import { FollowMe } from './followme';
 import { ThemeSwitcher } from './theme-switcher';
 import { LetterpadLogo } from '../letterpad-logo';
@@ -17,25 +16,35 @@ import { LogoOrTitle } from '../../components/site-logo';
 interface Props {
   settings: SettingsFragmentFragment;
   isHome?: boolean;
-  showCollapsedMenu?: boolean;
   me: any;
   PreHeader?: ComponentType;
 }
 export const Navbar: FC<Props> = ({
   settings,
   isHome = false,
-  showCollapsedMenu,
   me,
   PreHeader,
 }) => {
   const routes = [...settings.menu];
   const logoOrTitle = (
-    <LogoOrTitle logo={settings.site_logo} title={settings.site_title} />
+    <LogoOrTitle
+      logo={settings.site_logo}
+      title={settings.site_title}
+      tagline={settings.site_tagline!}
+    />
   );
 
   return (
     <>
-      <div className="relative bg-accent-50 bg-cover text-white py-4 px-4">
+      <div className="relative bg-accent-50 bg-cover text-white py-4 px-4 space-y-10">
+        <div className="relative mx-auto z-1 max-w-7xl md:px-20 flex justify-between bg-accent-50 items-center">
+          <LetterpadLogo />
+          <div className="lp-header-right flex items-center text-base leading-5 gap-4">
+            <FollowMe username={me.username} />
+            <ThemeSwitcher />
+            <ProfileDropdown />
+          </div>
+        </div>
         {PreHeader && <PreHeader />}
         <div
           className={classNames(
@@ -44,35 +53,34 @@ export const Navbar: FC<Props> = ({
             // hidden behind the PreHeader
             'relative mx-auto z-1 max-w-7xl md:px-20 space-y-10',
             {
-              'md:space-y-0': !isHome,
+              hidden: !isHome,
             }
           )}
         >
-          <header className="flex items-center justify-between">
+          <header
+            className={classNames('flex items-center justify-between', {
+              hidden: !isHome,
+            })}
+          >
             <div className="flex gap-1 items-center">
-              <CollapsableMenu
-                settings={settings}
-                forceShow={showCollapsedMenu}
-              />
-              {settings.is_platform ? (
-                <LetterpadLogo />
-              ) : (
-                <Link
-                  href="/"
-                  aria-label={settings.site_title}
-                  className="hidden md:block"
-                >
-                  {logoOrTitle}
-                </Link>
-              )}
+              <Link
+                href="/"
+                aria-label={settings.site_title}
+                className="hidden md:block"
+              >
+                {logoOrTitle}
+              </Link>
             </div>
-            <div className="lp-header-right flex items-center text-base leading-5 gap-4">
-              <FollowMe username={me.username} />
-              <ThemeSwitcher />
-              <ProfileDropdown />
+            <div
+              className={classNames(
+                'lp-header-right items-center text-base leading-5 gap-4 hidden md:flex'
+              )}
+            >
+              <SubscribeModal settings={settings} />
+              <SocialIcons me={me} />
             </div>
           </header>
-          <div>
+          <div className="space-y-8">
             <Link
               href="/"
               aria-label={settings.site_title}
@@ -80,22 +88,7 @@ export const Navbar: FC<Props> = ({
             >
               {logoOrTitle}
             </Link>
-            {
-              <p className="text-center py-2 md:hidden">
-                {settings.site_tagline}
-              </p>
-            }
           </div>
-          <div
-            className={classNames(
-              'flex md:justify-between justify-center items-center',
-              { 'md:hidden': !isHome }
-            )}
-          >
-            <SubscribeModal settings={settings} />
-            <SocialIcons me={me} />
-          </div>
-
           {isHome && <Menu routes={routes} />}
         </div>
       </div>

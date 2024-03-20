@@ -22,7 +22,7 @@ export const Menu = ({ routes }) => {
   );
 
   return (
-    <div className="lp-menu hidden md:flex uppercase font-bold text-sm gap-4">
+    <div className="lp-menu flex uppercase font-bold text-xs md:text-sm gap-4 md:justify-start justify-center pt-4 bg-accent-50">
       {menu}
     </div>
   );

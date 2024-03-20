@@ -16,7 +16,7 @@ export const SubscribeModal: FC<Props> = ({ settings }) => {
     <>
       <button
         type="button"
-        className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm p-2 text-center me-2"
+        className="text-slate-800 bg-slate-200 hover:bg-slate-300 font-bold rounded-full text-sm p-2 text-center"
         onClick={() => setShowModal(true)}
       >
         <LuMailPlus />
