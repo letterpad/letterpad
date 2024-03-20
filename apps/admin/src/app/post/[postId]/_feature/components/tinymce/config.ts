@@ -241,7 +241,7 @@ function convertToEmbed(inputUrl: string) {
   var videoId = extractVideoId(inputUrl);
   if (videoId) {
     var embedUrl = 'https://www.youtube.com/embed/' + videoId;
-    return '<div class="flex justify-center"><iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div><p></p><p></p>';
+    return '<div class="flex justify-center"><iframe width="100%" height="400px" src="' + embedUrl + '" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div><p></p><p></p>';
   }
   return inputUrl;
 

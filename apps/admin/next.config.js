@@ -1,13 +1,28 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
+const ContentSecurityPolicy = `
+  default-src 'self';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' *;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  img-src * blob: data:;
+  media-src 'none';
+  connect-src *;
+  font-src 'self' https://fonts.gstatic.com;
+  frame-src youtube.com www.youtube.com;
+`;
+
 const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value: ContentSecurityPolicy.replace(/\n/g, ''),
+  },
   {
     key: 'Referrer-Policy',
     value: 'strict-origin-when-cross-origin',
   },
-  // {
-  //   key: 'X-Frame-Options',
-  //   value: 'DENY',
-  // },
+  {
+    key: 'X-Frame-Options',
+    value: 'DENY',
+  },
   {
     key: 'X-Content-Type-Options',
     value: 'nosniff',
