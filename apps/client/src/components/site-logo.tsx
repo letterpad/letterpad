@@ -43,29 +43,29 @@ interface Props2 extends Logo {
 }
 function getLogoWidthAndHeight({ width, height, src, title = '' }: Props2) {
   if (!width || !height) {
-    return { width: 80, height: 80, src, classname: '' };
+    return { width: 65, height: 65, src, className: '' };
   }
   const ratio = width / height;
 
   if (ratio === 1) {
-    return { width: 80, height: 80, src, className: 'flex-row items-left ' };
+    return { width: 65, height: 65, src, className: 'flex-row items-left' };
   }
   if (ratio > 1) {
-    const ratio = width / height;
-    let className = ' flex-col items-left';
+    let newHeight = Math.min(65, 65 / ratio);
+    let className = 'flex-col items-left';
     if (title.length <= 20) {
-      className = ' flex-row items-center';
+      className = 'flex-row items-center';
     }
-    return { width: 80, height: 80 / ratio, src, className };
+    return { width: 65 * ratio, height: newHeight, src, className };
   }
   if (ratio < 1) {
-    const ratio = width / height;
+    let newHeight = Math.min(65, 65 / ratio);
     return {
-      width: 80,
-      height: 80 / ratio,
+      width: 65,
+      height: newHeight,
       src,
-      className: 'flex-row items-left ',
+      className: 'flex-row items-left',
     };
   }
-  return { classname: '', width, height, src };
+  return { width, height, src, className: '' };
 }
