@@ -10,6 +10,7 @@ interface Props {
   line2?: string | ReactNode;
   size?: "xs" | "sm" | "md" | "lg";
   className?: string;
+  target?: React.HTMLAttributeAnchorTarget;
 }
 export const ProfileCard:FC<Props> = ({
   link,
@@ -19,6 +20,7 @@ export const ProfileCard:FC<Props> = ({
   line2 = "",
   size = "md",
   className,
+  target = "_blank",
 }) => {
   return (
     <Link
@@ -27,7 +29,7 @@ export const ProfileCard:FC<Props> = ({
         "gap-4": size === "lg",
       })}
       href={link}
-      target="_blank" rel="noreferrer"
+      target={target}
     >
       <div className="rounded-full flex-none ">
         <img

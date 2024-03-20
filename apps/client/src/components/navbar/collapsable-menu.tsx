@@ -90,25 +90,17 @@ function getMenu(
   pathname: string,
   onClick
 ) {
-  return menu
-    .filter((_, i) => i !== 0)
-    .map((item, i) => {
-      return item.type === 'custom' ? (
-        <a key={item.slug} href={item.slug} className="md:font-bold sm:p-4">
-          {item.label}
-        </a>
-      ) : (
-        <Link
-          key={item.slug}
-          href={item.slug}
-          target="_self"
-          className={classNames('md:font-bold pb-2', {
-            'border-b': pathname === item.slug,
-          })}
-          onClick={(e) => onClick?.(e, item.slug)}
-        >
-          {item.label}
-        </Link>
-      );
-    });
+  return menu.map((item) => (
+    <Link
+      key={item.slug}
+      href={item.slug}
+      target="_self"
+      className={classNames('md:font-bold pb-2', {
+        'border-b': pathname === item.slug,
+      })}
+      onClick={(e) => onClick?.(e, item.slug)}
+    >
+      {item.label}
+    </Link>
+  ));
 }

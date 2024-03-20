@@ -31,6 +31,7 @@ export const PostAuthor: FC<Props> = ({ settings, post }) => {
         line2={<span className="text-md">{trueAuthor?.occupation!}</span>}
         size="lg"
         link={link}
+        target="_self"
       />
       <Share title={title} summary={excerpt} url={postUrl} />
     </div>

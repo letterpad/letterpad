@@ -17,7 +17,7 @@ import { getDirtyFields } from "@/lib/react-form";
 
 import { CopyToClipboard } from "@/components/clipboard";
 
-import { updateSetting, useGetSettings } from "./api.client";
+import { useGetSettings, useUpdateSettings } from "./api.client";
 import Ai from "./components/ai";
 import Appearance from "./components/appearance";
 import Integrations from "./components/integrations";
@@ -34,6 +34,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data } = useGetSettings();
+  const { updateSettings } = useUpdateSettings();
   const [_, deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
     values: data,
@@ -70,7 +71,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               formState.dirtyFields
             );
             Message().loading({ content: "Saving...", duration: 3 });
-            updateSetting(change).then(() => {
+            updateSettings({ options: change }).then(() => {
               methods.reset(change);
               Message().success({ content: "Saved", duration: 2 });
             });
