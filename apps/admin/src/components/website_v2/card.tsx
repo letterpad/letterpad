@@ -3,10 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { SlBadge } from "react-icons/sl";
+import { ProfileCard } from "ui/isomorphic";
 
 import { getReadableDate } from "@/shared/utils";
-
-import { ProfileCard } from "../profile-card";
 
 interface Props {
   slug: string;

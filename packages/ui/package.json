@@ -29,5 +29,8 @@
     "tsup": "^8.0.1",
     "typescript": "^5.1.6",
     "config": "*"
+  },
+  "peerDependencies": {
+    "next": "14.1.0"
   }
 }

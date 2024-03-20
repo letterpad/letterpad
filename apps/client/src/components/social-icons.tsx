@@ -11,7 +11,7 @@ import SocialIcon from '../../components/social-icons';
 
 export const SocialIcons = ({ me }: { me: MeFragmentFragment }) => {
   return (
-    <div className="inline-flex gap-2">
+    <div className="inline-flex gap-4">
       <SocialIcon
         icon={<FaGithub className="h-5 w-5" />}
         href={me.social?.github}

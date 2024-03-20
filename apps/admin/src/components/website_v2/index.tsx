@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
+import { ProfileCard } from "ui/isomorphic";
 
 import { AdminActions } from "./adminActions";
 import { BannerAd } from "./banner/bannerAd";
@@ -16,7 +17,6 @@ import {
 import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
-import { ProfileCard } from "../profile-card";
 import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";

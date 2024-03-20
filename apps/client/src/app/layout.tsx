@@ -181,7 +181,7 @@ const Layout = async ({ children }) => {
       >
         <Css css={settings.css} />
         <HeadMeta settings={settings} />
-        <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
+        <body className="max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
           <style
             dangerouslySetInnerHTML={{
               __html: `
