@@ -28,7 +28,7 @@ export const PostAuthor: FC<Props> = ({ settings, post }) => {
       <ProfileCard
         avatar={trueAuthor?.avatar!}
         name={trueAuthor?.name!}
-        line2={<span className="text-md">{trueAuthor?.occupation!}</span>}
+        line2={trueAuthor?.occupation!}
         size="lg"
         link={link}
         target="_self"
