@@ -28,7 +28,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
 
   return (
     <Layout>
-      <div className="divide-y">
+      <div className="divide-y pb-16">
         <GridLayout displayPosts={displayPosts} />
       </div>
     </Layout>
@@ -40,19 +40,16 @@ function GridLayout({ displayPosts }) {
     <ul className="grid grid-cols-1 gap-8 py-12 md:grid-cols-2 xl:grid-cols-3">
       {!displayPosts.length && 'No posts found.'}
       {displayPosts.map(
-        (
-          {
-            date,
-            title,
-            summary,
-            tags,
-            slug,
-            readingTime,
-            coverImage,
-            publishedAt,
-          },
-          i
-        ) => {
+        ({
+          date,
+          title,
+          summary,
+          tags,
+          slug,
+          readingTime,
+          coverImage,
+          publishedAt,
+        }) => {
           return (
             <GridPostCard
               key={slug}
@@ -87,22 +84,48 @@ function GridPostCard({
   return (
     <li className="group w-full">
       <Link
-        className="c-card block overflow-hidden rounded-2xl bg-white/[0.7] hover:bg-white dark:bg-white/[0.15] dark:hover:bg-white/[0.05]"
+        className="block overflow-hidden rounded-2xl bg-white/[0.7] dark:bg-white/[0.15]  group-hover:shadow-xl transition hover:scale-[1.01] dark:hover:shadow-slate-800 duration-100 ease-in-out"
         href={slug ?? ''}
       >
         <div className="relative max-h-4 overflow-hidden pb-60">
           <span>
             <Image
-              className="transform transition duration-400 group-hover:scale-[1.02]"
+              className=""
               src={coverImage ?? ''}
               fill={true}
               alt={title}
               style={{ objectFit: 'cover' }}
             />
           </span>
+          <div className="h-16 absolute bottom-0 z-10 left-0">
+            <div className="flex flex-wrap gap-2 mt-4 mb-2">
+              {tags
+                .filter((it) => it.startsWith('_topic_'))
+                .map((tag, i) => (
+                  <Tag
+                    key={i}
+                    text={tag}
+                    className="text-white text-shadow bg-slate-900/75 hover:bg-slate-900 rounded-r-xl py-2 px-4"
+                  />
+                ))}
+            </div>
+          </div>
         </div>
-        <div className="h-48 p-4 ">
-          <span className="inline-flex w-full items-center justify-between">
+        <div className="px-6 py-4">
+          <div className="h-16">
+            <h3
+              className={'mb-2 mt-2 font-bold text-lg leading-6 line-clamp-2'}
+            >
+              {title}
+            </h3>
+          </div>
+          <div className="h-32">
+            <p className="text-sm tracking-tight text-gray-600 dark:text-gray-300 line-clamp-4 leading-6">
+              {summary}
+            </p>
+          </div>
+
+          <div className="my-2 opacity-60 inline-flex w-full items-center justify-between">
             <span className="flex items-center gap-1 text-sm">
               <IconBook />
               {readingTime} read
@@ -111,12 +134,7 @@ function GridPostCard({
             <time dateTime={publishedAt} className="text-sm">
               {formatDate(publishedAt)}
             </time>
-          </span>
-
-          <h4 className={'mb-2 mt-2 font-bold leading-5'}>{title}</h4>
-          <p className="text-base tracking-tight text-gray-600 dark:text-gray-300">
-            {summary}
-          </p>
+          </div>
         </div>
       </Link>
     </li>
