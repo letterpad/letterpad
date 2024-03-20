@@ -18,7 +18,6 @@ function getLetterpad() {
       token: process.env.CLIENT_ID!,
       host: host.replace('www.', ''),
     },
-    fetchHandler: fetch,
   });
 }
 
@@ -40,12 +39,7 @@ export const getData = cache(async () => {
         page: null as unknown as PageFragmentFragment,
       },
     };
-    const posts = await letterpad.listPosts('/', {
-      cache: 'force-cache',
-      next: {
-        tags: ['posts'],
-      },
-    });
+    const posts = await letterpad.listPosts('/');
     result.props = {
       ...result.props,
       posts,
@@ -61,12 +55,7 @@ export const getData = cache(async () => {
 export const getPostData = cache(async (slug: string) => {
   try {
     const letterpad = getLetterpad();
-    const r = await letterpad.getPost(slug, {
-      cache: 'force-cache',
-      next: {
-        tags: ['post'],
-      },
-    });
+    const r = await letterpad.getPost(slug);
 
     return r;
   } catch (e) {
