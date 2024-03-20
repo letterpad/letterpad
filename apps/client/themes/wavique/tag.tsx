@@ -9,12 +9,19 @@ export const Tag = ({
   text: string;
   className?: string;
 }) => {
+  let tag = text;
+  if (text.toLowerCase().startsWith('_topic_')) {
+    tag = text.replace('_topic_', '');
+  } else {
+    tag = tag.split(' ').join('-');
+  }
+
   return (
     <Link
       href={`/tag/${kebabCase(text)}`}
-      className={`text-sm bg-gray-100 dark:bg-gray-700 p-1 font-medium uppercase text-primary-700 dark:text-primary-300 hover:text-primary-600 dark:hover:text-primary-400 ${className}`}
+      className={`text-xs font-medium uppercase ${className}`}
     >
-      {text.split(' ').join('-')}
+      {tag}
     </Link>
   );
 };
