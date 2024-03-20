@@ -1,2 +1,4 @@
-src
+node_modules
 dist
+src
+graphql.schema.json

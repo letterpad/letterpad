@@ -1,6 +1,7 @@
+import { PostStatusOptions, QueryResolvers } from "letterpad-graphql";
+
 import { prisma } from "@/lib/prisma";
 
-import { PostStatusOptions, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -117,15 +118,11 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 export default { Query };
 
-const isValidUrl = (urlString) => {
-  var urlPattern = new RegExp(
-    "^(https?:\\/\\/)?" + // validate protocol
-      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
-      "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
-      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
-      "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
-      "(\\#[-a-z\\d_]*)?$",
-    "i"
-  ); // validate fragment locator
-  return !!urlPattern.test(urlString);
+const isValidUrl = (urlString: string) => {
+  try {
+    new URL(urlString);
+  } catch (error) {
+    return false;
+  }
+  return true;
 };

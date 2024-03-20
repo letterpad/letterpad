@@ -1,6 +1,6 @@
+import { AuthorResponse, RegisterStep } from "letterpad-graphql";
 import { cache } from "react";
 
-import { RegisterStep, ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { getSocialLink } from "@/graphql/resolvers/helpers";
 import { getRootUrl } from "@/shared/getRootUrl";
@@ -9,7 +9,7 @@ export const getAuthor = cache(
   async (
     _: any,
     { session, client_author_id, dataloaders }: ResolverContext
-  ): Promise<ResolversTypes["AuthorResponse"]> => {
+  ): Promise<AuthorResponse> => {
     const authorId = client_author_id || session?.user.id;
     if (!authorId) {
       return {

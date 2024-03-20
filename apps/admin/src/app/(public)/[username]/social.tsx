@@ -1,3 +1,4 @@
+import { Social } from "letterpad-graphql";
 import {
   FaFacebook,
   FaGithub,
@@ -5,8 +6,6 @@ import {
   FaLinkedin,
   FaTwitter,
 } from "react-icons/fa";
-
-import { Social } from "@/__generated__/__types__";
 
 export const SocialIcons = ({ social }: { social: Social }) => {
   return (

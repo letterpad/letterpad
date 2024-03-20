@@ -4,7 +4,8 @@ import {
   NavigationType,
   QueryResolvers,
   SettingResolvers,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 import {
@@ -13,7 +14,6 @@ import {
   updateSetting,
 } from "../services/setting";
 import { resolveDesignField } from "../services/setting/resolveDesignField";
-import { encryptEmail } from "../../shared/clientToken";
 
 import { Optional } from "@/types";
 
@@ -39,8 +39,9 @@ const Setting: SettingResolvers<ResolverContext> = {
   site_favicon: ({ site_favicon }) => resolveImageField(site_favicon),
   design: ({ design }) => resolveDesignField(design),
   client_token: (__, _, { session }) => {
-    return session?.user.email ? encryptEmail(session?.user.email) : "";
+    return session?.user.id!
   },
+  is_platform: () => process.env.LETTERPAD_PLATFORM === "true",
 };
 
 const Query: QueryResolvers<ResolverContext> = {

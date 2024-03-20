@@ -4,7 +4,8 @@ import {
   Tag,
   TagResolvers,
   TagType,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import { createPathWithPrefix } from "@/utils/slug";
 
@@ -26,17 +27,17 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async popularTags(_root, args, { prisma }) {
     const tags: Tag[] =
-      await prisma.$queryRaw`SELECT count(*) as count, T.name, T.slug  FROM _PostToTag
-        INNER JOIN Tag T ON B = T.name 
-        INNER JOIN Post P ON A = P.id 
-        WHERE T.name LIKE ${`${TOPIC_PREFIX}%`} AND P.title != 'Coming Soon' AND P.title != "" AND P.excerpt != "" AND P.status = 'published' AND P.type = 'post'
-        GROUP by T.name HAVING count > 2 ORDER BY count DESC`;
+      await prisma.$queryRaw`SELECT count(*) as c, T.name, T.slug  FROM "_PostToTag"
+        INNER JOIN "Tag" T ON "B" = T.name 
+        INNER JOIN "Post" P ON "A" = P.id 
+        WHERE T.name LIKE ${`${TOPIC_PREFIX}%`} AND P.title != 'Coming Soon' AND P.title != '' AND P.excerpt != '' AND P.status = 'published' AND P.type = 'post'
+        GROUP by T.name HAVING count(*) > 2 ORDER BY c DESC`;
     return {
       ok: true,
       rows: tags.map((tag) => ({
         name: beautifyTopic(tag.name),
         slug: tag.name,
-        count: Number(tag.count),
+        count: parseInt(tag.count?.toString() ?? "0"),
         id: tag.name,
         type: TagType.Tag,
       })),

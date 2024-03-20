@@ -1,13 +1,14 @@
 import {
   MutationUpdateTagsArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+  UpdateTagsResponse,
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const updateTags = async (
   args: MutationUpdateTagsArgs,
   { session, prisma }: ResolverContext
-): Promise<ResolversTypes["UpdateTagsResponse"]> => {
+): Promise<UpdateTagsResponse> => {
   if (!session?.user) {
     return {
       __typename: "UnAuthorized",

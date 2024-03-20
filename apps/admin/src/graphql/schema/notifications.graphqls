@@ -72,7 +72,7 @@ type Notification {
 
 type NotificationNode {
   count: Int!
-  rows: [Notification]!
+  rows: [Notification!]!
 }
 
 type NotificationDeleteResult {

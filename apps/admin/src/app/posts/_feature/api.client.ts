@@ -2,15 +2,13 @@ import {
   InputAuthor,
   InputCreatePost,
   PostsFilters,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
 import {
   useCreatePostMutation,
-  useUpdateAuthorMutation,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
   usePostsQuery,
-  useStatsQuery,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
+  useStatsQuery, useUpdateAuthorMutation
+} from "letterpad-graphql/hooks";
+
 import { isAuthor, isPostsNode, isStats } from "@/utils/type-guards";
 
 export const useUpdateAuthor = () => {

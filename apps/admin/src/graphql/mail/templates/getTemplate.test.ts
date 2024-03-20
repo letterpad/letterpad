@@ -1,6 +1,3 @@
-import { prisma } from "@/lib/prisma";
-
-import { API } from "@/../tests/testClient";
 import {
   AddSubscriberDocument,
   CreateAuthorDocument,
@@ -8,7 +5,11 @@ import {
   ForgotPasswordDocument,
   UpdateAuthorDocument,
   UpdateSubscriberDocument,
-} from "@/__generated__/queries/mutations.graphql";
+} from "letterpad-graphql";
+
+import { prisma } from "@/lib/prisma";
+
+import { API } from "@/../tests/testClient";
 import { EmailTemplates } from "@/graphql/types";
 import { getVerifySubscriberToken } from "@/shared/token";
 

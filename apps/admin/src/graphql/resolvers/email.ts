@@ -1,4 +1,5 @@
-import { QueryResolvers } from "@/__generated__/__types__";
+import { QueryResolvers } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 const Query: QueryResolvers<ResolverContext> = {

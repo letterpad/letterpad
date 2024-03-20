@@ -111,6 +111,7 @@ fragment SettingsFragment on Setting {
     width
     height
   }
+  is_platform
 }
 
 fragment MeFragment on Author {

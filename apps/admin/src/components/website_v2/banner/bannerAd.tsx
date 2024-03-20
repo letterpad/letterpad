@@ -13,7 +13,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
       description=""
       rightReactNode={
         membershipFeatureActive ? (
-          <div className="z-10 flex-1 justify-center flex items-center w-full bg-gray-900 rounded-lg font-heading shadow-md">
+          <div className="z-10 flex-1 justify-center flex items-center w-full bg-gray-900 rounded-lg shadow-md">
             <div className="p-12 ">
               <h1 className="text-2xl md:text-2xl font-extrabold">
                 Share your stories and support Authors

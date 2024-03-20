@@ -43,6 +43,7 @@ type Setting {
   client_token: String! @maskIfUnauth
   openai_key: String @maskIfUnauth
   paypal_email: String @maskIfUnauth
+  is_platform: Boolean
 }
 
 input InputNavigation {

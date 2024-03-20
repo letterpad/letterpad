@@ -1,11 +1,11 @@
-import { createAuthorWithSettings } from "@/components/onboard";
-
 import {
+  AuthorResponse,
   MutationCreateAuthorArgs,
   RegisterStep,
-  RequireFields,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
+import { createAuthorWithSettings } from "@/components/onboard";
+
 import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { validateCaptcha } from "@/graphql/resolvers/helpers";
@@ -14,9 +14,9 @@ import { isBlackListed } from "@/pages/api/auth/blacklist";
 import { getHashedPassword, isPasswordValid } from "@/utils/bcrypt";
 
 export const createAuthor = async (
-  args: RequireFields<MutationCreateAuthorArgs, "data">,
+  args: MutationCreateAuthorArgs,
   { prisma }: ResolverContext
-): Promise<ResolversTypes["AuthorResponse"]> => {
+): Promise<AuthorResponse> => {
   if (isBlackListed(args.data?.email)) {
     return Promise.reject(new Error("Your email domain has been blacklisted."));
   }

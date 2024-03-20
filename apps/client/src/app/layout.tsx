@@ -1,4 +1,5 @@
 // export const runtime = 'edge';
+import { get } from '@vercel/edge-config';
 import classNames from 'classnames';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
@@ -17,15 +18,23 @@ import Custom404 from './not-found';
 import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { SessionProvider } from '../../context/SessionProvider';
-import { getPreference } from '../../lib/utils/theme.helper';
 
 export const viewport = {
   themeColor: 'black',
 };
-const trackingId = 'G-7WT72D7TKW';
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
+    if (process.env.EDGE_CONFIG) {
+      const key =
+        process.env.NODE_ENV === 'production'
+          ? 'isInMaintenanceMode'
+          : 'isInMaintenanceModeDev';
+      const isInMaintenanceMode = await get<boolean>(key);
+      if (isInMaintenanceMode) {
+        return {};
+      }
+    }
     const data = await getData();
     if (!data) return {};
     const { settings, me } = data;
@@ -137,6 +146,20 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Layout = async ({ children }) => {
+  if (process.env.EDGE_CONFIG) {
+    const key =
+      process.env.NODE_ENV === 'production'
+        ? 'isInMaintenanceMode'
+        : 'isInMaintenanceModeDev';
+    const isInMaintenanceMode = await get<boolean>(key);
+    if (isInMaintenanceMode) {
+      return (
+        <html>
+          <body>{children}</body>
+        </html>
+      );
+    }
+  }
   const data = await getData();
   if (!data) {
     return <Custom404 />;
@@ -158,7 +181,7 @@ const Layout = async ({ children }) => {
       >
         <Css css={settings.css} />
         <HeadMeta settings={settings} />
-        <body className="line-numbers max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
+        <body className="max-w-screen flex h-full min-h-screen flex-col text-md antialiased dark:bg-opacity-20 w-[100vw]">
           <style
             dangerouslySetInnerHTML={{
               __html: `

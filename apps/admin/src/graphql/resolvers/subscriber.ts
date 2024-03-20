@@ -1,4 +1,5 @@
-import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+import { MutationResolvers, QueryResolvers } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 import { decodeJWTToken } from "@/shared/token";

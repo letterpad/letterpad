@@ -1,8 +1,7 @@
+import { Navigation } from "letterpad-graphql";
 import { Controller, useFormContext } from "react-hook-form";
 
 import NavigationBuilder from "@/components/navigation-builder";
-
-import { Navigation } from "@/__generated__/__types__";
 
 const NavigationPanel = () => {
   const { control, setValue, watch } = useFormContext();

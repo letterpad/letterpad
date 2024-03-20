@@ -1,3 +1,4 @@
+import { NotificationMeta } from "letterpad-graphql";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
@@ -5,7 +6,6 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { mail } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
 
-import { NotificationMeta } from "@/__generated__/__types__";
 import { baseTemplate } from "@/graphql/mail/templates/base";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { isSqliteDb } from "@/utils/utils";

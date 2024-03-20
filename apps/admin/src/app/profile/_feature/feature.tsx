@@ -1,12 +1,11 @@
 "use client";
 
+import { Author, InputAuthor } from "letterpad-graphql";
 import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { Accordion, AccordionItem, Message } from "ui";
 
 import { getDirtyFields } from "@/lib/react-form";
-
-import { Author, InputAuthor } from "@/__generated__/__types__";
 
 import { useGetAuthor, useUpdateAuthor } from "./api.client";
 import { Basic } from "./components/basic";

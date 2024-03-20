@@ -1,17 +1,17 @@
-import { cache } from "react";
-
 import {
   QueryTagArgs,
-  ResolversTypes,
+  TagResponse,
   TagType,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+import { cache } from "react";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const getTag = cache(
   async (
     args: QueryTagArgs,
     { session, client_author_id, prisma }: ResolverContext
-  ): Promise<ResolversTypes["TagResponse"]> => {
+  ): Promise<TagResponse> => {
     const authorId = session?.user.id || client_author_id;
 
     if (!authorId) {

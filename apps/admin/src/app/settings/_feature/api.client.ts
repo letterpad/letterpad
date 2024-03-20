@@ -1,15 +1,14 @@
+import {
+  SettingInputType, UpdateOptionsMutation,
+  UpdateOptionsMutationVariables,
+} from "letterpad-graphql";
+import {
+  useSettingsQuery, useUpdateOptionsMutation
+} from "letterpad-graphql/hooks";
+
 import { client } from "@/lib/urqlClient";
 
-import { SettingInputType } from "@/__generated__/__types__";
 import {
-  UpdateOptionsMutation,
-  UpdateOptionsMutationVariables,
-  useUpdateOptionsMutation,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import { useSettingsQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
-import {
-  DeleteAuthorDocument,
-  DeleteAuthorMutation,
   UpdateOptionsDocument,
 } from "@/graphql/queries/mutations.graphql";
 import { isSettings } from "@/utils/type-guards";
@@ -26,9 +25,6 @@ export const updateSetting = (change: SettingInputType) =>
       optimistic: true,
     }
   );
-
-export const deleteAuthor = () =>
-  client.mutation<DeleteAuthorMutation>(DeleteAuthorDocument, {});
 
 export const useUpdateSettings = () => {
   const [{ error, fetching }, updateSettings] = useUpdateOptionsMutation();

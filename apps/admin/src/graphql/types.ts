@@ -1,7 +1,6 @@
 import { Author, Post, Setting } from "@prisma/client";
+import { Author as GraphqlAuthor } from "letterpad-graphql";
 import { NextApiRequest } from "next";
-
-import { Author as GraphqlAuthor } from "@/__generated__/__types__";
 
 export enum ROLES {
   ADMIN = "ADMIN",

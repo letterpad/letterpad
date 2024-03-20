@@ -1,13 +1,14 @@
 import {
+  MediaDeleteResponse,
   MutationDeleteMediaArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const deleteMedia = async (
   args: MutationDeleteMediaArgs,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["MediaDeleteResponse"]> => {
+): Promise<MediaDeleteResponse> => {
   if (!session?.user) {
     return {
       __typename: "UnAuthorized",

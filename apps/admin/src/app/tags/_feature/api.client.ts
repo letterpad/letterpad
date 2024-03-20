@@ -1,11 +1,9 @@
+import { TagsQueryVariables } from "letterpad-graphql";
 import {
   useDeleteTagsMutation,
-  useUpdateTagsMutation,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import {
-  TagsQueryVariables,
-  useTagsQuery,
-} from "@/__generated__/src/graphql/queries/queries.graphql";
+  useTagsQuery, useUpdateTagsMutation
+} from "letterpad-graphql/hooks";
+
 import { isTagsNode } from "@/utils/type-guards";
 
 export const useGetTags = (

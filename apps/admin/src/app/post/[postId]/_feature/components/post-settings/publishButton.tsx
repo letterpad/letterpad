@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Button, Message, Modal } from "ui";
-
 import {
   Navigation,
   NavigationType,
   PostStatusOptions,
   PostTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+import { useState } from "react";
+import { Button, Message, Modal } from "ui";
+
 import { EventAction, track } from "@/track";
 
 // import { isTagsNode } from "@/utils/type-guards";

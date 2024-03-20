@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
+import { ProfileCard } from "ui/isomorphic";
 
 import { AdminActions } from "./adminActions";
 import { BannerAd } from "./banner/bannerAd";
@@ -16,7 +17,6 @@ import {
 import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import Header from "../header/Header";
-import { ProfileCard } from "../profile-card";
 import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";
@@ -38,6 +38,7 @@ export const Website = async () => {
     data?.letterpadLatestPosts.__typename === "PostsNode"
       ? data.letterpadLatestPosts.rows
       : [];
+
   return (
     <>
       <div className="flex min-h-screen flex-col">
@@ -106,7 +107,7 @@ export const Website = async () => {
               className={classNames(
                 "hidden md:min-w-80 py-10 top-0 space-y-8 md:pl-10",
                 {
-                  "md:block": posts.length > 0,
+                  "md:block": posts.length > 0 || favAuthors?.length > 0,
                 }
               )}
             >

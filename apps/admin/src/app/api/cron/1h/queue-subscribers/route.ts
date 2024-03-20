@@ -1,9 +1,8 @@
+import { MailStatus, PostStatusOptions } from "letterpad-graphql";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
 import { queueSubscribeEmails } from "@/lib/redis";
-
-import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 
 interface Base {
   post_id: string;

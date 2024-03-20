@@ -44,8 +44,8 @@ export type Author = {
   email: Scalars["String"];
   favourite?: Maybe<Scalars["Boolean"]>;
   first_post_published?: Maybe<Scalars["Boolean"]>;
-  followers?: Maybe<Array<Maybe<FollowAuthor>>>;
-  following?: Maybe<Array<Maybe<FollowAuthor>>>;
+  followers?: Maybe<Array<FollowAuthor>>;
+  following?: Maybe<Array<FollowAuthor>>;
   id: Scalars["String"];
   is_paid_member?: Maybe<Scalars["Boolean"]>;
   name: Scalars["String"];
@@ -696,7 +696,7 @@ export type NotificationMeta =
 export type NotificationNode = {
   __typename?: "NotificationNode";
   count: Scalars["Int"];
-  rows: Array<Maybe<Notification>>;
+  rows: Array<Notification>;
 };
 
 export type NotificationResponse = NotificationNode | UnAuthorized;
@@ -1003,6 +1003,7 @@ export type Setting = {
   display_author_info: Scalars["Boolean"];
   id: Scalars["String"];
   intro_dismissed: Scalars["Boolean"];
+  is_platform?: Maybe<Scalars["Boolean"]>;
   menu: Array<Navigation>;
   openai_key?: Maybe<Scalars["String"]>;
   paypal_email?: Maybe<Scalars["String"]>;
@@ -1245,13 +1246,13 @@ export type MeQuery = {
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1285,13 +1286,13 @@ export type MeFragmentFragment = {
     name: string;
     avatar?: string | null;
     username: string;
-  } | null> | null;
+  }> | null;
   following?: Array<{
     __typename?: "FollowAuthor";
     name: string;
     avatar?: string | null;
     username: string;
-  } | null> | null;
+  }> | null;
   social?: {
     __typename?: "Social";
     twitter?: string | null;
@@ -1368,13 +1369,13 @@ export type MeAndSettingsQuery = {
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1405,6 +1406,7 @@ export type MeAndSettingsQuery = {
         display_author_info: boolean;
         css?: string | null;
         site_footer?: string | null;
+        is_platform?: boolean | null;
         banner?: {
           __typename?: "Image";
           src?: string | null;
@@ -1657,13 +1659,13 @@ export type PostPageQuery = {
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
           name: string;
           avatar?: string | null;
           username: string;
-        } | null> | null;
+        }> | null;
         social?: {
           __typename?: "Social";
           twitter?: string | null;
@@ -1694,6 +1696,7 @@ export type PostPageQuery = {
         display_author_info: boolean;
         css?: string | null;
         site_footer?: string | null;
+        is_platform?: boolean | null;
         banner?: {
           __typename?: "Image";
           src?: string | null;
@@ -1858,6 +1861,7 @@ export type SettingsQuery = {
         display_author_info: boolean;
         css?: string | null;
         site_footer?: string | null;
+        is_platform?: boolean | null;
         banner?: {
           __typename?: "Image";
           src?: string | null;
@@ -1907,6 +1911,7 @@ export type SettingsFragmentFragment = {
   display_author_info: boolean;
   css?: string | null;
   site_footer?: string | null;
+  is_platform?: boolean | null;
   banner?: {
     __typename?: "Image";
     src?: string | null;
@@ -2231,6 +2236,7 @@ export const SettingsFragmentFragmentDoc = `
     height
   }
   site_footer
+  is_platform
 }
     `;
 export const SitemapFragmentFragmentDoc = `

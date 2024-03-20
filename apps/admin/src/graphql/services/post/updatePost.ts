@@ -1,17 +1,17 @@
 import { Prisma } from "@prisma/client";
+import {
+  MutationUpdatePostArgs,
+  PostStatusOptions,
+  PostTypes,
+  Role,
+  UpdatePostResponse,
+} from "letterpad-graphql";
 import { revalidateTag } from "next/cache";
 
 import { mail } from "@/lib/mail";
 
 import { report } from "@/components/error";
 
-import {
-  MutationUpdatePostArgs,
-  PostStatusOptions,
-  PostTypes,
-  ResolversTypes,
-  Role,
-} from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { slugify } from "@/graphql/resolvers/helpers";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
@@ -25,7 +25,7 @@ import { textToSlug } from "@/utils/slug";
 export const updatePost = async (
   args: MutationUpdatePostArgs,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["UpdatePostResponse"]> => {
+): Promise<UpdatePostResponse> => {
   if (!session?.user.id) {
     return {
       __typename: "PostError",

@@ -1,12 +1,12 @@
 import { Prisma } from "@prisma/client";
+import { MediaResponse, QueryMediaArgs } from "letterpad-graphql";
 
-import { QueryMediaArgs, ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 
 export const getMedia = async (
   args: QueryMediaArgs,
   { prisma, session }: ResolverContext
-): Promise<ResolversTypes["MediaResponse"]> => {
+): Promise<MediaResponse> => {
   if (!session?.user.id) {
     return {
       __typename: "UnAuthorized",
@@ -26,8 +26,8 @@ export const getMedia = async (
 
     cursor: cursor
       ? {
-          id: cursor,
-        }
+        id: cursor,
+      }
       : undefined,
     skip: (page - 1) * limit,
   };

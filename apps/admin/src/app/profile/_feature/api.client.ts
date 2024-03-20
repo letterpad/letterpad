@@ -1,6 +1,6 @@
-import { InputAuthor } from "@/__generated__/__types__";
-import { useUpdateAuthorMutation } from "@/__generated__/src/graphql/queries/mutations.graphql";
-import { useMeQuery } from "@/__generated__/src/graphql/queries/queries.graphql";
+import { InputAuthor } from "letterpad-graphql";
+import { useMeQuery, useUpdateAuthorMutation } from "letterpad-graphql/hooks";
+
 import { isAuthor } from "@/utils/type-guards";
 
 export const useUpdateAuthor = () => {

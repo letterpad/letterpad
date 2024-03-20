@@ -1,6 +1,5 @@
+import {} from "letterpad-graphql";
 import { ChangeEvent, FC, useState } from "react";
-
-import {} from "@/__generated__/__types__";
 
 interface Props {
   status: boolean;

@@ -1,5 +1,6 @@
 "use client";
 
+import { InputAuthor, RegisterStep } from "letterpad-graphql";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
@@ -8,7 +9,6 @@ import { Input, Message, TextArea } from "ui";
 
 import { getDirtyFields } from "@/lib/react-form";
 
-import { InputAuthor, RegisterStep } from "@/__generated__/__types__";
 import { Logo } from "@/app/(public)/login/_feature";
 import {
   useGetAuthor,

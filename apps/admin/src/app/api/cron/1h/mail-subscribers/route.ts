@@ -1,3 +1,4 @@
+import { MailStatus, PostStatusOptions } from "letterpad-graphql";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
@@ -10,7 +11,6 @@ import {
   getQueuedSubscriberEmails,
 } from "@/lib/redis";
 
-import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 import { getTemplate } from "@/graphql/mail/template";
 import { baseTemplate } from "@/graphql/mail/templates/base";
 import { addLineBreaks } from "@/graphql/mail/utils";

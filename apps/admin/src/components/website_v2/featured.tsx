@@ -1,11 +1,11 @@
+import { Author } from "letterpad-graphql";
 import Link from "next/link";
 import { IoStar } from "react-icons/io5";
+import { ProfileCard } from "ui/isomorphic";
 
 import { getFeaturedPosts } from "./data";
-import { ProfileCard } from "../profile-card";
 import { getRootUrl } from "../../shared/getRootUrl";
 import { getReadableDate } from "../../shared/utils";
-import { Author } from "../../../__generated__server/__types__";
 
 export const Featured = async () => {
   const posts = await getFeaturedPosts();
@@ -25,7 +25,7 @@ export const Featured = async () => {
             const author = isAuthor(article.author) ? article.author : null;
             const link = new URL(
               article.slug ?? "",
-              author?.site_url
+              author?.site_url!
             ).toString();
             const authorLink = new URL(
               `@${author?.username}`,

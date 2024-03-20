@@ -1,10 +1,11 @@
-import { ResolversTypes } from "@/__generated__/__types__";
+import { AuthorResponse, RegisterStep } from "letterpad-graphql";
+
 import { ResolverContext } from "@/graphql/context";
 
 export const getAuthorFromPost = async (
   id: string,
   { dataloaders }: ResolverContext
-): Promise<ResolversTypes["AuthorResponse"]> => {
+): Promise<AuthorResponse> => {
 
   const author = await dataloaders.author.load(id);
   if (author) {
@@ -13,7 +14,7 @@ export const getAuthorFromPost = async (
       ...author,
       createdAt: author.createdAt?.toISOString() || undefined,
       signature: author.signature || undefined,
-      register_step: author.register_step as ResolversTypes["RegisterStep"],
+      register_step: author.register_step as RegisterStep,
       social: JSON.parse(author.social),
     };
   }

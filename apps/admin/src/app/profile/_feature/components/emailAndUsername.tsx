@@ -1,10 +1,9 @@
+import { MeFragmentFragment } from "letterpad-graphql";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Input } from "ui";
 
 import { SaveButton } from "@/components/save-button";
-
-import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 import { ChangeUsername } from "./change-username";
 

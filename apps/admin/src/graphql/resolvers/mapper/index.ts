@@ -3,7 +3,6 @@ import {
   Post as DbPost,
   Setting as DbSetting,
 } from "@prisma/client";
-
 import {
   Author,
   Post,
@@ -11,7 +10,7 @@ import {
   PostTypes,
   Setting,
   SettingInputType,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
 
 export const mapPostToGraphql = (post: DbPost | Error) => {
   if (post instanceof Error) {

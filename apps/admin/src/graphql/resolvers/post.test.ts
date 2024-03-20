@@ -1,10 +1,9 @@
-import { API } from "@/../tests/testClient";
-import { PostStatusOptions } from "@/__generated__/__types__";
 import {
   CreatePostDocument,
-  UpdatePostDocument,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
-import { PostsDocument } from "@/__generated__/src/graphql/queries/queries.graphql";
+  PostsDocument, PostStatusOptions, UpdatePostDocument
+} from "letterpad-graphql";
+
+import { API } from "@/../tests/testClient";
 import { createPathWithPrefix, textToSlug } from "@/utils/slug";
 describe("Test Post Query Graphql API", () => {
   it("get all posts", async () => {
@@ -127,7 +126,7 @@ describe("Test Post Query Graphql API", () => {
     expect(updatePost.slug).toBe("/post/new-slug");
   });
 });
-export {};
+export { };
 
 async function runQuery(query, args) {
   return API({
@@ -140,4 +139,4 @@ async function runQuery(query, args) {
   });
 }
 
-export {};
+export { };

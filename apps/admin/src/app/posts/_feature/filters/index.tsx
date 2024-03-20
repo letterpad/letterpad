@@ -1,12 +1,8 @@
+import { PostsFilters, PostStatusOptions, SortBy } from "letterpad-graphql";
+import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useEffect, useState } from "react";
 import { Select } from "ui";
 
-import {
-  PostsFilters,
-  PostStatusOptions,
-  SortBy,
-} from "@/__generated__/__types__";
-import { useHomeQueryQuery } from "@/__generated__/queries/queries.graphql";
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";

@@ -1,3 +1,4 @@
+import { RegisterStep } from "letterpad-graphql";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -5,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { Message } from "ui";
 
-import { RegisterStep } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 
 import { useCreateAuthor } from "./api.client";

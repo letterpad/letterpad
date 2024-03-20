@@ -1,12 +1,11 @@
+import { Author, PostStats } from "letterpad-graphql";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { SlBadge } from "react-icons/sl";
+import { ProfileCard } from "ui/isomorphic";
 
 import { getReadableDate } from "@/shared/utils";
-
-import { ProfileCard } from "../profile-card";
-import { Author, PostStats } from "../../../__generated__server/__types__";
 
 interface Props {
   slug: string;
@@ -19,7 +18,7 @@ interface Props {
     width?: number;
     height?: number;
   };
-  author?: Omit<Author, "email" | "id">;
+  author?: Omit<Author, "email">;
   stats?: PostStats;
   publishedAt?: string;
   featured?: boolean;

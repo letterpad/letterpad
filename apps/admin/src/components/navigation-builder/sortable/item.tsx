@@ -1,10 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Navigation, NavigationType } from "letterpad-graphql";
 import { FC, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
 import { Button, Input as Inputv2, Message } from "ui";
-
-import { Navigation, NavigationType } from "@/__generated__/__types__";
 
 import { IMenuWithError } from "@/types";
 

@@ -1,19 +1,18 @@
-import { cache } from "react";
-
 import {
+  PostResponse,
   PostStatusOptions,
   QueryPostArgs,
-  ResolversTypes,
-} from "@/__generated__/__types__";
+} from "letterpad-graphql";
+import { cache } from "react";
+
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
-import { decrypt } from "@/graphql/utils/crypto";
 
 export const getPost = cache(
   async (
     args: QueryPostArgs,
     { prisma, session, client_author_id, dataloaders }: ResolverContext
-  ): Promise<ResolversTypes["PostResponse"]> => {
+  ): Promise<PostResponse> => {
     const session_author_id = session?.user.id;
     if (!args.filters) {
       return {

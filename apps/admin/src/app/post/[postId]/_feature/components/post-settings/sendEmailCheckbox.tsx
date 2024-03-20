@@ -1,8 +1,8 @@
+import { MailStatus, PostStatusOptions } from "letterpad-graphql";
 import { ChangeEvent, FC, useState } from "react";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
-import { MailStatus, PostStatusOptions } from "@/__generated__/__types__";
 import { isMembershipFeatureActive } from "@/shared/utils";
 
 interface Props {

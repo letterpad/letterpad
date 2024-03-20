@@ -1,7 +1,7 @@
+import { Media } from "letterpad-graphql";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { InfiniteScrollList, SearchInput } from "ui";
 
-import { Media } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 
 interface IProps {
