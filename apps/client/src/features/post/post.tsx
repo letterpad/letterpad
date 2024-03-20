@@ -10,6 +10,7 @@ import { LikeProvider } from '../like/context';
 import { Like } from '../like/like';
 import { PostFooter } from '../../app/(others)/post/[slug]/post-footer';
 import { PostAuthor } from '../../components/postAuthor';
+import { PrismHighlight } from '../../components/prism-highlight';
 import { PublishedAt } from '../../components/published-at';
 import ScrollTop from '../../components/scroll-top';
 import { SectionContainer } from '../../components/section';
@@ -73,15 +74,15 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
             >
               <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
             </div>
-            <div className="pb-4 flex gap-2 flex-wrap leading-11">
+            <div className="pb-4 flex gap-1 flex-wrap leading-8">
               {tags?.__typename === 'TagsNode' &&
                 tags.rows.map(({ name }) => (
                   <Link
                     href={`/tag/${kebabCase(name)}`}
                     key={name.replace('_topic_', '')}
-                    className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 active:bg-blue-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white"
+                    className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-3 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300"
                   >
-                    {name.split(' ').join('-')}
+                    {name.split(' ').join('-').replace('_topic_', '')}
                   </Link>
                 ))}
             </div>
@@ -100,7 +101,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                     <img
                       className="mr-4 w-16 h-16 rounded-full object-cover"
                       src={author.avatar!}
-                      alt="Jese Leos"
+                      alt={author.name}
                     />
                   </Link>
                   <div>
@@ -148,6 +149,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
           />
         )}
       </LikeProvider>
+      <PrismHighlight id={post.id} />
     </SectionContainer>
   );
 };

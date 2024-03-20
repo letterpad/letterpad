@@ -2,7 +2,6 @@ import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 import { Post } from './post';
 import Custom404 from '../../app/not-found';
-import { PrismHighlight } from '../../components/prism-highlight';
 import { StructuredData } from '../../components/structured-data';
 
 export async function BlogPost(props) {
@@ -50,7 +49,6 @@ export async function BlogPost(props) {
     <>
       <StructuredData data={jsonLd} />
       <Post post={post} settings={settings} me={me} />
-      <PrismHighlight id={post.id} />
     </>
   );
 }
