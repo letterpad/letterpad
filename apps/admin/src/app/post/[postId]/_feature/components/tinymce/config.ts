@@ -110,9 +110,12 @@ export const blogEditorConfig = ({
     tempElement.innerHTML = o.content;
 
     const nodes = Array.from(tempElement.children);
+    if (tempElement.children.length === 0) {
+      return;
+    }
     nodes.forEach(elem => modifyElements(elem));
     let content = nodes.map(node => node.outerHTML).join('');
-    if (content === '<meta>') {
+    if (content === '<meta>' || !content) {
       content = tempElement.innerText;
     }
 
