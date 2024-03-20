@@ -2,6 +2,7 @@
   "name": "letterpad-graphql",
   "version": "0.0.1",
   "scripts": {
+    "clean": "rm -rf ./dist ./src",
     "postinstall": "bun run build",
     "codegen": "graphql-codegen --config codegen.ts",
     "build.tsc.mjs": "tsc -p tsconfig.json",
