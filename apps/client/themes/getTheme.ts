@@ -8,7 +8,7 @@ import * as List from './list';
 import * as Wavique from './wavique';
 
 export interface Theme {
-  HomePosts: ComponentType<HomePostsProps>;
+  HomePosts?: ComponentType<HomePostsProps>;
   HomePage?: ComponentType<any>;
   PreHeader?: ComponentType;
 }
