@@ -148,7 +148,7 @@ const About = async ({ params }: { params: { username: string } }) => {
                   <span className="block text-xs">{occupation}</span>
                 </div>
               }
-              size="lg"
+              size="xl"
               className="mb-6"
             />
             <div className="hidden md:block">

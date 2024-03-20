@@ -44,8 +44,6 @@ export const titleEditorConfig: IProps["init"] = {
         );
         main?.focus();
       }
-      const length = ed.getContent({ format: "text" }).length;
-      if (length > 140) return false;
     });
   },
 };
