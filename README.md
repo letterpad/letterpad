@@ -91,6 +91,8 @@ bun run seed
 bun run start
 ```
 
+> **❗ Note**: Copy `apps/client/.env.sample` to `apps/client/.env`. Your blog will not work without setting the CLIENT_ID in `apps/client/.env`.  You can find the CLIENT_ID by logging into your admin dashboard and navigating to Settings > Keys.
+
 ### Using Docker
 
 If you prefer using Docker for deployment, you can run Letterpad with the following command:
