@@ -102,6 +102,21 @@ export const blogEditorConfig = ({
   inline: true,
   image_caption: true,
   paste_preprocess: function (pl, o) {
+
+    try {
+      new URL(o.content)
+      const html = convertToEmbed(o.content);
+      pl.execCommand('mceInsertContent', false, html);
+
+      // @ts-ignore
+      o.preventDefault();
+      return
+    } catch (e) {
+      //
+    }
+
+
+
     o.content = o.content
       .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")
     // .replace(/(.*?)<br\s?\/?>/gi, "<p>$1</p>");
@@ -220,3 +235,19 @@ export const blogEditorConfig = ({
     { text: "Sql", value: "sql" },
   ],
 });
+
+
+function convertToEmbed(inputUrl: string) {
+  var videoId = extractVideoId(inputUrl);
+  if (videoId) {
+    var embedUrl = 'https://www.youtube.com/embed/' + videoId;
+    return '<div class="flex justify-center"><iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div><p></p><p></p>';
+  }
+  return inputUrl;
+
+}
+
+function extractVideoId(url) {
+  var match = url.match(/[?&]v=([^&]+)/);
+  return match && match[1];
+}
