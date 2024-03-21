@@ -15,6 +15,7 @@ type Design {
   brand_color: String
   primary_font: String
   secondary_font: String
+  mix_blend_difference: Boolean
 }
 
 type Setting {
@@ -57,6 +58,7 @@ input InputDesign {
   brand_color: String
   primary_font: String
   secondary_font: String
+  mix_blend_difference: Boolean
 }
 
 input InputImage {

@@ -87,6 +87,7 @@ fragment SettingsFragment on Setting {
     brand_color
     primary_font
     secondary_font
+    mix_blend_difference
   }
   menu {
     label

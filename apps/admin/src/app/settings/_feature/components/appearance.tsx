@@ -9,6 +9,8 @@ import { Upload } from "@/components/upload";
 
 import { isMembershipFeatureActive, removeTypenames } from "@/shared/utils";
 
+import { MixBlendCheckbox } from "./mixBlend";
+
 const Appearance = () => {
   const data = useFormContext();
   const membershipFeatureActive = isMembershipFeatureActive();
@@ -22,25 +24,38 @@ const Appearance = () => {
             name="design"
             control={data.control}
             render={({ field: { onChange } }) => (
-              <input
-                type="color"
-                className="h-20 w-32"
-                value={data?.getValues("design.brand_color")}
-                onChange={(e) =>
-                  onChange({
-                    ...removeTypenames(data?.watch("design")),
-                    brand_color: e.target.value,
-                  })
-                }
-              />
+              <>
+                <input
+                  type="color"
+                  className="h-20 w-32"
+                  value={data?.getValues("design.brand_color")}
+                  onChange={(e) =>
+                    onChange({
+                      ...removeTypenames(data?.watch("design")),
+                      brand_color: e.target.value,
+                    })
+                  }
+                />
+                <MixBlendCheckbox
+                  mixBlendDifference={data?.getValues(
+                    "design.mix_blend_difference"
+                  )}
+                  onChange={(value) =>
+                    onChange({
+                      ...removeTypenames(data?.watch("design")),
+                      mix_blend_difference: value,
+                    })
+                  }
+                />
+              </>
             )}
           />
 
-          <Button
+          {/* <Button
             onClick={() => window.open(data.getValues("site_url"), "_blank")}
           >
             Preview
-          </Button>
+          </Button> */}
         </div>
       </div>
       <div className="grid grid-cols-3">

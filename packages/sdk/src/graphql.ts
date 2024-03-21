@@ -133,6 +133,7 @@ export type DeleteTagsResult = {
 export type Design = {
   __typename?: "Design";
   brand_color?: Maybe<Scalars["String"]>;
+  mix_blend_difference?: Maybe<Scalars["Boolean"]>;
   primary_font?: Maybe<Scalars["String"]>;
   secondary_font?: Maybe<Scalars["String"]>;
 };
@@ -322,6 +323,7 @@ export type InputCreatePost = {
 
 export type InputDesign = {
   brand_color?: InputMaybe<Scalars["String"]>;
+  mix_blend_difference?: InputMaybe<Scalars["Boolean"]>;
   primary_font?: InputMaybe<Scalars["String"]>;
   secondary_font?: InputMaybe<Scalars["String"]>;
 };
@@ -1418,6 +1420,7 @@ export type MeAndSettingsQuery = {
           brand_color?: string | null;
           primary_font?: string | null;
           secondary_font?: string | null;
+          mix_blend_difference?: boolean | null;
         } | null;
         menu: Array<{
           __typename?: "Navigation";
@@ -1708,6 +1711,7 @@ export type PostPageQuery = {
           brand_color?: string | null;
           primary_font?: string | null;
           secondary_font?: string | null;
+          mix_blend_difference?: boolean | null;
         } | null;
         menu: Array<{
           __typename?: "Navigation";
@@ -1873,6 +1877,7 @@ export type SettingsQuery = {
           brand_color?: string | null;
           primary_font?: string | null;
           secondary_font?: string | null;
+          mix_blend_difference?: boolean | null;
         } | null;
         menu: Array<{
           __typename?: "Navigation";
@@ -1923,6 +1928,7 @@ export type SettingsFragmentFragment = {
     brand_color?: string | null;
     primary_font?: string | null;
     secondary_font?: string | null;
+    mix_blend_difference?: boolean | null;
   } | null;
   menu: Array<{
     __typename?: "Navigation";
@@ -2217,6 +2223,7 @@ export const SettingsFragmentFragmentDoc = `
     brand_color
     primary_font
     secondary_font
+    mix_blend_difference
   }
   menu {
     label
