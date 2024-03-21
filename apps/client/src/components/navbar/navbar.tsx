@@ -38,7 +38,7 @@ export const Navbar: FC<Props> = ({
     <>
       <div className="relative bg-accent-50 bg-cover text-white py-4 px-4 space-y-10">
         <div className="relative mx-auto z-1 max-w-7xl md:px-20 flex justify-between bg-accent-50 items-center">
-          <LetterpadLogo />
+          <LetterpadLogo className="mix-blend-difference" />
           <div className="lp-header-right flex items-center text-base leading-5 gap-4">
             <FollowMe username={me.username} />
             <ThemeSwitcher />
@@ -65,7 +65,7 @@ export const Navbar: FC<Props> = ({
               }
             )}
           >
-            <div className="flex gap-1 items-center">
+            <div className="flex gap-1 items-center mix-blend-difference">
               <Link href="/" aria-label={settings.site_title}>
                 {logoOrTitle}
               </Link>

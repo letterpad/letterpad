@@ -1,11 +1,9 @@
-import { CiDark, CiLight } from 'react-icons/ci';
-import { animated,useSpring } from 'react-spring';
+import { CiDark, CiLight } from "react-icons/ci";
+import { animated, useSpring } from "react-spring";
 
-import { useTheme } from './theme.context';
-
+import { useTheme } from "./theme.context";
 
 export const ThemeSwitcher = () => {
-
   const { theme, toggleTheme } = useTheme();
 
   const properties = {
@@ -14,34 +12,33 @@ export const ThemeSwitcher = () => {
       transform: "rotate(40deg)",
       cx: 12,
       cy: 4,
-      opacity: 0
+      opacity: 0,
     },
     light: {
       r: 5,
       transform: "rotate(90deg)",
       cx: 30,
       cy: 0,
-      opacity: 1
+      opacity: 1,
     },
-    springConfig: { mass: 4, tension: 250, friction: 35 }
+    springConfig: { mass: 4, tension: 250, friction: 35 },
   };
-  const { r, transform, cx, cy, opacity } = properties[
-    theme==="light" ? "dark" : "light"
-  ];
-  
+  const { r, transform, cx, cy, opacity } =
+    properties[theme === "light" ? "dark" : "light"];
+
   const svgContainerProps = useSpring({
     transform,
-    config: properties.springConfig
+    config: properties.springConfig,
   });
   const centerCircleProps = useSpring({ r, config: properties.springConfig });
   const maskedCircleProps = useSpring({
     cx,
     cy,
-    config: properties.springConfig
+    config: properties.springConfig,
   });
   const linesProps = useSpring({ opacity, config: properties.springConfig });
 
-   return (
+  return (
     <animated.svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -53,9 +50,10 @@ export const ThemeSwitcher = () => {
       strokeLinejoin="round"
       stroke="currentColor"
       onClick={toggleTheme}
+      className="mix-blend-exclusion"
       style={{
         cursor: "pointer",
-        ...svgContainerProps
+        ...svgContainerProps,
       }}
     >
       <mask id="myMask2">
@@ -71,14 +69,14 @@ export const ThemeSwitcher = () => {
         mask="url(#myMask2)"
       />
       <animated.g stroke="currentColor" style={linesProps}>
-      <line x1="12" y1="1" x2="12" y2="3" />
-          <line x1="12" y1="21" x2="12" y2="23" />
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-          <line x1="1" y1="12" x2="3" y2="12" />
-          <line x1="21" y1="12" x2="23" y2="12" />
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
       </animated.g>
     </animated.svg>
   );
@@ -90,7 +88,7 @@ export const ThemeSwitcher = () => {
       className="p-1 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 rounded-full h-10 w-10 flex justify-center items-center"
       onClick={toggleTheme}
     >
-      {theme === 'dark' ? (
+      {theme === "dark" ? (
         <CiLight className="h-6 w-6 md:h-7 md:w-7" />
       ) : (
         <CiDark className="h-6 w-6 md:h-7 md:w-7" />
