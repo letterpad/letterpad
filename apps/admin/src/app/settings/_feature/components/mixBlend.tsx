@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 
 export const MixBlendCheckbox = ({ mixBlendDifference = false, onChange }) => {
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       <div className="flex items-center mb">
         <input
           type="checkbox"

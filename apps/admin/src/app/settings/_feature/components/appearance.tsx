@@ -15,11 +15,13 @@ const Appearance = () => {
   const data = useFormContext();
   const membershipFeatureActive = isMembershipFeatureActive();
   const isPaidMember = useIsPaidMember();
+  const { handleSubmit } = useFormContext();
+
   return (
     <div className="grid gap-8">
       <div className="flex flex-col gap-4">
         <Label label="Brand Color - Choose a color that reflects your brand." />
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-col items-start space-y-5">
           <Controller
             name="design"
             control={data.control}
@@ -51,11 +53,18 @@ const Appearance = () => {
             )}
           />
 
-          {/* <Button
-            onClick={() => window.open(data.getValues("site_url"), "_blank")}
+          <Button
+            type="submit"
+            size="small"
+            onClick={() => {
+              const siteUrl = data.getValues("site_url");
+              setTimeout(() => {
+                window.open(siteUrl, "_blank");
+              }, 500);
+            }}
           >
-            Preview
-          </Button> */}
+            Save & Preview
+          </Button>
         </div>
       </div>
       <div className="grid grid-cols-3">

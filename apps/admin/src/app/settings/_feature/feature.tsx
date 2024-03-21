@@ -71,7 +71,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               formState.dirtyFields
             );
             Message().loading({ content: "Saving...", duration: 3 });
-            updateSettings({ options: change }).then(() => {
+            return updateSettings({ options: change }).then(() => {
               methods.reset(change);
               Message().success({ content: "Saved", duration: 2 });
             });
