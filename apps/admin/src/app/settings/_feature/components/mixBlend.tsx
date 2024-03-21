@@ -20,8 +20,9 @@ export const MixBlendCheckbox = ({ mixBlendDifference = false, onChange }) => {
           Enable Mix Blend Difference
         </label>
       </div>
-      <span className="opacity-60 text-xs">
-        This is used in few themes to compensate the text color from background.
+      <span className="opacity-70 text-xs">
+        This setting is used to create a high-contrast visual effect between
+        text and images where both have the similar colors.
       </span>
     </div>
   );
