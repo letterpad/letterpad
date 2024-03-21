@@ -72,6 +72,9 @@ module.exports = withAxiom({
     ];
   },
   reactStrictMode: true,
+  experimental: {
+    nextScriptWorkers: true,
+  },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
   eslint: {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],

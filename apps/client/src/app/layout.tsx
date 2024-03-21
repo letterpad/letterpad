@@ -202,6 +202,20 @@ const Layout = async ({ children }) => {
           `}
             </Script>
           )}
+          <Script id="ga-dl">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                'gtm.start': new Date().getTime(),
+                event:'gtm.js'
+              });
+          `}
+          </Script>
+          <Script
+            id="google-analytics"
+            strategy="worker"
+            src="https://ping.letterpad.app/gtm?id=GTM-557WRD5R&l=dataLayer"
+          />
 
           {process.env.NODE_ENV === 'production' && (
             <noscript>
