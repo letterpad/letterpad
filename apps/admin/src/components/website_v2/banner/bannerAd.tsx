@@ -1,8 +1,9 @@
 import { FC } from "react";
 
+import { isMembershipFeatureActive } from "@/utils/config";
+
 import { Banner } from "./banner";
 import { SignupLink } from "./signUpLink";
-import { isMembershipFeatureActive } from "../../../shared/utils";
 
 export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
   const membershipFeatureActive = isMembershipFeatureActive();

@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { cookies } from "next/headers";
 import Script from "next/script";
 import React from "react";
+import { getEdgeConfig } from "ui/server";
 
 import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
@@ -76,6 +77,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme-preference")?.value ?? "light";
+  const edgeConfig = await getEdgeConfig.all();
   return (
     <html
       lang="en"
@@ -98,6 +100,14 @@ const RootLayout = async ({ children }) => {
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
+        />
+        <Script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.edgeConfig = ${JSON.stringify(edgeConfig) ?? {}};
+            `,
+          }}
+          id="edgeConfig"
         />
       </head>
       <body

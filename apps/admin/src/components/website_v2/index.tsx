@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { ProfileCard } from "ui/isomorphic";
+import { isPaymentsEnabled } from "ui/server";
 
 import { AdminActions } from "./adminActions";
 import { BannerAd } from "./banner/bannerAd";
@@ -22,7 +23,6 @@ import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
 import { getRootUrl } from "../../shared/getRootUrl";
-import { isMembershipFeatureActive } from "../../shared/utils";
 
 export const Website = async () => {
   const [data, categories, favAuthors, posts] = await Promise.all([
@@ -31,7 +31,7 @@ export const Website = async () => {
     getfavAuthors(),
     fetchPostsByTag(),
   ]);
-  const isMemberFeatActive = isMembershipFeatureActive();
+  const isMemberFeatActive = await isPaymentsEnabled();
   const session = await getServerSession(options());
   const hasSession = !!session?.user?.id;
   const rows =

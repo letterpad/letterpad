@@ -7,7 +7,7 @@ import { RiLayout4Line } from "react-icons/ri";
 import { SlBadge } from "react-icons/sl";
 import { VscDebugDisconnect, VscGraphLine } from "react-icons/vsc";
 
-import { isMembershipFeatureActive } from "../../shared/utils";
+import { isMembershipFeatureActive } from "@/utils/config";
 
 export const items = (stats, activePlan: boolean) => [
   {

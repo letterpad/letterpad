@@ -7,7 +7,7 @@ import { Drawer, ThemeSwitcher } from "ui";
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
 
-import { isMembershipFeatureActive } from "../../shared/utils";
+import { isMembershipFeatureActive } from "@/utils/config";
 
 // @ts-ignore
 import Logo from "/public/logo/logo-full.png";

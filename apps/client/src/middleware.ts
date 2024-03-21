@@ -1,21 +1,15 @@
-import { get } from '@vercel/edge-config';
 import { NextRequest, NextResponse } from 'next/server';
+import { isInMaintenanceModeEnabled } from 'ui/server';
 
 import { getAuthCookieName } from '../lib/utils/authCookie';
 import { getApiRootUrl } from '../lib/utils/url';
 
 export async function middleware(request: NextRequest) {
   try {
-    if (process.env.EDGE_CONFIG) {
-      const key =
-        process.env.NODE_ENV === 'production'
-          ? 'isInMaintenanceMode'
-          : 'isInMaintenanceModeDev';
-      const isInMaintenanceMode = await get<boolean>(key);
-      if (isInMaintenanceMode) {
-        request.nextUrl.pathname = `/maintenance`;
-        return NextResponse.rewrite(request.nextUrl);
-      }
+    const isInMaintenanceMode = await isInMaintenanceModeEnabled();
+    if (isInMaintenanceMode) {
+      request.nextUrl.pathname = `/maintenance`;
+      return NextResponse.rewrite(request.nextUrl);
     }
   } catch (error) {
     // eslint-disable-next-line no-console
