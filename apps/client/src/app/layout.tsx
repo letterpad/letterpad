@@ -203,8 +203,8 @@ const Layout = async ({ children }) => {
           {process.env.NODE_ENV === 'production' && (
             <Script
               id="google-analytics"
-              strategy="worker"
-              src="https://ping.letterpad.app/gtm?id=GTM-557WRD5R&l=dataLayer"
+              strategy="afterInteractive"
+              src="https://ping.letterpad.app/gtm.js?id=GTM-557WRD5R&l=dataLayer"
             />
           )}
 
