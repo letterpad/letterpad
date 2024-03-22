@@ -7,8 +7,7 @@ import { SaveButton } from "@/components/save-button";
 import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 import { Upload } from "@/components/upload";
 
-import { removeTypenames } from "@/shared/utils";
-import { isMembershipFeatureActive } from "@/utils/config";
+import { isMembershipFeatureActive, removeTypenames } from "@/shared/utils";
 
 import { MixBlendCheckbox } from "./mixBlend";
 
@@ -16,6 +15,7 @@ const Appearance = () => {
   const data = useFormContext();
   const membershipFeatureActive = isMembershipFeatureActive();
   const isPaidMember = useIsPaidMember();
+  const { handleSubmit } = useFormContext();
 
   return (
     <div className="grid gap-8">

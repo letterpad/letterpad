@@ -5,8 +5,6 @@ import { andThen, pipe } from "ramda";
 
 import { prisma } from "@/lib/prisma";
 
-import { getSessionUrl } from "@/shared/getRootUrl";
-
 import { SessionData } from "./types";
 import { basePath } from "../constants";
 import {
@@ -174,7 +172,7 @@ export type ResolverContext = Awaited<ReturnType<typeof context>>;
 export const getServerSession = async ({ req }) => {
   try {
     const headers = req.headers;
-    const sessionURL = getSessionUrl();
+    const sessionURL = process.env.ROOT_URL + basePath + "/api/auth/session";
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });

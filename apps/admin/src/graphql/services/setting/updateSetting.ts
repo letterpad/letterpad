@@ -63,23 +63,6 @@ export const updateSetting = async (
 
       data[option] = value;
     });
-    if (settings.site_url) {
-      try {
-        const res = await fetch(settings.site_url)
-        const isLetterpadSite = res.headers.get('x-platform') === "Letterpad"
-        if (!isLetterpadSite) {
-          return {
-            message: "The site url is not a valid Letterpad site",
-            __typename: "NotFound"
-          };
-        }
-      } catch (e) {
-        return {
-          message: "The site url is not a valid Letterpad site",
-          __typename: "NotFound"
-        };
-      }
-    }
     logger.info(`Updating settings with id ${setting_id}- `, data);
     const res = await prisma.setting.update({
       data: data,

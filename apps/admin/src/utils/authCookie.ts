@@ -1,8 +1,7 @@
-import { getRootUrl } from "@/shared/getRootUrl";
-
 export const getAuthCookieName = () => {
-  const rootUrl = getRootUrl();
-  if (rootUrl && new URL(rootUrl).protocol === "https:"
+  if (
+    process.env.NEXT_PUBLIC_ROOT_URL &&
+    new URL(process.env.NEXT_PUBLIC_ROOT_URL).protocol === "https:"
   ) {
     return "__Secure-next-auth.session-token";
   }
