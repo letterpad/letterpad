@@ -7,7 +7,7 @@ const ContentSecurityPolicy = `
   media-src 'none';
   connect-src *;
   font-src 'self' https://fonts.gstatic.com;
-  frame-src youtube.com www.youtube.com https://js.stripe.com/;
+  frame-src youtube.com www.youtube.com js.stripe.com;
 `;
 
 const securityHeaders = [
