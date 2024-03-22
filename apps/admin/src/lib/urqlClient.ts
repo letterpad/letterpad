@@ -3,7 +3,7 @@ import { Client, createClient, fetchExchange, mapExchange } from "@urql/core";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import schema from "letterpad-graphql/graphql.schema.json";
 
-import { getApiUrl, getRootUrl } from "@/shared/getRootUrl";
+import { getApiUrl } from "@/shared/getRootUrl";
 
 let _client: Client | null = null;
 export const cache = cacheExchange({
