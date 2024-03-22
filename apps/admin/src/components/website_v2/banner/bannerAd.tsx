@@ -1,12 +1,11 @@
 import { FC } from "react";
-
-import { isMembershipFeatureActive } from "@/utils/config";
+import { isPaymentsEnabled } from "ui/server";
 
 import { Banner } from "./banner";
 import { SignupLink } from "./signUpLink";
 
-export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
-  const membershipFeatureActive = isMembershipFeatureActive();
+export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
+  const membershipFeatureActive = await isPaymentsEnabled();
   return (
     <Banner
       particles={250}
