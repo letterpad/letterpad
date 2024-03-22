@@ -10,18 +10,13 @@ import { reportAllTimeReads, reportCountry, reportDevice, reportReads, reportRef
 import { DateRangeEnum, ProcessedCountryData, ProcessedDeviceData, ProcessedReferralData, ProcessedReportData, ProcessedSessionsPerDayData } from './types';
 import { getDateRanges } from '../../../components/analytics/utils';
 
-let client: BetaAnalyticsDataClient;
 
-const createAnalyticsDataClient = () => {
-    if (client) return client;
-    client = new BetaAnalyticsDataClient({
-        credentials: {
-            client_email: process.env.GA_CLIENT_EMAIL!,
-            private_key: process.env.GA_PRIVATE_KEY!,
-        },
-    });
-    return client;
-}
+const analyticsDataClient = new BetaAnalyticsDataClient({
+    credentials: {
+        client_email: process.env.GA_CLIENT_EMAIL!,
+        private_key: process.env.GA_PRIVATE_KEY!,
+    },
+});
 
 export async function GET(req: Request) {
     const session = await getServerSession({ req });
@@ -77,7 +72,7 @@ export async function GET(req: Request) {
 const queries = [reportViewPerPage, reportReferral, reportCountry, reportSessionPerDay, reportDevice]
 export async function runReport1(dateRanges: any, site_url: string) {
 
-    const response = await createAnalyticsDataClient().batchRunReports({
+    const response = await analyticsDataClient.batchRunReports({
         property: `properties/${process.env.GA_PROPERTY_ID}`,
         requests: [
             ...queries.map((query) => ({ ...query(site_url).query, dateRanges })),
@@ -108,7 +103,7 @@ export async function runReport2(dateRanges: any, prevDateRanges: any, site_url:
         startDate: range30Days.startDate,
         endDate: range30Days.endDate,
     }];
-    const response = await createAnalyticsDataClient().batchRunReports({
+    const response = await analyticsDataClient.batchRunReports({
         property: `properties/${process.env.GA_PROPERTY_ID}`,
         requests: [
             { ...totalAll(site_url).query, dateRanges },
