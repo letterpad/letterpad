@@ -44,3 +44,6 @@ data
 apps/docs/**
 
 .vscode
+
+apps/admin/public/uploads/*
+!apps/admin/public/uploads/logo.png
