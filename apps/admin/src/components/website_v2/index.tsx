@@ -4,9 +4,6 @@ import { getServerSession } from "next-auth";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { ProfileCard } from "ui/isomorphic";
-import { isPaymentsEnabled } from "ui/server";
-
-import { getRootUrl } from "@/shared/getRootUrl";
 
 import { AdminActions } from "./adminActions";
 import { BannerAd } from "./banner/bannerAd";
@@ -24,6 +21,8 @@ import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
+import { getRootUrl } from "../../shared/getRootUrl";
+import { isMembershipFeatureActive } from "../../shared/utils";
 
 export const Website = async () => {
   const [data, categories, favAuthors, posts] = await Promise.all([
@@ -32,7 +31,7 @@ export const Website = async () => {
     getfavAuthors(),
     fetchPostsByTag(),
   ]);
-  const isMemberFeatActive = await isPaymentsEnabled();
+  const isMemberFeatActive = isMembershipFeatureActive();
   const session = await getServerSession(options());
   const hasSession = !!session?.user?.id;
   const rows =
@@ -108,7 +107,7 @@ export const Website = async () => {
               className={classNames(
                 "hidden md:min-w-80 py-10 top-0 space-y-8 md:pl-10",
                 {
-                  "md:block": posts?.length > 0 || favAuthors?.length > 0,
+                  "md:block": posts.length > 0 || favAuthors?.length > 0,
                 }
               )}
             >
@@ -118,7 +117,7 @@ export const Website = async () => {
                   Announcements
                 </h4>
                 <ul className="flex flex-col divide-y dark:divide-blue-500/30 divide-slate-100">
-                  {posts?.map((post) => {
+                  {posts.map((post) => {
                     return (
                       <li
                         className="text-gray-900 truncate dark:text-white  py-2 "

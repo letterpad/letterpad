@@ -71,13 +71,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               formState.dirtyFields
             );
             Message().loading({ content: "Saving...", duration: 3 });
-            return updateSettings({ options: change }).then((res) => {
-              if (res.data?.updateOptions?.__typename === "NotFound") {
-                return Message().error({
-                  content: res.data?.updateOptions.message,
-                  duration: 3,
-                });
-              }
+            return updateSettings({ options: change }).then(() => {
               methods.reset(change);
               Message().success({ content: "Saved", duration: 2 });
             });
