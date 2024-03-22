@@ -5,7 +5,9 @@ export const getApiRootUrl = () => {
       .toString()
       .replace('client', 'admin');
   }
-  return new URL(process.env.NEXT_PUBLIC_API_URL!).toString();
+  return new URL(
+    process.env.NEXT_PUBLIC_API_URL!?.replace('api/graphql', '')
+  ).toString();
 };
 
 export const getProfileUrl = (username: string) => {
