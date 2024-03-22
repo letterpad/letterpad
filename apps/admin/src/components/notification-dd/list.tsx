@@ -19,8 +19,9 @@ import { Drawer } from "ui";
 
 import { NotificationItem } from "./notification";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
+import { getRootUrl } from "../../shared/getRootUrl";
 
-const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
+const rootUrl = getRootUrl();
 
 export const NotificationDropdown = () => {
   const [show, setShow] = useState(false);

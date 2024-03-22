@@ -7,6 +7,8 @@ import { ProfileCard } from "ui/isomorphic";
 
 import { getReadableDate } from "@/shared/utils";
 
+import { getRootUrl } from "../../shared/getRootUrl";
+
 interface Props {
   slug: string;
   title: string;
@@ -36,9 +38,7 @@ export const Card: FC<Props> = ({
   featured,
 }) => {
   const origin =
-    typeof window === "undefined"
-      ? process.env.ROOT_URL
-      : document.location.origin;
+    typeof window === "undefined" ? getRootUrl() : document.location.origin;
   const reading_time = stats?.reading_time?.replace("1 mins", "1 min");
 
   const avatar = author?.avatar

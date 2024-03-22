@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { decode } from "next-auth/jwt";
 import { isInMaintenanceModeEnabled } from "ui/server";
 
+import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
 
 export const config = { matcher: "/((?!.*\\.).*)" };
@@ -74,7 +75,7 @@ interface Props {
 function handleAuth({ request, source }: Props) {
   const sourceURL = new URL(source);
   const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
-  const adminURL = new URL(process.env.ROOT_URL!);
+  const adminURL = new URL(getRootUrl()!);
   const url = request.nextUrl;
   const isLogin = url.pathname === "/api/identity/login";
   const isLogout = url.pathname === "/api/identity/logout";

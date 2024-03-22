@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { isInMaintenanceModeEnabled } from 'ui/server';
 
 import { getAuthCookieName } from '../lib/utils/authCookie';
-import { getApiRootUrl } from '../lib/utils/url';
+import { getSessionUrl } from '../lib/utils/url';
 
 export async function middleware(request: NextRequest) {
   try {
@@ -76,7 +76,7 @@ async function handleSessionResponse(request: NextRequest) {
   const siteUrl = `${header.get('x-forwarded-proto')}://${header.get('host')}`;
 
   if (sessionCookie) {
-    const req = await fetch(`${getApiRootUrl()}/api/client/session`, {
+    const req = await fetch(getSessionUrl(), {
       headers: {
         cookie: `${getAuthCookieName()}=${sessionCookie}`,
         siteurl: siteUrl,

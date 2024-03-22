@@ -6,6 +6,8 @@ import { prisma } from "@/lib/prisma";
 import logger from "@/shared/logger";
 import { textToSlug } from "@/utils/slug";
 
+import { getRootUrl } from "../../shared/getRootUrl";
+
 const slugOfUntitledPost = "untitled";
 
 export async function slugify(
@@ -57,7 +59,9 @@ export async function slugify(
 export async function getImageDimensions(
   url: string
 ): Promise<{ width: number; height: number; type: string }> {
-  const req = await fetch(process.env.ROOT_URL + "/api/imageSize?url=" + url);
+  const src = new URL("/api/imageSize", getRootUrl())
+  src.searchParams.append("url", url);
+  const req = await fetch(src);
   const data = await req.json();
   return data;
 }

@@ -15,7 +15,7 @@ export const LetterpadLogo: FC<Logo> = ({ className = '' }) => {
       <Link href={getApiRootUrl()!} aria-label={'Letterpad'}>
         <Image
           alt={'Letterpad'}
-          src={getApiRootUrl() + '/logo/lp_logo_white.svg'}
+          src={getApiRootUrl() + 'logo/lp_logo_white.svg'}
           width={28}
           height={28}
         />

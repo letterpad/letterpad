@@ -12,6 +12,7 @@ import {
   findAuthorIdFromLetterpadSubdomain,
   findEmailFromToken,
 } from "../shared/getAuthorIdFromHeaders";
+import { getSessionUrl } from "../shared/getRootUrl";
 import { getHeader } from "../utils/headers";
 
 const isTest = process.env.NODE_ENV === "test";
@@ -172,7 +173,7 @@ export type ResolverContext = Awaited<ReturnType<typeof context>>;
 export const getServerSession = async ({ req }) => {
   try {
     const headers = req.headers;
-    const sessionURL = process.env.ROOT_URL + basePath + "/api/auth/session";
+    const sessionURL = getSessionUrl();
     const res = await fetch(sessionURL, {
       headers: { cookie: getHeader(headers, "cookie") },
     });

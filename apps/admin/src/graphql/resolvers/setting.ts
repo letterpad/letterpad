@@ -14,6 +14,7 @@ import {
   updateSetting,
 } from "../services/setting";
 import { resolveDesignField } from "../services/setting/resolveDesignField";
+import { getRootUrl } from "../../shared/getRootUrl";
 
 import { Optional } from "@/types";
 
@@ -81,7 +82,7 @@ function getMenuWithSanitizedSlug(
   }
   if (show_about_page) {
     cleanMenu.push({
-      slug: new URL(`@${username}`, process.env.ROOT_URL).href,
+      slug: new URL(`@${username}`, getRootUrl()).href,
       label: "About",
       type: NavigationType.Custom,
       original_name: "About",
