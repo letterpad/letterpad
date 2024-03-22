@@ -7,6 +7,7 @@ import {
 } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 import {
   getSetting,
@@ -42,6 +43,15 @@ const Setting: SettingResolvers<ResolverContext> = {
     return session?.user.id!
   },
   is_platform: () => process.env.LETTERPAD_PLATFORM === "true",
+  site_url: async ({ site_url }, _, { session, dataloaders, client_author_id }) => {
+    if (site_url) {
+      const author = await dataloaders.author.load(
+        session?.user.id || client_author_id
+      );
+      return 'https://' + author.username + '.' + new URL(getRootUrl()).hostname
+    }
+    return site_url
+  },
 };
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -81,7 +91,7 @@ function getMenuWithSanitizedSlug(
   }
   if (show_about_page) {
     cleanMenu.push({
-      slug: new URL(`@${username}`, process.env.ROOT_URL).href,
+      slug: new URL(`@${username}`, getRootUrl()).href,
       label: "About",
       type: NavigationType.Custom,
       original_name: "About",

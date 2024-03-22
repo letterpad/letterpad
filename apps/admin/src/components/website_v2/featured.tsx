@@ -3,8 +3,9 @@ import Link from "next/link";
 import { IoStar } from "react-icons/io5";
 import { ProfileCard } from "ui/isomorphic";
 
+import { getRootUrl } from "@/shared/getRootUrl";
+
 import { getFeaturedPosts } from "./data";
-import { getRootUrl } from "../../shared/getRootUrl";
 import { getReadableDate } from "../../shared/utils";
 
 export const Featured = async () => {

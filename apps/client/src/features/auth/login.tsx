@@ -10,7 +10,7 @@ export const Login = () => {
 
   const onClick = (e: any) => {
     e.preventDefault();
-    document.location.href = `${getApiRootUrl()}/api/identity/login?source=${
+    document.location.href = `${getApiRootUrl()}api/identity/login?source=${
       document.location.href
     }`;
   };

@@ -103,7 +103,7 @@ export const ProfileDropdown = () => {
 };
 
 const MenuItem = ({ label, icon, path, target = '' }) => {
-  const link = getApiRootUrl() + path;
+  const link = new URL(path, getApiRootUrl()).href;
   return (
     <li className="py-2.5 px-6  hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer ">
       <a className="flex items-center gap-2" href={link} target={target}>
