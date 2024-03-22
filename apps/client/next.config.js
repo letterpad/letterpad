@@ -110,6 +110,15 @@ module.exports = withAxiom({
         source: '/(.*)',
         headers: securityHeaders,
       },
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'x-platform',
+            value: 'Letterpad',
+          },
+        ],
+      },
     ];
   },
   webpack: (config, { dev, isServer }) => {

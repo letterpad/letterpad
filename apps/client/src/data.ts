@@ -9,12 +9,14 @@ import {
 import { headers } from 'next/headers';
 import { cache } from 'react';
 
+import { getApiUrl } from '../lib/utils/url';
+
 function getLetterpad() {
   const headersList = headers();
   const host = headersList.get('x-forwarded-host')! ?? headersList.get('host');
   return new Letterpad({
     letterpadServer: {
-      url: process.env.API_URL!,
+      url: getApiUrl() ?? '',
       token: process.env.CLIENT_ID!,
       host: host.replace('www.', ''),
     },

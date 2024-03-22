@@ -17,10 +17,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";
 import { Drawer } from "ui";
 
+import { getRootUrl } from "@/shared/getRootUrl";
+
 import { NotificationItem } from "./notification";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
 
-const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
+const rootUrl = getRootUrl();
 
 export const NotificationDropdown = () => {
   const [show, setShow] = useState(false);

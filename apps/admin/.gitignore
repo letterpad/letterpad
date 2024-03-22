@@ -35,7 +35,6 @@ yarn-error.log*
 !src/page.d.ts
 !src/graphqls.d.ts
 
-__generated__/*
 data/*
 .env
 .env.production.local
@@ -55,6 +54,3 @@ prisma/sqlite/data
 .vscode
 
 public/css/custom.css
-
-__generated__/*
-__generated__server/*

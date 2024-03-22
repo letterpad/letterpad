@@ -17,6 +17,7 @@ import {
   updateTags,
 } from "../services/tag";
 import { beautifyTopic, TOPIC_PREFIX } from "../../shared/utils";
+import { isPostgresDb } from "../../utils/utils";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, context) {
@@ -26,12 +27,38 @@ const Query: QueryResolvers<ResolverContext> = {
     return getTags(args, context);
   },
   async popularTags(_root, args, { prisma }) {
+    // Postgress needs double quotes for table names or else it will convert tables to lowercase
     const tags: Tag[] =
-      await prisma.$queryRaw`SELECT count(*) as c, T.name, T.slug  FROM "_PostToTag"
-        INNER JOIN "Tag" T ON "B" = T.name 
-        INNER JOIN "Post" P ON "A" = P.id 
-        WHERE T.name LIKE ${`${TOPIC_PREFIX}%`} AND P.title != 'Coming Soon' AND P.title != '' AND P.excerpt != '' AND P.status = 'published' AND P.type = 'post'
-        GROUP by T.name HAVING count(*) > 2 ORDER BY c DESC`;
+      !isPostgresDb() ? await prisma.$queryRaw`
+        SELECT count(*) as c, T.name, T.slug  
+          FROM _PostToTag
+          INNER JOIN Tag T ON B = T.name 
+          INNER JOIN Post P ON A = P.id 
+          WHERE T.name LIKE CONCAT(${TOPIC_PREFIX}, '%') 
+            AND P.title != 'Coming Soon' 
+            AND P.title != '' 
+            AND P.excerpt != '' 
+            AND P.status = 'published' 
+            AND P.type = 'post'
+          GROUP BY T.name 
+          HAVING count(*) > 2 
+          ORDER BY c DESC;
+      `: await prisma.$queryRaw`
+        SELECT count(*) as c, T.name, T.slug  
+          FROM "_PostToTag"
+          INNER JOIN "Tag" T ON "B" = T.name 
+          INNER JOIN "Post" P ON "A" = P.id 
+          WHERE T.name LIKE CONCAT(${TOPIC_PREFIX}, '%') 
+            AND P.title != 'Coming Soon' 
+            AND P.title != '' 
+            AND P.excerpt != '' 
+            AND P.status = 'published' 
+            AND P.type = 'post'
+          GROUP BY T.name 
+          HAVING count(*) > 2 
+          ORDER BY c DESC;
+      `;
+
     return {
       ok: true,
       rows: tags.map((tag) => ({

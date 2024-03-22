@@ -5,9 +5,9 @@ import { Button, Input, Message } from "ui";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
-import { isMembershipFeatureActive } from "@/shared/utils";
+import { isMembershipFeatureActive } from "@/utils/config";
 
-export const NewDomain = () => {
+export const NewDomain = async () => {
   const [domain, setDomain] = useState("");
   const isPaidMember = useIsPaidMember();
   const membershipFeatureActive = isMembershipFeatureActive();

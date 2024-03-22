@@ -24,6 +24,7 @@ export * from "./src/components/tabs";
 export * from "./src/components/textarea";
 export * from "./src/components/theme";
 export * from "./src/components/tooltip";
+export * from "./src/components/vercelEdgeConfig/client"
 export { useIdle } from "./src/hooks/useIdle";
 export { useIntersectionObserver } from "./src/hooks/useIntersectionObserver";
 export { useKeyPress } from "./src/hooks/useKeyPress";

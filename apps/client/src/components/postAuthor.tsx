@@ -4,7 +4,7 @@ import { ProfileCard } from 'ui/isomorphic';
 
 import { Share } from '@/components/share';
 
-import { getApiRootUrl } from '../../lib/utils/url';
+import { getApiRootUrl, getProfileUrl } from '../../lib/utils/url';
 
 interface Props {
   settings: SettingsFragmentFragment;
@@ -19,7 +19,7 @@ export const PostAuthor: FC<Props> = ({ settings, post }) => {
   const trueAuthor = author?.__typename === 'Author' ? author : null;
   const link = settings.is_platform
     ? settings.site_url
-    : `${getApiRootUrl()}/@${trueAuthor?.username!}`;
+    : getProfileUrl(trueAuthor?.username!);
 
   if (isPage) return null;
 

@@ -1,7 +1,8 @@
 import { Metadata, Viewport } from "next";
 
+import { getRootUrl } from "@/shared/getRootUrl";
+
 import { Website as WebsiteV2 } from "../components/website_v2";
-import { getRootUrl } from "../shared/getRootUrl";
 
 const Home = () => {
   return (

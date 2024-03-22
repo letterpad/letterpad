@@ -3,7 +3,7 @@ import { ChangeEvent, FC, useState } from "react";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
-import { isMembershipFeatureActive } from "@/shared/utils";
+import { isMembershipFeatureActive } from "@/utils/config";
 
 interface Props {
   mail_status: MailStatus;
