@@ -1,5 +1,5 @@
-import { getEdgeConfigClient } from "ui";
+import { getEdgeConfigClient } from "../shared/utils"
 
 export const isMembershipFeatureActive = () => {
-    return !!getEdgeConfigClient()?.paymentsActive;
+    return getEdgeConfigClient()?.paymentsActive
 }

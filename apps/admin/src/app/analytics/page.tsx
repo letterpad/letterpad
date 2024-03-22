@@ -3,7 +3,7 @@ import Chart, { ChartConfiguration } from "chart.js/auto";
 import { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import { FC, useEffect, useRef, useState } from "react";
-import { Content, getEdgeConfigClient, useTheme } from "ui";
+import { Content, useTheme } from "ui";
 import { PageHeader } from "ui/isomorphic";
 import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
@@ -37,7 +37,7 @@ const Analytics: FC<P & Props> = () => {
   const activeFeature = isMembershipFeatureActive();
   const isPaidMemeber = useIsPaidMember();
   const { theme } = useTheme();
-  const isMember = getEdgeConfigClient() && isPaidMemeber;
+  const isMember = activeFeature && isPaidMemeber;
   const [data, setData] = useState<ApiResponseData>({
     device: [],
     data: [],
