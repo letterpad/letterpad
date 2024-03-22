@@ -1,25 +1,19 @@
 "use client";
-import classNames from "classnames";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { Drawer, ThemeSwitcher } from "ui";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
 
-import { isMembershipFeatureActive } from "@/utils/config";
+import { isMembershipFeatureActive } from "../../shared/utils";
 
 // @ts-ignore
 import Logo from "/public/logo/logo-full.png";
 
 function Header() {
   const [show, setShow] = useState(false);
-  const [isPaymentsActive, setIsPaymentsActive] = useState(false);
-  useEffect(() => {
-    setIsPaymentsActive(isMembershipFeatureActive());
-  }, []);
-
   return (
     <header className="z-30 w-full bg-slate-950 text-white">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -45,15 +39,11 @@ function Header() {
                 {/* <ResourceDropdown /> */}
                 <Link href="/resources">Resources</Link>
               </li>
-
-              <li
-                className={classNames("hidden", {
-                  "md:block": isPaymentsActive,
-                })}
-              >
-                <Link href="/pricing">Pricing</Link>
-              </li>
-
+              {isMembershipFeatureActive() && (
+                <li className="hidden md:block">
+                  <Link href="/pricing">Pricing</Link>
+                </li>
+              )}
               <li>
                 <Search />
               </li>
@@ -81,24 +71,16 @@ function Header() {
           <li>
             <Link href="/resources">Resources</Link>
           </li>
-
-          <li
-            className={classNames("md:hidden", {
-              block: isPaymentsActive,
-            })}
-          >
-            <Link href="/pricing">Pricing</Link>
-          </li>
+          {isMembershipFeatureActive() && (
+            <li>
+              <Link href="/pricing">Pricing</Link>
+            </li>
+          )}
           <li>
             <ThemeSwitcher />
           </li>
         </ul>
       </Drawer>
-      <style jsx>{`
-        .pricing {
-          display: ${isPaymentsActive ? "block" : "none"};
-        }
-      `}</style>
     </header>
   );
 }

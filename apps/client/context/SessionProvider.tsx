@@ -60,7 +60,7 @@ export function SessionProvider({ children }: any) {
             key="submit"
             onClick={() => {
               showLogin(false);
-              window.location.href = `${getApiRootUrl()}api/identity/login?source=${document.location.href}`;
+              window.location.href = `${getApiRootUrl()}/api/identity/login?source=${document.location.href}`;
             }}
           >
             Login

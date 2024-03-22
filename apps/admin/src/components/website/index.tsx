@@ -4,8 +4,6 @@ import { Metadata, Viewport } from "next";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-import { getRootUrl } from "@/shared/getRootUrl";
-
 import AiSection from "./AiSection";
 import Client from "./Client";
 import Cta from "./Cta";
@@ -15,6 +13,7 @@ import Footer from "./Footer";
 import Hero from "./Hero";
 import PressLogos from "./PressLogos";
 import Header from "../header/Header";
+import { getRootUrl } from "../../shared/getRootUrl";
 
 export const viewport: Viewport = {
   themeColor: "black",

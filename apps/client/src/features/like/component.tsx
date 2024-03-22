@@ -1,7 +1,8 @@
+import classNames from 'classnames';
 import { PageFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 
-import { getProfileUrl } from '@/lib/utils/url';
+import { getApiRootUrl } from '@/lib/utils/url';
 
 interface Props {
   liked: boolean;
@@ -61,7 +62,7 @@ const Avatars: FC<{ likes: PageFragmentFragment['likes'] }> = ({ likes }) => {
         return (
           <a
             className="relative h-8 w-8 rounded-full border-2 border-slate-100 bg-white group-hover:border-slate-200 dark:border-slate-800 dark:bg-slate-600 group-hover:dark:border-slate-700 [&:not(:first-of-type)]:-ml-3"
-            href={getProfileUrl(like?.username!)}
+            href={`${getApiRootUrl()}/@${like?.username}`}
             target="_blank"
             rel="noreferrer"
             key={like?.username}

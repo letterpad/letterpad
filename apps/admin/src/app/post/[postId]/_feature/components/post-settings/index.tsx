@@ -1,7 +1,13 @@
 import classNames from "classnames";
 import { PostTypes, PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import Link from "next/link";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { CgSpinner } from "react-icons/cg";
 import { Drawer, Input, Switch, TextArea } from "ui";
 
@@ -9,8 +15,11 @@ import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 
 import { useGetSettings } from "@/app/settings/_feature/api.client";
 import { PageType } from "@/graphql/types";
-import { debounce, TOPIC_PREFIX } from "@/shared/utils";
-import { isMembershipFeatureActive } from "@/utils/config";
+import {
+  debounce,
+  isMembershipFeatureActive,
+  TOPIC_PREFIX,
+} from "@/shared/utils";
 import {
   createPathWithPrefix,
   getLastPartFromPath,

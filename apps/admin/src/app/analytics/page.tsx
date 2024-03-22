@@ -20,7 +20,6 @@ import { getDateRanges } from "@/components/analytics/utils";
 import { UpgradeBanner } from "@/components/upgrade-plan-banner";
 
 import { SessionData } from "@/graphql/types";
-import { isMembershipFeatureActive } from "@/utils/config";
 
 import {
   type ApiResponseData,
@@ -28,13 +27,15 @@ import {
   DateRangeEnum,
 } from "../api/analytics/types";
 import { useIsPaidMember } from "../../hooks/useIsPaidMember";
+import { isMembershipFeatureActive } from "../../shared/utils";
+
+const activeFeature = isMembershipFeatureActive();
 
 type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
 const Analytics: FC<P & Props> = () => {
-  const activeFeature = isMembershipFeatureActive();
   const isPaidMemeber = useIsPaidMember();
   const { theme } = useTheme();
   const isMember = activeFeature && isPaidMemeber;
