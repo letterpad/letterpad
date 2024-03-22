@@ -147,7 +147,6 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
           data-testid="newMenuBtn"
           variant="primary"
           className="flex items-center justify-center gap-1"
-          size={"small"}
         >
           <BiPlus size={18} />
           Add New

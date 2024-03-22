@@ -4,7 +4,6 @@ import { decode } from "next-auth/jwt";
 
 import { prisma } from "@/lib/prisma";
 
-import { getLoginUrl, getRootUrl } from "@/shared/getRootUrl";
 import { getAuthCookieName } from "@/utils/authCookie";
 
 export async function GET(
@@ -25,13 +24,8 @@ export async function GET(
   }
 
   if (!decodedToken) {
-    const url = new URL(getLoginUrl());
-    url.searchParams.append("error", "unauthorized");
-    url.searchParams.append("source", sourceUrl);
-    url.searchParams.append("serviceUrl", serviceUrl);
-
     return NextResponse.redirect(
-      url.href,
+      `${process.env.ROOT_URL}/login?error=unauthorized&source=${sourceUrl}&serviceUrl=${serviceUrl}`,
       { status: 307 }
     );
   }
@@ -63,10 +57,8 @@ export async function GET(
   if (params.action === "login") {
     try {
       if (!serviceUrl) {
-        const url = new URL(getLoginUrl());
-        url.searchParams.append("error", "serviceUrl_is_missing");
         return NextResponse.redirect(
-          url.href,
+          process.env.ROOT_URL + "/login?error=serviceUrl_is_missing",
           { status: 302 }
         );
       }
@@ -110,14 +102,11 @@ export async function GET(
           },
         });
       }
-      if (new URL(serviceUrl).host === new URL(getRootUrl()).host) {
+      if (new URL(serviceUrl).host === new URL(process.env.ROOT_URL).host) {
         return NextResponse.redirect(sourceUrl, { status: 302 });
       }
-      const src = new URL(serviceUrl);
-      src.searchParams.append("token", sessionToken);
-      src.searchParams.append("source", sourceUrl);
       const response = NextResponse.redirect(
-        src.href,
+        `${serviceUrl}?token=${sessionToken}&source=${sourceUrl}`,
         { status: 302 }
       );
       return response;

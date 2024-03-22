@@ -1,9 +1,9 @@
 // export const runtime = 'edge';
+import { get } from '@vercel/edge-config';
 import classNames from 'classnames';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
-import { isInMaintenanceModeEnabled } from 'ui/server';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
@@ -25,13 +25,15 @@ export const viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const isInMaintenanceMode = await isInMaintenanceModeEnabled();
-    if (isInMaintenanceMode) {
-      return {
-        title: 'Under Maintenance',
-        description: 'The site is under maintenance. Please check back later.',
-        robots: { index: false, follow: false },
-      };
+    if (process.env.EDGE_CONFIG) {
+      const key =
+        process.env.NODE_ENV === 'production'
+          ? 'isInMaintenanceMode'
+          : 'isInMaintenanceModeDev';
+      const isInMaintenanceMode = await get<boolean>(key);
+      if (isInMaintenanceMode) {
+        return {};
+      }
     }
     const data = await getData();
     if (!data) return {};
@@ -144,13 +146,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Layout = async ({ children }) => {
-  const isInMaintenanceMode = await isInMaintenanceModeEnabled();
-  if (isInMaintenanceMode) {
-    return (
-      <html>
-        <body>{children}</body>
-      </html>
-    );
+  if (process.env.EDGE_CONFIG) {
+    const key =
+      process.env.NODE_ENV === 'production'
+        ? 'isInMaintenanceMode'
+        : 'isInMaintenanceModeDev';
+    const isInMaintenanceMode = await get<boolean>(key);
+    if (isInMaintenanceMode) {
+      return (
+        <html>
+          <body>{children}</body>
+        </html>
+      );
+    }
   }
   const data = await getData();
   if (!data) {

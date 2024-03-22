@@ -107,7 +107,6 @@ export const beautifyTopic = (str: string) => {
     )
 }
 
-const isClient = typeof window !== "undefined";
-export const getEdgeConfigClient = () => {
-  return (isClient) ? window['edgeConfig'] as Record<string, any> : null
+export const isMembershipFeatureActive = () => {
+  return process.env.NEXT_PUBLIC_PAYMENTS_ACTIVE === "true"
 }

@@ -35,14 +35,6 @@ export async function findAuthorIdFromLetterpadSubdomain({
       });
       if (author) return { identifierHeader, authHeader, authorId: author.id };
     }
-    if (identifierHeader?.includes("letterpad-client-git")) {
-      const author = await prisma.author.findFirst({
-        where: {
-          username: 'demo',
-        },
-      });
-      if (author) return { identifierHeader, authHeader, authorId: author.id };
-    }
   }
   return { identifierHeader, authHeader, authorId };
 }

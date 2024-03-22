@@ -2,9 +2,8 @@
 import Link from "next/link";
 import { BsInfoCircleFill } from "react-icons/bs";
 
-import { isMembershipFeatureActive } from "@/utils/config";
-
 import { useIsPaidMember } from "../../hooks/useIsPaidMember";
+import { isMembershipFeatureActive } from "../../shared/utils";
 
 export const UpgradeBanner = () => {
   const isPaidMember = useIsPaidMember();

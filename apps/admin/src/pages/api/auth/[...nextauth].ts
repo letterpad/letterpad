@@ -83,7 +83,7 @@ export const options = (): NextAuthOptions => ({
       if (url.startsWith(baseUrl)) {
         return url;
       }
-      return new URL("/posts", getRootUrl()).toString();
+      return getRootUrl(baseUrl) + "/posts";
     },
     jwt: async ({ token, trigger, session }) => {
       if (trigger === "update") {

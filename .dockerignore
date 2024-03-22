@@ -1,4 +1,5 @@
 **/node_modules
 .turbo
 **/cypress
+**/__generated__
 **/.next
