@@ -15,7 +15,8 @@ function getApiUrlWithVercel() {
   if (process.env.VERCEL_ENV === 'preview') {
     return process.env.VERCEL_BRANCH_URL?.replace('client', 'admin');
   }
-  getApiUrl()!;
+  console.log('===================', getApiUrl());
+  return getApiUrl()!;
 }
 function getLetterpad() {
   const headersList = headers();
