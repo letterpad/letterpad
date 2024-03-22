@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { gql } from "urql";
 
+import { getApiUrl } from "@/shared/getRootUrl";
+
 const like = gql`
   mutation LikePost($postId: String!) {
     likePost(postId: $postId) {
@@ -18,7 +20,7 @@ export async function GET(request: Request) {
   if (!id || !type) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
-  const resp = await fetch((process.env.ROOT_URL + "/api/graphql") as string, {
+  const resp = await fetch(getApiUrl(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
