@@ -8,13 +8,13 @@ import { PageHeader } from "ui/isomorphic";
 
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
-import { isMembershipFeatureActive } from "@/utils/config";
 import { isPost } from "@/utils/type-guards";
 
 import { useCreatePost, useGetPosts } from "../api.client";
 import { DEFAULT_FILTERS } from "../constants";
 import { UpgradeLabel } from "../../../../components/upgrade-plan-banner";
 import { useIsPaidMember } from "../../../../hooks/useIsPaidMember";
+import { isMembershipFeatureActive } from "../../../../shared/utils";
 
 interface IProps {
   type: PostTypes;
@@ -25,6 +25,7 @@ interface IProps {
 export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   const isPaidMemeber = useIsPaidMember();
+  const isMember = isMembershipFeatureActive() || isPaidMemeber;
   const [showModal, setShowModal] = useState(false);
   const { createPost } = useCreatePost();
   const { refetch } = useGetPosts({ ...DEFAULT_FILTERS, type }, { skip: true });

@@ -1,8 +1,7 @@
+import { get } from '@vercel/edge-config';
 import { NextRequest, NextResponse } from "next/server";
 import { decode } from "next-auth/jwt";
-import { isInMaintenanceModeEnabled } from "ui/server";
 
-import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
 
 export const config = { matcher: "/((?!.*\\.).*)" };
@@ -10,13 +9,16 @@ export const config = { matcher: "/((?!.*\\.).*)" };
 const isPlatform = process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM;
 
 export async function middleware(request: NextRequest) {
-  try {
-    const isInMaintenanceMode = await isInMaintenanceModeEnabled();
-    if (isInMaintenanceMode) {
-      request.nextUrl.pathname = `/maintenance`
-      return NextResponse.rewrite(request.nextUrl)
-    }
 
+  try {
+    if (process.env.EDGE_CONFIG) {
+      const key = process.env.NODE_ENV === 'production' ? 'isInMaintenanceMode' : 'isInMaintenanceModeDev'
+      const isInMaintenanceMode = await get<boolean>(key)
+      if (isInMaintenanceMode) {
+        request.nextUrl.pathname = `/maintenance`
+        return NextResponse.rewrite(request.nextUrl)
+      }
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error)
@@ -75,7 +77,7 @@ interface Props {
 function handleAuth({ request, source }: Props) {
   const sourceURL = new URL(source);
   const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
-  const adminURL = new URL(getRootUrl()!);
+  const adminURL = new URL(process.env.ROOT_URL!);
   const url = request.nextUrl;
   const isLogin = url.pathname === "/api/identity/login";
   const isLogout = url.pathname === "/api/identity/logout";

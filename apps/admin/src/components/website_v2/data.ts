@@ -17,16 +17,13 @@ import {
   PostsQueryVariables,
 } from "letterpad-graphql";
 
-import { getApiUrl } from "@/shared/getRootUrl";
-
 import { client } from "../../lib/urqlClient";
-
-const apiUrl = typeof window === "undefined" ? getApiUrl() : "";
 
 export async function getLetterpadPosts(
   filters: LetterpadLatestPostsQueryVariables
 ) {
-  const resp = await fetch(apiUrl, {
+  const root = typeof window === "undefined" ? process.env.ROOT_URL : "";
+  const resp = await fetch((root + "/api/graphql") as string, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -48,7 +45,8 @@ export async function getLetterpadPosts(
 }
 
 export async function getLetterpadCategories() {
-  const resp = await fetch(apiUrl, {
+  const root = typeof window === "undefined" ? process.env.ROOT_URL : "";
+  const resp = await fetch((root + "/api/graphql") as string, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

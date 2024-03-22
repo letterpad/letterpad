@@ -8,7 +8,6 @@ import {
 } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
-import { getRootUrl } from "@/shared/getRootUrl";
 
 import { getSocialLink } from "./helpers";
 import { convertNotificationMetaIn } from "./utils/dbTypeCheck";
@@ -24,6 +23,7 @@ import {
 } from "../services/author";
 import { loginAuthor } from "../services/author/loginAuthor";
 import { EmailTemplates } from "../types";
+import { getRootUrl } from "../../shared/getRootUrl";
 
 const Author: AuthorResolvers<ResolverContext> = {
   avatar: async ({ avatar }, _args) => {

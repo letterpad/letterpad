@@ -1,8 +1,7 @@
 {
   "extends": "tsconfig/react-library.json",
   "include": [
-    ".",
-    "src/types.d.ts"
+    "."
   ],
   "compilerOptions": {
     "lib": [

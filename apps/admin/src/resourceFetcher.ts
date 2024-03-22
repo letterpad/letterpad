@@ -1,10 +1,8 @@
-import { getApiUrl, getRootUrl } from "./shared/getRootUrl";
-
 export const fetchResource = async (slug: string) => {
     if (!process.env.LETTERPAD_BLOG_KEY) {
         throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
     }
-    const req = await fetch(new URL('api/graphql', getRootUrl()).toString(), {
+    const req = await fetch(new URL('api/graphql', process.env.ROOT_URL).toString(), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -43,7 +41,7 @@ export const fetchPostsOfClient = async () => {
     if (!process.env.LETTERPAD_BLOG_KEY) {
         throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
     }
-    const req = await fetch(getApiUrl(), {
+    const req = await fetch(new URL('api/graphql', process.env.ROOT_URL).toString(), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -96,7 +94,7 @@ export const fetchPostsByTag = async () => {
     if (!process.env.LETTERPAD_BLOG_KEY) {
         throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
     }
-    const req = await fetch('https://letterpad.app/api/graphql', {
+    const req = await fetch(new URL('api/graphql', process.env.ROOT_URL).toString(), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
