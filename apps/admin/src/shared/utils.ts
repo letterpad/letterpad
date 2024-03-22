@@ -107,8 +107,7 @@ export const beautifyTopic = (str: string) => {
     )
 }
 
-
+const isClient = typeof window !== "undefined";
 export const getEdgeConfigClient = () => {
-  if (typeof globalThis !== "undefined") return (globalThis as any).edgeConfig as Record<string, any>;
-  return null;
+  return (isClient) ? window['edgeConfig'] as Record<string, any> : null
 }
