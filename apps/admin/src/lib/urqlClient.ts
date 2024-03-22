@@ -3,7 +3,7 @@ import { Client, createClient, fetchExchange, mapExchange } from "@urql/core";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import schema from "letterpad-graphql/graphql.schema.json";
 
-import { getRootUrl } from "@/shared/getRootUrl";
+import { getApiUrl, getRootUrl } from "@/shared/getRootUrl";
 
 let _client: Client | null = null;
 export const cache = cacheExchange({
@@ -28,11 +28,11 @@ export const cache = cacheExchange({
   },
 });
 
-const url =
-  typeof document === "undefined"
-    ? `${getRootUrl()}/api/graphql`
-    : "/api/graphql";
+const url = getApiUrl();
 const makeClient = () => {
+  // saha
+  // eslint-disable-next-line no-console 
+  console.log("Creating client", url)
   if (_client) return _client;
   _client = createClient({
     url,

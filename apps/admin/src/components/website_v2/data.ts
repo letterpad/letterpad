@@ -114,5 +114,8 @@ export async function getFeaturedPosts() {
       },
     }
   );
+  // saha
+  // eslint-disable-next-line no-console 
+  console.log("res", res.data?.letterpadFeaturedPosts)
   return res.data?.letterpadFeaturedPosts.__typename === "PostsNode" ? res.data.letterpadFeaturedPosts.rows : [];
 }
