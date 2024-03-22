@@ -1,4 +1,4 @@
-import { getRootUrl } from "../shared/getRootUrl";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 
 export const isPasswordValid = async (password: string, hash: string) => {

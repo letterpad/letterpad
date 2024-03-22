@@ -17,9 +17,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";
 import { Drawer } from "ui";
 
+import { getRootUrl } from "@/shared/getRootUrl";
+
 import { NotificationItem } from "./notification";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
-import { getRootUrl } from "../../shared/getRootUrl";
 
 const rootUrl = getRootUrl();
 

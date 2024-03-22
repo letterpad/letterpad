@@ -4,9 +4,8 @@ import { decode } from "next-auth/jwt";
 
 import { prisma } from "@/lib/prisma";
 
+import { getLoginUrl, getRootUrl } from "@/shared/getRootUrl";
 import { getAuthCookieName } from "@/utils/authCookie";
-
-import { getLoginUrl, getRootUrl } from "../../../../shared/getRootUrl";
 
 export async function GET(
   req: NextRequest,

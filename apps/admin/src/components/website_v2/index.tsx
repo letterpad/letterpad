@@ -6,6 +6,8 @@ import { TfiAnnouncement } from "react-icons/tfi";
 import { ProfileCard } from "ui/isomorphic";
 import { isPaymentsEnabled } from "ui/server";
 
+import { getRootUrl } from "@/shared/getRootUrl";
+
 import { AdminActions } from "./adminActions";
 import { BannerAd } from "./banner/bannerAd";
 import { SignupBanner } from "./banner/signupBanner";
@@ -22,7 +24,6 @@ import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
-import { getRootUrl } from "../../shared/getRootUrl";
 
 export const Website = async () => {
   const [data, categories, favAuthors, posts] = await Promise.all([

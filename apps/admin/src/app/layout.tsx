@@ -13,10 +13,10 @@ import "ui/css/editor.css";
 import { Providers } from "@/components/providers";
 
 import { basePath, gaTrackingId } from "@/constants";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 import { CookieBanner } from "../components/cookie-banner";
 import { fonts } from "../components/fonts";
-import { getRootUrl } from "../shared/getRootUrl";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getRootUrl()),

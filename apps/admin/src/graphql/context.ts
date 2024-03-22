@@ -5,6 +5,8 @@ import { andThen, pipe } from "ramda";
 
 import { prisma } from "@/lib/prisma";
 
+import { getSessionUrl } from "@/shared/getRootUrl";
+
 import { SessionData } from "./types";
 import { basePath } from "../constants";
 import {
@@ -12,7 +14,6 @@ import {
   findAuthorIdFromLetterpadSubdomain,
   findEmailFromToken,
 } from "../shared/getAuthorIdFromHeaders";
-import { getSessionUrl } from "../shared/getRootUrl";
 import { getHeader } from "../utils/headers";
 
 const isTest = process.env.NODE_ENV === "test";

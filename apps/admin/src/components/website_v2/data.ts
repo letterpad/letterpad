@@ -17,8 +17,9 @@ import {
   PostsQueryVariables,
 } from "letterpad-graphql";
 
+import { getApiUrl } from "@/shared/getRootUrl";
+
 import { client } from "../../lib/urqlClient";
-import { getApiUrl } from "../../shared/getRootUrl";
 
 const apiUrl = typeof window === "undefined" ? getApiUrl() : "";
 

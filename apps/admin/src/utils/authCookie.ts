@@ -1,4 +1,4 @@
-import { getRootUrl } from "../shared/getRootUrl";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 export const getAuthCookieName = () => {
   const rootUrl = getRootUrl();

@@ -7,6 +7,7 @@ import {
 } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
+import { getRootUrl } from "@/shared/getRootUrl";
 
 import {
   getSetting,
@@ -14,7 +15,6 @@ import {
   updateSetting,
 } from "../services/setting";
 import { resolveDesignField } from "../services/setting/resolveDesignField";
-import { getRootUrl } from "../../shared/getRootUrl";
 
 import { Optional } from "@/types";
 

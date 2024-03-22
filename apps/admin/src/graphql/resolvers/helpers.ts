@@ -3,10 +3,9 @@ import { Social } from "letterpad-graphql";
 
 import { prisma } from "@/lib/prisma";
 
+import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
 import { textToSlug } from "@/utils/slug";
-
-import { getRootUrl } from "../../shared/getRootUrl";
 
 const slugOfUntitledPost = "untitled";
 

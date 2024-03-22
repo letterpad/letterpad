@@ -5,9 +5,8 @@ import { FC } from "react";
 import { SlBadge } from "react-icons/sl";
 import { ProfileCard } from "ui/isomorphic";
 
+import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate } from "@/shared/utils";
-
-import { getRootUrl } from "../../shared/getRootUrl";
 
 interface Props {
   slug: string;
