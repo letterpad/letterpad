@@ -11,19 +11,12 @@ import { cache } from 'react';
 
 import { getApiUrl } from '../lib/utils/url';
 
-function getApiUrlWithVercel() {
-  if (process.env.VERCEL_ENV === 'preview') {
-    return process.env.VERCEL_BRANCH_URL?.replace('client', 'admin');
-  }
-  console.log('===================', getApiUrl());
-  return getApiUrl()!;
-}
 function getLetterpad() {
   const headersList = headers();
   const host = headersList.get('x-forwarded-host')! ?? headersList.get('host');
   return new Letterpad({
     letterpadServer: {
-      url: getApiUrlWithVercel() ?? '',
+      url: getApiUrl() ?? '',
       token: process.env.CLIENT_ID!,
       host: host.replace('www.', ''),
     },
