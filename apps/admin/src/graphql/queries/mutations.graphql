@@ -74,6 +74,9 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
     ... on Setting {
       ...SettingsFragment
     }
+    ... on NotFound {
+      message
+    }
     ... on UnAuthorized {
       message
     }

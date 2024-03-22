@@ -12,10 +12,9 @@ import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { EmailTemplates } from "@/graphql/types";
+import { getRootUrl } from "@/shared/getRootUrl";
 import { sanitizeUsername } from "@/shared/utils";
 import { getHashedPassword } from "@/utils/bcrypt";
-
-import { getRootUrl } from "../../../shared/getRootUrl";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;

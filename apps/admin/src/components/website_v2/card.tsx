@@ -5,6 +5,7 @@ import { FC } from "react";
 import { SlBadge } from "react-icons/sl";
 import { ProfileCard } from "ui/isomorphic";
 
+import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate } from "@/shared/utils";
 
 interface Props {
@@ -36,9 +37,7 @@ export const Card: FC<Props> = ({
   featured,
 }) => {
   const origin =
-    typeof window === "undefined"
-      ? process.env.ROOT_URL
-      : document.location.origin;
+    typeof window === "undefined" ? getRootUrl() : document.location.origin;
   const reading_time = stats?.reading_time?.replace("1 mins", "1 min");
 
   const avatar = author?.avatar

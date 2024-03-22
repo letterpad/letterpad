@@ -5,7 +5,7 @@ import { getData } from '@/data';
 import Custom404 from './not-found';
 import { Navbar } from '../components/navbar';
 import { StructuredData } from '../components/structured-data';
-import { getApiRootUrl } from '../../lib/utils/url';
+import { getApiRootUrl, getProfileUrl } from '../../lib/utils/url';
 import { SectionContainer } from '../../src/components/section';
 import { getTheme } from '../../themes';
 
@@ -74,7 +74,7 @@ const AboutMe = ({ me }) => {
       />
       <div className="mt-5">
         <a
-          href={new URL(`@${me.username}`, getApiRootUrl()).href}
+          href={getProfileUrl(me.username)}
           className="text-2xl font-bold leading-none text-gray-900 dark:text-gray-300 transition duration-500 ease-in-out"
         >
           {me.name}

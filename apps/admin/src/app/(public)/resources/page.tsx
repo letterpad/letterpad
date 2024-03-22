@@ -1,8 +1,9 @@
 import Link from "next/link";
 
+import { getRootUrl } from "@/shared/getRootUrl";
+
 import { Banner } from "../../../components/website_v2/banner/banner";
 import { fetchPostsOfClient } from "../../../resourceFetcher";
-import { getRootUrl } from "../../../shared/getRootUrl";
 
 const Resources = async () => {
   const posts = await fetchPostsOfClient();

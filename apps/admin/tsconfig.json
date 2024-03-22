@@ -50,7 +50,6 @@
     ".next/types/**/*.ts",
   ],
   "exclude": [
-    "__generated__/**/*.tsx",
     "letterpad-graphql",
     "node_modules",
   ],

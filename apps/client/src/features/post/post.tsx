@@ -17,7 +17,7 @@ import { SectionContainer } from '../../components/section';
 import { SubscribeToMyBlogPopup } from '../../components/subscribePopup';
 import { PageTitle } from '../../components/title';
 import { Share } from '../../../components/share';
-import { getApiRootUrl } from '../../../lib/utils/url';
+import { getApiRootUrl, getProfileUrl } from '../../../lib/utils/url';
 import { PostProps } from '../../../types/pageTypes';
 
 const Comments = lazy(() => import('@/components/comments'));
@@ -91,10 +91,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                 <span className="mb-2">Author</span>
                 <div className="inline-flex mr-3 text-gray-900 dark:text-white py-4 border-t dark:border-slate-800">
                   <Link
-                    href={new URL(
-                      `@${author.username}`,
-                      getApiRootUrl()
-                    ).toString()}
+                    href={getProfileUrl(author.username)}
                     rel={author.name}
                     className="contents"
                   >
@@ -106,10 +103,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                   </Link>
                   <div>
                     <Link
-                      href={new URL(
-                        `@${author.username}`,
-                        getApiRootUrl()
-                      ).toString()}
+                      href={getProfileUrl(author.username)}
                       rel={author.name}
                       className="text-xl font-bold text-gray-900 dark:text-white"
                     >
