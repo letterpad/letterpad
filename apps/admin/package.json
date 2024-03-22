@@ -37,7 +37,7 @@
     "e2e": "dotenv scripts/seed.sh && start-server-and-test 'bun dev' http://localhost:3000/login cy:open",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
-    "find-deadcode": "ts-prune | grep -Ev \"\\.d\\.ts|__generated__|seed\" | cat"
+    "find-deadcode": "ts-prune | grep -Ev \"\\.d\\.ts|seed\" | cat"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.0.5",

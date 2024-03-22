@@ -5,7 +5,7 @@ export const getRootUrl = () => {
     const protocol = "https://";
     return new URL(protocol + process.env.VERCEL_BRANCH_URL + basePath).toString();
   }
-  return new URL(process.env.NEXT_PUBLIC_ROOT_URL + basePath);
+  return new URL(process.env.NEXT_PUBLIC_ROOT_URL + basePath).toString();
 };
 
 export const getApiUrl = () => {

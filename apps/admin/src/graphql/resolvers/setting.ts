@@ -43,6 +43,15 @@ const Setting: SettingResolvers<ResolverContext> = {
     return session?.user.id!
   },
   is_platform: () => process.env.LETTERPAD_PLATFORM === "true",
+  site_url: async ({ site_url }, _, { session, dataloaders, client_author_id }) => {
+    if (site_url) {
+      const author = await dataloaders.author.load(
+        session?.user.id || client_author_id
+      );
+      return 'https://' + author.username + '.' + new URL(getRootUrl()).hostname
+    }
+    return site_url
+  },
 };
 
 const Query: QueryResolvers<ResolverContext> = {
