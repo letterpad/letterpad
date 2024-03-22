@@ -104,7 +104,7 @@ const RootLayout = async ({ children }) => {
         <Script
           dangerouslySetInnerHTML={{
             __html: `
-              window.edgeConfig = ${JSON.stringify(edgeConfig) ?? {}};
+              window.edgeConfig = ${JSON.stringify(edgeConfig ?? {})};
             `,
           }}
           id="edgeConfig"
