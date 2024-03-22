@@ -101,10 +101,11 @@ const RootLayout = async ({ children }) => {
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <Script
+
+        <script
           dangerouslySetInnerHTML={{
             __html: `
-              window.edgeConfig = ${JSON.stringify(edgeConfig ?? {})};
+              globalThis.edgeConfig = ${JSON.stringify(edgeConfig ?? {})};
             `,
           }}
           id="edgeConfig"
