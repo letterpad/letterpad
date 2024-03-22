@@ -46,7 +46,11 @@ function Header() {
                 <Link href="/resources">Resources</Link>
               </li>
 
-              <li className={classNames("hidden md:block pricing")}>
+              <li
+                className={classNames("hidden", {
+                  "md:block": isPaymentsActive,
+                })}
+              >
                 <Link href="/pricing">Pricing</Link>
               </li>
 
@@ -78,7 +82,11 @@ function Header() {
             <Link href="/resources">Resources</Link>
           </li>
 
-          <li className={classNames("md:hidden block pricing")}>
+          <li
+            className={classNames("md:hidden", {
+              block: isPaymentsActive,
+            })}
+          >
             <Link href="/pricing">Pricing</Link>
           </li>
           <li>
