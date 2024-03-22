@@ -18,13 +18,14 @@ import {
 } from "letterpad-graphql";
 
 import { client } from "../../lib/urqlClient";
-import { getRootUrl } from "../../shared/getRootUrl";
+import { getApiUrl } from "../../shared/getRootUrl";
+
+const apiUrl = typeof window === "undefined" ? getApiUrl() : "";
 
 export async function getLetterpadPosts(
   filters: LetterpadLatestPostsQueryVariables
 ) {
-  const root = typeof window === "undefined" ? getRootUrl() : "";
-  const resp = await fetch((root + "/api/graphql") as string, {
+  const resp = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -46,8 +47,7 @@ export async function getLetterpadPosts(
 }
 
 export async function getLetterpadCategories() {
-  const root = typeof window === "undefined" ? getRootUrl() : "";
-  const resp = await fetch((root + "/api/graphql") as string, {
+  const resp = await fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
