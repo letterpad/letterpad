@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { SettingsFragmentFragment } from 'letterpad-sdk';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { ComponentType, FC } from 'react';
 
 import Link from '@/components/Link';
@@ -29,6 +29,7 @@ export const Navbar: FC<Props> = async ({
   PreHeader,
 }) => {
   const routes = [...settings.menu];
+  const isPlatform = !!process.env.LETTERPAD_PLATFORM;
   const session = await getServerSession();
   const logoOrTitle = (
     <LogoOrTitle
@@ -46,14 +47,14 @@ export const Navbar: FC<Props> = async ({
           <div className="lp-header-right flex items-center text-base leading-5 gap-5">
             {!session?.user ? (
               <>
-                <AuthButtons />
+                {isPlatform && <AuthButtons />}
                 <ThemeSwitcher />
               </>
             ) : (
               <>
-                <FollowMe username={me.username} />
+                {isPlatform && <FollowMe username={me.username} />}
                 <ThemeSwitcher />
-                <ProfileDropdown />
+                {isPlatform && <ProfileDropdown />}
               </>
             )}
           </div>
