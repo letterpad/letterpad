@@ -4,6 +4,7 @@ import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { Menu, useResponsiveLayout } from "ui";
 
 import { isMembershipFeatureActive } from "@/utils/config";
@@ -14,17 +15,24 @@ import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
 
 export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();
+  const [paymentActive, setPaymentActive] = useState(false);
   const pathname = usePathname();
   const { isMobileOrTablet, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
   const stats = isStats(data?.stats) ? data?.stats : null;
   const activePlan = isAuthor(data?.me) ? data?.me?.is_paid_member : false;
+  const isActive = isMembershipFeatureActive();
+
+  useEffect(() => {
+    setPaymentActive(isActive);
+  }, [isActive]);
+
   return (
     <div className="h-full shadow-lg">
       <div className=" h-full flex-1 p-4">
         <Brand site_name={settings?.site_title ?? ""} />
         <div
-          className="sidebar-content  my-6 overflow-y-auto font-paragraph"
+          className="sidebar-content my-6 overflow-y-auto font-paragraph"
           style={{ height: "calc(100vh - 152px)" }}
         >
           <Menu
@@ -50,7 +58,7 @@ export const Sidebar = () => {
         </div>
         <style jsx>{`
           a[href="/membership"] {
-            display: ${isMembershipFeatureActive() ? "block" : "none"};
+            display: ${paymentActive ? "block" : "none"};
           }
         `}</style>
       </div>

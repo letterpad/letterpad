@@ -128,7 +128,7 @@ const Actions = ({ post }: IProps) => {
                     });
                   }}
                   ref={excerptRef}
-                  defaultValue={post.excerpt!}
+                  defaultValue={post.excerpt! ?? post.sub_title}
                 />
                 <div className="mt-2">
                   {busy ? (
