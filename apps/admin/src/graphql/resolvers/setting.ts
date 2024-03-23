@@ -44,7 +44,7 @@ const Setting: SettingResolvers<ResolverContext> = {
   },
   is_platform: () => process.env.LETTERPAD_PLATFORM === "true",
   site_url: async ({ site_url }, _, { session, dataloaders, client_author_id }) => {
-    if (site_url) {
+    if (!site_url) {
       const author = await dataloaders.author.load(
         session?.user.id || client_author_id
       );
