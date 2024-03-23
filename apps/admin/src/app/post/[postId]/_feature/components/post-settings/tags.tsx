@@ -281,11 +281,12 @@ export const PrimaryTag = ({ selected, onSelect }) => {
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
           e.target.value && onSelect(e.target.value)
         }
+        value={selected}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       >
         <option value="">Select</option>
         {tags.sort().map((tag) => (
-          <option key={tag} value={tag} selected={tag === selected}>
+          <option key={tag} value={tag}>
             {beautifyTopic(tag)}
           </option>
         ))}

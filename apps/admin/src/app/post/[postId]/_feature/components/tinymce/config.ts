@@ -13,6 +13,8 @@ export const subTitleEditorConfig: IProps["init"] = {
   toolbar: false,
   placeholder: "Optional sub-title of your post...",
   inline: true,
+  skin: false,
+  theme: false,
   content_style: `#${subTitleId} { font-size: 1.1rem; line-height: 1.3rem; font-weight: 500; color: rgba(var(--color), 0.5) }; `,
   setup: function (ed) {
     ed.on("keydown", function (e) {
@@ -34,6 +36,8 @@ export const titleEditorConfig: IProps["init"] = {
   toolbar: false,
   placeholder: "Title",
   inline: true,
+  skin: false,
+  theme: false,
   content_style: `#${titleId} p, #${titleId}::before { font-size: 3rem;  line-height: 3rem; font-weight: 700; margin-bottom: 1rem; }`,
   setup: function (ed) {
     ed.on("keydown", function (e) {
@@ -99,6 +103,8 @@ export const blogEditorConfig = ({
   placeholder: "Write your story here...",
   inline: true,
   image_caption: true,
+  skin: false,
+  theme: false,
   paste_preprocess: function (pl, o) {
 
     try {
