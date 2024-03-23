@@ -103,8 +103,6 @@ export const blogEditorConfig = ({
   placeholder: "Write your story here...",
   inline: true,
   image_caption: true,
-  skin: false,
-  theme: false,
   paste_preprocess: function (pl, o) {
 
     try {
@@ -158,9 +156,10 @@ export const blogEditorConfig = ({
   browser_spellcheck: true,
   contextmenu: false,
   branding: false,
+  link_context_toolbar: true,
   plugins:
     "lists image ai link quickbars autoresize  code codesample directionality wordcount",
-  skin: "none",
+  // skin: "none",
   skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
   height: "100%",
   quickbars_image_toolbar: false,
@@ -178,8 +177,7 @@ export const blogEditorConfig = ({
   text_patterns: textPatterns,
   paste_remove_styles: true,
   onpageload: () => {
-    editorRef.current?.dom.doc
-      .querySelectorAll("img")
+    editorRef.current?.dom?.doc?.querySelectorAll("img")
       .forEach((e) => e.removeAttribute("srcset"));
   },
   setup: function (editor) {
