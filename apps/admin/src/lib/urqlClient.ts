@@ -30,9 +30,7 @@ export const cache = cacheExchange({
 
 const url = getApiUrl();
 const makeClient = () => {
-  // saha
   // eslint-disable-next-line no-console 
-  console.log("Creating client", url)
   if (_client) return _client;
   _client = createClient({
     url,

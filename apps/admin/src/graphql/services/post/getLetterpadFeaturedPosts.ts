@@ -22,9 +22,6 @@ export const getLetterpadFeaturedPosts = async (
         }
       }
     });
-    // saha
-    // eslint-disable-next-line no-console 
-    console.log("featured Week", postIds)
     const posts = await dataloaders.post.loadMany(
       postIds.map((p) => p.post_id)
     );

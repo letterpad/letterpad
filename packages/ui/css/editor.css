@@ -10,7 +10,7 @@
   }
 
   ::selection {
-    background: yellow;
+    background: rgb(120, 199, 255);
     color: #000;
   }
 

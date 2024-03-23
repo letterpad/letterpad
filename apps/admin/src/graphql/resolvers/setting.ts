@@ -52,6 +52,9 @@ const Setting: SettingResolvers<ResolverContext> = {
     }
     return site_url
   },
+  logged_in: (_, __, { session }) => {
+    return !!session?.user?.id;
+  }
 };
 
 const Query: QueryResolvers<ResolverContext> = {

@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import { SettingsFragmentFragment } from 'letterpad-sdk';
+import { cookies, headers } from 'next/headers';
 import { ComponentType, FC } from 'react';
 
 import Link from '@/components/Link';
 
+import { AuthButtons } from './authButtons';
 import { FollowMe } from './followme';
 import { ThemeSwitcher } from './theme-switcher';
 import { LetterpadLogo } from '../letterpad-logo';
@@ -12,6 +14,7 @@ import { SubscribeModal } from '../subscribe-modal';
 import { Menu } from '../../components/menu';
 import { ProfileDropdown } from '../../components/profile-dropdown';
 import { LogoOrTitle } from '../../components/site-logo';
+import { getSessionUrl } from '../../../lib/utils/url';
 
 interface Props {
   settings: SettingsFragmentFragment;
@@ -19,13 +22,14 @@ interface Props {
   me: any;
   PreHeader?: ComponentType;
 }
-export const Navbar: FC<Props> = ({
+export const Navbar: FC<Props> = async ({
   settings,
   isHome = false,
   me,
   PreHeader,
 }) => {
   const routes = [...settings.menu];
+  const session = await getServerSession();
   const logoOrTitle = (
     <LogoOrTitle
       logo={settings.site_logo}
@@ -39,10 +43,19 @@ export const Navbar: FC<Props> = ({
       <div className="relative bg-accent-50 bg-cover text-white py-4 px-4 space-y-10">
         <div className="relative mx-auto z-1 max-w-7xl md:px-20 flex justify-between bg-accent-50 items-center">
           <LetterpadLogo />
-          <div className="lp-header-right flex items-center text-base leading-5 gap-4">
-            <FollowMe username={me.username} />
-            <ThemeSwitcher />
-            <ProfileDropdown />
+          <div className="lp-header-right flex items-center text-base leading-5 gap-5">
+            {!session?.user ? (
+              <>
+                <AuthButtons />
+                <ThemeSwitcher />
+              </>
+            ) : (
+              <>
+                <FollowMe username={me.username} />
+                <ThemeSwitcher />
+                <ProfileDropdown />
+              </>
+            )}
           </div>
         </div>
         {PreHeader && <PreHeader />}
@@ -97,4 +110,17 @@ export const Navbar: FC<Props> = ({
       )}
     </>
   );
+};
+
+export const getServerSession = async () => {
+  try {
+    const sessionURL = getSessionUrl();
+    const res = await fetch(sessionURL, {
+      headers: { cookie: cookies().toString() },
+    });
+    const session = await res.json();
+    return session.user ? (session as { user: any }) : null;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+  }
 };

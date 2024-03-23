@@ -2,6 +2,7 @@
 import { animated, useSpring } from '@react-spring/web';
 import classNames from 'classnames';
 import { useRef, useState } from 'react';
+import { BsEnvelope } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiEdit2 } from 'react-icons/fi';
 import { IoMdPerson } from 'react-icons/io';
@@ -59,6 +60,11 @@ export const ProfileDropdown = () => {
         {show &&
           (session?.user?.username ? (
             <>
+              <MenuItem
+                label="Posts"
+                icon={<BsEnvelope size={18} />}
+                path="/posts"
+              />
               <MenuItem
                 target="_blank"
                 label="New Story"

@@ -1006,6 +1006,7 @@ export type Setting = {
   id: Scalars["String"];
   intro_dismissed: Scalars["Boolean"];
   is_platform?: Maybe<Scalars["Boolean"]>;
+  logged_in?: Maybe<Scalars["Boolean"]>;
   menu: Array<Navigation>;
   openai_key?: Maybe<Scalars["String"]>;
   paypal_email?: Maybe<Scalars["String"]>;
@@ -1409,6 +1410,7 @@ export type MeAndSettingsQuery = {
         css?: string | null;
         site_footer?: string | null;
         is_platform?: boolean | null;
+        logged_in?: boolean | null;
         banner?: {
           __typename?: "Image";
           src?: string | null;
@@ -1700,6 +1702,7 @@ export type PostPageQuery = {
         css?: string | null;
         site_footer?: string | null;
         is_platform?: boolean | null;
+        logged_in?: boolean | null;
         banner?: {
           __typename?: "Image";
           src?: string | null;
@@ -1866,6 +1869,7 @@ export type SettingsQuery = {
         css?: string | null;
         site_footer?: string | null;
         is_platform?: boolean | null;
+        logged_in?: boolean | null;
         banner?: {
           __typename?: "Image";
           src?: string | null;
@@ -1917,6 +1921,7 @@ export type SettingsFragmentFragment = {
   css?: string | null;
   site_footer?: string | null;
   is_platform?: boolean | null;
+  logged_in?: boolean | null;
   banner?: {
     __typename?: "Image";
     src?: string | null;
@@ -2244,6 +2249,7 @@ export const SettingsFragmentFragmentDoc = `
   }
   site_footer
   is_platform
+  logged_in
 }
     `;
 export const SitemapFragmentFragmentDoc = `

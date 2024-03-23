@@ -17,7 +17,7 @@ import { SectionContainer } from '../../components/section';
 import { SubscribeToMyBlogPopup } from '../../components/subscribePopup';
 import { PageTitle } from '../../components/title';
 import { Share } from '../../../components/share';
-import { getApiRootUrl, getProfileUrl } from '../../../lib/utils/url';
+import { getProfileUrl } from '../../../lib/utils/url';
 import { PostProps } from '../../../types/pageTypes';
 
 const Comments = lazy(() => import('@/components/comments'));
@@ -155,11 +155,11 @@ interface Props {
 
 export default function PostSubTitle({ text, className }: Props) {
   if (!text) return null;
-  const textColor = className ?? 'text-gray-400 dark:text-slate-400';
+  const textColor = className ?? 'text-gray-500 dark:text-slate-400';
   return (
     <h4
       className={classNames(
-        'py-2 text-lg font-medium  leading-7 font-body',
+        'py-2 text-md leading-7 font-body',
         className,
         textColor
       )}
