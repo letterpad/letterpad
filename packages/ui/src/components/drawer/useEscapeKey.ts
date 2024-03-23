@@ -11,7 +11,6 @@ export const useEscapeKey = (callback: any) => {
 
         const onKeyPress = (event: any) => {
             if (event.keyCode === ESCAPE_KEY) {
-                debugger;
                 callback(event);
             }
         }
