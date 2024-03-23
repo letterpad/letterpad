@@ -6,11 +6,16 @@ require("katex/dist/katex.min.css");
  * Core
  */
 
-function renderKatex(code, el) {
+function renderKatex(dom, code, el) {
   Katex.render(code, el, {
     output: "html",
     throwOnError: false,
   });
+  dom.setAttrib(
+    el,
+    "class",
+    dom.getAttrib(el, "class").trim() + " flex justify-center py-2"
+  );
 }
 
 function isLatexNode(el) {
@@ -38,7 +43,7 @@ function insertLatexCode(editor, code) {
       dom.setAttrib(latexNode, "class", "letterpad-katex");
       dom.setAttrib(latexNode, "data-latex", code);
       latexNode.innerHTML = code;
-      renderKatex(code, latexNode);
+      renderKatex(dom, code, latexNode);
     } else {
       editor.insertContent(`<p id="__new" class="letterpad-katex">${code}</p>`);
       const newEl = dom.select("#__new")[0];
@@ -86,7 +91,7 @@ function setupCore(editor) {
     if (unprocessedCodeSamples.length) {
       editor.undoManager.transact(() => {
         tinymce.each(unprocessedCodeSamples, (elm) => {
-          renderKatex(elm.getAttribute("data-latex"), elm);
+          renderKatex(dom, elm.getAttribute("data-latex"), elm);
           dom.setAttrib(elm, "data-mce-highlighted", true);
         });
       });
