@@ -3,7 +3,6 @@ import { Button, Label, TextArea } from "ui";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
-import { SaveButton } from "@/components/save-button";
 import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 import { Upload } from "@/components/upload";
 
@@ -18,7 +17,7 @@ const Appearance = () => {
   const isPaidMember = useIsPaidMember();
 
   return (
-    <div className="grid gap-8">
+    <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-4">
         <Label label="Brand Color - Choose a color that reflects your brand." />
         <div className="flex flex-col items-start space-y-5">
@@ -158,9 +157,6 @@ const Appearance = () => {
             />
           )}
         />
-
-        <br />
-        <SaveButton />
       </div>
     </div>
   );

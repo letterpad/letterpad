@@ -2,15 +2,13 @@ import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
 import { Input, TextArea } from "ui";
 
-import { SaveButton } from "@/components/save-button";
-
 interface Props {}
 const General: React.FC<Props> = () => {
   const data = useFormContext<Setting>();
 
   return (
     <>
-      <div className="mb-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
+      <div className="mb-8 flex-col gap-8 flex">
         <div>
           <Input
             label="Site Title"
@@ -78,7 +76,6 @@ const General: React.FC<Props> = () => {
           />
         </div>
       </div>
-      <SaveButton testId="save-general" />
     </>
   );
 };

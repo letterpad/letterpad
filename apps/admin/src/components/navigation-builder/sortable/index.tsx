@@ -18,7 +18,6 @@ import { BiPlus } from "react-icons/bi";
 import { Button } from "ui";
 
 import { Collection } from "@/components/navigation-builder/types";
-import { SaveButton } from "@/components/save-button";
 
 import { EventAction, track } from "@/track";
 
@@ -152,7 +151,6 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
           <BiPlus size={18} />
           Add New
         </Button>
-        <SaveButton testId="saveMenuBtn" />
       </div>
       <SuggestionModal
         isOpen={showModal}

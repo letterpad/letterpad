@@ -7,8 +7,6 @@ import { RiLayout4Line } from "react-icons/ri";
 import { SlBadge } from "react-icons/sl";
 import { VscDebugDisconnect, VscGraphLine } from "react-icons/vsc";
 
-import { isMembershipFeatureActive } from "@/utils/config";
-
 export const items = (stats, activePlan: boolean) => [
   {
     label: "Posts",
@@ -58,7 +56,6 @@ export const items = (stats, activePlan: boolean) => [
     label: "Membership",
     icon: <SlBadge size={16} className={activePlan ? "fill-green-500" : ""} />,
     key: "/membership",
-    hidden: !isMembershipFeatureActive(),
   },
   {
     label: "Settings",
