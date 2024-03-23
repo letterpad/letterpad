@@ -2,15 +2,13 @@ import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
 import { TextArea } from "ui";
 
-import { SaveButton } from "@/components/save-button";
-
 interface Props {}
 const Ai: React.FC<Props> = () => {
   const data = useFormContext<Setting>();
 
   return (
     <>
-      <div className="mb-8 grid w-full grid-cols-1 gap-8">
+      <div className="mb-8 w-full gap-8 flex flex-col">
         <span className="max-w-2xl">
           To get an OpenAI key, you first need to register at{" "}
           <a
@@ -46,7 +44,6 @@ const Ai: React.FC<Props> = () => {
           />
         </div>
       </div>
-      <SaveButton testId="save-general" />
     </>
   );
 };

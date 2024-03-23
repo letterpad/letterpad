@@ -1,17 +1,13 @@
 "use client";
 
+import classNames from "classnames";
 import { SettingInputType } from "letterpad-graphql";
 import { useDeleteAuthorMutation } from "letterpad-graphql/hooks";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  Accordion,
-  AccordionItem,
-  Button,
-  Message,
-  PopConfirm,
-  TextArea,
-} from "ui";
+import { Button, Message, PopConfirm, TextArea } from "ui";
 
 import { getDirtyFields } from "@/lib/react-form";
 
@@ -25,10 +21,35 @@ import Navigation from "./components/navigation";
 import Pages from "./components/pages";
 import Paypal from "./components/paypal";
 import SeoSettings from "./components/seo";
+import { SaveButton } from "../../../components/save-button";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
 }
+
+const settingsLinks = [
+  { key: "seo", text: "Seo Configuration", url: "/settings?selected=seo" },
+  { key: "payment", text: "Payments", url: "/settings?selected=payment" },
+  { key: "ai", text: "Ai", url: "/settings?selected=ai" },
+  {
+    key: "appearance",
+    text: "Appearance",
+    url: "/settings?selected=appearance",
+  },
+  { key: "pages", text: "Pages", url: "/settings?selected=pages" },
+  {
+    key: "navigation",
+    text: "Navigation",
+    url: "/settings?selected=navigation",
+  },
+  {
+    key: "integrations",
+    text: "Integration",
+    url: "/settings?selected=integrations",
+  },
+  { key: "keys", text: "Keys", url: "/settings?selected=keys" },
+  { key: "delete", text: "Delete Account", url: "/settings?selected=delete" },
+];
 
 export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
@@ -38,21 +59,17 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const [_, deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
     values: data,
+    mode: "all",
+    reValidateMode: "onChange",
   });
   const { handleSubmit, formState } = methods;
+  const selectedKey = searchParams.get("selected") ?? "seo";
 
-  const onPanelClick = (key) => {
-    const params = new URLSearchParams(Array.from(searchParams.entries()));
-    if (key) {
-      params.set("selected", key);
-    } else {
-      params.delete("selected");
-    }
-    // cast to string
-    const search = params.toString();
-    const query = search ? `?${search}` : "?";
-    history.replaceState(null, "", query);
-  };
+  useEffect(() => {
+    document
+      .querySelector(`#${selectedKey}`)
+      ?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedKey]);
 
   const confirm = async () => {
     await deleteAuthor({});
@@ -62,91 +79,137 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   if (!data) return null;
 
   return (
-    <>
-      <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit((data) => {
-            const change = getDirtyFields<SettingInputType>(
-              data,
-              formState.dirtyFields
-            );
-            Message().loading({ content: "Saving...", duration: 3 });
-            return updateSettings({ options: change }).then((res) => {
-              if (res.data?.updateOptions?.__typename === "NotFound") {
-                return Message().error({
-                  content: res.data?.updateOptions.message,
-                  duration: 3,
-                });
-              }
-              methods.reset(change);
-              Message().success({ content: "Saved", duration: 2 });
-            });
-          })}
-        >
-          <Accordion
-            onChange={onPanelClick}
-            activeKey={searchParams.get("selected")!}
-          >
-            <AccordionItem
-              label="SEO Settings"
-              id="seo"
-              description="Basic details and metadata of your site"
-            >
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          const change = getDirtyFields<SettingInputType>(
+            data,
+            formState.dirtyFields
+          );
+          Message().loading({ content: "Saving...", duration: 3 });
+          return updateSettings({ options: change }).then((res) => {
+            if (res.data?.updateOptions?.__typename === "NotFound") {
+              return Message().error({
+                content: res.data?.updateOptions.message,
+                duration: 3,
+              });
+            }
+            methods.reset(change);
+            Message().success({ content: "Saved", duration: 2 });
+          });
+        })}
+      >
+        {formState.isDirty && (
+          <div className="absolute bottom-0 z-20 w-full py-2 text-right -ml-8 md:-ml-16">
+            <SaveButton />
+          </div>
+        )}
+        <div className="flex flex-col md:flex-row relative gap-10 md:gap-20">
+          <div className="md:p-8 md:sticky top-0 h-full">
+            <div className="hidden md:flex flex-col  gap-2">
+              {settingsLinks.map(({ key, text, url }) => (
+                <Link
+                  key={key}
+                  className={classNames({
+                    "text-blue-500": selectedKey == key,
+                  })}
+                  href={url}
+                >
+                  {text}
+                </Link>
+              ))}
+            </div>
+            <div className="md:hidden">
+              <select
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                onChange={(e) => {
+                  const selectedKey = e.target.value;
+                  router.push(`/settings?selected=${selectedKey}`);
+                }}
+                value={selectedKey}
+              >
+                {settingsLinks.map(({ key, text }) => (
+                  <option key={key} value={key}>
+                    {text}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="md:p-8 flex-col space-y-10 w-full md:w-1/2">
+            <div>
+              <Heading
+                heading={"Seo Configuration"}
+                description={"Basic details and metadata of your site"}
+                id="seo"
+              />
               <SeoSettings />
-            </AccordionItem>
-            <AccordionItem
-              label="Payment Information"
-              id="payment"
-              description="Your earnings will be trasferred to this account"
-            >
+            </div>
+            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div>
+              <Heading
+                heading={"Payment Information"}
+                description={"Your earnings will be trasferred to this account"}
+                id="payment"
+              />
               <Paypal />
-            </AccordionItem>
-            <AccordionItem
-              label="Open AI"
-              id="openai"
-              description="Add Open AI key"
-            >
+            </div>
+            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div>
+              <Heading
+                heading={"Open AI"}
+                description={"Add Open AI key"}
+                id="ai"
+              />
               <Ai />
-            </AccordionItem>
-            <AccordionItem
-              label="Appearance"
-              id="appearance"
-              description="Customise the look and feel of your site"
-            >
+            </div>
+            <div>
+              <Heading
+                heading={"Appearance"}
+                description={"Customise the look and feel of your site"}
+                id="appearance"
+              />
               <Appearance />
-            </AccordionItem>
-            <AccordionItem
-              label="Pages"
-              id="pages"
-              description="Optional pages to add to your site"
-            >
+            </div>
+            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div>
+              <Heading
+                heading={"Pages"}
+                description={"Optional pages to add to your site"}
+                id="pages"
+              />
               <Pages settings={data} />
-            </AccordionItem>
-            <AccordionItem
-              label="Navigation"
-              id="navigation"
-              description="Configure the navigation menu of your site"
-            >
-              <div className="pb-8 dark:text-gray-400">
-                The first item in the navigation menu will be the homepage of
-                your blog.
-              </div>
+            </div>
+            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div className="relative">
+              <Heading
+                heading={"Navigation"}
+                description={
+                  "Configure the navigation menu of your site. The first item in the navigation menu will be the homepage of your blog."
+                }
+                id="navigation"
+              />
               <Navigation />
-            </AccordionItem>
-            <AccordionItem
-              label="Integrations"
-              id="integrations"
-              description="Integrations and code injections"
-            >
+            </div>
+            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div>
+              <Heading
+                heading={"Integrations"}
+                description={"Integrations and code injections"}
+                id="integrations"
+              />
               <Integrations
                 cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
               />
-            </AccordionItem>
-            <AccordionItem
-              label="Keys"
-              id="keys"
-              description="Custom token to access letterpad API"
-            >
+            </div>
+            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div>
+              <Heading
+                heading={"Keys"}
+                description={"Custom token to access letterpad API"}
+                id="keys"
+              />
+
               <div className="mb-8 flex flex-1 items-center gap-2">
                 <TextArea
                   label="Client Key"
@@ -160,12 +223,14 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
 
                 <CopyToClipboard elementId="client_token" />
               </div>
-            </AccordionItem>
-            <AccordionItem
-              label="Delete your account"
-              id="account"
-              description="Danger Zone"
-            >
+            </div>
+            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div>
+              <Heading
+                heading={"Delete Account"}
+                description={""}
+                id="delete"
+              />
               <div className="mb-4 text-gray-700 dark:text-gray-400 whitespace-normal">
                 If due to some reason you wish to move out of Letterpad, you may
                 delete your account. <br />
@@ -180,10 +245,27 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               >
                 <Button variant="danger">Delete your account</Button>
               </PopConfirm>
-            </AccordionItem>
-          </Accordion>
-        </form>
-      </FormProvider>
-    </>
+            </div>
+          </div>
+        </div>
+      </form>
+    </FormProvider>
   );
 }
+
+const Heading = ({ heading, description, id }) => {
+  const searchParams = useSearchParams();
+  const selectedKey = searchParams.get("selected");
+  return (
+    <div className="mb-8" id={id}>
+      <h2
+        className={classNames("font-paragraph text-lg font-semibold", {
+          "text-blue-500": selectedKey == id,
+        })}
+      >
+        {heading}
+      </h2>
+      <p className="font-paragraph">{description}</p>
+    </div>
+  );
+};

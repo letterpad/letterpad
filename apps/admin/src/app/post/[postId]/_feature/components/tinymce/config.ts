@@ -14,6 +14,8 @@ export const subTitleEditorConfig: IProps["init"] = {
   toolbar: false,
   placeholder: "Optional sub-title of your post...",
   inline: true,
+  skin: false,
+  theme: false,
   content_style: `#${subTitleId} { font-size: 1.1rem; line-height: 1.3rem; font-weight: 500; color: rgba(var(--color), 0.5) }; `,
   setup: function (ed) {
     ed.on("keydown", function (e) {
@@ -35,6 +37,8 @@ export const titleEditorConfig: IProps["init"] = {
   toolbar: false,
   placeholder: "Title",
   inline: true,
+  skin: false,
+  theme: false,
   content_style: `#${titleId} p, #${titleId}::before { font-size: 3rem;  line-height: 3rem; font-weight: 700; margin-bottom: 1rem; }`,
   setup: function (ed) {
     ed.on("keydown", function (e) {
@@ -153,9 +157,10 @@ export const blogEditorConfig = ({
   browser_spellcheck: true,
   contextmenu: false,
   branding: false,
+  link_context_toolbar: true,
   plugins:
     "lists image ai link quickbars autoresize  code codesample directionality wordcount latex",
-  skin: "none",
+  // skin: "none",
   skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
   height: "100%",
   quickbars_image_toolbar: false,
@@ -173,8 +178,7 @@ export const blogEditorConfig = ({
   text_patterns: textPatterns,
   paste_remove_styles: true,
   onpageload: () => {
-    editorRef.current?.dom.doc
-      .querySelectorAll("img")
+    editorRef.current?.dom?.doc?.querySelectorAll("img")
       .forEach((e) => e.removeAttribute("srcset"));
   },
   setup: function (editor) {

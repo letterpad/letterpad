@@ -62,7 +62,7 @@ module.exports = {
         widest: "0.4em",
       },
       colors: {
-        primary: colors.green,
+        primary: colors.blue,
         gray: colors.slate,
         muted: colors.slate[400],
         accent: {

@@ -1,8 +1,9 @@
-import { animated, config, useSpring } from "@react-spring/web";
+import { animated, useSpring } from "@react-spring/web";
 import classNames from "classnames";
 import { FC, useEffect } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
+import { useEscapeKey } from "./useEscapeKey";
 import { disableScroll } from "../../utils";
 
 interface Props {
@@ -55,6 +56,8 @@ export const Drawer: FC<Props> = ({
     scale: scale ? (show ? 1 : 0.2) : 1,
     delay: 2,
   });
+
+  useEscapeKey(()=> onClose());
 
   useEffect(() => {
     disableScroll(show);

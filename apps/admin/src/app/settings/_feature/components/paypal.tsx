@@ -1,8 +1,6 @@
 import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
-import { Input, TextArea } from "ui";
-
-import { SaveButton } from "@/components/save-button";
+import { Input } from "ui";
 
 interface Props {}
 const Paypal: React.FC<Props> = () => {
@@ -10,7 +8,7 @@ const Paypal: React.FC<Props> = () => {
 
   return (
     <>
-      <div className="mb-8 grid w-full grid-cols-1 gap-8">
+      <div className="mb-8 flex flex-col gap-8">
         <div className="mb-8 flex flex-1 gap-10 flex-col">
           <div className="font-heading">
             We will trasfer your earning to this account. Please make sure to
@@ -27,7 +25,6 @@ const Paypal: React.FC<Props> = () => {
           />
         </div>
       </div>
-      <SaveButton testId="save-paypal" />
     </>
   );
 };

@@ -1,4 +1,5 @@
 import { SettingsFragmentFragment } from "letterpad-graphql";
+import { Controller, useFormContext } from "react-hook-form";
 import { Divider, Switch } from "ui";
 
 import { useUpdateSettings } from "../api.client";
@@ -9,26 +10,36 @@ interface Props {
 
 const Pages: React.FC<Props> = ({ settings }) => {
   const { updateSettings } = useUpdateSettings();
+  const data = useFormContext();
   return (
     <>
-      <Switch
-        data-testid="aboutPageCb"
-        active={!!settings.show_about_page}
-        onChange={(checked) =>
-          updateSettings({ options: { show_about_page: checked } })
-        }
-        label='Select this to add a new menu item "About" which will display
+      <Controller
+        name="show_about_page"
+        control={data.control}
+        render={({ field: { onChange } }) => (
+          <Switch
+            data-testid="aboutPageCb"
+            active={!!settings.show_about_page}
+            onChange={onChange}
+            label='Select this to add a new menu item "About" which will display
         information about you.'
+          />
+        )}
       />
+
       <Divider />
-      <Switch
-        active={!!settings.show_tags_page}
-        data-testId="tagsPageCb"
-        onChange={(checked) =>
-          updateSettings({ options: { show_tags_page: checked } })
-        }
-        label='Select this to add a new menu item "Tags" which will display
+      <Controller
+        name="show_tags_page"
+        control={data.control}
+        render={({ field: { onChange } }) => (
+          <Switch
+            active={!!settings.show_tags_page}
+            data-testId="tagsPageCb"
+            onChange={onChange}
+            label='Select this to add a new menu item "Tags" which will display
         all the tags with the post count.'
+          />
+        )}
       />
     </>
   );

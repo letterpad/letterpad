@@ -28,11 +28,11 @@ export const Preview: FC<Props> = ({
         <div>
           <div>
             <div className="font-bold">{siteTitle}</div>
-            <p className="text-xs text-gray-600 dark:text-gray-300">
+            <div className="text-xs text-gray-600 dark:text-gray-300">
               <div className="hover:underline text-ellipsis overflow-hidden">
                 {url}
               </div>
-            </p>
+            </div>
           </div>
           <h2 className="text-sm font-semibold text-blue-700 mt-2 leading-5">
             <span className="hover:underline">{ellipsis(title, 57)}</span>
