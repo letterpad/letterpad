@@ -1,6 +1,7 @@
 import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
+import { Button } from "ui";
 
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
@@ -30,6 +31,7 @@ export const Tags = ({ post, header }: IProps) => {
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const { updatePost } = useUpdatePost();
   const { data, fetching: loading } = useGetTags({ suggest: true });
+  const [showSave, setShowSave] = useState(false);
 
   const computedTags = useMemo(() => data ?? [], [data]);
 
@@ -54,11 +56,12 @@ export const Tags = ({ post, header }: IProps) => {
     }
   }, [computedTags, loading, tags]);
 
-  const saveTags = (tags: Tag[]) => {
-    updatePost({
+  const saveTags = async () => {
+    await updatePost({
       id: post.id,
       tags: tags.map((t) => ({ name: t.name, slug: t.name })),
     });
+    setShowSave(false);
   };
 
   const onDelete = (i) => {
@@ -69,7 +72,8 @@ export const Tags = ({ post, header }: IProps) => {
 
     addToSuggestion(removedTag);
     setTags(_tags);
-    saveTags(_tags);
+    // saveTags(_tags);
+    setShowSave(true);
   };
 
   const onAddition = (tag) => {
@@ -83,7 +87,8 @@ export const Tags = ({ post, header }: IProps) => {
     }
     const _tags = [...tags, { ...tag, id: removeCount(tag.name) }];
     setTags(_tags);
-    saveTags(_tags);
+    // saveTags(_tags);
+    setShowSave(true);
     removeFromSuggestion(tag);
   };
 
@@ -107,6 +112,11 @@ export const Tags = ({ post, header }: IProps) => {
           suggestions={suggestions}
           delimiters={["Enter", "Tab", ","]}
         />
+        {showSave && (
+          <Button size="small" onClick={saveTags}>
+            Save
+          </Button>
+        )}
       </div>
       <style jsx global>{`
         .react-tags {
