@@ -49,4 +49,5 @@ fragment settingsFragment on Setting {
   }
   site_footer
   is_platform
+  logged_in
 }

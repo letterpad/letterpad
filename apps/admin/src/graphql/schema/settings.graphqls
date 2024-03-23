@@ -45,6 +45,7 @@ type Setting {
   openai_key: String @maskIfUnauth
   paypal_email: String @maskIfUnauth
   is_platform: Boolean
+  logged_in: Boolean
 }
 
 input InputNavigation {

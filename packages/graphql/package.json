@@ -4,10 +4,9 @@
   "scripts": {
     "clean": "rm -rf ./dist ./src",
     "postinstall": "bun run build",
-    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen": "graphql-codegen --config codegen.ts && bun run build.tsc.mjs && bun run build.tsc.cjs",
     "build.tsc.mjs": "tsc -p tsconfig.json",
-    "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
-    "build": "bun run codegen && bun run build.tsc.mjs && bun run build.tsc.cjs"
+    "build.tsc.cjs": "tsc -p tsconfig.cjs.json"
   },
   "main": "dist/cjs/graphql.js",
   "module": "dist/mjs/graphql.js",

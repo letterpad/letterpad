@@ -5,7 +5,7 @@ import { getData } from '@/data';
 import Custom404 from './not-found';
 import { Navbar } from '../components/navbar';
 import { StructuredData } from '../components/structured-data';
-import { getApiRootUrl, getProfileUrl } from '../../lib/utils/url';
+import { getProfileUrl } from '../../lib/utils/url';
 import { SectionContainer } from '../../src/components/section';
 import { getTheme } from '../../themes';
 

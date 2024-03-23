@@ -18,9 +18,10 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
         <Item
           title="Free"
           items={[
-            "Maximum 5 posts allowed",
-            "Build Subscribers",
-            "Basic Support",
+            "Unlimited Posts",
+            "Basic Analytics",
+            "Earnings ( $3 / 500 reads )",
+            null,
             null,
             null,
             null,
@@ -39,9 +40,10 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
         items={[
           "Unlimited Posts",
           "Domain Mapping",
-          "Analytics",
-          "Creatives to create photo blog page",
-          "Custom Email Template for Subscribers",
+          "Entended Analytics",
+          "Creatives",
+          "Custom Email Template",
+          "Earnings 2x ( $6 / 500 reads )",
           "Pro Badge",
           "And more...",
         ]}
