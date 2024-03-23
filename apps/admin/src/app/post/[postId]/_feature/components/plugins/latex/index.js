@@ -36,7 +36,6 @@ function insertLatexCode(editor, code) {
   const dom = editor.dom;
   editor.undoManager.transact(() => {
     const latexNode = getLatexNode(editor);
-
     code = tinymce.DOM.encode(code);
 
     if (latexNode) {
@@ -45,7 +44,9 @@ function insertLatexCode(editor, code) {
       latexNode.innerHTML = code;
       renderKatex(dom, code, latexNode);
     } else {
-      editor.insertContent(`<p id="__new" class="letterpad-katex">${code}</p>`);
+      editor.insertContent(
+        `<p id="__new" class="letterpad-katex" data-latex="${code}"></p>`
+      );
       const newEl = dom.select("#__new")[0];
       dom.setAttrib(newEl, "data-latex", code);
       dom.setAttrib(newEl, "id", null);

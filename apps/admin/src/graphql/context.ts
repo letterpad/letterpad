@@ -23,8 +23,6 @@ const cache: Record<string, string> = {};
 export const getResolverContext = async (request: Request) => {
   const authHeader = getHeader(request.headers, "authorization");
   const identifierHeader = getHeader(request.headers, "identifier");
-  console.log('authHeader', authHeader);
-  console.log('identifierHeader', identifierHeader);
   if (cache[`${authHeader}-${identifierHeader}`]) {
     console.log(
       `Found authorId from cache: ${cache[`${authHeader}-${identifierHeader}`]}`
@@ -65,14 +63,14 @@ const batchAuthors = async (keys: readonly string[]) => {
       setting: {
         select: {
           site_url: true,
-        }
+        },
       },
       membership: {
         select: {
           status: true,
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
   const authorMap: Record<string, (typeof authors)[0]> = {};
@@ -108,7 +106,7 @@ const batchPosts = async (keys: readonly string[]) => {
     },
     include: {
       featured_weeks: true,
-    }
+    },
   });
 
   const postsMap: Record<string, (typeof posts)[0]> = {};
@@ -152,12 +150,9 @@ const dataLoaderOptions = {
 const createDataLoaders = () => ({
   author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
   setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
-  post: new DataLoader<Readonly<string>, Post>(
-    batchPosts,
-    dataLoaderOptions
-  ),
+  post: new DataLoader<Readonly<string>, Post>(batchPosts, dataLoaderOptions),
   tagsByPostId: new DataLoader<any, Tag[]>(batchTags, dataLoaderOptions),
-})
+});
 
 export const context = async ({ request }) => {
   const resolverContext = await getResolverContext(request);
@@ -179,7 +174,7 @@ export const getServerSession = async ({ req }) => {
       headers: { cookie: getHeader(headers, "cookie") },
     });
     const session = await res.json();
-    return session.user ? session as { user: SessionData } : null;
+    return session.user ? (session as { user: SessionData }) : null;
   } catch (e) {
     // eslint-disable-next-line no-console
   }
