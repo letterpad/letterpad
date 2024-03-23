@@ -71,13 +71,13 @@
   }
 
   a {
-    color: var(--accent);
-    border-bottom: 1px solid var(--accent);
+    /* color: #1f9aff; */
+    /* border-bottom: 1px solid var(--accent); */
     text-decoration: none;
   }
 
   [data-mce-selected='inline-boundary'] {
-    /* color: initial; */
+    color: white;
   }
 
   .highlight {
