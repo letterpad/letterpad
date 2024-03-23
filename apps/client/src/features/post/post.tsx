@@ -155,7 +155,7 @@ interface Props {
 
 export default function PostSubTitle({ text, className }: Props) {
   if (!text) return null;
-  const textColor = className ?? 'text-gray-400 dark:text-slate-400';
+  const textColor = className ?? 'text-gray-500 dark:text-slate-400';
   return (
     <h4
       className={classNames(
