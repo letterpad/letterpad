@@ -16,7 +16,8 @@ const createGetEdgeConfig = () => {
                 return cache[key] as T;
             }
             if (process.env.EDGE_CONFIG) {
-                const records = await getAll();
+                let records = await getAll();
+                records = checkPaymentsEnabledCookie({ ...records })
                 cache = records;
                 return records[key] as T;
             }
@@ -28,7 +29,8 @@ const createGetEdgeConfig = () => {
                 return cache;
 
             if (process.env.EDGE_CONFIG) {
-                const records = await getAll();
+                let records = await getAll();
+                records = checkPaymentsEnabledCookie({ ...records })
                 cache = records;
                 return cache;
             }
@@ -43,7 +45,15 @@ export const isInMaintenanceModeEnabled = async () => {
     return await getEdgeConfig.byKey<boolean>(maintainanceModeKey)
 }
 export const isPaymentsEnabled = async () => {
-    const cookie = cookies().get('isPaymentsEnabled')?.value;
+    const cookie = cookies().get('paymentsActive')?.value;
     if (cookie) return true;
-    return await getEdgeConfig.byKey<boolean>('isPaymentsEnabled')
+    return await getEdgeConfig.byKey<boolean>('paymentsActive')
+}
+
+function checkPaymentsEnabledCookie(records: Record<string, any>) {
+    const cookie = cookies().get('paymentsActive')?.value;
+    if (cookie === "true") {
+        records['paymentsActive'] = true
+    }
+    return records
 }
