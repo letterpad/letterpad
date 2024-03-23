@@ -7,7 +7,7 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
   return (
     <div
       className={classNames(
-        "space-y-4 lg:grid sm:gap-3 xl:gap-5 lg:space-y-0",
+        "space-y-4 lg:grid sm:gap-3 xl:gap-5 lg:space-y-0 font-heading",
         {
           "lg:grid-cols-1": !showFreeTier,
           "lg:grid-cols-2": showFreeTier,
@@ -30,7 +30,7 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
           action={
             <CheckoutButton
               label={`${hasSession ? "Select" : "Sign up for free"}`}
-              role={hasSession ? "checkout" : "register"}
+              hasSession={hasSession}
             />
           }
         />
@@ -45,12 +45,13 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
           "Custom Email Template",
           "Earnings 2x ( $6 / 500 reads )",
           "Pro Badge",
-          "And more...",
+          "Priority Support",
         ]}
         action={
           <CheckoutButton
             label={`${hasSession ? "Subscribe for $5/month" : "Sign up for $5/month"}`}
-            role={hasSession ? "checkout" : "register"}
+            freePlan={true}
+            hasSession={hasSession}
           />
         }
       />

@@ -16,9 +16,11 @@ import Logo from "/public/logo/logo-full.png";
 function Header() {
   const [show, setShow] = useState(false);
   const [isPaymentsActive, setIsPaymentsActive] = useState(false);
+  const isActive = isMembershipFeatureActive();
+
   useEffect(() => {
-    setIsPaymentsActive(isMembershipFeatureActive());
-  }, []);
+    setIsPaymentsActive(isActive);
+  }, [isActive]);
 
   return (
     <header className="z-30 w-full bg-slate-950 text-white">

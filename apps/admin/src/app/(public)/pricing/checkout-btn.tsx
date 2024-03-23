@@ -1,30 +1,51 @@
 "use client";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { VscLoading } from "react-icons/vsc";
+import { Button } from "ui";
 
 import { checkout } from "../../membership/checkout";
 
 interface Props {
+  freePlan?: boolean;
   label: string;
-  role: "checkout" | "register";
+  hasSession: boolean;
 }
 
-export const CheckoutButton: FC<Props> = ({ label, role }) => {
+export const CheckoutButton: FC<Props> = ({ label, freePlan, hasSession }) => {
+  const [loading, setLoading] = useState(false);
+
   const onClick = async (e) => {
     e.preventDefault();
-    if (role === "checkout") {
-      checkout();
-    } else if (role === "register") {
+    if (freePlan && !hasSession) {
       window.location.href = "/register?sourcePage=pricing";
+      return;
     }
+    if (freePlan && hasSession) {
+      window.location.href = "/posts?sourcePage=pricing";
+      return;
+    }
+    setLoading(true);
+    try {
+      if (hasSession) {
+        await checkout();
+      } else {
+        window.location.href = "/register?sourcePage=pricing";
+      }
+    } catch (e) {
+      //
+    }
+    setLoading(false);
   };
 
   return (
-    <a
-      href="#"
+    <Button
       onClick={onClick}
-      className="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2 text-center dark:text-white  dark:focus:ring-primary-900"
+      variant={"success"}
+      size="small"
+      className="flex items-center gap-2"
+      disabled={loading}
     >
-      {label}
-    </a>
+      {loading && <VscLoading />} <span>{label}</span>
+    </Button>
   );
 };

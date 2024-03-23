@@ -20,7 +20,7 @@ export const checkout = async () => {
 
     const stripe = await stripePromise;
 
-    await stripe?.redirectToCheckout({
+    return await stripe?.redirectToCheckout({
         sessionId: res.id,
     });
 };
