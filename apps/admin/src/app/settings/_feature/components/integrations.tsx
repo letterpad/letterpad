@@ -1,8 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Input, Label, TextArea } from "ui";
 
-import { SaveButton } from "@/components/save-button";
-
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
 }
@@ -74,7 +72,6 @@ const Integrations: React.FC<Props> = ({ cloudinaryEnabledByAdmin }) => {
           />
         </div>
       </div>
-      <SaveButton testId="save-integrations" />
     </>
   );
 };

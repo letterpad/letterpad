@@ -1,8 +1,12 @@
+"use client";
+
 import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Menu, useResponsiveLayout } from "ui";
+
+import { isMembershipFeatureActive } from "@/utils/config";
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
@@ -44,6 +48,11 @@ export const Sidebar = () => {
             items={items(stats, !!activePlan)}
           />
         </div>
+        <style jsx>{`
+          a[href="/membership"] {
+            display: ${isMembershipFeatureActive() ? "block" : "none"};
+          }
+        `}</style>
       </div>
     </div>
   );

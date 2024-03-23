@@ -17,6 +17,7 @@ export const SaveButton = ({
       type="submit"
       className={`${className} flex items-center gap-1`}
       size={"small"}
+      variant={"success"}
     >
       <BiSave size={16} />
       Save

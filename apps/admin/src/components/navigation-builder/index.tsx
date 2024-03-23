@@ -25,9 +25,9 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
   );
 
   return (
-    <>
+    <div className="w-full">
       <List items={menu} suggestions={collection} onChange={onChange} />
-    </>
+    </div>
   );
 };
 
