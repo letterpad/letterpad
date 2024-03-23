@@ -16,6 +16,7 @@ if (typeof window !== "undefined") {
   require("tinymce/plugins/directionality");
   require("../plugins/ai");
   require("../plugins/image");
+  require("../plugins/latex");
   // require("tinymce/plugins/image");
   require("../plugins/editImage");
   require("tinymce/plugins/pagebreak");
