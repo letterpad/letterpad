@@ -41,7 +41,7 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
           "Unlimited Posts",
           "Domain Mapping",
           "Entended Analytics",
-          "Creatives",
+          "Custom pages & photostory builder",
           "Custom Email Template",
           "Earnings 2x ( $6 / 500 reads )",
           "Pro Badge",
