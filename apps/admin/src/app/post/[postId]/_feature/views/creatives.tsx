@@ -1,4 +1,4 @@
-import { Post } from "letterpad-graphql";
+import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import { FC } from "react";
 import { BuilderContext, Layout as LayoutBuilder } from "ui";
 
@@ -9,7 +9,7 @@ import { FileExplorer } from "@/components/file-explorer";
 import { useUpdatePost } from "../api.client";
 import { Title } from "../components/title";
 interface Props {
-  post?: Post;
+  post?: PostWithAuthorAndTagsFragment;
 }
 
 export const Creatives: FC<Props> = ({ post }) => {

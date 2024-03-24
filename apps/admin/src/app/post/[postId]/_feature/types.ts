@@ -8,4 +8,6 @@ export type PostContextType = {
   onFileExplorerClose: () => void;
   onMediaBrowse: () => void;
   settings?: Setting;
+  saving: boolean;
+  setSaving: (saving: boolean) => void;
 };

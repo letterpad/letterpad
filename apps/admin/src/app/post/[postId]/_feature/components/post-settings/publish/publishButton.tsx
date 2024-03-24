@@ -2,17 +2,14 @@ import {
   Navigation,
   NavigationType,
   PostStatusOptions,
-  PostTypes,
 } from "letterpad-graphql";
 import { useState } from "react";
-import { Button, Message, Modal } from "ui";
+import { Button, Modal } from "ui";
 
-import { EventAction, track } from "@/track";
-
-// import { isTagsNode } from "@/utils/type-guards";
-import { Heading } from "./heading";
-import { PageNotLinkedWithNavigation, WarnNoTags } from "./warnings";
-import { useGetPost, useUpdatePost } from "../../api.client";
+import { usePublish } from "./usePublish";
+import { Heading } from "../heading";
+import { PageNotLinkedWithNavigation, WarnNoTags } from "../warnings";
+import { useGetPost } from "../../../api.client";
 
 interface Props {
   postId: string;
@@ -28,54 +25,19 @@ enum NotPublished {
 const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
   const { data: post } = useGetPost({ id: postId });
-  const { updatePost, fetching } = useUpdatePost();
+  const {
+    publishOrUnpublish,
+    validateAndPublish,
+    _discardDraft,
+    fetching,
+    isPublished,
+    isDirty,
+  } = usePublish({
+    postId,
+    menu,
+  });
 
   if (post?.__typename !== "Post") return null;
-
-  const validateAndPublish = () => {
-    const isPost = post.type === PostTypes.Post;
-
-    const navigationPages = getPagesFromMenu(menu);
-    // const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
-
-    const navLinkedWithPages = navigationPages?.find(
-      (page) => page === post.slug?.replace("/page/", "").toLowerCase()
-    );
-
-    if (!navLinkedWithPages && !isPost) {
-      setError(NotPublished.PageNotLinkedWithNav);
-    } else {
-      publishOrUnpublish(true);
-    }
-  };
-
-  const publishOrUnpublish = async (active: boolean) => {
-    const status = active
-      ? PostStatusOptions.Published
-      : PostStatusOptions.Draft;
-
-    if (active) {
-      track({
-        eventAction: EventAction.Click,
-        eventCategory: "post status",
-        eventLabel: "publish",
-      });
-    }
-    await updatePost({ id: postId, status });
-  };
-
-  const _discardDraft = async () => {
-    const res = await fetch("/api/discardDraft", {
-      method: "POST",
-      body: JSON.stringify({ id: postId }),
-    });
-    if (res.status === 200) {
-      Message().success({ content: "Draft discarded successfully" });
-      setTimeout(() => {
-        document.location.reload();
-      }, 0);
-    }
-  };
 
   const published = post.status === PostStatusOptions.Published;
 
@@ -108,8 +70,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
               subheading={`Your ${post.type} will no longer be visible to users.`}
             />
             <div className="flex flex-col gap-2">
-              {post.status === PostStatusOptions.Published &&
-              post.html !== post.html_draft ? (
+              {isPublished && isDirty ? (
                 <div className="flex gap-2">
                   <Button
                     onClick={() => publishOrUnpublish(true)}

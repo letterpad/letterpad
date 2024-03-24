@@ -1,4 +1,4 @@
-import { InputUpdatePost, PostFilters } from "letterpad-graphql";
+import { InputUpdatePost, Post, PostFilters, PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import { usePostQuery, useUpdatePostMutation } from "letterpad-graphql/hooks";
 import { useCallback, useMemo } from "react";
 import { RequestPolicy } from "urql";
@@ -9,6 +9,7 @@ import { debounce } from "@/shared/utils";
 import { isPost } from "@/utils/type-guards";
 
 import { WordCount } from "./components/wordCount";
+import { usePostContext } from "./context";
 
 export const useGetPost = (
   filters: PostFilters,
@@ -21,10 +22,10 @@ export const useGetPost = (
     requestPolicy,
     pause: !filters.id,
   });
-  const post = isPost(data?.post) ? data?.post : undefined;
+  const post = isPost(data?.post) ? data.post : undefined;
 
   return {
-    data: post,
+    data: post as unknown as PostWithAuthorAndTagsFragment | undefined,
     fetching,
     refetch,
   };
@@ -32,13 +33,18 @@ export const useGetPost = (
 
 export const useUpdatePost = () => {
   const [{ fetching }, updatePost] = useUpdatePostMutation();
+  const { setSaving, saving } = usePostContext();
 
   const handleUpdatePost = useCallback(
-    async (params: InputUpdatePost) => {
-      Message().loading({ content: "Saving...", duration: 3 });
+    async (params: InputUpdatePost, savingIndicator = true) => {
+      if (savingIndicator) {
+        Message().loading({ content: "Saving...", duration: 3 });
+      }
+      setSaving(true)
       const res = await updatePost({
         data: { ...params },
       });
+      setSaving(false);
       if (res.data?.updatePost.__typename.endsWith("Error")) {
         Message().error({
           content: (res.data.updatePost as any).message,
@@ -50,10 +56,12 @@ export const useUpdatePost = () => {
         Message().error({ content: res.error.message, duration: 3 });
         return res;
       }
-      Message().success({ content: "Saved", duration: 2 });
+      if (savingIndicator) {
+        Message().success({ content: "Saved", duration: 2 });
+      }
       return res;
     },
-    [updatePost]
+    [setSaving, updatePost]
   );
 
   const debounceUpdatePostAPI = useMemo(
@@ -62,7 +70,7 @@ export const useUpdatePost = () => {
   );
 
   const updatePostWithDebounce = useCallback(
-    (props: InputUpdatePost) => {
+    (props: InputUpdatePost, savingIndicator?: boolean) => {
       let change: InputUpdatePost = { ...props };
       if (props) {
         const stats = WordCount.getStats();
@@ -72,13 +80,14 @@ export const useUpdatePost = () => {
           id: props.id,
         };
       }
-      debounceUpdatePostAPI(change);
+      setSaving(true)
+      debounceUpdatePostAPI(change, savingIndicator);
     },
-    [debounceUpdatePostAPI]
+    [debounceUpdatePostAPI, setSaving]
   );
 
   return {
-    fetching,
+    fetching: saving,
     updatePost: handleUpdatePost,
     updatePostWithDebounce,
   };

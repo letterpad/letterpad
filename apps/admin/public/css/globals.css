@@ -152,3 +152,51 @@ select {
   padding: 14px 18px;
   border-radius: 8px;
 }
+
+@keyframes blink {
+  /**
+   * At the start of the animation the dot
+   * has an opacity of .2
+   */
+  0% {
+    opacity: 0.2;
+  }
+  /**
+   * At 20% the dot is fully visible and
+   * then fades out slowly
+   */
+  20% {
+    opacity: 1;
+  }
+  /**
+   * Until it reaches an opacity of .2 and
+   * the animation can start again
+   */
+  100% {
+    opacity: 0.2;
+  }
+}
+.saving {
+  display: flex;
+  gap: 4px;
+}
+.saving span {
+  animation-name: blink;
+  animation-duration: 1.4s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  background: rgb(244, 70, 70);
+}
+
+.saving span:nth-child(2) {
+  animation-delay: 0.2s;
+  background-color: rgb(20, 158, 20);
+}
+
+.saving span:nth-child(3) {
+  animation-delay: 0.4s;
+  background: rgb(183, 180, 11);
+}

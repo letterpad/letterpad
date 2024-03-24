@@ -13,7 +13,7 @@ const buttonVariants = cva(
         outline: "border border-slate-400 dark:border-slate-600 text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
         secondary:"border dark:border-slate-600 border-slate-900 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 text-gray-900 hover:text-black",
         ghost: "text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-200",
-        link: "text-black dark:text-white hover:underline",
+        link: "",
       },
       size: {
         normal: "h-10 py-2 px-4",
@@ -37,7 +37,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
     return (
       <button
-        className={classNames(buttonVariants({ variant, size, className }))}
+        className={classNames(buttonVariants({ variant, size }),className)}
         ref={ref}
         {...props}
       />

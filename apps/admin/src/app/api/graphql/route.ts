@@ -7,6 +7,7 @@ import { resolversArr } from "@/graphql/resolvers";
 import { typeDefsList } from "@/graphql/schema";
 
 import cors from "../_cors";
+import { getApiUrl } from "../../../shared/getRootUrl";
 
 export const setupYoga = (context) => {
   return createYoga({
@@ -19,7 +20,7 @@ export const setupYoga = (context) => {
       )
     ),
     context,
-    graphqlEndpoint: "/api/graphql",
+    graphqlEndpoint: getApiUrl(),
     fetchAPI: { Response },
   });
 };
