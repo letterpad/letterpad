@@ -12,7 +12,7 @@ export function PostsReadTable({
 }) {
   if (loading) return <ListPlaceholder className="w-full" />;
   return (
-    <div className="hidden md:flex-none min-w-full px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-96">
+    <div className="hidden md:block md:flex-none min-w-full px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-96">
       <table className="w-full table-responsive text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
         <thead className="">
           <tr>
