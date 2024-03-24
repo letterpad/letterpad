@@ -17,6 +17,15 @@ export const PostAuthor: FC<Props> = ({ settings, post }) => {
   const postUrl = `${settings.site_url}${slug}`;
 
   const trueAuthor = author?.__typename === 'Author' ? author : null;
+
+  const avatar = settings.is_platform
+    ? settings.site_logo?.src
+    : trueAuthor?.avatar;
+  const name = settings.is_platform ? settings.site_title : trueAuthor?.name;
+  const line2 = settings.is_platform
+    ? settings.site_description
+    : trueAuthor?.occupation;
+
   const link = settings.is_platform
     ? settings.site_url
     : getProfileUrl(trueAuthor?.username!);
@@ -26,9 +35,9 @@ export const PostAuthor: FC<Props> = ({ settings, post }) => {
   return (
     <div className="flex items-start justify-between">
       <ProfileCard
-        avatar={trueAuthor?.avatar!}
-        name={trueAuthor?.name!}
-        line2={trueAuthor?.occupation!}
+        avatar={avatar!}
+        name={name}
+        line2={line2}
         size="lg"
         link={link}
         target="_self"
