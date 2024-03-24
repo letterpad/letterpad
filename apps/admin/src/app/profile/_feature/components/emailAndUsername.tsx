@@ -28,19 +28,16 @@ export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
   };
   return (
     <>
-      <div className="mb-8 grid w-full grid-cols-1 gap-8">
-        <div className="grid grid-cols-12 items-end gap-2">
-          <div className="col-span-10 lg:col-span-6">
-            <Input
-              label="Email (private)"
-              {...register("email", { validate: onEmailChange })}
-              data-id="email-input"
-            />
-          </div>
+      <div className="mb-8 w-full gap-8 space-y-8">
+        <div className="flex items-end gap-2">
+          <Input
+            label="Email (private)"
+            {...register("email", { validate: onEmailChange })}
+            data-id="email-input"
+          />
           <SaveButton
             testId="email-save-button"
             disabled={!getFieldState("email").isDirty}
-            className="col-span-2 lg:col-span-1"
           />
         </div>
         {emailError && (

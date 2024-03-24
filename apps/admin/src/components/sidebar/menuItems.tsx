@@ -6,8 +6,9 @@ import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 import { SlBadge } from "react-icons/sl";
 import { VscDebugDisconnect, VscGraphLine } from "react-icons/vsc";
+import { MenuItem } from "ui";
 
-export const items = (stats, activePlan: boolean) => [
+export const items = (stats, activePlan: boolean): MenuItem[] => [
   {
     label: "Posts",
     icon: <BsEnvelope size={16} />,
@@ -56,6 +57,7 @@ export const items = (stats, activePlan: boolean) => [
     label: "Membership",
     icon: <SlBadge size={16} className={activePlan ? "fill-green-500" : ""} />,
     key: "/membership",
+    className: "membership",
   },
   {
     label: "Settings",

@@ -22,6 +22,7 @@ import Pages from "./components/pages";
 import Paypal from "./components/paypal";
 import SeoSettings from "./components/seo";
 import { SaveButton } from "../../../components/save-button";
+import { SectionHeader } from "../../../components/sectionHeader/sectionHeader";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
@@ -138,7 +139,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
           </div>
           <div className="md:p-8 flex-col space-y-10 w-full md:w-1/2">
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Seo Configuration"}
                 description={"Basic details and metadata of your site"}
                 id="seo"
@@ -147,7 +148,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Payment Information"}
                 description={"Your earnings will be trasferred to this account"}
                 id="payment"
@@ -156,7 +157,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Open AI"}
                 description={"Add Open AI key"}
                 id="ai"
@@ -164,7 +165,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               <Ai />
             </div>
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Appearance"}
                 description={"Customise the look and feel of your site"}
                 id="appearance"
@@ -173,7 +174,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Pages"}
                 description={"Optional pages to add to your site"}
                 id="pages"
@@ -182,7 +183,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className="relative">
-              <Heading
+              <SectionHeader
                 heading={"Navigation"}
                 description={
                   "Configure the navigation menu of your site. The first item in the navigation menu will be the homepage of your blog."
@@ -193,7 +194,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Integrations"}
                 description={"Integrations and code injections"}
                 id="integrations"
@@ -204,7 +205,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Keys"}
                 description={"Custom token to access letterpad API"}
                 id="keys"
@@ -226,7 +227,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>
-              <Heading
+              <SectionHeader
                 heading={"Delete Account"}
                 description={""}
                 id="delete"
@@ -252,20 +253,3 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
     </FormProvider>
   );
 }
-
-const Heading = ({ heading, description, id }) => {
-  const searchParams = useSearchParams();
-  const selectedKey = searchParams.get("selected");
-  return (
-    <div className="mb-8" id={id}>
-      <h2
-        className={classNames("font-paragraph text-lg font-semibold", {
-          "text-blue-500": selectedKey == id,
-        })}
-      >
-        {heading}
-      </h2>
-      <p className="font-paragraph">{description}</p>
-    </div>
-  );
-};

@@ -22,7 +22,7 @@ export const Social = () => {
 
   return (
     <>
-      <div className="mb-8 grid w-full grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="mb-8 w-full gap-6 space-y-8">
         <Controller
           name="social"
           control={control}
@@ -122,7 +122,6 @@ export const Social = () => {
           )}
         />
       </div>
-      <SaveButton />
     </>
   );
 };

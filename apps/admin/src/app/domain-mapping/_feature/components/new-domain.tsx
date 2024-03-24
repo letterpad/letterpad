@@ -60,7 +60,7 @@ export const NewDomain = () => {
             value={domain}
             placeholder="e.g. example.com, blog.example.com"
             onChange={changeDomainName}
-            disabled={disabled}
+            disabled={!membershipFeatureActive}
           />
           <Button
             variant="primary"

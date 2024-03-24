@@ -47,22 +47,17 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
 
   return (
     <>
-      <div className="grid grid-cols-12 items-end gap-2">
-        <div className="col-span-10 lg:col-span-6">
+      <div className="gap-2">
+        <div className="flex items-end gap-2">
           <Input
             label="Username"
             value={_username}
             onChange={onUsernameChange}
           />
+          <Button onClick={tryUpdateAuthor} disabled={!saveButtonEnabled}>
+            Save
+          </Button>
         </div>
-        <Button
-          variant="primary"
-          onClick={tryUpdateAuthor}
-          disabled={!saveButtonEnabled}
-          className="col-span-2 lg:col-span-1"
-        >
-          Save
-        </Button>
       </div>
       <span className="-mt-4 text-sm text-red-500">{error}</span>
     </>

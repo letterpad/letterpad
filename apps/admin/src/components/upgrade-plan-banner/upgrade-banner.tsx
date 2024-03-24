@@ -13,9 +13,12 @@ export const UpgradeBanner = () => {
   const membershipFeatureActive = isMembershipFeatureActive();
 
   useEffect(() => {
-    setShow(membershipFeatureActive || !isPaidMember);
+    setShow(membershipFeatureActive);
   }, [isPaidMember, membershipFeatureActive]);
 
+  if (!membershipFeatureActive) {
+    return null;
+  }
   if (!show) {
     return null;
   }

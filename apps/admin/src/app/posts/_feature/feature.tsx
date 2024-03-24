@@ -29,8 +29,9 @@ export const Feature = () => {
   const { updatePost } = useUpdatePost();
   useRedirectToOnboard();
 
-  const changeStatus = (id: string, status: PostStatusOptions) => {
-    updatePost({ id, status });
+  const changeStatus = async (id: string, status: PostStatusOptions) => {
+    await updatePost({ id, status });
+    refetch({ requestPolicy: "network-only" });
   };
 
   React.useEffect(() => {
