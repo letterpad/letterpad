@@ -16,11 +16,14 @@ interface IProps {
 const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);
+  const [fetching, setFetching] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const mounted = useRef(false);
 
   const fetchInternalMedia = useCallback(async (page = 1) => {
+    setFetching(true);
     const images = await fetchMedia(page);
+    setFetching(false);
     if (mounted.current) {
       setData((prevData) => {
         return [...prevData, ...images.rows];
@@ -44,20 +47,24 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
     fetchInternalMedia(nextPage);
   };
 
+  if (fetching) {
+    return <div className="h-[60vh]">Loading...</div>;
+  }
   if (data.length === 0) {
-    return <p>You do not have any images in your gallery.</p>;
+    return (
+      <p className="h-[60vh]">You do not have any images in your gallery.</p>
+    );
   }
 
   const jsxElements = renderer(data);
 
   return (
-    <div>
-      <InfiniteScrollList
-        data={jsxElements}
-        count={totalCount}
-        loadMore={loadMore}
-      />
-    </div>
+    <InfiniteScrollList
+      data={jsxElements}
+      count={totalCount}
+      loadMore={loadMore}
+      className="h-[60vh]"
+    />
   );
 };
 

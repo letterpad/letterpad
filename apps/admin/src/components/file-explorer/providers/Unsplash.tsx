@@ -98,6 +98,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
         data={jsxElements}
         count={totalCount}
         loadMore={loadMore}
+        className="h-[55vh]"
       />
     </div>
   );
