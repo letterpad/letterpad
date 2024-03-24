@@ -5,6 +5,9 @@ const colors = require('tailwindcss/colors');
 
 /** @type {import("tailwindcss").Config}  */
 module.exports = {
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   experimental: {
     optimizeUniversalDefaults: true,
   },
@@ -15,9 +18,9 @@ module.exports = {
     './themes/**/*.tsx',
     './layouts/**/*.tsx',
     './lib/**/*.ts',
-    "./app/**/*.{js,ts,jsx,tsx}",
+    './app/**/*.{js,ts,jsx,tsx}',
     './src/**/*.{js,ts,jsx,tsx}',
-    '../../packages/ui/**/*.{js,ts,jsx,tsx}'
+    '../../packages/ui/**/*.{js,ts,jsx,tsx}',
   ],
   darkMode: 'class',
   theme: {
@@ -32,10 +35,10 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        "heading": "var(--font-heading)",
-        "paragraph": "var(--font-paragraph)",
-        "body": "var(--font-body)",
-        "code": "var(--font-code)",
+        heading: 'var(--font-heading)',
+        paragraph: 'var(--font-paragraph)',
+        body: 'var(--font-body)',
+        code: 'var(--font-code)',
       },
       fontSize: {
         xs: '.8rem',
@@ -54,25 +57,25 @@ module.exports = {
         '7xl': ['5rem', { lineHeight: '1', letterSpacing: '-0.01em' }],
       },
       letterSpacing: {
-        tighter: "-0.02em",
-        tight: "-0.01em",
-        normal: "0",
-        wide: "0.01em",
-        wider: "0.02em",
-        widest: "0.4em",
+        tighter: '-0.02em',
+        tight: '-0.01em',
+        normal: '0',
+        wide: '0.01em',
+        wider: '0.02em',
+        widest: '0.4em',
       },
       colors: {
         primary: colors.blue,
         gray: colors.slate,
         muted: colors.slate[400],
         accent: {
-          50: "var(--accent)",
+          50: 'var(--accent)',
           100: '#f4f5f7',
         },
         zinc: {
-          800: "#131e32",
-          900: "#101827",
-        }
+          800: '#131e32',
+          900: '#101827',
+        },
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -86,7 +89,7 @@ module.exports = {
               code: { color: theme('colors.primary.400') },
             },
             'h1, h2, h3': {
-              fontFamily: theme('fontFamily.heading')
+              fontFamily: theme('fontFamily.heading'),
             },
             h1: {
               fontWeight: '700',
@@ -149,7 +152,7 @@ module.exports = {
             },
             '.prose': {
               fontFamily: theme('fontFamily.paragraph'),
-            }
+            },
           },
         },
         dark: {
