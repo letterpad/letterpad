@@ -2,7 +2,7 @@
 import Chart, { ChartConfiguration } from "chart.js/auto";
 import { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Content, useTheme } from "ui";
 import { PageHeader } from "ui/isomorphic";
 import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
@@ -85,8 +85,8 @@ const Analytics: FC<P & Props> = () => {
 
   useEffect(doFetch, [dateRange, isMember]);
 
-  useEffect(() => {
-    if (!data?.sessionsPerDay) return;
+  const _getChartData = useCallback(() => {
+    if (!data?.sessionsPerDay) return null;
     if (chartContainer.current) {
       // Destroy existing chart to prevent memory leaks
       if (chartInstance.current) {
@@ -115,7 +115,7 @@ const Analytics: FC<P & Props> = () => {
           },
           options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             plugins: {
               legend: {
                 display: true,
@@ -163,160 +163,179 @@ const Analytics: FC<P & Props> = () => {
           },
         };
 
-        chartInstance.current = new Chart(ctx, chartConfig);
+        return { ctx, chartConfig };
       }
     }
+    return null;
+  }, [data?.sessionsPerDay, theme]);
 
+  useEffect(() => {
+    const config = _getChartData();
+    if (config) {
+      chartInstance.current = new Chart(config.ctx, config.chartConfig);
+    }
     // Cleanup function
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
     };
-  }, [data?.sessionsPerDay, theme]);
+  }, [_getChartData, theme]);
 
-  useEffect(() => {
-    if (!data?.device) return;
-    if (deviceContainer.current) {
-      // Destroy existing chart to prevent memory leaks
-      if (deviceInstance.current) {
-        deviceInstance.current.destroy();
-      }
-
-      // Extract dates and page views from data
-      // Extract labels and data values from the data
-      const labels = data.device.map((item) => item.device);
-      const values = data.device.map((item) => item.sessions);
-
-      const ctx = deviceContainer.current.getContext("2d");
-      if (ctx) {
-        const chartConfig: ChartConfiguration<"pie"> = {
-          type: "pie",
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: "sessions by Device",
-                data: values,
-                backgroundColor: [
-                  "rgba(49, 137, 106, 0.8)",
-                  "rgba(54, 162, 235, 0.5)",
-                  "rgba(255, 206, 86, 0.5)",
-                ],
-                borderColor: [
-                  "rgba(49, 137, 106, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                ],
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                ticks: {
-                  display: false,
-                  color: theme === "dark" ? "#36445f" : "#eee",
-                },
-                grid: {
-                  display: false,
-                },
-              },
-              x: {
-                ticks: {
-                  display: false,
-                  color: theme === "dark" ? "#36445f" : "#eee",
-                },
-                grid: {
-                  display: false,
-                },
-              },
-            },
-            plugins: {
-              legend: {
-                display: true,
-                labels: {
-                  color: theme === "dark" ? "#eee" : "#333",
-                },
-              },
-            },
-          },
-        };
-
-        deviceInstance.current = new Chart(ctx, chartConfig);
-      }
+  const _getDeviceData = useCallback(() => {
+    if (!countryContainer.current) return null;
+    if (!data?.device) {
+      return null;
+    }
+    if (deviceInstance.current) {
+      deviceInstance.current.destroy();
     }
 
-    // Cleanup function
-    return () => {
-      if (deviceInstance.current) {
-        deviceInstance.current.destroy();
-      }
-    };
-  }, [data?.device, theme]);
+    // Extract dates and page views from data
+    // Extract labels and data values from the data
+    const labels = data.device.map((item) => item.device);
+    const values = data.device.map((item) => item.sessions);
 
-  useEffect(() => {
-    if (!data?.countries) return;
-    if (countryContainer.current) {
-      // Destroy existing chart to prevent memory leaks
-      if (countryInstance.current) {
-        countryInstance.current.destroy();
-      }
-
-      const countryNames = data.countries.map((country) => country.country);
-      const sessions = data.countries.map((country) => country.sessions);
-
-      const ctx = countryContainer.current.getContext("2d");
-      if (ctx) {
-        const chartConfig: ChartConfiguration<"bar"> = {
-          type: "bar",
-          data: {
-            labels: countryNames,
-            datasets: [
-              {
-                label: "Sessions",
-                data: sessions,
-                backgroundColor: "rgba(54, 162, 235, 0.5)", // Blue color
-                borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 1,
+    const ctx = deviceContainer.current?.getContext("2d");
+    if (ctx) {
+      const chartConfig: ChartConfiguration<"pie"> = {
+        type: "pie",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "sessions by Device",
+              data: values,
+              backgroundColor: [
+                "rgba(49, 137, 106, 0.8)",
+                "rgba(54, 162, 235, 0.5)",
+                "rgba(255, 206, 86, 0.5)",
+              ],
+              borderColor: [
+                "rgba(49, 137, 106, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              ticks: {
+                display: false,
+                color: theme === "dark" ? "#36445f" : "#eee",
               },
-            ],
-          },
-          options: {
-            indexAxis: "y",
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                ticks: {
-                  color: theme === "dark" ? "#eee" : "#333",
-                },
-                grid: {
-                  color: theme === "dark" ? "#36445f" : "#eee",
-                },
-              },
-              x: {
-                ticks: {
-                  color: theme === "dark" ? "#eee" : "#333",
-                },
-                grid: {
-                  color: theme === "dark" ? "#36445f" : "#eee",
-                },
+              grid: {
+                display: false,
               },
             },
-            plugins: {
-              legend: {
+            x: {
+              ticks: {
+                display: false,
+                color: theme === "dark" ? "#36445f" : "#eee",
+              },
+              grid: {
                 display: false,
               },
             },
           },
-        };
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: theme === "dark" ? "#eee" : "#333",
+              },
+            },
+          },
+        },
+      };
+      return { ctx, chartConfig };
+    }
+  }, [data?.device, theme]);
 
-        countryInstance.current = new Chart(ctx, chartConfig);
+  useEffect(() => {
+    const config = _getDeviceData();
+    if (config) {
+      deviceInstance.current = new Chart(config.ctx, config.chartConfig);
+    }
+    // Cleanup function
+    return () => {
+      if (deviceInstance.current) {
+        deviceInstance.current.destroy();
       }
+    };
+  }, [_getDeviceData, theme]);
+
+  const _getCountryData = useCallback(() => {
+    if (!countryContainer.current) {
+      return null;
+    }
+    if (!data?.countries) return null;
+    // Destroy existing chart to prevent memory leaks
+    if (countryInstance.current) {
+      countryInstance.current.destroy();
+    }
+
+    const countryNames = data.countries.map((country) => country.country);
+    const sessions = data.countries.map((country) => country.sessions);
+
+    const ctx = countryContainer.current.getContext("2d");
+    if (ctx) {
+      const chartConfig: ChartConfiguration<"bar"> = {
+        type: "bar",
+        data: {
+          labels: countryNames,
+          datasets: [
+            {
+              label: "Sessions",
+              data: sessions,
+              backgroundColor: "rgba(54, 162, 235, 0.5)", // Blue color
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              ticks: {
+                color: theme === "dark" ? "#eee" : "#333",
+              },
+              grid: {
+                color: theme === "dark" ? "#36445f" : "#eee",
+              },
+            },
+            x: {
+              ticks: {
+                color: theme === "dark" ? "#eee" : "#333",
+              },
+              grid: {
+                color: theme === "dark" ? "#36445f" : "#eee",
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+        },
+      };
+      return { ctx, chartConfig };
+    }
+  }, [data?.countries, theme]);
+
+  useEffect(() => {
+    const config = _getCountryData();
+    if (config) {
+      countryInstance.current = new Chart(config.ctx, config.chartConfig);
     }
 
     // Cleanup function
@@ -325,7 +344,7 @@ const Analytics: FC<P & Props> = () => {
         countryInstance.current.destroy();
       }
     };
-  }, [data?.countries, theme]);
+  }, [_getCountryData, data?.countries, theme]);
 
   return (
     <>
@@ -354,7 +373,7 @@ const Analytics: FC<P & Props> = () => {
                 {!activeFeature || isPaidMemeber ? (
                   <>
                     <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                    <div className="justify-center py-10 grid md:grid-cols-2 grid-cols-1 gap-10 md:gap-2">
+                    <div className="py-10 flex flex-col lg:flex-row gap-4 md:gap-10">
                       <UsersPerDayChart
                         ref={chartContainer}
                         loading={fetching}
@@ -362,7 +381,7 @@ const Analytics: FC<P & Props> = () => {
                       <DeviceChart ref={deviceContainer} loading={fetching} />
                     </div>
                     <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="flex flex-col lg:flex-row gap-10">
                       <ReferrerTable data={data.referals} loading={fetching} />
                       <CountryChart ref={countryContainer} loading={fetching} />
                     </div>

@@ -9,7 +9,7 @@ export const DeviceChart = forwardRef<HTMLCanvasElement, DeviceChartProps>(
   ({ loading }, ref) => {
     if (loading) return <WidgetPlaceholder className="w-full" />;
     return (
-      <div className="flex flex-auto justify-center max-h-80 min-w-0">
+      <div className="flex flex-auto lg:justify-center max-h-80 min-w-0">
         <div className="relative">
           <canvas ref={ref}></canvas>
         </div>
