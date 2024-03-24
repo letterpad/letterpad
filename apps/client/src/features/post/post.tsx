@@ -28,6 +28,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
   if (author?.__typename !== 'Author') return null;
 
   const isPage = type === 'page';
+
   return (
     <SectionContainer>
       <ScrollTop />

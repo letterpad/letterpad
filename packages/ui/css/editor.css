@@ -1,5 +1,5 @@
-@import './creatives.css';
-@import './prism.css';
+@import "./creatives.css";
+@import "./prism.css";
 
 .prose {
   word-break: break-word;
@@ -14,7 +14,12 @@
     color: #000;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading);
   }
 
@@ -41,7 +46,7 @@
     font-family: var(--font-code), monospace !important;
     padding: 0.8rem !important;
     opacity: 0.9;
-    line-height: 1.8!important;
+    line-height: 1.8 !important;
   }
 
   pre code {
@@ -76,7 +81,7 @@
     text-decoration: none;
   }
 
-  [data-mce-selected='inline-boundary'] {
+  [data-mce-selected="inline-boundary"] {
     color: white;
   }
 
@@ -102,7 +107,7 @@
     border: 1px solid rgb(var(--color-border));
   }
 
-  h2+figure {
+  h2 + figure {
     margin-top: 1.4rem !important;
   }
 }

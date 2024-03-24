@@ -1,6 +1,7 @@
 import { IProps } from "@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor";
 
 import { basePath } from "@/constants";
+import Katex from "katex";
 
 import { textPatterns } from "../textPatterns";
 
@@ -53,32 +54,38 @@ export const titleEditorConfig: IProps["init"] = {
 };
 
 function modifyElements(node: Element) {
-  if (node.tagName === 'IMG') {
-    node.removeAttribute('srcset');
+  if (node.tagName === "IMG") {
+    node.removeAttribute("srcset");
   }
-  if (node.getAttribute('data-mce-bogus') || node.tagName === "BUTTON") {
-    node.parentNode?.removeChild(node)
+  if (node.getAttribute("data-mce-bogus") || node.tagName === "BUTTON") {
+    node.parentNode?.removeChild(node);
   }
+
   let parentElem = node.parentElement;
   while (parentElem) {
-    if (parentElem.nodeName === 'PRE') {
+    if (parentElem.nodeName === "PRE") {
       const childEle = parentElem.children[0] as HTMLElement;
-      const parentClass = parentElem.getAttribute('class');
-      const childClass = childEle?.getAttribute('class');
+      const parentClass = parentElem.getAttribute("class");
+      const childClass = childEle?.getAttribute("class");
 
       if (!parentClass?.startsWith("language")) {
         if (childClass?.startsWith("language")) {
-          parentElem.setAttribute('class', childClass)
+          parentElem.setAttribute("class", childClass);
         } else {
-          parentElem.setAttribute('class', "language-javascript")
+          parentElem.setAttribute("class", "language-javascript");
         }
       }
-      const lang = parentClass?.split('-')[1] || childClass?.split('-')[1] || 'plain';
-      parentElem.innerHTML = parentElem.innerHTML?.replaceAll('<br>', '\n');
-      const code = parentElem.innerText?.replaceAll('\n', '\r\n');
+      const lang =
+        parentClass?.split("-")[1] || childClass?.split("-")[1] || "plain";
+      parentElem.innerHTML = parentElem.innerHTML?.replaceAll("<br>", "\n");
+      const code = parentElem.innerText?.replaceAll("\n", "\r\n");
       if (code) {
-        const highlight = window.Prism.highlight(code, window.Prism.languages[lang], lang);
-        parentElem.innerHTML = `<code class="language-javascript">${highlight}</code>`
+        const highlight = window.Prism.highlight(
+          code,
+          window.Prism.languages[lang],
+          lang
+        );
+        parentElem.innerHTML = `<code class="language-javascript">${highlight}</code>`;
       }
       return; // Exit the loop if a <pre> element is found
     }
@@ -88,12 +95,10 @@ function modifyElements(node: Element) {
     node.removeAttribute(node.attributes[0].name);
   }
 
-
   // Recursively process child nodes
   const childNodes = Array.from(node.children);
-  childNodes.forEach(child => modifyElements(child));
+  childNodes.forEach((child) => modifyElements(child));
 }
-
 
 export const blogEditorConfig = ({
   isDark,
@@ -104,39 +109,35 @@ export const blogEditorConfig = ({
   inline: true,
   image_caption: true,
   paste_preprocess: function (pl, o) {
-
     try {
-      new URL(o.content)
+      new URL(o.content);
       const html = convertToEmbed(o.content);
-      pl.execCommand('mceInsertContent', false, html);
+      pl.execCommand("mceInsertContent", false, html);
 
       // @ts-ignore
       o.preventDefault();
-      return
+      return;
     } catch (e) {
       //
     }
 
-
-
-    o.content = o.content
-      .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")
+    o.content = o.content.replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>");
     // .replace(/(.*?)<br\s?\/?>/gi, "<p>$1</p>");
 
-    const tempElement = document.createElement('div');
+    const tempElement = document.createElement("div");
     tempElement.innerHTML = o.content;
 
     const nodes = Array.from(tempElement.children);
     if (tempElement.children.length === 0) {
       return;
     }
-    nodes.forEach(elem => modifyElements(elem));
-    let content = nodes.map(node => node.outerHTML).join('');
-    if (content === '<meta>' || !content) {
+    nodes.forEach((elem) => modifyElements(elem));
+    let content = nodes.map((node) => node.outerHTML).join("");
+    if (content === "<meta>" || !content) {
       content = tempElement.innerText;
     }
 
-    pl.execCommand('mceInsertContent', false, content);
+    pl.execCommand("mceInsertContent", false, content);
 
     // @ts-ignore
     o.preventDefault();
@@ -158,7 +159,7 @@ export const blogEditorConfig = ({
   branding: false,
   link_context_toolbar: true,
   plugins:
-    "lists image ai link quickbars autoresize  code codesample directionality wordcount",
+    "lists image ai link quickbars autoresize  code codesample directionality wordcount latex",
   // skin: "none",
   skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
   height: "100%",
@@ -166,7 +167,7 @@ export const blogEditorConfig = ({
   quickbars_selection_toolbar:
     "h1 h2 mark bold italic underline link nlpcheck nlpremove ltr rtl",
   quickbars_insert_toolbar:
-    "bullist numlist blockquote hr codesample customImage image aiButton",
+    "bullist numlist blockquote hr codesample customImage image latex aiButton",
   statusbar: false,
   formats: {
     hilitecolor: {
@@ -238,15 +239,17 @@ export const blogEditorConfig = ({
   ],
 });
 
-
 function convertToEmbed(inputUrl: string) {
   var videoId = extractVideoId(inputUrl);
   if (videoId) {
-    var embedUrl = 'https://www.youtube.com/embed/' + videoId;
-    return '<div class="flex justify-center"><iframe width="100%" height="400px" src="' + embedUrl + '" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div><p></p><p></p>';
+    var embedUrl = "https://www.youtube.com/embed/" + videoId;
+    return (
+      '<div class="flex justify-center"><iframe width="100%" height="400px" src="' +
+      embedUrl +
+      '" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div><p></p><p></p>'
+    );
   }
   return inputUrl;
-
 }
 
 function extractVideoId(url) {

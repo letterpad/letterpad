@@ -1,4 +1,4 @@
-import { ArrayElement } from './array-element';
+import { ArrayElement } from "./array-element";
 import {
   handleAuthorErrors,
   handlePostErrors,
@@ -7,9 +7,9 @@ import {
   handleSitemapErrors,
   handleTagsErrors,
   handleFeedErrors,
-} from './errors.js';
-import { getSdk, PostFilters, PostsQuery } from './graphql.js';
-import { createRequester } from './requester.js';
+} from "./errors.js";
+import { getSdk, PostFilters, PostsQuery } from "./graphql.js";
+import { createRequester } from "./requester.js";
 
 export interface LetterpadServerOptions {
   url: string;
@@ -41,16 +41,16 @@ export class Letterpad {
 
     type RawRow = ArrayElement<typeof posts.rows>;
     type Row = RawRow & {
-      tags?: RawRow['tags'] & { __typename: 'TagsNode' };
-    } & { author?: RawRow['author'] & { __typename: 'Author' } };
-    return posts as PostsQuery['posts'] & { __typename: 'PostsNode' } & {
+      tags?: RawRow["tags"] & { __typename: "TagsNode" };
+    } & { author?: RawRow["author"] & { __typename: "Author" } };
+    return posts as PostsQuery["posts"] & { __typename: "PostsNode" } & {
       rows: Row[];
     };
   }
 
   async getPost(slugOrOptions: string | PostFilters) {
     const options =
-      typeof slugOrOptions === 'string'
+      typeof slugOrOptions === "string"
         ? { slug: slugOrOptions }
         : slugOrOptions;
     const postResponse = await this.sdk.post({ filters: options });
@@ -93,17 +93,21 @@ export class Letterpad {
     const response = await this.sdk.meAndSettings();
     handleAuthorErrors(response.me);
     handleSettingsErrors(response.settings);
-    return {me: response.me, settings: response.settings};
+    return { me: response.me, settings: response.settings };
   }
   async getPostPage(slugOrOptions: string | PostFilters) {
     const options =
-      typeof slugOrOptions === 'string'
+      typeof slugOrOptions === "string"
         ? { slug: slugOrOptions }
         : slugOrOptions;
     const response = await this.sdk.postPage({ filters: options });
     handlePostErrors(response.post);
     handleAuthorErrors(response.me);
     handleSettingsErrors(response.settings);
-    return { me: response.me, settings: response.settings, post: response.post };
+    return {
+      me: response.me,
+      settings: response.settings,
+      post: response.post,
+    };
   }
 }

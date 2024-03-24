@@ -13,7 +13,9 @@ export const getPost = cache(
     args: QueryPostArgs,
     { prisma, session, client_author_id, dataloaders }: ResolverContext
   ): Promise<PostResponse> => {
+    const callSource = client_author_id ? "client" : "server";
     const session_author_id = session?.user.id;
+
     if (!args.filters) {
       return {
         __typename: "InvalidArguments",
@@ -37,7 +39,7 @@ export const getPost = cache(
         const post = await prisma.post.findFirst({ where: { id: postId } });
         if (post) {
           return {
-            ...mapPostToGraphql(post),
+            ...mapPostToGraphql(post, callSource),
             html: post.html_draft ?? "",
             __typename: "Post",
           };
@@ -61,7 +63,7 @@ export const getPost = cache(
           };
         }
         return {
-          ...mapPostToGraphql(post),
+          ...mapPostToGraphql(post, callSource),
           __typename: "Post",
         };
       }
@@ -81,7 +83,7 @@ export const getPost = cache(
         },
       });
       if (post) {
-        return { ...mapPostToGraphql(post), __typename: "Post" };
+        return { ...mapPostToGraphql(post, callSource), __typename: "Post" };
       }
       return {
         __typename: "NotFound",

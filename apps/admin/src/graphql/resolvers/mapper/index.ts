@@ -3,6 +3,7 @@ import {
   Post as DbPost,
   Setting as DbSetting,
 } from "@prisma/client";
+import { parseFragment, serialize } from "parse5";
 import {
   Author,
   Post,
@@ -11,11 +12,30 @@ import {
   Setting,
   SettingInputType,
 } from "letterpad-graphql";
+import { transformHtml } from "./transforms";
 
-export const mapPostToGraphql = (post: DbPost | Error) => {
+export const mapPostToGraphql = (
+  post: DbPost | Error,
+  callSource: "server" | "client"
+) => {
   if (post instanceof Error) {
     return post as unknown as Post;
   }
+
+  if (callSource === "client") {
+    // For clients, apply transformations to HTML
+    // to prevent download of heavy libraries like PrismJS, Katex, etc.
+    let htmlAst = parseFragment(post.html);
+    let htmlDraftAst = parseFragment(post.html_draft);
+
+    // Apply transformations
+    htmlAst = transformHtml(htmlAst);
+    htmlDraftAst = transformHtml(htmlDraftAst);
+
+    post.html = serialize(htmlAst);
+    post.html_draft = serialize(htmlDraftAst);
+  }
+
   return {
     ...post,
     type: post.type as PostTypes,
