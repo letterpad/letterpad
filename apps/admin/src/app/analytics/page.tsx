@@ -100,6 +100,7 @@ const Analytics: FC<P & Props> = () => {
       if (ctx) {
         const chartConfig: ChartConfiguration<"bar"> = {
           type: "bar",
+
           data: {
             labels: dates,
             datasets: [
@@ -115,7 +116,7 @@ const Analytics: FC<P & Props> = () => {
           },
           options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
               legend: {
                 display: true,
@@ -345,6 +346,19 @@ const Analytics: FC<P & Props> = () => {
       }
     };
   }, [_getCountryData, data?.countries, theme]);
+
+  useEffect(() => {
+    document.addEventListener("resize", () => {
+      const config = _getCountryData();
+      if (config) {
+        countryInstance.current = new Chart(config.ctx, config.chartConfig);
+      }
+      const config1 = _getChartData();
+      if (config1) {
+        chartInstance.current = new Chart(config1.ctx, config1.chartConfig);
+      }
+    });
+  }, [_getChartData, _getCountryData]);
 
   return (
     <>
