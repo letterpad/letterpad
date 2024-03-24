@@ -21,6 +21,7 @@ export const PostProvider: React.FC<{
 }> = ({ children }) => {
   const { data: settings } = useGetSettings();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [helpers, setHelpers] = useState<Editor["editor"]>();
   const onMediaBrowse = useCallback(() => setFileExplorerOpen(true), []);
 
@@ -34,6 +35,8 @@ export const PostProvider: React.FC<{
       setHelpers,
       onMediaBrowse,
       onFileExplorerClose,
+      saving,
+      setSaving,
     }),
     [
       fileExplorerOpen,
@@ -42,6 +45,8 @@ export const PostProvider: React.FC<{
       setHelpers,
       onMediaBrowse,
       onFileExplorerClose,
+      saving,
+      setSaving,
     ]
   );
 

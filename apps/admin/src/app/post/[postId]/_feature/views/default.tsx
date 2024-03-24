@@ -1,4 +1,4 @@
-import { Post, Setting } from "letterpad-graphql";
+import { PostWithAuthorAndTagsFragment, Setting } from "letterpad-graphql";
 import { FC } from "react";
 import { PostTitlePlaceholder } from "ui";
 
@@ -11,7 +11,7 @@ import { WordCount } from "../components/wordCount";
 
 interface Props {
   settings?: Setting;
-  post?: Post;
+  post?: PostWithAuthorAndTagsFragment;
   loading: boolean;
 }
 
@@ -50,7 +50,10 @@ export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
             loading={loading}
             text={post.html_draft || ""}
             onChange={(html) => {
-              updatePostWithDebounce?.({ html_draft: html, id: post.id });
+              updatePostWithDebounce?.(
+                { html_draft: html, id: post.id },
+                false
+              );
             }}
           />
         </div>

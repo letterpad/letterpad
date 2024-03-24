@@ -6,15 +6,24 @@ import {
 } from "letterpad-graphql";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
+import { Button } from "ui";
 
 import Actions from "./post-settings";
+import { usePublish } from "./post-settings/publish/usePublish";
 
 interface Props {
   post: PostWithAuthorAndTagsFragment;
+  setShowPostSetting: (show: boolean) => void;
 }
 
-export const Header: React.VFC<Props> = ({ post }) => {
+export const Header: React.FC<Props> = ({ post, setShowPostSetting }) => {
+  const { isDirty, isPublished, fetching, validateAndPublish } = usePublish({
+    postId: post.id,
+    menu: [],
+  });
   if (!post) return null;
+
+  const canUpdatePublishedPost = isDirty && isPublished;
 
   if (post.__typename === "Post") {
     const isPost = post.type === PostTypes.Post;
@@ -41,8 +50,29 @@ export const Header: React.VFC<Props> = ({ post }) => {
             {post.status}
           </span>
         </div>
-        <div className="right">
-          <Actions key="actions" post={post} />
+        <div className="right flex flex-row gap-4 items-center">
+          {fetching && (
+            <span className="saving">
+              <span />
+              <span />
+              <span />
+            </span>
+          )}
+          {canUpdatePublishedPost && (
+            <Button
+              size="small"
+              variant={"link"}
+              className="text-green-600 dark:text-green-500 text-sm"
+              onClick={validateAndPublish}
+            >
+              Update
+            </Button>
+          )}
+          <Actions
+            key="actions"
+            post={post}
+            setShowPostSetting={setShowPostSetting}
+          />
         </div>
       </div>
     );
