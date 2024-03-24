@@ -21,7 +21,6 @@ import { getProfileUrl } from '../../../lib/utils/url';
 import { PostProps } from '../../../types/pageTypes';
 
 const Comments = lazy(() => import('@/components/comments'));
-const KatexCssDummy = lazy(() => import('./katex'));
 
 export const Post: FC<PostProps> = ({ post, settings }) => {
   const { title, tags, author, type, sub_title, featured } = post;
@@ -30,16 +29,9 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
 
   const isPage = type === 'page';
 
-  const isKatex = post.html && post.html.includes('letterpad-katex');
-
   return (
     <SectionContainer>
       <ScrollTop />
-      {/**
-       * Optimization: if the post contains katex,
-       * then signal the bundler to load the css
-       */}
-      {isKatex ? <KatexCssDummy /> : null}
       <LikeProvider likes={post.likes} postId={post.id}>
         <div className="mx-auto flex w-full  max-w-3xl justify-between pt-10 flex-col">
           <article className="post format-blue dark:format-invert mx-auto w-full">
