@@ -56,8 +56,8 @@ export const Sidebar = () => {
             items={items(stats, !!activePlan)}
           />
         </div>
-        <style jsx>{`
-          a[href="/membership"] {
+        <style jsx global>{`
+          .membership {
             display: ${paymentActive ? "block" : "none"};
           }
         `}</style>

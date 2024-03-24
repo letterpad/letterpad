@@ -10,7 +10,7 @@ export const Basic = () => {
 
   return (
     <>
-      <div className="mb-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
+      <div className="mb-8 grid w-full gap-8">
         <Input
           label="Full Name"
           placeholder="Write you full name"
@@ -78,7 +78,6 @@ export const Basic = () => {
           data-testid="company"
         />
       </div>
-      <SaveButton testId="basic-submit" />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { FC } from "react";
 
-interface Item {
+export interface MenuItem {
   icon?: JSX.Element;
   label: string;
   group?: string;
@@ -9,9 +9,10 @@ interface Item {
   badge?: string;
   testid?: string;
   hidden?: boolean;
+  className?: string;
 }
 interface Props {
-  items: Item[];
+  items: MenuItem[];
   selectedKey: string;
   onSelect: (e: React.MouseEvent, key: string) => void;
   Link: any;
@@ -47,7 +48,7 @@ export const Menu: FC<Props> = ({
         }
 
         return (
-          <li className="my-px" key={item.key}>
+          <li className={classNames("my-px", item.className)} key={item.key}>
             <Link
               href={item.key}
               data-testid={item.testid}
