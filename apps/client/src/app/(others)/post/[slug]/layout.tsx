@@ -4,7 +4,17 @@ import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 import Custom404 from '@/app/not-found';
 
-export default async function PostPageLayout({ children, params, katex }) {
+interface PostPageLayoutProps {
+  katex: React.ReactNode;
+  children?: React.ReactNode;
+  params: { slug: string };
+}
+
+export default async function PostPageLayout({
+  children,
+  params,
+  katex,
+}: PostPageLayoutProps) {
   const post = await getPostData(params.slug);
 
   if (!post) {
@@ -23,7 +33,9 @@ export default async function PostPageLayout({ children, params, katex }) {
   return <>{children}</>;
 }
 
-export async function generateMetadata({ params }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PostPageLayoutProps): Promise<Metadata> {
   const [post, data] = await Promise.all([
     getPostData(params.slug),
     getAuthorAndSettingsData(),
