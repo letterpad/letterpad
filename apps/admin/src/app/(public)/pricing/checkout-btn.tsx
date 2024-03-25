@@ -20,10 +20,6 @@ export const CheckoutButton: FC<Props> = ({ label, freePlan, hasSession }) => {
       window.location.href = "/register?sourcePage=pricing";
       return;
     }
-    if (freePlan && hasSession) {
-      window.location.href = "/posts?sourcePage=pricing";
-      return;
-    }
     setLoading(true);
     try {
       if (hasSession) {
