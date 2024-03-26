@@ -1,11 +1,11 @@
 "use client";
 
-import { FC, ReactNode, useEffect, useRef } from "react";
+import { FC, ReactNode, useEffect, useLayoutEffect, useRef } from "react";
 
 export const Content: FC<{ children?: ReactNode }> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ref.current) {
       const topSpace = ref.current.getBoundingClientRect().top;
       ref.current.style.height = `calc(100vh - ${topSpace}px - 48px)`;

@@ -17,7 +17,7 @@ export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();
   const [paymentActive, setPaymentActive] = useState(false);
   const pathname = usePathname();
-  const { isMobileOrTablet, setSidebarVisible } = useResponsiveLayout();
+  const { isDesktop, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
   const stats = isStats(data?.stats) ? data?.stats : null;
   const activePlan = isAuthor(data?.me) ? data?.me?.is_paid_member : false;
@@ -29,11 +29,10 @@ export const Sidebar = () => {
 
   return (
     <div className="h-full shadow-lg">
-      <div className=" h-full flex-1 p-4">
-        <Brand site_name={settings?.site_title ?? ""} />
+      <div className=" h-full flex flex-col">
+        <Brand site_name={settings?.site_title ?? ""} className="p-4"/>
         <div
-          className="sidebar-content my-6 overflow-y-auto font-paragraph"
-          style={{ height: "calc(100vh - 152px)" }}
+          className="sidebar-content p-4 overflow-y-auto font-paragraph"
         >
           <Menu
             Link={Link}
@@ -50,7 +49,7 @@ export const Sidebar = () => {
                   window.location.href = "/login";
                 });
               }
-              isMobileOrTablet && setSidebarVisible(false);
+              !isDesktop && setSidebarVisible(false);
             }}
             selectedKey={pathname}
             items={items(stats, !!activePlan)}

@@ -34,7 +34,7 @@ const Pages: React.FC<Props> = ({ settings }) => {
         render={({ field: { onChange } }) => (
           <Switch
             active={!!settings.show_tags_page}
-            data-testId="tagsPageCb"
+            data-testid="tagsPageCb"
             onChange={onChange}
             label='Select this to add a new menu item "Tags" which will display
         all the tags with the post count.'

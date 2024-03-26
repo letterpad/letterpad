@@ -112,7 +112,7 @@ const RootLayout = async ({ children }) => {
         />
       </head>
       <body
-        className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100`}
+        className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 overflow-hidden`}
       >
         {process.env.NODE_ENV === "production" && (
           <Script

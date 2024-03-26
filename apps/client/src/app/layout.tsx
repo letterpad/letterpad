@@ -207,7 +207,7 @@ const Layout = async ({ children }) => {
           )}
 
           <SessionProvider>
-            <main className="mb-auto">{children}</main>
+            <main>{children}</main>
             <div className="border-b-[1px] dark:border-gray-700">
               <Footer author={me} settings={settings} />
             </div>
