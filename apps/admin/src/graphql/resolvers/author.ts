@@ -56,7 +56,7 @@ const Author: AuthorResolvers<ResolverContext> = {
         author_id: id
       }
     });
-    return membership?.status === "complete";
+    return membership?.status === "complete" || membership?.status === "profree";
   },
   followers: async ({ id }, _args, { prisma }) => {
     const followers = await prisma.follows.findMany({
