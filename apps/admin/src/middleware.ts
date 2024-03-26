@@ -5,7 +5,7 @@ import { isInMaintenanceModeEnabled } from "ui/server";
 import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
 
-export const config = { matcher: "/((?!.*\\.).*)" };
+export const config = { matcher: "/((?!static|.*\\..*|_next).*)" };
 
 const isPlatform = process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM;
 

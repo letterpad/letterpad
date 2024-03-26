@@ -4,6 +4,8 @@ import { isInMaintenanceModeEnabled } from 'ui/server';
 import { getAuthCookieName } from '../lib/utils/authCookie';
 import { getSessionUrl } from '../lib/utils/url';
 
+export const config = { matcher: '/((?!static|.*\\..*|_next).*)' };
+
 export async function middleware(request: NextRequest) {
   try {
     const isInMaintenanceMode = await isInMaintenanceModeEnabled();
@@ -42,8 +44,6 @@ export async function middleware(request: NextRequest) {
   }
   return NextResponse.rewrite(url, { headers: requestHeaders });
 }
-
-export const config = { matcher: '/((?!.*\\.).*)' };
 
 // Helpers
 function setSessionCookieAndRedirect(request: NextRequest) {
