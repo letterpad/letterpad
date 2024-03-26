@@ -12,8 +12,8 @@ export function ReferrerTable({
   if (loading) return <ListPlaceholder />;
   return (
     <div className="flex lg:justify-center">
-      <div className="flex-auto px-4 md:px-0 overflow-auto max-h-96 lg:max-h-80">
-        <table className="w-full table-responsive text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
+      <div className="flex-auto md:px-0 relative overflow-auto max-h-96 lg:max-h-80">
+        <table className="w-full table-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
           <thead className="">
             <tr>
               <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
@@ -35,7 +35,7 @@ export function ReferrerTable({
                 }
               >
                 <td className="py-2 px-4 font-mono font-medium text-xs leading-6 text-sky-500 whitespace-nowrap dark:text-sky-400">
-                  <div className="whitespace-nowrap truncate overflow-hidden max-w-xs md:max-w-lg md:min-w-96">
+                  <div className="whitespace-normal truncate overflow-hidden max-w-xs md:max-w-lg md:min-w-96">
                     {item.referrer}
                   </div>
                 </td>

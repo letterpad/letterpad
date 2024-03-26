@@ -24,7 +24,7 @@ export function TotalStats({
   allTimeReads: number;
 }) {
   return (
-    <div className="grid lg:grid-cols-4 grid-cols-2 gap-6 w-full max-w-5xl">
+    <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-2 md:gap-6 w-full max-w-5xl">
       <div className="flex items-center p-4 rounded">
         <div className="flex-grow flex flex-col ml-4">
           <span className="text-4xl font-bold dark:text-slate-200">
