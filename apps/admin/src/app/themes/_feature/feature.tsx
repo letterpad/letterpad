@@ -21,7 +21,7 @@ export const Feature = () => {
         return (
           <div
             className={classNames(
-              "relative max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+              "relative max-w-md rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
             )}
             key={theme.label}
           >

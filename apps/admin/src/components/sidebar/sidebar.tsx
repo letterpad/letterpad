@@ -17,7 +17,7 @@ export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();
   const [paymentActive, setPaymentActive] = useState(false);
   const pathname = usePathname();
-  const { isMobileOrTablet, setSidebarVisible } = useResponsiveLayout();
+  const { isDesktop, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
   const stats = isStats(data?.stats) ? data?.stats : null;
   const activePlan = isAuthor(data?.me) ? data?.me?.is_paid_member : false;
@@ -50,7 +50,7 @@ export const Sidebar = () => {
                   window.location.href = "/login";
                 });
               }
-              isMobileOrTablet && setSidebarVisible(false);
+              !isDesktop && setSidebarVisible(false);
             }}
             selectedKey={pathname}
             items={items(stats, !!activePlan)}

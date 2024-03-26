@@ -5,6 +5,7 @@ import { Button, ThemeSwitcher, useResponsiveLayout } from "ui";
 import FeedbackForm from "./feedback-form";
 import { NotificationDropdown } from "../notification-dd/list";
 import { ProfileDropdown } from "../profile-dd";
+import classNames from "classnames";
 
 export const TopBar = () => {
   const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
@@ -12,7 +13,8 @@ export const TopBar = () => {
     <div className="flex flex-row items-center justify-between py-4">
       <div>
         <Button
-          className="menu md:hidden"
+          size={"extrasmall"}
+          className={classNames("menu", { hidden: sidebarVisible })}
           onClick={() => setSidebarVisible(!sidebarVisible)}
         >
           {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}

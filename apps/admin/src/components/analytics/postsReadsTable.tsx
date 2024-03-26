@@ -12,7 +12,7 @@ export function PostsReadTable({
 }) {
   if (loading) return <ListPlaceholder className="w-full" />;
   return (
-    <div className="hidden md:block md:flex-none min-w-full px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-96">
+    <div className="md:flex-none min-w-full px-4 sm:px-6 md:px-0 overflow-auto max-h-96 lg:max-h-96">
       <table className="w-full table-responsive text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
         <thead className="">
           <tr>
@@ -25,7 +25,7 @@ export function PostsReadTable({
             <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
               Reads
             </th>
-            <th className="sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
+            <th className="md:block hidden sticky z-10 top-0 text-sm leading-6 font-semibold text-slate-700 bg-white p-0 dark:bg-slate-900 dark:text-slate-300">
               Engagement Time
             </th>
           </tr>
@@ -51,7 +51,7 @@ export function PostsReadTable({
               <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
                 {item.reads}
               </td>
-              <td className="px-4 py-2 border border-gray-200 dark:border-gray-800">
+              <td className="md:block hidden  px-4 py-2 border border-gray-200 dark:border-gray-800">
                 {secondsToMinutes(item.duration / item.pageViews)}
               </td>
             </tr>

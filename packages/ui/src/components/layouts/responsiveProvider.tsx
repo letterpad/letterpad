@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
 
 import { useResponsive } from "./useResponsive";
 
@@ -18,7 +18,7 @@ export const ResponsiveProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { isDesktop, isMobileOrTablet, isMobile, isTablet } = useResponsive();
-  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
   const value = {
     sidebarVisible,
     setSidebarVisible,
@@ -27,6 +27,9 @@ export const ResponsiveProvider: FC<{ children: ReactNode }> = ({
     isMobile,
     isTablet,
   };
+  useEffect(()=>{
+    setSidebarVisible(isDesktop)
+  },[isDesktop])
   return <Responsive.Provider value={value}>{children}</Responsive.Provider>;
 };
 
