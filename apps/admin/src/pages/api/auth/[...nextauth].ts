@@ -95,6 +95,7 @@ export const options = (): NextAuthOptions => ({
       if (!token.email) {
         throw new Error("Invalid session");
       }
+
       let author = await prisma.author.findFirst({
         where: { email: token.email },
         include: {

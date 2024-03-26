@@ -19,7 +19,7 @@ interface Props {
 const Payments: FC<P & Props> = () => {
   const [membership, setMembership] = useState<any>({});
   const [fetching, setFetching] = useState(true);
-  const { active } = membership;
+  const { active, status } = membership;
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -61,20 +61,24 @@ const Payments: FC<P & Props> = () => {
         </span>
       </PageHeader>
       <Content>
-        {fetching ? (
-          <TablePlaceholder loading={true} />
-        ) : active ? (
+        {fetching && <TablePlaceholder loading={true} />}
+
+        {!fetching && active && status !== "free" && 
           <ActiveMember
             membership={membership}
             onCancel={() => {
               setMembership({ ...membership, active: false });
             }}
           />
-        ) : (
+        }
+        {!fetching && active && status === "free" && 
+          <div className="text-blue-500 dark:bg-slate-800 bg-blue-100 p-4 font-paragraph rounded dark:border-slate-700 border-blue-200 border"><strong>✨ Congratulations! </strong>You have been provided with the Letterpad Pro membership for free.</div>
+        }
+        {!fetching &&  (status === "free" || !active) && 
           <div className="py-8 px-4 mx-auto max-w-screen-md lg:py-16 lg:px-6">
             <PricingTable hasSession={true} showFreeTier={false} />
           </div>
-        )}
+        }
       </Content>
     </>
   );

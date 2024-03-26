@@ -20,7 +20,7 @@ export const ChangePassword: React.FC<Props> = () => {
         <div className="flex items-end flex-1 gap-2">
           <Input
             label="Password"
-            {...register("password", { required: true, minLength: 8 })}
+            {...register("password", { minLength: 8 })}
             type="password"
           />
           <SaveButton

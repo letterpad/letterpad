@@ -35,9 +35,10 @@ interface Props {
 }
 const Analytics: FC<P & Props> = () => {
   const activeFeature = isMembershipFeatureActive();
-  const isPaidMemeber = useIsPaidMember();
+  const isPaidMember = useIsPaidMember();
+  const [showPremiumCharts, setShowPremiumCharts] = useState(true);
   const { theme } = useTheme();
-  const isMember = activeFeature && isPaidMemeber;
+  const isMember = activeFeature && isPaidMember;
   const [data, setData] = useState<ApiResponseData>({
     device: [],
     data: [],
@@ -55,6 +56,10 @@ const Analytics: FC<P & Props> = () => {
   const chartInstance = useRef<Chart<"bar">>();
   const deviceInstance = useRef<Chart<"pie">>();
   const countryInstance = useRef<Chart<"bar">>();
+
+  useEffect(()=>{
+    setShowPremiumCharts(!activeFeature || isPaidMember)
+  },[activeFeature, isPaidMember]);
 
   const [dateRange, setDateRange] = useState<DateRange>(
     getDateRanges(DateRangeEnum.last7Days)
@@ -384,7 +389,7 @@ const Analytics: FC<P & Props> = () => {
                   loading={fetching}
                   allTimeReads={data.allTimeReads}
                 />
-                {!activeFeature || isPaidMemeber ? (
+                {showPremiumCharts ? (
                   <>
                     <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
                     <div className="py-10 flex flex-col lg:flex-row gap-4 md:gap-10">
@@ -408,7 +413,7 @@ const Analytics: FC<P & Props> = () => {
                       src="/images/analytics.png"
                       alt="Analytics"
                       fill={true}
-                      objectFit="contain"
+                      style={{ objectFit: "cover" }}
                     />
                   </div>
                 )}
