@@ -63,7 +63,7 @@ const Payments: FC<P & Props> = () => {
       <Content>
         {fetching && <TablePlaceholder loading={true} />}
 
-        {!fetching && active && status !== "free" && 
+        {!fetching && active && status !== "free"  && status !== "profree" &&
           <ActiveMember
             membership={membership}
             onCancel={() => {
@@ -71,10 +71,10 @@ const Payments: FC<P & Props> = () => {
             }}
           />
         }
-        {!fetching && active && status === "free" && 
+        {!fetching && status === "profree" && 
           <div className="text-blue-500 dark:bg-slate-800 bg-blue-100 p-4 font-paragraph rounded dark:border-slate-700 border-blue-200 border"><strong>✨ Congratulations! </strong>You have been provided with the Letterpad Pro membership for free.</div>
         }
-        {!fetching &&  (status === "free" || !active) && 
+        {!fetching &&  (status === "free" || status === "profree" || !active) && 
           <div className="py-8 px-4 mx-auto max-w-screen-md lg:py-16 lg:px-6">
             <PricingTable hasSession={true} showFreeTier={false} />
           </div>

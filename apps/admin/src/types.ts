@@ -13,7 +13,7 @@ declare module "next-auth" {
       id: string;
       role: ROLES;
       register_step: RegisterStep;
-      membership: "free" | "complete" | "cancelled";
+      membership: "free" | "complete" | "cancelled" | "profree";
     };
   }
 }

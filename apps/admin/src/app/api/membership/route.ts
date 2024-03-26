@@ -18,7 +18,7 @@ export async function GET(req: Request) {
             },
         },
     });
-    if (author?.status === "free") {
+    if (author?.status === "profree") {
         return NextResponse.json({ active: true, status: author.status }, { status: 200 });
     }
     if (!author || !author.stripe_customer_id) {
