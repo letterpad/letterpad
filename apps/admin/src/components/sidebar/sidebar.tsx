@@ -29,11 +29,10 @@ export const Sidebar = () => {
 
   return (
     <div className="h-full shadow-lg">
-      <div className=" h-full flex-1 p-4">
-        <Brand site_name={settings?.site_title ?? ""} />
+      <div className=" h-full flex flex-col">
+        <Brand site_name={settings?.site_title ?? ""} className="p-4"/>
         <div
-          className="sidebar-content my-6 overflow-y-auto font-paragraph"
-          style={{ height: "calc(100vh - 152px)" }}
+          className="sidebar-content p-4 overflow-y-auto font-paragraph"
         >
           <Menu
             Link={Link}

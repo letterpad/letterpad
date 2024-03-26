@@ -19,10 +19,10 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
 
   return (
     <>
-      <div className="flex min-h-screen w-full flex-row bg-white dark:bg-zinc-900">
+      <div className="flex max-h-screen relative w-full flex-row bg-white dark:bg-zinc-900">
         <aside
           className={classNames(
-            "top-0  h-screen min-w-[250px] transform bg-zinc-800 transition-transform duration-150 ease-in md:sticky md:shadow",
+            "top-0 min-w-[250px] transform bg-zinc-800 transition-transform duration-150 ease-in sticky md:shadow",
             {
               "translate-x-0": sidebarVisible,
               "-translate-x-full": !sidebarVisible,
