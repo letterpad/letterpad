@@ -24,6 +24,8 @@ import PublishButton from "./publish/publishButton";
 import { SendEmailCheckbox } from "./sendEmailCheckbox";
 import { PrimaryTag, Tags } from "./tags";
 import { useUpdatePost } from "../../api.client";
+import { useSession } from "next-auth/react";
+import { useIsPaidMember } from "../../../../../../hooks/useIsPaidMember";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -37,6 +39,7 @@ export const PostSettingsModal = ({ post, visible, onClose }: IProps) => {
   const { data: settings } = useGetSettings();
   const [slug, setSlug] = useState(post.slug || "");
   const [busy, setBusy] = useState(false);
+  const isPaid = useIsPaidMember();
 
   const { updatePost, fetching } = useUpdatePost();
 
@@ -180,7 +183,7 @@ export const PostSettingsModal = ({ post, visible, onClose }: IProps) => {
                       <>
                         Notify your email subscribers and followers when you
                         publish this post.{" "}
-                        {membershipActive ? (
+                        {membershipActive && !isPaid ?(
                           <>
                             <UpgradeLabel /> to enable this feature.
                           </>

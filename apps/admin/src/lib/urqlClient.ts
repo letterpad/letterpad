@@ -43,7 +43,7 @@ const makeClient = () => {
             result?.data?.[Object.keys(result?.data)[0]]?.__typename !==
             "UnAuthorized";
 
-          if (!isAuthorized) {
+          if (!isAuthorized && typeof window !== "undefined") {
             window.location.replace(
               `/login?callbackUrl=${window.location.href}`
             );
