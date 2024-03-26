@@ -67,9 +67,15 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const selectedKey = searchParams.get("selected") ?? "seo";
 
   useEffect(() => {
-    document
-      .querySelector(`#${selectedKey}`)
-      ?.scrollIntoView({ behavior: "smooth" });
+    const container  = document.querySelector(`#lp-content`);
+    const element  = document.querySelector(`#${selectedKey}`) as HTMLElement; 
+    if(container && element) {
+      container.scroll({
+        top: element.offsetTop,
+        left: 0,
+        behavior: "smooth",
+      })
+    }
   }, [selectedKey]);
 
   const confirm = async () => {

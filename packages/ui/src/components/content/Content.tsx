@@ -15,6 +15,7 @@ export const Content: FC<{ children?: ReactNode }> = ({ children }) => {
     <div
       className="flex min-h-0 w-full overflow-y-auto overflow-x-hidden"
       ref={ref}
+      id="lp-content"
     >
       <div className="flex-1">{children}</div>
     </div>

@@ -15,7 +15,7 @@ export const TwoColumnLayout = ({ children }) => {
     <Layout
       left={<Sidebar />}
       right={
-        <div className={classNames("flex flex-col px-4 md:px-6 flex-1",{
+        <div className={classNames("top-0 flex flex-col px-4 md:px-6 flex-1",{
           "w-screen": sidebarVisible && !isDesktop
         })}>
           <TopBar />

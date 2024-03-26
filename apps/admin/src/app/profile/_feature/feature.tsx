@@ -39,10 +39,17 @@ export const Feature = () => {
   const selectedKey = searchParams.get("selected") ?? "basic";
 
   useEffect(() => {
-    document
-      .querySelector(`#${selectedKey}`)
-      ?.scrollIntoView({ behavior: "smooth" });
+    const container  = document.querySelector(`#lp-content`);
+    const element  = document.querySelector(`#${selectedKey}`) as HTMLElement; 
+    if(container && element) {
+      container.scroll({
+        top: element.offsetTop,
+        left: 0,
+        behavior: "smooth",
+      })
+    }
   }, [selectedKey]);
+
 
   if (fetching || !data) return <>Please wait...</>;
   const dirtyFields = Object.keys(formState.dirtyFields).filter((key) => {
