@@ -35,7 +35,7 @@ export function ReferrerTable({
                 }
               >
                 <td className="py-2 px-4 font-mono font-medium text-xs leading-6 text-sky-500 whitespace-nowrap dark:text-sky-400">
-                  <div className="whitespace-normal truncate overflow-hidden max-w-xs md:max-w-lg md:min-w-96">
+                  <div className="whitespace-normal truncate overflow-hidden max-w-[200px] md:max-w-lg md:min-w-96">
                     {item.referrer}
                   </div>
                 </td>
