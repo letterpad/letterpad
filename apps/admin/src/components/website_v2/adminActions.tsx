@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const AdminActions:FC<Props> = (props) => {
-  return (<PostProvider>
+  return (<PostProvider addSettings={false}>
     <Buttons {...props} />
   </PostProvider>)
 }

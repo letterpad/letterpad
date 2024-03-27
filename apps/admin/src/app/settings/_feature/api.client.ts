@@ -35,8 +35,8 @@ export const useUpdateSettings = () => {
     fetching,
   };
 };
-export const useGetSettings = () => {
-  const [{ data, fetching }] = useSettingsQuery();
+export const useGetSettings = (addSettings = true) => {
+  const [{ data, fetching }] = useSettingsQuery({ pause: !addSettings });
   const settings = isSettings(data?.settings) ? data?.settings : undefined;
 
   return {

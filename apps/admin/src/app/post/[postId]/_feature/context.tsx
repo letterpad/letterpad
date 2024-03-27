@@ -18,8 +18,9 @@ export const PostContext = createContext<PostContextType>(
 
 export const PostProvider: React.FC<{
   children: ReactNode;
-}> = ({ children }) => {
-  const { data: settings } = useGetSettings();
+  addSettings?: boolean;
+}> = ({ children, addSettings = true }) => {
+  const { data: settings } = useGetSettings(addSettings);
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [helpers, setHelpers] = useState<Editor["editor"]>();
