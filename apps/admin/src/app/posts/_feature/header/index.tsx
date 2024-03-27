@@ -1,7 +1,7 @@
 import className from "classnames";
 import { PostStatusOptions, TagsNode } from "letterpad-graphql";
 
-import { getReadableDate } from "../../../../shared/utils";
+import { TOPIC_PREFIX, getReadableDate } from "@/shared/utils";
 
 const titleColumn = {
   title: "Title",
@@ -81,12 +81,14 @@ export const postsColumns = ({ changeStatus }) => [
   statusColumn,
   { ...updatedAtColumn },
   {
-    title: "Tags",
+    title: "Topic",
     dataIndex: "tags",
     key: "tags",
     className: "hidden lg:table-cell max-w-sm",
     render: (tags: TagsNode) => {
-      return <span>{tags.rows.map((tag) => tag.name).join(", ")}</span>;
+      const topic = tags.rows.filter((tag) => tag.name.startsWith(TOPIC_PREFIX)).pop();
+      if(!topic) return null;
+      return <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded flex items-center">{topic.name.replace(TOPIC_PREFIX,"")}</span>;
     },
   },
   {

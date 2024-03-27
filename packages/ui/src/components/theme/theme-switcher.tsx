@@ -67,7 +67,7 @@ export const ThemeSwitcher = () => {
         cx="12"
         cy="12"
         style={centerCircleProps as {}}
-        fill="#eee"
+        fill="currentColor"
         mask="url(#myMask2)"
       />
       <animated.g stroke="currentColor" style={linesProps}>
@@ -81,20 +81,5 @@ export const ThemeSwitcher = () => {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
       </animated.g>
     </animated.svg>
-  );
-
-  return (
-    <button
-      aria-label="Toggle Dark Mode"
-      type="button"
-      className="p-1 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 rounded-full h-10 w-10 flex justify-center items-center"
-      onClick={toggleTheme}
-    >
-      {theme === 'dark' ? (
-        <CiLight className="h-6 w-6 md:h-7 md:w-7" />
-      ) : (
-        <CiDark className="h-6 w-6 md:h-7 md:w-7" />
-      )}
-    </button>
   );
 };
