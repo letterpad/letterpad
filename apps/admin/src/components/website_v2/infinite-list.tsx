@@ -41,12 +41,12 @@ export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
         const link = new URL(item.slug ?? "", author?.site_url!).toString();
         return (
           <div key={item.id}>
-            <AdminActions
-              id={item.id}
-              banned={item.banned!}
-              isFavourite={author?.favourite!}
-              authorId={author?.id!}
-            />
+              <AdminActions
+                id={item.id}
+                banned={item.banned!}
+                isFavourite={author?.favourite!}
+                authorId={author?.id!}
+              />
             <Card {...item} link={link} slug={link} author={author} />
           </div>
         );

@@ -86,12 +86,12 @@ export const Website = async () => {
 
                 return (
                   <div key={item.id}>
-                    <AdminActions
-                      id={item.id}
-                      banned={!!item.banned}
-                      isFavourite={!!author?.favourite}
-                      authorId={author?.id!}
-                    />
+                      <AdminActions
+                        id={item.id}
+                        banned={!!item.banned}
+                        isFavourite={!!author?.favourite}
+                        authorId={author?.id!}
+                      />
                     <Card
                       key={item.id}
                       {...item}

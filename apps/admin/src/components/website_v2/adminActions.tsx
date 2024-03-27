@@ -7,17 +7,26 @@ import { useUpdatePost } from "@/app/post/[postId]/_feature/api.client";
 
 import { useUpdateAuthor } from "../../app/posts/_feature/api.client";
 import { ROLES } from "../../graphql/types";
-
-export const AdminActions = ({
-  id,
-  banned,
-  isFavourite,
-  authorId,
-}: {
+import { PostProvider } from "../../app/post/[postId]/_feature/context";
+import { FC } from "react";
+interface Props {
   id: string;
   banned: boolean;
   isFavourite: boolean;
   authorId: string;
+}
+
+export const AdminActions:FC<Props> = (props) => {
+  return (<PostProvider>
+    <Buttons {...props} />
+  </PostProvider>)
+}
+
+const Buttons:FC<Props> = ({
+  id,
+  banned,
+  isFavourite,
+  authorId,
 }) => {
   const { updatePost, fetching } = useUpdatePost();
   const { updateAuthor, fetching: updatingAuthor } = useUpdateAuthor();
