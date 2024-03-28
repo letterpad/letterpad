@@ -75,8 +75,9 @@ export const Drawer: FC<Props> = ({
         style={animation}
         className={classNames(
           className,
-          "fixed z-40 h-screen p-4 overflow-y-auto bg-zinc-100 shadow-md  dark:bg-zinc-900",
+          "fixed z-40 p-4 overflow-y-auto bg-zinc-100 shadow-md  dark:bg-zinc-900",
           initalClass,
+          {"h-screen": dir === "left" || dir === "right"}
         )}
         tabIndex={-1}
         aria-labelledby="drawer-label"
