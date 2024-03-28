@@ -52,7 +52,7 @@ export const Card: FC<Props> = ({
   return (
     <div
       key={slug}
-      className="relative w-full p-6 rounded border dark:border-brand/10 border-slate-100 bg-brand/5 dark:bg-brand/5"
+      className="relative w-full px-2 py-4 md:p-6 rounded border dark:border-brand/10 border-slate-100 bg-brand/5 dark:bg-brand/5"
     >
       {featured && (
         <span className="bg-blue-100 text-blue-800 font-medium me-2 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1 absolute top-0 -right-2 text-xs rounded-bl-md">
@@ -72,10 +72,10 @@ export const Card: FC<Props> = ({
       <div className="flex flex-row justify-between md:gap-6">
         <div className="flex flex-1 flex-col gap-y-4 justify-between py-2 text-gray-800 dark:text-gray-200">
           <Link className="flex flex-col gap-1" href={link}>
-            <p className="font-sans text-md font-extrabold block text-ellipsis">
+            <p className="font-sans md:text-md font-extrabold block text-ellipsis">
               {title}
             </p>
-            <span className="opacity-70 mr-3 dark:text-gray-300/80 line-clamp-2">
+            <span className="opacity-70 mr-3 dark:text-gray-300/80 line-clamp-2 font-medium font-heading">
               {excerpt ?? sub_title}
             </span>
           </Link>
@@ -118,7 +118,7 @@ export const Card: FC<Props> = ({
 function transformText(text) {
   return text
     .replaceAll("-", " ")
-    .replaceAll("&", "")
+    .replaceAll("&", "and")
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
