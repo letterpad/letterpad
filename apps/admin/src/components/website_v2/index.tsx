@@ -24,6 +24,8 @@ import Footer from "../website/Footer";
 import { timeAgo } from "../../lib/timeAgo";
 import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
+import { TOPIC_PREFIX } from "../../shared/utils";
+import { isTagsNode } from "../../utils/type-guards";
 
 export const Website = async () => {
   const [data, categories, favAuthors, posts] = await Promise.all([
@@ -50,7 +52,7 @@ export const Website = async () => {
           <SignupBanner hasSession={hasSession} />
         )}
 
-        <div className=" bg-slate-800 sticky top-0 border-t border-gray-800 z-10">
+        <div className="bg-brand sticky top-0 border-t border-gray-800 z-10">
           <div className="overflow-x-auto max-w-6xl mx-auto py-4 p-2 relative">
             {/* <h2 className="font-bold mb-6 text-md">Topics:</h2> */}
             <div className="flex space-x-8 ">
@@ -74,7 +76,7 @@ export const Website = async () => {
             </div>
           </div>
           <div className="flex flex-row max-w-6xl mx-auto px-4 sm:px-6 divide-x-[1px] dark:divide-slate-800 divide-slate-200">
-            <section className="w-full mb-5 flex flex-col md:pr-10">
+            <section className="w-full mb-5 flex flex-col md:pr-10 gap-8">
               {rows.map((item) => {
                 const author =
                   item.author?.__typename === "Author" ? item.author : null;
@@ -84,20 +86,28 @@ export const Website = async () => {
                   author?.site_url
                 ).toString();
 
+                const tag = isTagsNode(item.tags)
+                  ? item.tags.rows.find((tag) =>
+                      tag.name.startsWith(TOPIC_PREFIX)
+                    )
+                  : null;
+                const tagName = tag?.name.replace(TOPIC_PREFIX, "");
                 return (
                   <div key={item.id}>
-                      <AdminActions
-                        id={item.id}
-                        banned={!!item.banned}
-                        isFavourite={!!author?.favourite}
-                        authorId={author?.id!}
-                      />
+                    <AdminActions
+                      id={item.id}
+                      banned={!!item.banned}
+                      isFavourite={!!author?.favourite}
+                      authorId={author?.id!}
+                    />
                     <Card
                       key={item.id}
                       {...item}
                       link={link}
                       slug={link}
                       author={author!}
+                      category={tagName}
+                      categorySlug={tag?.slug}
                     />
                   </div>
                 );
@@ -112,12 +122,12 @@ export const Website = async () => {
                 }
               )}
             >
-              <section className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-sky-50 dark:bg-blue-500/20 p-4 border">
+              <section className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-brand/5 p-4 border">
                 <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
-                  <TfiAnnouncement className="text-sky-500" />
+                  <TfiAnnouncement className="text-brand" />
                   Announcements
                 </h4>
-                <ul className="flex flex-col divide-y dark:divide-blue-500/30 divide-slate-100">
+                <ul className="flex flex-col divide-y dark:divide-blue-500/30 divide-brand/10">
                   {posts?.map((post) => {
                     return (
                       <li

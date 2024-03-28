@@ -433,6 +433,7 @@ query LetterpadLatestPosts($filters: LetterpadPostsFilters) {
         }
         tags {
           ... on TagsNode {
+            __typename
             rows {
               name
               slug

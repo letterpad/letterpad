@@ -23,9 +23,7 @@ const Layout = async ({ children, ...p }) => {
           title={
             <>
               Posts tagged with{" "}
-              <span className={"font-body " + getTailwindColorClass(tag)}>
-                {tag}
-              </span>
+              <span className={"font-body text-white"}>{tag}</span>
             </>
           }
           description=""
@@ -57,33 +55,3 @@ const Layout = async ({ children, ...p }) => {
 };
 
 export default Layout;
-
-function getTailwindColorClass(keyword: string) {
-  const colors = [
-    "text-red-600",
-    "text-red-400",
-    "text-orange-600",
-    "text-orange-400",
-    "text-yellow-600",
-    "text-green-600",
-    "text-green-400",
-    "text-teal-600",
-    "text-teal-400",
-    "text-blue-600",
-    "text-blue-400",
-    "text-indigo-600",
-    "text-purple-600",
-    "text-purple-400",
-    "text-pink-600",
-  ];
-
-  // Convert keyword to a numeric value
-  let hash = 0;
-  for (let i = 0; i < keyword.length; i++) {
-    hash = keyword.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  // Map the numeric value to a color
-  const index = Math.abs(hash) % colors.length;
-  return colors[index];
-}
