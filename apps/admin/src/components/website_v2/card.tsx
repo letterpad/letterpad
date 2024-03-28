@@ -118,7 +118,7 @@ export const Card: FC<Props> = ({
 function transformText(text) {
   return text
     .replaceAll("-", " ")
-    .replace("&", "")
+    .replaceAll("&", "")
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
