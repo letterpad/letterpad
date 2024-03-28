@@ -23,6 +23,8 @@ interface Props {
   stats?: PostStats;
   publishedAt?: string;
   featured?: boolean;
+  category?: string;
+  categorySlug?: string;
 }
 export const Card: FC<Props> = ({
   slug,
@@ -35,6 +37,8 @@ export const Card: FC<Props> = ({
   stats,
   publishedAt,
   featured,
+  category,
+  categorySlug,
 }) => {
   const origin =
     typeof window === "undefined" ? getRootUrl() : document.location.origin;
@@ -48,63 +52,74 @@ export const Card: FC<Props> = ({
   return (
     <div
       key={slug}
-      className="w-full py-10 border-b border-slate-100 dark:border-slate-800"
+      className="relative w-full p-6 rounded border dark:border-brand/10 border-slate-100 bg-brand/5 dark:bg-brand/5"
     >
+      {featured && (
+        <span className="bg-blue-100 text-blue-800 font-medium me-2 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1 absolute top-0 -right-2 text-xs rounded-bl-md">
+          <SlBadge />
+          Featured
+        </span>
+      )}
       <div className="flex items-center justify-between flex-row">
         <ProfileCard
           link={authorLink}
           avatar={avatar}
-          name={author?.name!}
+          name={<span className="font-semibold">{author?.name!}</span>}
           showProLabel={author?.is_paid_member!}
-          size="sm"
+          size="xs"
         />
       </div>
-      <Link
-        href={link}
-        target="_blank"
-        rel="noreferrer"
-        className="flex flex-row justify-between md:gap-6"
-      >
-        <div className="flex flex-col gap-y-2 justify-between py-2">
-          <div className="flex flex-col gap-1">
-            <p className="font-heading text-lg font-[600] block text-ellipsis text-gray-800 dark:text-gray-200">
+      <div className="flex flex-row justify-between md:gap-6">
+        <div className="flex flex-1 flex-col gap-y-4 justify-between py-2 text-gray-800 dark:text-gray-200">
+          <Link className="flex flex-col gap-1" href={link}>
+            <p className="font-sans text-md font-extrabold block text-ellipsis">
               {title}
             </p>
-            <span className="text-gray-800 mr-3 dark:text-gray-400 line-clamp-2">
+            <span className="opacity-70 mr-3 dark:text-gray-300/80 line-clamp-2">
               {excerpt ?? sub_title}
             </span>
-          </div>
-          <div className="flex gap-2 text-slate-600 dark:text-gray-400 font-heading">
+          </Link>
+          <div className="flex gap-2 font-light opacity-80 text-sm">
             {getReadableDate(new Date(publishedAt!))}
             <span>·</span>
             <span className="">{reading_time}</span>
-            {featured && (
+            {category && (
               <>
                 <span>·</span>
-                <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1">
-                  <SlBadge />
-                  Featured
-                </span>
+                <Link href={categorySlug!} className="font-semibold">
+                  {transformText(category)}
+                </Link>
               </>
             )}
           </div>
         </div>
         {cover_image.src && (
-          <Image
-            src={
-              cover_image.src?.replace(
-                "image/upload",
-                "image/upload/c_scale,w_200"
-              )!
-            }
-            alt="Product"
-            loading="lazy"
-            height={cover_image.height}
-            width={cover_image.width}
-            className="h-36 w-36 object-cover rounded-xl hidden md:block"
-          />
+          <Link className="hidden md:block" href={link}>
+            <Image
+              src={
+                cover_image.src?.replace(
+                  "image/upload",
+                  "image/upload/c_scale,w_200"
+                )!
+              }
+              alt="Product"
+              loading="lazy"
+              height={cover_image.height}
+              width={cover_image.width}
+              className="h-36 w-36 object-cover rounded-xl"
+            />
+          </Link>
         )}
-      </Link>
+      </div>
     </div>
   );
 };
+
+function transformText(text) {
+  return text
+    .replaceAll("-", " ")
+    .replaceAll("&", "")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
