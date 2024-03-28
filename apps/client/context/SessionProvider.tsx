@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Button, Modal } from 'ui';
+import { Button, Drawer, Modal } from 'ui';
 
 import { getApiRootUrl } from '../lib/utils/url';
 import { Subscribe } from '../src/components/subscribe';
@@ -71,7 +71,16 @@ export function SessionProvider({ children }: any) {
           You need to be logged into Letterpad for this action.
         </div>
       </Modal>
-      <Modal
+      <Drawer
+        title="Subscribe"
+        onClose={() => setShowSubscribe(false)}
+        show={showSubscribe}
+        dir="bottom"
+        className="w-full h-[60vh]"
+      >
+        <Subscribe />
+      </Drawer>
+      {/* <Modal
         toggle={() => setShowSubscribe(false)}
         show={showSubscribe}
         header={`Subscribe`}
@@ -79,7 +88,7 @@ export function SessionProvider({ children }: any) {
         footer={[]}
       >
         <Subscribe />
-      </Modal>
+      </Modal> */}
     </Context.Provider>
   );
 }
