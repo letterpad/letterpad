@@ -68,6 +68,7 @@ module.exports = {
         primary: colors.blue,
         gray: colors.slate,
         muted: colors.slate[400],
+        brand: "#2f8ccf",
         accent: {
           50: 'var(--accent)',
           100: '#f4f5f7',

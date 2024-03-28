@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import React, { FC } from "react";
 
-import { fetchResource } from "@/resourceFetcher";
+import { Banner } from "@/components/website_v2/banner/banner";
 
-import { Banner } from "../../../../components/website_v2/banner/banner";
+import { fetchResource } from "@/resourceFetcher";
 
 export const metadata: Metadata = {
   title: "Tag",
