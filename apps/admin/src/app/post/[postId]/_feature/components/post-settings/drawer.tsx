@@ -100,7 +100,7 @@ export const PostSettingsModal = ({ post, visible, onClose }: IProps) => {
         title="Settings"
         onClose={onClose}
         dir="top"
-        className="w-screen z-20 bg-white"
+        className="w-screen z-20 bg-white h-screen"
         scale={true}
       >
         <div className="whitespace-normal lg:w-2/3 m-auto">
