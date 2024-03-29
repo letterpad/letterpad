@@ -353,11 +353,6 @@ export type InputPostStats = {
   words?: InputMaybe<Scalars["Int"]>;
 };
 
-export type InputPublishOptions = {
-  sendMail?: InputMaybe<Scalars["Boolean"]>;
-  testMail?: InputMaybe<Scalars["Boolean"]>;
-};
-
 export type InputSocial = {
   facebook?: InputMaybe<Scalars["String"]>;
   github?: InputMaybe<Scalars["String"]>;
@@ -391,7 +386,6 @@ export type InputUpdatePost = {
   mail_status?: InputMaybe<MailStatus>;
   page_data?: InputMaybe<Scalars["String"]>;
   page_type?: InputMaybe<Scalars["String"]>;
-  publishOptions?: InputMaybe<InputPublishOptions>;
   publishedAt?: InputMaybe<Scalars["Date"]>;
   scheduledAt?: InputMaybe<Scalars["Date"]>;
   slug?: InputMaybe<Scalars["String"]>;
@@ -1178,7 +1172,7 @@ export enum TagType {
 export type TagsFilters = {
   active?: InputMaybe<Scalars["Boolean"]>;
   name?: InputMaybe<Scalars["String"]>;
-  suggest?: InputMaybe<Scalars["Boolean"]>;
+  search?: InputMaybe<Scalars["String"]>;
 };
 
 export type TagsInputType = {

@@ -1,51 +1,41 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { memo, useEffect, useRef } from "react";
+import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
+import { memo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import "./tinymce/core";
 
 import { titleEditorConfig, titleId } from "./tinymce/config";
 
-interface Props {
-  postId?: string;
-  title: string;
-  onTitleChange: (title: string) => void;
-}
+interface Props {}
 
-export const Title: React.FC<Props> = memo(
-  ({ postId, title, onTitleChange }) => {
-    const ref = useRef<Editor>(null);
+export const Title: React.FC<Props> = memo(({}) => {
+  const { control, watch } = useFormContext<PostWithAuthorAndTagsFragment>();
+  const title = watch("title");
 
-    useEffect(() => {
-      if (ref.current && title.length === 0) {
-        try {
-          ref.current.editor?.focus();
-        } catch (e) {
-          //
-        }
-      }
-    }, [title]);
-
-    return (
-      <Editor
-        ref={ref}
-        id={titleId}
-        initialValue={title ?? null}
-        onBlur={() => {
-          if (postId) {
-            const newtitle = ref.current?.editor?.getContent({
-              format: "text",
-            });
-            if (title !== newtitle) onTitleChange(newtitle ?? "");
-          }
-        }}
-        // onEditorChange={(_, editor) => {
-        //   if (postId) {
-        //     const newtitle = editor.getContent({ format: "text" });
-        //     if (title !== newtitle) onTitleChange(newtitle);
-        //   }
-        // }}
-        init={titleEditorConfig}
-      />
-    );
-  }
-);
+  return (
+    <Controller
+      name="title"
+      control={control}
+      rules={{ required: "Title is required" }}
+      render={({ field: { onChange, onBlur } }) => {
+        return (
+          <Editor
+            id={titleId}
+            value={title}
+            onEditorChange={(_, editor) => {
+              if (watch("id")) {
+                const newtitle = editor?.getContent({
+                  format: "text",
+                });
+                if (title !== newtitle) onChange(newtitle ?? "");
+              }
+            }}
+            onBlur={onBlur}
+            init={titleEditorConfig}
+          />
+        );
+      }}
+    ></Controller>
+  );
+});
 Title.displayName = "Title";

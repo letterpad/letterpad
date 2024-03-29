@@ -1,7 +1,6 @@
 import { IProps } from "@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor";
 
 import { basePath } from "@/constants";
-import Katex from "katex";
 
 import { textPatterns } from "../textPatterns";
 
@@ -41,6 +40,9 @@ export const titleEditorConfig: IProps["init"] = {
   theme: false,
   content_style: `#${titleId} p, #${titleId}::before { font-size: 3rem;  line-height: 3rem; font-weight: 700; margin-bottom: 1rem; }`,
   setup: function (ed) {
+    ed.on("init", function () {
+      ed.focus()
+    });
     ed.on("keydown", function (e) {
       if (e.key === "Enter") {
         e.preventDefault();

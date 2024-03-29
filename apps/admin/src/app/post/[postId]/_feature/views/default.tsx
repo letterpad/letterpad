@@ -24,27 +24,11 @@ export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
     <>
       <div className="prose dark:prose-dark">
         <div className="content">
-          {loading ? (
-            <PostTitlePlaceholder />
-          ) : (
-            <Title
-              title={post?.title || ""}
-              postId={post?.id}
-              onTitleChange={(title) => {
-                updatePostWithDebounce?.({ title, id: post.id });
-              }}
-            />
-          )}
+          {loading ? <PostTitlePlaceholder /> : <Title />}
           <div className="mt-8">
-            <SubTitle
-              postId={post?.id}
-              sub_title={post?.sub_title || ""}
-              onSubtitleChange={(sub_title) => {
-                updatePostWithDebounce?.({ sub_title, id: post.id });
-              }}
-            />
+            <SubTitle />
           </div>
-          <FeaturedImage id={post.id} cover_image={post.cover_image} />
+          <FeaturedImage />
           <Editor
             hasAiKey={!!settings?.openai_key}
             loading={loading}

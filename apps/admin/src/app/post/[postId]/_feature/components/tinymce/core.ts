@@ -24,4 +24,4 @@ if (typeof window !== "undefined") {
   require("tinymce/skins/ui/oxide-dark/skin.min.css");
   require("tinymce/skins/ui/oxide-dark/content.min.css");
 }
-export {};
+export { };

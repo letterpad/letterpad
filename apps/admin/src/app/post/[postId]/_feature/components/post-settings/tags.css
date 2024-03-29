@@ -1,0 +1,132 @@
+.react-tags {
+  position: relative;
+  padding: 6px 0 0 6px;
+  font-size: 1em;
+  line-height: 1.2;
+  cursor: text;
+}
+
+.react-tags__selected {
+  display: inline;
+}
+
+.react-tags__selected-tag {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0 6px 6px 0;
+  padding: 6px 8px;
+  border: 1px solid #0b5cbe;
+  border-radius: 6px;
+  background: #0b5cbe;
+  color: #fff;
+  font-size: inherit;
+  line-height: inherit;
+}
+.react-tags__selected-tag:after {
+  content: "x";
+  margin-left: 8px;
+}
+.react-tags__search {
+  display: block;
+
+  padding: 7px 2px;
+  margin-bottom: 6px;
+
+  max-width: 100%;
+}
+
+@media screen and (min-width: 30em) {
+  .react-tags__search {
+    position: relative;
+  }
+}
+
+.react-tags__search input {
+  max-width: 100%;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+
+  font-size: inherit;
+  line-height: inherit;
+  background: transparent;
+}
+.react-tags__search input:focus {
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.3) inset !important;
+  outline: none;
+}
+.react-tags__suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+}
+
+@media screen and (min-width: 30em) {
+  .react-tags__suggestions {
+    width: 240px;
+  }
+}
+
+.react-tags__suggestions ul {
+  margin: 4px -1px;
+  padding: 0;
+  list-style: none;
+  background: rgb(var(--sidebar-bg));
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.react-tags__suggestions li:not(:last-child) {
+  border-bottom: 1px solid rgba(var(--color-border), 0.9);
+}
+.react-tags__suggestions li {
+  padding: 10px 8px;
+}
+
+.react-tags__suggestions li mark {
+  background: none;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+
+.react-tags__suggestions li {
+  background: rgb(var(--content-bg));
+}
+
+.dark .react-tags__suggestions li mark,
+.dark .react-tags__suggestions li mark {
+  color: #fff;
+  font-weight: bold;
+}
+
+.react-tags__suggestions li:hover {
+  cursor: pointer;
+  background: #283141;
+}
+
+.dark .react-tags__suggestions li.is-active {
+  background: #283141;
+}
+.light .react-tags__suggestions li.is-active {
+  background: #eee;
+}
+
+.react-tags__suggestions li.is-disabled {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+.react-tags__search input::-ms-clear {
+  display: none;
+}
+
+.react-tags__selected-tag:hover,
+.react-tags__selected-tag:focus {
+  border-color: rgb(var(--color-border));
+}

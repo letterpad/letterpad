@@ -32,15 +32,17 @@ export const useGetPost = (
 };
 
 export const useUpdatePost = () => {
-  const [{ fetching }, updatePost] = useUpdatePostMutation();
+  const [, updatePost] = useUpdatePostMutation();
   const { setSaving, saving } = usePostContext();
 
   const handleUpdatePost = useCallback(
     async (params: InputUpdatePost, savingIndicator = true) => {
       if (savingIndicator) {
         Message().loading({ content: "Saving...", duration: 3 });
+      } else {
+        setSaving(true)
       }
-      setSaving(true)
+
       const res = await updatePost({
         data: { ...params },
       });
@@ -81,7 +83,7 @@ export const useUpdatePost = () => {
         };
       }
       setSaving(true)
-      debounceUpdatePostAPI(change, savingIndicator);
+      return debounceUpdatePostAPI(change, savingIndicator);
     },
     [debounceUpdatePostAPI, setSaving]
   );

@@ -2,14 +2,15 @@ import {
   Navigation,
   NavigationType,
   PostStatusOptions,
+  PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { Button, Modal } from "ui";
 
 import { usePublish } from "./usePublish";
 import { Heading } from "../heading";
 import { PageNotLinkedWithNavigation, WarnNoTags } from "../warnings";
-import { useGetPost } from "../../../api.client";
 
 interface Props {
   postId: string;
@@ -24,22 +25,23 @@ enum NotPublished {
 
 const PublishButton: React.FC<Props> = ({ postId, menu }) => {
   const [error, setError] = useState<NotPublished>();
-  const { data: post } = useGetPost({ id: postId });
+  const [busy, setBusy] = useState(false);
+  const { watch } = useFormContext<PostWithAuthorAndTagsFragment>();
   const {
     publishOrUnpublish,
     validateAndPublish,
     _discardDraft,
-    fetching,
     isPublished,
     isDirty,
   } = usePublish({
     postId,
     menu,
   });
+  if (!watch("id")) return null;
 
-  if (post?.__typename !== "Post") return null;
-
-  const published = post.status === PostStatusOptions.Published;
+  const type = watch("type");
+  const status = watch("status");
+  const published = status === PostStatusOptions.Published;
 
   return (
     <>
@@ -47,18 +49,23 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
         {!published && (
           <>
             <Heading
-              heading={`Ready to publish your ${post.type} ?`}
+              heading={`Ready to publish your ${type} ?`}
               subheading={``}
             />
             <div>
               <Button
                 size="normal"
-                onClick={validateAndPublish}
+                onClick={() => {
+                  setBusy(true);
+                  validateAndPublish()
+                    ?.then(() => setBusy(false))
+                    .catch(() => setBusy(false));
+                }}
                 data-testid="publishBtn"
                 className="button btn-success"
-                disabled={fetching}
+                disabled={busy}
               >
-                {fetching ? "Publishing..." : "Publish"}
+                {busy ? "Publishing..." : "Publish"}
               </Button>
             </div>
           </>
@@ -66,19 +73,24 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
         {published && (
           <>
             <Heading
-              heading={`Unpublish this ${post.type} ?`}
-              subheading={`Your ${post.type} will no longer be visible to users.`}
+              heading={`Unpublish this ${type} ?`}
+              subheading={`Your ${type} will no longer be visible to users.`}
             />
             <div className="flex flex-col gap-2">
               {isPublished && isDirty ? (
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => publishOrUnpublish(true)}
+                    onClick={() => {
+                      setBusy(true);
+                      publishOrUnpublish(true)
+                        ?.then(() => setBusy(false))
+                        .catch(() => setBusy(false));
+                    }}
                     className="flex-1"
-                    disabled={fetching}
+                    disabled={busy}
                     variant="outline"
                   >
-                    {fetching ? "Updating Post..." : "Update Live Post"}
+                    {busy ? "Updating Post..." : "Update Live Post"}
                   </Button>
                   <Button
                     onClick={_discardDraft}
@@ -89,9 +101,14 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
                   </Button>
                   <Button
                     variant="danger"
-                    onClick={() => publishOrUnpublish(false)}
+                    onClick={() => {
+                      setBusy(true);
+                      publishOrUnpublish(false)
+                        ?.then(() => setBusy(false))
+                        .catch(() => setBusy(false));
+                    }}
                     data-testid="unPublishBtn"
-                    disabled={fetching}
+                    disabled={busy}
                   >
                     Unpublish
                   </Button>
@@ -100,11 +117,16 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
                 <div>
                   <Button
                     variant="danger"
-                    onClick={() => publishOrUnpublish(false)}
+                    onClick={() => {
+                      setBusy(true);
+                      publishOrUnpublish(false)
+                        ?.then(() => setBusy(false))
+                        .catch(() => setBusy(false));
+                    }}
                     data-testid="unPublishBtn"
-                    disabled={fetching}
+                    disabled={busy}
                   >
-                    {fetching ? "Unpublishing..." : "Unpublish"}
+                    {busy ? "Unpublishing..." : "Unpublish"}
                   </Button>
                 </div>
               )}
