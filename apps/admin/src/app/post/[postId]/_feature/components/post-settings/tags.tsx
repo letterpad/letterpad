@@ -6,7 +6,7 @@ import ReactTags from "react-tag-autocomplete";
 import "./tags.css";
 
 import { useGetTags } from "@/app/tags/_feature/api.client";
-import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
+import { beautifyTopic, debounce, TOPIC_PREFIX } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
 import { tags } from "./constants";
@@ -31,11 +31,7 @@ export const Tags = ({ post }: IProps) => {
   const [tags, setTags] = useState<Tag[]>(addTagsWithId(initialTags));
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const [search, setSearch] = useState("");
-  const {
-    data,
-    fetching: loading,
-    refetch,
-  } = useGetTags({ search }, { skip: true });
+  const { data, fetching: loading } = useGetTags({ search }, { skip: !search });
 
   const computedTags = useMemo(() => data ?? [], [data]);
 
@@ -45,7 +41,6 @@ export const Tags = ({ post }: IProps) => {
       return;
     }
     setSearch(query);
-    refetch({});
   };
   useEffect(() => {
     if (!loading) {
@@ -70,27 +65,27 @@ export const Tags = ({ post }: IProps) => {
 
   const saveTags = async () => {
     const newTagsString = tags
-      .map((t) => t.name)
+      .map((t) => t?.name)
       .sort()
-      .join(",");
+      .join();
     const oldTagsString = watch("tags.rows")
       .map((t) => t.name)
-      .filter((t) => !t.startsWith(TOPIC_PREFIX))
+      .filter((t) => !t?.startsWith(TOPIC_PREFIX))
       .sort()
-      .join(",");
+      .join();
 
-    if (newTagsString === "," && oldTagsString === ",") return;
+    if (newTagsString === oldTagsString) return;
     const shouldDirty = newTagsString !== oldTagsString;
-
-    setValue(
-      "tags.rows",
-      [...tags.map((t) => ({ name: t.name, slug: t.name })), { ...topic }],
-      {
-        shouldDirty: shouldDirty,
-        shouldTouch: shouldDirty,
-        shouldValidate: shouldDirty,
-      }
-    );
+    const resultTags = [
+      ...tags.map((t) => ({ name: t.name, slug: t.name })),
+      topic ? { ...topic } : null,
+    ];
+    if (topic) resultTags.push(topic);
+    setValue("tags.rows", resultTags, {
+      shouldDirty: shouldDirty,
+      shouldTouch: shouldDirty,
+      shouldValidate: shouldDirty,
+    });
   };
 
   const onDelete = (i) => {
@@ -180,6 +175,7 @@ export const PrimaryTag = () => {
         name="tags.rows"
         control={control}
         render={({ field: { onChange, value = [] } }) => {
+          value = value.filter((v) => v !== null);
           const tagsWithoutTopic = value.filter(
             (tag) => !tag.name?.startsWith(TOPIC_PREFIX)
           );

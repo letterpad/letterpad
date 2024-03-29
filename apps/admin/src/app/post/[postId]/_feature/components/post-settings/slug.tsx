@@ -1,4 +1,5 @@
 import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "ui";
 
@@ -20,9 +21,20 @@ export const Slug = () => {
       textToSlug(getLastPartFromPath(slug)),
       post.type
     );
-    setValue("slug", formattedSlug);
+    return formattedSlug;
   };
-  const slug = watch("slug") ?? "";
+
+  const [slug, setSlug] = useState(
+    getLastPartFromPath(post?.slug ?? formatSlug(post.title))
+  );
+
+  const saveSlug = () => {
+    const formattedSlug = formatSlug(slug);
+    const dirty = watch("slug") !== formattedSlug;
+    setValue("slug", formattedSlug, { shouldDirty: dirty });
+    setSlug(formattedSlug);
+  };
+
   return (
     <div>
       <Heading
@@ -34,25 +46,29 @@ export const Slug = () => {
       <Controller
         name="slug"
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onBlur } }) => (
           <Input
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => setSlug(e.target.value)}
+            onBlur={(e) => {
+              saveSlug();
+              onBlur();
+            }}
             value={getLastPartFromPath(slug)}
             addonBefore={`/${post.type}/`}
-            addonAfter={
-              <a
-                className="cursor-pointer text-blue-500"
-                onClick={(e) => {
-                  e.preventDefault();
-                  formatSlug(slug);
-                }}
-              >
-                Validate
-              </a>
-            }
-            onEnter={() => formatSlug(slug)}
+            // addonAfter={
+            //   <a
+            //     className="cursor-pointer text-blue-500"
+            //     onClick={(e) => {
+            //       e.preventDefault();
+            //       formatSlug(slug);
+            //     }}
+            //   >
+            //     Validate
+            //   </a>
+            // }
+            onEnter={saveSlug}
             data-testid="slugInp"
-            help={<span className="dark:text-white">Checking...</span>}
+            // help={<span className="dark:text-white">Checking...</span>}
           />
         )}
       />
