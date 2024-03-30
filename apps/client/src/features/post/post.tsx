@@ -8,6 +8,7 @@ import Link from '@/components/Link';
 
 import { LikeProvider } from '../like/context';
 import { Like } from '../like/like';
+import RelatedPosts from '../relatedPosts';
 import { PostFooter } from '../../app/(others)/post/[slug]/post-footer';
 import { PostAuthor } from '../../components/postAuthor';
 import { PrismHighlight } from '../../components/prism-highlight';
@@ -64,7 +65,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                   src={post.cover_image.src}
                   loading="lazy"
                   alt={post.title}
-                  className="py-4"
+                  className="left-0 max-h-screen object-cover"
                   style={{ minHeight: 200, width: '100%' }}
                 />
               )}
@@ -118,9 +119,16 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
               </div>
             )}
             {!isPage && <SubscribeToMyBlogPopup />}
+
             {type === 'post' && (
               <Suspense fallback={<div>Loading Comments...</div>}>
                 <Comments postId={post.id} />
+              </Suspense>
+            )}
+
+            {type === 'post' && (
+              <Suspense fallback={<div>Loading Related...</div>}>
+                <RelatedPosts postId={post.id} />
               </Suspense>
             )}
           </article>

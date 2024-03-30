@@ -19,7 +19,8 @@ export interface LayoutProps {
 
 export interface HomePostsProps {
   posts: PostsFragmentFragment;
-  settings: SettingsFragmentFragment;
+  settings?: SettingsFragmentFragment;
+  className?: string;
 }
 
 export interface HomePageProps {

@@ -181,3 +181,14 @@ export const getAuthorAndSettingsData = cache(async () => {
     return null;
   }
 });
+
+export const getRelatedPosts = cache(async ({ post_id }) => {
+  try {
+    const letterpad = getLetterpad();
+    const data = await letterpad.getRelatedPosts({ post_id });
+    console.log('Fired');
+    return data;
+  } catch (e) {
+    return null;
+  }
+});
