@@ -65,7 +65,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                   src={post.cover_image.src}
                   loading="lazy"
                   alt={post.title}
-                  className="left-0 max-h-screen object-cover"
+                  className="lg:left-0 -mx-8 min-w-[calc(100vw+16px)] lg:max-h-[80vh] object-cover lg:-mx-[20%] lg:min-w-[calc(140%)]"
                   style={{ minHeight: 200, width: '100%' }}
                 />
               )}
