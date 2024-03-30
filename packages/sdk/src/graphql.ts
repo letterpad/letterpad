@@ -878,6 +878,7 @@ export type Query = {
   popularTags: PopularTagsResponse;
   post: PostResponse;
   posts: PostsResponse;
+  relatedPosts: PostsResponse;
   settings: SettingResponse;
   sitemap: SiteMapResponse;
   sitemaps: SiteMapResponse;
@@ -941,6 +942,10 @@ export type QueryPostsArgs = {
   filters?: InputMaybe<PostsFilters>;
 };
 
+export type QueryRelatedPostsArgs = {
+  filters?: InputMaybe<RelatedPostFilters>;
+};
+
 export type QuerySubscriberArgs = {
   subscriber_id?: InputMaybe<Scalars["Int"]>;
 };
@@ -966,6 +971,10 @@ export enum RegisterStep {
   Registered = "Registered",
   SiteInfo = "SiteInfo",
 }
+
+export type RelatedPostFilters = {
+  post_id: Scalars["String"];
+};
 
 export type RemoveDomainResponse = {
   __typename?: "RemoveDomainResponse";
@@ -1733,6 +1742,65 @@ export type PostPageQuery = {
     | { __typename: "UnAuthorized"; message: string };
 };
 
+export type RelatedPostsQueryVariables = Exact<{
+  filters?: InputMaybe<RelatedPostFilters>;
+}>;
+
+export type RelatedPostsQuery = {
+  __typename?: "Query";
+  relatedPosts:
+    | { __typename: "Exception"; message: string }
+    | {
+        __typename: "PostsNode";
+        count: number;
+        rows: Array<{
+          __typename?: "Post";
+          id: string;
+          title: string;
+          sub_title?: string | null;
+          slug?: string | null;
+          featured: boolean;
+          publishedAt?: any | null;
+          reading_time?: string | null;
+          excerpt?: string | null;
+          likes?: Array<{
+            __typename?: "Like";
+            avatar?: string | null;
+            username?: string | null;
+          } | null> | null;
+          cover_image: { __typename?: "Image"; src?: string | null };
+          author?:
+            | {
+                __typename: "Author";
+                name: string;
+                avatar?: string | null;
+                username: string;
+              }
+            | { __typename: "Exception"; message: string }
+            | { __typename: "Failed"; message: string }
+            | { __typename: "NotFound"; message: string }
+            | { __typename: "UnAuthorized"; message: string }
+            | null;
+          stats?: {
+            __typename?: "PostStats";
+            words?: number | null;
+            reading_time?: string | null;
+            characters?: number | null;
+            spaceless_characters?: number | null;
+          } | null;
+          tags?:
+            | { __typename: "Exception"; message: string }
+            | {
+                __typename: "TagsNode";
+                rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
+              }
+            | { __typename: "UnAuthorized"; message: string }
+            | null;
+        }>;
+      }
+    | { __typename: "UnAuthorized"; message: string };
+};
+
 export type PostsQueryVariables = Exact<{
   tagSlug?: InputMaybe<Scalars["String"]>;
   search?: InputMaybe<Scalars["String"]>;
@@ -2337,6 +2405,17 @@ export const PostPageDocument = `
     ${PageFragmentFragmentDoc}
 ${MeFragmentFragmentDoc}
 ${SettingsFragmentFragmentDoc}`;
+export const RelatedPostsDocument = `
+    query relatedPosts($filters: RelatedPostFilters) {
+  relatedPosts(filters: $filters) {
+    __typename
+    ...postsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+    ${PostsFragmentFragmentDoc}`;
 export const PostsDocument = `
     query posts($tagSlug: String, $search: String) {
   posts(filters: {tagSlug: $tagSlug, search: $search}) {
@@ -2461,6 +2540,16 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         variables,
         options,
       ) as Promise<PostPageQuery>;
+    },
+    relatedPosts(
+      variables?: RelatedPostsQueryVariables,
+      options?: C,
+    ): Promise<RelatedPostsQuery> {
+      return requester<RelatedPostsQuery, RelatedPostsQueryVariables>(
+        RelatedPostsDocument,
+        variables,
+        options,
+      ) as Promise<RelatedPostsQuery>;
     },
     posts(variables?: PostsQueryVariables, options?: C): Promise<PostsQuery> {
       return requester<PostsQuery, PostsQueryVariables>(

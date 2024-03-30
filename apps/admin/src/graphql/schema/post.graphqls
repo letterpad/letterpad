@@ -201,6 +201,10 @@ input InputUpdatePost {
   banned: Boolean
 }
 
+input RelatedPostFilters {
+  post_id: String!
+}
+
 type PostError implements LetterpadError {
   message: String!
 }
@@ -247,6 +251,7 @@ input LetterpadPostsFilters {
 type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
+  relatedPosts(filters: RelatedPostFilters): PostsResponse!
   stats: StatsResponse
   isPostLiked(postId: String!): IsPostLikedResponse!
   letterpadLatestPosts(filters: LetterpadPostsFilters): PostsResponse!

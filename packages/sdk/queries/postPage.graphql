@@ -22,6 +22,16 @@ query postPage($filters: PostFilters) {
   }
 }
 
+query relatedPosts($filters: RelatedPostFilters) {
+  relatedPosts(filters: $filters) {
+    __typename
+    ...postsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+
 fragment pageFragment on Post {
   id
   slug

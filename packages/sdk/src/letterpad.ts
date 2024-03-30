@@ -110,4 +110,9 @@ export class Letterpad {
       post: response.post,
     };
   }
+  async getRelatedPosts({ post_id }: { post_id: string }) {
+    const response = await this.sdk.relatedPosts({ filters: { post_id } });
+    handlePostsErrors(response.relatedPosts);
+    return response.relatedPosts;
+  }
 }
