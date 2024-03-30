@@ -1,22 +1,22 @@
 import classNames from "classnames";
+import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
+import { useFormContext } from "react-hook-form";
 import { HiPlus } from "react-icons/hi";
 import { RiUnsplashFill } from "react-icons/ri";
 
 import { Upload } from "@/components/upload";
 
-import { useUpdatePost } from "../api.client";
-
-export const FeaturedImage = ({ id, cover_image }) => {
-  const { updatePost } = useUpdatePost();
+export const FeaturedImage = () => {
+  const { setValue, watch } = useFormContext<PostWithAuthorAndTagsFragment>();
   return (
     <div
       className={classNames("relative", {
-        "my-10 mb-10": cover_image.src,
+        "my-10 mb-10": watch("cover_image.src"),
       })}
     >
       <Upload
         className="bg-transparent text-slate-300 hover:text-slate-400 dark:bg-transparent dark:hover:text-slate-500"
-        url={cover_image.src || ""}
+        url={watch("cover_image.src") || ""}
         emptyIcon={
           <div className="flex items-center justify-center gap-2">
             <HiPlus size={18} />
@@ -25,13 +25,10 @@ export const FeaturedImage = ({ id, cover_image }) => {
           </div>
         }
         onSuccess={([res]) => {
-          updatePost({
-            id: id,
-            cover_image: {
-              src: res?.src,
-              width: res.size?.width,
-              height: res.size?.height,
-            },
+          setValue("cover_image", {
+            src: res?.src,
+            width: res.size?.width,
+            height: res.size?.height,
           });
         }}
       />

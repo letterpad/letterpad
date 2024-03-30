@@ -65,6 +65,7 @@
     "react-icons": "^5.0.1",
     "react-spring": "^9.7.3",
     "turbo": "latest",
+    "use-deep-compare-effect": "^1.8.1",
     "uuid": "^9.0.1"
   }
 }

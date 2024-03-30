@@ -103,7 +103,7 @@ export const Drawer: FC<Props> = ({
           </button>
         )}
         <div className="mb-6 flex-1 text-sm text-gray-500 dark:text-gray-300">
-          {children}
+          {show && children}
         </div>
         <div className="bottom-0 left-0">{footer}</div>
       </animated.div>

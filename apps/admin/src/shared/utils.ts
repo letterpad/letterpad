@@ -14,18 +14,17 @@ export const getDateTime = (d?: Date) => {
   return dayjs(d).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
 };
 
-export function debounce<Params extends any[]>(
-  func: (...args: Params) => any,
-  timeout: number
-): (...args: Params) => Promise<any> {
-  let timer: NodeJS.Timeout;
+export const debounce = <F extends (...args: any[]) => any>(func: F, waitFor: number) => {
+  let timeout
 
-  return (...args: Params) => {
-    clearTimeout(timer);
-    return new Promise((resolve) => {
-      timer = setTimeout(() => resolve(func(...args)), timeout);
-    });
-  };
+  return (...args: Parameters<F>): Promise<ReturnType<F>> =>
+    new Promise(resolve => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+
+      timeout = setTimeout(() => resolve(func(...args)), waitFor)
+    })
 }
 
 export function getBase64(file: File) {

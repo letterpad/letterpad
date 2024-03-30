@@ -3,13 +3,15 @@ import {
     NavigationType,
     PostStatusOptions,
     PostTypes,
+    PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { Message } from "ui";
 
 import { EventAction, track } from "@/track";
 
-import { useGetPost, useUpdatePost } from "../../../api.client";
+import { useUpdatePost } from "../../../api.client";
 
 interface Props {
     postId: string;
@@ -22,25 +24,29 @@ enum NotPublished {
     PageNotLinkedWithNav = "PageNotLinkedWithNav",
 }
 
-export const usePublish = ({ postId, menu }: Props) => {
+export const usePublish = ({ menu }: Props) => {
     const [error, setError] = useState<NotPublished>();
-    const { data: post } = useGetPost({ id: postId });
+    const { watch, setValue } = useFormContext<PostWithAuthorAndTagsFragment>();
     const { updatePost, fetching } = useUpdatePost();
+    const type = watch("type");
+    const postId = watch("id");
+    const slug = watch("slug");
+    const status = watch("status");
+    const isDirty = watch("html") !== watch("html_draft");
 
     const validateAndPublish = () => {
-        const isPost = post?.type === PostTypes.Post;
+        const isPost = type === PostTypes.Post;
 
         const navigationPages = getPagesFromMenu(menu);
-        // const postTags = isTagsNode(post.tags) ? post.tags.rows : [];
 
         const navLinkedWithPages = navigationPages?.find(
-            (page) => page === post?.slug?.replace("/page/", "").toLowerCase()
+            (page) => page === slug?.replace("/page/", "").toLowerCase()
         );
 
         if (!navLinkedWithPages && !isPost) {
             setError(NotPublished.PageNotLinkedWithNav);
         } else {
-            publishOrUnpublish(true);
+            return publishOrUnpublish(true);
         }
     };
 
@@ -56,7 +62,7 @@ export const usePublish = ({ postId, menu }: Props) => {
                 eventLabel: "publish",
             });
         }
-
+        setValue("status", status);
         return await updatePost({ id: postId, status })
 
     };
@@ -79,8 +85,8 @@ export const usePublish = ({ postId, menu }: Props) => {
         publishOrUnpublish,
         _discardDraft,
         fetching,
-        isPublished: post?.status === PostStatusOptions.Published,
-        isDirty: post?.html !== post?.html_draft
+        isPublished: status === PostStatusOptions.Published,
+        isDirty
     }
 }
 

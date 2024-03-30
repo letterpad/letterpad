@@ -25,11 +25,17 @@ export const getTags = cache(
       };
     }
 
-    if (args.filters?.suggest) {
+    if (args.filters?.search) {
       const tags = await prisma.tag.findMany({
         orderBy: {
           name: "asc",
         },
+        where: {
+          name: {
+            contains: args.filters.search,
+          },
+        },
+        take: 20,
       });
       return {
         __typename: "TagsNode",
