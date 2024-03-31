@@ -7,7 +7,8 @@
 
 code[class*='language-'],
 pre[class*='language-'] {
-	color: #d6e7ff;
+	color: #d6e7ff !important;
+  background-color: darkslategray;
 	text-shadow: none;
 	font-size: 1em;
 	line-height: 1.8;
@@ -17,14 +18,7 @@ pre[class*='language-'] {
 	word-break: normal;
 	word-wrap: normal;
 	text-align: left;
-
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
 	tab-size: 4;
-
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
 	hyphens: none;
 }
 
