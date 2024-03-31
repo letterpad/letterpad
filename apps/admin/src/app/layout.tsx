@@ -77,7 +77,6 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme-preference")?.value ?? "light";
-  const edgeConfig = await getEdgeConfig.all();
   return (
     <html
       lang="en"
@@ -91,7 +90,6 @@ const RootLayout = async ({ children }) => {
       )}
     >
       <head>
-        <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
         <script src={basePath + `/prism/prism.js`} async />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -102,10 +100,10 @@ const RootLayout = async ({ children }) => {
           crossOrigin="anonymous"
         />
 
-        <script
+        <Script
           dangerouslySetInnerHTML={{
             __html: `
-              globalThis.edgeConfig = ${JSON.stringify(edgeConfig ?? {})};
+              globalThis.edgeConfig = ${JSON.stringify((await getEdgeConfig.all()) ?? {})};
             `,
           }}
           id="edgeConfig"

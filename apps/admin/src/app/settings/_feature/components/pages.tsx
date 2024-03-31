@@ -9,7 +9,6 @@ interface Props {
 }
 
 const Pages: React.FC<Props> = ({ settings }) => {
-  const { updateSettings } = useUpdateSettings();
   const data = useFormContext();
   return (
     <>

@@ -115,7 +115,7 @@
     "@types/ramda": "0.29.9",
     "concurrently": "^6.2.0",
     "config": "workspace:*",
-    "cypress": "13.2.0",
+    "cypress": "13.7.1",
     "letterpad-graphql": "workspace:*",
     "cypress-plugin-tab": "^1.0.5",
     "graphql-tag": "2.11.0",

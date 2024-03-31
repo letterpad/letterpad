@@ -81,9 +81,10 @@ Cypress.Commands.add("openSettings", openSettings);
 
 //-----
 function enterTags(tags) {
-  return tags.forEach((tag) => {
+  tags.forEach((tag) => {
     cy.get(".react-tags__search-input").type(`${tag}{enter}`);
   });
+  return cy.get(".react-tags__search-input");
 }
 Cypress.Commands.add("enterTags", enterTags);
 

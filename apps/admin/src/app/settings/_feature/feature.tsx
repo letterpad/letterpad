@@ -67,14 +67,14 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
   const selectedKey = searchParams.get("selected") ?? "seo";
 
   useEffect(() => {
-    const container  = document.querySelector(`#lp-content`);
-    const element  = document.querySelector(`#${selectedKey}`) as HTMLElement; 
-    if(container && element) {
+    const container = document.querySelector(`#lp-content`);
+    const element = document.querySelector(`#${selectedKey}`) as HTMLElement;
+    if (container && element) {
       container.scroll({
         top: element.offsetTop,
         left: 0,
         behavior: "smooth",
-      })
+      });
     }
   }, [selectedKey]);
 
@@ -83,29 +83,33 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
     router.push("/login?deleted=true");
   };
 
+  const save = async (e) => {
+    e.preventDefault();
+    // do your early validation here
+    handleSubmit((data) => {
+      const change = getDirtyFields<SettingInputType>(
+        data,
+        formState.dirtyFields
+      );
+      Message().loading({ content: "Saving...", duration: 3 });
+      return updateSettings({ options: change }).then((res) => {
+        if (res.data?.updateOptions?.__typename === "NotFound") {
+          return Message().error({
+            content: res.data?.updateOptions.message,
+            duration: 3,
+          });
+        }
+        methods.reset(change);
+        Message().success({ content: "Saved", duration: 2 });
+      });
+    })(e);
+  };
+
   if (!data) return null;
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit((data) => {
-          const change = getDirtyFields<SettingInputType>(
-            data,
-            formState.dirtyFields
-          );
-          Message().loading({ content: "Saving...", duration: 3 });
-          return updateSettings({ options: change }).then((res) => {
-            if (res.data?.updateOptions?.__typename === "NotFound") {
-              return Message().error({
-                content: res.data?.updateOptions.message,
-                duration: 3,
-              });
-            }
-            methods.reset(change);
-            Message().success({ content: "Saved", duration: 2 });
-          });
-        })}
-      >
+      <form onSubmit={save}>
         {formState.isDirty && (
           <div className="absolute bottom-0 z-20 w-full py-2 text-right -ml-8 md:-ml-16">
             <SaveButton />
@@ -188,7 +192,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
               <Pages settings={data} />
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div className="relative">
+            <div className="">
               <SectionHeader
                 heading={"Navigation"}
                 description={
