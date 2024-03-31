@@ -1,4 +1,5 @@
 "use client";
+import classNames from "classnames";
 import {
   InputUpdatePost,
   PostWithAuthorAndTagsFragment,
@@ -69,21 +70,28 @@ export const Feature = () => {
   };
 
   if (loading) return <div></div>;
+  const isStoryBuilder = post?.page_type === "story-builder";
+
   return (
     <div style={{ minHeight: "100vh" }}>
       <FormProvider {...methods}>
         <AutoSaveForm defaultValue={post} onSubmit={onSubmit} />
 
-        <div className="sticky top-0 dark:bg-slate-900 bg-slate-100 md:bg-transparent lg:z-0 z-10">
+        <div
+          className={classNames(
+            "sticky top-0 dark:bg-slate-900 bg-slate-100 md:bg-transparent lg:z-0 z-10",
+            {
+              "px-4": isStoryBuilder,
+            }
+          )}
+        >
           {post && <Header post={post} setShowPostSetting={showDrawer} />}
         </div>
 
         {post?.page_type === PageType["Default"] && (
           <DefaultPost settings={settings} post={post} loading={loading} />
         )}
-        {post?.page_type === PageType["Story Builder"] && (
-          <Creatives post={post} />
-        )}
+        {isStoryBuilder && <Creatives post={post} />}
 
         <PostSettingsModal post={post!} visible={visible} onClose={onClose} />
       </FormProvider>

@@ -38,7 +38,7 @@ export const titleEditorConfig: IProps["init"] = {
   inline: true,
   skin: false,
   theme: false,
-  content_style: `#${titleId} p, #${titleId}::before { font-size: 3rem;  line-height: 3rem; font-weight: 700; margin-bottom: 1rem; }`,
+  content_style: `#${titleId} p, #${titleId}::before { font-size: 3rem;  line-height: 3rem; font-weight: 700; margin-bottom: 1rem }`,
   setup: function (ed) {
     ed.on("init", function () {
       ed.focus()

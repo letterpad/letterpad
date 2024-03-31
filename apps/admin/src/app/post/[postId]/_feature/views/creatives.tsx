@@ -18,13 +18,7 @@ export const Creatives: FC<Props> = ({ post }) => {
   return (
     <div className="my-10">
       <div className="mx-4">
-        <Title
-          title={post.title || ""}
-          postId={post?.id}
-          onTitleChange={(title) => {
-            updatePostWithDebounce?.({ title, id: post.id });
-          }}
-        />
+        <Title />
       </div>
       <BuilderContext
         data={JSON.parse(post.page_data as string).rows}

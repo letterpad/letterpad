@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { IoRemoveCircleOutline } from "react-icons/io5";
+import { RiDeleteBin4Fill } from "react-icons/ri";
 
 import { BlockMasonry } from "../../types";
 import { Button } from "../../../button";
@@ -29,20 +30,19 @@ export const MasonryGrid: FC<Props> = ({
           onClick={() => onSelect(i)}
         />
         {!preview && (
-          <Button
+          <button
             onClick={() => onRemove(item.id)}
-            className="absolute top-0 rounded-none px-1 py-1"
-            variant="danger"
+            className="absolute top-0 rounded-full h-10 w-10 flex items-center justify-center right-0 p-1 m-2 backdrop-brightness-50"
           >
-            <IoRemoveCircleOutline size={20} />
-          </Button>
+            <RiDeleteBin4Fill size={16}/>
+          </button>
         )}
       </div>
     );
   });
 
   return (
-    <div className="m-auto grid w-full grid-cols-2 gap-0 space-x-2 space-y-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="m-auto grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
       {rows}
     </div>
   );
