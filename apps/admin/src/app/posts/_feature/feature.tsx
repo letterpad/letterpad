@@ -86,7 +86,7 @@ export const Feature = () => {
         <PostSettingsModal
           visible={!!postId}
           onClose={() => setPostId(null)}
-          className={sidebarVisible ? "w-[calc(100vw-250px)]" : ""}
+          className={sidebarVisible ? "!w-[calc(100vw-250px)]" : ""}
         />
       </FormProvider>
     </>
