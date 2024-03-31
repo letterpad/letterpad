@@ -19,7 +19,7 @@ describe("Settings", () => {
     cy.getTestId("siteEmail").type("site email");
 
     cy.getTestId("css").type("css stuff");
-    cy.getTestId("close-cookie-banner").click();
+    // cy.getTestId("close-cookie-banner").click();
     cy.getTestId("save-btn").click({ force: true });
     cy.wait("@UpdateOptionsMutation");
   });

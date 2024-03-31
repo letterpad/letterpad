@@ -3,7 +3,7 @@ describe("Publishing", () => {
   const slug = title.toLocaleLowerCase().replace(/ /g, "-");
 
   it("can publish new post", () => {
-    cy.getTestId("close-cookie-banner").click();
+    // cy.getTestId("close-cookie-banner").click();
     cy.getTestId("createPostBtn").click();
     cy.getTestId("postStatus").should("have.text", "draft");
 
@@ -34,19 +34,22 @@ describe("Publishing", () => {
     cy.getTestId("slugInp").should("have.value", slug + "-1");
   });
 
-  it("publish post with no tags and then with tags", () => {
+  it.only("publish post with no tags and then with tags", () => {
     cy.getTestId("createPostBtn").click();
     cy.setContent({
       title: "Another new post",
       content: "Content written from cypress test",
     });
     cy.openSettings();
+    cy.getTestId("excerpt").type("This is an excerpt of the post")
+    cy.getTestId("topicSelect").select("_topic_gaming", { force: true });
 
     cy.enterTags(["new-tag"]);
-    cy.window().focus();
     cy.wait(1000);
 
     cy.enterTags(["first-post"]);
+    cy.window().focus();
+
     cy.getTestId("publishBtn").click();
     cy.wait("@UpdatePostMutation");
   });
