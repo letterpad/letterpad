@@ -63,7 +63,7 @@ export const Dropdown: FC<Props> = ({ label, options, testId }) => {
         <div className="dropdown__content">
           <div
             id="dropdown"
-            className="absolute z-10 -ml-20 mt-2 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
+            className="absolute z-30 -ml-20 mt-2 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
           >
             <ul
               className="py-2 text-sm text-gray-700 dark:text-gray-200"

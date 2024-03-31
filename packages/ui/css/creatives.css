@@ -1,3 +1,7 @@
+.mce-content-body {
+  width: 100%;
+  outline: none;
+}
 #creative {
   font-family: 'Lato', sans-serif;
   --accent: 14, 114, 207;
@@ -66,7 +70,7 @@
     font-size: 2.5rem;
   }
 
-
+  
   .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
     color: rgba(var(--color), 0.3);
     font-size: 1.2rem;
@@ -81,6 +85,7 @@
 
   .mce-content-body {
     width: 100%;
+    outline: none;
   }
 
   .mce-content-body:not([dir='rtl'])[data-mce-placeholder]:not(.mce-visualblocks)::before {

@@ -24,7 +24,7 @@ export const ThumbnailList = <
   }, [index]);
 
   return (
-    <div className="flex h-screen flex-col overflow-scroll" ref={ref}>
+    <div className="flex w-screen items-center justify-center flex-row overflow-x-scroll absolute bottom-0" ref={ref}>
       {items.map((item, i) => (
         <div key={i}>
           <img
@@ -32,10 +32,10 @@ export const ThumbnailList = <
             width={100}
             height={100}
             className={
-              "bg-black p-2  " +
+              "p-2  " +
               (index === i
                 ? "opacity-1 border-2 border-solid border-blue-500 "
-                : "opacity-50 hover:opacity-100 ")
+                : "opacity-80 hover:opacity-100 ")
             }
             onClick={() => onSelect(i)}
             loading="lazy"

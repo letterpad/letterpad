@@ -9,7 +9,7 @@ interface Props {
 
 export const Controls: FC<Props> = ({ onNext, onPrevious }) => {
   return (
-    <div className="absolute flex h-full w-full items-center justify-between px-4">
+    <>
       <button
         type="button"
         className="inline-flex items-center rounded-full bg-blue-700 p-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 dark:bg-blue-600 dark:hover:bg-blue-700 "
@@ -49,6 +49,6 @@ export const Controls: FC<Props> = ({ onNext, onPrevious }) => {
           />
         </svg>
       </button>
-    </div>
+    </>
   );
 };
