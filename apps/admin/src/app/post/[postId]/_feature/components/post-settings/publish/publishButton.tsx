@@ -37,7 +37,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
     postId,
     menu,
   });
-  if (!watch("id")) return null;
+  if (!postId) return null;
 
   const type = watch("type");
   const status = watch("status");

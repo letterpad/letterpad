@@ -1,7 +1,8 @@
+import classNames from "classnames";
 import { PostTypes, PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Drawer } from "ui";
+import { Drawer, useResponsiveLayout } from "ui";
 
 import { useGetSettings } from "@/app/settings/_feature/api.client";
 
@@ -16,12 +17,12 @@ import { PrimaryTag, Tags } from "./tags";
 import { useUpdatePost } from "../../api.client";
 
 interface IProps {
-  post: PostWithAuthorAndTagsFragment;
   visible: boolean;
   onClose: () => void;
+  className?: string;
 }
 
-export const PostSettingsModal = ({ visible, onClose }: IProps) => {
+export const PostSettingsModal = ({ visible, onClose, className }: IProps) => {
   const { getValues } = useFormContext<PostWithAuthorAndTagsFragment>();
   const post = getValues();
   const { data: settings } = useGetSettings();
@@ -39,10 +40,10 @@ export const PostSettingsModal = ({ visible, onClose }: IProps) => {
     <>
       <Drawer
         show={visible}
-        title="Settings"
+        title={"Settings - " + post.title}
         onClose={onClose}
         dir="top"
-        className="w-screen z-20 bg-white h-screen"
+        className={classNames("w-screen z-20 bg-white h-screen", className)}
       >
         <div className="whitespace-normal lg:w-2/3 m-auto">
           <div className="flex flex-col-reverse md:flex-row gap-10">
@@ -56,7 +57,7 @@ export const PostSettingsModal = ({ visible, onClose }: IProps) => {
               <PublishButton postId={post.id} menu={settings?.menu ?? []} />
             </div>
             <div className="flex-1  space-y-10">
-              <Slug />
+              {post.slug && <Slug />}
               {isPost && <ExcludeFromHome />}
               <Preview
                 url={settings?.site_url! + slug}
