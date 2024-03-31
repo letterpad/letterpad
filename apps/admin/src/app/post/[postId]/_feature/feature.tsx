@@ -44,10 +44,10 @@ export const Feature = () => {
 
     if (change.title) update.title = change.title;
     if (change.sub_title) update.sub_title = change.sub_title;
-    if (change.cover_image?.src)
+    if (change.cover_image)
       update.cover_image = {
         ...change.cover_image,
-        src: change.cover_image.src,
+        src: change.cover_image?.src ?? "",
       };
     if (change.html) update.html = change.html;
     if (change.html_draft) update.html_draft = change.html_draft;
