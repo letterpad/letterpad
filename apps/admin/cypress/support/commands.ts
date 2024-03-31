@@ -119,11 +119,12 @@ beforeEach(function () {
   cy.intercept("/api/auth/session").as("getSession");
   cy.intercept("/api/auth/callback/credentials?").as("getCredentials");
   window.localStorage.setItem("intro_dismissed", "true");
+  window.localStorage.setItem("cookie-concent", "true");
   cy.login({ email: "demo@demo.com", password: "demo" });
 });
 
 afterEach(function () {
-  cy.clearCookies();
+  // cy.clearCookies();
   cy.clearLocalStorage();
 });
 

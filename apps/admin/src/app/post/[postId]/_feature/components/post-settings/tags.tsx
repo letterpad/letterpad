@@ -6,7 +6,7 @@ import ReactTags from "react-tag-autocomplete";
 import "./tags.css";
 
 import { useGetTags } from "@/app/tags/_feature/api.client";
-import { beautifyTopic, debounce, TOPIC_PREFIX } from "@/shared/utils";
+import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
 import { tags } from "./constants";
@@ -67,27 +67,17 @@ export const Tags = ({ post }: IProps) => {
   }, [computedTags, loading, tags]);
 
   const saveTags = async () => {
-    const newTagsString = tags
-      .map((t) => t?.name)
-      .sort()
-      .join();
-    const oldTagsString = watch("tags.rows")
-      .map((t) => t.name)
-      .filter((t) => !t?.startsWith(TOPIC_PREFIX))
-      .sort()
-      .join();
-
-    if (newTagsString === oldTagsString) return;
-    const shouldDirty = newTagsString !== oldTagsString;
+    const isDirty = isTagsDirty(tags, watch("tags.rows"));
+    if (!isDirty) return;
     const resultTags = [
       ...tags.map((t) => ({ name: t.name, slug: t.name })),
       topic ? { ...topic } : null,
     ];
     if (topic) resultTags.push(topic);
     setValue("tags.rows", removeNull(resultTags), {
-      shouldDirty: shouldDirty,
-      shouldTouch: shouldDirty,
-      shouldValidate: shouldDirty,
+      shouldDirty: isDirty,
+      shouldTouch: isDirty,
+      shouldValidate: isDirty,
     });
   };
 
@@ -188,6 +178,7 @@ export const PrimaryTag = () => {
           return (
             <>
               <select
+                data-testid="topicSelect"
                 value={selected}
                 onChange={(e) => {
                   const tag = {
@@ -216,4 +207,18 @@ export const PrimaryTag = () => {
       />
     </div>
   );
+};
+
+const isTagsDirty = (tags: { name: string }[], oldTags: { name: string }[]) => {
+  const newTagsString = tags
+    .map((t) => t?.name)
+    .sort()
+    .join();
+  const oldTagsString = oldTags
+    .map((t) => t.name)
+    .filter((t) => !t?.startsWith(TOPIC_PREFIX))
+    .sort()
+    .join();
+
+  return newTagsString !== oldTagsString;
 };

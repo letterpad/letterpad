@@ -55,6 +55,7 @@ export const Excerpt = () => {
         {...register("excerpt", {
           maxLength: 160,
         })}
+        data-testid="excerpt"
       />
       <div className="mt-2">
         {busy ? (

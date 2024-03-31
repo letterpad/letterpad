@@ -3,7 +3,7 @@ describe("Profile", () => {
     const email = `test@test.com`;
     cy.url().should("contain", "/posts");
     cy.getTestId("menu-open-btn").click();
-    cy.getTestId("close-cookie-banner").click();
+    // cy.getTestId("close-cookie-banner").click();
     cy.getTestId("logout").click();
     // cy.url().should("contain", "/login");
     cy.visitRegister();
