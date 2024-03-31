@@ -84,7 +84,7 @@ export const getStats = async (
     },
   });
 
-  result.pages.drafts = await prisma.post.count({
+  result.pages.trashed = await prisma.post.count({
     where: {
       status: PostStatusOptions.Trashed,
       type: PostTypes.Page,

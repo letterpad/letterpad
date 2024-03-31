@@ -5,6 +5,7 @@ import Script from "next/script";
 import React from "react";
 import { getEdgeConfig } from "ui/server";
 
+import "tippy.js/dist/tippy.css";
 import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
 import "../../public/css/theme-variables.css";

@@ -46,7 +46,7 @@ export const useUpdatePost = () => {
       const res = await updatePost({
         data: { ...params },
       });
-      setSaving(false);
+      setSaving?.(false);
       if (res.data?.updatePost.__typename.endsWith("Error")) {
         Message().error({
           content: (res.data.updatePost as any).message,

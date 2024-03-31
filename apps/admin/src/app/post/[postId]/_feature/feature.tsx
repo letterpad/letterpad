@@ -93,7 +93,7 @@ export const Feature = () => {
         )}
         {isStoryBuilder && <Creatives post={post} />}
 
-        <PostSettingsModal post={post!} visible={visible} onClose={onClose} />
+        <PostSettingsModal visible={visible} onClose={onClose} />
       </FormProvider>
     </div>
   );

@@ -1,7 +1,10 @@
 import className from "classnames";
 import { PostStatusOptions, TagsNode } from "letterpad-graphql";
+import { useEffect } from "react";
+import { BiCog, BiTrash } from "react-icons/bi";
+import tippy from "tippy.js";
 
-import { TOPIC_PREFIX, getReadableDate } from "@/shared/utils";
+import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";
 
 const titleColumn = {
   title: "Title",
@@ -29,18 +32,34 @@ const updatedAtColumn = {
   },
 };
 
-const Actions = ({ changeStatus, id, status }) => {
+const Actions = ({ changeStatus, id, status, onSettingsClick }) => {
+  useEffect(() => {
+    tippy("[data-tippy-content]");
+  }, []);
+
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-4">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onSettingsClick(id);
+        }}
+        className="text-blue-600"
+        data-tippy-content="Post Settings"
+      >
+        <BiCog size={20} />
+      </button>
       <button
         onClick={(e) => {
           e.stopPropagation();
           changeStatus(id, PostStatusOptions.Trashed);
         }}
-        className="text-blue-600"
+        className="dark:text-red-800 text-red-500"
+        data-tippy-content="Move to Trash"
       >
-        Delete
+        <BiTrash size={20} />
       </button>
+
       <span
         className={className({
           hidden: status !== PostStatusOptions.Trashed,
@@ -57,12 +76,12 @@ const Actions = ({ changeStatus, id, status }) => {
           hidden: status !== PostStatusOptions.Trashed,
         })}
       >
-        Draft
+        Set as Draft
       </button>
     </div>
   );
 };
-export const creativesColumns = ({ changeStatus }) => [
+export const creativesColumns = ({ changeStatus, onSettingsClick }) => [
   { ...titleColumn },
   { ...statusColumn },
   { ...updatedAtColumn },
@@ -71,12 +90,17 @@ export const creativesColumns = ({ changeStatus }) => [
     dataIndex: "actions",
     key: "actions",
     render: (_, item) => (
-      <Actions changeStatus={changeStatus} id={item.id} status={item.status} />
+      <Actions
+        changeStatus={changeStatus}
+        id={item.id}
+        status={item.status}
+        onSettingsClick={onSettingsClick}
+      />
     ),
   },
 ];
 
-export const postsColumns = ({ changeStatus }) => [
+export const postsColumns = ({ changeStatus, onSettingsClick }) => [
   { ...titleColumn },
   statusColumn,
   { ...updatedAtColumn },
@@ -86,9 +110,15 @@ export const postsColumns = ({ changeStatus }) => [
     key: "tags",
     className: "hidden lg:table-cell max-w-sm",
     render: (tags: TagsNode) => {
-      const topic = tags.rows.filter((tag) => tag.name.startsWith(TOPIC_PREFIX)).pop();
-      if(!topic) return null;
-      return <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded flex items-center">{topic.name.replace(TOPIC_PREFIX,"")}</span>;
+      const topic = tags.rows
+        .filter((tag) => tag.name.startsWith(TOPIC_PREFIX))
+        .pop();
+      if (!topic) return null;
+      return (
+        <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded flex items-center">
+          {topic.name.replace(TOPIC_PREFIX, "")}
+        </span>
+      );
     },
   },
   {
@@ -96,7 +126,12 @@ export const postsColumns = ({ changeStatus }) => [
     dataIndex: "actions",
     key: "actions",
     render: (_, item) => (
-      <Actions changeStatus={changeStatus} id={item.id} status={item.status} />
+      <Actions
+        changeStatus={changeStatus}
+        id={item.id}
+        status={item.status}
+        onSettingsClick={onSettingsClick}
+      />
     ),
   },
 ];

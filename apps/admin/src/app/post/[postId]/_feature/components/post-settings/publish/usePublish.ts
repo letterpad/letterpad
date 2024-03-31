@@ -5,6 +5,7 @@ import {
     PostTypes,
     PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Message } from "ui";
@@ -26,6 +27,7 @@ enum NotPublished {
 
 export const usePublish = ({ menu }: Props) => {
     const [error, setError] = useState<NotPublished>();
+    const path = usePathname();
     const { watch, setValue } = useFormContext<PostWithAuthorAndTagsFragment>();
     const { updatePost, fetching } = useUpdatePost();
     const type = watch("type");
@@ -43,7 +45,7 @@ export const usePublish = ({ menu }: Props) => {
             (page) => page === slug?.replace("/page/", "").toLowerCase()
         );
 
-        if (!navLinkedWithPages && !isPost) {
+        if (!navLinkedWithPages && !isPost && path !== "/creatives") {
             setError(NotPublished.PageNotLinkedWithNav);
         } else {
             return publishOrUnpublish(true);
