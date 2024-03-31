@@ -65,7 +65,7 @@ export const GalleryModal: FC<Props> = ({
             style={{...size, objectFit: "contain"}}
             loading="lazy"
           />
-          <Description description={"Hello world, this is a description of an image which keeps repeating.."} />
+          <Description description={item.description} />
           <div className="w-full" ref={thumbnailsRef}>
             <ThumbnailList items={items} onSelect={onSelect} index={index} />
           </div>
