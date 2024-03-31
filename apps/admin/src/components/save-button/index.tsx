@@ -12,7 +12,7 @@ export const SaveButton = ({
 }) => {
   return (
     <Button
-      data-testid={testId}
+      data-testid={testId ?? "save-btn"}
       disabled={disabled}
       type="submit"
       className={`${className} flex items-center gap-1`}

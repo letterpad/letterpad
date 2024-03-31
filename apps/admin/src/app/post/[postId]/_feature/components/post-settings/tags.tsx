@@ -21,13 +21,16 @@ interface Tag {
   slug: string;
 }
 
+const removeNull = (arr) => arr.filter((value) => value !== null);
+
 export const Tags = ({ post }: IProps) => {
   const { setValue, watch } = useFormContext<PostWithAuthorAndTagsFragment>();
-  const topic = post.tags?.["rows"]?.find((t) =>
-    t.name?.startsWith(TOPIC_PREFIX)
+  const topic = post.tags?.["rows"].find((t) =>
+    t?.name?.startsWith(TOPIC_PREFIX)
   );
   const initialTags =
-    post.tags?.["rows"]?.filter((t) => !t.name?.startsWith(TOPIC_PREFIX)) ?? [];
+    post.tags?.["rows"]?.filter((t) => !t?.name?.startsWith(TOPIC_PREFIX)) ??
+    [];
   const [tags, setTags] = useState<Tag[]>(addTagsWithId(initialTags));
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const [search, setSearch] = useState("");
@@ -81,7 +84,7 @@ export const Tags = ({ post }: IProps) => {
       topic ? { ...topic } : null,
     ];
     if (topic) resultTags.push(topic);
-    setValue("tags.rows", resultTags, {
+    setValue("tags.rows", removeNull(resultTags), {
       shouldDirty: shouldDirty,
       shouldTouch: shouldDirty,
       shouldValidate: shouldDirty,

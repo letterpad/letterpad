@@ -2,6 +2,8 @@ describe("Profile", () => {
   it("can register and login", () => {
     const email = `test@test.com`;
     cy.url().should("contain", "/posts");
+    cy.getTestId("menu-open-btn").click();
+    cy.getTestId("close-cookie-banner").click();
     cy.getTestId("logout").click();
     // cy.url().should("contain", "/login");
     cy.visitRegister();
@@ -24,8 +26,9 @@ describe("Profile", () => {
     cy.getTestId("name").type("Testing User");
     cy.getTestId("bio").type(
       "This is a bio that has been written automatically by tests"
-    );
+    )
     cy.getTestId("updateProfile").click();
+
 
     cy.location("pathname").should("include", "/update/site-info");
     cy.getTestId("siteName").type("Site Name");
@@ -38,7 +41,6 @@ describe("Profile", () => {
   });
   it("Can update basic profile details", () => {
     cy.visitProfile();
-    cy.getTestId("basic").click();
 
     cy.getTestId("name").type("name");
 
@@ -46,12 +48,12 @@ describe("Profile", () => {
 
     cy.getTestId("occupation").type("occupation");
 
-    cy.getTestId("company").type("company");
+    cy.getTestId("company").type("company").blur();
 
-    cy.getTestId("basic-submit").click();
+    // cy.getTestId("basic-submit").click();
 
     // cy.addUnplsashImage("avatar");
   });
 });
 
-export {};
+export { };

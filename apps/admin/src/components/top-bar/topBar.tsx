@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
 import { Button, ThemeSwitcher, useResponsiveLayout } from "ui";
@@ -5,7 +6,6 @@ import { Button, ThemeSwitcher, useResponsiveLayout } from "ui";
 import FeedbackForm from "./feedback-form";
 import { NotificationDropdown } from "../notification-dd/list";
 import { ProfileDropdown } from "../profile-dd";
-import classNames from "classnames";
 
 export const TopBar = () => {
   const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
@@ -16,6 +16,7 @@ export const TopBar = () => {
           size={"extrasmall"}
           className={classNames("menu", { hidden: sidebarVisible })}
           onClick={() => setSidebarVisible(!sidebarVisible)}
+          data-testid="menu-open-btn"
         >
           {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}
         </Button>
