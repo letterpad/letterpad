@@ -40,7 +40,7 @@ export const useUpdatePost = () => {
       if (savingIndicator) {
         Message().loading({ content: "Saving...", duration: 3 });
       } else {
-        setSaving(true)
+        setSaving?.(true)
       }
 
       const res = await updatePost({
@@ -82,10 +82,9 @@ export const useUpdatePost = () => {
           id: props.id,
         };
       }
-      setSaving(true)
       return debounceUpdatePostAPI(change, savingIndicator);
     },
-    [debounceUpdatePostAPI, setSaving]
+    [debounceUpdatePostAPI]
   );
 
   return {

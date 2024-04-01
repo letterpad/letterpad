@@ -110,3 +110,16 @@ const isClient = typeof window !== "undefined";
 export const getEdgeConfigClient = () => {
   return (isClient) ? window['edgeConfig'] as Record<string, any> : null
 }
+
+export function dirtyValues<T>(
+  dirtyFields: object | boolean,
+  allValues: T
+): Partial<T> {
+  if (dirtyFields === true || Array.isArray(dirtyFields)) return allValues;
+  return Object.fromEntries(
+    Object.keys(dirtyFields).map((key) => [
+      key,
+      dirtyValues(dirtyFields[key], allValues[key]),
+    ])
+  ) as Partial<T>;
+}
