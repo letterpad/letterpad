@@ -39,6 +39,11 @@ export const getLetterpadLatestPosts = async (
           equals: "",
         },
       },
+      html: {
+        not: {
+          equals: "",
+        },
+      },
       banned: false,
       NOT: [
         {
