@@ -1,6 +1,6 @@
 import { animated, useSpring } from "@react-spring/web";
 import classNames from "classnames";
-import { FC, useEffect } from "react";
+import  { FC, ReactNode,useEffect } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
 import { useEscapeKey } from "./useEscapeKey";
@@ -9,9 +9,9 @@ import { disableScroll } from "../../utils";
 interface Props {
   show: boolean;
   onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
+  title: string | ReactNode
+  children: ReactNode;
+  footer?: ReactNode;
   dir?: "right" | "left" | "top" | "bottom";
   className?: string;
   scale?: boolean;

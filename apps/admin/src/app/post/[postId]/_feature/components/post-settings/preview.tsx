@@ -19,7 +19,7 @@ export const Preview: FC<Props> = ({ url, siteTitle }) => {
           "This is how various search engines and social posting will look like."
         }
       />
-      <div className="p-1 max-w-3xl mx-auto mt-8 bg-white dark:bg-neutral-800 shadow-md rounded-md flex flex-row gap-2">
+      <div className="p-4 max-w-3xl mx-auto mt-8 bg-white dark:bg-slate-800 shadow-md rounded-md flex flex-row gap-2">
         {watch("cover_image.src") && (
           <img
             src={watch("cover_image.src")}
@@ -36,7 +36,7 @@ export const Preview: FC<Props> = ({ url, siteTitle }) => {
               </div>
             </div>
           </div>
-          <h2 className="text-sm font-semibold text-blue-700 mt-2 leading-5">
+          <h2 className="text-sm font-semibold text-blue-500 mt-2 leading-5">
             <span className="hover:underline">
               {ellipsis(watch("title"), 57)}
             </span>

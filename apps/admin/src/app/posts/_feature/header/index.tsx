@@ -44,7 +44,7 @@ const Actions = ({ changeStatus, id, status, onSettingsClick }) => {
           e.stopPropagation();
           onSettingsClick(id);
         }}
-        className="text-blue-600"
+        className="dark:text-white/80 text-black/60"
         data-tippy-content="Post Settings"
       >
         <BiCog size={20} />
@@ -54,7 +54,7 @@ const Actions = ({ changeStatus, id, status, onSettingsClick }) => {
           e.stopPropagation();
           changeStatus(id, PostStatusOptions.Trashed);
         }}
-        className="dark:text-red-800 text-red-500"
+        className="dark:text-red-500 text-red-500"
         data-tippy-content="Move to Trash"
       >
         <BiTrash size={20} />
