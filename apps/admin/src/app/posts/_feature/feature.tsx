@@ -25,6 +25,7 @@ import { useGetPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
+import { AutoSaveForm } from "../../post/[postId]/_feature/AutoSaveForm";
 import { PostSettingsModal } from "../../post/[postId]/_feature/components/post-settings/drawer";
 
 export const Feature = () => {
@@ -83,6 +84,7 @@ export const Feature = () => {
       />
       <style jsx>{postsStyles}</style>
       <FormProvider {...methods}>
+        <AutoSaveForm defaultValue={selectedPost} />
         <PostSettingsModal
           visible={!!postId}
           onClose={() => setPostId(null)}

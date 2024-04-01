@@ -7,7 +7,7 @@ import {
 } from "letterpad-graphql";
 import { usePostsQuery } from "letterpad-graphql/hooks";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Table, useResponsiveLayout } from "ui";
 
@@ -19,6 +19,7 @@ import Filters from "@/app/posts/_feature/filters";
 import { creativesColumns } from "@/app/posts/_feature/header";
 
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
+import { AutoSaveForm } from "../../post/[postId]/_feature/AutoSaveForm";
 import { PostSettingsModal } from "../../post/[postId]/_feature/components/post-settings/drawer";
 import { DEFAULT_FILTERS } from "../../posts/_feature/constants";
 import { isPostsNode } from "../../../utils/type-guards";
@@ -43,12 +44,6 @@ export const Feature = () => {
   });
   const router = useRouter();
   const { updatePost } = useUpdatePost();
-
-  useEffect(() => {
-    if (postId && selectedPost) {
-      methods.reset(selectedPost);
-    }
-  }, [methods, selectedPost, postId]);
 
   if (error) {
     return <ErrorMessage description={error} title="Error" />;
@@ -81,6 +76,7 @@ export const Feature = () => {
         onRowClick={(row) => router.push("/post/" + row.id)}
       />
       <FormProvider {...methods}>
+        <AutoSaveForm defaultValue={selectedPost} />
         <PostSettingsModal
           visible={!!postId}
           onClose={() => setPostId(null)}
