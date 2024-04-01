@@ -1,7 +1,8 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
-import { memo } from "react";
+import { memo, useRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { Editor as TinyMCEEditor } from "tinymce";
 import "./tinymce/core";
 
 import { titleEditorConfig, titleId } from "./tinymce/config";
@@ -9,6 +10,7 @@ import { titleEditorConfig, titleId } from "./tinymce/config";
 interface Props {}
 
 export const Title: React.FC<Props> = memo(({}) => {
+  const editorRef = useRef<TinyMCEEditor | null>(null);
   const { control, watch } = useFormContext<PostWithAuthorAndTagsFragment>();
   const title = watch("title");
 
@@ -20,17 +22,20 @@ export const Title: React.FC<Props> = memo(({}) => {
       render={({ field: { onChange, onBlur } }) => {
         return (
           <Editor
+            onInit={(_, editor) =>
+              (editorRef.current = editor as unknown as TinyMCEEditor)
+            }
             id={titleId}
-            value={title}
-            onEditorChange={(_, editor) => {
+            initialValue={title}
+            onBlur={() => {
               if (watch("id")) {
-                const newtitle = editor?.getContent({
+                const newtitle = editorRef.current?.getContent({
                   format: "text",
                 });
                 if (title !== newtitle) onChange(newtitle ?? "");
               }
+              onBlur();
             }}
-            onBlur={onBlur}
             init={titleEditorConfig}
           />
         );

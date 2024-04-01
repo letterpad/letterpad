@@ -40,13 +40,20 @@ export const PostSettingsModal = ({ visible, onClose, className }: IProps) => {
     <>
       <Drawer
         show={visible}
-        title={"Settings - " + post.title}
+        title={""}
         onClose={onClose}
         dir="top"
         className={classNames("w-screen z-20 bg-white h-screen", className)}
       >
         <div className="whitespace-normal lg:w-2/3 m-auto">
-          <div className="flex flex-col-reverse md:flex-row gap-10">
+          <div className="text-lg font-paragraph font-thin">
+            Settings for{" "}
+            <span className="font-bold dark:text-white text-black">
+              {post.title}
+            </span>
+          </div>
+          <hr className="my-4 border-t dark:border-slate-800 border-slate-200" />
+          <div className="pt-8 flex flex-col-reverse md:flex-row gap-10">
             <div className="flex-1 space-y-10">
               <Excerpt />
               {isPost && <PrimaryTag />}
