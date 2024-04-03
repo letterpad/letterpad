@@ -178,7 +178,7 @@ const Layout = async ({ children }) => {
             dangerouslySetInnerHTML={{
               __html: `
           html {
-            --accent: ${settings?.design?.brand_color ?? '#d93097'};
+            --userbrand: ${settings?.design?.brand_color ?? '#d93097'};
           }
         `,
             }}

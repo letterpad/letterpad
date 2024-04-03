@@ -34,7 +34,7 @@ const MediaItem: React.FC<IProps> = ({
           padding: 10px;
         }
         .item.selected {
-          background: rgba(var(--accent), 0.5);
+          background: rgba(var(--userbrand), 0.5);
         }
         /* .item:nth-child(5n) {
           grid-column-end: span 2;

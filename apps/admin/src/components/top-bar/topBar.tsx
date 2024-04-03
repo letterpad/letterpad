@@ -14,7 +14,10 @@ export const TopBar = () => {
       <div>
         <Button
           size={"extrasmall"}
-          className={classNames("menu", { hidden: sidebarVisible })}
+          className={classNames("menu px-2", {
+            hidden: sidebarVisible,
+          })}
+          variant="outline"
           onClick={() => setSidebarVisible(!sidebarVisible)}
           data-testid="menu-open-btn"
         >

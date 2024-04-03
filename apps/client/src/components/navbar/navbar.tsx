@@ -41,8 +41,8 @@ export const Navbar: FC<Props> = async ({
 
   return (
     <>
-      <div className="relative bg-accent-50 bg-cover text-white py-4 px-4 space-y-10">
-        <div className="relative mx-auto z-1 max-w-7xl md:px-20 flex justify-between bg-accent-50 items-center">
+      <div className="relative bg-userbrand bg-cover text-white py-4 px-4 space-y-10">
+        <div className="relative mx-auto z-1 max-w-7xl md:px-20 flex justify-between bg-userbrand items-center">
           <LetterpadLogo />
           <div className="lp-header-right flex items-center text-base leading-5 gap-5">
             {!session?.user ? (

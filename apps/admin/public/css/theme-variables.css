@@ -4,7 +4,7 @@ html {
   --sidebar-bg: 20, 20, 24;
   --content-bg: 255, 255, 255;
   --section-bg: 250, 250, 250;
-  --accent: 14, 114, 207;
+  /* --accent: 14, 114, 207; */
   --color: 29, 29, 32;
   --color-border: 217, 217, 217;
 }
@@ -14,6 +14,6 @@ html.dark {
   --content-bg: 21, 22, 26;
   --section-bg: 27, 27, 34;
   --color-border: 42, 46, 62; /* this variable is not availabe in the light theme*/
-  --accent: 14, 114, 207;
+  /* --accent: 14, 114, 207; */
   --color: 255, 255, 255;
 }

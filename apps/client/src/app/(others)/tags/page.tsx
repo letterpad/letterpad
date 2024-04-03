@@ -152,13 +152,13 @@ export default async function Tags() {
                 <div key={t.name} className="mb-2 mr-5 mt-2">
                   <Link
                     href={`/tag/${kebabCase(t.name)}`}
-                    className="link mr-3 text-sm font-medium uppercase opacity-60 hover:text-accent-50"
+                    className="link mr-3 text-sm font-medium uppercase opacity-60 hover:text-userbrand"
                   >
                     {t.name.split(' ').join('-')}
                   </Link>
                   <Link
                     href={`/tag/${kebabCase(t.name)}`}
-                    className="-ml-2 text-sm font-semibold uppercase text-gray-600 hover:text-accent-50 dark:text-gray-300"
+                    className="-ml-2 text-sm font-semibold uppercase text-gray-600 hover:text-userbrand dark:text-gray-300"
                   >
                     {`(${count})`}
                   </Link>
