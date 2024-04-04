@@ -33,7 +33,7 @@ export const columns = ({
 
       return (
         <div
-          className="ml-5 font-medium font-heading space-y-4 py-2 md:py-0"
+          className="font-medium font-heading space-y-4 py-2 md:py-0"
           onClick={() => onClick(row.original.id)}
         >
           <li className="flex md:hidden items-center gap-2 mb-2">
@@ -68,13 +68,22 @@ export const columns = ({
   },
   {
     accessorKey: "status",
-    header: () => {
-      return <span className="md:block hidden">Status</span>;
+    header: ({ column }) => {
+      return (
+        <Button
+          className="hidden md:flex"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <LuArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: ({ row }) => {
       const post = row.original;
       return (
-        <div className="ml-5 hidden md:block">
+        <div className="ml-10 hidden md:block">
           <span
             className={classNames(
               "uppercase text-[0.6rem] inline-flex items-center rounded-[0.3rem]  transition-colors focus:outline-none w-2 h-2 focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -91,18 +100,9 @@ export const columns = ({
   },
   {
     accessorKey: "tags",
-    header: ({ column }) => {
+    header: () => {
       if (!displayTags) return null;
-      return (
-        <Button
-          className="hidden md:flex"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Topic
-          <LuArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      return <div className="hidden md:inline-flex">Topic</div>;
     },
     cell: ({ row }) => {
       if (!displayTags) return null;
@@ -112,7 +112,7 @@ export const columns = ({
       );
       if (!topic) return null;
       return (
-        <div className="hidden md:inline-flex ml-5 text-blue-500 items-center">
+        <div className="hidden md:inline-flex text-blue-500 items-center">
           {topic.name.replace(TOPIC_PREFIX, "")}
         </div>
       );

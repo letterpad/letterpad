@@ -41,7 +41,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
     });
     refetch({ requestPolicy: "network-only" });
     if (isPost(post?.createPost)) {
-      router.replace(`/${type}/${post?.createPost.id}`);
+      router.replace(`/${type}/${post?.createPost?.id}`);
     }
   };
 
