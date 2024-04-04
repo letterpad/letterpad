@@ -21,12 +21,12 @@ export const Feature = () => {
         return (
           <div
             className={classNames(
-              "relative max-w-md rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+              "relative max-w-md rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 flex flex-col dark:bg-gray-800"
             )}
             key={theme.label}
           >
             <Image
-              className="rounded-t-lg"
+              className="rounded-t-lg object-cover"
               src={theme.image}
               height={380}
               width={380}
@@ -43,12 +43,12 @@ export const Feature = () => {
               Selected
             </div>
 
-            <div className="p-4">
+            <div className="p-4 flex flex-col h-full">
               <h5 className="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">
                 {theme.label}
               </h5>
 
-              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 flex-1 flex">
                 {theme.description}
               </p>
               <Button
