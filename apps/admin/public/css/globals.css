@@ -25,6 +25,7 @@ a {
 
 * {
   box-sizing: border-box;
+  border-color: hsl(var(--border)) !important;
 }
 
 /* Make clicks pass-through */

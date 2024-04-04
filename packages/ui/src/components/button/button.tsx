@@ -7,7 +7,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        success: "text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 rounded-lg text-sm text-center dark:text-white  dark:focus:ring-primary-900",
+        success: "text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 rounded-lg text-sm text-center dark:text-white  dark:focus:ring-green-900",
         primary: "bg-black dark:bg-white text-white dark:text-black hover:bg-slate-700 dark:hover:bg-slate-100",
         danger:"bg-red-500 text-white hover:bg-red-800 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50",
         outline: "border border-slate-400 dark:border-slate-600 text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",

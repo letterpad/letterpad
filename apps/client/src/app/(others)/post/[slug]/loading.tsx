@@ -21,7 +21,7 @@ const Loading = (p) => {
   return (
     <div className="h-1.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
       <div
-        className="h-1.5 rounded-full bg-accent-50"
+        className="h-1.5 rounded-full bg-userbrand"
         style={{ transform: `translateX(${-100 + width}vw)` }}
       ></div>
     </div>

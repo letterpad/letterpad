@@ -120,7 +120,7 @@ function getRandom<T>(list: T[]) {
 
 const SectionHeading = ({ children }) => {
   return (
-    <span className="font-system mb-4 mt-10 border-l-2 border-accent-50 pl-2 text-base font-bold uppercase tracking-wider text-accent-50">
+    <span className="font-system mb-4 mt-10 border-l-2 border-userbrand pl-2 text-base font-bold uppercase tracking-wider text-userbrand">
       {children}
     </span>
   );

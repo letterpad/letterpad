@@ -1,13 +1,19 @@
 import { PostsFilters, PostStatusOptions, SortBy } from "letterpad-graphql";
 import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useEffect, useState } from "react";
-import { Select } from "ui";
+import {
+  Select2,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  ToggleGroup,
+  ToggleGroupItem,
+} from "ui";
 
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
-
-import { Badge } from "./badge";
 
 interface IProps {
   showTags?: boolean;
@@ -15,12 +21,14 @@ interface IProps {
   showPageTypes?: boolean;
   filters: PostsFilters;
   setFilters: (data: PostsFilters) => void;
+  showSort?: boolean;
 }
 
 export const Filters = ({
   showTags = true,
   onChange,
   showPageTypes = false,
+  showSort = true,
   filters,
   setFilters,
 }: IProps) => {
@@ -33,7 +41,7 @@ export const Filters = ({
   const { data, fetching } = useGetTags();
 
   useEffect(() => {
-    if (!showTags || showPageTypes) return onChange(filters);
+    if (!showTags || showPageTypes) return;
 
     if (fetching || !data) return;
 
@@ -58,58 +66,78 @@ export const Filters = ({
     onChange({ ...changedFilters });
   };
 
-  // if (fetching && showTags) return <Loading />;
+  // if (fetching && showTags) return null;
 
   return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-row gap-2 text-sm">
-        <Badge
-          label="Published"
-          count={statsData?.published ?? 0}
-          active={filters.status?.includes(PostStatusOptions.Published)}
-          onClick={() => onBadgeClick(PostStatusOptions.Published)}
-          fetching={fetching}
-        />
-        <Badge
-          label="Drafts"
-          count={statsData?.drafts ?? 0}
-          active={filters.status?.includes(PostStatusOptions.Draft)}
-          onClick={() => onBadgeClick(PostStatusOptions.Draft)}
-          fetching={fetching}
-        />
-        <Badge
-          label="Trashed"
-          count={statsData?.trashed ?? 0}
-          active={filters.status?.includes(PostStatusOptions.Trashed)}
-          onClick={() => onBadgeClick(PostStatusOptions.Trashed)}
-          fetching={fetching}
-        />
+        <ToggleGroup
+          variant="outline"
+          type="multiple"
+          value={filters.status}
+          disabled={fetching}
+          size={"sm"}
+        >
+          <ToggleGroupItem
+            value={PostStatusOptions.Published}
+            aria-label="Toggle bold"
+            onClick={() => onBadgeClick(PostStatusOptions.Published)}
+          >
+            Published{" "}
+            <span className="bg-slate-200 dark:bg-slate-700 rounded-full w-6 h-6 text-xs flex items-center justify-center ml-2">
+              {statsData?.published ?? 0}
+            </span>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value={PostStatusOptions.Draft}
+            aria-label="Toggle Draft"
+            onClick={() => onBadgeClick(PostStatusOptions.Draft)}
+          >
+            Drafts{" "}
+            <span className="bg-slate-200 dark:bg-slate-700 rounded-full w-6 h-6 text-xs flex items-center justify-center ml-2">
+              {statsData?.drafts ?? 0}
+            </span>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value={PostStatusOptions.Trashed}
+            aria-label="Toggle Trashed"
+            onClick={() => onBadgeClick(PostStatusOptions.Trashed)}
+          >
+            Trashed{" "}
+            <span className="bg-slate-200 dark:bg-slate-700 rounded-full w-6 h-6 text-xs flex items-center justify-center ml-2">
+              {statsData?.trashed ?? 0}
+            </span>
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
-      <div className="hidden grid-cols-2 items-center gap-2 md:grid ">
-        <Select
-          id="filters-sort"
-          onChange={(key) => {
-            track({
-              eventAction: EventAction.Click,
-              eventCategory: "filters",
-              eventLabel: "sortBy",
-            });
-            setFilters({ ...filters, sortBy: key as SortBy });
-            onChange({ ...filters, sortBy: key as SortBy });
-          }}
-          selected={filters.sortBy ?? "all"}
-          items={[
-            ...Object.values(SortBy).map((key) => ({
-              key,
-              label: key === SortBy.Desc ? "Latest" : "Oldest",
-            })),
-          ]}
-        />
-        {allTags && showTags && (
-          <Select
-            id="filters-tags"
-            onChange={(key) => {
-              if (key === "all") {
+      <div className="grid-cols-1 items-center gap-2 grid ">
+        {showSort && (
+          <Select2
+            defaultValue={SortBy.Desc}
+            onValueChange={(value) => {
+              track({
+                eventAction: EventAction.Click,
+                eventCategory: "filters",
+                eventLabel: "sortBy",
+              });
+              setFilters({ ...filters, sortBy: value as SortBy });
+              onChange({ ...filters, sortBy: value as SortBy });
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent id="filters-sort">
+              <SelectItem value={SortBy.Desc}>Latest</SelectItem>
+              <SelectItem value={SortBy.Asc}>Oldest</SelectItem>
+            </SelectContent>
+          </Select2>
+        )}
+        {allTags.length > 0 && showTags && (
+          <Select2
+            defaultValue={"all"}
+            onValueChange={(value) => {
+              if (value === "all") {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { tagSlug, ...rest } = filters;
                 return setFilters({
@@ -121,24 +149,35 @@ export const Filters = ({
                 eventCategory: "filters",
                 eventLabel: "tagSlug",
               });
-              setFilters({ ...filters, tagSlug: key });
-              onChange({ ...filters, tagSlug: key });
+              setFilters({ ...filters, tagSlug: value });
+              onChange({ ...filters, tagSlug: value });
             }}
-            selected={filters.tagSlug ?? "all"}
-            items={[
-              { key: "all", label: "All Tags" },
-              ...allTags.map((tag) => ({
-                key: tag.slug,
-                label: tag.name,
-              })),
-            ]}
-          />
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent id="filters-sort">
+              {[
+                { key: "all", label: "All Tags" },
+                ...allTags.map((tag) => ({
+                  key: tag.slug,
+                  label: tag.name,
+                })),
+              ].map(({ key, label }) => {
+                return (
+                  <SelectItem value={key} key={key}>
+                    {label}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select2>
         )}
         {showPageTypes && (
-          <Select
-            id="filters-pagetypes"
-            onChange={(key) => {
-              if (key === "all") {
+          <Select2
+            defaultValue={filters.page_type ?? "all"}
+            onValueChange={(value) => {
+              if (value === "all") {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { tagSlug, page_type, ...rest } = filters;
                 return setFilters({
@@ -152,20 +191,31 @@ export const Filters = ({
               });
               setFilters({
                 ...filters,
-                page_type: key as PageType,
+                page_type: value as PageType,
                 // type: PostTypes.Page,
               });
-              onChange({ ...filters, page_type: key as PageType });
+              onChange({ ...filters, page_type: value as PageType });
             }}
-            selected={filters.page_type ?? "all"}
-            items={[
-              { key: "all", label: "All" },
-              ...Object.keys(PageType).map((type) => ({
-                key: PageType[type],
-                label: type,
-              })),
-            ]}
-          />
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent id="filters-sort">
+              {[
+                { key: "all", label: "All" },
+                ...Object.keys(PageType).map((type) => ({
+                  key: PageType[type],
+                  label: type,
+                })),
+              ].map(({ key, label }) => {
+                return (
+                  <SelectItem value={key} key={key}>
+                    {label}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select2>
         )}
       </div>
     </div>

@@ -24,7 +24,7 @@ const classes = {
   group: "my-4  px-4 text-sm font-medium uppercase text-gray-300",
   selected: "bg-gray-800 text-gray-200",
   badge:
-    "ml-auto flex items-center justify-center rounded-full bg-gray-700 w-5 h-5 text-xs font-semibold text-gray-200 shadow-md",
+    "ml-auto flex items-center justify-center rounded-full bg-gray-700 w-6 h-6 font-semibold text-xs text-gray-200 shadow-md",
 };
 
 export const Menu: FC<Props> = ({

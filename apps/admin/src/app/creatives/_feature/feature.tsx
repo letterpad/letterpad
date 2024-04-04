@@ -9,14 +9,14 @@ import { usePostsQuery } from "letterpad-graphql/hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Table, useResponsiveLayout } from "ui";
+import { DataTable, useResponsiveLayout } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
 import ErrorMessage from "@/components/ErrorMessage";
 
 import Filters from "@/app/posts/_feature/filters";
-import { creativesColumns } from "@/app/posts/_feature/header";
+import { columns } from "@/app/posts/_feature/header";
 
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
 import { AutoSaveForm } from "../../post/[postId]/_feature/AutoSaveForm";
@@ -52,14 +52,11 @@ export const Feature = () => {
     updatePost({ id, status });
   };
 
-  const onSettingsClick = (id: string) => {
-    setPostId(id);
-  };
-
   return (
     <>
       <Filters
         showTags={false}
+        showSort={false}
         showPageTypes={true}
         onChange={(_filters) => {
           //   setFilters({ ...filters, type: PostTypes.Page });
@@ -69,11 +66,14 @@ export const Feature = () => {
         setFilters={setFilters}
       />
 
-      <Table
-        columns={creativesColumns({ changeStatus, onSettingsClick })}
-        dataSource={loading ? [] : source}
-        loading={loading}
-        onRowClick={(row) => router.push("/post/" + row.id)}
+      <DataTable
+        columns={columns({
+          changeStatus,
+          onSettingsClick: setPostId,
+          onClick: (id: string) => router.push("/post/" + id),
+          displayTags: false,
+        })}
+        data={isPostsNode(data?.posts) ? data.posts.rows : []}
       />
       <FormProvider {...methods}>
         <AutoSaveForm defaultValue={selectedPost} />
