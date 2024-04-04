@@ -21,12 +21,14 @@ interface IProps {
   showPageTypes?: boolean;
   filters: PostsFilters;
   setFilters: (data: PostsFilters) => void;
+  showSort?: boolean;
 }
 
 export const Filters = ({
   showTags = true,
   onChange,
   showPageTypes = false,
+  showSort = true,
   filters,
   setFilters,
 }: IProps) => {
@@ -39,7 +41,7 @@ export const Filters = ({
   const { data, fetching } = useGetTags();
 
   useEffect(() => {
-    if (!showTags || showPageTypes) return onChange(filters);
+    if (!showTags || showPageTypes) return;
 
     if (fetching || !data) return;
 
@@ -64,7 +66,7 @@ export const Filters = ({
     onChange({ ...changedFilters });
   };
 
-  // if (fetching && showTags) return <Loading />;
+  // if (fetching && showTags) return null;
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -74,6 +76,7 @@ export const Filters = ({
           type="multiple"
           value={filters.status}
           disabled={fetching}
+          size={"sm"}
         >
           <ToggleGroupItem
             value={PostStatusOptions.Published}
@@ -107,28 +110,30 @@ export const Filters = ({
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
-      <div className="hidden grid-cols-2 items-center gap-2 md:grid ">
-        <Select2
-          defaultValue={SortBy.Desc}
-          onValueChange={(value) => {
-            track({
-              eventAction: EventAction.Click,
-              eventCategory: "filters",
-              eventLabel: "sortBy",
-            });
-            setFilters({ ...filters, sortBy: value as SortBy });
-            onChange({ ...filters, sortBy: value as SortBy });
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort" />
-          </SelectTrigger>
-          <SelectContent id="filters-sort">
-            <SelectItem value={SortBy.Desc}>Latest</SelectItem>
-            <SelectItem value={SortBy.Asc}>Oldest</SelectItem>
-          </SelectContent>
-        </Select2>
-        {allTags && showTags && (
+      <div className="grid-cols-1 items-center gap-2 grid ">
+        {showSort && (
+          <Select2
+            defaultValue={SortBy.Desc}
+            onValueChange={(value) => {
+              track({
+                eventAction: EventAction.Click,
+                eventCategory: "filters",
+                eventLabel: "sortBy",
+              });
+              setFilters({ ...filters, sortBy: value as SortBy });
+              onChange({ ...filters, sortBy: value as SortBy });
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent id="filters-sort">
+              <SelectItem value={SortBy.Desc}>Latest</SelectItem>
+              <SelectItem value={SortBy.Asc}>Oldest</SelectItem>
+            </SelectContent>
+          </Select2>
+        )}
+        {allTags.length > 0 && showTags && (
           <Select2
             defaultValue={"all"}
             onValueChange={(value) => {

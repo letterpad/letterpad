@@ -9,7 +9,7 @@ import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Table, useResponsiveLayout } from "ui";
+import { DataTable, useResponsiveLayout } from "ui";
 
 import { postsStyles } from "@/components/posts.css";
 
@@ -19,11 +19,11 @@ import {
   isIntroDismissed,
   setIntroDimissed,
 } from "@/app/home/_feature/components/visibility";
-import { postsColumns } from "@/app/posts/_feature/header";
 
 import { useGetPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
+import { columns } from "./header";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
 import { AutoSaveForm } from "../../post/[postId]/_feature/AutoSaveForm";
 import { PostSettingsModal } from "../../post/[postId]/_feature/components/post-settings/drawer";
@@ -72,15 +72,16 @@ export const Feature = () => {
         }}
         filters={filters}
         setFilters={setFilters}
+        showTags={false}
       />
-      <Table
-        columns={postsColumns({
+      <DataTable
+        columns={columns({
           changeStatus,
           onSettingsClick: setPostId,
+          onClick: (id: string) => router.push("/post/" + id),
+          displayTags: true,
         })}
-        dataSource={fetching ? [] : data}
-        loading={fetching}
-        onRowClick={(row) => router.push("/post/" + row.id)}
+        data={data}
       />
       <style jsx>{postsStyles}</style>
       <FormProvider {...methods}>

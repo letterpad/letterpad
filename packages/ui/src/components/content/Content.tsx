@@ -1,8 +1,9 @@
 "use client";
 
-import { FC, ReactNode, useEffect, useLayoutEffect, useRef } from "react";
+import classNames from "classnames";
+import { FC, ReactNode, useLayoutEffect, useRef } from "react";
 
-export const Content: FC<{ children?: ReactNode }> = ({ children }) => {
+export const Content: FC<{ children?: ReactNode, className?:string }> = ({ children, className }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -13,7 +14,7 @@ export const Content: FC<{ children?: ReactNode }> = ({ children }) => {
   }, []);
   return (
     <div
-      className="flex min-h-0 w-full overflow-y-auto overflow-x-hidden"
+      className={classNames("flex min-h-0 w-full overflow-y-auto overflow-x-hidden", className)}
       ref={ref}
       id="lp-content"
     >

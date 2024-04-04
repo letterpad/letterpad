@@ -64,6 +64,11 @@ module.exports = {
         wider: '0.02em',
         widest: '0.4em',
       },
+      extend: {
+        borderColor: {
+            DEFAULT: "hsl(var(--border))",
+        },
+      },
       colors: {
         // primary: colors.blue,
         gray: colors.slate,

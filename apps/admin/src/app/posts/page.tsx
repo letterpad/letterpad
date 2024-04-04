@@ -15,7 +15,7 @@ async function Posts() {
           Here you will find the list of posts for your blog.
         </span>
       </Header>
-      <Content>
+      <Content className="overflow-y-hidden">
         <Feature />
       </Content>
     </>
