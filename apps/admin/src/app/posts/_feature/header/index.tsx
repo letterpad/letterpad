@@ -51,7 +51,7 @@ export const columns = ({
               {getReadableDate(row.getValue("updatedAt"))}
             </span>
           </li>
-          <span className="dark:text-white">{row.getValue("title")}</span>
+          <span>{row.getValue("title")}</span>
           <ul className="flex gap-3 md:hidden flex-row">
             {topic?.name && (
               <li className="flex items-center gap-1">

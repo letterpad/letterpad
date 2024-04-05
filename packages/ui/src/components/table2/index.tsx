@@ -10,6 +10,7 @@ import {
   SortingState,
   useReactTable} from "@tanstack/react-table"
 import { useState } from "react"
+import { RiLoader4Fill } from "react-icons/ri";
 
 import {
   Table,
@@ -24,13 +25,15 @@ import { Input } from "../input";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  loading: boolean
 }
 
 export {type ColumnDef} from "@tanstack/react-table";
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  loading,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
@@ -62,7 +65,7 @@ export function DataTable<TData, TValue>({
         table.getColumn("title")?.setFilterValue(event.target.value)
       }
       className="max-w-sm"
-    />
+    />{loading && <RiLoader4Fill className="animate-spin text-brand" size={18}/>}
   </div>
     <div className="rounded-md border overflow-y-scroll h-full">
       <Table>
@@ -101,7 +104,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                {loading ? "Loading...": "No results."}
               </TableCell>
             </TableRow>
           )}

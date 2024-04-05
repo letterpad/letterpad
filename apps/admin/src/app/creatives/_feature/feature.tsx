@@ -74,6 +74,7 @@ export const Feature = () => {
           displayTags: false,
         })}
         data={isPostsNode(data?.posts) ? data.posts.rows : []}
+        loading={loading}
       />
       <FormProvider {...methods}>
         <AutoSaveForm defaultValue={selectedPost} />

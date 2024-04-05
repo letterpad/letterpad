@@ -82,6 +82,7 @@ export const Feature = () => {
           displayTags: true,
         })}
         data={data}
+        loading={fetching}
       />
       <style jsx>{postsStyles}</style>
       <FormProvider {...methods}>
