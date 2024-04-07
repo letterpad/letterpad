@@ -53,7 +53,7 @@ export const ProfileCard:FC<Props> = ({
             "text-md": size === "sm",
             "text-lg": size === "md",
             "font-bold text-md": size === "lg",
-            "text-3xl": size === "xl",
+            "text-xl md:text-3xl": size === "xl",
           })}
         >
           <span className={classNames({ "font-bold": size === "xl" })}>{name}</span>
