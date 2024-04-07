@@ -132,14 +132,8 @@ type FavAuthorResponse {
   ok: Boolean!
 }
 
-type AuthorsNode {
-  rows: [Author]!
-  ok: Boolean!
-}
 type Query {
   me: AuthorResponse
-  followers(id: String!): AuthorsNode
-  following(id: String!): AuthorsNode
   isFollowing(username: String!): IsFollowingResponse!
   aboutStats(username: String!): AboutStatsResponse!
   favAuthors(limit: Int): FavAuthorResponse
