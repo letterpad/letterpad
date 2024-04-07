@@ -156,7 +156,7 @@ const About = async ({ params }: { params: { username: string } }) => {
             </div>
           </div>
           <div className="flex items-center md:justify-between flex-col md:flex-row ">
-            <AboutStats username={username} id={author.id} />
+            <AboutStats username={username} />
             <div className="flex flex-col gap-6 p-3 mt-30">
               <span className="flex gap-2 items-center text-slate-300 text-sm">
                 <BiCalendar />
@@ -173,10 +173,10 @@ const About = async ({ params }: { params: { username: string } }) => {
         </div>
 
         <div className="flex gap-8 items-start pb-32 flex-col  md:flex-row">
-          <div className="md:max-w-2xl w-full">
+          <div className="max-w-2xl w-full">
             <h2 className="text-2xl font-bold">About Me</h2>
             <p
-              className="block antialiased font-paragraph text-md font-normal leading-relaxed text-inherit mt-8 md:max-w-2xl max-w-sm"
+              className="block antialiased font-paragraph text-md font-normal leading-relaxed text-inherit mt-8 max-w-2xl"
               dangerouslySetInnerHTML={{ __html: bio ?? "Empty" }}
             ></p>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
@@ -219,7 +219,7 @@ const About = async ({ params }: { params: { username: string } }) => {
               </div>
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div className="max-w-xs">
+            <div className="w-96">
               <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-[1.1rem] py-2">
                 Topics I write about:
               </h3>

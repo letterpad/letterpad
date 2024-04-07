@@ -28,6 +28,7 @@ export const Modal = ({
   show = false,
 }: Props) => {
   useKeyPress({ targetKey: "Escape", onKeyPress: () => toggle(false) });
+
   useEffect(() => {
     if (show) {
       document.body.style.overflowY = "hidden";
@@ -57,7 +58,6 @@ export const Modal = ({
                 "max-w-3xl": size === "md",
                 "max-w-7xl": size === "lg",
               },
-              className
             )}
           >
             <div className="relative rounded-md bg-white shadow dark:bg-gray-800">

@@ -7,9 +7,10 @@ import { getRootUrl } from "@/shared/getRootUrl";
 
 export const getAuthor = cache(
   async (
-    authorId: string | undefined,
-    { dataloaders }: ResolverContext
+    _: any,
+    { session, client_author_id, dataloaders }: ResolverContext
   ): Promise<AuthorResponse> => {
+    const authorId = client_author_id || session?.user.id;
     if (!authorId) {
       return {
         __typename: "UnAuthorized",

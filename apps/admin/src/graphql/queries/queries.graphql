@@ -513,25 +513,3 @@ query LetterpadFeaturedPosts {
     }
   }
 }
-
-query GetFollowers($id: String!) {
-  followers(id: $id) {
-    rows {
-      username
-      name
-      avatar
-      createdAt
-    }
-  }
-}
-
-query GetFollowing($id: String!) {
-  following(id: $id) {
-    rows {
-      username
-      name
-      avatar
-      createdAt
-    }
-  }
-}

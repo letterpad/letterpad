@@ -59,32 +59,58 @@ const Author: AuthorResolvers<ResolverContext> = {
     return membership?.status === "complete" || membership?.status === "profree";
   },
   followers: async ({ id }, _args, { prisma }) => {
-    return getFollowers(id, prisma);
+    const followers = await prisma.follows.findMany({
+      where: {
+        follower: {
+          id,
+        },
+      },
+    });
+    const ids = followers.map((user) => user.follower_id);
+    const rows = await prisma.author.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return Promise.resolve(
+      rows.map((row) => ({
+        ...row,
+        createdAt: row.createdAt?.toISOString(),
+      }))
+    );
   },
   following: async ({ id }, _args, { prisma }) => {
-    return getFollowing(id, prisma);
+    const following = await prisma.follows.findMany({
+      where: {
+        following: {
+          id,
+        },
+      },
+    });
+    const ids = following.map((user) => user.following_id);
+    const rows = await prisma.author.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return Promise.resolve(
+      rows.map((row) => ({
+        ...row,
+        createdAt: row.createdAt?.toISOString(),
+      }))
+    );
   },
 };
 
 const Query: QueryResolvers<ResolverContext> = {
   async me(_parent, _args, context) {
-    const authorId = context.client_author_id || context.session?.user.id;
-    return getAuthor(authorId, context);
-  },
-  async followers(_parent, args, context) {
-    const authorId = args.id
-    return {
-      rows: await getFollowers(authorId, context.prisma),
-      ok: true
-    }
-
-  },
-  async following(_parent, args, context) {
-    const authorId = args.id;
-    return {
-      rows: await getFollowing(authorId, context.prisma),
-      ok: true
-    }
+    return getAuthor(_args, context);
   },
   async favAuthors(_parent, _args, { prisma }) {
     const authors = await prisma.author.findMany({
@@ -266,61 +292,3 @@ const Mutation: MutationResolvers<ResolverContext> = {
 };
 
 export default { Mutation, Author, Query };
-
-
-const getFollowing = async (id: string, prisma: ResolverContext['prisma']) => {
-  const following = await prisma.follows.findMany({
-    where: {
-      follower: {
-        id,
-      },
-    },
-  });
-  const ids = following.map((user) => user.following_id);
-  const rows = await prisma.author.findMany({
-    where: {
-      id: {
-        in: ids,
-      },
-    },
-  });
-
-  return Promise.resolve(
-    rows.map((row) => ({
-      ...row,
-      createdAt: row.createdAt?.toISOString(),
-      register_step: row.register_step as RegisterStep,
-      social: getSocialLink(JSON.parse(row.social as string)),
-      signature: row.signature || undefined,
-    }))
-  );
-}
-
-const getFollowers = async (id: string, prisma: ResolverContext['prisma']) => {
-
-  const followers = await prisma.follows.findMany({
-    where: {
-      following: {
-        id,
-      },
-    },
-  });
-  const ids = followers.map((user) => user.follower_id);
-  const rows = await prisma.author.findMany({
-    where: {
-      id: {
-        in: ids,
-      },
-    },
-  });
-
-  return Promise.resolve(
-    rows.map((row) => ({
-      ...row,
-      createdAt: row.createdAt?.toISOString(),
-      register_step: row.register_step as RegisterStep,
-      social: getSocialLink(JSON.parse(row.social as string)),
-      signature: row.signature || undefined,
-    }))
-  );
-}
