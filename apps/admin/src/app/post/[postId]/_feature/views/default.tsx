@@ -1,6 +1,6 @@
 import { PostWithAuthorAndTagsFragment, Setting } from "letterpad-graphql";
-import { FC } from "react";
-import { PostTitlePlaceholder } from "ui";
+import { FC, useState } from "react";
+import { Button, PostTitlePlaceholder } from "ui";
 
 import { useUpdatePost } from "../api.client";
 import { Editor } from "../components/editor";
@@ -17,7 +17,28 @@ interface Props {
 
 export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
   const { updatePostWithDebounce } = useUpdatePost();
+  const [busy, setBusy] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
 
+  const showSuggestions = async () => {
+    try {
+      setBusy(true);
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: post?.html_draft,
+          field: "html_draft",
+        }),
+      });
+      const text = await response.text();
+      setSuggestion(text);
+      // setValue("excerpt", text);
+    } catch (e) {}
+    setBusy(false);
+  };
   if (!post) return null;
 
   return (
@@ -29,6 +50,9 @@ export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
             <SubTitle />
           </div>
           <FeaturedImage />
+          <Button onClick={showSuggestions}>Suggestions</Button>
+          <div dangerouslySetInnerHTML={{ __html: suggestion }} />
+          <div>------------------------------------------------</div>
           <Editor
             hasAiKey={!!settings?.openai_key}
             loading={loading}

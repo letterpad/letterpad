@@ -115,3 +115,10 @@
 .dark .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
   color: #526278;
 }
+
+[data-suggestion] {
+  color: green;
+}
+[data-type="typo"] {
+  color: red;
+}

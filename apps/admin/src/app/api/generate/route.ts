@@ -64,6 +64,41 @@ export async function POST(req: Request): Promise<Response> {
     return new StreamingTextResponse(stream);
   }
 
+  if (field === "html_draft") {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content:
+            `You will receive a block of HTML. Your task is to identify and correct any mistakes and provide suggestions to improve its quality. Your suggestions should fall in one of this category: typo, grammar, sentence, word choice, alternate sentence, spacing, or formatting.
+            For each correction, wrap the relevant word or sentence with a <span> tag and add the appropriate data attribute with meaningful reasons. 
+            Example:
+
+            <p>She looks so <span data-type="word-choice" data-original="good">beautiful</span>.</p>
+            <p>When I <span data-type="alternate-sentence" data-original="got up in the morning">woke up</span> at 10am, it was already very bright..</p>
+           `,
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      stream: true,
+      n: 1,
+    });
+
+    // Convert the response into a friendly text-stream
+    const stream = OpenAIStream(response);
+
+    // Respond with the stream
+    return new StreamingTextResponse(stream);
+  }
+
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
