@@ -61,7 +61,7 @@ export const Sidebar = () => {
           }
         `}</style>
         {!isPaidMember && (
-          <div className="rounded-lg border border-slate-800 m-2 bg-black/20 shadow-sm max-w-[240px]">
+          <div className="rounded-lg border !border-slate-800 m-2 bg-black/20 shadow-sm max-w-[240px]">
             <div className="flex flex-col space-y-1.5 p-2 pt-0 md:p-4">
               <h3 className="text-md font-semibold leading-none tracking-tight text-slate-100">
                 Upgrade to <span className="text-orange-400">Pro</span>
@@ -72,7 +72,7 @@ export const Sidebar = () => {
             </div>
             <div className="p-2 pt-0 md:p-4 md:pt-0">
               <Button
-                variant="outline"
+                variant="success"
                 size={"small"}
                 onClick={() => (window.location.href = "/membership")}
                 className="text-white"

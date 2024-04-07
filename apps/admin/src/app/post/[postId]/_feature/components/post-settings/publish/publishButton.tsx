@@ -90,7 +90,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
                     disabled={busy}
                     variant="outline"
                   >
-                    {busy ? "Updating Post..." : "Update Live Post"}
+                    {busy ? "Updating Post..." : "Update Live"}
                   </Button>
                   <Button
                     onClick={_discardDraft}

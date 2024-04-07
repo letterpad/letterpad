@@ -145,13 +145,10 @@ module.exports = {
               color: theme('colors.gray.900'),
             },
             code: {
-              // color: theme('colors.green.600'),
-              fontSize: theme('fontSize.md'),
-              backgroundColor: '#6fd7535c',
+              color: theme('colors.pink.500'),
+              fontFamily: theme('fontFamily.body'),
+              fontSize: theme('fontSize.prose'),
               fontWeight: 'initial',
-              fontFamily: theme('fontFamily.code'),
-              padding: '0.1rem 0.2rem',
-              borderRadius: '0.25rem',
             },
             'code::before': {
               content: 'none',
@@ -181,7 +178,7 @@ module.exports = {
             strong: { color: theme('colors.gray.600') },
             blockquote: {
               color: theme('colors.gray.900'),
-              borderLeftColor: theme('colors.accent.50'),
+              borderLeftColor: theme('colors.accent'),
             },
             'figcaption a': {
               color: theme('colors.green.500'),
@@ -195,8 +192,8 @@ module.exports = {
           css: {
             color: theme('colors.slate.300'),
             a: {
-              color: theme('colors.primary.500'),
-              code: { color: theme('colors.primary.400') },
+              color: theme('colors.blue.500'),
+              code: { color: theme('colors.blue.400') },
             },
             h1: {
               fontWeight: '700',
@@ -219,7 +216,7 @@ module.exports = {
             //   backgroundColor: theme('colors.gray.900'),
             // },
             code: {
-              color: theme('colors.lime.500'),
+              color: theme('colors.pink.500'),
               backgroundColor: 'transparent',
             },
             details: {

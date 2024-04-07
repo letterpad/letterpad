@@ -1,5 +1,5 @@
-import { parseFragment, DefaultTreeAdapterMap } from "parse5";
 import Katex from "katex";
+import { DefaultTreeAdapterMap, parseFragment } from "parse5";
 
 type DocumentFragment = DefaultTreeAdapterMap["documentFragment"];
 type Element = DefaultTreeAdapterMap["element"];
