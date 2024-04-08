@@ -6,13 +6,9 @@ import {
   useGetFollowingQuery,
 } from "letterpad-graphql/hooks";
 import Link from "next/link";
-import { useState } from "react";
-import { Button, DialogModal, Modal } from "ui";
+import { Button, DialogClose, DialogModal } from "ui";
 
 export const AboutStats = ({ username, id }) => {
-  const [showModal, setShowModal] = useState<"followers" | "following" | null>(
-    null
-  );
   const [{ data, fetching }] = useAboutStatsQuery({ variables: { username } });
   const [followers, refetchFollowers] = useGetFollowersQuery({
     variables: { id },
@@ -40,17 +36,13 @@ export const AboutStats = ({ username, id }) => {
               title="Followers"
               value={data?.aboutStats.stats?.followerCount}
               onClick={() => {
-                setShowModal("followers");
+                // setShowModal("followers");
                 refetchFollowers();
               }}
               className={"cursor-pointer"}
             />
           }
-          footer={[
-            <Button size="small" onClick={() => setShowModal(null)}>
-              Close
-            </Button>,
-          ]}
+          footer={[<Button size="small">Close</Button>]}
         >
           <FollowList
             data={followers.data?.followers?.rows}
@@ -65,17 +57,19 @@ export const AboutStats = ({ username, id }) => {
               title="Following"
               value={data?.aboutStats.stats?.followingCount}
               onClick={() => {
-                setShowModal("following");
+                // setShowModal("following");
                 refetchFollowing();
               }}
               className={"cursor-pointer"}
             />
           }
-          footer={[
-            <Button size="small" onClick={() => setShowModal(null)}>
-              Close
-            </Button>,
-          ]}
+          footer={
+            <DialogClose asChild>
+              <Button size="small" type="button">
+                Close
+              </Button>
+            </DialogClose>
+          }
         >
           <FollowList
             data={following.data?.following?.rows}

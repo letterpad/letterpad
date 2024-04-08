@@ -15,6 +15,8 @@ interface Props {
     description?: string;
     children: React.ReactNode;
 }
+
+export { DialogClose } from "./dialog";
 export function DialogModal({footer, trigger, title, description, children}: Props) {
   return (
     <Dialog>
@@ -31,9 +33,11 @@ export function DialogModal({footer, trigger, title, description, children}: Pro
         <div className="grid gap-4 py-4">
         {children}
         </div>
-        {footer && <DialogFooter>
-          {footer}
-        </DialogFooter>}
+        {footer && 
+          <DialogFooter className="sm:justify-start">
+            {footer}
+          </DialogFooter>
+        }
       </DialogContent>
     </Dialog>
   )
