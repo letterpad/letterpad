@@ -3,7 +3,6 @@ import {
   Post as DbPost,
   Setting as DbSetting,
 } from "@prisma/client";
-import { parseFragment, serialize } from "parse5";
 import {
   Author,
   Post,
@@ -12,11 +11,13 @@ import {
   Setting,
   SettingInputType,
 } from "letterpad-graphql";
+import { parseFragment, serialize } from "parse5";
+
 import { transformHtml } from "./transforms";
 
 export const mapPostToGraphql = (
   post: DbPost | Error,
-  callSource: "server" | "client"
+  callSource: "server" | "client" = "server"
 ) => {
   if (post instanceof Error) {
     return post as unknown as Post;

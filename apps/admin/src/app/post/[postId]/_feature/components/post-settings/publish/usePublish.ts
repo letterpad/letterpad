@@ -5,7 +5,7 @@ import {
     PostTypes,
     PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Message } from "ui";

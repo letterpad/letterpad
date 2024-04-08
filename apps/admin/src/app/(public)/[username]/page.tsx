@@ -80,6 +80,8 @@ const About = async ({ params }: { params: { username: string } }) => {
 
   if (!author) return notFound();
 
+  const siteUrl = getSiteUrl(author.setting?.site_url!, username);
+
   const data = await getTagsLinkedWithPosts({
     id: author.id,
     status: PostStatusOptions.Published,
@@ -156,7 +158,7 @@ const About = async ({ params }: { params: { username: string } }) => {
             </div>
           </div>
           <div className="flex items-center md:justify-between flex-col md:flex-row ">
-            <AboutStats username={username} />
+            <AboutStats username={username} id={author.id} />
             <div className="flex flex-col gap-6 p-3 mt-30">
               <span className="flex gap-2 items-center text-slate-300 text-sm">
                 <BiCalendar />
@@ -173,16 +175,16 @@ const About = async ({ params }: { params: { username: string } }) => {
         </div>
 
         <div className="flex gap-8 items-start pb-32 flex-col  md:flex-row">
-          <div className="max-w-2xl w-full">
+          <div className="md:max-w-2xl w-full">
             <h2 className="text-2xl font-bold">About Me</h2>
             <p
-              className="block antialiased font-paragraph text-md font-normal leading-relaxed text-inherit mt-8 max-w-2xl"
+              className="block antialiased font-paragraph text-md font-normal leading-relaxed text-inherit mt-8 md:max-w-2xl max-w-sm"
               dangerouslySetInnerHTML={{ __html: bio ?? "Empty" }}
             ></p>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className="mt-10">
               <Suspense fallback={<div>Loading...</div>}>
-                <Feed authorId={author.id} site_url={setting?.site_url} />
+                <Feed authorId={author.id} site_url={siteUrl} />
               </Suspense>
             </div>
           </div>
@@ -219,7 +221,7 @@ const About = async ({ params }: { params: { username: string } }) => {
               </div>
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div className="w-96">
+            <div className="max-w-xs">
               <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-[1.1rem] py-2">
                 Topics I write about:
               </h3>
@@ -229,7 +231,7 @@ const About = async ({ params }: { params: { username: string } }) => {
                     <Link
                       key={tag.id}
                       target="_blank"
-                      href={new URL(`/tag/${tag.name}`, setting?.site_url).href}
+                      href={new URL(`/tag/${tag.name}`, siteUrl).href}
                     >
                       <span className="py-1.5 px-4 me-2 mb-1 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-800 dark:hover:text-white dark:hover:bg-gray-700">
                         {tag.name.replace(TOPIC_PREFIX, "")}
@@ -247,3 +249,13 @@ const About = async ({ params }: { params: { username: string } }) => {
 };
 
 export default About;
+
+const getSiteUrl = (site_url: string, username: string) => {
+  try {
+    new URL(site_url);
+    return site_url;
+  } catch (e) {
+    //
+  }
+  return "https://" + username + "." + new URL(getRootUrl()).hostname;
+};

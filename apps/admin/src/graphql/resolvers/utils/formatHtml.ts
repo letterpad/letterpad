@@ -19,5 +19,5 @@ export async function formatHtml(html: string) {
     html = _html;
   }
 
-  return html;
+  return html.replaceAll("</img>", "");
 }
