@@ -4,6 +4,7 @@ import { BiPencil } from "react-icons/bi";
 
 import { prisma } from "@/lib/prisma";
 
+import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate } from "@/shared/utils";
 
 export const Feed = async ({ authorId, site_url }) => {
@@ -18,6 +19,7 @@ export const Feed = async ({ authorId, site_url }) => {
       createdAt: "desc",
     },
   });
+
   return (
     <section>
       <h3 className="block antialiased tracking-normal font-sans font-semibold text-inherit text-xl py-4">

@@ -44,13 +44,18 @@ const Setting: SettingResolvers<ResolverContext> = {
   },
   is_platform: () => process.env.LETTERPAD_PLATFORM === "true",
   site_url: async ({ site_url }, _, { session, dataloaders, client_author_id }) => {
-    if (!site_url) {
-      const author = await dataloaders.author.load(
-        session?.user.id || client_author_id
-      );
-      return 'https://' + author.username + '.' + new URL(getRootUrl()).hostname
+    try {
+      new URL(site_url)
+      return site_url;
+    } catch (e) {
+      //
     }
-    return site_url
+
+    const author = await dataloaders.author.load(
+      session?.user.id || client_author_id
+    );
+    return 'https://' + author.username + '.' + new URL(getRootUrl()).hostname
+
   },
   logged_in: (_, __, { session }) => {
     return !!session?.user?.id;

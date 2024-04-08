@@ -80,6 +80,8 @@ const About = async ({ params }: { params: { username: string } }) => {
 
   if (!author) return notFound();
 
+  const siteUrl = getSiteUrl(author.setting?.site_url!, username);
+
   const data = await getTagsLinkedWithPosts({
     id: author.id,
     status: PostStatusOptions.Published,
@@ -182,7 +184,7 @@ const About = async ({ params }: { params: { username: string } }) => {
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div className="mt-10">
               <Suspense fallback={<div>Loading...</div>}>
-                <Feed authorId={author.id} site_url={setting?.site_url} />
+                <Feed authorId={author.id} site_url={siteUrl} />
               </Suspense>
             </div>
           </div>
@@ -229,7 +231,7 @@ const About = async ({ params }: { params: { username: string } }) => {
                     <Link
                       key={tag.id}
                       target="_blank"
-                      href={new URL(`/tag/${tag.name}`, setting?.site_url).href}
+                      href={new URL(`/tag/${tag.name}`, siteUrl).href}
                     >
                       <span className="py-1.5 px-4 me-2 mb-1 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-800 dark:hover:text-white dark:hover:bg-gray-700">
                         {tag.name.replace(TOPIC_PREFIX, "")}
@@ -247,3 +249,13 @@ const About = async ({ params }: { params: { username: string } }) => {
 };
 
 export default About;
+
+const getSiteUrl = (site_url: string, username: string) => {
+  try {
+    new URL(site_url);
+    return site_url;
+  } catch (e) {
+    //
+  }
+  return "https://" + username + "." + new URL(getRootUrl()).hostname;
+};
