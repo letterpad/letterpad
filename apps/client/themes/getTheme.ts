@@ -40,10 +40,6 @@ export const getTheme: (theme?: string | null) => Theme = (theme) => {
 
   return {
     ...GridDefaultTheme,
-    ...Zenith,
-  };
-  return {
-    ...GridDefaultTheme,
     ...selectedTheme,
   };
 };
