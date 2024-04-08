@@ -9,8 +9,7 @@
     },
     "build": {
       "dependsOn": [
-        "^build",
-        "letterpad-graphql#build"
+        "^build"
       ],
       "outputs": [
         "dist/**",
