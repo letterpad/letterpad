@@ -5,15 +5,19 @@ import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { ResponsiveProvider, ThemeProvider } from "ui";
 import { Provider as UrqlProvider } from "urql";
 
+import { GetProModalProvider } from "../get-pro-modal-provider";
 import { basePath } from "../../constants";
 import { client } from "../../lib/urqlClient";
+
 export const Providers = ({ children, theme }) => {
   return (
     <SessionProvider basePath={basePath + "/api/auth"}>
       <ThemeProvider theme={theme}>
         <ResponsiveProvider>
           <div id="message" />
-          <UrqlProvider value={client}>{children}</UrqlProvider>
+          <GetProModalProvider>
+            <UrqlProvider value={client}>{children}</UrqlProvider>
+          </GetProModalProvider>
           <ProgressBar
             height="3px"
             color="#2fb2fa"

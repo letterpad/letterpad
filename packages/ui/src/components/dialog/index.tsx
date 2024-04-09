@@ -8,22 +8,34 @@ import {
   DialogTrigger,
 } from "./dialog"
 
-interface Props {
-    footer?: React.ReactNode;
-    trigger: React.ReactNode;
-    title?: string;
-    description?: string;
-    children: React.ReactNode;
+interface Base {
+  footer?: React.ReactNode;
+  title?: string;
+  description?: string;
+  children: React.ReactNode;
+}
+interface PropsWithState extends Base{
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  type: "state";
+}
+interface PropsWithTrigger extends Base{ 
+  trigger: React.ReactNode;
+  type: "trigger";
 }
 
+type Props = PropsWithState | PropsWithTrigger
+
 export { DialogClose } from "./dialog";
-export function DialogModal({footer, trigger, title, description, children}: Props) {
+
+export function DialogModal({footer, title, description, children, ...rest}: Props) {
+  const controlProps = rest.type === "state" ? { open:rest.open, onOpenChange:rest.onOpenChange } : { }
   return (
-    <Dialog>
+    <Dialog {...controlProps}>
       <DialogTrigger asChild>
-        {trigger}
+        {rest.type === "trigger" && rest.trigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         {(title || description) && <DialogHeader>
           {title && <DialogTitle>{title}</DialogTitle>}
           {description && <DialogDescription>

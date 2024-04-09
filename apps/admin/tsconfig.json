@@ -52,6 +52,6 @@
   "exclude": [
     "letterpad-graphql",
     "node_modules",
-    "*.js"
+    "**/*.js"
   ],
 }

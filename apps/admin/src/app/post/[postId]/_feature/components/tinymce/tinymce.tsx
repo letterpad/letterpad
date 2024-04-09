@@ -2,7 +2,10 @@ import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef } from "react";
 import "./core";
 
+import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+
 import { FileExplorer } from "@/components/file-explorer";
+import { useGetProModal } from "@/components/get-pro-modal-provider";
 
 import { blogEditorConfig, id } from "./config";
 import { insertImageInEditor } from "../commands";
@@ -29,6 +32,8 @@ export const LpEditor: React.FC<Props> = memo(
     const isDark = document.body.classList.contains("dark");
     const textRef = useRef("");
     const allowEditorChange = useActivateEditorChangeAfterClick();
+    const isPaidMember = useIsPaidMember();
+    const { setIsOpen } = useGetProModal();
 
     useEffect(() => {
       if (!allowEditorChange) {
@@ -65,9 +70,15 @@ export const LpEditor: React.FC<Props> = memo(
               onChange(newHtml);
             }
           }}
-          init={blogEditorConfig({ isDark, editorRef, hasAiKey })}
+          licenseKey="gpl"
+          init={blogEditorConfig({
+            isDark,
+            editorRef,
+            hasAiKey,
+            isPaidMember: false,
+            openProModal: () => setIsOpen(true),
+          })}
         />
-
         <FileExplorer
           multi={true}
           isVisible={!!fileExplorerOpen}

@@ -5,15 +5,32 @@ import { useFormContext } from "react-hook-form";
 import { CgSpinner } from "react-icons/cg";
 import { TextArea } from "ui";
 
+import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+
+import { useGetProModal } from "@/components/get-pro-modal-provider";
+
+import { EventAction, track } from "@/track";
+
 import { Heading } from "./heading";
 
 export const Excerpt = () => {
   const { register, setValue, getValues } =
     useFormContext<PostWithAuthorAndTagsFragment>();
   const [busy, setBusy] = useState(false);
+  const isPaidMember = useIsPaidMember();
+  const { setIsOpen } = useGetProModal();
 
   const generateExcerpt = async (e) => {
     e.preventDefault();
+    if (!isPaidMember) {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: "pro-modal",
+        eventLabel: `excerpt`,
+      });
+      setIsOpen(true);
+      return;
+    }
     try {
       setBusy(true);
       const element = document.createElement("div");

@@ -39,6 +39,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
                   <li>✓ Earn money from reads</li>
                   <li>✓ Build your audience</li>
                   <li>✓ Customise your brand</li>
+                  <li>✓ Ai Powered Editor</li>
                   <li>✓ No annoying ads</li>
                 </ul>
               </div>

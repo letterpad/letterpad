@@ -1,12 +1,20 @@
 import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { CgSpinner } from "react-icons/cg";
 import ReactTags from "react-tag-autocomplete";
+import { Message } from "ui";
 
 import "./tags.css";
 
+import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+
+import { useGetProModal } from "@/components/get-pro-modal-provider";
+
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
+import { EventAction, track } from "@/track";
 import { textToSlug } from "@/utils/slug";
 
 import { tags } from "./constants";
@@ -28,6 +36,7 @@ export const Tags = ({ post }: IProps) => {
   const topic = post.tags?.["rows"].find((t) =>
     t?.name?.startsWith(TOPIC_PREFIX)
   );
+  const { setIsOpen } = useGetProModal();
   const initialTags =
     post.tags?.["rows"]?.filter((t) => !t?.name?.startsWith(TOPIC_PREFIX)) ??
     [];
@@ -35,8 +44,9 @@ export const Tags = ({ post }: IProps) => {
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const [search, setSearch] = useState("");
   const { data, fetching: loading } = useGetTags({ search }, { skip: !search });
-
+  const [busy, setBusy] = useState(false);
   const computedTags = useMemo(() => data ?? [], [data]);
+  const isPaidMember = useIsPaidMember();
 
   const fetchSuggestions = async (query: string) => {
     if (!query) {
@@ -114,6 +124,61 @@ export const Tags = ({ post }: IProps) => {
     setSuggestions([...suggestions, { ...tag }]);
   };
 
+  const generateTags = async (e) => {
+    e.preventDefault();
+    if (!isPaidMember) {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: "pro-modal",
+        eventLabel: `tags`,
+      });
+      setIsOpen(true);
+      return;
+    }
+    if (!post.html_draft || post.html_draft.length < 300) {
+      Message().error({
+        content:
+          "Please write a post with at least 300 characters to generate tags.",
+        duration: 5,
+      });
+      return;
+    }
+    try {
+      setBusy(true);
+      const element = document.createElement("div");
+      element.innerHTML = post.html_draft ?? "";
+      element.querySelectorAll("pre").forEach((pre) => {
+        pre.remove();
+      });
+      const prompt = element.textContent;
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          field: "tags",
+        }),
+      });
+      const text = await response.text();
+      const tags = text.split(",").map((t) => {
+        return {
+          name: t,
+          slug: t,
+          id: t,
+        };
+      });
+      if (topic) tags.push(topic);
+      setValue("tags.rows", tags, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+    } catch (e) {}
+    setBusy(false);
+  };
+
   return (
     <div>
       <Heading
@@ -136,6 +201,15 @@ export const Tags = ({ post }: IProps) => {
           onBlur={saveTags}
           onInput={fetchSuggestions}
         />
+        <div className="mt-2">
+          {busy ? (
+            <CgSpinner className="animate-spin w-5 h-5" />
+          ) : (
+            <Link href="#" onClick={generateTags}>
+              Generate ✨
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

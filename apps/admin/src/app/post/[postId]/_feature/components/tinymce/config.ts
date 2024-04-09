@@ -1,6 +1,7 @@
 import { IProps } from "@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor";
 
 import { basePath } from "@/constants";
+import { EventAction, track } from "@/track";
 
 import { textPatterns } from "../textPatterns";
 
@@ -35,6 +36,7 @@ export const titleEditorConfig: IProps["init"] = {
   menubar: false,
   toolbar: false,
   placeholder: "Title",
+  license_key: "gpl",
   inline: true,
   skin: false,
   theme: false,
@@ -105,7 +107,8 @@ function modifyElements(node: Element) {
 export const blogEditorConfig = ({
   isDark,
   editorRef,
-  hasAiKey,
+  isPaidMember,
+  openProModal
 }): IProps["init"] => ({
   placeholder: "Write your story here...",
   inline: true,
@@ -161,15 +164,15 @@ export const blogEditorConfig = ({
   branding: false,
   link_context_toolbar: true,
   plugins:
-    "lists image ai link quickbars autoresize  code codesample directionality wordcount latex",
+    "lists image aiCompletion ai tableofcontents link quickbars autoresize code codesample wordcount latex",
   // skin: "none",
   skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
   height: "100%",
   quickbars_image_toolbar: false,
   quickbars_selection_toolbar:
-    "h1 h2 mark bold italic underline link nlpcheck nlpremove ltr rtl",
+    "h1 h2 mark bold italic underline link",
   quickbars_insert_toolbar:
-    "bullist numlist blockquote hr codesample customImage image latex aiButton",
+    "aidialog bullist numlist blockquote hr codesample customImage image latex tableofcontents",
   statusbar: false,
   formats: {
     hilitecolor: {
@@ -183,39 +186,54 @@ export const blogEditorConfig = ({
     editorRef.current?.dom?.doc?.querySelectorAll("img")
       .forEach((e) => e.removeAttribute("srcset"));
   },
+  ai_request: (request, respondWith) => {
+    if (!isPaidMember) {
+      editorRef.current.execCommand('mceAiDialogClose');
+      return openProModal();
+    }
+    respondWith.string((signal) => window.fetch('/api/generate', {
+      signal, method: "POST", headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: request.prompt,
+        field: "post",
+      }),
+    })
+      .then(async (response) => {
+        if (response) {
+          const data = await response.json();
+          if (data.error) {
+            throw new Error(`${data.error.type}: ${data.error.message}`);
+          } else if (response.ok) {
+            return data?.choices[0]?.message?.content?.trim();
+          }
+        } else {
+          throw new Error('Failed to communicate with the ChatGPT API');
+        }
+      })
+    );
+  },
   setup: function (editor) {
     editor.ui.registry.addButton("mark", {
       icon: "highlight-bg-color",
+      tooltip: "Highlight Text",
       onAction: function (_) {
         editor.execCommand("HiliteColor", false, "");
       },
     });
-    if (!hasAiKey) {
-      editor.ui.registry.addButton("aiButton", {
-        text: "AI",
-        tooltip: "Autocomplete with AI",
-        onAction: () => {
-          editor.windowManager.open({
-            title: "Autocomplete with AI",
-            body: {
-              type: "panel",
-              items: [
-                {
-                  type: "htmlpanel", // A HTML panel component
-                  html: "You can use AI to autocomplete your text by simply typing +++. To enable this feature, updated the OpenAI Key in <a href='/settings?selected=openai' target='_blank'>settings</a> ",
-                },
-              ],
-            },
-            buttons: [
-              {
-                type: "cancel",
-                text: "OK",
-              },
-            ],
-          });
-        },
-      });
-    }
+    editor.on('beforeExecCommand', function (args) {
+      if (isPaidMember) return;
+      if (args.command === "mceUpdateToc" || args.command === "mceInsertToc") {
+        args.preventDefault();
+        track({
+          eventAction: EventAction.Click,
+          eventCategory: "pro-modal",
+          eventLabel: `editor`,
+        });
+        return openProModal();
+      }
+    });
   },
   // valid_elements: '*[*]',
   entity_encoding: "raw",
@@ -258,3 +276,4 @@ function extractVideoId(url) {
   var match = url.match(/[?&]v=([^&]+)/);
   return match && match[1];
 }
+
