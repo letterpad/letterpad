@@ -2,11 +2,9 @@ import { OpenAIStream, StreamingTextResponse, } from "ai";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-import { prisma } from "@/lib/prisma";
+import { mail } from "@/lib/mail";
 
 import { getServerSession } from "@/graphql/context";
-
-import { mail } from "../../../lib/mail";
 
 export async function POST(req: Request): Promise<Response> {
   const session = await getServerSession({ req });
@@ -14,24 +12,8 @@ export async function POST(req: Request): Promise<Response> {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const setting = await prisma.setting.findFirst({
-    where: {
-      author_id: session.user.id,
-    },
-  });
-  const openai_api_key = setting?.openai_key;
-
-  if (!openai_api_key || openai_api_key === "") {
-    return new Response(
-      "Missing OPENAI_API_KEY – Add the openai key in settings under Open AI.",
-      {
-        status: 400,
-      }
-    );
-  }
-
   const openai = new OpenAI({
-    apiKey: openai_api_key,
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
   let { prompt, field = "post" } = await req.json();

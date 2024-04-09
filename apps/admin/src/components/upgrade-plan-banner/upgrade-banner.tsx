@@ -1,25 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
-
-import { isMembershipFeatureActive } from "@/utils/config";
 
 import { useIsPaidMember } from "../../hooks/useIsPaidMember";
 
 export const UpgradeBanner = () => {
-  const [show, setShow] = useState(false);
   const isPaidMember = useIsPaidMember();
-  const membershipFeatureActive = isMembershipFeatureActive();
-
-  useEffect(() => {
-    setShow(membershipFeatureActive && !isPaidMember);
-  }, [isPaidMember, membershipFeatureActive]);
-
-  if (!membershipFeatureActive) {
-    return null;
-  }
-  if (!show) {
+  if (isPaidMember) {
     return null;
   }
 

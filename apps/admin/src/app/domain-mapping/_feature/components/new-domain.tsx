@@ -1,28 +1,20 @@
 import { useAddDomainMutation } from "letterpad-graphql/hooks";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { Button, Input, Message } from "ui";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
-import { isMembershipFeatureActive } from "@/utils/config";
-
 const regex =
   /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/g;
 export const NewDomain = () => {
   const [domain, setDomain] = useState("");
-  const [disabled, setDisabled] = useState(false);
   const isPaidMember = useIsPaidMember();
-  const membershipFeatureActive = isMembershipFeatureActive();
   const [{ fetching: loading }, addDomain] = useAddDomainMutation();
 
   const changeDomainName = (e: ChangeEvent<HTMLInputElement>) => {
     setDomain(e.target.value);
   };
-
-  useEffect(() => {
-    setDisabled(membershipFeatureActive || !isPaidMember);
-  }, [isPaidMember, membershipFeatureActive]);
 
   const tryAddDomain = async () => {
     if (regex.test(domain) !== true) {
@@ -60,12 +52,12 @@ export const NewDomain = () => {
             value={domain}
             placeholder="e.g. example.com, blog.example.com"
             onChange={changeDomainName}
-            disabled={!membershipFeatureActive || !isPaidMember}
+            disabled={!isPaidMember}
           />
           <Button
             variant="primary"
             onClick={tryAddDomain}
-            disabled={loading || !domain || disabled}
+            disabled={loading || !domain || !isPaidMember}
             className="h-10"
           >
             Add

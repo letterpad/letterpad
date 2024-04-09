@@ -7,13 +7,11 @@ import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 import { Upload } from "@/components/upload";
 
 import { removeTypenames } from "@/shared/utils";
-import { isMembershipFeatureActive } from "@/utils/config";
 
 import { MixBlendCheckbox } from "./mixBlend";
 
 const Appearance = () => {
   const data = useFormContext();
-  const membershipFeatureActive = isMembershipFeatureActive();
   const isPaidMember = useIsPaidMember();
 
   return (
@@ -132,11 +130,11 @@ const Appearance = () => {
         help={
           <>
             <span>This will appear in the footer of your site. </span>
-            {!isPaidMember && membershipFeatureActive && <UpgradeLabel />}
+            {!isPaidMember && <UpgradeLabel />}
           </>
         }
         // help={<span>hello</span>}
-        disabled={!isPaidMember && membershipFeatureActive}
+        disabled={!isPaidMember}
       />
       <div>
         <Controller

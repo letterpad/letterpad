@@ -20,7 +20,6 @@ import { getDateRanges } from "@/components/analytics/utils";
 import { UpgradeBanner } from "@/components/upgrade-plan-banner";
 
 import { SessionData } from "@/graphql/types";
-import { isMembershipFeatureActive } from "@/utils/config";
 
 import {
   type ApiResponseData,
@@ -34,11 +33,8 @@ interface Props {
   session: SessionData;
 }
 const Analytics: FC<P & Props> = () => {
-  const activeFeature = isMembershipFeatureActive();
   const isPaidMember = useIsPaidMember();
-  const [showPremiumCharts, setShowPremiumCharts] = useState(true);
   const { theme } = useTheme();
-  const isMember = activeFeature && isPaidMember;
   const [data, setData] = useState<ApiResponseData>({
     device: [],
     data: [],
@@ -56,10 +52,6 @@ const Analytics: FC<P & Props> = () => {
   const chartInstance = useRef<Chart<"bar">>();
   const deviceInstance = useRef<Chart<"pie">>();
   const countryInstance = useRef<Chart<"bar">>();
-
-  useEffect(()=>{
-    setShowPremiumCharts(!activeFeature || isPaidMember)
-  },[activeFeature, isPaidMember]);
 
   const [dateRange, setDateRange] = useState<DateRange>(
     getDateRanges(DateRangeEnum.last7Days)
@@ -88,7 +80,7 @@ const Analytics: FC<P & Props> = () => {
       .catch(() => setFetching(false));
   };
 
-  useEffect(doFetch, [dateRange, isMember]);
+  useEffect(doFetch, [dateRange, isPaidMember]);
 
   const _getChartData = useCallback(() => {
     if (!data?.sessionsPerDay) return null;
@@ -389,7 +381,7 @@ const Analytics: FC<P & Props> = () => {
                   loading={fetching}
                   allTimeReads={data.allTimeReads}
                 />
-                {showPremiumCharts ? (
+                {isPaidMember ? (
                   <>
                     <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
                     <div className="py-10 flex flex-col lg:flex-row gap-4 md:gap-10">
@@ -421,7 +413,7 @@ const Analytics: FC<P & Props> = () => {
             </div>
           ) : (
             <span className="dark:text-gray-400 text-gray-700">
-              {isMember && "There is not enough data to display metrics."}
+              {isPaidMember && "There is not enough data to display metrics."}
             </span>
           )}
         </div>

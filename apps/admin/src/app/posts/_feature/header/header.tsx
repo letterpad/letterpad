@@ -6,15 +6,16 @@ import { BiPlus } from "react-icons/bi";
 import { Button, Modal } from "ui";
 import { PageHeader } from "ui/isomorphic";
 
+import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+
+import { UpgradeLabel } from "@/components/upgrade-plan-banner";
+
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
-import { isMembershipFeatureActive } from "@/utils/config";
 import { isPost } from "@/utils/type-guards";
 
 import { useCreatePost, useGetPosts } from "../api.client";
 import { DEFAULT_FILTERS } from "../constants";
-import { UpgradeLabel } from "../../../../components/upgrade-plan-banner";
-import { useIsPaidMember } from "../../../../hooks/useIsPaidMember";
 
 interface IProps {
   type: PostTypes;
@@ -53,9 +54,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   };
 
   const buttonLabel = `New ${type === "page" ? "Creative" : "Post"}`;
-  const displayBtn =
-    ((!isMembershipFeatureActive() || isPaidMemeber) && type === "page") ||
-    type === "post";
+  const displayBtn = (isPaidMemeber && type === "page") || type === "post";
   return (
     <>
       <PageHeader

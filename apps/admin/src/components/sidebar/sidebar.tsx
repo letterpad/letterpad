@@ -4,10 +4,7 @@ import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { Button, Menu, useResponsiveLayout } from "ui";
-
-import { isMembershipFeatureActive } from "@/utils/config";
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
@@ -16,18 +13,12 @@ import { isAuthor, isSettings, isStats } from "../../utils/type-guards";
 
 export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();
-  const [paymentActive, setPaymentActive] = useState(false);
   const isPaidMember = useIsPaidMember();
   const pathname = usePathname();
   const { isDesktop, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
   const stats = isStats(data?.stats) ? data?.stats : null;
   const activePlan = isAuthor(data?.me) ? data?.me?.is_paid_member : false;
-  const isActive = isMembershipFeatureActive();
-
-  useEffect(() => {
-    setPaymentActive(isActive);
-  }, [isActive]);
 
   return (
     <div className="h-full shadow-lg text-slate-300">
@@ -55,11 +46,6 @@ export const Sidebar = () => {
             items={items(stats, !!activePlan)}
           />
         </div>
-        <style jsx global>{`
-          .membership {
-            display: ${paymentActive ? "block" : "none"};
-          }
-        `}</style>
         {!isPaidMember && (
           <div className="rounded-lg border !border-slate-800 m-2 bg-black/20 shadow-sm max-w-[240px]">
             <div className="flex flex-col space-y-1.5 p-2 pt-0 md:p-4">

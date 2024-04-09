@@ -6,13 +6,10 @@ import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
 import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 
-import { isMembershipFeatureActive } from "@/utils/config";
-
 import { Heading } from "./heading";
 
 export const SendEmailCheckbox: FC = () => {
   const isPaidMember = useIsPaidMember();
-  const membershipActive = isMembershipFeatureActive();
   const { watch, control } = useFormContext<PostWithAuthorAndTagsFragment>();
   return (
     <div>
@@ -22,7 +19,7 @@ export const SendEmailCheckbox: FC = () => {
           <>
             Notify your email subscribers and followers when you publish this
             post.{" "}
-            {membershipActive && !isPaidMember ? (
+            {!isPaidMember ? (
               <>
                 <UpgradeLabel /> to enable this feature.
               </>
@@ -43,9 +40,7 @@ export const SendEmailCheckbox: FC = () => {
               )}
               id="mail-status"
               disabled={
-                !isPaidMember && membershipActive
-                  ? true
-                  : watch("mail_status") === MailStatus.Sent
+                !isPaidMember ? true : watch("mail_status") === MailStatus.Sent
               }
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 onChange(

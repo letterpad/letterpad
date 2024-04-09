@@ -1,26 +1,18 @@
 "use client";
 import classNames from "classnames";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { Drawer, ThemeSwitcher } from "ui";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
 
-import { isMembershipFeatureActive } from "@/utils/config";
-
 // @ts-ignore
 import Logo from "/public/logo/logo-full.png";
 
 function Header() {
   const [show, setShow] = useState(false);
-  const [isPaymentsActive, setIsPaymentsActive] = useState(false);
-  const isActive = isMembershipFeatureActive();
-
-  useEffect(() => {
-    setIsPaymentsActive(isActive);
-  }, [isActive]);
 
   return (
     <header className="z-30 w-full bg-slate-950 text-white">
@@ -48,11 +40,7 @@ function Header() {
                 <Link href="/resources">Resources</Link>
               </li>
 
-              <li
-                className={classNames("hidden", {
-                  "md:block": isPaymentsActive,
-                })}
-              >
+              <li className={classNames("md:block")}>
                 <Link href="/pricing">Pricing</Link>
               </li>
 
@@ -84,11 +72,7 @@ function Header() {
             <Link href="/resources">Resources</Link>
           </li>
 
-          <li
-            className={classNames("md:hidden", {
-              block: isPaymentsActive,
-            })}
-          >
+          <li>
             <Link href="/pricing">Pricing</Link>
           </li>
           <li>
@@ -96,11 +80,6 @@ function Header() {
           </li>
         </ul>
       </Drawer>
-      <style jsx>{`
-        .pricing {
-          display: ${isPaymentsActive ? "block" : "none"};
-        }
-      `}</style>
     </header>
   );
 }
