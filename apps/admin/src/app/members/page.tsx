@@ -92,7 +92,6 @@ const Members = () => {
               <div>Variables: @name, @username, @email, @profile_link</div>
               <div className="shadow-md">
                 <Editor
-                  hasAiKey={false}
                   onChange={setHtml}
                   text={html}
                   style={`body {padding: 4px 8px !important;font-size: } p,i,a,div {font-size: 1rem !important;}`}

@@ -38,7 +38,7 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
       <Item
         title="Pro"
         items={[
-          "Unlimited Posts",
+          "AI Powered Editor",
           "Domain Mapping",
           "Entended Analytics",
           "Custom pages & photostory builder",
