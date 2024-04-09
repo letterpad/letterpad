@@ -158,7 +158,7 @@ const About = async ({ params }: { params: { username: string } }) => {
             </div>
           </div>
           <div className="flex items-center md:justify-between flex-col md:flex-row ">
-            <AboutStats username={username} id={author.id} />
+            <AboutStats username={username} id={author.id} siteUrl={siteUrl} />
             <div className="flex flex-col gap-6 p-3 mt-30">
               <span className="flex gap-2 items-center text-slate-300 text-sm">
                 <BiCalendar />
@@ -204,17 +204,13 @@ const About = async ({ params }: { params: { username: string } }) => {
                 Publishes At:
               </h3>
               <div className="flex gap-2 flex-row justify-between items-center">
-                <Link
-                  href={setting?.site_url!}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <Link href={siteUrl} target="_blank" rel="noreferrer">
                   <div>
                     <span className="font-bold text-md">
                       {setting?.site_title}
                     </span>
                     <p className="font-paragraph text-blue-500 underline">
-                      {setting?.site_url}
+                      {siteUrl}
                     </p>
                   </div>
                 </Link>

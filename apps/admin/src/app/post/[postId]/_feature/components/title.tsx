@@ -37,6 +37,7 @@ export const Title: React.FC<Props> = memo(({}) => {
               onBlur();
             }}
             init={titleEditorConfig}
+            licenseKey="gpl"
           />
         );
       }}
