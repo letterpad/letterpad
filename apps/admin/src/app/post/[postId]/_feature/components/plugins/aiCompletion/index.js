@@ -1,4 +1,4 @@
-tinymce.PluginManager.add("ai", function (editor) {
+tinymce.PluginManager.add("aiCompletion", function (editor) {
   let lastTwoChars = "";
   let trigger = false;
   const marker = '<span id="t">.</span>';
