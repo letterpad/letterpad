@@ -20,7 +20,5 @@ if (typeof window !== "undefined") {
   require("../plugins/editImage");
   require("tinymce/plugins/pagebreak");
   require("tinymce/icons/default");
-  require("tinymce/skins/ui/oxide-dark/skin.min.css");
-  require("tinymce/skins/ui/oxide-dark/content.min.css");
 }
 export { };

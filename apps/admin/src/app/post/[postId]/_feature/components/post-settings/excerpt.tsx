@@ -63,10 +63,11 @@ export const Excerpt = () => {
     <div>
       <Heading
         heading={`${postVerb} Meta`}
-        subheading={`Used in search engines and social media.`}
+        subheading={`Write an excerpt. Used in search engines and social media for SEO.`}
       />
       <TextArea
         rows={2}
+        placeholder="Write an excerpt or description of the post."
         maxLength={160}
         defaultValue={post.excerpt! ?? post.sub_title}
         {...register("excerpt", {

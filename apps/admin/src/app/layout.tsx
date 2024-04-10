@@ -16,6 +16,7 @@ import { Providers } from "@/components/providers";
 import { basePath, gaTrackingId } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 
+import { TinyMceStyleChange } from "./tinymceThemeChange";
 import { CookieBanner } from "../components/cookie-banner";
 import { fonts } from "../components/fonts";
 
@@ -78,6 +79,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme-preference")?.value ?? "light";
+
   return (
     <html
       lang="en"
@@ -129,7 +131,10 @@ const RootLayout = async ({ children }) => {
           gtag('config', '${gaTrackingId}');
           `}
         </Script>
-        <Providers theme={theme}>{children}</Providers>
+        <Providers theme={theme}>
+          {children}
+          <TinyMceStyleChange />
+        </Providers>
         <CookieBanner />
       </body>
     </html>

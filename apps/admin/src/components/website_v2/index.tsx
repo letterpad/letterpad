@@ -4,13 +4,12 @@ import { getServerSession } from "next-auth";
 import { IoRocketOutline } from "react-icons/io5";
 import { TfiAnnouncement } from "react-icons/tfi";
 import { ProfileCard } from "ui/isomorphic";
-import { isPaymentsEnabled } from "ui/server";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import { AdminActions } from "./adminActions";
+import { AiAd } from "./banner/aiAd";
 import { BannerAd } from "./banner/bannerAd";
-import { SignupBanner } from "./banner/signupBanner";
 import { Card } from "./card";
 import {
   getfavAuthors,
@@ -34,7 +33,6 @@ export const Website = async () => {
     getfavAuthors(),
     fetchPostsByTag(),
   ]);
-  const isMemberFeatActive = await isPaymentsEnabled();
   const session = await getServerSession(options());
   const hasSession = !!session?.user?.id;
   const rows =
@@ -46,12 +44,8 @@ export const Website = async () => {
     <>
       <div className="flex min-h-screen flex-col">
         <Header />
-        {isMemberFeatActive ? (
-          <BannerAd hasSession={hasSession} />
-        ) : (
-          <SignupBanner hasSession={hasSession} />
-        )}
-
+        <AiAd />
+        <BannerAd hasSession={hasSession} />
         <div className="bg-brand sticky top-0 border-t border-gray-800 z-10">
           <div className="overflow-x-auto max-w-6xl mx-auto py-4 p-2 relative">
             {/* <h2 className="font-bold mb-6 text-md">Topics:</h2> */}

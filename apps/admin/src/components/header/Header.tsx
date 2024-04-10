@@ -11,11 +11,15 @@ import { Search } from "@/components/website_v2/search";
 // @ts-ignore
 import Logo from "/public/logo/logo-full.png";
 
-function Header() {
+function Header({ displayBg = true }: { displayBg?: boolean }) {
   const [show, setShow] = useState(false);
 
   return (
-    <header className="z-30 w-full bg-slate-950 text-white">
+    <header
+      className={classNames("z-30 w-full  text-white", {
+        "bg-slate-950": displayBg,
+      })}
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <div className="mr-4 shrink-0 flex gap-2">

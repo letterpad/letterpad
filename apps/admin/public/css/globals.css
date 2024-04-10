@@ -25,10 +25,7 @@ a {
 
 *:not(.tox *, .prose *) {
   box-sizing: border-box;
-  border-color: hsl(var(--border)) !important;
-}
-.tox * {
-  border-color: #48586a !important;
+  border-color: hsl(var(--border));
 }
 
 /* Make clicks pass-through */
