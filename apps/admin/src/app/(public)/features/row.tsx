@@ -1,62 +1,109 @@
+"use client";
+
 import classNames from "classnames";
-import { FC, ReactNode } from "react";
+import { FC, useEffect, useRef } from "react";
+import { useIntersectionObserver } from "ui";
+
+import { Heading } from "./headings";
+import VideoPlayer from "../../../components/video/video";
 
 interface Props {
-  title: string | ReactNode;
-  caption: string | ReactNode;
+  title: string;
+  caption: string;
   imgSrc: string;
   reverse?: boolean;
   imgAlt: string;
+  tag?: string;
 }
 export const Row: FC<Props> = ({
   title,
   caption,
   imgSrc,
   reverse = false,
-  imgAlt,
+  tag,
 }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { isIntersecting, hasLoaded } = useIntersectionObserver(videoRef, {
+    rootMargin: "0px",
+  });
+
+  useEffect(() => {
+    if (isIntersecting && !hasLoaded) {
+      videoRef.current?.play();
+    }
+  }, [hasLoaded, isIntersecting]);
+
+  useEffect(() => {
+    videoRef.current?.addEventListener("mouseover", () => {
+      videoRef.current?.pause();
+    });
+    videoRef.current?.addEventListener("mouseout", () => {
+      videoRef.current?.play();
+    });
+
+    const video = videoRef.current;
+    return () => {
+      video?.removeEventListener("mouseover", () => {
+        video?.pause();
+      });
+      video?.removeEventListener("mouseout", () => {
+        video?.play();
+      });
+    };
+  }, []);
+
+  const videoJsOptions = {
+    sources: [
+      {
+        src: imgSrc,
+        type: "video/mp4",
+      },
+    ],
+  };
+
   return (
-    <div
-      className={classNames(
-        "flex flex-col lg:flex-row mt-28 lg:mt-52 gap-10 items-center",
-        {
-          "lg:flex-row-reverse": reverse,
-        }
-      )}
-    >
-      <div className="flex flex-col items-center lg:items-start space-y-4 max-w-96">
-        <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800 dark:text-gray-100">
-          Do more with less
+    <div>
+      <div
+        className={classNames(
+          "flex flex-col lg:flex-row  gap-10 items-center",
+          {
+            "lg:flex-row-reverse": reverse,
+          }
+        )}
+      >
+        <div
+          className="flex flex-col text-center md:text-left items-center lg:items-start space-y-4 w-full md:max-w-96"
+          data-aos={reverse ? "fade-left" : "fade-right"}
+          data-aos-delay="200"
+        >
+          <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800 dark:text-gray-100">
+            {tag}
+          </div>
+          <div className="grid gap-2">
+            <Heading
+              title={title}
+              description={caption}
+              size="sm"
+              className="text-center md:text-left"
+            />
+          </div>
         </div>
-        <div className="grid gap-2">
-          <p className=" text-gray-500 dark:text-gray-300 text-lg">{title}</p>
-          <p className="text-gray-400 dark:text-gray-400 font-paragraph">
-            {caption}
-          </p>
+        <div className="flex flex-col lg:p-10  -ml-11 -mr-11 sm:ml-0 sm:mr-0">
+          <div
+            className="w-screen md:w-[36rem] rounded-lg"
+            data-aos={reverse ? "fade-right" : "fade-left"}
+            data-aos-delay="200"
+          >
+            <VideoPlayer
+              options={{
+                ...videoJsOptions,
+                poster:
+                  "https://res.cloudinary.com/abhisheksaha/image/upload/c_scale,w_936/v1712854446/lp_assets/Untitled-3_us4npl.avif",
+              }}
+              // onReady={() => console.log("The video is ready to play")}
+            />
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col lg:p-10  -ml-11 -mr-11 sm:ml-0 sm:mr-0">
-        {/* <img
-          src={imgSrc}
-          alt={imgAlt}
-          className="lg:rounded-2xl lpImg "
-          //   style={{ boxShadow: "0 0 40rem -3rem #0092ff" }}
-        /> */}
-        <video width="100%" height="100%" controls className="lpImg">
-          <source src={imgSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <style>
-          {`
-          img.lpImg {
-            box-shadow: 0 0 9rem -1rem #3b82f6de;
-        }
-            .dark img.lpImg {
-                box-shadow: 0 0 40rem -3rem #3b82f6;
-            }
-            
-            `}
-        </style>
       </div>
     </div>
   );

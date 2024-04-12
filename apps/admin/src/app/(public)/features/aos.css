@@ -1,0 +1,4 @@
+[data-aos="fade-down"][data-aos="fade-down"] {
+  opacity: 0;
+  transform: translate3d(0, -20px, 0);
+}

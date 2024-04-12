@@ -16,8 +16,8 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
 
   return (
     <header
-      className={classNames("z-30 w-full  text-white", {
-        "bg-slate-950": displayBg,
+      className={classNames("z-30 w-full", {
+        "bg-slate-950 text-white": displayBg,
       })}
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">

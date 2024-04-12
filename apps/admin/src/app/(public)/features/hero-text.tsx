@@ -8,6 +8,8 @@ export const HeroText = () => {
   const isDarkTheme = theme === "dark";
   return (
     <h2
+      data-aos="fade"
+      data-aos-easing="linear"
       className="text-3xl font-paragraph sm:text-6xl fill-white dark:text-gray-100"
       style={{
         background:
@@ -15,8 +17,10 @@ export const HeroText = () => {
         WebkitTextFillColor: isDarkTheme ? "transparent" : "black",
       }}
     >
-      Letterpad <Mark>Pro</Mark> is a blogging platform for <Mark>Pro</Mark>{" "}
-      creators.
+      Introducing{" "}
+      <span className="font-bold">
+        Letterpad <Mark>Pro</Mark>
+      </span>
     </h2>
   );
 };

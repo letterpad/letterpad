@@ -25,7 +25,7 @@ export function ReferrerTable({
             </tr>
           </thead>
           <tbody className="align-baseline">
-            {data.map((item, index) => (
+            {data?.map((item, index) => (
               <tr
                 key={index}
                 className={

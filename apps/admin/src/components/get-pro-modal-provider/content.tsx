@@ -43,7 +43,11 @@ export const ProFeatures = () => {
 
 export const Block = ({ title, description, icon }) => {
   return (
-    <div className="flex gap-2 flex-col">
+    <div
+      className="flex gap-2 flex-col"
+      data-aos="fade-down"
+      data-aos-delay="200"
+    >
       {icon}
       <h3 className="font-heading font-bold">{title}</h3>
       <p className="font-paragraph text-sm">{description}</p>

@@ -58,7 +58,7 @@ export function AiAd() {
           Explore our innovative AI assistive writing features.
         </p>
         <a
-          href="/ai-mode"
+          href="/features"
           className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
         >
           Read more <span aria-hidden="true">&rarr;</span>

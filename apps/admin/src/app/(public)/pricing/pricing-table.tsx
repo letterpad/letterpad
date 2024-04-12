@@ -61,7 +61,7 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
 
 const Item = ({ items, title, action }) => {
   return (
-    <div className="flex flex-col p-3 mx-auto max-w-sm text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-6 dark:bg-gray-800 dark:text-white">
+    <div className="flex flex-col p-3 mx-auto max-w-sm text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-6 dark:bg-gray-800 dark:text-white w-full">
       <h3 className="mb-4 pb-2 text-lg font-semibold border-b dark:border-gray-700 border-gray-200">
         {title}
       </h3>

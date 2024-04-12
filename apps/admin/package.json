@@ -99,9 +99,11 @@
     "openai": "4.24.1",
     "ai": "2.2.30",
     "@aws-sdk/client-ses": "3.504.0",
-    "canvas-confetti": "^1.0.1"
+    "canvas-confetti": "^1.0.1",
+    "video.js": "^7.14.3"
   },
   "devDependencies": {
+    "@types/video.js": "^7.3.57",
     "@commitlint/cli": "^19.2.1",
     "@commitlint/config-conventional": "^19.1.0",
     "@graphql-tools/jest-transform": "^2.0.0",
