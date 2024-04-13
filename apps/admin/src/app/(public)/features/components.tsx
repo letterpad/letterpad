@@ -20,8 +20,8 @@ export const AnimatedBorder = ({ children }) => {
     <div className="relative">
       <div
         className="animated-border absolute top-0 left-0 w-full h-full !md:flex !hidden"
-        data-aos="fade-up"
-        data-aos-delay="600"
+        data-aos="fade-down"
+        data-aos-delay="400"
         style={{
           // borderTop: "1px solid rgba(29,46,58,0.3)",
           // borderRight: "1px solid rgba(29,46,58,0.5)",
