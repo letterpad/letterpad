@@ -10,7 +10,7 @@ export const HeroText = () => {
     <h2
       data-aos="fade"
       data-aos-easing="linear"
-      className="text-2xl font-paragraph sm:text-5xl fill-white dark:text-gray-100"
+      className="text-4xl font-paragraph sm:text-5xl fill-white dark:text-gray-100"
       style={{
         background:
           "linear-gradient(to right bottom, rgb(255, 255, 255) 30%, rgba(255, 255, 255, 0.38)) text",

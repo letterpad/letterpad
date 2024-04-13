@@ -19,7 +19,7 @@ export default function Component() {
             <section className="w-full">
               <div className="container px-4 md:px-6">
                 <div className="max-w-5xl mx-auto items-center gap-4 sm:px-6 md:px-10 text-center">
-                  <div className="space-y-8">
+                  <div className="space-y-8 mt-10 md:mt-0 ">
                     {/* <div
                       data-aos="fade-down"
                       data-aos-easing="linear"
