@@ -42,7 +42,7 @@ export default function Component() {
                   </div>
                   <div className="flex items-center justify-center my-10">
                     <CustomLink href="/register?ref=features-cta">
-                      Register
+                      Signup
                     </CustomLink>
                   </div>
                 </div>
@@ -68,7 +68,7 @@ export default function Component() {
                     />
                     <div className="mt-10">
                       <CustomLink href="/pricing?ref=features-bottom">
-                        Go Pro Today
+                        Get Pro Membership
                       </CustomLink>
                     </div>
                   </div>

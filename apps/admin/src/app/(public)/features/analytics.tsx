@@ -17,7 +17,7 @@ export const Analytics = () => {
         <AnimatedBorder>
           <img
             src="https://res.cloudinary.com/abhisheksaha/image/upload/c_crop,g_north,h_1102,w_1599/v1713019678/lp_assets/analytics_znlruu.avif"
-            className="w-full md:w-full md:rounded-xl max-h-[54rem] object-top object-cover brightness-125"
+            className="w-full md:w-full rounded-md md:rounded-xl max-h-[54rem] object-top object-cover brightness-125"
             alt="analytics"
           />
         </AnimatedBorder>
