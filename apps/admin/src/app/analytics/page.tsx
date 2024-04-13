@@ -21,6 +21,7 @@ import { UpgradeBanner } from "@/components/upgrade-plan-banner";
 
 import { SessionData } from "@/graphql/types";
 
+// import { generateRandomData, testData } from "./fixtures";
 import {
   type ApiResponseData,
   DateRange,
@@ -32,20 +33,21 @@ type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
+const defaultState = {
+  device: [],
+  data: [],
+  referals: [],
+  countries: [],
+  total: null,
+  sessionsPerDay: [],
+  reads: [],
+  allTimeReads: 0,
+};
 const Analytics: FC<P & Props> = () => {
   const isPaidMember = useIsPaidMember();
   const { theme } = useTheme();
-  const [data, setData] = useState<ApiResponseData>({
-    device: [],
-    data: [],
-    referals: [],
-    countries: [],
-    total: null,
-    sessionsPerDay: [],
-    reads: [],
-    allTimeReads: 0,
-  });
-  const [fetching, setFetching] = useState(true);
+  const [data, setData] = useState<ApiResponseData>(defaultState);
+  const [fetching, setFetching] = useState(false);
   const chartContainer = useRef<HTMLCanvasElement>(null);
   const deviceContainer = useRef<HTMLCanvasElement>(null);
   const countryContainer = useRef<HTMLCanvasElement>(null);
@@ -56,6 +58,10 @@ const Analytics: FC<P & Props> = () => {
   const [dateRange, setDateRange] = useState<DateRange>(
     getDateRanges(DateRangeEnum.last7Days)
   );
+
+  // useEffect(() => {
+  //   setData(testData);
+  // }, []);
 
   const doFetch = () => {
     setFetching(true);
@@ -104,10 +110,9 @@ const Analytics: FC<P & Props> = () => {
               {
                 label: "Sessions",
                 backgroundColor:
-                  theme === "dark" ? "rgb(255, 99, 132)" : "rgb(75, 192, 192)",
+                  theme === "dark" ? "#3494ce" : "rgb(75, 192, 192)",
                 data: pageViews,
-                borderColor:
-                  theme === "dark" ? "rgb(255, 99, 132)" : "rgb(75, 192, 192)",
+                borderColor: theme === "dark" ? "#3494ce" : "rgb(75, 192, 192)",
               },
             ],
           },

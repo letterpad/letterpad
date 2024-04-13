@@ -5,7 +5,6 @@ import { FC, useEffect, useRef } from "react";
 import { useIntersectionObserver } from "ui";
 
 import { Heading } from "./headings";
-import VideoPlayer from "../../../components/video/video";
 
 interface Props {
   title: string;
@@ -14,6 +13,7 @@ interface Props {
   reverse?: boolean;
   imgAlt: string;
   tag?: string;
+  imgClass?: string;
 }
 export const Row: FC<Props> = ({
   title,
@@ -21,6 +21,7 @@ export const Row: FC<Props> = ({
   imgSrc,
   reverse = false,
   tag,
+  imgClass,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { isIntersecting, hasLoaded } = useIntersectionObserver(videoRef, {
@@ -76,9 +77,9 @@ export const Row: FC<Props> = ({
           data-aos={reverse ? "fade-left" : "fade-right"}
           data-aos-delay="200"
         >
-          <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800 dark:text-gray-100">
+          <span className="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">
             {tag}
-          </div>
+          </span>
           <div className="grid gap-2">
             <Heading
               title={title}
@@ -94,13 +95,17 @@ export const Row: FC<Props> = ({
             data-aos={reverse ? "fade-right" : "fade-left"}
             data-aos-delay="200"
           >
-            <VideoPlayer
-              options={{
-                ...videoJsOptions,
-                poster:
-                  "https://res.cloudinary.com/abhisheksaha/image/upload/c_scale,w_936/v1712854446/lp_assets/Untitled-3_us4npl.avif",
+            <div className="absolute top-0 left-0 bg-gradient w-full h-full opacity-40" />
+            <img
+              src={imgSrc}
+              className={
+                "w-full h-full object-fit rounded-lg border-opacity-10 border border-purple-500 " +
+                imgClass
+              }
+              alt="generate_title"
+              style={{
+                boxShadow: "rgb(130 66 255) 0px 0px 40rem -3rem",
               }}
-              // onReady={() => console.log("The video is ready to play")}
             />
           </div>
         </div>

@@ -187,7 +187,7 @@ export const blogEditorConfig = ({
       .forEach((e) => e.removeAttribute("srcset"));
   },
   ai_shortcuts: [
-    { title: 'Tidy up', prompt: 'Format this content, remove empty paragraphs, add headings for paragraphs if there are no headings, extra spaces, alignment, indentation, heading hirerchy, consistency without changing the meaning or losing any key information.', selection: true },
+    { title: 'Tidy up', prompt: 'Format this content, remove empty paragraphs, add headings for paragraphs if there are no headings, extra spaces, alignment, indentation, heading hirerchy, spelling, grammar, consistency without changing the meaning or losing any key information.', selection: true },
     { title: 'Summarize content', prompt: 'Provide the key points and concepts in this content in a succinct summary.', selection: true },
     { title: 'Improve writing', prompt: 'Rewrite this content with no spelling mistakes, proper grammar, and with more descriptive language, using best writing practices without losing the original meaning.', selection: true },
     { title: 'Simplify language', prompt: 'Rewrite this content with simplified language and reduce the complexity of the writing, so that the content is easier to understand.', selection: true },

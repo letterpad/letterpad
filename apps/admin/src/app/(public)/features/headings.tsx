@@ -23,7 +23,7 @@ export const Heading: FC<Props> = ({
       )}
     >
       <h2
-        className={classNames("font-bold", {
+        className={classNames("font-bold w-full", {
           "text-3xl md:text-3xl": size === "sm",
           "text-3xl md:text-4xl": size === "md",
           "text-4xl": size === "lg",

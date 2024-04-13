@@ -1,0 +1,41 @@
+.animated-border {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.animated-border .inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 2px;
+}
+
+.animated-border::before {
+  content: "";
+  display: block;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgb(213 101 242 / 98%) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  height: 640px;
+  width: 150px;
+  transform: translate(0);
+  position: absolute;
+  animation: rotate 5s linear forwards infinite;
+  z-index: 0;
+  top: 50%;
+  transform-origin: top center;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
