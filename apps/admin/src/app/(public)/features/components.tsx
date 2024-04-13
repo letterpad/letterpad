@@ -28,6 +28,8 @@ export const AnimatedBorder = ({ children }) => {
           borderTop: "1px solid rgba(29,46,58,0.3)",
           borderRight: "1px solid rgba(29,46,58,0.5)",
         }}
+        data-aos="fade"
+        data-aos-delay="600"
       >
         {children}
       </div>
