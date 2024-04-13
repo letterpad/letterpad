@@ -34,11 +34,15 @@ export const Heading: FC<Props> = ({
         {title}
       </h2>
       <h3
-        className={classNames("py-4 max-w-lg font-heading", className, {
-          "text-sm": size === "sm",
-          "text-base": size === "md",
-          "text-xl": size === "lg",
-        })}
+        className={classNames(
+          "py-4 max-w-lg font-heading text-slate-500",
+          className,
+          {
+            "text-md": size === "sm",
+            "text-base": size === "md",
+            "text-xl": size === "lg",
+          }
+        )}
         data-aos={animation ?? "fade-down"}
         data-aos-delay="200"
       >

@@ -29,7 +29,7 @@ export const AnimatedBorder = ({ children }) => {
         }}
       ></div>
       <div
-        data-aos="fade-up"
+        data-aos="fade-down"
         data-aos-delay="300"
         style={{
           borderTop: "1px solid transparent",
