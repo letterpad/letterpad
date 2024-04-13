@@ -21,15 +21,19 @@ export const AnimatedBorder = ({ children }) => {
       <div
         className="animated-border absolute top-0 left-0 w-full h-full"
         data-aos="fade-up"
-        data-aos-delay="6000"
+        data-aos-delay="600"
+        style={{
+          // borderTop: "1px solid rgba(29,46,58,0.3)",
+          // borderRight: "1px solid rgba(29,46,58,0.5)",
+          borderRadius: 10,
+        }}
       ></div>
       <div
         data-aos="fade-up"
         data-aos-delay="300"
         style={{
-          borderTop: "1px solid rgba(29,46,58,0.3)",
-          borderRight: "1px solid rgba(29,46,58,0.5)",
-          borderRadius: 10,
+          borderTop: "1px solid transparent",
+          borderRight: "1px solid transparent",
         }}
       >
         {children}
