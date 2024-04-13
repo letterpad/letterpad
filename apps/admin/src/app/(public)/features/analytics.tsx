@@ -19,8 +19,6 @@ export const Analytics = () => {
             src="https://res.cloudinary.com/abhisheksaha/image/upload/c_crop,g_north,h_1102,w_1599/v1713019678/lp_assets/analytics_znlruu.avif"
             className="w-full md:w-full md:rounded-lg max-h-[54rem] object-top object-cover brightness-125"
             alt="analytics"
-            data-aos="zoom-in"
-            data-aos-delay="50"
           />
         </AnimatedBorder>
       </div>

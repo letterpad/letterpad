@@ -74,7 +74,7 @@ export const Row: FC<Props> = ({
       >
         <div
           className="flex flex-col text-center md:text-left items-center lg:items-start space-y-4 w-full md:max-w-96"
-          data-aos={reverse ? "fade-left" : "fade-right"}
+          data-aos={"fade-down"}
           data-aos-delay="200"
         >
           <span className="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-purple-900 dark:text-purple-300">
@@ -92,7 +92,7 @@ export const Row: FC<Props> = ({
         <div className="flex flex-col lg:p-10  -ml-11 -mr-11 sm:ml-0 sm:mr-0">
           <div
             className="w-screen md:w-[36rem] rounded-lg"
-            data-aos={reverse ? "fade-right" : "fade-left"}
+            data-aos={"fade-down"}
             data-aos-delay="200"
           >
             <div className="absolute top-0 left-0 bg-gradient w-full h-full opacity-40" />

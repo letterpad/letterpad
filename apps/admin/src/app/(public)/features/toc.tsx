@@ -18,7 +18,7 @@ export const Toc = () => {
           style={{
             boxShadow: "rgb(130 66 255) 0px 0px 40rem -3rem",
           }}
-          data-aos="zoom-in"
+          data-aos="fade-up"
           data-aos-delay="600"
         />
       </div>
