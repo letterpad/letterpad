@@ -91,7 +91,7 @@ export const Row: FC<Props> = ({
         </div>
         <div className="flex flex-col lg:p-10 sm:ml-0 sm:mr-0">
           <div
-            className="w-screen md:w-[36rem] rounded-lg px-4"
+            className="w-screen md:w-[36rem] rounded-lg md:rounded-xl px-4"
             data-aos={"fade-down"}
             data-aos-delay="200"
           >
@@ -99,7 +99,7 @@ export const Row: FC<Props> = ({
             <img
               src={imgSrc}
               className={
-                "w-full h-full object-fit rounded-lg border-opacity-10 border border-purple-500 " +
+                "w-full h-full object-fit rounded-lg md:rounded-xl border-opacity-10 border border-purple-500 " +
                 imgClass
               }
               alt="generate_title"

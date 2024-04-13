@@ -13,13 +13,14 @@ export const Toc = () => {
         <img
           src="https://res.cloudinary.com/abhisheksaha/image/upload/o_98/v1713015109/lp_assets/toc_nvf5fj.webp"
           alt="Letterpad Table of contents"
-          className="w-full md:rounded-lg"
+          className="w-full rounded-lg md:rounded-xl"
           loading="lazy"
           style={{
             boxShadow: "rgb(130 66 255) 0px 0px 40rem -3rem",
+            border: "1px solid rgba(77,47,86,0.3)",
           }}
           data-aos="fade-down"
-          data-aos-delay="600"
+          data-aos-delay="400"
         />
       </div>
     </>
