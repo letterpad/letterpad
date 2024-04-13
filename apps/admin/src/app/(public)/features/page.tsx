@@ -13,21 +13,21 @@ import { Toc } from "./toc";
 export default function Component() {
   return (
     <>
-      <div className="sm:py-18 container relative mx-auto px-6 py-16 md:py-24 lg:px-16 lg:py-24 xl:px-20 pt-8 md:pt-16 overflow-hidden">
+      <div className="sm:py-18 container relative mx-auto px-2 py-16 md:py-24 lg:px-16 lg:py-24 xl:px-20 pt-8 md:pt-16 overflow-hidden">
         <div className="relative">
           <div className="mx-auto">
             <section className="w-full">
               <div className="container px-4 md:px-6">
                 <div className="max-w-5xl mx-auto items-center gap-4 sm:px-6 md:px-10 text-center">
                   <div className="space-y-8">
-                    <div
+                    {/* <div
                       data-aos="fade-down"
                       data-aos-easing="linear"
                       data-aos-duration="200"
                       className="inline-block rounded-full bg-blue-500 px-3 py-1 text-sm text-white"
                     >
                       New Features
-                    </div>
+                    </div> */}
                     <HeroText />
                     <p
                       data-aos="fade-down"
@@ -61,7 +61,7 @@ export default function Component() {
                   <div className="text-center md:px-40">
                     <Toc />
                   </div>
-                  <div className="text-center">
+                  <div className="text-center pb-40">
                     <Heading
                       title="Get Pro and start publishing with Letterpad AI"
                       description="Unlock premium AI-powered features designed to enhance your writing and make publishing easier."

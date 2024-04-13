@@ -89,9 +89,9 @@ export const Row: FC<Props> = ({
             />
           </div>
         </div>
-        <div className="flex flex-col lg:p-10  -ml-11 -mr-11 sm:ml-0 sm:mr-0">
+        <div className="flex flex-col lg:p-10 sm:ml-0 sm:mr-0">
           <div
-            className="w-screen md:w-[36rem] rounded-lg"
+            className="w-screen md:w-[36rem] rounded-lg px-4"
             data-aos={"fade-down"}
             data-aos-delay="200"
           >
