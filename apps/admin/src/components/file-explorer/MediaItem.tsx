@@ -1,5 +1,7 @@
+import classNames from "classnames";
 import { Media } from "letterpad-graphql";
 import React from "react";
+import { TiTick } from "react-icons/ti";
 
 interface IProps {
   media: Media;
@@ -16,30 +18,25 @@ const MediaItem: React.FC<IProps> = ({
     onMediaSelected(media);
   };
 
-  const classes = isSelected ? "item selected" : "item";
   return (
-    <div data-testid="media-item" className={classes} onClick={onSelect}>
-      <img src={media.url} alt={media.name} />
-
-      <style jsx>{`
-        img {
-          display: flex;
-          width: 100%;
-          object-fit: cover;
-        }
-        .item {
-          align-items: center;
-          display: flex;
-          background: rgba(var(--color-border), 0.5);
-          padding: 10px;
-        }
-        .item.selected {
-          background: rgba(var(--userbrand), 0.5);
-        }
-        /* .item:nth-child(5n) {
-          grid-column-end: span 2;
-        } */
-      `}</style>
+    <div
+      data-testid="media-item"
+      className={classNames("item flex items-center relative")}
+      onClick={onSelect}
+    >
+      <img
+        className={classNames("flex object-cover w-full rounded h-full", {
+          "brightness-50": isSelected,
+        })}
+        src={media.url}
+        alt={media.name}
+        loading="lazy"
+      />
+      {isSelected && (
+        <div className="absolute top-1/2 left-1/2 text-white -translate-x-1/2 -translate-y-1/2">
+          <TiTick size={24} />
+        </div>
+      )}
     </div>
   );
 };

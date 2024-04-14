@@ -1,13 +1,15 @@
 import { Media } from "letterpad-graphql";
-import { useCallback, useState } from "react";
-import { FileExplorer } from "ui";
-
-import { uploadFile } from "@/shared/utils";
+import { useCallback, useEffect, useState } from "react";
+import { CgClose } from "react-icons/cg";
+import { Button, DialogModal } from "ui";
 
 import MediaItem from "./MediaItem";
-import InternalMedia from "./providers/Internal";
-import Unsplash from "./providers/Unsplash";
+import { Gallery } from "./providers/Gallery";
+import { UploadZone } from "./providers/UploadZone";
+import { useInternal } from "./providers/useInternal";
+import { useUnsplash } from "./providers/useUnsplash";
 import { basePath } from "../../constants";
+import { EventAction, track } from "../../track";
 
 import { MediaProvider, TypeMediaInsert } from "@/types";
 
@@ -25,8 +27,13 @@ export const Container = ({
   onInsert,
 }: IProps) => {
   const [mediaProvider, setMediaProvider] = useState<MediaProvider>(
-    MediaProvider.Letterpad
+    MediaProvider.Upload
   );
+  const internal = useInternal();
+  const unsplash = useUnsplash();
+
+  const helper =
+    mediaProvider === MediaProvider.Letterpad ? internal : unsplash;
 
   const [selectedUrls, setSelection] = useState<{
     [urls: string]: TypeMediaInsert;
@@ -36,6 +43,21 @@ export const Container = ({
     setSelection({});
     handleCancel();
   };
+
+  const changeMediaProvider = (provider: MediaProvider) => {
+    setSelection({});
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "mediaProvider",
+      eventLabel: provider,
+    });
+    setMediaProvider(provider);
+  };
+
+  useEffect(() => {
+    setMediaProvider(MediaProvider.Upload);
+  }, [isVisible]);
+
   const onMediaSelected = useCallback(
     (media: Media) => {
       const urls = { ...selectedUrls };
@@ -51,19 +73,9 @@ export const Container = ({
           download_location: media.download_location,
         };
       }
-      if (!multi) {
-        urls[`${media.url}`] = {
-          src: media.url,
-          width: media.width || 0,
-          height: media.height || 0,
-          caption: media.description,
-          //@ts-ignore
-          download_location: media.download_location,
-        };
-      }
       setSelection(urls);
     },
-    [multi, selectedUrls]
+    [selectedUrls]
   );
   const insertMedia = async () => {
     // get only the urls in an array
@@ -96,41 +108,66 @@ export const Container = ({
     },
     [selectedUrls, onMediaSelected]
   );
-
-  if (!isVisible) return null;
-
+  const selected = Object.keys(selectedUrls).length;
   return (
-    <>
-      <FileExplorer
-        isVisible={isVisible}
-        handleCancel={closeWindow}
-        provider={mediaProvider}
-        setProvider={setMediaProvider}
-        onInsert={onInsert}
-        uploadFile={uploadFile}
-        multi={multi}
-        renderProvider={(provider) => {
-          return provider === MediaProvider.Letterpad ? (
-            <InternalMedia renderer={renderer} />
-          ) : (
-            <Unsplash renderer={renderer} />
-          );
-        }}
-        insertMedia={insertMedia}
-        selectedUrls={selectedUrls}
-        resetSelection={() => setSelection({})}
-      />
-      <style jsx global>{`
-        .file-explorer {
-          width: 90vw !important;
-          margin: auto;
-        }
-        @media (min-width: 991px) {
-          .file-explorer {
-            width: 60vw !important;
-          }
-        }
-      `}</style>
-    </>
+    <DialogModal
+      type="state"
+      open={isVisible}
+      onOpenChange={closeWindow}
+      title={
+        <div className="flex justify-start items-center gap-2">
+          Media Library{" "}
+          {selected > 0 && (
+            <div
+              className="flex gap-2 items-center justify-center cursor-pointer"
+              onClick={() => setSelection({})}
+            >
+              <span className="text-xs flex font-normal items-center gap-2 justify-between bg-slate-200 dark:bg-slate-700 px-3 py-1.5 rounded-full">
+                {`${selected} selected`}
+
+                <CgClose size={10} />
+              </span>
+            </div>
+          )}
+        </div>
+      }
+      contentClassName="lg:max-w-[60rem]"
+      footer={
+        <>
+          <Button size="small" onClick={closeWindow} variant={"secondary"}>
+            Cancel
+          </Button>
+          {mediaProvider !== MediaProvider.Upload && (
+            <Button
+              size="small"
+              onClick={() => changeMediaProvider(MediaProvider.Upload)}
+            >
+              Upload File
+            </Button>
+          )}
+          {!!selected && (
+            <Button size="small" onClick={insertMedia}>
+              Insert
+            </Button>
+          )}
+        </>
+      }
+    >
+      {mediaProvider === MediaProvider.Upload ? (
+        <UploadZone
+          onInsert={onInsert}
+          selectedUrls={selectedUrls}
+          showUnsplash={() => changeMediaProvider(MediaProvider.Unsplash)}
+          showLocalMedia={() => changeMediaProvider(MediaProvider.Letterpad)}
+        />
+      ) : (
+        <Gallery
+          loadMore={helper.loadMore}
+          totalCount={helper.totalCount}
+          jsxElements={renderer(helper.data)}
+          key={mediaProvider}
+        />
+      )}
+    </DialogModal>
   );
 };

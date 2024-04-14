@@ -1,5 +1,5 @@
 import { BiLogOut } from "react-icons/bi";
-import { BsEnvelope, BsImages, BsTags } from "react-icons/bs";
+import { BsEnvelope, BsTags } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
 import { HiOutlineUsers, HiTemplate } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
@@ -20,12 +20,6 @@ export const items = (stats, activePlan: boolean): MenuItem[] => [
     icon: <RiLayout4Line size={16} />,
     key: "/creatives",
     badge: stats?.pages?.published.toString(),
-  },
-  {
-    label: "Media",
-    icon: <BsImages size={16} />,
-    key: "/media",
-    badge: stats?.media?.toString(),
   },
   {
     label: "Tags",

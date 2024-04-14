@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 import {
   Dialog,
   DialogContent,
@@ -10,9 +12,10 @@ import {
 
 interface Base {
   footer?: React.ReactNode;
-  title?: string;
+  title?: string | React.ReactNode;
   description?: string;
   children: React.ReactNode;
+  contentClassName?: string;
 }
 interface PropsWithState extends Base{
   open: boolean;
@@ -28,14 +31,14 @@ type Props = PropsWithState | PropsWithTrigger
 
 export { DialogClose } from "./dialog";
 
-export function DialogModal({footer, title, description, children, ...rest}: Props) {
+export function DialogModal({footer, title, description, children,contentClassName, ...rest}: Props) {
   const controlProps = rest.type === "state" ? { open:rest.open, onOpenChange:rest.onOpenChange } : { }
   return (
     <Dialog {...controlProps}>
       <DialogTrigger asChild>
         {rest.type === "trigger" && rest.trigger}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className={classNames("overflow-y-scroll max-h-screen",contentClassName)}>
         {(title || description) && <DialogHeader>
           {title && <DialogTitle>{title}</DialogTitle>}
           {description && <DialogDescription>
