@@ -26,7 +26,7 @@ export const InfiniteScrollList = ({
         hasMore={data.length < count}
         loader={null}
       >
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 h-full">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 h-full grid-rows-[min-content]">
           {data}
         </div>
       </InfiniteScroll>
