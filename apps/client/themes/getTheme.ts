@@ -6,6 +6,7 @@ import * as Amun from './amun';
 import * as GridDefaultTheme from './grid';
 import * as List from './list';
 import * as Wavique from './wavique';
+import * as Zenith from './zenith';
 
 export interface Theme {
   HomePosts: ComponentType<HomePostsProps>;
@@ -28,6 +29,9 @@ export const getTheme: (theme?: string | null) => Theme = (theme) => {
       break;
     case 'wavique':
       selectedTheme = Wavique;
+      break;
+    case 'zenith':
+      selectedTheme = Zenith;
       break;
     default:
       selectedTheme = GridDefaultTheme;
