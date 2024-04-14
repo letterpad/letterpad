@@ -13,10 +13,10 @@ export const AdBanner = () => {
       <div className="relative items-center flex">
         <div className="w-full justify-between lg:inline-flex lg:items-center">
           <div className="max-w-xl">
-            <span className="text-sm dark:text-white text-black  font-semibold uppercase tracking-widest">
+            <span className="text-sm dark:text-white text-white  font-semibold uppercase tracking-widest">
               Letterpad
             </span>
-            <p className="font-bold font-paragraph mt-8 text-3xl tracking-tight dark:text-white/80 text-slate-800 ">
+            <p className="font-bold font-paragraph mt-8 text-3xl tracking-tight dark:text-white/80 text-slate-200 ">
               Get started in seconds. Join our community of writers.
               {/* <span className="lg:block">make a move!</span> */}
             </p>
