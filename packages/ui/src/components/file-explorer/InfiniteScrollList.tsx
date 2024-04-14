@@ -6,27 +6,37 @@ interface IInfiniteScrollListProps {
   count: number;
   loadMore: () => void;
   className?: string;
+  height?: number | string;
 }
 
 export const InfiniteScrollList = ({
   data,
   count,
   loadMore,
-  className
+  className,
+  height
 }: IInfiniteScrollListProps) => {
   return (
-    <div className={classNames("grid overflow-y-scroll", className)} id="scrollableDiv">
+    <div className={classNames("grid", className)} id="scrollableDiv">
       <InfiniteScroll
+        height={height}
         className={className}
         dataLength={data.length}
         next={loadMore}
         hasMore={data.length < count}
         loader={null}
       >
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 h-full">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 h-full grid-rows-[min-content]">
           {data}
         </div>
       </InfiniteScroll>
+      <style>
+        {`
+        .infinite-scroll-component  {
+          transition: height 0.5s linear;
+        }
+      `}
+      </style>
     </div>
   ) as JSX.Element;
 };

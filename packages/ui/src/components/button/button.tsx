@@ -18,7 +18,7 @@ const buttonVariants = cva(
       size: {
         normal: "h-10 py-2 px-4",
         small: "h-9 px-3 rounded-md",
-        extrasmall: "h-7 px-1.5 rounded-md text-xs",
+        extrasmall: "h-7 px-2 rounded-md text-xs",
         large: "h-11 px-8 rounded-md",
       },
     },

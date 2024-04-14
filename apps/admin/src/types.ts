@@ -64,6 +64,7 @@ export interface IUploadFileProps {
 export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
+  Upload = "upload"
 }
 
 export interface TypeMediaInsert {

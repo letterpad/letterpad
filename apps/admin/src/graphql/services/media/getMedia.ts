@@ -14,7 +14,7 @@ export const getMedia = async (
     };
   }
 
-  const { id, cursor, limit = 20, page = 1 } = args.filters ?? {};
+  const { id, cursor, limit = 40, page = 1 } = args.filters ?? {};
 
   const condition: Prisma.UploadFindManyArgs = {
     where: {
@@ -23,7 +23,9 @@ export const getMedia = async (
       },
     },
     take: limit,
-
+    orderBy: {
+      createdAt: "desc",
+    },
     cursor: cursor
       ? {
         id: cursor,
