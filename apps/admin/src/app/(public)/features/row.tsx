@@ -90,13 +90,13 @@ export const Row: FC<Props> = ({
             />
             <Link
               href="/register"
-              className="relative h-8 w-36 rounded-full"
+              className="relative h-8 w-32 rounded-full"
               style={{
                 background:
                   "linear-gradient(208.15deg, #3466F6 -4.22%, #3466F6 -4.21%, #7C3AED 102.68%)",
               }}
             >
-              <span className="absolute justify-center top-[1px] left-[1px] right-[1px] bottom-[1px] bg-black/80 hover:bg-black/90 flex items-center rounded-full font-sans text-sm">
+              <span className="absolute justify-center top-[1px] left-[1px] right-[1px] bottom-[1px] bg-black/10 dark:bg-black/80   dark:hover:bg-black/90 hover:bg-black/20 flex items-center rounded-full font-sans text-sm text-white">
                 Try Letterpad
               </span>
             </Link>
