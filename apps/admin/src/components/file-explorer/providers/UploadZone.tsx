@@ -166,6 +166,7 @@ export const UploadZone: FC<Props> = ({
   );
 };
 
+// helper function to get the cropped image as a file
 interface CropProps {
   crop: Crop;
   image: HTMLImageElement;
