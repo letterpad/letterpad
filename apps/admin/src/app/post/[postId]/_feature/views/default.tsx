@@ -30,7 +30,6 @@ export const DefaultPost: FC<Props> = ({ post, settings, loading }) => {
           </div>
           <FeaturedImage />
           <Editor
-            hasAiKey={!!settings?.openai_key}
             loading={loading}
             text={post.html_draft || ""}
             onChange={(html) => {

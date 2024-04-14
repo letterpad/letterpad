@@ -47,6 +47,7 @@
   "packageManager": "bun@1.0.21",
   "dependencies": {
     "@google-analytics/data": "^4.4.0",
+    "aos": "^2.3.4",
     "@react-spring/web": "^9.7.3",
     "@upstash/redis": "^1.28.2",
     "@vercel/edge-config": "^1.1.0",

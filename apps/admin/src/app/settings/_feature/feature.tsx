@@ -169,7 +169,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             <div>
               <SectionHeader
                 heading={"Open AI"}
-                description={"Add Open AI key"}
+                description={"Unlock premium AI-powered features"}
                 id="ai"
               />
               <Ai />

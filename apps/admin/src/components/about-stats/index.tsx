@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import { Button, DialogClose, DialogModal } from "ui";
 
-export const AboutStats = ({ username, id }) => {
+export const AboutStats = ({ username, id, siteUrl }) => {
   const [{ data, fetching }] = useAboutStatsQuery({ variables: { username } });
   const [followers, refetchFollowers] = useGetFollowersQuery({
     variables: { id },
@@ -25,12 +25,15 @@ export const AboutStats = ({ username, id }) => {
         <MetricItem
           title="Posts"
           value={data?.aboutStats.stats?.postCount}
-          onClick={() => {}}
+          onClick={() => {
+            window.location.href = siteUrl;
+          }}
           className={"cursor-pointer"}
         />
 
         <DialogModal
           title="Followers"
+          type="trigger"
           trigger={
             <MetricItem
               title="Followers"
@@ -52,6 +55,7 @@ export const AboutStats = ({ username, id }) => {
 
         <DialogModal
           title="Following"
+          type="trigger"
           trigger={
             <MetricItem
               title="Following"

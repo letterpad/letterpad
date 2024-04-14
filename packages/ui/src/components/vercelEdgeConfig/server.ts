@@ -44,11 +44,6 @@ export const getEdgeConfig = createGetEdgeConfig();
 export const isInMaintenanceModeEnabled = async () => {
     return await getEdgeConfig.byKey<boolean>(maintainanceModeKey)
 }
-export const isPaymentsEnabled = async () => {
-    const cookie = cookies().get('paymentsActive')?.value;
-    if (cookie) return true;
-    return await getEdgeConfig.byKey<boolean>('paymentsActive')
-}
 
 function checkPaymentsEnabledCookie(records: Record<string, any>) {
     const cookie = cookies().get('paymentsActive')?.value;

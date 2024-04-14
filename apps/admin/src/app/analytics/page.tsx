@@ -20,8 +20,8 @@ import { getDateRanges } from "@/components/analytics/utils";
 import { UpgradeBanner } from "@/components/upgrade-plan-banner";
 
 import { SessionData } from "@/graphql/types";
-import { isMembershipFeatureActive } from "@/utils/config";
 
+// import { generateRandomData, testData } from "./fixtures";
 import {
   type ApiResponseData,
   DateRange,
@@ -33,23 +33,21 @@ type P = InferGetServerSidePropsType<any>;
 interface Props {
   session: SessionData;
 }
+const defaultState = {
+  device: [],
+  data: [],
+  referals: [],
+  countries: [],
+  total: null,
+  sessionsPerDay: [],
+  reads: [],
+  allTimeReads: 0,
+};
 const Analytics: FC<P & Props> = () => {
-  const activeFeature = isMembershipFeatureActive();
   const isPaidMember = useIsPaidMember();
-  const [showPremiumCharts, setShowPremiumCharts] = useState(true);
   const { theme } = useTheme();
-  const isMember = activeFeature && isPaidMember;
-  const [data, setData] = useState<ApiResponseData>({
-    device: [],
-    data: [],
-    referals: [],
-    countries: [],
-    total: null,
-    sessionsPerDay: [],
-    reads: [],
-    allTimeReads: 0,
-  });
-  const [fetching, setFetching] = useState(true);
+  const [data, setData] = useState<ApiResponseData>(defaultState);
+  const [fetching, setFetching] = useState(false);
   const chartContainer = useRef<HTMLCanvasElement>(null);
   const deviceContainer = useRef<HTMLCanvasElement>(null);
   const countryContainer = useRef<HTMLCanvasElement>(null);
@@ -57,13 +55,13 @@ const Analytics: FC<P & Props> = () => {
   const deviceInstance = useRef<Chart<"pie">>();
   const countryInstance = useRef<Chart<"bar">>();
 
-  useEffect(()=>{
-    setShowPremiumCharts(!activeFeature || isPaidMember)
-  },[activeFeature, isPaidMember]);
-
   const [dateRange, setDateRange] = useState<DateRange>(
     getDateRanges(DateRangeEnum.last7Days)
   );
+
+  // useEffect(() => {
+  //   setData(testData);
+  // }, []);
 
   const doFetch = () => {
     setFetching(true);
@@ -88,7 +86,7 @@ const Analytics: FC<P & Props> = () => {
       .catch(() => setFetching(false));
   };
 
-  useEffect(doFetch, [dateRange, isMember]);
+  useEffect(doFetch, [dateRange, isPaidMember]);
 
   const _getChartData = useCallback(() => {
     if (!data?.sessionsPerDay) return null;
@@ -112,10 +110,9 @@ const Analytics: FC<P & Props> = () => {
               {
                 label: "Sessions",
                 backgroundColor:
-                  theme === "dark" ? "rgb(255, 99, 132)" : "rgb(75, 192, 192)",
+                  theme === "dark" ? "#3494ce" : "rgb(75, 192, 192)",
                 data: pageViews,
-                borderColor:
-                  theme === "dark" ? "rgb(255, 99, 132)" : "rgb(75, 192, 192)",
+                borderColor: theme === "dark" ? "#3494ce" : "rgb(75, 192, 192)",
               },
             ],
           },
@@ -389,7 +386,7 @@ const Analytics: FC<P & Props> = () => {
                   loading={fetching}
                   allTimeReads={data.allTimeReads}
                 />
-                {showPremiumCharts ? (
+                {isPaidMember ? (
                   <>
                     <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
                     <div className="py-10 flex flex-col lg:flex-row gap-4 md:gap-10">
@@ -421,7 +418,7 @@ const Analytics: FC<P & Props> = () => {
             </div>
           ) : (
             <span className="dark:text-gray-400 text-gray-700">
-              {isMember && "There is not enough data to display metrics."}
+              {isPaidMember && "There is not enough data to display metrics."}
             </span>
           )}
         </div>

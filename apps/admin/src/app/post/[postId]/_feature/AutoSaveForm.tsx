@@ -21,25 +21,25 @@ export const AutoSaveForm = ({ defaultValue }) => {
     const change = dirtyValues(methods.formState.dirtyFields, data);
     const update: InputUpdatePost = { id: data?.id! };
 
-    if (change.title) update.title = change.title;
-    if (change.sub_title) update.sub_title = change.sub_title;
+    if ("title" in change) update.title = change.title;
+    if ("sub_title" in change) update.sub_title = change.sub_title;
     if (change.cover_image)
       update.cover_image = {
         ...change.cover_image,
         src: change.cover_image?.src ?? "",
       };
-    if (change.html) update.html = change.html;
-    if (change.html_draft) update.html_draft = change.html_draft;
-    if (change.excerpt) update.excerpt = change.excerpt;
-    if (change.slug) update.slug = change.slug;
-    if (change.publishedAt) update.publishedAt = change.publishedAt;
-    if (change.createdAt) update.createdAt = change.createdAt;
-    if (change.mail_status) update.mail_status = change.mail_status;
-    if (change.html_draft) update.html_draft = change.html_draft;
-    if (change.status) update.status = change.status;
-    if (change.exclude_from_home)
+    if ("html" in change) update.html = change.html;
+    if ("html_draft" in change) update.html_draft = change.html_draft;
+    if ("excerpt" in change) update.excerpt = change.excerpt;
+    if ("slug" in change) update.slug = change.slug;
+    if ("publishedAt" in change) update.publishedAt = change.publishedAt;
+    if ("createdAt" in change) update.createdAt = change.createdAt;
+    if ("mail_status" in change) update.mail_status = change.mail_status;
+    if ("html_draft" in change) update.html_draft = change.html_draft;
+    if ("status" in change) update.status = change.status;
+    if ("exclude_from_home" in change)
       update.exclude_from_home = change.exclude_from_home;
-    if (change.tags)
+    if ("tags" in change)
       update.tags = change.tags?.["rows"]?.map((tag) => ({
         name: tag.name,
         slug: tag.slug,

@@ -5,15 +5,32 @@ import { useFormContext } from "react-hook-form";
 import { CgSpinner } from "react-icons/cg";
 import { TextArea } from "ui";
 
+import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+
+import { useGetProModal } from "@/components/get-pro-modal-provider";
+
+import { EventAction, track } from "@/track";
+
 import { Heading } from "./heading";
 
 export const Excerpt = () => {
   const { register, setValue, getValues } =
     useFormContext<PostWithAuthorAndTagsFragment>();
   const [busy, setBusy] = useState(false);
+  const isPaidMember = useIsPaidMember();
+  const { setIsOpen } = useGetProModal();
 
   const generateExcerpt = async (e) => {
     e.preventDefault();
+    if (!isPaidMember) {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: "pro-modal",
+        eventLabel: `excerpt`,
+      });
+      setIsOpen(true);
+      return;
+    }
     try {
       setBusy(true);
       const element = document.createElement("div");
@@ -46,10 +63,11 @@ export const Excerpt = () => {
     <div>
       <Heading
         heading={`${postVerb} Meta`}
-        subheading={`Used in search engines and social media.`}
+        subheading={`Write an excerpt. Used in search engines and social media for SEO.`}
       />
       <TextArea
         rows={2}
+        placeholder="Write an excerpt or description of the post."
         maxLength={160}
         defaultValue={post.excerpt! ?? post.sub_title}
         {...register("excerpt", {

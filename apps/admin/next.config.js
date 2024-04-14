@@ -2,11 +2,11 @@
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' *;
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  style-src 'unsafe-inline' 'unsafe-eval' *;
   img-src * blob: data:;
-  media-src 'none';
+  media-src res.cloudinary.com;
   connect-src *;
-  font-src 'self' https://fonts.gstatic.com;
+  font-src data: *;
   frame-src youtube.com www.youtube.com js.stripe.com;
 `;
 

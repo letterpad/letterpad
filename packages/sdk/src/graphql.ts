@@ -69,6 +69,12 @@ export type AuthorResponse =
   | NotFound
   | UnAuthorized;
 
+export type AuthorsNode = {
+  __typename?: "AuthorsNode";
+  ok: Scalars["Boolean"];
+  rows: Array<Maybe<Author>>;
+};
+
 export type Comment = {
   __typename?: "Comment";
   author: Commenter;
@@ -867,6 +873,8 @@ export type Query = {
   emails: Array<Maybe<Email>>;
   favAuthors?: Maybe<FavAuthorResponse>;
   feed: FeedResponse;
+  followers?: Maybe<AuthorsNode>;
+  following?: Maybe<AuthorsNode>;
   isFollowing: IsFollowingResponse;
   isPostLiked: IsPostLikedResponse;
   letterpadFeaturedPosts: PostsResponse;
@@ -908,6 +916,14 @@ export type QueryEmailArgs = {
 
 export type QueryFavAuthorsArgs = {
   limit?: InputMaybe<Scalars["Int"]>;
+};
+
+export type QueryFollowersArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryFollowingArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryIsFollowingArgs = {
