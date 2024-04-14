@@ -100,7 +100,8 @@
     "ai": "2.2.30",
     "@aws-sdk/client-ses": "3.504.0",
     "canvas-confetti": "^1.0.1",
-    "video.js": "^7.14.3"
+    "video.js": "^7.14.3",
+    "react-image-crop": "^11.0.5"
   },
   "devDependencies": {
     "@types/video.js": "^7.3.57",
