@@ -1,5 +1,3 @@
-import "./style.css";
-
 import { AnimatedBorder } from "./components";
 import { Heading } from "./headings";
 export const Analytics = () => {

@@ -1,6 +1,7 @@
 "use client";
 
 import classNames from "classnames";
+import Link from "next/link";
 import { FC, useEffect, useRef } from "react";
 import { useIntersectionObserver } from "ui";
 
@@ -87,6 +88,18 @@ export const Row: FC<Props> = ({
               size="sm"
               className="text-center md:text-left"
             />
+            <Link
+              href="/register"
+              className="relative h-8 w-36 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(208.15deg, #3466F6 -4.22%, #3466F6 -4.21%, #7C3AED 102.68%)",
+              }}
+            >
+              <span className="absolute justify-center top-[1px] left-[1px] right-[1px] bottom-[1px] bg-black/80 hover:bg-black/90 flex items-center rounded-full font-sans text-sm">
+                Try Letterpad
+              </span>
+            </Link>
           </div>
         </div>
         <div className="flex flex-col lg:p-10 sm:ml-0 sm:mr-0">

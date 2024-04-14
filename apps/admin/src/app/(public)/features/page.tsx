@@ -1,5 +1,6 @@
 import { Block } from "@/components/get-pro-modal-provider/content";
 
+import { AdBanner } from "./adBanner";
 import { Analytics } from "./analytics";
 import { Aos } from "./aos";
 import { CustomLink } from "./components";
@@ -55,9 +56,17 @@ export default function Component() {
                     </div>
                   </div>
                   <Analytics />
-                  {data.map((row, index) => (
-                    <Row key={index} {...row} />
-                  ))}
+
+                  {data.map((row, index) =>
+                    index === 2 ? (
+                      <>
+                        <AdBanner />
+                        <Row key={index} {...row} />
+                      </>
+                    ) : (
+                      <Row key={index} {...row} />
+                    )
+                  )}
                   <div className="text-center md:px-40">
                     <Toc />
                   </div>

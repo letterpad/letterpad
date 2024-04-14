@@ -19,16 +19,16 @@ export const data = [
     reverse: true,
     title: "Your Personal Writing Companion",
     caption:
-      "Experience the power of AI at your fingertips. From idea generation to content optimization, Letterpad AI assistant is your ultimate writing ally.",
+      "From idea generation to content optimization, Letterpad AI is your ultimate writing assistant.",
     imgSrc:
       "https://res.cloudinary.com/abhisheksaha/image/upload/c_scale,q_100,w_1461/v1712978459/lp_assets/assistant_thva0g.avif",
   },
   {
     tag: "Tailored Expression",
     imgAlt: "Customize post tone",
-    title: "Perfect Your Voice",
+    title: "Refine Your Voice",
     caption:
-      "Ensure your message resonates. Fine-tune the tone of your posts effortlessly and captivate your audience every time.",
+      "Ensure your message resonates. Customize your tone to create a compelling connection with your readers.",
     imgSrc:
       "https://res.cloudinary.com/abhisheksaha/image/upload/q_100/v1712974765/lp_assets/tone_xakkap.avif",
     imgClass: "object-scale-down max-h-96 p-6 bg-slate-900",
@@ -36,7 +36,7 @@ export const data = [
   {
     tag: "Auto Tags",
     reverse: true,
-    imgAlt: "Streamline tagging and excerpts",
+    imgAlt: "Streamline tagging",
     title: "Tags Made Simple",
     caption:
       "Say hello to effortless organization. Automatically assign relevant tags to your posts and boost discoverability.",

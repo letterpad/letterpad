@@ -48,6 +48,10 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                 <Link href="/pricing">Pricing</Link>
               </li>
 
+              <li className={classNames("md:block")}>
+                <Link href="/features">Pro</Link>
+              </li>
+
               <li>
                 <Search />
               </li>
