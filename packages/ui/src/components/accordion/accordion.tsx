@@ -1,116 +1,56 @@
-import classNames from "classnames";
-import { Children, FC, ReactElement, ReactNode, useState } from "react";
-import { BiPlus } from "react-icons/bi";
-import { CgMathMinus } from "react-icons/cg";
+"use client"
 
-interface Props {
-  children: ReactNode;
-  activeKey: string;
-  onChange: (key: string) => void;
-}
+import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import { ChevronDownIcon } from "@radix-ui/react-icons"
+import cn from "classnames";
+import * as React from "react"
 
-interface EnrichedChildren {
-  id: string;
-  description: string;
-  label: string;
-  children?: ReactNode;
-}
+const AccordionRoot = AccordionPrimitive.Root
 
-export const Component: FC<Props> = ({ children, activeKey, onChange }) => {
-  const [activeTab, setActiveTab] = useState(activeKey);
+const AccordionItem = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
+>(({ className, ...props }, ref) => (
+  <AccordionPrimitive.Item
+    ref={ref}
+    className={cn("border-b", className)}
+    {...props}
+  />
+))
+AccordionItem.displayName = "AccordionItem"
 
-  const onClickTabItem = (id: string) => {
-    if (id === activeTab) {
-      id = "";
-    }
-    setActiveTab(id);
-    onChange(id);
-  };
-  const totalChildren = Children.count(children);
-  return (
-    <>
-      <div data-accordion="collapse">
-        {Children.map(children, (child, index) => {
-          if (!child) return null;
-          let typedChild: React.ReactElement<EnrichedChildren> =
-            child as ReactElement;
-          const { label, id, children, description } = typedChild.props;
-          const isFirstItem = index === 0;
-          const isLastItem = index === totalChildren - 1;
+const AccordionTrigger = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+    </AccordionPrimitive.Trigger>
+  </AccordionPrimitive.Header>
+))
+AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 
-          return (
-            <>
-              <Header
-                isFirstItem={isFirstItem}
-                isLastItem={isLastItem}
-                key={id}
-                isActive={activeTab === id}
-                label={label}
-                onClick={() => onClickTabItem(id)}
-                testId={id}
-                description={description}
-              />
-              {typedChild.props.id === activeTab && (
-                <div
-                  className={classNames({
-                    hidden: activeTab !== id,
-                  })}
-                >
-                  <div
-                    className={classNames(
-                      "border border-gray-200 p-4 dark:border-gray-700",
-                      {
-                        "border-b-0":
-                          !isLastItem && typedChild.props.id !== activeTab,
-                        "rounded-b-lg": isLastItem,
-                      }
-                    )}
-                  >
-                    {children}
-                  </div>
-                </div>
-              )}
-            </>
-          );
-        })}
-      </div>
-    </>
-  );
-};
+const AccordionContent = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <AccordionPrimitive.Content
+    ref={ref}
+    className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    {...props}
+  >
+    <div className={cn("pb-4 pt-0", className)}>{children}</div>
+  </AccordionPrimitive.Content>
+))
+AccordionContent.displayName = AccordionPrimitive.Content.displayName
 
-const Header: FC<any> = ({
-  isActive,
-  label,
-  description,
-  onClick,
-  isFirstItem,
-  isLastItem,
-  testId,
-}) => {
-  return (
-    <h2 data-last={isLastItem} data-first={isFirstItem}>
-      <button
-        type="button"
-        className={classNames(
-          "flex w-full flex-row items-center border border-gray-200 p-4 text-left font-medium text-gray-600 hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
-          {
-            "rounded-t-lg": isFirstItem,
-            "rounded-b-lg border-b": isLastItem && !isActive,
-            "border-t-0": !isFirstItem && !isActive,
-            "border-b-0": isActive,
-            "bg-gray-100 dark:bg-gray-800": isActive,
-          }
-        )}
-        aria-expanded="true"
-        onClick={onClick}
-        data-testid={testId}
-      >
-        <span className="flex w-full flex-col justify-between">
-          <span className="text-base-1 font-normal">{label}</span>
-          <span className="text-slate-400 dark:text-slate-500">{description}</span>
-        </span>
-        {isActive ? <CgMathMinus size={24} /> : <BiPlus size={24} />}
-      </button>
-    </h2>
-  );
-};
+export { AccordionContent,AccordionItem, AccordionRoot, AccordionTrigger }

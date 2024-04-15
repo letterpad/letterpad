@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 
+import { Faq } from "./faq";
 import { PricingTable } from "./pricing-table";
 import { options } from "../../../pages/api/auth/[...nextauth]";
 
@@ -19,6 +20,7 @@ const Pricing = async () => {
             </p>
           </div>
           <PricingTable hasSession={hasSession} />
+          <Faq />
         </div>
       </section>
     </>
