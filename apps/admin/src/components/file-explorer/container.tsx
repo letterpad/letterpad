@@ -1,7 +1,7 @@
 import { Media } from "letterpad-graphql";
 import { useCallback, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { Button, DialogModal } from "ui";
+import { Button, DialogModal, SearchInput } from "ui";
 
 import MediaItem from "./MediaItem";
 import { Gallery } from "./providers/Gallery";
@@ -161,12 +161,24 @@ export const Container = ({
           showLocalMedia={() => changeMediaProvider(MediaProvider.Letterpad)}
         />
       ) : (
-        <Gallery
-          loadMore={helper.loadMore}
-          totalCount={helper.totalCount}
-          jsxElements={renderer(helper.data)}
-          key={mediaProvider}
-        />
+        <>
+          {mediaProvider === MediaProvider.Unsplash && (
+            <SearchInput
+              value={unsplash.query}
+              enterButton="Search"
+              data-testid="input-unsplash"
+              onSearch={unsplash.onSearchEnter}
+              placeholder="Search high resolution photos from Unsplash"
+              loading={unsplash.loading}
+            />
+          )}
+          <Gallery
+            loadMore={helper.loadMore}
+            totalCount={helper.totalCount}
+            jsxElements={renderer(helper.data)}
+            key={mediaProvider}
+          />
+        </>
       )}
     </DialogModal>
   );

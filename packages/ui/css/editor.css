@@ -115,3 +115,13 @@
 .dark .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
   color: #526278;
 }
+
+.mce-toc {
+  border-radius: 10px;
+}
+body .mce-toc {
+  border: 1px solid #d5dff8;
+}
+.dark .mce-toc {
+  border: 1px solid #21325c;
+}
