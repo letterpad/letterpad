@@ -9,7 +9,13 @@ export const Toc = () => {
     articles more readable and SEO friendly."
       />
       <div className="relative w-full mt-10">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient"></div>
+        <div
+          className="absolute top-0 left-0 w-full h-full"
+          style={{
+            background: "#7a86a830",
+            filter: "blur(120px) brightness(1.2)",
+          }}
+        ></div>
         <img
           src="https://res.cloudinary.com/abhisheksaha/image/upload/o_98/v1713015109/lp_assets/toc_nvf5fj.webp"
           alt="Letterpad Table of contents"

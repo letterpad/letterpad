@@ -1,3 +1,5 @@
+// import { Button } from "ui";
+
 import { Block } from "@/components/get-pro-modal-provider/content";
 
 import { AdBanner } from "./adBanner";
@@ -10,6 +12,8 @@ import { HeroText } from "./hero-text";
 import { Mark } from "./mark";
 import { Row } from "./row";
 import { Toc } from "./toc";
+import { Faq } from "../pricing/faq";
+import { ContactUsModal } from "../../../components/contact-us";
 
 export default function Component() {
   return (
@@ -69,6 +73,17 @@ export default function Component() {
                   )}
                   <div className="text-center md:px-40">
                     <Toc />
+                  </div>
+                  <div className="text-center md:px-40">
+                    <Faq />
+                    <ContactUsModal
+                      trigger={
+                        <span>
+                          If you have any questions, feel free to{" "}
+                          <button className="text-blue-500">contact us</button>.
+                        </span>
+                      }
+                    />
                   </div>
                   <div className="text-center pb-40">
                     <Heading
