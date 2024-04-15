@@ -68,7 +68,7 @@ export const UploadZone: FC<Props> = ({
 
   const saveCroppedImage = async () => {
     if (!crop) {
-      return uploadImage(tempFiles || []);
+      if (tempFiles) return uploadImage([...tempFiles]);
     }
     track({
       eventAction: EventAction.Click,
