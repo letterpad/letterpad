@@ -123,3 +123,47 @@ export function dirtyValues<T>(
     ])
   ) as Partial<T>;
 }
+
+
+interface IResizeImageOptions {
+  maxSize: number;
+  file: File;
+}
+
+export const resizeImageClient = (settings: IResizeImageOptions): Promise<Blob> => {
+  return new Promise((resolve, _reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Calculate dimensions to fit under maxSizeInMB
+        const maxSizeInBytes = settings.maxSize * 1024 * 1024;
+        let width = img.width;
+        let height = img.height;
+        let scaleFactor = 1;
+
+        while ((width * height * (scaleFactor ** 2)) > maxSizeInBytes) {
+          scaleFactor -= 0.1;
+          width = Math.floor(img.width * scaleFactor);
+          height = Math.floor(img.height * scaleFactor);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw image on canvas
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        // Convert canvas to blob
+        canvas.toBlob((blob) => {
+          resolve(blob as Blob);
+        }, 'image/jpeg', 0.9); // Adjust quality (0.0 - 1.0) to reduce file size
+      };
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(settings.file);
+  });
+};
