@@ -1,14 +1,15 @@
 import { PostsFilters, PostStatusOptions, SortBy } from "letterpad-graphql";
 import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useEffect, useState } from "react";
+import { CiFilter } from "react-icons/ci";
 import {
+  Button,
+  DropdownMenuCheckboxes,
   Select2,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  ToggleGroup,
-  ToggleGroupItem,
 } from "ui";
 
 import { useGetTags } from "@/app/tags/_feature/api.client";
@@ -69,48 +70,8 @@ export const Filters = ({
   // if (fetching && showTags) return null;
 
   return (
-    <div className="flex flex-row items-center justify-between">
-      <div className="flex flex-row gap-2 text-sm">
-        <ToggleGroup
-          variant="outline"
-          type="multiple"
-          value={filters.status}
-          disabled={fetching}
-          size={"sm"}
-        >
-          <ToggleGroupItem
-            value={PostStatusOptions.Published}
-            aria-label="Toggle bold"
-            onClick={() => onBadgeClick(PostStatusOptions.Published)}
-          >
-            Published{" "}
-            <span className="bg-slate-200 dark:bg-slate-700 rounded-full w-6 h-6 text-xs flex items-center justify-center ml-2">
-              {statsData?.published ?? 0}
-            </span>
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value={PostStatusOptions.Draft}
-            aria-label="Toggle Draft"
-            onClick={() => onBadgeClick(PostStatusOptions.Draft)}
-          >
-            Drafts{" "}
-            <span className="bg-slate-200 dark:bg-slate-700 rounded-full w-6 h-6 text-xs flex items-center justify-center ml-2">
-              {statsData?.drafts ?? 0}
-            </span>
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value={PostStatusOptions.Trashed}
-            aria-label="Toggle Trashed"
-            onClick={() => onBadgeClick(PostStatusOptions.Trashed)}
-          >
-            Trashed{" "}
-            <span className="bg-slate-200 dark:bg-slate-700 rounded-full w-6 h-6 text-xs flex items-center justify-center ml-2">
-              {statsData?.trashed ?? 0}
-            </span>
-          </ToggleGroupItem>
-        </ToggleGroup>
-      </div>
-      <div className="grid-cols-1 items-center gap-2 grid ">
+    <div className="flex flex-row items-center justify-between gap-2">
+      <div className="flex-row items-center gap-2 md:flex hidden">
         {showSort && (
           <Select2
             defaultValue={SortBy.Desc}
@@ -124,7 +85,7 @@ export const Filters = ({
               onChange({ ...filters, sortBy: value as SortBy });
             }}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Sort" />
             </SelectTrigger>
             <SelectContent id="filters-sort">
@@ -217,6 +178,41 @@ export const Filters = ({
             </SelectContent>
           </Select2>
         )}
+      </div>
+      <div className="flex flex-row gap-2 text-sm">
+        <DropdownMenuCheckboxes
+          data={[
+            {
+              checked:
+                filters.status?.includes(PostStatusOptions.Published) ?? false,
+              label: `Published (${statsData?.published ?? 0})`,
+              onCheckedChange: (value) => {
+                onBadgeClick(PostStatusOptions.Published);
+              },
+            },
+            {
+              checked:
+                filters.status?.includes(PostStatusOptions.Draft) ?? false,
+              label: `Drafts (${statsData?.drafts ?? 0})`,
+              onCheckedChange: (value) => {
+                onBadgeClick(PostStatusOptions.Draft);
+              },
+            },
+            {
+              checked:
+                filters.status?.includes(PostStatusOptions.Trashed) ?? false,
+              label: `Trashed (${statsData?.trashed ?? 0})`,
+              onCheckedChange: (value) => {
+                onBadgeClick(PostStatusOptions.Trashed);
+              },
+            },
+          ]}
+          trigger={
+            <Button size={"small"} className="!p-1 w-8 !h-8">
+              <CiFilter />
+            </Button>
+          }
+        />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ export * from "./src/components/dialog"
 export * from "./src/components/divider";
 export * from "./src/components/drawer";
 export * from "./src/components/dropdown-menu";
+export * from "./src/components/dropdown-menu/menuWithCheckbox";
 export * from "./src/components/file-explorer";
 export * from "./src/components/input";
 export * from "./src/components/layouts";

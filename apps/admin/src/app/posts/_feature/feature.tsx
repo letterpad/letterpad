@@ -66,15 +66,17 @@ export const Feature = () => {
 
   return (
     <>
-      <Filters
-        onChange={() => {
-          refetch();
-        }}
-        filters={filters}
-        setFilters={setFilters}
-        showTags={false}
-      />
       <DataTable
+        rightToolBar={
+          <Filters
+            onChange={() => {
+              refetch();
+            }}
+            filters={filters}
+            setFilters={setFilters}
+            showTags={false}
+          />
+        }
         columns={columns({
           changeStatus,
           onSettingsClick: setPostId,

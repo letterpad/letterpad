@@ -10,7 +10,6 @@ import {
   SortingState,
   useReactTable} from "@tanstack/react-table"
 import { useState } from "react"
-import { RiLoader4Fill } from "react-icons/ri";
 
 import {
   Table,
@@ -21,11 +20,13 @@ import {
   TableRow,
 } from "./table"
 import { Input } from "../input";
+import { TablePlaceholder } from "../placeholders";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   loading: boolean
+  rightToolBar?: React.ReactNode
 }
 
 export {type ColumnDef} from "@tanstack/react-table";
@@ -34,12 +35,14 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   loading,
+  rightToolBar
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
+
   const table = useReactTable({
     data,
     columns,
@@ -57,7 +60,8 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <><div className="flex items-center py-4">
+    <>
+    <div className="flex items-center pb-4 gap-4">
     <Input
       placeholder="Filter title..."
       value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -65,7 +69,8 @@ export function DataTable<TData, TValue>({
         table.getColumn("title")?.setFilterValue(event.target.value)
       }
       className="max-w-sm"
-    />{loading && <RiLoader4Fill className="animate-spin text-brand" size={18}/>}
+    />
+    {rightToolBar}
   </div>
     <div className="rounded-md border overflow-y-scroll h-full">
       <Table>
@@ -88,7 +93,7 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {!loading && table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -104,7 +109,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                {loading ? "Loading...": "No results."}
+                <TablePlaceholder loading={loading}/>
               </TableCell>
             </TableRow>
           )}

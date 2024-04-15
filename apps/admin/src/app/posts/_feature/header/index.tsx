@@ -134,7 +134,7 @@ export const columns = ({
     },
     cell: ({ row }) => {
       return (
-        <div className="ml-5 hidden md:block">
+        <div className="ml-5 hidden md:block text-sm">
           {getReadableDate(row.getValue("updatedAt"))}
         </div>
       );
