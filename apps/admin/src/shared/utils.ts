@@ -159,6 +159,7 @@ export const resizeImageClient = (settings: IResizeImageOptions): Promise<Blob> 
 
         // Convert canvas to blob
         canvas.toBlob((blob) => {
+          canvas.remove();
           resolve(blob as Blob);
         }, 'image/jpeg', 0.9); // Adjust quality (0.0 - 1.0) to reduce file size
       };

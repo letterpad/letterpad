@@ -36,6 +36,7 @@ export const UploadZone: FC<Props> = ({
   };
 
   const uploadImage = async (files: File[]) => {
+    setUploading(true);
     let data = new FormData();
     const fileWithCorrectSizePromise = files.map((file) => {
       if (file.type === "image/png" || file.type === "image/jpg") {
@@ -61,7 +62,7 @@ export const UploadZone: FC<Props> = ({
       alert("File size should be less than 10MB");
       return;
     }
-    setUploading(true);
+
     const result = await uploadFile({
       files: fileWithCorrectSize as any,
       type: "cover_image",
@@ -84,6 +85,7 @@ export const UploadZone: FC<Props> = ({
   };
 
   const saveCroppedImage = async () => {
+    setUploading(true);
     if (!crop) {
       if (tempFiles) return uploadImage([...tempFiles]);
     }
@@ -93,15 +95,14 @@ export const UploadZone: FC<Props> = ({
       eventLabel: "crop_image",
     });
     if (crop && cropImageRef.current) {
-      setUploading(true);
       const file = getFileFromCrop({
         crop: crop,
         image: cropImageRef.current,
         fileName: tempFiles?.[0].name || "",
       });
       if (file) await uploadImage([file]);
-      setUploading(false);
     }
+    setUploading(false);
   };
 
   return (
