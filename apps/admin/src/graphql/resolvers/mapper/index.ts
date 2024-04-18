@@ -26,8 +26,8 @@ export const mapPostToGraphql = (
   if (callSource === "client") {
     // For clients, apply transformations to HTML
     // to prevent download of heavy libraries like PrismJS, Katex, etc.
-    let htmlAst = parseFragment(post.html);
-    let htmlDraftAst = parseFragment(post.html_draft);
+    let htmlAst = parseFragment(post.html ?? "");
+    let htmlDraftAst = parseFragment(post.html_draft ?? "");
 
     // Apply transformations
     htmlAst = transformHtml(htmlAst);
