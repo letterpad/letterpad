@@ -45,11 +45,15 @@ export const usePublish = ({ menu }: Props) => {
             (page) => page === slug?.replace("/page/", "").toLowerCase()
         );
 
-        if (!navLinkedWithPages && !isPost && path !== "/creatives") {
-            setError(NotPublished.PageNotLinkedWithNav);
-        } else {
-            return publishOrUnpublish(true);
-        }
+        // TODO: Fix this. 
+
+        // if (!navLinkedWithPages && !isPost && path !== "/creatives") {
+        //     setError(NotPublished.PageNotLinkedWithNav);
+        // } else {
+        //     return publishOrUnpublish(true);
+        // }
+
+        return publishOrUnpublish(true);
     };
 
     const publishOrUnpublish = async (active: boolean) => {
