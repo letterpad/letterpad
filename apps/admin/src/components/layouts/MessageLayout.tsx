@@ -1,16 +1,15 @@
 import React from "react";
 
+import Header from "../header/Header";
+import Footer from "../website/Footer";
+
 const StaticLayout = ({ children }) => {
   return (
     <>
       <div className="flex h-screen flex-1 flex-col">
-        <div className="bg-gray-200 p-6 dark:bg-gray-800">
-          <img src="/uploads/logo.png" width={28} alt="logo" />
-        </div>
+        <Header />
         <div className="flex flex-1 justify-center pt-20">{children}</div>
-        <div className="p-6 text-center">
-          Letterpad ©2023, An Open Source Project
-        </div>
+        <Footer />
       </div>
     </>
   );
