@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
-import { Button, Drawer, ThemeSwitcher } from "ui";
+import { Drawer, ThemeSwitcher } from "ui";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
@@ -12,9 +12,11 @@ import { Search } from "@/components/website_v2/search";
 // @ts-ignore
 import Logo from "/public/logo/logo-full.png";
 
+const source = typeof window !== "undefined" ? window.location.href : "";
+
 const menu = (isLoggedIn: boolean) => [
   {
-    link: "/login",
+    link: `/api/identity/login?source=${source}`,
     title: "Login",
     className: "hidden md:block",
     visible: !isLoggedIn,
