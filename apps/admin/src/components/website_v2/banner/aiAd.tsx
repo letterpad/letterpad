@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 
 import { EventAction, track } from "@/track";
 
 export function AiAd() {
-  const [show, setShow] = useState(!!!localStorage.getItem("showAiAd"));
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    setShow(!!!localStorage.getItem("showAiAd"));
+  }, []);
 
   const handleClose = () => {
     localStorage.setItem("showAiAd", "false");
