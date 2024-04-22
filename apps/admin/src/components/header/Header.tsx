@@ -40,22 +40,19 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                 <Link href="/resources/monetise">Monetise</Link>
               </li>
               <li className="hidden md:block">
-                {/* <ResourceDropdown /> */}
                 <Link href="/resources">Resources</Link>
               </li>
-
-              <li className={classNames("md:block")}>
+              <li className="hidden md:block">
                 <Link href="/pricing">Pricing</Link>
               </li>
 
-              <li className={classNames("md:block")}>
+              <li className="hidden md:block">
                 <Link href="/features">Pro</Link>
               </li>
-
               <li>
                 <Search />
               </li>
-              <li className="hidden md:block">
+              <li>
                 <ThemeSwitcher />
               </li>
               <li>
@@ -79,12 +76,11 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
           <li>
             <Link href="/resources">Resources</Link>
           </li>
-
           <li>
-            <Link href="/pricing">Pricing</Link>
+            <Link href="/features">Pro</Link>
           </li>
           <li>
-            <ThemeSwitcher />
+            <Link href="/pricing">Pricing</Link>
           </li>
         </ul>
       </Drawer>
