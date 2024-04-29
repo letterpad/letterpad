@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 import { prisma } from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
+import { createCustomer, createSubscriptionWithTrial, stripe } from "@/lib/stripe";
 
 import { getServerSession } from "@/graphql/context";
-import { SessionData } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
+
+// import { createCustomer } from "./createCustomer";
 
 
 export async function POST(req: Request) {
@@ -61,29 +62,3 @@ export async function POST(req: Request) {
   }
 };
 
-
-const createCustomer = async (session: SessionData) => {
-  try {
-    const { id, email, name } = session;
-    const customer: Stripe.Customer = await stripe.customers.create({
-      email,
-      name,
-    });
-
-    await prisma.membership.create({
-      data: {
-        stripe_customer_id: customer.id,
-        author: {
-          connect: {
-            id
-          }
-        }
-      }
-    })
-    return customer;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-    return null;
-  }
-};

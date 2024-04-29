@@ -1,0 +1,6 @@
+Hello {{ full_name }},
+
+Your Letterpad subcription has failed. However, there is nothing to worry. You can easily update the <a href="{{ invoice_url }}" target="_blank">payment details</a> to continue using Letterpad Pro.
+
+Happy Blogging!
+Letterpad Support

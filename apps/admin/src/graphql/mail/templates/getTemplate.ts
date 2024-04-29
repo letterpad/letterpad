@@ -1,37 +1,40 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 
-import { getdomainMapSuccessContent } from "../domainMapSuccess/content";
-import { getEmailChangeSuccessContent } from "../emailChangeSuccess/content";
-import { getForgotPasswordContent } from "../forgotPassword/content";
-import { getNewFollowerContent } from "../newFollower/content";
-import { getPasswordChangeSuccessContent } from "../passwordChangeSuccess/content";
-import { getSubscriberVerifiedEmailContent } from "../subscriberVerified/content";
-import { getVerifyUserEmailChangeContent } from "../verifyChangedEmail/content";
-import { getVerifyUserEmailContent } from "../verifyNewUser/content";
-import { getVerifySubscriberEmailContent } from "../verifySubscriber/content";
-import { getWelcomeUserContent } from "../welcomeUser/content";
+import { getdomainMapSuccessContent } from "../content/domain-mapping-success";
+import { getEmailChangeSuccessContent } from "../content/email-change-success";
+import { getForgotPasswordContent } from "../content/forgot-password";
+import { getNewFollowerContent } from "../content/new-follower";
+import { getPasswordChangeSuccessContent } from "../content/password-change-success";
+import { getPaymentFailedContent } from "../content/payment-failed";
+import { getSubscriberVerifiedEmailContent } from "../content/subscription-verified";
+import { getVerifyUserEmailChangeContent } from "../content/verify-change-email";
+import { getVerifyUserEmailContent } from "../content/verify-new-user";
+import { getVerifySubscriberEmailContent } from "../content/verify-subscriber";
+import { getWelcomeUserContent } from "../content/welcome-user";
 
 export async function getEmailTemplate(props: EmailProps, prismaInstance) {
   switch (props.template_id) {
     case EmailTemplates.ForgotPassword:
-      return await getForgotPasswordContent(props, prismaInstance);
+      return await getForgotPasswordContent(props);
     case EmailTemplates.VerifySubscriber:
       return await getVerifySubscriberEmailContent(props, prismaInstance);
     case EmailTemplates.SubscriberVerified:
       return await getSubscriberVerifiedEmailContent(props, prismaInstance);
     case EmailTemplates.VerifyNewUser:
-      return await getVerifyUserEmailContent(props, prismaInstance);
+      return await getVerifyUserEmailContent(props);
     case EmailTemplates.VerifyChangedEmail:
-      return await getVerifyUserEmailChangeContent(props, prismaInstance);
+      return await getVerifyUserEmailChangeContent(props);
     case EmailTemplates.WelcomeUser:
-      return await getWelcomeUserContent(props, prismaInstance);
+      return await getWelcomeUserContent(props);
     case EmailTemplates.EmailChangeSuccess:
-      return await getEmailChangeSuccessContent(props, prismaInstance);
+      return await getEmailChangeSuccessContent(props);
     case EmailTemplates.PasswordChangeSuccess:
-      return await getPasswordChangeSuccessContent(props, prismaInstance);
+      return await getPasswordChangeSuccessContent(props);
     case EmailTemplates.DomainMapSuccess:
-      return await getdomainMapSuccessContent(props, prismaInstance);
+      return await getdomainMapSuccessContent(props);
     case EmailTemplates.NewFollower:
       return await getNewFollowerContent(props, prismaInstance);
+    case EmailTemplates.PaymentFailed:
+      return await getPaymentFailedContent(props);
   }
 }

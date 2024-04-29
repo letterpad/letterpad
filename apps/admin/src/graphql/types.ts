@@ -81,6 +81,7 @@ export enum EmailTemplates {
   WelcomeUser = "welcomeUser",
   NewFollower = "newFollower",
   NewPost = "newPost",
+  PaymentFailed = "paymentFailed"
 }
 export interface Template {
   body: string;
@@ -143,6 +144,12 @@ export interface NewPostProps {
   template_id: EmailTemplates.NewPost;
 }
 
+export interface PaymentFailedProps {
+  author_id: string;
+  template_id: EmailTemplates.PaymentFailed;
+  invoice_url: string;
+}
+
 export type EmailProps =
   | EmailVerifyNewUserProps
   | EmailVerifyNewEmailProps
@@ -154,7 +161,8 @@ export type EmailProps =
   | PasswordChangeSuccessProps
   | EmailForgotPasswordProps
   | NewFollowerProps
-  | NewPostProps;
+  | NewPostProps
+  | PaymentFailedProps;
 
 export interface Mail {
   to: string | { email: string; id: number }[];
