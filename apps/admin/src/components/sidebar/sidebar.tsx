@@ -10,12 +10,12 @@ import { Button, Menu, useResponsiveLayout } from "ui";
 
 import { useMembershipDetails } from "@/hooks/useIsPaidMember";
 
+import { createCustomerAndAddTrial } from "@/actions";
+import { EventAction, track } from "@/track";
 import { isAuthor, isSettings, isStats } from "@/utils/type-guards";
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
-import { createCustomerAndAddTrial } from "../../actions";
-import { EventAction, track } from "../../track";
 
 export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();

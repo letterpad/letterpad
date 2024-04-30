@@ -5,8 +5,8 @@ import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { stripe } from "@/lib/stripe";
 
-import { enqueueEmailAndSend } from '../../../graphql/mail/enqueueEmailAndSend';
-import { EmailTemplates } from '../../../graphql/types';
+import { enqueueEmailAndSend } from '@/graphql/mail/enqueueEmailAndSend';
+import { EmailTemplates } from '@/graphql/types';
 
 enum StripeWebhooks {
     Completed = 'checkout.session.completed',
