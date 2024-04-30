@@ -4,7 +4,7 @@ import { Accordion } from "ui";
 import { Heading } from "../features/headings";
 
 const Trigger = ({ children }) => (
-  <div className="text-lg font-heading">{children}</div>
+  <div className="text-lg font-heading text-left">{children}</div>
 );
 const Content = ({ children }) => (
   <div className="text-md opacity-80 font-paragraph text-left">{children}</div>
@@ -56,11 +56,7 @@ export const Faq = () => {
           },
           {
             trigger: <Trigger>Do you offer free trial?</Trigger>,
-            content: (
-              <Content>
-                No. Since we have a refund policy, we do not offer a free trial.
-              </Content>
-            ),
+            content: <Content>Yes. We offer a free trial for 7 days.</Content>,
           },
           {
             trigger: <Trigger>Which payment methods do you accept?</Trigger>,
