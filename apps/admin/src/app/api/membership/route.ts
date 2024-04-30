@@ -38,7 +38,7 @@ export async function GET(req: Request) {
                 limit: 3,
             });
             let invoice;
-            if (customer?.subscriptions?.data[0].latest_invoice) {
+            if (customer?.subscriptions?.data[0]?.latest_invoice) {
                 invoice = await stripe.invoices.retrieve(customer?.subscriptions?.data[0].latest_invoice as string)
             }
             return { customer, charges, invoice };

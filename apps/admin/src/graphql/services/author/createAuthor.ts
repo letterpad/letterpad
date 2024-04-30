@@ -4,8 +4,6 @@ import {
   RegisterStep,
 } from "letterpad-graphql";
 
-import { createCustomer, createSubscriptionWithTrial } from "@/lib/stripe";
-
 import { createAuthorWithSettings } from "@/components/onboard";
 
 import { ResolverContext } from "@/graphql/context";
@@ -19,7 +17,7 @@ import { getHashedPassword, isPasswordValid } from "@/utils/bcrypt";
 
 export const createAuthor = async (
   args: MutationCreateAuthorArgs,
-  { prisma, session }: ResolverContext
+  { prisma }: ResolverContext
 ): Promise<AuthorResponse> => {
   if (isBlackListed(args.data?.email)) {
     return Promise.reject(new Error("Your email domain has been blacklisted."));
@@ -83,10 +81,6 @@ export const createAuthor = async (
       where: { id: created.id },
     });
     if (newAuthor) {
-      const customer = await createCustomer({ ...newAuthor, id: newAuthor.id, name: newAuthor.name!, expires: '', __typename: "SessionData", register_step: newAuthor.register_step as RegisterStep })
-      if (customer?.id) {
-        await createSubscriptionWithTrial({ customerId: customer.id });
-      }
       await enqueueEmailAndSend({
         author_id: newAuthor.id,
         template_id: EmailTemplates.VerifyNewUser,
