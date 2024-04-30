@@ -32,7 +32,7 @@ export const RegisterForm = () => {
     setError(null);
     Message().loading({
       content: "Please wait",
-      duration: 10,
+      duration: 30,
     });
     let errors = {};
     if (executeRecaptcha) {

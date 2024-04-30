@@ -3,13 +3,13 @@ import { ChangeEvent, useState } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { Button, Input, Message } from "ui";
 
-import { useIsPaidMember } from "@/hooks/useIsPaidMember";
+import { useIsPaidAndNotTrialMember } from "@/hooks/useIsPaidMember";
 
 const regex =
   /(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/g;
 export const NewDomain = () => {
   const [domain, setDomain] = useState("");
-  const isPaidMember = useIsPaidMember();
+  const isPaidMember = useIsPaidAndNotTrialMember();
   const [{ fetching: loading }, addDomain] = useAddDomainMutation();
 
   const changeDomainName = (e: ChangeEvent<HTMLInputElement>) => {

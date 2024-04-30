@@ -132,7 +132,7 @@ export const options = (): NextAuthOptions => ({
         }
 
         if (author) {
-          const { id, email, username, avatar, name, register_step } = author;
+          const { id, email, username, avatar, name, register_step, createdAt } = author;
           session.user = {
             id,
             email,
@@ -141,7 +141,9 @@ export const options = (): NextAuthOptions => ({
             avatar,
             image: avatar,
             role: author.role.name,
+            createdAt,
             membership: author.membership?.status ?? "free",
+            can_start_trial: !!!author.membership?.status,
             register_step,
           } as any;
 

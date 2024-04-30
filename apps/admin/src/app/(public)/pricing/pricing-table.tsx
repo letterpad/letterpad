@@ -20,7 +20,7 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
           items={[
             "Unlimited Posts",
             "Basic Analytics",
-            "Earnings ( $3 / 1000 reads)",
+            "Earnings ( $2 / 1000 reads)",
             null,
             null,
             null,
@@ -43,7 +43,7 @@ export const PricingTable = ({ hasSession, showFreeTier = true }) => {
           "Entended Analytics",
           "Custom pages & photostory builder",
           "Custom Email Template",
-          "Earnings 2x ( $6 / 1000 reads)",
+          "Earnings 2x ( $4 / 1000 reads)",
           "Pro Badge",
           "Priority Support",
         ]}

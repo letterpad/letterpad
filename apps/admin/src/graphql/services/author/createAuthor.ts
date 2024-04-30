@@ -13,6 +13,8 @@ import { EmailTemplates } from "@/graphql/types";
 import { isBlackListed } from "@/pages/api/auth/blacklist";
 import { getHashedPassword, isPasswordValid } from "@/utils/bcrypt";
 
+
+
 export const createAuthor = async (
   args: MutationCreateAuthorArgs,
   { prisma }: ResolverContext
@@ -73,6 +75,7 @@ export const createAuthor = async (
   }
 
   const created = await createAuthorWithSettings(authorData, setting);
+
   if (created) {
     const newAuthor = await prisma.author.findUnique({
       where: { id: created.id },

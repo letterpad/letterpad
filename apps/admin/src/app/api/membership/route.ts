@@ -37,12 +37,16 @@ export async function GET(req: Request) {
                 customer: author?.stripe_customer_id!,
                 limit: 3,
             });
-            return { customer, charges };
+            let invoice;
+            if (customer?.subscriptions?.data[0]?.latest_invoice) {
+                invoice = await stripe.invoices.retrieve(customer?.subscriptions?.data[0].latest_invoice as string)
+            }
+            return { customer, charges, invoice };
         }
 
-        return { customer: null, charges: null };
+        return { customer: null, charges: null, invoice: null };
     };
-    const { customer, charges } = await details();
+    const { customer, charges, invoice } = await details();
     const active = customer?.subscriptions?.data[0]?.status === "active";
-    return NextResponse.json({ customer, charges, active }, { status: 200 });
+    return NextResponse.json({ customer, charges, active, invoice }, { status: 200 });
 }

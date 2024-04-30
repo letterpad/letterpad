@@ -56,7 +56,7 @@ const Author: AuthorResolvers<ResolverContext> = {
         author_id: id
       }
     });
-    return membership?.status === "complete" || membership?.status === "profree";
+    return membership?.status === "complete" || membership?.status === "profree" || membership?.status === "active";
   },
   followers: async ({ id }, _args, { prisma }) => {
     return getFollowers(id, prisma);

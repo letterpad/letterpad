@@ -18,7 +18,8 @@ export default function Registered() {
           </h1>
           <p className="text-lg text-gray-500 dark:text-gray-400">
             <IoSparkles className="mr-2 inline-block h-6 w-6 text-primary" />
-            You have been registered successfully.
+            You have been registered successfully. We have sent you an email to
+            verify your email address.
           </p>
           <div className="relative">
             <Button className="w-full" type="submit" variant={"success"}>

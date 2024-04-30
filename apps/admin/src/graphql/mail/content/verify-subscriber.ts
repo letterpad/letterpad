@@ -9,26 +9,22 @@ import { getVerifySubscriberToken } from "@/shared/token";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
+import { getBaseVariables, replaceBodyVariables, replaceSubjectVariables } from "../variables";
 
 export async function getVerifySubscriberEmailContent(
   data: EmailVerifySubscriberProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
   const template = await getTemplate(data.template_id);
-  const author = await prisma.author.findFirst({
-    where: { id: data.author_id },
-    include: {
-      setting: true,
-    },
-  });
 
-  if (!author) {
+
+  const variables = await getBaseVariables(data.author_id);
+  if (!variables) {
     return {
       ok: false,
-      message: `No info found for the current blog.`,
+      message: `No base variables found for the current blog.`,
     };
   }
-
   const subscriber = await prisma.subscriber.findFirst({
     where: { id: data.subscriber_id },
   });
@@ -40,34 +36,19 @@ export async function getVerifySubscriberEmailContent(
     };
   }
 
-  const subject = template.subject.replaceAll(
-    "{{ blog_name }}",
-    author.setting?.site_title ?? ""
-  );
-
   const token = await getVerifySubscriberToken({
     email: subscriber.email,
     subscriber_id: subscriber.id,
     author_id: data.author_id,
   });
 
-  const href = `${getRootUrl()}/api/verifySubscriber?token=${token}&subscriber=1`;
-
-  const body = template.body
-    .replaceAll("{{ blog_name }}", author.setting?.site_title ?? "")
-    .replaceAll("{{ full_name }}", "There")
-    .replaceAll(
-      "{{ verify_link }}",
-      `<a target="_blank" href="${href}">
-        Verify Email
-      </a>`
-    );
+  const verify_link = `${getRootUrl()}/api/verifySubscriber?token=${token}&subscriber=1`;
+  const subject = replaceSubjectVariables(template.subject, variables.subject);
+  const body = replaceBodyVariables(template.body, { ...variables.body, verify_link, verify_link_text: "Verify Email" });
 
   return {
     ok: true,
-    content: { subject, html: addLineBreaks(body), to: subscriber.email },
-    meta: {
-      author,
-    },
+    content: { subject, html: addLineBreaks(body), to: variables.meta.author.email },
+    meta: variables.meta,
   };
 }

@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import { cookies } from "next/headers";
 import Script from "next/script";
 import React from "react";
-import { getEdgeConfig } from "ui/server";
 
 import "tippy.js/dist/tippy.css";
 import "ui/css/tailwind.css";
@@ -101,15 +100,6 @@ const RootLayout = async ({ children }) => {
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
-        />
-
-        <Script
-          dangerouslySetInnerHTML={{
-            __html: `
-              globalThis.edgeConfig = ${JSON.stringify((await getEdgeConfig.all()) ?? {})};
-            `,
-          }}
-          id="edgeConfig"
         />
       </head>
       <body
