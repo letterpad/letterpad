@@ -45,6 +45,7 @@ const authItems = (isLoggedIn, source) => [
     title: "Login",
     className: "hidden md:block",
     visible: !isLoggedIn,
+    prefetch: false,
   },
 ];
 
@@ -96,7 +97,9 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                 .filter((item) => item.visible)
                 .map((item) => (
                   <li className={item.className} key={item.title}>
-                    <Link href={item.link}>{item.title}</Link>
+                    <Link href={item.link} prefetch={false}>
+                      {item.title}
+                    </Link>
                   </li>
                 ))}
               {isLoggedIn ? (
