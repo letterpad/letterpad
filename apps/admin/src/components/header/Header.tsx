@@ -59,7 +59,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
       className={classNames("z-30 w-full", {
         "bg-slate-950 text-white": displayBg,
       })}
-      data-aos="zoom-in"
+      data-aos="fade-in"
       data-aos-easing="linear"
       data-aos-duration="200"
     >

@@ -21,7 +21,7 @@ const Home = () => {
         className="flex flex-col justify-between min-h-screen"
         style={{
           background:
-            "radial-gradient(ellipse 84% 35% at 50% -25%, rgb(113 153 243 / 70%), transparent),",
+            "radial-gradient(ellipse 84% 35% at 50% -25%, rgb(113 153 243 / 70%), transparent)",
         }}
       >
         <AiAd />

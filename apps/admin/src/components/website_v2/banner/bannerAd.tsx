@@ -7,7 +7,7 @@ import { HeroText } from "../../../app/(public)/features/hero-text";
 
 export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
   return (
-    <div className="max-w-5xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
+    <div className="max-w-4xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
       <div className="space-y-8 mt-10 md:mt-0">
         <HeroText
           headline={
@@ -29,8 +29,9 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
         </p>
       </div>
       <div className="flex items-center justify-center my-10 gap-4">
-        <CustomLink href="/register?ref=features-cta">Signup</CustomLink>
-        <CustomLink href="/features">Explore</CustomLink>
+        {!hasSession ? (
+          <CustomLink href="/register?ref=features-cta">Register</CustomLink>
+        ) : null}
       </div>
     </div>
   );
