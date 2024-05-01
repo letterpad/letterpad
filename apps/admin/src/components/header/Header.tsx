@@ -2,7 +2,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiMenuBurger } from "react-icons/ci";
 import { Drawer, ThemeSwitcher } from "ui";
 
@@ -11,8 +11,6 @@ import { Search } from "@/components/website_v2/search";
 
 // @ts-ignore
 import Logo from "/public/logo/logo-full.png";
-
-const source = typeof window !== "undefined" ? window.location.href : "";
 
 const menu = (isLoggedIn: boolean) => [
   {
@@ -41,7 +39,7 @@ const menu = (isLoggedIn: boolean) => [
   },
 ];
 
-const authItems = (isLoggedIn) => [
+const authItems = (isLoggedIn, source) => [
   {
     link: `/api/identity/login?source=${source}`,
     title: "Login",
@@ -52,7 +50,12 @@ const authItems = (isLoggedIn) => [
 
 function Header({ displayBg = true }: { displayBg?: boolean }) {
   const [show, setShow] = useState(false);
+  const [source, setSource] = useState("");
   const { data } = useSession();
+  useEffect(() => {
+    const source = typeof window !== "undefined" ? window.location.href : "";
+    setSource(source);
+  }, []);
   const isLoggedIn = !!data?.user?.id;
   return (
     <header
@@ -89,7 +92,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                     <Link href={item.link}>{item.title}</Link>
                   </li>
                 ))}
-              {authItems(isLoggedIn)
+              {authItems(isLoggedIn, source)
                 .filter((item) => item.visible)
                 .map((item) => (
                   <li className={item.className} key={item.title}>
