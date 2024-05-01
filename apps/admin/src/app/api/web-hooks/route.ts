@@ -109,6 +109,21 @@ export async function POST(req: Request) {
                 break;
             }
             case StripeWebhooks.Completed: {
+                // const session = event.data.object as Stripe.Checkout.Session;
+                // const customer = await stripe.customers.retrieve(
+                //     session.customer as string,
+                // ) as Stripe.Customer;
+                // const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
+                // if (author) {
+                //     await prisma.membership.update({
+                //         where: {
+                //             author_id: author.id
+                //         },
+                //         data: {
+                //             status: session.status as string,
+                //         },
+                //     })
+                // }
                 break;
             }
             case StripeWebhooks.SubscriptionDeleted: {
