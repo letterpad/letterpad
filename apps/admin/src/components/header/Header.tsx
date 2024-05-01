@@ -59,6 +59,9 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
       className={classNames("z-30 w-full", {
         "bg-slate-950 text-white": displayBg,
       })}
+      data-aos="zoom-in"
+      data-aos-easing="linear"
+      data-aos-duration="200"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">

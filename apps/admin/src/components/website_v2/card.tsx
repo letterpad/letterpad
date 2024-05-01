@@ -57,6 +57,9 @@ export const Card: FC<Props> = ({
   const authorLink = new URL(`@${author?.username}`, origin).toString();
   return (
     <div
+      data-aos="fade-down"
+      data-aos-easing="linear"
+      data-aos-duration="200"
       key={slug}
       className="relative w-full px-2 py-4 md:p-6 rounded border dark:border-brand/10 border-slate-200 bg-brand/5 dark:bg-brand/5"
     >

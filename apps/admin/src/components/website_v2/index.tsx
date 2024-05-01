@@ -15,6 +15,7 @@ import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import { Topics } from "./topics";
 import Footer from "../website/Footer";
+import { Aos } from "../../app/(public)/features/aos";
 import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
 
@@ -48,7 +49,13 @@ export const Website = async () => {
             </div>
           </div>
           <Divider className="md:hidden" />
-          <div className="max-w-6xl mx-auto px-4 gap-4 flex flex-col">
+          <div
+            className="max-w-6xl mx-auto px-4 gap-4 flex flex-col"
+            data-aos="fade-down"
+            data-aos-easing="linear"
+            data-aos-duration="200"
+            data-aos-delay="200"
+          >
             <Featured />
           </div>
           <Divider />
@@ -64,12 +71,23 @@ export const Website = async () => {
                 "md:block": posts?.length > 0 || favAuthors?.length > 0,
               })}
             >
-              <div className="space-y-8 sticky top-10 ">
-                <section className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-brand/5 p-4 border">
+              <div className="space-y-8 sticky top-10">
+                <section
+                  data-aos="zoom-in"
+                  data-aos-easing="linear"
+                  data-aos-duration="200"
+                  className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-brand/5 p-4 border"
+                >
                   <Announcements posts={posts} />
                 </section>
 
-                <section className="block max-w-md">
+                <section
+                  className="block max-w-md"
+                  data-aos="zoom-in"
+                  data-aos-easing="linear"
+                  data-aos-duration="200"
+                  data-aos-delay="100"
+                >
                   <h4 className="font-bold text-md pb-4 font-heading flex items-center gap-2">
                     <IoRocketOutline className="text-sky-500" />
                     Topics
@@ -80,7 +98,7 @@ export const Website = async () => {
             </div>
           </div>
         </main>
-        <Footer />
+        <Aos />
       </div>
     </>
   );

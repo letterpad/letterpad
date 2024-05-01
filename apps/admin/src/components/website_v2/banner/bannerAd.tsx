@@ -9,14 +9,6 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
   return (
     <div className="max-w-5xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
       <div className="space-y-8 mt-10 md:mt-0">
-        {/* <div
-      data-aos="fade-down"
-      data-aos-easing="linear"
-      data-aos-duration="200"
-      className="inline-block rounded-full bg-blue-500 px-3 py-1 text-sm text-white"
-    >
-      New Features
-    </div> */}
         <HeroText
           headline={
             <div className="font-bold">
@@ -29,6 +21,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
           data-aos="fade-down"
           data-aos-easing="linear"
           data-aos-duration="200"
+          data-aos-delay="0"
           className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 font-paragraph"
         >
           Letterpad offers a versatile platform where you can share your
