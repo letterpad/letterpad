@@ -2,7 +2,10 @@ import { Metadata, Viewport } from "next";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 
+import Header from "../components/header/Header";
+import Footer from "../components/website/Footer";
 import { Website as WebsiteV2 } from "../components/website_v2";
+import { AiAd } from "../components/website_v2/banner/aiAd";
 
 const Home = () => {
   return (
@@ -14,7 +17,22 @@ const Home = () => {
           __html: JSON.stringify(letterpadStructuredData),
         }}
       />
-      <WebsiteV2 />
+      <div
+        className="flex flex-col justify-between min-h-screen"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 49% at 50% -25%, rgb(126 172 255 / 70%), transparent)",
+        }}
+      >
+        <AiAd />
+        <Header displayBg={false} />
+        <div className="md:px-0 flex-1">
+          <div className="flex flex-col justify-between">
+            <WebsiteV2 />
+          </div>
+        </div>
+        <Footer />
+      </div>
     </>
   );
 };

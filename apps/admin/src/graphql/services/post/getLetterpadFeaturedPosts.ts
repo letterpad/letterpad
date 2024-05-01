@@ -1,9 +1,14 @@
+import dayjs from "dayjs";
+import weekOfYear from 'dayjs/plugin/weekOfYear' // dependent on weekOfYear plugin
+import weekYear from 'dayjs/plugin/weekYear' // dependent on weekOfYear plugin
 import {
   PostsResponse,
 } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+dayjs.extend(weekOfYear)
+dayjs.extend(weekYear)
 
 export const getLetterpadFeaturedPosts = async (
   _args,
@@ -12,7 +17,7 @@ export const getLetterpadFeaturedPosts = async (
   try {
     const postIds = await prisma.featuredWeek.findMany({
       where: {
-        week_number: getWeekNumber(),
+        week_number: dayjs().week(),
       },
       include: {
         post: {
@@ -39,15 +44,4 @@ export const getLetterpadFeaturedPosts = async (
       message: "Internal Server Error",
     };
   }
-};
-
-
-const getWeekNumber = (): number => {
-  const now: Date = new Date();
-  const startOfYear: Date = new Date(now.getFullYear(), 0, 0);
-  const difference: number = now.getTime() - startOfYear.getTime();
-  const oneWeek: number = 1000 * 60 * 60 * 24 * 7;
-  const weekNumber: number = Math.floor(difference / oneWeek);
-
-  return weekNumber;
 };

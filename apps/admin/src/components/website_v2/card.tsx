@@ -1,4 +1,8 @@
-import { Author, PostStats } from "letterpad-graphql";
+import {
+  Author,
+  LetterpadLatestPostsQuery,
+  PostStats,
+} from "letterpad-graphql";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
@@ -6,7 +10,9 @@ import { SlBadge } from "react-icons/sl";
 import { ProfileCard } from "ui/isomorphic";
 
 import { getRootUrl } from "@/shared/getRootUrl";
-import { getReadableDate } from "@/shared/utils";
+import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";
+
+import { AdminActions } from "./adminActions";
 
 interface Props {
   slug: string;
@@ -52,7 +58,7 @@ export const Card: FC<Props> = ({
   return (
     <div
       key={slug}
-      className="relative w-full px-2 py-4 md:p-6 rounded border dark:border-brand/10 border-slate-100 bg-brand/5 dark:bg-brand/5"
+      className="relative w-full px-2 py-4 md:p-6 rounded border dark:border-brand/10 border-slate-200 bg-brand/5 dark:bg-brand/5"
     >
       {featured && (
         <span className="bg-blue-100 text-blue-800 font-medium me-2 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1 absolute top-0 -right-2 text-xs rounded-bl-md">
@@ -71,7 +77,7 @@ export const Card: FC<Props> = ({
       </div>
       <div className="flex flex-row justify-between md:gap-6">
         <div className="flex flex-1 flex-col gap-y-4 justify-between py-2 text-gray-800 dark:text-gray-200">
-          <Link className="flex flex-col gap-1" href={link}>
+          <Link className="flex flex-col gap-2" href={link}>
             <p className="font-sans md:text-md font-extrabold block text-ellipsis">
               {title}
             </p>
@@ -115,6 +121,40 @@ export const Card: FC<Props> = ({
   );
 };
 
+type PostRow = Extract<
+  LetterpadLatestPostsQuery["letterpadLatestPosts"],
+  { __typename: "PostsNode" }
+>["rows"][number];
+
+export const RenderCard: FC<{ post: PostRow }> = ({ post }) => {
+  const author = isAuthor(post.author) ? post.author : null;
+  const link = new URL(post.slug ?? "", author?.site_url).toString();
+  const tag = isTagsNode(post.tags)
+    ? post.tags.rows.find((tag) => tag.name.startsWith(TOPIC_PREFIX))
+    : null;
+  const tagName = tag?.name.replace(TOPIC_PREFIX, "");
+
+  return (
+    <div key={post.id}>
+      <AdminActions
+        id={post.id}
+        banned={!!post.banned}
+        isFavourite={!!author?.favourite}
+        authorId={author?.id!}
+      />
+      <Card
+        key={post.id}
+        {...post}
+        link={link}
+        slug={link}
+        author={author!}
+        category={tagName}
+        categorySlug={tag?.slug}
+      />
+    </div>
+  );
+};
+
 function transformText(text) {
   return text
     .replaceAll("-", " ")
@@ -123,3 +163,19 @@ function transformText(text) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+const isTagsNode = (
+  obj: any
+): obj is PostRow["tags"] & {
+  __typename: "TagsNode";
+} => {
+  return obj && obj.__typename === "TagsNode";
+};
+
+const isAuthor = (
+  obj: any
+): obj is PostRow["author"] & {
+  __typename: "Author";
+} => {
+  return obj && obj.__typename === "Author";
+};

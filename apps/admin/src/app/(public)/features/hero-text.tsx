@@ -3,7 +3,7 @@ import { useTheme } from "ui";
 
 import { Mark } from "./mark";
 
-export const HeroText = () => {
+export const HeroText = ({ headline }) => {
   const { theme } = useTheme();
   const isDarkTheme = theme === "dark";
   return (
@@ -17,10 +17,7 @@ export const HeroText = () => {
         WebkitTextFillColor: isDarkTheme ? "transparent" : "black",
       }}
     >
-      Introducing{" "}
-      <span className="font-bold">
-        Letterpad <Mark>Pro</Mark>
-      </span>
+      {headline}
     </h2>
   );
 };

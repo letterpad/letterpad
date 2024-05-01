@@ -73,7 +73,7 @@ module.exports = {
         // primary: colors.blue,
         gray: colors.slate,
         // muted: colors.slate[400],
-        brand: "#2f8ccf",
+        brand: "rgb(28 129 201)",
         userbrand: 'var(--userbrand)',
         // accent: {
         //   50: 'var(--accent)',

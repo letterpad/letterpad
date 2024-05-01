@@ -1,4 +1,3 @@
-import { CiDark, CiLight } from 'react-icons/ci';
 import { animated,useSpring } from 'react-spring';
 
 import { useTheme } from './theme.context';
@@ -60,7 +59,7 @@ export const ThemeSwitcher = () => {
     >
       <mask id="myMask2">
         <rect x="0" y="0" width="100%" height="100%" fill="#eee" />
-        <animated.circle style={maskedCircleProps as {}} r="9" fill="black" />
+        <animated.circle style={maskedCircleProps as {}} r="9" fill="black" stroke={"black"}/>
       </mask>
 
       <animated.circle
