@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { FC } from "react";
+import { Button } from "ui/isomorphic";
 
 import { Banner } from "./banner";
 import { SignupLink } from "./signUpLink";
-import { CustomLink } from "../../../app/(public)/features/components";
 import { HeroText } from "../../../app/(public)/features/hero-text";
 
 export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
@@ -10,6 +11,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
     <div className="max-w-4xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
       <div className="space-y-8 mt-10 md:mt-0">
         <HeroText
+          addShadow={false}
           headline={
             <div className="font-bold">
               Share your <span className="">stories</span> and{" "}
@@ -30,8 +32,13 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
       </div>
       <div className="flex items-center justify-center my-10 gap-4">
         {!hasSession ? (
-          <CustomLink href="/register?ref=features-cta">Register</CustomLink>
+          <Button variant={"primary"}>
+            <Link href="/register?ref=features-cta">Register</Link>
+          </Button>
         ) : null}
+        <Button variant={"outline"}>
+          <Link href="/features?ref=features-cta">Learn More</Link>
+        </Button>
       </div>
     </div>
   );
