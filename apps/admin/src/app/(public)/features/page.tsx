@@ -101,7 +101,7 @@ export default function Component() {
                     />
                     <div className="mt-10">
                       <CustomLink href="/pricing?ref=features-bottom">
-                        Get Pro Membership
+                        Start free trial
                       </CustomLink>
                     </div>
                   </div>
