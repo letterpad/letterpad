@@ -2,8 +2,39 @@ import { FC } from "react";
 
 import { Banner } from "./banner";
 import { SignupLink } from "./signUpLink";
+import { CustomLink } from "../../../app/(public)/features/components";
+import { HeroText } from "../../../app/(public)/features/hero-text";
 
 export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
+  return (
+    <div className="max-w-4xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
+      <div className="space-y-8 mt-10 md:mt-0">
+        <HeroText
+          headline={
+            <div className="font-bold">
+              Share your <span className="">stories</span> and{" "}
+              <span className=" text-nowrap">earn</span> money.
+            </div>
+          }
+        />
+        <p
+          data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="200"
+          data-aos-delay="0"
+          className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 font-paragraph"
+        >
+          Letterpad offers a versatile platform where you can share your
+          stories, build an audience, and make money.
+        </p>
+      </div>
+      <div className="flex items-center justify-center my-10 gap-4">
+        {!hasSession ? (
+          <CustomLink href="/register?ref=features-cta">Register</CustomLink>
+        ) : null}
+      </div>
+    </div>
+  );
   return (
     <Banner
       title={
@@ -28,7 +59,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
             <div>
               {!hasSession ? <SignupLink /> : <div className="py-5" />}
 
-              <h3 className="text-xl font-bold my-4">Why choose Letterpad?</h3>
+              {/* <h3 className="text-xl font-bold my-4">Why choose Letterpad?</h3>
               <ul className="flex flex-col gap-2 text-opacity-80">
                 <li>✓ Easy-to-use story creation tools</li>
                 <li>✓ Earn money from reads</li>
@@ -36,7 +67,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
                 <li>✓ Customise your brand</li>
                 <li>✓ Ai Powered Editor</li>
                 <li>✓ No annoying ads</li>
-              </ul>
+              </ul> */}
             </div>
           </div>
         </div>

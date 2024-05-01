@@ -42,8 +42,6 @@ export async function POST(req: Request) {
 
     try {
         switch (event.type) {
-            // case StripeWebhooks.PaymentSucceeded:
-            // case StripeWebhooks.ChargeSucceeded:
             case StripeWebhooks.InvoiceSucceeded: {
                 const invoice = event.data.object as Stripe.Invoice;
                 const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
@@ -93,7 +91,6 @@ export async function POST(req: Request) {
                 break;
             case StripeWebhooks.SubscriptionUpdated: {
                 const subscription = event.data.object as Stripe.Subscription;
-                console.log('Subscription updated', subscription.status)
                 const customer = await stripe.customers.retrieve(
                     subscription.customer as string,
                 ) as Stripe.Customer;

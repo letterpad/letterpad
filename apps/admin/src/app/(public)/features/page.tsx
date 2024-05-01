@@ -33,7 +33,16 @@ export default function Component() {
                     >
                       New Features
                     </div> */}
-                    <HeroText />
+                    <HeroText
+                      headline={
+                        <>
+                          Introducing{" "}
+                          <span className="font-bold">
+                            Letterpad <Mark>Pro</Mark>
+                          </span>
+                        </>
+                      }
+                    />
                     <p
                       data-aos="fade-down"
                       data-aos-easing="linear"

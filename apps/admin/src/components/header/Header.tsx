@@ -16,18 +16,6 @@ const source = typeof window !== "undefined" ? window.location.href : "";
 
 const menu = (isLoggedIn: boolean) => [
   {
-    link: `/api/identity/login?source=${source}`,
-    title: "Login",
-    className: "hidden md:block",
-    visible: !isLoggedIn,
-  },
-  {
-    link: "/register",
-    title: "Register",
-    className: "hidden md:block",
-    visible: !isLoggedIn,
-  },
-  {
     link: "/resources/monetise",
     title: "Monetise",
     className: "hidden md:block",
@@ -48,8 +36,17 @@ const menu = (isLoggedIn: boolean) => [
   {
     link: "/features",
     title: "Features",
-    className: "hidden md:block text-sky-400",
+    className: "hidden md:block",
     visible: true,
+  },
+];
+
+const authItems = (isLoggedIn) => [
+  {
+    link: `/api/identity/login?source=${source}`,
+    title: "Login",
+    className: "hidden md:block",
+    visible: !isLoggedIn,
   },
 ];
 
@@ -62,6 +59,9 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
       className={classNames("z-30 w-full", {
         "bg-slate-950 text-white": displayBg,
       })}
+      data-aos="fade-in"
+      data-aos-easing="linear"
+      data-aos-duration="200"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
@@ -79,6 +79,9 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
           </div>
           <nav className="flex grow">
             <ul className="flex grow flex-wrap items-center justify-end gap-6">
+              <li className="hidden md:block">
+                <Search />
+              </li>
               {menu(isLoggedIn)
                 .filter((item) => item.visible)
                 .map((item) => (
@@ -86,24 +89,28 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                     <Link href={item.link}>{item.title}</Link>
                   </li>
                 ))}
-              <li className="hidden md:block">
-                <Search />
-              </li>
-              <li>
-                <ThemeSwitcher />
-              </li>
+              {authItems(isLoggedIn)
+                .filter((item) => item.visible)
+                .map((item) => (
+                  <li className={item.className} key={item.title}>
+                    <Link href={item.link}>{item.title}</Link>
+                  </li>
+                ))}
               {isLoggedIn ? (
                 <li>
                   <ProfileDropdown />
                 </li>
               ) : (
                 <Link
-                  href="/login"
-                  className="md:hidden rounded-full border px-3 py-1.5 bg-sky-600 text-sm"
+                  href="/register"
+                  className="rounded-full border px-3 py-1.5 bg-black text-white text-sm"
                 >
                   Get Started
                 </Link>
-              )}
+              )}{" "}
+              <li>
+                <ThemeSwitcher />
+              </li>
             </ul>
           </nav>
         </div>

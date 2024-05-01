@@ -143,7 +143,7 @@ const About = async ({ params }: { params: { username: string } }) => {
               link={"/"}
               avatar={author?.avatar!}
               name={author?.name!}
-              showProLabel={author.membership?.status === "complete"}
+              showProLabel={author.membership?.status === "active"}
               line2={
                 <div className="-mt-2 text-gray-200">
                   <span className="text-sm">@{author?.username!}</span>
