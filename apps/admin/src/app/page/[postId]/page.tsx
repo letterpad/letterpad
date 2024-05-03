@@ -3,6 +3,8 @@
 import { PostProvider } from "@/app/post/[postId]/_feature/context";
 import { Feature } from "@/app/post/[postId]/_feature/feature";
 
+import { TinyMceStyleChange } from "../../tinymceThemeChange";
+
 function EditPost() {
   return (
     <PostProvider>
@@ -17,6 +19,7 @@ function EditPost() {
       <br />
       <br />
       <br />
+      <TinyMceStyleChange />
     </PostProvider>
   );
 }
