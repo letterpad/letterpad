@@ -19,7 +19,7 @@ export const HeroText: FC<{ headline: ReactNode; addShadow?: boolean }> = ({
     <h2
       data-aos="fade"
       data-aos-easing="linear"
-      className="text-4xl font-paragraph sm:text-5xl fill-white dark:text-gray-100"
+      className="text-4xl sm:text-5xl fill-white dark:text-gray-100"
       style={addShadow ? style : {}}
     >
       {headline}
