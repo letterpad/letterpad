@@ -36,7 +36,7 @@ export const Announcements: FC<{
                 ).toString()}
                 className="text-sm"
                 target="_blank"
-                onClick={onAnouncementClick}
+                // onClick={onAnouncementClick}
               >
                 <span className="font-[500]">{post.title}</span>
 

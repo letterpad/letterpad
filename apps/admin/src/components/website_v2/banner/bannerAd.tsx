@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { FC } from "react";
 import { Button } from "ui/isomorphic";
@@ -5,7 +6,7 @@ import { Button } from "ui/isomorphic";
 import { HeroText } from "../../../app/(public)/features/hero-text";
 import { EventAction, EventCategory, track } from "../../../track";
 
-export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
+export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
   const onClick = (e) => {
     track({
       eventAction: EventAction.Click,
@@ -36,7 +37,12 @@ export const BannerAd: FC<{ hasSession: boolean }> = async ({ hasSession }) => {
           stories, build an audience, and make money.
         </p>
       </div>
-      <div className="flex items-center justify-center my-10 gap-4">
+      <div
+        className="flex items-center justify-center my-10 gap-4"
+        data-aos="fade-down"
+        data-aos-easing="linear"
+        data-aos-duration="200"
+      >
         {!hasSession ? (
           <Button variant={"primary"}>
             <Link
