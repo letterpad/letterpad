@@ -4,7 +4,7 @@ import { useTheme } from "ui";
 
 import { Dropdown } from "@/components/dropdown/dropdown";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 interface Props {
   siteUrl: string;
@@ -21,9 +21,9 @@ export const QuickMenu: FC<Props> = ({
   const { toggleTheme } = useTheme();
   const openPreview = () => {
     track({
-      eventAction: EventAction.Change,
-      eventCategory: "setting",
-      eventLabel: "preview",
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Settings,
+      eventLabel: EventLabel.Preview,
     });
     window.open(siteUrl + "/preview/" + id);
   };

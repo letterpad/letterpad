@@ -11,7 +11,7 @@ import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 
 import { PageType } from "@/graphql/types";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 import { isPost } from "@/utils/type-guards";
 
 import { useCreatePost, useGetPosts } from "../api.client";
@@ -32,8 +32,8 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const onClick = async (type, pageType: PageType) => {
     track({
       eventAction: EventAction.Click,
-      eventCategory: "New",
-      eventLabel: `${type} - ${pageType}`,
+      eventCategory: EventCategory.Post,
+      eventLabel: EventLabel.Create + "_" + type + "_" + pageType,
     });
     const { data: post } = await createPost({
       type,

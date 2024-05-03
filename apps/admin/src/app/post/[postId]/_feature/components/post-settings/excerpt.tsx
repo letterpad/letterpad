@@ -9,7 +9,7 @@ import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
 import { useGetProModal } from "@/components/get-pro-modal-provider";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { Heading } from "./heading";
 
@@ -25,8 +25,8 @@ export const Excerpt = () => {
     if (!isPaidMember) {
       track({
         eventAction: EventAction.Click,
-        eventCategory: "pro-modal",
-        eventLabel: `excerpt`,
+        eventCategory: EventCategory.ProModal,
+        eventLabel: EventLabel.Excerpt,
       });
       setIsOpen(true);
       return;

@@ -18,5 +18,11 @@
     ],
     "strictNullChecks": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", ".next/types/**/*.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
+    ".next/types/**/*.ts",
+    "src/page.d.ts"
+  ]
 }

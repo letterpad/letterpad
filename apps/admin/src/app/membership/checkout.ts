@@ -1,5 +1,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 
+import { EventAction, EventCategory, EventLabel, track } from "../../track";
+
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
@@ -9,7 +11,7 @@ export const checkout = async () => {
         interval: "month",
         amount: 2000,
         plan: "Monthly",
-        planDescription: "Subscribe for $20 per month",
+        planDescription: "Subscribe for $5 per month",
     };
 
     const res = await fetch("/api/checkout_sessions", {
@@ -19,6 +21,12 @@ export const checkout = async () => {
     }).then((res) => res.json());
 
     const stripe = await stripePromise;
+
+    track({
+        eventAction: EventAction.Click,
+        eventCategory: EventCategory.Membership,
+        eventLabel: EventLabel.Checkout,
+    });
 
     return await stripe?.redirectToCheckout({
         sessionId: res.id,

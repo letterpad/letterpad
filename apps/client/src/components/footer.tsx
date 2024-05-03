@@ -1,5 +1,6 @@
 import Link from '@/components/Link';
 
+import { PublishWithLetterpad } from './publishWithLetterpad';
 import { getApiRootUrl } from '../../lib/utils/url';
 
 export function Footer({ author, settings }) {
@@ -18,21 +19,7 @@ export function Footer({ author, settings }) {
           ></span>
         </div>
 
-        <Link
-          href={new URL(
-            '/register?ref=blog-footer',
-            getApiRootUrl()
-          ).toString()}
-          className="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center justify-center gap-2"
-        >
-          <img
-            src={new URL('/logo/logo.png', getApiRootUrl()).toString()}
-            width={20}
-            alt="Letterpad"
-          />
-          Publish with Letterpad
-        </Link>
-
+        <PublishWithLetterpad />
         <div className="flex space-x-2 text-sm text-gray-500 dark:text-gray-300 justify-end flex-1">
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>{` • `}</div>

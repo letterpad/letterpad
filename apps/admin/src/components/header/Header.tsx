@@ -9,10 +9,12 @@ import { Drawer, ThemeSwitcher } from "ui";
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
 
+import { EventAction, EventCategory, track } from "../../track";
+
 // @ts-ignore
 import Logo from "/public/logo/logo-full.png";
 
-const menu = (isLoggedIn: boolean) => [
+const menu = () => [
   {
     link: "/resources/monetise",
     title: "Monetise",
@@ -58,6 +60,15 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
     setSource(source);
   }, []);
   const isLoggedIn = !!data?.user?.id;
+
+  const onClick = (e) => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.HeaderMenu,
+      eventLabel: e.target.innerText,
+    });
+  };
+
   return (
     <header
       className={classNames("z-30 w-full", {
@@ -90,14 +101,16 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                 .filter((item) => item.visible)
                 .map((item) => (
                   <li className={item.className} key={item.title}>
-                    <Link href={item.link}>{item.title}</Link>
+                    <Link href={item.link} onClick={onClick}>
+                      {item.title}
+                    </Link>
                   </li>
                 ))}
               {authItems(isLoggedIn, source)
                 .filter((item) => item.visible)
                 .map((item) => (
                   <li className={item.className} key={item.title}>
-                    <Link href={item.link} prefetch={false}>
+                    <Link href={item.link} prefetch={false} onClick={onClick}>
                       {item.title}
                     </Link>
                   </li>
@@ -109,6 +122,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
               ) : (
                 <Link
                   href="/register"
+                  onClick={onClick}
                   className="rounded-full border px-3 py-1.5 bg-black text-white text-sm"
                 >
                   Get Started
@@ -133,7 +147,9 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
             .filter((item) => item.visible)
             .map((item) => (
               <li key={item.title}>
-                <Link href={item.link}>{item.title}</Link>
+                <Link href={item.link} onClick={onClick}>
+                  {item.title}
+                </Link>
               </li>
             ))}
         </ul>

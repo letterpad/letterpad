@@ -21,6 +21,7 @@ import { getRootUrl } from "@/shared/getRootUrl";
 
 import { NotificationItem } from "./notification";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
+import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 const rootUrl = getRootUrl();
 
@@ -47,6 +48,11 @@ export const NotificationDropdown = () => {
   );
 
   const onShow = () => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Notification,
+      eventLabel: EventLabel.ViewList,
+    });
     setShow(!show);
     setRead(true);
     markAllAsRead({});

@@ -15,7 +15,7 @@ import {
   useUpdateAuthor,
 } from "@/app/profile/_feature/api.client";
 import { registrationPaths } from "@/constants";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, track } from "@/track";
 import { isAuthor } from "@/utils/type-guards";
 
 export const UpdateProfile = () => {
@@ -56,7 +56,7 @@ export const UpdateProfile = () => {
       ) {
         track({
           eventAction: EventAction.Click,
-          eventCategory: "register",
+          eventCategory: EventCategory.Auth,
           eventLabel: updatedAuthor.register_step,
         });
         await session.update({

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import React from "react";
 
 import Header from "@/components/header/Header";
-import Footer from "@/components/website/Footer";
+import Footer from "@/components/website_v2/Footer";
 
 export const metadata: Metadata = {
   title: "Topics",

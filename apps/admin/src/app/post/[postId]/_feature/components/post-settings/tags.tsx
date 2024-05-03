@@ -14,7 +14,7 @@ import { useGetProModal } from "@/components/get-pro-modal-provider";
 
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { beautifyTopic, TOPIC_PREFIX } from "@/shared/utils";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 import { textToSlug } from "@/utils/slug";
 
 import { tags } from "./constants";
@@ -129,8 +129,8 @@ export const Tags = ({ post }: IProps) => {
     if (!isPaidMember) {
       track({
         eventAction: EventAction.Click,
-        eventCategory: "pro-modal",
-        eventLabel: `tags`,
+        eventCategory: EventCategory.ProModal,
+        eventLabel: EventLabel.Tags,
       });
       setIsOpen(true);
       return;

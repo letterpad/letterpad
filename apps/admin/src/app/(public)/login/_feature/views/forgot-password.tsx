@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Message } from "ui";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { useForgotPassword } from "../client.api";
 import { Logo } from "../logo";
@@ -24,8 +24,8 @@ export const ForgotPassword = ({
     setWaiting(true);
     track({
       eventAction: EventAction.Click,
-      eventCategory: "forgot-password",
-      eventLabel: `before-request`,
+      eventCategory: EventCategory.Auth,
+      eventLabel: EventLabel.ForgotPassword,
     });
 
     try {

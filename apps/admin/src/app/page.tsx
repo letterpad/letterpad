@@ -3,9 +3,9 @@ import { Metadata, Viewport } from "next";
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import Header from "../components/header/Header";
-import Footer from "../components/website/Footer";
 import { Website as WebsiteV2 } from "../components/website_v2";
 import { AiAd } from "../components/website_v2/banner/aiAd";
+import Footer from "../components/website_v2/Footer";
 
 const Home = () => {
   return (

@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Message } from "ui";
 
 import { Logo } from "@/app/(public)/login/_feature";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { useResetPassword } from "./api.client";
 
@@ -35,8 +35,8 @@ export const Feature = () => {
 
     track({
       eventAction: EventAction.Click,
-      eventCategory: "reset-password",
-      eventLabel: "with-token",
+      eventCategory: EventCategory.Auth,
+      eventLabel: EventLabel.ResetPassword,
     });
 
     const { data } = await resetPassword({
