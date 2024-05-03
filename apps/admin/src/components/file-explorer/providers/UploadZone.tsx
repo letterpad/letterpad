@@ -8,7 +8,7 @@ import { type Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
 import { resizeImageClient, uploadFile } from "@/shared/utils";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { CropModal } from "../cropModal";
 import { DropZone } from "../../upload";
@@ -91,8 +91,8 @@ export const UploadZone: FC<Props> = ({
     }
     track({
       eventAction: EventAction.Click,
-      eventCategory: "media",
-      eventLabel: "crop_image",
+      eventCategory: EventCategory.Media,
+      eventLabel: EventLabel.CropImage,
     });
     if (crop && cropImageRef.current) {
       const file = getFileFromCrop({

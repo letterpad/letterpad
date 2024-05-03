@@ -11,7 +11,7 @@ import { Button, Menu, useResponsiveLayout } from "ui";
 import { useMembershipDetails } from "@/hooks/useIsPaidMember";
 
 import { createCustomerAndAddTrial } from "@/actions";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 import { isAuthor, isSettings, isStats } from "@/utils/type-guards";
 
 import { Brand } from "./brand";
@@ -57,8 +57,8 @@ export const Sidebar = () => {
       setLoading(false);
       track({
         eventAction: EventAction.Click,
-        eventCategory: "membership",
-        eventLabel: `trial-activated`,
+        eventCategory: EventCategory.Membership,
+        eventLabel: EventLabel.TrialActivated,
       });
     }
   };

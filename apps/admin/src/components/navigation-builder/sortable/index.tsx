@@ -19,7 +19,7 @@ import { Button } from "ui";
 
 import { Collection } from "@/components/navigation-builder/types";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { Item } from "./item";
 import { SuggestionModal } from "./suggestion-modal";
@@ -77,7 +77,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
     setActiveItem(null);
     track({
       eventAction: EventAction.Change,
-      eventCategory: "navigation",
+      eventCategory: EventCategory.Navigation,
       eventLabel: "sort",
     });
   };
@@ -96,8 +96,8 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
     updateLibraries(modified);
     track({
       eventAction: EventAction.Click,
-      eventCategory: "navigation",
-      eventLabel: "remove-item",
+      eventCategory: EventCategory.Navigation,
+      eventLabel: EventLabel.RemoveItem,
     });
   };
 

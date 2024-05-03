@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 export function AiAd() {
   const [show, setShow] = useState(false);
@@ -16,8 +16,8 @@ export function AiAd() {
     localStorage.setItem("showAiAd", "false");
     track({
       eventAction: EventAction.Click,
-      eventCategory: "aiAdBanner",
-      eventLabel: "dismiss",
+      eventCategory: EventCategory.AiAdBanner,
+      eventLabel: EventLabel.Dismiss,
     });
     setShow(false);
   };

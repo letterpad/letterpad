@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Message } from "ui";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { useUpdatePost } from "../../../api.client";
 
@@ -37,7 +37,6 @@ export const usePublish = ({ menu }: Props) => {
     const isDirty = watch("html") !== watch("html_draft");
 
     const validateAndPublish = () => {
-        const isPost = type === PostTypes.Post;
 
         const navigationPages = getPagesFromMenu(menu);
 
@@ -61,16 +60,13 @@ export const usePublish = ({ menu }: Props) => {
             ? PostStatusOptions.Published
             : PostStatusOptions.Draft;
 
-        if (active) {
-            track({
-                eventAction: EventAction.Click,
-                eventCategory: "post status",
-                eventLabel: "publish",
-            });
-        }
+        track({
+            eventAction: EventAction.Click,
+            eventCategory: EventCategory.PostStatus,
+            eventLabel: active ? EventLabel.Published : EventLabel.Draft,
+        });
         setValue("status", status);
         return await updatePost({ id: postId, status })
-
     };
 
     const _discardDraft = async () => {

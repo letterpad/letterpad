@@ -16,7 +16,7 @@ import {
   useUpdateSettings,
 } from "@/app/settings/_feature/api.client";
 import { registrationPaths } from "@/constants";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, track } from "@/track";
 import { isAuthor } from "@/utils/type-guards";
 
 export const SiteInfo = () => {
@@ -65,7 +65,7 @@ export const SiteInfo = () => {
       });
       track({
         eventAction: EventAction.Click,
-        eventCategory: "register",
+        eventCategory: EventCategory.Auth,
         eventLabel: updatedAuthor.register_step!,
       });
       setProcessing(false);

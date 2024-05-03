@@ -1,14 +1,10 @@
-export enum EventAction {
-  Load = "load",
-  View = "view",
-  Click = "click",
-  Change = "change",
-}
 
-export interface EventInfo {
-  eventCategory: string;
+import { EventAction, EventCategory, EventLabel } from "ui/isomorphic";
+
+interface EventInfo {
+  eventCategory: EventCategory;
   eventAction: EventAction;
-  eventLabel: string;
+  eventLabel: EventLabel | string;
 }
 
 export const track = (info: EventInfo) => {
@@ -17,3 +13,5 @@ export const track = (info: EventInfo) => {
     event_label: info.eventLabel,
   });
 };
+
+export { EventAction, EventCategory, EventLabel }

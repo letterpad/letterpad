@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { LuCookie } from "react-icons/lu";
 
+import { EventAction, EventCategory, EventLabel, track } from "../../track";
+
 export const CookieBanner = () => {
   const [show, setShow] = useState(false);
 
@@ -14,6 +16,11 @@ export const CookieBanner = () => {
   }, []);
 
   const onClose = () => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Cookie,
+      eventLabel: EventLabel.Dismiss,
+    });
     localStorage.setItem("cookie-concent", "true");
     setShow(false);
   };

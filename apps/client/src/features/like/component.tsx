@@ -3,6 +3,8 @@ import { FC } from 'react';
 
 import { getProfileUrl } from '@/lib/utils/url';
 
+import { EventAction, EventCategory, EventLabel, track } from '../../track';
+
 interface Props {
   liked: boolean;
   likesArr: PageFragmentFragment['likes'];
@@ -55,6 +57,13 @@ export const LikeComponent: FC<Props> = ({
 const Avatars: FC<{ likes: PageFragmentFragment['likes'] }> = ({ likes }) => {
   const pickThreeLikes = likes!.slice(0, 3);
   const hasMore = likes!.length - 3;
+  const onAvatarClick = () => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Profile,
+      eventLabel: EventLabel.LikedAvatars,
+    });
+  };
   return (
     <div className="flex -space-x-4 rtl:space-x-reverse flex-row">
       {pickThreeLikes.map((like) => {
@@ -65,6 +74,7 @@ const Avatars: FC<{ likes: PageFragmentFragment['likes'] }> = ({ likes }) => {
             target="_blank"
             rel="noreferrer"
             key={like?.username}
+            onClick={onAvatarClick}
           >
             <img
               className="block mr-3 h-full w-full rounded-full hover:opacity-80 object-cover"

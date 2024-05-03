@@ -21,7 +21,7 @@ import {
 } from "@/components/creatives-data";
 import { FileExplorer } from "@/components/file-explorer";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 const TryCreatives = () => {
   return (
@@ -46,8 +46,8 @@ const Builder = () => {
     (value: string) => {
       track({
         eventAction: EventAction.Click,
-        eventCategory: "creatives-demo",
-        eventLabel: value,
+        eventCategory: EventCategory.CreativesDemo,
+        eventLabel: activeCreative,
       });
 
       switch (value) {

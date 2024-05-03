@@ -11,6 +11,7 @@ import {
 } from 'react';
 
 import { hasLiked, likePost } from './like.api';
+import { EventAction, EventCategory, EventLabel, track } from '../../track';
 import { useSession } from '../../../context/SessionProvider';
 
 interface ContextProps {
@@ -55,6 +56,11 @@ export const LikeProvider: FC<Props> = ({ children, postId, likes }) => {
   const onLike = useCallback(async () => {
     setLiked(true);
     try {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: EventCategory.Post,
+        eventLabel: EventLabel.Like,
+      });
       const res = await sendRequest();
       if (!res.likePost.ok) {
         setLiked(false);

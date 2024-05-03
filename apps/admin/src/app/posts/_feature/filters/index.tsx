@@ -14,7 +14,7 @@ import {
 
 import { useGetTags } from "@/app/tags/_feature/api.client";
 import { PageType } from "@/graphql/types";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 interface IProps {
   showTags?: boolean;
@@ -78,8 +78,8 @@ export const Filters = ({
             onValueChange={(value) => {
               track({
                 eventAction: EventAction.Click,
-                eventCategory: "filters",
-                eventLabel: "sortBy",
+                eventCategory: EventCategory.Filters,
+                eventLabel: EventLabel.SortBy,
               });
               setFilters({ ...filters, sortBy: value as SortBy });
               onChange({ ...filters, sortBy: value as SortBy });
@@ -107,8 +107,8 @@ export const Filters = ({
               }
               track({
                 eventAction: EventAction.Click,
-                eventCategory: "filters",
-                eventLabel: "tagSlug",
+                eventCategory: EventCategory.Filters,
+                eventLabel: EventLabel.Tags,
               });
               setFilters({ ...filters, tagSlug: value });
               onChange({ ...filters, tagSlug: value });
@@ -147,8 +147,8 @@ export const Filters = ({
               }
               track({
                 eventAction: EventAction.Click,
-                eventCategory: "filters",
-                eventLabel: "pagetype dropdown",
+                eventCategory: EventCategory.Filters,
+                eventLabel: value as PageType,
               });
               setFilters({
                 ...filters,
@@ -186,7 +186,7 @@ export const Filters = ({
               checked:
                 filters.status?.includes(PostStatusOptions.Published) ?? false,
               label: `Published (${statsData?.published ?? 0})`,
-              onCheckedChange: (value) => {
+              onCheckedChange: () => {
                 onBadgeClick(PostStatusOptions.Published);
               },
             },
@@ -194,7 +194,7 @@ export const Filters = ({
               checked:
                 filters.status?.includes(PostStatusOptions.Draft) ?? false,
               label: `Drafts (${statsData?.drafts ?? 0})`,
-              onCheckedChange: (value) => {
+              onCheckedChange: () => {
                 onBadgeClick(PostStatusOptions.Draft);
               },
             },
@@ -202,7 +202,7 @@ export const Filters = ({
               checked:
                 filters.status?.includes(PostStatusOptions.Trashed) ?? false,
               label: `Trashed (${statsData?.trashed ?? 0})`,
-              onCheckedChange: (value) => {
+              onCheckedChange: () => {
                 onBadgeClick(PostStatusOptions.Trashed);
               },
             },

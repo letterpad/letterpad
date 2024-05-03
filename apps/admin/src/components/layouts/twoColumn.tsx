@@ -7,7 +7,7 @@ import { TwoColumnLayout as Layout, useResponsiveLayout } from "ui";
 import { Sidebar } from "@/components/sidebar";
 import { TopBar } from "@/components/top-bar";
 
-import Footer from "../website/Footer";
+import Footer from "../website_v2/Footer";
 
 export const TwoColumnLayout = ({ children }) => {
   const { sidebarVisible, isDesktop } = useResponsiveLayout();

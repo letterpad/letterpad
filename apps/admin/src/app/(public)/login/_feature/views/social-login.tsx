@@ -1,7 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 interface Props {
   mode: "login" | "register";
@@ -12,8 +12,9 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
     e.preventDefault();
     track({
       eventAction: EventAction.Click,
-      eventCategory: `social-${mode}`,
-      eventLabel: type,
+      eventCategory: EventCategory.Auth,
+      eventLabel:
+        type === "google" ? EventLabel.GoogleLogin : EventLabel.GitHubLogin,
     });
     if (params.get("source") && params.get("serviceUrl")) {
       const source = params.get("source");

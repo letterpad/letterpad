@@ -9,6 +9,7 @@ import { getReadableDate } from "@/shared/utils";
 
 import { checkout } from "./checkout";
 import { basePath } from "../../constants";
+import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 export const ActiveMember = ({ membership, onCancel }) => {
   const { customer, charges, active } = membership;
@@ -23,6 +24,11 @@ export const ActiveMember = ({ membership, onCancel }) => {
       body: JSON.stringify({ subscription_id: id }),
       headers: { "Content-Type": "application/json" },
     }).then((res) => res.json());
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Membership,
+      eventLabel: EventLabel.Cancel,
+    });
     setCancelling(false);
     onCancel();
   };

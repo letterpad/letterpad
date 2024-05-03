@@ -1,7 +1,7 @@
 import { IProps } from "@tinymce/tinymce-react/lib/cjs/main/ts/components/Editor";
 
 import { basePath } from "@/constants";
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { textPatterns } from "../textPatterns";
 
@@ -217,6 +217,11 @@ export const blogEditorConfig = ({
       editorRef.current.execCommand('mceAiDialogClose');
       return openProModal();
     }
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.AI,
+      eventLabel: EventLabel.AIRequest,
+    });
     respondWith.string((signal) => window.fetch('/api/generate', {
       signal, method: "POST", headers: {
         "Content-Type": "application/json",
@@ -230,11 +235,26 @@ export const blogEditorConfig = ({
         if (response) {
           const data = await response.json();
           if (data.error) {
+            track({
+              eventAction: EventAction.Click,
+              eventCategory: EventCategory.AI,
+              eventLabel: EventLabel.AIRequestFailed,
+            });
             throw new Error(`${data.error.type}: ${data.error.message}`);
           } else if (response.ok) {
+            track({
+              eventAction: EventAction.Click,
+              eventCategory: EventCategory.AI,
+              eventLabel: EventLabel.AIRequestSuccess,
+            });
             return data?.choices[0]?.message?.content?.trim();
           }
         } else {
+          track({
+            eventAction: EventAction.Click,
+            eventCategory: EventCategory.AI,
+            eventLabel: EventLabel.AIRequestFailed + '_chatGpt',
+          });
           throw new Error('Failed to communicate with the ChatGPT API');
         }
       })
@@ -299,8 +319,8 @@ export const blogEditorConfig = ({
         args.preventDefault();
         track({
           eventAction: EventAction.Click,
-          eventCategory: "pro-modal",
-          eventLabel: `editor`,
+          eventCategory: EventCategory.ProModal,
+          eventLabel: EventLabel.Editor,
         });
         return openProModal();
       }

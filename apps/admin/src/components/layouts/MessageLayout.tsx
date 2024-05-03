@@ -1,7 +1,7 @@
 import React from "react";
 
 import Header from "../header/Header";
-import Footer from "../website/Footer";
+import Footer from "../website_v2/Footer";
 
 const StaticLayout = ({ children }) => {
   return (

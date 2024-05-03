@@ -9,6 +9,7 @@ import { Modal } from "ui";
 
 import { doOmniSearch } from "./data";
 import { getReadableDate } from "../../shared/utils";
+import { EventAction, EventCategory, track } from "../../track";
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 type SearchResults = UnwrapPromise<ReturnType<typeof doOmniSearch>>;
@@ -41,6 +42,11 @@ export const Search = () => {
               `#${searchId}`
             ) as HTMLInputElement;
             setLoading(true);
+            track({
+              eventAction: EventAction.Click,
+              eventCategory: EventCategory.OmniSearch,
+              eventLabel: `search-${ele.value}`,
+            });
             const result = await doOmniSearch(ele?.value);
             setLoading(false);
             setPosts(result);

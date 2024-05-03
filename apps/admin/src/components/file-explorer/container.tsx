@@ -9,7 +9,7 @@ import { UploadZone } from "./providers/UploadZone";
 import { useInternal } from "./providers/useInternal";
 import { useUnsplash } from "./providers/useUnsplash";
 import { basePath } from "../../constants";
-import { EventAction, track } from "../../track";
+import { EventAction, EventCategory, track } from "../../track";
 
 import { MediaProvider, TypeMediaInsert } from "@/types";
 
@@ -48,7 +48,7 @@ export const Container = ({
     setSelection({});
     track({
       eventAction: EventAction.Click,
-      eventCategory: "mediaProvider",
+      eventCategory: EventCategory.MediaProvider,
       eventLabel: provider,
     });
     setMediaProvider(provider);

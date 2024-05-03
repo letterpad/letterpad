@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { Message } from "ui";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { useCreateAuthor } from "./api.client";
 import { Logo, SocialLogin } from "../../login/_feature";
@@ -83,9 +83,10 @@ export const RegisterForm = () => {
 
         track({
           eventAction: EventAction.Click,
-          eventCategory: "register",
-          eventLabel: `success`,
+          eventCategory: EventCategory.Auth,
+          eventLabel: EventLabel.Registered,
         });
+
         Message().success({ content: "Succcess", duration: 5 });
         router.push("/messages/registered");
       }

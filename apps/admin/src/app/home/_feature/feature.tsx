@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { GettingStarted } from "./components/getting-started";
 import { useGetAuthor } from "../../profile/_feature/api.client";
@@ -20,8 +20,8 @@ export const Feature = () => {
   const onDismiss = useCallback(() => {
     track({
       eventAction: EventAction.Click,
-      eventCategory: "onboarding",
-      eventLabel: "completed",
+      eventCategory: EventCategory.Onboarding,
+      eventLabel: EventLabel.Completed,
     });
     updateSettings({ options: { intro_dismissed: true } });
     router.push("/posts");

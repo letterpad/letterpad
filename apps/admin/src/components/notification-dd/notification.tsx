@@ -1,10 +1,19 @@
 import { timeAgo } from "../../lib/timeAgo";
+import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 export const NotificationItem = ({ link, avatar, time, message }) => {
+  const onClick = () => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Notification,
+      eventLabel: EventLabel.ViewItem,
+    });
+  };
   return (
     <a
       href={link}
       className="flex py-3 hover:bg-gray-200 dark:hover:bg-gray-700"
+      onClick={onClick}
     >
       <div className="flex-shrink-0">
         <img

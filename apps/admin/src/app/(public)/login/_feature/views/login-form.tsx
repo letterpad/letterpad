@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Message } from "ui";
 
-import { EventAction, track } from "@/track";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 import { SocialLogin } from "./social-login";
 import { doLogin } from "../actions";
@@ -31,8 +31,8 @@ export const LoginForm = ({
     });
     track({
       eventAction: EventAction.Click,
-      eventCategory: "login",
-      eventLabel: `User logged in`,
+      eventCategory: EventCategory.Auth,
+      eventLabel: EventLabel.CredentialsLogin,
     });
     if (result.success) {
       Message().success({ content: result.message, duration: 3 });

@@ -4,10 +4,18 @@ import { TfiAnnouncement } from "react-icons/tfi";
 
 import { timeAgo } from "../../lib/timeAgo";
 import { fetchPostsByTag } from "../../resourceFetcher";
+import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 export const Announcements: FC<{
   posts: Awaited<ReturnType<typeof fetchPostsByTag>>;
 }> = ({ posts }) => {
+  const onAnouncementClick = () => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Announcement,
+      eventLabel: EventLabel.ViewItem,
+    });
+  };
   return (
     <>
       <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
@@ -28,6 +36,7 @@ export const Announcements: FC<{
                 ).toString()}
                 className="text-sm"
                 target="_blank"
+                onClick={onAnouncementClick}
               >
                 <span className="font-[500]">{post.title}</span>
 
