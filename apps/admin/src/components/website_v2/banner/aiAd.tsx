@@ -1,26 +1,11 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { cookies } from "next/headers";
 import { CgClose } from "react-icons/cg";
 
-import { EventAction, EventCategory, EventLabel, track } from "@/track";
+import { onClose } from "./action";
 
 export function AiAd() {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    setShow(!!!localStorage.getItem("showAiAd"));
-  }, []);
-
-  const handleClose = () => {
-    localStorage.setItem("showAiAd", "false");
-    track({
-      eventAction: EventAction.Click,
-      eventCategory: EventCategory.AiAdBanner,
-      eventLabel: EventLabel.Dismiss,
-    });
-    setShow(false);
-  };
+  const cookie = cookies();
+  const show = cookie.get("showAiAd")?.value !== "false";
 
   if (!show) return null;
   return (
@@ -66,14 +51,15 @@ export function AiAd() {
         </a>
       </div>
       <div className="flex flex-1 justify-end">
-        <button
-          type="button"
-          className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
-          onClick={handleClose}
-        >
-          <span className="sr-only">Dismiss</span>
-          <CgClose className="h-5 w-5 text-gray-900" aria-hidden="true" />
-        </button>
+        <form action={onClose}>
+          <button
+            type="submit"
+            className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
+          >
+            <span className="sr-only">Dismiss</span>
+            <CgClose className="h-5 w-5 text-gray-900" aria-hidden="true" />
+          </button>
+        </form>
       </div>
     </div>
   );
