@@ -14,7 +14,7 @@ import { Divider } from "./divider";
 import { Featured } from "./featured";
 import { InfiniteList } from "./infinite-list";
 import { Topics } from "./topics";
-import { Aos } from "../../app/(public)/features/aos";
+// import { Aos } from "../../app/(public)/features/aos";
 import { options } from "../../pages/api/auth/[...nextauth]";
 import { fetchPostsByTag } from "../../resourceFetcher";
 
@@ -97,7 +97,7 @@ export const Website = async () => {
             </div>
           </div>
         </main>
-        <Aos />
+        {/* <Aos /> */}
       </div>
     </>
   );
