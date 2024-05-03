@@ -14,6 +14,9 @@ export interface EventInfo {
 export enum EventCategory {
     Social = "social",
     Footer = "footer",
+    Author = "author",
+    Profile = "profile",
+    PostMeta = "post_meta",
     Announcement = "announcement",
     OmniSearch = "omni_search",
     Notification = "notification",
@@ -38,9 +41,11 @@ export enum EventCategory {
     Topic = "topic",
     HeaderMenu = "header_menu",
     HeroBanner = "hero_banner",
+    Subscribe = "subscribe",
 }
 
 export enum EventLabel {
+    Follow = "follow",
     GoogleRegistration = "google_registration",
     GitHubRegistration = "github_registration",
     CredentialsRegistration = "credentials_registration",
@@ -84,4 +89,7 @@ export enum EventLabel {
     ViewItem = "view_item",
     Register = "register",
     Login = "login",
+    UsernameChange = "username_change",
+    Like = "like",
+    LikedAvatars = "liked_avatars"
 }

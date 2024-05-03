@@ -10,6 +10,8 @@ import { useState } from "react";
 import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
 import { Button, Modal } from "ui";
 
+import { EventAction, EventCategory, EventLabel, track } from "../../../track";
+
 export const FollowMe = ({ username }) => {
   const session = useSession();
   const [show, setShow] = useState(false);
@@ -32,6 +34,11 @@ export const FollowMe = ({ username }) => {
     if (!!data?.isFollowing.following) {
       await unFollowAuthor({ username });
     } else {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: EventCategory.Profile,
+        eventLabel: EventLabel.Follow,
+      });
       await followAuthor({ username });
     }
     refetch({

@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 
+import { EventAction, EventCategory, EventLabel, track } from '../track';
+
 export const Subscribe = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -31,6 +33,11 @@ export const Subscribe = () => {
     } else {
       setSuccess('');
       setEmail('');
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: EventCategory.Subscribe,
+        eventLabel: EventLabel.UsernameChange,
+      });
       setSuccess(a.data.addSubscriber.message);
     }
     setLoading(false);

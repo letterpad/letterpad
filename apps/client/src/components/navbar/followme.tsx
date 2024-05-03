@@ -6,6 +6,7 @@ import { IoMdPersonAdd } from 'react-icons/io';
 import { IoPersonRemove } from 'react-icons/io5';
 
 import { doFollow, doUnFollow, getIsFollowing } from '../../graphql';
+import { EventAction, EventCategory, EventLabel, track } from '../../track';
 import { useSession } from '../../../context/SessionProvider';
 
 export const FollowMe = ({ username }) => {
@@ -27,6 +28,11 @@ export const FollowMe = ({ username }) => {
       await doUnFollow(username);
       setFollowing(false);
     } else {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: EventCategory.PostMeta,
+        eventLabel: EventLabel.Follow,
+      });
       await doFollow(username);
       setFollowing(true);
     }

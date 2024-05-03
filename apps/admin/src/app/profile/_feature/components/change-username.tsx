@@ -4,6 +4,7 @@ import { Button, Input } from "ui";
 
 import { useUpdateAuthor } from "@/app/posts/_feature/api.client";
 import { sanitizeUsername } from "@/shared/utils";
+import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 interface Props {
   username: string;
@@ -25,6 +26,11 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
       setError(result.data.updateAuthor.message);
       setSaveButtonEnabled(false);
     } else if (data) {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: EventCategory.Profile,
+        eventLabel: EventLabel.UsernameChange,
+      });
       update({ ...data, user: { ...data.user, username: _username } });
     }
   };
