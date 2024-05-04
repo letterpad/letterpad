@@ -101,7 +101,8 @@
     "@aws-sdk/client-ses": "3.504.0",
     "canvas-confetti": "^1.0.1",
     "video.js": "^7.14.3",
-    "react-image-crop": "^11.0.5"
+    "react-image-crop": "^11.0.5",
+    "posthog-js": "^1.130.2"
   },
   "devDependencies": {
     "@types/video.js": "^7.3.57",
