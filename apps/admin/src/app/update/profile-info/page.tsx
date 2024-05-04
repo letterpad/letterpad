@@ -168,9 +168,9 @@ export const UpdateProfile = () => {
                           },
                           validate: (value) => {
                             // regex to contain alphabets or numbers or both
-                            const regex = /^[0-9a-z]+$/;
+                            const regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]*$/;
                             if (!regex.test(value)) {
-                              return "Should be alphaneumeric";
+                              return "Can be either alphabets or alphabets and numbers.";
                             }
                             return true;
                           },

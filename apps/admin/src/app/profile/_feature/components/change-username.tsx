@@ -41,7 +41,7 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
     setSaveButtonEnabled(true);
 
     if (!allowed) {
-      setError("Only letters, numbers, underscore, hyphen and dot are allowed");
+      setError("Only letters or letters and numbers are allowed");
       setSaveButtonEnabled(false);
     } else if (e.target.value.length < 4) {
       setError("Username should be atleast 4 characters long");
