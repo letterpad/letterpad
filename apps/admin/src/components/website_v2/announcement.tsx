@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FC } from "react";
 import { TfiAnnouncement } from "react-icons/tfi";
+import { Skeleton } from "ui/isomorphic";
 
 import { timeAgo } from "../../lib/timeAgo";
 import { fetchPostsByTag } from "../../resourceFetcher";
@@ -8,7 +9,6 @@ import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 export const Announcements: FC = async () => {
   const posts = await fetchPostsByTag();
-
   const onAnouncementClick = () => {
     track({
       eventAction: EventAction.Click,
@@ -52,5 +52,23 @@ export const Announcements: FC = async () => {
         })}
       </ul>
     </>
+  );
+};
+
+export const AnnouncementPlaceholder = () => {
+  const items = Array.from({ length: 3 });
+  return (
+    <div className="my-4">
+      <Skeleton className="w-full h-6 rounded my-4" />
+      <ul className="flex gap-5 flex-col divide-y dark:divide-blue-500/30 divide-brand/10">
+        {items.map((_, i) => (
+          <div className="flex flex-col space-y-2">
+            <Skeleton key={i} className="w-full h-4 rounded" />
+            <Skeleton key={i} className="w-1/2 h-3 rounded" />
+            <Skeleton key={i} className="w-1/6 h-2 rounded" />
+          </div>
+        ))}
+      </ul>
+    </div>
   );
 };

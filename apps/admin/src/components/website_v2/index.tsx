@@ -3,14 +3,15 @@ import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 import { IoRocketOutline } from "react-icons/io5";
 
-import { Announcements } from "./announcement";
+import { AnnouncementPlaceholder, Announcements } from "./announcement";
 import { BannerAd } from "./banner/bannerAd";
 import { RenderCard } from "./card";
 import { getLetterpadPosts } from "./data";
 import { Divider } from "./divider";
-import { Featured } from "./featured";
+import { Featured, FeaturedPlaceholder } from "./featured";
 import { InfiniteList } from "./infinite-list";
-import { Topics } from "./topics";
+import { InView } from "./inView";
+import { Topics, TopicsPlaceholder } from "./topics";
 import { options } from "../../pages/api/auth/[...nextauth]";
 
 export const Website = async () => {
@@ -29,8 +30,10 @@ export const Website = async () => {
                 <IoRocketOutline className="text-sky-500" />
                 Topics
               </h4>
-              <Suspense fallback={<>Loading...</>}>
-                <Topics limit={8} />
+              <Suspense fallback={<TopicsPlaceholder />}>
+                <InView>
+                  <Topics limit={8} />
+                </InView>
               </Suspense>
             </div>
           </div>
@@ -42,20 +45,24 @@ export const Website = async () => {
             data-aos-duration="200"
             data-aos-delay="200"
           >
-            <Suspense fallback={<>Loading...</>}>
-              <Featured />
+            <Suspense fallback={<FeaturedPlaceholder />}>
+              <InView>
+                <Featured />
+              </InView>
             </Suspense>
           </div>
           <Divider />
           <div className="flex flex-row max-w-6xl mx-auto px-4 divide-x-[1px] dark:divide-slate-800 divide-slate-200">
+            <Suspense fallback={<>Loading...</>}>
+              <InView>
+                <RenderCards />
+              </InView>
+            </Suspense>
             <div
               className={classNames(
                 "hidden md:min-w-80  top-0  md:pl-10 md:block"
               )}
             >
-              <Suspense fallback={<>Loading...</>}>
-                <RenderCards />
-              </Suspense>
               <div className="space-y-8 sticky top-10">
                 <section
                   data-aos="zoom-in"
@@ -63,8 +70,10 @@ export const Website = async () => {
                   data-aos-duration="200"
                   className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-brand/5 p-4 border"
                 >
-                  <Suspense fallback={<>Loading...</>}>
-                    <Announcements />
+                  <Suspense fallback={<AnnouncementPlaceholder />}>
+                    <InView>
+                      <Announcements />
+                    </InView>
                   </Suspense>
                 </section>
 
@@ -79,8 +88,10 @@ export const Website = async () => {
                     <IoRocketOutline className="text-sky-500" />
                     Topics
                   </h4>
-                  <Suspense fallback={<>Loading...</>}>
-                    <Topics limit={8} />
+                  <Suspense fallback={<TopicsPlaceholder />}>
+                    <InView>
+                      <Topics limit={8} />
+                    </InView>
                   </Suspense>
                 </section>
               </div>
