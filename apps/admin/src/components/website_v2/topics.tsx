@@ -1,21 +1,25 @@
+import classNames from "classnames";
 import Link from "next/link";
 import { FC } from "react";
+import { Skeleton } from "ui/isomorphic";
 
+import { getLetterpadCategories } from "./data";
 import { Topic } from "./topic";
 
 interface Props {
-  topics: any[];
   limit?: number;
   selected?: string;
 }
-export const Topics: FC<Props> = ({ topics, limit, selected }) => {
+export const Topics: FC<Props> = async ({ limit, selected }) => {
+  const categories = await getLetterpadCategories();
+  const topics = categories?.popularTags?.rows!;
   const items = limit ? topics?.splice(0, limit) : topics;
 
   return (
     <>
       <ul className="flex flex-wrap gap-2">
         {items.map((category) => (
-          <Topic {...category} selected={selected} />
+          <Topic {...category} selected={selected} key={category.name} />
         ))}
       </ul>
       {limit && (
@@ -25,6 +29,27 @@ export const Topics: FC<Props> = ({ topics, limit, selected }) => {
           </Link>
         </div>
       )}
+    </>
+  );
+};
+export const TopicsPlaceholder = () => {
+  const items = Array.from({ length: 8 });
+  return (
+    <>
+      <ul className="flex flex-wrap gap-2">
+        {items.map((_, i) => (
+          <Skeleton
+            key={i}
+            className={classNames(
+              "py-1 sm:py-1.5 font-sans border rounded-full px-3 sm:px-4 h-8 cursor-pointer w-24",
+              {
+                "w-28": i % 2 === 0,
+                "w-36": i % 3 === 0,
+              }
+            )}
+          />
+        ))}
+      </ul>
     </>
   );
 };

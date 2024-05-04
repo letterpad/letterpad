@@ -97,7 +97,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
               <li className="hidden md:block">
                 <Search />
               </li>
-              {menu(isLoggedIn)
+              {menu()
                 .filter((item) => item.visible)
                 .map((item) => (
                   <li className={item.className} key={item.title}>
@@ -143,7 +143,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
         className="w-64"
       >
         <ul className="flex flex-col grow flex-wrap justify-end items-center gap-4 text-md mt-10">
-          {menu(isLoggedIn)
+          {menu()
             .filter((item) => item.visible)
             .map((item) => (
               <li key={item.title}>
