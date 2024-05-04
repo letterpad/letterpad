@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { FC } from "react";
 
+import { getLetterpadCategories } from "./data";
 import { Topic } from "./topic";
 
 interface Props {
-  topics: any[];
   limit?: number;
   selected?: string;
 }
-export const Topics: FC<Props> = ({ topics, limit, selected }) => {
+export const Topics: FC<Props> = async ({ limit, selected }) => {
+  const categories = await getLetterpadCategories();
+  const topics = categories?.popularTags?.rows!;
   const items = limit ? topics?.splice(0, limit) : topics;
 
   return (
