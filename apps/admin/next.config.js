@@ -1,7 +1,7 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://eu-assets.i.posthog.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://eu-assets.i.posthog.com *;
   connect-src https://eu-assets.i.posthog.com *;
   style-src 'unsafe-inline' 'unsafe-eval' *;
   img-src * blob: data:;
