@@ -58,7 +58,7 @@ model Membership {
   author_id              String    @unique
   stripe_customer_id     String?
   stripe_subscription_id String?
-  status                 String    @default("active")
+  status                 String    @default("inactive")
   createdAt              DateTime? @default(now())
   updatedAt              DateTime? @updatedAt
   author                 Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
@@ -212,6 +212,7 @@ model Post {
   featured_weeks     FeaturedWeek[]
   pageTimeLog        PageTimeLog[]
   comments           Comment[]
+  trending           Trending[]
 
   @@index([author_id])
   @@index([status, mail_status])
@@ -369,4 +370,15 @@ model EmailTemplates {
   template String @unique
   subject  String
   body     String
+}
+
+model Trending {
+  id        Int       @id @default(autoincrement())
+  post      Post      @relation(fields: [post_id], references: [id])
+  post_id   String
+  views     Int       @default(0)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@index([post_id])
 }

@@ -256,6 +256,7 @@ type Query {
   isPostLiked(postId: String!): IsPostLikedResponse!
   letterpadLatestPosts(filters: LetterpadPostsFilters): PostsResponse!
   letterpadFeaturedPosts: PostsResponse!
+  letterpadTrendingPosts: PostsResponse!
   letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
 }
 

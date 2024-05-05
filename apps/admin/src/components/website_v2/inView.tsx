@@ -3,12 +3,17 @@
 import { useRef } from "react";
 import { useIntersectionObserver } from "ui";
 
-export function InView({ children }: { children: any }) {
+type InViewProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+export function InView({ children, className }: InViewProps) {
   const ref = useRef(null);
-  const { isIntersecting } = useIntersectionObserver(ref, {});
+  const { hasLoaded } = useIntersectionObserver(ref, {});
+
   return (
-    <div ref={ref} className="w-full">
-      {isIntersecting ? children : null}
+    <div ref={ref} className={className}>
+      {hasLoaded ? children : null}
     </div>
   );
 }

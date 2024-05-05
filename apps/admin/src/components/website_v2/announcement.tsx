@@ -17,7 +17,12 @@ export const Announcements: FC = async () => {
     });
   };
   return (
-    <>
+    <section
+      data-aos="zoom-in"
+      data-aos-easing="linear"
+      data-aos-duration="200"
+      className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-brand/5 p-4 border"
+    >
       <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
         <TfiAnnouncement className="text-brand" />
         Announcements
@@ -51,7 +56,7 @@ export const Announcements: FC = async () => {
           );
         })}
       </ul>
-    </>
+    </section>
   );
 };
 

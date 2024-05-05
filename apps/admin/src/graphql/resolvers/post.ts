@@ -22,6 +22,7 @@ import {
 import { getLetterpadFeaturedPosts } from "../services/post/getLetterpadFeaturedPosts";
 import { getLetterpadLatestPost } from "../services/post/getLetterpadLatestPost";
 import { getLetterpadLatestPosts } from "../services/post/getLetterpadLatestPosts";
+import { getLetterpadTrendingPosts } from "../services/post/getLetterpadTrendingPosts";
 import { getRelatedPosts } from "../services/post/getRelatedPosts";
 import { getStats } from "../services/stats";
 import { setResponsiveImages } from "../utils/imageAttributs";
@@ -105,6 +106,18 @@ const Query: QueryResolvers<ResolverContext> = {
   async letterpadFeaturedPosts(_parent, args, context) {
     try {
       const response = await getLetterpadFeaturedPosts(args, context);
+      return response;
+    } catch (e: any) {
+      report.error(e);
+      return {
+        __typename: "Exception",
+        message: "Something unexpected happened",
+      };
+    }
+  },
+  async letterpadTrendingPosts(_parent, args, context) {
+    try {
+      const response = await getLetterpadTrendingPosts(args, context);
       return response;
     } catch (e: any) {
       report.error(e);

@@ -72,7 +72,7 @@ model Membership {
   author_id              String    @unique
   stripe_customer_id     String?
   stripe_subscription_id String?
-  status                 String    @default("active")
+  status                 String    @default("inactive")
   createdAt              DateTime? @default(now())
   updatedAt              DateTime? @updatedAt
   author                 Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
@@ -203,6 +203,7 @@ model Post {
   banned             Boolean        @default(false)
   views              PageViews[]
   featured_weeks     FeaturedWeek[]
+  trending           Trending[]
   pageTimeLog        PageTimeLog[]
   comments           Comment[]
 
@@ -382,4 +383,15 @@ enum MailStatus {
   ACTIVE
   SENT
   INACTIVE
+}
+
+model Trending {
+  id        Int       @id @default(autoincrement())
+  post      Post      @relation(fields: [post_id], references: [id])
+  post_id   String
+  views     Int       @default(0)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@index([post_id])
 }

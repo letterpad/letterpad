@@ -10,11 +10,12 @@ import {
   LetterpadLatestPostsDocument,
   LetterpadLatestPostsQuery,
   LetterpadLatestPostsQueryVariables,
-  PopularTagsDocument,
+  LetterpadTrendingPostsDocument,
+  LetterpadTrendingPostsQuery, PopularTagsDocument,
   PopularTagsQuery,
   PostsDocument,
   PostsQuery,
-  PostsQueryVariables,
+  PostsQueryVariables
 } from "letterpad-graphql";
 
 import { getApiUrl } from "@/shared/getRootUrl";
@@ -115,4 +116,22 @@ export async function getFeaturedPosts() {
     }
   );
   return res.data?.letterpadFeaturedPosts.__typename === "PostsNode" ? res.data.letterpadFeaturedPosts.rows : [];
+}
+
+export async function getTrendingPosts() {
+  "use server";
+  const res = await client.query<LetterpadTrendingPostsQuery, LetterpadFeaturedPostsQueryVariables>(
+    LetterpadTrendingPostsDocument,
+    {},
+    {
+      fetch,
+      fetchOptions: {
+        next: {
+          tags: ["trendingPosts"],
+        },
+        cache: "force-cache",
+      },
+    }
+  );
+  return res.data?.letterpadTrendingPosts.__typename === "PostsNode" ? res.data.letterpadTrendingPosts.rows : [];
 }

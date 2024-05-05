@@ -1,12 +1,11 @@
-"use client";
+import { cookies } from "next/headers";
 import { FC, ReactNode } from "react";
-import { useTheme } from "ui";
 
 export const HeroText: FC<{ headline: ReactNode; addShadow?: boolean }> = ({
   headline,
   addShadow = true,
 }) => {
-  const { theme } = useTheme();
+  const theme = cookies().get("theme-preference")?.value ?? "light";
   const isDarkTheme = theme === "dark";
 
   const style = {

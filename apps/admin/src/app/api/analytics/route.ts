@@ -12,7 +12,7 @@ import { getDateRanges } from '../../../components/analytics/utils';
 
 let client: BetaAnalyticsDataClient;
 
-const createAnalyticsDataClient = () => {
+export const createAnalyticsDataClient = () => {
     if (client) return client;
     client = new BetaAnalyticsDataClient({
         credentials: {
