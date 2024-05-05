@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { revalidateTag } from "next/cache";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -116,7 +117,7 @@ export async function GET(request: NextRequest) {
       take: count - MAX_ROW_LIMIT,
       skip: 0
     });
-    const res = await prisma.trending.deleteMany({
+    await prisma.trending.deleteMany({
       where: {
         id: {
           in: idsToDelete.map((item) => item.id)
@@ -125,5 +126,6 @@ export async function GET(request: NextRequest) {
     });
   }
 
+  revalidateTag("trendingPosts")
   return NextResponse.json({ success: true });
 }
