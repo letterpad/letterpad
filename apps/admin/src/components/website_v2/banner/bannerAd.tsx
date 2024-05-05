@@ -1,19 +1,9 @@
-"use client";
-import Link from "next/link";
 import { FC } from "react";
-import { Button } from "ui/isomorphic";
 
+import { CtaButtons } from "./cta";
 import { HeroText } from "../../../app/(public)/features/hero-text";
-import { EventAction, EventCategory, track } from "../../../track";
 
 export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
-  const onClick = (e) => {
-    track({
-      eventAction: EventAction.Click,
-      eventCategory: EventCategory.HeroBanner,
-      eventLabel: e.target.innerText,
-    });
-  };
   return (
     <div className="max-w-4xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
       <div className="space-y-8 mt-10 md:mt-0">
@@ -37,31 +27,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
           stories, build an audience, and make money.
         </p>
       </div>
-      <div
-        className="flex items-center justify-center my-10 gap-4"
-        data-aos="fade-down"
-        data-aos-easing="linear"
-        data-aos-duration="200"
-      >
-        {!hasSession ? (
-          <Button variant={"primary"}>
-            <Link
-              href="/register?ref=features-cta"
-              onClick={() => onClick("register")}
-            >
-              Register
-            </Link>
-          </Button>
-        ) : null}
-        <Button variant={"outline"}>
-          <Link
-            href="/features?ref=features-cta"
-            onClick={() => onClick("features")}
-          >
-            Learn More
-          </Link>
-        </Button>
-      </div>
+      <CtaButtons hasSession={hasSession} />
     </div>
   );
 };

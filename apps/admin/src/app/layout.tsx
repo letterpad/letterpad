@@ -104,13 +104,6 @@ const RootLayout = async ({ children }) => {
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 overflow-hidden`}
       >
-        {process.env.NODE_ENV === "production" && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
-            async={true}
-            strategy="afterInteractive"
-          />
-        )}
         <Script id="google-analytics" async={true}>
           {`
           window.dataLayer = window.dataLayer || [];
@@ -122,6 +115,13 @@ const RootLayout = async ({ children }) => {
         </Script>
         <Providers theme={theme}>{children}</Providers>
         <CookieBanner />
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+            defer={true}
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );
