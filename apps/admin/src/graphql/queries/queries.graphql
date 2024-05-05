@@ -514,6 +514,49 @@ query LetterpadFeaturedPosts {
   }
 }
 
+query LetterpadTrendingPosts {
+  letterpadTrendingPosts {
+    __typename
+    ... on PostsNode {
+      rows {
+        id
+        title
+        slug
+        sub_title
+        publishedAt
+        excerpt
+        cover_image {
+          src
+          width
+          height
+        }
+        stats {
+          reading_time
+        }
+        author {
+          ... on Author {
+            name
+            username
+            avatar
+            id
+            site_url
+            is_paid_member
+            __typename
+          }
+        }
+        tags {
+          ... on TagsNode {
+            rows {
+              name
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 query GetFollowers($id: String!) {
   followers(id: $id) {
     rows {

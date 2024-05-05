@@ -9,5 +9,6 @@ export async function GET() {
   revalidateTag("resources");
   revalidateTag("resource");
   revalidateTag("announcement");
+  revalidateTag("trendingPosts");
   return NextResponse.json({});
 }
