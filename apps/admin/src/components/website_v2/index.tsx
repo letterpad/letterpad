@@ -38,7 +38,7 @@ export const Website = async () => {
             </div>
           </div>
           <Divider className="md:hidden" />
-          <div
+          {/* <div
             className="max-w-6xl mx-auto px-4 gap-4 flex flex-col"
             data-aos="fade-down"
             data-aos-easing="linear"
@@ -51,7 +51,7 @@ export const Website = async () => {
               </Suspense>
             </InView>
           </div>
-          <Divider />
+          <Divider /> */}
           <div className="flex flex-row max-w-6xl mx-auto px-4 divide-x-[1px] dark:divide-slate-800 divide-slate-200">
             <InView>
               <Suspense
