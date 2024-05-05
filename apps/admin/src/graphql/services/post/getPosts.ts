@@ -82,7 +82,7 @@ export const getPosts = cache(
 
       return {
         __typename: "PostsNode",
-        rows: posts.map(mapPostToGraphql),
+        rows: posts.map(p => mapPostToGraphql(p)),
         count: await prisma.post.count({ where: condition.where }),
       };
     } catch (e: any) {

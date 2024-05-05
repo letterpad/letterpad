@@ -39,11 +39,6 @@ export const getLetterpadLatestPosts = async (
           equals: "",
         },
       },
-      author_id: {
-        not: {
-          equals: "4742ac7c-f994-401f-ade2-72659371600f",
-        },
-      },
       html: {
         not: {
           equals: "",
