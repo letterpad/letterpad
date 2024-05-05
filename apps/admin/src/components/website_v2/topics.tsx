@@ -18,7 +18,7 @@ export const Topics: FC<Props> = async ({ limit, selected }) => {
   return (
     <>
       <ul className="flex flex-wrap gap-2">
-        {items.map((category) => (
+        {items?.map((category) => (
           <Topic {...category} selected={selected} key={category.name} />
         ))}
       </ul>

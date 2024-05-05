@@ -94,19 +94,20 @@ export const fetchPostsByTag = async () => {
     if (!process.env.LETTERPAD_BLOG_KEY) {
         throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
     }
-    const req = await fetch('https://letterpad.app/api/graphql', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization:
-                `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
-        },
-        cache: "force-cache",
-        next: {
-            tags: ["announcement"],
-        },
-        body: JSON.stringify({
-            query: `
+    try {
+        const req = await fetch('https://letterpad.app/api/graphql', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization:
+                    `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
+            },
+            cache: "force-cache",
+            next: {
+                tags: ["announcement"],
+            },
+            body: JSON.stringify({
+                query: `
             query {
                 tag(slug:"announcement"){
                     __typename
@@ -131,15 +132,18 @@ export const fetchPostsByTag = async () => {
                   }
             }
             `,
-        }),
-    });
-    const data = await req.json();
-    return data?.data?.tag?.posts?.rows as {
-        title: string, html: string, sub_title: string, excerpt: string, slug: string, author: { name: string, avatar: string }, cover_image: {
-            src: string,
-            width: number,
-            height: number
-        },
-        publishedAt: Date
-    }[];
+            }),
+        });
+        const data = await req.json();
+        return data?.data?.tag?.posts?.rows as {
+            title: string, html: string, sub_title: string, excerpt: string, slug: string, author: { name: string, avatar: string }, cover_image: {
+                src: string,
+                width: number,
+                height: number
+            },
+            publishedAt: Date
+        }[];
+    } catch (e) {
+        return []
+    }
 }

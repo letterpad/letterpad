@@ -7,11 +7,10 @@ import { getRootUrl } from "@/shared/getRootUrl";
 
 import { getFeaturedPosts } from "./data";
 import { getReadableDate } from "../../shared/utils";
-const items = Array.from({ length: 6 });
+
 export const Featured = async () => {
   const posts = await getFeaturedPosts();
   // await new Promise((resolve) => setTimeout(resolve, 5000));
-
   return (
     <>
       <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -24,7 +23,7 @@ export const Featured = async () => {
 
       <div className="flex flex-row justify-between md:gap-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-10 w-full">
-          {posts.map((article) => {
+          {posts?.map((article) => {
             const author = isAuthor(article.author) ? article.author : null;
             const link = new URL(
               article.slug ?? "",

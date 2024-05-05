@@ -6,5 +6,9 @@ import { useIntersectionObserver } from "ui";
 export function InView({ children }: { children: any }) {
   const ref = useRef(null);
   const { isIntersecting } = useIntersectionObserver(ref, {});
-  return <div ref={ref}>{isIntersecting ? children : null}</div>;
+  return (
+    <div ref={ref} className="w-full">
+      {isIntersecting ? children : null}
+    </div>
+  );
 }

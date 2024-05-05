@@ -1,3 +1,3 @@
 export const isInMaintenanceModeEnabled = async () => {
-    return true;
+    return false;
 }

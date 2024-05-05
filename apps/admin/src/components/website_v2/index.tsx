@@ -53,11 +53,17 @@ export const Website = async () => {
           </div>
           <Divider />
           <div className="flex flex-row max-w-6xl mx-auto px-4 divide-x-[1px] dark:divide-slate-800 divide-slate-200">
-            <Suspense fallback={<>Loading...</>}>
-              <InView>
+            <InView>
+              <Suspense
+                fallback={
+                  <div className="w-full mb-5 flex flex-col md:pr-10 gap-4 md:gap-8">
+                    Loading...
+                  </div>
+                }
+              >
                 <RenderCards />
-              </InView>
-            </Suspense>
+              </Suspense>
+            </InView>
             <div
               className={classNames(
                 "hidden md:min-w-80  top-0  md:pl-10 md:block"
@@ -113,9 +119,7 @@ const RenderCards = async () => {
 
   return (
     <section className="w-full mb-5 flex flex-col md:pr-10 gap-4 md:gap-8">
-      {rows.map((post) => (
-        <RenderCard key={post.slug} post={post} />
-      ))}
+      {rows?.map((post) => <RenderCard key={post.slug} post={post} />)}
       <InfiniteList cursor={rows?.[rows.length - 1]?.id} />
     </section>
   );
