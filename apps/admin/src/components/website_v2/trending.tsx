@@ -16,7 +16,7 @@ export const Trending = async () => {
         <IoTrendingUpSharp className="dark:text-sky-500 text-sky-500" />
         Trending
       </h2>
-      <h4 className="mb-4">Trending on Letterpad</h4>
+      <h4 className="mb-4">Stories trending on Letterpad</h4>
       <div className="flex flex-row justify-between md:gap-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-10 w-full">
           {posts?.map((article) => {
