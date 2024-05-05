@@ -1,17 +1,18 @@
 "use client";
+import { BsEnvelope } from "@react-icons/all-files/bs/BsEnvelope";
+import { CgProfile } from "@react-icons/all-files/cg/CgProfile";
+import { FiArrowUpRight } from "@react-icons/all-files/fi/FiArrowUpRight";
+import { FiEdit2 } from "@react-icons/all-files/fi/FiEdit2";
+import { IoIosLogIn } from "@react-icons/all-files/io/IoIosLogIn";
+import { IoIosLogOut } from "@react-icons/all-files/io/IoIosLogOut";
+import { IoMdPerson } from "@react-icons/all-files/io/IoMdPerson";
+import { IoSettingsOutline } from "@react-icons/all-files/io5/IoSettingsOutline";
+import { VscDebugStart } from "@react-icons/all-files/vsc/VscDebugStart";
 import { animated, useSpring } from "@react-spring/web";
 import classNames from "classnames";
 import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
-import { BsEnvelope } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
-import { FiEdit2 } from "react-icons/fi";
-import { IoMdPerson } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
-import { LuLogIn, LuLogOut } from "react-icons/lu";
-import { TfiNewWindow } from "react-icons/tfi";
-import { VscDebugStart } from "react-icons/vsc";
 
 import { MenuItem } from "./menu-item";
 import { useOnClickOutside } from "../../hooks/useOnClickOutisde";
@@ -88,7 +89,7 @@ export const ProfileDropdown = ({
                 <>
                   <MenuItem
                     label="View Site"
-                    icon={<TfiNewWindow size={18} />}
+                    icon={<FiArrowUpRight size={18} />}
                     path={settings?.site_url}
                     target="_blank"
                   />
@@ -120,7 +121,7 @@ export const ProfileDropdown = ({
               <MenuItem
                 className="text-red-500 dark:text-red-400"
                 label="Logout"
-                icon={<LuLogOut size={18} />}
+                icon={<IoIosLogOut size={18} />}
                 onClick={(e) => {
                   e.preventDefault();
                   signOut();
@@ -131,7 +132,7 @@ export const ProfileDropdown = ({
             <>
               <MenuItem
                 label="SignIn"
-                icon={<LuLogIn size={18} />}
+                icon={<IoIosLogIn size={18} />}
                 path={`/api/identity/login?source=${document.location.href}`}
               />
               <MenuItem

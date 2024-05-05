@@ -1,7 +1,7 @@
+import { IoRocketOutline } from "@react-icons/all-files/io5/IoRocketOutline";
 import classNames from "classnames";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
-import { IoRocketOutline } from "react-icons/io5";
 
 import { AnnouncementPlaceholder, Announcements } from "./announcement";
 import { BannerAd } from "./banner/bannerAd";
@@ -30,11 +30,11 @@ export const Website = async () => {
                 <IoRocketOutline className="text-sky-500" />
                 Topics
               </h4>
-              <Suspense fallback={<TopicsPlaceholder />}>
-                <InView>
+              <InView>
+                <Suspense fallback={<TopicsPlaceholder />}>
                   <Topics limit={8} />
-                </InView>
-              </Suspense>
+                </Suspense>
+              </InView>
             </div>
           </div>
           <Divider className="md:hidden" />
@@ -45,11 +45,11 @@ export const Website = async () => {
             data-aos-duration="200"
             data-aos-delay="200"
           >
-            <Suspense fallback={<FeaturedPlaceholder />}>
-              <InView>
+            <InView>
+              <Suspense fallback={<FeaturedPlaceholder />}>
                 <Featured />
-              </InView>
-            </Suspense>
+              </Suspense>
+            </InView>
           </div>
           <Divider />
           <div className="flex flex-row max-w-6xl mx-auto px-4 divide-x-[1px] dark:divide-slate-800 divide-slate-200">

@@ -7,9 +7,11 @@ import { getRootUrl } from "@/shared/getRootUrl";
 
 import { getFeaturedPosts } from "./data";
 import { getReadableDate } from "../../shared/utils";
-
+const items = Array.from({ length: 6 });
 export const Featured = async () => {
   const posts = await getFeaturedPosts();
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
+
   return (
     <>
       <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -86,13 +88,14 @@ function isAuthor(obj?: any): obj is Author {
 
 export const FeaturedPlaceholder = () => {
   const items = Array.from({ length: 6 });
+
   return (
-    <>
+    <div className="w-full">
       <Skeleton className="h-6 w-36 rounded-full" />
       <Skeleton className="h-4 w-72 rounded-full" />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-10 w-full mt-6">
         {items.map((_, i) => (
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4" key={i}>
             <Skeleton className="h-12 w-12 rounded-full" />
             <div className="space-y-2">
               <Skeleton className="h-3 w-[250px] rounded-full" />
@@ -103,6 +106,6 @@ export const FeaturedPlaceholder = () => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };

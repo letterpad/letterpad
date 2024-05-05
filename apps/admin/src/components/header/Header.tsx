@@ -1,9 +1,9 @@
 "use client";
+import { AiOutlineMenu } from "@react-icons/all-files/ai/AiOutlineMenu";
 import classNames from "classnames";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { CiMenuBurger } from "react-icons/ci";
 import { Drawer, ThemeSwitcher } from "ui";
 
 import { ProfileDropdown } from "@/components/profile-dd";
@@ -82,7 +82,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
         <div className="flex h-16 items-center justify-between md:h-20">
           <div className="mr-4 shrink-0 flex gap-2">
             <button onClick={() => setShow(true)} className="md:hidden">
-              <CiMenuBurger size="20" className="bold" />
+              <AiOutlineMenu size="20" className="bold" />
             </button>
             <Link className="flex gap-2" href="/" aria-label="Letterpad">
               <img

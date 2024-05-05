@@ -1,3 +1,4 @@
+import { IoIosRibbon } from "@react-icons/all-files/io/IoIosRibbon";
 import {
   Author,
   LetterpadLatestPostsQuery,
@@ -6,7 +7,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-import { SlBadge } from "react-icons/sl";
 import { ProfileCard } from "ui/isomorphic";
 
 import { getRootUrl } from "@/shared/getRootUrl";
@@ -65,7 +65,7 @@ export const Card: FC<Props> = ({
     >
       {featured && (
         <span className="bg-blue-100 text-blue-800 font-medium me-2 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300 flex items-center gap-1 absolute top-0 -right-2 text-xs rounded-bl-md">
-          <SlBadge />
+          <IoIosRibbon />
           Featured
         </span>
       )}

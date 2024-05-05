@@ -1,10 +1,10 @@
 "use client";
 
+import { AiOutlineLoading3Quarters } from "@react-icons/all-files/ai/AiOutlineLoading3Quarters";
+import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
+import { IoSearchOutline } from "@react-icons/all-files/io5/IoSearchOutline";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { BiSearch } from "react-icons/bi";
-import { CiSearch } from "react-icons/ci";
 import { Modal } from "ui";
 
 import { doOmniSearch } from "./data";
@@ -29,7 +29,7 @@ export const Search = () => {
 
   return (
     <>
-      <CiSearch
+      <IoSearchOutline
         size={24}
         className="cursor-pointer"
         onClick={() => setShowSearch(true)}

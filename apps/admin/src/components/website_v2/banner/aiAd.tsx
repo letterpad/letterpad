@@ -1,5 +1,5 @@
+import { CgClose } from "@react-icons/all-files/cg/CgClose";
 import { cookies } from "next/headers";
-import { CgClose } from "react-icons/cg";
 
 import { onClose } from "./action";
 
