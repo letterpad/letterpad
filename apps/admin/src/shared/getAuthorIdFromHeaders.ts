@@ -30,13 +30,13 @@ export async function findAuthorIdFromLetterpadSubdomain({
     console.log("identifierHeader", identifierHeader);
     if (identifierHeader?.includes("letterpad.app")) {
       const username = identifierHeader.split(".")[0];
-      // eslint-disable-next-line no-console
-      console.log("username", username)
       const author = await prisma.author.findFirst({
         where: {
           username,
         },
       });
+      // eslint-disable-next-line no-console
+      console.log("author_id", author?.id)
       if (author) return { identifierHeader, authHeader, authorId: author.id };
     }
     if (identifierHeader?.includes("letterpad-client-git")) {
