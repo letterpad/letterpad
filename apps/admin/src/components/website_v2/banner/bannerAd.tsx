@@ -16,8 +16,8 @@ export const BannerAd: FC = async () => {
           addShadow={false}
           headline={
             <div className="font-bold">
-              Share your <span className="">stories</span> and{" "}
-              <span className=" text-nowrap">monetise</span> them.
+              Write, share and <span className="">monetise</span>{" "}
+              <span className=" text-nowrap">your stories</span>.
             </div>
           }
         />
