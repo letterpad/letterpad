@@ -42,7 +42,7 @@ const nextConfig = {
   },
   productionBrowserSourceMaps: false,
   experimental: {
-    serverComponentsExternalPackages: ["@whatwg-node"],
+    serverComponentsExternalPackages: ["@whatwg-node"]
   },
   env: {
     ROOT: __dirname,
@@ -97,6 +97,14 @@ const nextConfig = {
       },
     ],
   },
+  // what is the type of config and options
+
+  /**
+   *
+   * @param {import("webpack").Configuration} config
+   * @param {import("next/dist/next-server/server/config").NextConfig} options
+   * @returns {import("webpack").Configuration}
+   */
   webpack(config, options) {
     config.module.rules.push({
       test: /\.graphql$/,
@@ -115,9 +123,8 @@ const nextConfig = {
       exclude: /node_modules/,
       use: ["webpack-graphql-loader"],
     });
-
     return config;
   },
 };
 
-module.exports = nextConfig;
+module.exports = nextConfig

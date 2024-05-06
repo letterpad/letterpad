@@ -11,7 +11,7 @@ import React from "react";
 
 import logger from "@/shared/logger";
 
-import { setupYoga } from "../src/app/api/graphql/route";
+import { setupYoga } from "../src/app/(protected)/api/graphql/route";
 import { getResolverContext } from "../src/graphql/context";
 import { seed } from "../src/graphql/db/seed/seed";
 // import { schema } from "../src/graphql/schema";

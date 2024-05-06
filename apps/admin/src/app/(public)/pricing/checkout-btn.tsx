@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import { VscLoading } from "react-icons/vsc";
 import { Button } from "ui";
 
-import { checkout } from "../../membership/checkout";
+import { checkout } from "../../(protected)/membership/checkout";
 
 interface Props {
   freePlan?: boolean;

@@ -4,11 +4,10 @@ import { cookies } from "next/headers";
 import Script from "next/script";
 import React from "react";
 
-import "tippy.js/dist/tippy.css";
 import "ui/css/tailwind.css";
 import "../../public/css/globals.css";
 import "../../public/css/theme-variables.css";
-import "ui/css/editor.css";
+import "tippy.js/dist/tippy.css";
 
 import { Providers } from "@/components/providers";
 

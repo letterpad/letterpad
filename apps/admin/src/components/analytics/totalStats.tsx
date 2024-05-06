@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { MetricPlaceholder } from "ui";
 
-import { ProcessedTotalData } from "../../app/api/analytics/types";
+import { ProcessedTotalData } from "../../app/(protected)/api/analytics/types";
 
 type TotalStatsDataValue = {
   value: number | string;

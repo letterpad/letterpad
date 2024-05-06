@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 
 import { getDateRanges } from "./utils";
-import { DateRange, DateRangeEnum } from "../../app/api/analytics/types";
+import {
+  DateRange,
+  DateRangeEnum,
+} from "../../app/(protected)/api/analytics/types";
 
 interface Props {
   onChange: (dateRanges: DateRange) => void;

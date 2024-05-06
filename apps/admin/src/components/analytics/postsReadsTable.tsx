@@ -1,7 +1,7 @@
 import { ListPlaceholder } from "ui";
 
-import { secondsToMinutes } from "../../app/api/analytics/helper";
-import { ProcessedReportData } from "../../app/api/analytics/types";
+import { secondsToMinutes } from "../../app/(protected)/api/analytics/helper";
+import { ProcessedReportData } from "../../app/(protected)/api/analytics/types";
 
 export function PostsReadTable({
   data,

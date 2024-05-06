@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from "dayjs";
 
-import { DateRange, DateRangeEnum } from "../../app/api/analytics/types";
+import { DateRange, DateRangeEnum } from "../../app/(protected)/api/analytics/types";
 
 export const getDateRanges = (value: DateRangeEnum): DateRange => {
     const today = dayjs();
