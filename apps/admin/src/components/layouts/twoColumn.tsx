@@ -7,12 +7,19 @@ import { TwoColumnLayout as Layout, useResponsiveLayout } from "ui";
 import { Sidebar } from "@/components/sidebar";
 import { TopBar } from "@/components/top-bar";
 
+import { fonts } from "../fonts/fonts";
 import Footer from "../website_v2/Footer";
 
 export const TwoColumnLayout = ({ children }) => {
   const { sidebarVisible, isDesktop } = useResponsiveLayout();
   return (
     <Layout
+      className={classNames(
+        fonts.paragraph.variable,
+        fonts.code.variable,
+        fonts.heading.variable,
+        fonts.sans.variable
+      )}
       left={<Sidebar />}
       right={
         <div
