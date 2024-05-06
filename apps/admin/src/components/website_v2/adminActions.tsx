@@ -1,14 +1,14 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { FC } from "react";
 import { Button } from "ui";
 
-import { useUpdatePost } from "@/app/post/[postId]/_feature/api.client";
+import { useUpdatePost } from "@/app/(protected)/post/[postId]/_feature/api.client";
 
-import { useUpdateAuthor } from "../../app/posts/_feature/api.client";
+import { PostProvider } from "../../app/(protected)/post/[postId]/_feature/context";
+import { useUpdateAuthor } from "../../app/(protected)/posts/_feature/api.client";
 import { ROLES } from "../../graphql/types";
-import { PostProvider } from "../../app/post/[postId]/_feature/context";
-import { FC } from "react";
 interface Props {
   id: string;
   banned: boolean;
@@ -16,18 +16,15 @@ interface Props {
   authorId: string;
 }
 
-export const AdminActions:FC<Props> = (props) => {
-  return (<PostProvider addSettings={false}>
-    <Buttons {...props} />
-  </PostProvider>)
-}
+export const AdminActions: FC<Props> = (props) => {
+  return (
+    <PostProvider addSettings={false}>
+      <Buttons {...props} />
+    </PostProvider>
+  );
+};
 
-const Buttons:FC<Props> = ({
-  id,
-  banned,
-  isFavourite,
-  authorId,
-}) => {
+const Buttons: FC<Props> = ({ id, banned, isFavourite, authorId }) => {
   const { updatePost, fetching } = useUpdatePost();
   const { updateAuthor, fetching: updatingAuthor } = useUpdateAuthor();
   const { data } = useSession();

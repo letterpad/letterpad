@@ -1,6 +1,6 @@
 import { ListPlaceholder } from "ui";
 
-import { ProcessedReferralData } from "../../app/api/analytics/types";
+import { ProcessedReferralData } from "../../app/(protected)/api/analytics/types";
 
 export function ReferrerTable({
   data,

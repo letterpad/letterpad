@@ -7,8 +7,8 @@ import {
 import { useEffect, useState } from "react";
 
 import { Collection } from "./types";
-import { useGetPosts } from "../../app/posts/_feature/api.client";
-import { useGetTags } from "../../app/tags/_feature/api.client";
+import { useGetPosts } from "../../app/(protected)/posts/_feature/api.client";
+import { useGetTags } from "../../app/(protected)/tags/_feature/api.client";
 
 interface IReturn {
   loading: boolean;

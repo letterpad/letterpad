@@ -1,25 +1,25 @@
 "use client";
 import classNames from "classnames";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect } from "react";
 
 import { useResponsiveLayout } from "./responsiveProvider";
-import { useResponsive } from "./useResponsive";
 
 interface Props {
   left: ReactNode;
   right: ReactNode;
+  className?: string;
 }
 
-export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
+export const TwoColumnLayout: FC<Props> = ({ left, right, className }) => {
   const { isDesktop, sidebarVisible, setSidebarVisible } = useResponsiveLayout();
 
   useEffect(()=>{
     setSidebarVisible(isDesktop)
-  },[isDesktop]);
+  },[isDesktop, setSidebarVisible]);
 
   return (
     <>
-      <div className="flex max-h-screen relative w-full flex-row bg-white dark:bg-zinc-900">
+      <div className={classNames("flex max-h-screen relative w-full flex-row bg-white dark:bg-zinc-900",className)}>
         <aside
           className={classNames(
             "top-0 min-w-[250px] transform bg-zinc-800 transition-transform duration-150 ease-in sticky md:shadow",
