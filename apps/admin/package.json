@@ -18,7 +18,7 @@
     "client": "concurrently -k 'bun dev'",
     "dev": "next",
     "buildSeed": "tsup ./src/graphql/db/seed/seedIfNoSeed.ts ./src/graphql/db/seed/index.ts --format cjs --outDir ./src/graphql/db/dist",
-    "build": "next build",
+    "build": "partytown copylib public/~partytown && next build",
     "test": "jest --runInBand",
     "start": "next start",
     "seed": "bun run buildSeed && bun run prisma:seed",
@@ -102,7 +102,8 @@
     "canvas-confetti": "^1.0.1",
     "video.js": "^7.14.3",
     "react-image-crop": "^11.0.5",
-    "posthog-js": "^1.130.2"
+    "posthog-js": "^1.130.2",
+    "@builder.io/partytown": "0.10.2"
   },
   "devDependencies": {
     "@types/video.js": "^7.3.57",

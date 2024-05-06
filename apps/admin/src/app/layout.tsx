@@ -1,3 +1,4 @@
+import { Partytown } from "@builder.io/partytown/react";
 import classNames from "classnames";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -114,13 +115,14 @@ const RootLayout = async ({ children }) => {
         </Script>
         <Providers theme={theme}>{children}</Providers>
         <CookieBanner />
-        {process.env.NODE_ENV === "production" && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+        {process.env.NODE_ENV !== "production" && (
+          <script
+            type="text/partytown"
             defer={true}
-            strategy="afterInteractive"
-          />
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+          ></script>
         )}
+        <Partytown forward={["dataLayer.push"]} />
       </body>
     </html>
   );

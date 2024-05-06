@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 
+~partytown
 # testing
 /coverage
 dist
