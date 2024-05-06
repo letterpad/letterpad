@@ -31,8 +31,9 @@ export const Sidebar = () => {
 
   const fetchMembership = () => {
     fetch("/api/membership")
-      .then((res) => res.json())
-      .then(setDetails);
+      .then((res) => res?.json())
+      .then(setDetails)
+      .catch(() => setDetails({}));
   };
 
   useEffect(fetchMembership, []);

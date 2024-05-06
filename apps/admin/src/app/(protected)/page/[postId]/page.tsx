@@ -1,5 +1,7 @@
 "use client";
 
+import "../../../../../public/prism/prism";
+
 import "ui/css/editor.css";
 
 import { PostProvider } from "@/app/(protected)/post/[postId]/_feature/context";

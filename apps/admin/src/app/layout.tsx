@@ -91,7 +91,6 @@ const RootLayout = async ({ children }) => {
       )}
     >
       <head>
-        <script src={basePath + `/prism/prism.js`} async />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
 
