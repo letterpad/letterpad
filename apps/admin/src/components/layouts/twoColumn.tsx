@@ -4,8 +4,8 @@ import classNames from "classnames";
 import React from "react";
 import { TwoColumnLayout as Layout, useResponsiveLayout } from "ui";
 
-import "../../public/css/globals.css";
-import "../../public/css/theme-variables.css";
+import "../../../public/css/globals.css";
+import "../../../public/css/theme-variables.css";
 import "tippy.js/dist/tippy.css";
 
 import { Sidebar } from "@/components/sidebar";
