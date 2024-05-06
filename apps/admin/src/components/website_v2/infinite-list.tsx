@@ -1,7 +1,7 @@
 "use client";
+import { AiOutlineLoading3Quarters } from "@react-icons/all-files/ai/AiOutlineLoading3Quarters";
 import { Post } from "letterpad-graphql";
 import { FC, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import { RenderCard } from "./card";
