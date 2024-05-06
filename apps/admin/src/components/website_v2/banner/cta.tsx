@@ -21,17 +21,14 @@ export const CtaButtons = ({ hasSession }) => {
     >
       {!hasSession ? (
         <Button variant={"primary"}>
-          <Link
-            href="/register?ref=features-cta"
-            onClick={() => onClick("register")}
-          >
+          <Link href="/register" onClick={() => onClick("register")}>
             Register
           </Link>
         </Button>
       ) : null}
       <Button variant={"outline"}>
         <Link
-          href="/features?ref=features-cta"
+          href="/features"
           onClick={() => onClick("features")}
         >
           Learn More
