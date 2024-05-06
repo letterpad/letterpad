@@ -13,16 +13,12 @@ import { InfiniteList } from "./infinite-list";
 import { InView } from "./inView";
 import { Topics, TopicsPlaceholder } from "./topics";
 import { Trending, TrendingPlaceholder } from "./trending";
-import { options } from "../../pages/api/auth/[...nextauth]";
 
 export const Website = async () => {
-  const session = await getServerSession(options());
-  const hasSession = !!session?.user?.id;
-
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <BannerAd hasSession={hasSession} />
+        <BannerAd />
         <Divider />
         <main className="grow space-y-16 py-8">
           <div className="z-10 md:hidden">

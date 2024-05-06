@@ -3,7 +3,7 @@ import { FC } from "react";
 import { CtaButtons } from "./cta";
 import { HeroText } from "../../../app/(public)/features/hero-text";
 
-export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
+export const BannerAd: FC = () => {
   return (
     <div className="max-w-4xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
       <div className="space-y-8 mt-10 md:mt-0">
@@ -27,7 +27,7 @@ export const BannerAd: FC<{ hasSession: boolean }> = ({ hasSession }) => {
           stories, build an audience, and make money.
         </p>
       </div>
-      <CtaButtons hasSession={hasSession} />
+      <CtaButtons />
     </div>
   );
 };

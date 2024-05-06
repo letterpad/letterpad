@@ -1,10 +1,14 @@
 "use client";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Button } from "ui/isomorphic";
 
 import { EventAction, EventCategory, track } from "../../../track";
 
-export const CtaButtons = ({ hasSession }) => {
+export const CtaButtons = () => {
+  const session = useSession();
+  const hasSession = !!session.data?.user?.id;
+
   const onClick = (e) => {
     track({
       eventAction: EventAction.Click,
