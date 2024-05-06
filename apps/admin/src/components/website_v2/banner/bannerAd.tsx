@@ -17,7 +17,7 @@ export const BannerAd: FC = async () => {
           headline={
             <div className="font-bold">
               Share your <span className="">stories</span> and{" "}
-              <span className=" text-nowrap">earn</span> money.
+              <span className=" text-nowrap">monetise</span> them.
             </div>
           }
         />
@@ -28,8 +28,8 @@ export const BannerAd: FC = async () => {
           data-aos-delay="0"
           className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 font-paragraph"
         >
-          Letterpad offers a versatile platform where you can share your
-          stories, build an audience, and make money.
+          Letterpad is a versatile platform where you can share your stories,
+          build an audience, and earn money.
         </p>
       </div>
       <CtaButtons />
