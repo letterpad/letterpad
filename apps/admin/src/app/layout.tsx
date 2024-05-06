@@ -119,7 +119,7 @@ const RootLayout = async ({ children }) => {
         ></script>
         <Providers theme={theme}>{children}</Providers>
         <CookieBanner />
-        <Partytown debug={true} forward={["dataLayer.push", "gtag"]} />
+        <Partytown debug={false} forward={["dataLayer.push", "gtag"]} />
         {process.env.NODE_ENV === "production" && (
           <script
             type="text/partytown"
