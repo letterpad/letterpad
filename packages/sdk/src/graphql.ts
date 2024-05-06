@@ -880,6 +880,7 @@ export type Query = {
   letterpadFeaturedPosts: PostsResponse;
   letterpadLatestPost: PostResponse;
   letterpadLatestPosts: PostsResponse;
+  letterpadTrendingPosts: PostsResponse;
   me?: Maybe<AuthorResponse>;
   media: MediaResponse;
   notifications: NotificationResponse;
