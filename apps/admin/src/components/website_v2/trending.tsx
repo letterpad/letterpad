@@ -1,6 +1,5 @@
 import { IoTrendingUpSharp } from "@react-icons/all-files/io5/IoTrendingUpSharp";
 import { Author } from "letterpad-graphql";
-import Link from "next/link";
 import {
   EventAction,
   EventCategory,
@@ -13,16 +12,18 @@ import { getRootUrl } from "@/shared/getRootUrl";
 import { ClickAndTrack } from "./click";
 import { getTrendingPosts } from "./data";
 import { getReadableDate } from "../../shared/utils";
+import { cookies } from "next/headers";
 
 export const Trending = async () => {
   const posts = await getTrendingPosts();
+  const isControl = cookies().get("trendingPosition")?.value === "control";
   return (
     <>
-      <h2 className="text-lg font-semibold flex items-center gap-2">
+      <p className="text-lg font-semibold flex items-center gap-2">
         <IoTrendingUpSharp className="dark:text-sky-500 text-sky-500" />
         Trending
-      </h2>
-      <h4 className="mb-4">Stories trending on Letterpad</h4>
+      </p>
+      <h3 className="mb-4 -mt-3">Stories trending on Letterpad</h3>
       <div className="flex flex-row justify-between md:gap-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-10 w-full">
           {posts?.map((article) => {
@@ -63,7 +64,9 @@ export const Trending = async () => {
                         target="_blank"
                         trackOptions={{
                           eventAction: EventAction.Click,
-                          eventCategory: EventCategory.TrendingPosts,
+                          eventCategory: isControl
+                            ? EventCategory.TrendingPostsControl
+                            : EventCategory.TrendingPostsVariation,
                           eventLabel: article.title,
                         }}
                       >

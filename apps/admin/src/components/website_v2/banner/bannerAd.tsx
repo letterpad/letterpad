@@ -2,10 +2,15 @@ import { FC } from "react";
 
 import { CtaButtons } from "./cta";
 import { HeroText } from "../../../app/(public)/features/hero-text";
+import { getServerSession } from "next-auth";
+import { options } from "../../../pages/api/auth/[...nextauth]";
 
-export const BannerAd: FC = () => {
+export const BannerAd: FC = async () => {
+  const session = await getServerSession(options());
+  const hasSession = session?.user?.id;
+  if (hasSession) return null;
   return (
-    <div className="max-w-4xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-20">
+    <div className="max-w-4xl mx-auto items-center gap-4 px-4 sm:px-6 md:px-10 text-center py-10">
       <div className="space-y-8 mt-10 md:mt-0">
         <HeroText
           addShadow={false}

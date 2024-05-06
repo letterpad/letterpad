@@ -1,21 +1,14 @@
-import { GrAnnounce } from "@react-icons/all-files/gr/GrAnnounce";
-import Link from "next/link";
+import { IoMdInformationCircleOutline } from "@react-icons/all-files/io/IoMdInformationCircleOutline";
 import { FC } from "react";
 import { Skeleton } from "ui/isomorphic";
 
 import { timeAgo } from "../../lib/timeAgo";
 import { fetchPostsByTag } from "../../resourceFetcher";
 import { EventAction, EventCategory, EventLabel, track } from "../../track";
+import { ClickAndTrack } from "./click";
 
 export const Announcements: FC = async () => {
   const posts = await fetchPostsByTag();
-  const onAnouncementClick = () => {
-    track({
-      eventAction: EventAction.Click,
-      eventCategory: EventCategory.Announcement,
-      eventLabel: EventLabel.ViewItem,
-    });
-  };
   return (
     <section
       data-aos="zoom-in"
@@ -24,7 +17,7 @@ export const Announcements: FC = async () => {
       className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-brand/5 p-4 border"
     >
       <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
-        <GrAnnounce className="text-brand" />
+        <IoMdInformationCircleOutline className="text-brand" size={24} />
         Announcements
       </h4>
       <ul className="flex flex-col divide-y dark:divide-blue-500/30 divide-brand/10">
@@ -34,19 +27,23 @@ export const Announcements: FC = async () => {
               className="text-gray-900 truncate dark:text-white  py-2 "
               key={post.slug}
             >
-              <Link
+              <ClickAndTrack
                 href={new URL(
                   post.slug,
                   "https://blog.letterpad.app"
                 ).toString()}
                 className="text-sm"
                 target="_blank"
-                // onClick={onAnouncementClick}
+                trackOptions={{
+                  eventAction: EventAction.Click,
+                  eventCategory: EventCategory.Announcement,
+                  eventLabel: EventLabel.ViewItem,
+                }}
               >
                 <span className="font-[500]">{post.title}</span>
 
                 <p className="text-xs truncate opacity-80">{post.sub_title}</p>
-              </Link>
+              </ClickAndTrack>
               <div className="mt-1">
                 <time className="block text-[0.68rem] text-blue-500">
                   {timeAgo(post.publishedAt)}

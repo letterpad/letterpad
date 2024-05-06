@@ -43,6 +43,8 @@ export enum EventCategory {
     HeroBanner = "hero_banner",
     Subscribe = "subscribe",
     TrendingPosts = "trending_posts",
+    TrendingPostsControl = "trending_posts_control",
+    TrendingPostsVariation = "trending_posts_variation",
 }
 
 export enum EventLabel {
@@ -92,5 +94,6 @@ export enum EventLabel {
     Login = "login",
     UsernameChange = "username_change",
     Like = "like",
-    LikedAvatars = "liked_avatars"
+    LikedAvatars = "liked_avatars",
+    ReadMore = 'read_more'
 }
