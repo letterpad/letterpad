@@ -81,7 +81,11 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <div className="mr-4 shrink-0 flex gap-2">
-            <button onClick={() => setShow(true)} className="md:hidden">
+            <button
+              onClick={() => setShow(true)}
+              className="md:hidden"
+              aria-label="Menu Button"
+            >
               <AiOutlineMenu size="20" className="bold" />
             </button>
             <Link className="flex gap-2" href="/" aria-label="Letterpad">

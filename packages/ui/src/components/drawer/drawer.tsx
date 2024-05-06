@@ -81,7 +81,6 @@ export const Drawer: FC<Props> = ({
         )}
         tabIndex={-1}
         aria-labelledby="drawer-label"
-        aria-hidden="true"
       >
         {title && (
           <h5
