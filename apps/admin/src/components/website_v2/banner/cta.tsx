@@ -27,11 +27,8 @@ export const CtaButtons = ({ hasSession }) => {
         </Button>
       ) : null}
       <Button variant={"outline"}>
-        <Link
-          href="/features"
-          onClick={() => onClick("features")}
-        >
-          Learn More
+        <Link href="/features" onClick={() => onClick("features")}>
+          Pro Features
         </Link>
       </Button>
     </div>
