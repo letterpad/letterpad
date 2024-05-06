@@ -1,6 +1,5 @@
 import { IoRocketOutline } from "@react-icons/all-files/io5/IoRocketOutline";
 import classNames from "classnames";
-import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 import { Skeleton } from "ui/isomorphic";
 

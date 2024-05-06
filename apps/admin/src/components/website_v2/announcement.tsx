@@ -1,6 +1,6 @@
+import { GrAnnounce } from "@react-icons/all-files/gr/GrAnnounce";
 import Link from "next/link";
 import { FC } from "react";
-import { TfiAnnouncement } from "react-icons/tfi";
 import { Skeleton } from "ui/isomorphic";
 
 import { timeAgo } from "../../lib/timeAgo";
@@ -24,7 +24,7 @@ export const Announcements: FC = async () => {
       className="border-sky-100 dark:border-sky-500/20 rounded-lg bg-brand/5 p-4 border"
     >
       <h4 className="font-bold text-md pb-2 flex items-center gap-2 font-heading">
-        <TfiAnnouncement className="text-brand" />
+        <GrAnnounce className="text-brand" />
         Announcements
       </h4>
       <ul className="flex flex-col divide-y dark:divide-blue-500/30 divide-brand/10">

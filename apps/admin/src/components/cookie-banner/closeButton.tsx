@@ -1,6 +1,6 @@
 "use client";
 
-import { IoMdClose } from "react-icons/io";
+import { IoMdClose } from "@react-icons/all-files/io/IoMdClose";
 
 import { onClose } from "./action";
 
