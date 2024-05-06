@@ -5,8 +5,8 @@ import { cookies } from "next/headers";
 import React from "react";
 
 import "ui/css/tailwind.css";
-import "../../../public/css/globals.css";
-import "../../../public/css/theme-variables.css";
+import "../public/css/globals.css";
+import "../public/css/theme-variables.css";
 
 import { Providers } from "@/components/providers";
 
