@@ -2,21 +2,16 @@ import { Partytown } from "@builder.io/partytown/react";
 import classNames from "classnames";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
-import Script from "next/script";
 import React from "react";
 
 import "ui/css/tailwind.css";
-import "../../public/css/globals.css";
-import "../../public/css/theme-variables.css";
-import "tippy.js/dist/tippy.css";
 
 import { Providers } from "@/components/providers";
 
-import { basePath, gaTrackingId } from "@/constants";
+import { gaTrackingId } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import { CookieBanner } from "../components/cookie-banner";
-// import { fonts } from "../components/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getRootUrl()),
@@ -79,17 +74,7 @@ const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme-preference")?.value ?? "light";
 
   return (
-    <html
-      lang="en"
-      data-color-scheme={theme}
-      className={classNames(
-        theme
-        // fonts.paragraph.variable,
-        // fonts.code.variable,
-        // fonts.heading.variable,
-        // fonts.sans.variable
-      )}
-    >
+    <html lang="en" data-color-scheme={theme} className={classNames(theme)}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
