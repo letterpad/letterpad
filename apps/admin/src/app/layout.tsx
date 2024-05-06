@@ -104,17 +104,22 @@ const RootLayout = async ({ children }) => {
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 overflow-hidden`}
       >
-        <Script id="google-analytics" async={true}>
-          {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          
-          gtag('config', '${gaTrackingId}');
-          `}
-        </Script>
+        <script
+          type="text/partytown"
+          dangerouslySetInnerHTML={{
+            __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        gtag('config', '${gaTrackingId}');
+        
+        `,
+          }}
+        ></script>
         <Providers theme={theme}>{children}</Providers>
         <CookieBanner />
+        <Partytown debug={true} forward={["dataLayer.push", "gtag"]} />
         {process.env.NODE_ENV === "production" && (
           <script
             type="text/partytown"
@@ -122,7 +127,6 @@ const RootLayout = async ({ children }) => {
             src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
           ></script>
         )}
-        <Partytown forward={["dataLayer.push"]} />
       </body>
     </html>
   );
