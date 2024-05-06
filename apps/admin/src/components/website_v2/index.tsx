@@ -29,10 +29,10 @@ export const Website = async () => {
             <div className="mx-auto px-4 relative">
               <InView>
                 <Suspense fallback={<TopicsPlaceholder />}>
-                  <h4 className="font-bold text-lg pb-4 font-heading flex items-center gap-2">
+                  <div className="font-bold text-lg pb-4 font-heading flex items-center gap-2">
                     <IoRocketOutline className="text-sky-500" />
                     Topics
-                  </h4>
+                  </div>
                   <Topics limit={8} />
                 </Suspense>
               </InView>

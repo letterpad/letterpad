@@ -115,19 +115,19 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                     </Link>
                   </li>
                 ))}
-              {isLoggedIn ? (
-                <li>
+              <li>
+                {isLoggedIn ? (
                   <ProfileDropdown />
-                </li>
-              ) : (
-                <Link
-                  href="/register"
-                  onClick={onClick}
-                  className="rounded-full border px-3 py-1.5 bg-black text-white text-sm"
-                >
-                  Get Started
-                </Link>
-              )}{" "}
+                ) : (
+                  <Link
+                    href="/register"
+                    onClick={onClick}
+                    className="rounded-full border px-3 py-1.5 bg-black text-white text-sm"
+                  >
+                    Get Started
+                  </Link>
+                )}
+              </li>
               <li>
                 <ThemeSwitcher />
               </li>
