@@ -7,7 +7,8 @@ import { EventAction, EventCategory, track } from "../../../track";
 
 export const CtaButtons = () => {
   const session = useSession();
-  const hasSession = !!session.data?.user?.id;
+
+  const hasSession = !!session.data?.user?.id || session.status === "loading";
 
   const onClick = (e) => {
     track({

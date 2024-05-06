@@ -14,11 +14,13 @@ import { InView } from "./inView";
 import { Topics, TopicsPlaceholder } from "./topics";
 import { Trending, TrendingPlaceholder } from "./trending";
 
-export const Website = async () => {
+export const Website = () => {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <BannerAd />
+        <Suspense fallback={<div>hello</div>}>
+          <BannerAd />
+        </Suspense>
         <Divider />
         <main className="grow space-y-16 py-8">
           <div className="z-10 md:hidden">
