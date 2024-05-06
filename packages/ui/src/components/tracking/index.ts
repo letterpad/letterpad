@@ -42,6 +42,7 @@ export enum EventCategory {
     HeaderMenu = "header_menu",
     HeroBanner = "hero_banner",
     Subscribe = "subscribe",
+    TrendingPosts = "trending_posts",
 }
 
 export enum EventLabel {

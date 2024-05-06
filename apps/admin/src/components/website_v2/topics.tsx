@@ -17,7 +17,7 @@ export const Topics: FC<Props> = async ({ limit, selected }) => {
 
   return (
     <>
-      <ul className="flex flex-wrap gap-2">
+      <ul className="flex flex-wrap gap-4">
         {items?.map((category) => (
           <Topic {...category} selected={selected} key={category.name} />
         ))}
@@ -36,7 +36,7 @@ export const TopicsPlaceholder = () => {
   const items = Array.from({ length: 8 });
   return (
     <>
-      <ul className="flex flex-wrap gap-2">
+      <ul className="flex flex-wrap gap-4">
         {items.map((_, i) => (
           <Skeleton
             key={i}

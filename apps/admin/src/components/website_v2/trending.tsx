@@ -1,10 +1,16 @@
 import { IoTrendingUpSharp } from "@react-icons/all-files/io5/IoTrendingUpSharp";
 import { Author } from "letterpad-graphql";
 import Link from "next/link";
-import { ProfileCard, Skeleton } from "ui/isomorphic";
+import {
+  EventAction,
+  EventCategory,
+  ProfileCard,
+  Skeleton,
+} from "ui/isomorphic";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 
+import { ClickAndTrack } from "./click";
 import { getTrendingPosts } from "./data";
 import { getReadableDate } from "../../shared/utils";
 
@@ -51,15 +57,20 @@ export const Trending = async () => {
                         showProLabel={author?.is_paid_member!}
                         size="xs"
                       />
-                      <Link
+                      <ClickAndTrack
                         className="flex items-center gap-2 mb-2"
                         href={link}
                         target="_blank"
+                        trackOptions={{
+                          eventAction: EventAction.Click,
+                          eventCategory: EventCategory.TrendingPosts,
+                          eventLabel: article.title,
+                        }}
                       >
                         <span className="text-base font-bold text-wrap break-words line-clamp-2 font-heading">
                           {article.title}
                         </span>
-                      </Link>
+                      </ClickAndTrack>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       {article.stats?.reading_time} •{" "}
