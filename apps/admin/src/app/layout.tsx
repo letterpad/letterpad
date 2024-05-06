@@ -115,7 +115,7 @@ const RootLayout = async ({ children }) => {
         </Script>
         <Providers theme={theme}>{children}</Providers>
         <CookieBanner />
-        {process.env.NODE_ENV !== "production" && (
+        {process.env.NODE_ENV === "production" && (
           <script
             type="text/partytown"
             defer={true}
