@@ -23,7 +23,7 @@ export const ActiveMember = ({ membership, onCancel }) => {
       method: "POST",
       body: JSON.stringify({ subscription_id: id }),
       headers: { "Content-Type": "application/json" },
-    }).then((res) => res.json());
+    }).then((res) => res?.json());
     track({
       eventAction: EventAction.Click,
       eventCategory: EventCategory.Membership,

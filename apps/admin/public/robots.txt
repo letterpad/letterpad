@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /cdn-cgi/
+Sitemap: https://letterpad.app/api/sitemap.xml
+Sitemap: https://letterpad.app/api/author-sitemap.xml

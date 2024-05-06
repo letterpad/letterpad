@@ -1,6 +1,5 @@
 import { IoRocketOutline } from "@react-icons/all-files/io5/IoRocketOutline";
 import classNames from "classnames";
-import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 import { Skeleton } from "ui/isomorphic";
 
@@ -13,26 +12,24 @@ import { InfiniteList } from "./infinite-list";
 import { InView } from "./inView";
 import { Topics, TopicsPlaceholder } from "./topics";
 import { Trending, TrendingPlaceholder } from "./trending";
-import { options } from "../../pages/api/auth/[...nextauth]";
 
-export const Website = async () => {
-  const session = await getServerSession(options());
-  const hasSession = !!session?.user?.id;
-
+export const Website = () => {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <BannerAd hasSession={hasSession} />
+        <Suspense fallback={<div>hello</div>}>
+          <BannerAd />
+        </Suspense>
         <Divider />
         <main className="grow space-y-16 py-8">
           <div className="z-10 md:hidden">
             <div className="mx-auto px-4 relative">
               <InView>
                 <Suspense fallback={<TopicsPlaceholder />}>
-                  <h4 className="font-bold text-lg pb-4 font-heading flex items-center gap-2">
+                  <div className="font-bold text-lg pb-4 font-heading flex items-center gap-2">
                     <IoRocketOutline className="text-sky-500" />
                     Topics
-                  </h4>
+                  </div>
                   <Topics limit={8} />
                 </Suspense>
               </InView>

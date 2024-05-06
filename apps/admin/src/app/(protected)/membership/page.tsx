@@ -49,7 +49,7 @@ const Payments: FC<P & { session: SessionData }> = () => {
 
   const fetchMembership = () => {
     fetch("/api/membership")
-      .then((res) => res.json())
+      .then((res) => res?.json())
       .then(setMembership)
       .then(() => setFetching(false))
       .catch(() => setFetching(false));

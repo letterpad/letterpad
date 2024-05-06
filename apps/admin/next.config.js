@@ -7,7 +7,7 @@ const ContentSecurityPolicy = `
   img-src * blob: data:;
   media-src res.cloudinary.com;
   font-src data: *;
-  frame-src youtube.com www.youtube.com js.stripe.com;
+  frame-src youtube.com www.youtube.com js.stripe.com *;
 `;
 
 const securityHeaders = [

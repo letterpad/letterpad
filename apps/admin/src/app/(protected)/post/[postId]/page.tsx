@@ -1,3 +1,5 @@
+import "../../../../../public/prism/prism";
+
 import "ui/css/editor.css";
 
 import { EditPost } from "./features";

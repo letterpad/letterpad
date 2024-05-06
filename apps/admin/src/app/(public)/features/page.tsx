@@ -55,9 +55,7 @@ export default function Component() {
                     </p>
                   </div>
                   <div className="flex items-center justify-center my-10">
-                    <CustomLink href="/register?ref=features-cta">
-                      Signup
-                    </CustomLink>
+                    <CustomLink href="/register">Signup</CustomLink>
                   </div>
                 </div>
                 <div className="space-y-40">

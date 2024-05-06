@@ -1,21 +1,17 @@
+import { Partytown } from "@builder.io/partytown/react";
 import classNames from "classnames";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
-import Script from "next/script";
 import React from "react";
 
 import "ui/css/tailwind.css";
-import "../../public/css/globals.css";
-import "../../public/css/theme-variables.css";
-import "tippy.js/dist/tippy.css";
 
 import { Providers } from "@/components/providers";
 
-import { basePath, gaTrackingId } from "@/constants";
+import { gaTrackingId } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import { CookieBanner } from "../components/cookie-banner";
-// import { fonts } from "../components/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getRootUrl()),
@@ -78,19 +74,8 @@ const RootLayout = async ({ children }) => {
   const theme = cookies().get("theme-preference")?.value ?? "light";
 
   return (
-    <html
-      lang="en"
-      data-color-scheme={theme}
-      className={classNames(
-        theme
-        // fonts.paragraph.variable,
-        // fonts.code.variable,
-        // fonts.heading.variable,
-        // fonts.sans.variable
-      )}
-    >
+    <html lang="en" data-color-scheme={theme} className={classNames(theme)}>
       <head>
-        <script src={basePath + `/prism/prism.js`} async />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
 
@@ -103,23 +88,28 @@ const RootLayout = async ({ children }) => {
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 overflow-hidden`}
       >
-        <Script id="google-analytics" async={true}>
-          {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          
-          gtag('config', '${gaTrackingId}');
-          `}
-        </Script>
+        <script
+          type="text/partytown"
+          dangerouslySetInnerHTML={{
+            __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        gtag('config', '${gaTrackingId}');
+        
+        `,
+          }}
+        ></script>
         <Providers theme={theme}>{children}</Providers>
         <CookieBanner />
+        <Partytown debug={false} forward={["dataLayer.push", "gtag"]} />
         {process.env.NODE_ENV === "production" && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+          <script
+            type="text/partytown"
             defer={true}
-            strategy="afterInteractive"
-          />
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+          ></script>
         )}
       </body>
     </html>
