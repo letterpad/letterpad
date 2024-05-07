@@ -1,4 +1,3 @@
-import { Partytown } from "@builder.io/partytown/react";
 import classNames from "classnames";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -14,6 +13,7 @@ import { gaTrackingId } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import { CookieBanner } from "../components/cookie-banner";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getRootUrl()),
@@ -90,8 +90,8 @@ const RootLayout = async ({ children }) => {
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 overflow-hidden`}
       >
-        <script
-          type="text/partytown"
+        <Script
+          id="google-analytics"
           dangerouslySetInnerHTML={{
             __html: `
         window.dataLayer = window.dataLayer || [];
@@ -102,16 +102,15 @@ const RootLayout = async ({ children }) => {
         
         `,
           }}
-        ></script>
+        ></Script>
         <Providers theme={theme}>{children}</Providers>
         <CookieBanner />
-        <Partytown debug={false} forward={["dataLayer.push", "gtag"]} />
-        {process.env.NODE_ENV === "production" && (
-          <script
-            type="text/partytown"
+        {process.env.NODE_ENV !== "production" && (
+          <Script
             defer={true}
+            strategy="afterInteractive"
             src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
-          ></script>
+          ></Script>
         )}
       </body>
     </html>

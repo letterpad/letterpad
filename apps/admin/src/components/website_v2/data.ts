@@ -21,6 +21,7 @@ import {
 import { getApiUrl } from "@/shared/getRootUrl";
 
 import { client } from "../../lib/urqlClient";
+import { cookies } from "next/headers";
 
 const apiUrl = typeof window === "undefined" ? getApiUrl() : "";
 
@@ -134,4 +135,9 @@ export async function getTrendingPosts() {
     }
   );
   return res.data?.letterpadTrendingPosts.__typename === "PostsNode" ? res.data.letterpadTrendingPosts.rows : [];
+}
+
+export async function setAbTestVersion(isControl: boolean) {
+  "use server"
+  cookies().set("trendingPosition", isControl ? "control" : "variation");
 }
