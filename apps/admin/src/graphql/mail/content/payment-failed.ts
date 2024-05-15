@@ -20,7 +20,7 @@ export async function getPaymentFailedContent(
         };
     }
     const subject = replaceSubjectVariables(template.subject, variables.subject);
-    const body = replaceBodyVariables(template.body, { ...variables.body, update_payment_link: data.invoice_url });
+    const body = replaceBodyVariables(template.body, { ...variables.body, invoice_url: data.invoice_url });
 
     return {
         ok: true,
