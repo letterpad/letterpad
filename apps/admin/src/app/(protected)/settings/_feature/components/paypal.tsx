@@ -1,6 +1,6 @@
 import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
-import { Input } from "ui";
+import { Input } from "ui/dist/index.mjs";
 
 interface Props {}
 const Paypal: React.FC<Props> = () => {

@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { WidgetPlaceholder } from "ui";
+import { WidgetPlaceholder } from "ui/dist/index.mjs";
 
 interface CountryChartProps {
   loading: boolean;

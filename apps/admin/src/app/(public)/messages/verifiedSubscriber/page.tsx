@@ -5,7 +5,7 @@ export const metadata = {
 import { BsArrowRight } from "react-icons/bs";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
-import { Button } from "ui/isomorphic";
+import { Button } from "ui/dist/isomorphic.mjs";
 
 export default function Verified() {
   return (

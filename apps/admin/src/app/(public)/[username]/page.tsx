@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { BiCalendar } from "react-icons/bi";
-import { ProfileCard } from "ui/isomorphic";
+import { ProfileCard } from "ui/dist/isomorphic.mjs";
 
 import { prisma } from "@/lib/prisma";
 

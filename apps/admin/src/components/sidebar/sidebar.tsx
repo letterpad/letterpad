@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Button, Menu, useResponsiveLayout } from "ui";
+import { Button, Menu, useResponsiveLayout } from "ui/dist/index.mjs";
 
 import { useMembershipDetails } from "@/hooks/useIsPaidMember";
 

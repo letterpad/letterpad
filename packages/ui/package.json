@@ -1,28 +1,22 @@
 {
   "name": "ui",
   "version": "0.0.1",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist",
-      "require": "./dist"
-    },
-    "./isomorphic": {
-      "import": "./dist/isomorphic.js",
-      "require": "./dist/isomorphic.js"
-    },
-    "./server": {
-      "import": "./dist/server.js",
-      "require": "./dist/server.js"
-    },
+    ".": "./dist/index.mjs",
+    "./dist/index.mjs": "./dist/index.mjs",
+    "./dist/isomorphic.mjs": "./dist/isomorphic.mjs",
+    "./dist/server.mjs": "./dist/server.mjs",
     "./css/*": "./css/*"
   },
+  "sideEffects": false,
   "module": "./dist/index.mjs",
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "tsup index.tsx isomorphic.ts server.ts --dts --format cjs,esm --external react,react-dom --treeshake --sourcemap --splitting --tsconfig ./tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "build": "NODE_OPTIONS='--max-old-space-size=16384' tsup",
     "dev": "bun run clean && tsup index.tsx isomorphic.ts server.ts --watch --dts --format cjs,esm --external react,react-dom --treeshake --sourcemap --splitting --tsconfig ./tsconfig.json",
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },

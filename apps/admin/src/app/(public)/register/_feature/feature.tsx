@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { Message } from "ui";
+import { Message } from "ui/dist/index.mjs";
 
 import { EventAction, EventCategory, EventLabel, track } from "@/track";
 

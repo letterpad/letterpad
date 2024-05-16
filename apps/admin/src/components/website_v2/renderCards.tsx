@@ -1,7 +1,8 @@
-import { Skeleton } from "ui/isomorphic";
-import { InfiniteList } from "./infinite-list";
+import { Skeleton } from "ui/dist/isomorphic.mjs";
+
 import { RenderCard } from "./card";
 import { getLetterpadPosts } from "./data";
+import { InfiniteList } from "./infinite-list";
 
 export const RenderCards = async () => {
   const data = await getLetterpadPosts({ filters: { cursor: "" } });

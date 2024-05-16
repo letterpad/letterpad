@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import Image from "next/image";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 import { themes as themesList } from "./components/themes";
 import {

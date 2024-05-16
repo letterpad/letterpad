@@ -15,7 +15,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BiBell } from "react-icons/bi";
-import { Drawer } from "ui";
+import { Drawer } from "ui/dist/index.mjs";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 

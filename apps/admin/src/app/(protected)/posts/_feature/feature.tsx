@@ -9,7 +9,7 @@ import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { DataTable, useResponsiveLayout } from "ui";
+import { DataTable, useResponsiveLayout } from "ui/dist/index.mjs";
 
 import { postsStyles } from "@/components/posts.css";
 

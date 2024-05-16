@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Input } from "ui";
+import { Input } from "ui/dist/index.mjs";
 
 import { removeTypenames } from "@/shared/utils";
 

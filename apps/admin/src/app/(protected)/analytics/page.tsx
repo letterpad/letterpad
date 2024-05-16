@@ -11,8 +11,8 @@ import { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import { FC, useEffect, useMemo, useState } from "react";
 import { Bar, Pie } from "react-chartjs-2";
-import { Content, useTheme } from "ui";
-import { PageHeader } from "ui/isomorphic";
+import { Content, useTheme } from "ui/dist/index.mjs";
+import { PageHeader } from "ui/dist/isomorphic.mjs"; // removed isomorphic;
 import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
 import {

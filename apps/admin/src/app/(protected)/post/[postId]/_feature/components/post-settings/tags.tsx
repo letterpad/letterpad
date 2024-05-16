@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { CgSpinner } from "react-icons/cg";
 import ReactTags from "react-tag-autocomplete";
-import { Message } from "ui";
+import { Message } from "ui/dist/index.mjs";
 
 import "./tags.css";
 

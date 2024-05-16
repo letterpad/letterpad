@@ -1,5 +1,5 @@
 import { BiSave } from "react-icons/bi";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 export const SaveButton = ({
   testId,

@@ -2,7 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
-import { ResponsiveProvider, ThemeProvider } from "ui";
+import { ResponsiveProvider, ThemeProvider } from "ui/dist/index.mjs";
 import { Provider as UrqlProvider } from "urql";
 
 // import { CSPostHogProvider } from "./posthog";

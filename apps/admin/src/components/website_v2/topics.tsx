@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { FC } from "react";
-import { Skeleton } from "ui/isomorphic";
+import { Skeleton } from "ui/dist/isomorphic.mjs";
 
 import { getLetterpadCategories } from "./data";
 import { Topic } from "./topic";

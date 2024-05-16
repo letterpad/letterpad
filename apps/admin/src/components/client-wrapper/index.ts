@@ -1,2 +1,2 @@
 "use client";
-export * from "ui";
+export * from "ui/dist/index.mjs";

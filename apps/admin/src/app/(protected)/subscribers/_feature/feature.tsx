@@ -1,6 +1,6 @@
 "use client";
 
-import { Table } from "ui";
+import { Table } from "ui/dist/index.mjs";
 
 import ErrorMessage from "@/components/ErrorMessage";
 

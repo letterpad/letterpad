@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { Message } from "ui";
+import { Message } from "ui/dist/index.mjs";
 
 import { EventAction, EventCategory, EventLabel, track } from "@/track";
 

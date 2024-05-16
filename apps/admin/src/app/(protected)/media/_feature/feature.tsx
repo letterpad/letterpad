@@ -3,7 +3,7 @@
 import { Media as IMedia, MediaNode } from "letterpad-graphql";
 import { useMediaQuery } from "letterpad-graphql/hooks";
 import { useEffect, useState } from "react";
-import { Button, Message } from "ui";
+import { Button, Message } from "ui/dist/index.mjs";
 
 import { useDeleteImage, useUpdateImage } from "./api.client";
 import { MediaUpdateModal } from "./components/mediaUpdateModal";

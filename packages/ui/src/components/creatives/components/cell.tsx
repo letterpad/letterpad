@@ -107,7 +107,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         multi={true}
         isVisible={!!fileExplorerOpen}
         handleCancel={() => setFileExplorerOpen(false)}
-        onInsert={(images) => {
+        onInsert={(images:any[]) => {
           setFileExplorerOpen(false);
           const { src, width = 1200, height = 800, caption } = images[0];
           if (isImage || isFirstRow) {

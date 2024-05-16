@@ -1,6 +1,6 @@
 import { PostWithAuthorAndTagsFragment, Setting } from "letterpad-graphql";
 import { FC } from "react";
-import { PostTitlePlaceholder } from "ui";
+import { PostTitlePlaceholder } from "ui/dist/index.mjs";
 
 import { useUpdatePost } from "../api.client";
 import { Editor } from "../components/editor";

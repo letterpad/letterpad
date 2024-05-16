@@ -7,7 +7,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-import { ProfileCard } from "ui/isomorphic";
+import { ProfileCard } from "ui/dist/isomorphic.mjs";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";

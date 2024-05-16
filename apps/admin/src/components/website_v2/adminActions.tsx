@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { FC } from "react";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 import { useUpdatePost } from "@/app/(protected)/post/[postId]/_feature/api.client";
 

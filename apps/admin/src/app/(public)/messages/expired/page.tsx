@@ -5,7 +5,7 @@ export const metadata = {
 import { BiSad } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
 import { CiWarning } from "react-icons/ci";
-import { Button } from "ui/isomorphic";
+import { Button } from "ui/dist/isomorphic.mjs";
 
 export default function Expired() {
   return (

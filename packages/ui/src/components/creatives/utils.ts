@@ -48,7 +48,7 @@ export const showFullSizeIcon = (item: Block) =>
 
 export const showBannerIcon = (item: Block) => item.cover !== "banner";
 
-export const splitBlock = (item: Block, firstCellType): Block => {
+export const splitBlock = (item: Block, firstCellType: any): Block => {
   let data = [...item.data];
   if (firstCellType === "text") {
     data = [{ type: "text" }, { type: "image" }];

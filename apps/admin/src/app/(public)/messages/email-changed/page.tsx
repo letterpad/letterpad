@@ -6,7 +6,7 @@ import { BiRocket } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
 import { IoSparkles } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
-import { Button } from "ui/isomorphic";
+import { Button } from "ui/dist/isomorphic.mjs";
 
 export default function EmailChanged() {
   return (

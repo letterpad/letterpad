@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Message, Modal, TextArea } from "ui";
+import { Button, Message, Modal, TextArea } from "ui/dist/index.mjs";
 
 import { basePath } from "@/constants";
 

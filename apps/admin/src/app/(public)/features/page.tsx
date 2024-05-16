@@ -1,4 +1,4 @@
-// import { Button } from "ui";
+// import { Button } from "ui/dist/index.mjs";
 
 import { Block } from "@/components/get-pro-modal-provider/content";
 

@@ -1,5 +1,5 @@
 import { IoInformationCircle } from "react-icons/io5";
-import { Content } from "ui";
+import { Content } from "ui/dist/index.mjs";
 
 const ErrorMessage = ({ title, description }) => {
   return (

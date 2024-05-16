@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { MetricPlaceholder } from "ui";
+import { MetricPlaceholder } from "ui/dist/index.mjs";
 
 import { ProcessedTotalData } from "../../app/(protected)/api/analytics/types";
 

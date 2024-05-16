@@ -3,7 +3,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { FC, useEffect, useRef } from "react";
-import { useIntersectionObserver } from "ui";
+import { useIntersectionObserver } from "ui/dist/index.mjs";
 
 import { Heading } from "./headings";
 

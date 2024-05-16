@@ -9,7 +9,7 @@ import {
   Layout,
   ThemeSwitcher,
   useBuilderContext,
-} from "ui";
+} from "ui/dist/index.mjs";
 
 import "./creatives.css";
 

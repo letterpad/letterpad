@@ -1,7 +1,7 @@
 import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { Input } from "ui";
+import { Input } from "ui/dist/index.mjs";
 
 import {
   createPathWithPrefix,

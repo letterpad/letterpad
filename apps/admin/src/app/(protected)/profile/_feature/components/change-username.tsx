@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { FC, useState } from "react";
-import { Button, Input } from "ui";
+import { Button, Input } from "ui/dist/index.mjs";
 
 import { useUpdateAuthor } from "@/app/(protected)/posts/_feature/api.client";
 import { sanitizeUsername } from "@/shared/utils";

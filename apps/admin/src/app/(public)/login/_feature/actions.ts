@@ -1,5 +1,5 @@
 import { signIn } from "next-auth/react";
-import { Message } from "ui";
+import { Message } from "ui/dist/index.mjs";
 
 import { basePath } from "@/constants";
 

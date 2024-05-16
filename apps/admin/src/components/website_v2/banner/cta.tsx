@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Button } from "ui/isomorphic";
+import { Button } from "ui/dist/isomorphic.mjs"; // removed isomorphic;
 
 import { EventAction, EventCategory, track } from "../../../track";
 

@@ -1,5 +1,5 @@
 import { RxOpenInNewWindow } from "react-icons/rx";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 interface Props {}
 const Ai: React.FC<Props> = () => {

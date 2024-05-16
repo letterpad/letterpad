@@ -1,4 +1,4 @@
-import { ListPlaceholder } from "ui";
+import { ListPlaceholder } from "ui/dist/index.mjs";
 
 import { secondsToMinutes } from "../../app/(protected)/api/analytics/helper";
 import { ProcessedReportData } from "../../app/(protected)/api/analytics/types";

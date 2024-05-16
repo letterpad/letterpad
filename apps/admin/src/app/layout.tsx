@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
+import Script from "next/script";
 import React from "react";
 
 import "ui/css/tailwind.css";
@@ -13,7 +14,6 @@ import { gaTrackingId } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import { CookieBanner } from "../components/cookie-banner";
-import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getRootUrl()),

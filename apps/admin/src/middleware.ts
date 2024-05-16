@@ -1,10 +1,10 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { decode } from "next-auth/jwt";
-import { isInMaintenanceModeEnabled } from "ui/server";
+import { isInMaintenanceModeEnabled } from "ui/dist/server.mjs";
 
 import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
-import { cookies } from "next/headers";
 
 export const config = { matcher: "/((?!static|.*\\..*|_next).*)" };
 

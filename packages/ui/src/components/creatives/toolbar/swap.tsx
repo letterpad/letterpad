@@ -13,7 +13,7 @@ export const Swap: FC<Props> = ({ onClick }) => {
       <Button
         onClick={onClick}
         variant="primary"
-        size="none"
+        size="small"
         className="rounded-full p-2"
       >
         <IoSwapHorizontal size={20} />

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { BiLoaderCircle } from "react-icons/bi";
 import ReactCrop, { type Crop } from "react-image-crop";
-import { Button, DialogModal } from "ui";
+import { Button, DialogModal } from "ui/dist/index.mjs";
 
 interface Props {
   showCropModal: boolean;

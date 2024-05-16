@@ -1,5 +1,5 @@
 import { BiRename, BiUnlink } from "react-icons/bi";
-import { Button, PopConfirm } from "ui";
+import { Button, PopConfirm } from "ui/dist/index.mjs";
 
 export function getHeaders({ tags, deleteTag, editTag }) {
   return [

@@ -5,7 +5,7 @@ import {
 } from "letterpad-graphql";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Button, Modal } from "ui";
+import { Button, Modal } from "ui/dist/index.mjs";
 
 import { usePublish } from "./usePublish";
 import { Heading } from "../heading";

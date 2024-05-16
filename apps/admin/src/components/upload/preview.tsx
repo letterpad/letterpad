@@ -6,7 +6,7 @@ import {
   AiOutlineLoading3Quarters,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { Button, Modal } from "ui";
+import { Button, Modal } from "ui/dist/index.mjs";
 
 interface NoImage {
   src: string;

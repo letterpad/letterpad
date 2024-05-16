@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { CgSpinner } from "react-icons/cg";
-import { TextArea } from "ui";
+import { TextArea } from "ui/dist/index.mjs";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
