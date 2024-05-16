@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isInMaintenanceModeEnabled } from 'ui/server';
+import { isInMaintenanceModeEnabled } from 'ui/dist/server.mjs';
 
 import { getAuthCookieName } from '../lib/utils/authCookie';
 import { getSessionUrl } from '../lib/utils/url';

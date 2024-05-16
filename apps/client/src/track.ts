@@ -1,4 +1,4 @@
-import { EventAction, EventCategory, EventLabel } from 'ui/isomorphic';
+import { EventAction, EventCategory, EventLabel } from 'ui/dist/isomorphic.mjs';
 
 interface EventInfo {
   eventCategory: EventCategory;

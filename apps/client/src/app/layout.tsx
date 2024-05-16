@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
-import { isInMaintenanceModeEnabled } from 'ui/server';
+import { isInMaintenanceModeEnabled } from 'ui/dist/server.mjs';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';

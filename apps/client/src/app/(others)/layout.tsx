@@ -1,4 +1,4 @@
-import { isInMaintenanceModeEnabled } from 'ui/server';
+import { isInMaintenanceModeEnabled } from 'ui/dist/server.mjs';
 
 import { Navbar } from '../../components/navbar';
 import { getData } from '../../data';

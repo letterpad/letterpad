@@ -1,6 +1,6 @@
 import { PageFragmentFragment, SettingsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
-import { ProfileCard } from 'ui/isomorphic';
+import { ProfileCard } from 'ui/dist/isomorphic.mjs';
 
 import { Share } from '@/components/share';
 
