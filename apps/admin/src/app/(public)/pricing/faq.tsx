@@ -1,5 +1,5 @@
 "use client";
-import { Accordion } from "ui";
+import { Accordion } from "ui/dist/index.mjs";
 
 import { Heading } from "../features/headings";
 

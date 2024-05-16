@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { useIntersectionObserver } from "ui";
+import { useIntersectionObserver } from "ui/dist/index.mjs";
 
 type InViewProps = {
   children: React.ReactNode;

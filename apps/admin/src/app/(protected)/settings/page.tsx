@@ -1,5 +1,5 @@
 import React from "react";
-import { PageHeader } from "ui/isomorphic";
+import { PageHeader } from "ui/dist/isomorphic.mjs";
 
 import { Content } from "@/components/client-wrapper";
 

@@ -1,5 +1,5 @@
 import { Children, FC, ReactNode } from "react";
-import { InfiniteScrollList } from "ui";
+import { InfiniteScrollList } from "ui/dist/index.mjs";
 
 interface Props {
   totalCount: number;

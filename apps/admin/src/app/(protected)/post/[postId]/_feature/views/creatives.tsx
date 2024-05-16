@@ -1,6 +1,6 @@
 import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import { FC } from "react";
-import { BuilderContext, Layout as LayoutBuilder } from "ui";
+import { BuilderContext, Layout as LayoutBuilder } from "ui/dist/index.mjs";
 
 import "./creatives.css";
 

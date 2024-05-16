@@ -8,7 +8,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
-import { Button, Modal } from "ui";
+import { Button, Modal } from "ui/dist/index.mjs";
 
 import { EventAction, EventCategory, EventLabel, track } from "../../../track";
 

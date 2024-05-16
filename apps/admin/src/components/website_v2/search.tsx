@@ -5,7 +5,7 @@ import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
 import { IoSearchOutline } from "@react-icons/all-files/io5/IoSearchOutline";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Modal } from "ui";
+import { Modal } from "ui/dist/index.mjs";
 
 import { doOmniSearch } from "./data";
 import { getReadableDate } from "../../shared/utils";

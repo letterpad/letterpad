@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useState } from "react";
-import { Button, DialogModal } from "ui";
+import { Button, DialogModal } from "ui/dist/index.mjs";
 
 import { ProFeatures } from "./content";
 

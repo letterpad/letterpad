@@ -121,7 +121,7 @@ export const LayoutToolbar: FC<Props> = ({
   );
 };
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({ children }:any) => (
   <div className="top-10 left-1/2  z-50 flex items-center  justify-center gap-8   rounded-t-lg border-b border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-700 dark:bg-gray-800">
     {children}
   </div>

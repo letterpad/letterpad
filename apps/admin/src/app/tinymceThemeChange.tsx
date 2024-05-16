@@ -1,5 +1,5 @@
 "use client";
-import { useTheme } from "ui";
+import { useTheme } from "ui/dist/index.mjs";
 export const TinyMceStyleChange = () => {
   const { theme } = useTheme();
 

@@ -2,7 +2,10 @@
 
 import classNames from "classnames";
 import React from "react";
-import { TwoColumnLayout as Layout, useResponsiveLayout } from "ui";
+import {
+  TwoColumnLayout as Layout,
+  useResponsiveLayout,
+} from "ui/dist/index.mjs";
 
 import "tippy.js/dist/tippy.css";
 

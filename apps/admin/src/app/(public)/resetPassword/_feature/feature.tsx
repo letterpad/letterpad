@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { Message } from "ui";
+import { Message } from "ui/dist/index.mjs";
 
 import { Logo } from "@/app/(public)/login/_feature";
 import { EventAction, EventCategory, EventLabel, track } from "@/track";

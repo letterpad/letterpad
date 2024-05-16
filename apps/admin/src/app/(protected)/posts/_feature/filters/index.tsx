@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "ui";
+} from "ui/dist/index.mjs";
 
 import { useGetTags } from "@/app/(protected)/tags/_feature/api.client";
 import { PageType } from "@/graphql/types";

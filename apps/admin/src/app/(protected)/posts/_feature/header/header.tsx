@@ -3,8 +3,8 @@ import { PostStatusOptions, PostTypes } from "letterpad-graphql";
 import { useRouter } from "next/navigation";
 import { MouseEvent, ReactNode, useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import { Button, Modal } from "ui";
-import { PageHeader } from "ui/isomorphic";
+import { Button, Modal } from "ui/dist/index.mjs";
+import { PageHeader } from "ui/dist/isomorphic.mjs";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 

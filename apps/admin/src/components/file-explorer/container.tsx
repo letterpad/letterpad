@@ -1,7 +1,7 @@
 import { Media } from "letterpad-graphql";
 import { useCallback, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
-import { Button, DialogModal, SearchInput } from "ui";
+import { Button, DialogModal, SearchInput } from "ui/dist/index.mjs";
 
 import MediaItem from "./MediaItem";
 import { Gallery } from "./providers/Gallery";

@@ -1,11 +1,11 @@
 import { IoMdInformationCircleOutline } from "@react-icons/all-files/io/IoMdInformationCircleOutline";
 import { FC } from "react";
-import { Skeleton } from "ui/isomorphic";
+import { Skeleton } from "ui/dist/isomorphic.mjs";
 
+import { ClickAndTrack } from "./click";
 import { timeAgo } from "../../lib/timeAgo";
 import { fetchPostsByTag } from "../../resourceFetcher";
 import { EventAction, EventCategory, EventLabel, track } from "../../track";
-import { ClickAndTrack } from "./click";
 
 export const Announcements: FC = async () => {
   const posts = await fetchPostsByTag();

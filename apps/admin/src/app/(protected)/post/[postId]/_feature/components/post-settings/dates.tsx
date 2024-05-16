@@ -1,6 +1,6 @@
 import { PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
-import { Input } from "ui";
+import { Input } from "ui/dist/index.mjs";
 
 import { Heading } from "./heading";
 

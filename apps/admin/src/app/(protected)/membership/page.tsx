@@ -5,8 +5,8 @@ import { InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { Content, TablePlaceholder } from "ui";
-import { PageHeader } from "ui/isomorphic";
+import { Content, TablePlaceholder } from "ui/dist/index.mjs";
+import { PageHeader } from "ui/dist/isomorphic.mjs";
 
 import { SessionData } from "@/graphql/types";
 

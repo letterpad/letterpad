@@ -6,7 +6,7 @@ import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 import { SlBadge } from "react-icons/sl";
 import { VscDebugDisconnect, VscGraphLine } from "react-icons/vsc";
-import { MenuItem } from "ui";
+import { MenuItem } from "ui/dist/index.mjs";
 
 export const items = (stats, activePlan: boolean): MenuItem[] => [
   {

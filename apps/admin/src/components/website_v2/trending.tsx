@@ -1,18 +1,18 @@
 import { IoTrendingUpSharp } from "@react-icons/all-files/io5/IoTrendingUpSharp";
 import { Author } from "letterpad-graphql";
+import { cookies } from "next/headers";
 import {
   EventAction,
   EventCategory,
   ProfileCard,
   Skeleton,
-} from "ui/isomorphic";
+} from "ui/dist/isomorphic.mjs";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import { ClickAndTrack } from "./click";
 import { getTrendingPosts } from "./data";
 import { getReadableDate } from "../../shared/utils";
-import { cookies } from "next/headers";
 
 export const Trending = async () => {
   const posts = await getTrendingPosts();

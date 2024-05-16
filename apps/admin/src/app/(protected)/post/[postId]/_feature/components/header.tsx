@@ -6,7 +6,7 @@ import {
 } from "letterpad-graphql";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 import Actions from "./post-settings";
 import { usePublish } from "./post-settings/publish/usePublish";

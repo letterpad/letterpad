@@ -5,7 +5,7 @@ import {
 } from "letterpad-graphql";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Message } from "ui";
+import { Message } from "ui/dist/index.mjs";
 
 import { EventAction, EventCategory, EventLabel, track } from "@/track";
 

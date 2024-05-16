@@ -1,5 +1,5 @@
 "use client";
 
-import { PagePlaceholder } from "ui";
+import { PagePlaceholder } from "ui/dist/index.mjs";
 
 export default PagePlaceholder;

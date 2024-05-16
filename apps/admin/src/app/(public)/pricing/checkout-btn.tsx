@@ -1,7 +1,7 @@
 "use client";
 import { FC, useState } from "react";
 import { VscLoading } from "react-icons/vsc";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 import { checkout } from "../../(protected)/membership/checkout";
 

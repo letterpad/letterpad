@@ -15,7 +15,7 @@ import {
 } from "@dnd-kit/sortable";
 import { FC, useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 import { Collection } from "@/components/navigation-builder/types";
 

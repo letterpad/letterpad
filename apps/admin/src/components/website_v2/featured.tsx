@@ -1,7 +1,7 @@
 import { Author } from "letterpad-graphql";
 import Link from "next/link";
 import { IoStar } from "react-icons/io5";
-import { ProfileCard, Skeleton } from "ui/isomorphic";
+import { ProfileCard, Skeleton } from "ui/dist/isomorphic.mjs";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 

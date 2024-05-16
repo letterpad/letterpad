@@ -21,7 +21,7 @@ export const ColorPickerGradient: FC<Props> = ({
 }) => {
   const [active, setActive] = useState("background");
 
-  const handleChange = (change) => {
+  const handleChange = (change:any) => {
     onChange({ background, gradientStart, gradientEnd, ...change });
   };
 
@@ -76,7 +76,7 @@ export const ColorPickerGradient: FC<Props> = ({
             />
           )}
         </div>
-        <style jsx global>{`
+        <style>{`
           .flex .react-colorful {
             width: 200px;
             height: 160px;

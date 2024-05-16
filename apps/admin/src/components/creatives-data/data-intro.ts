@@ -1,4 +1,4 @@
-import { Block } from "ui";
+import { Block } from "ui/dist/index.mjs";
 
 export const introData: Block[] = [
   {

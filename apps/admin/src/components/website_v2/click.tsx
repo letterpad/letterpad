@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { FC, HTMLAttributeAnchorTarget, ReactNode } from "react";
-import { EventInfo } from "ui/isomorphic";
+import { EventInfo } from "ui/dist/isomorphic.mjs";
 
 import { track } from "../../track";
 

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
-import { Button, Table } from "ui";
+import { Button, Table } from "ui/dist/index.mjs";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
 

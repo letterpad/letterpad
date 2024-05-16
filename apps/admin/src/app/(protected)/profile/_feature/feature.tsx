@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Message } from "ui";
+import { Message } from "ui/dist/index.mjs";
 
 import { getDirtyFields } from "@/lib/react-form";
 

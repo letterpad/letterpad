@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, DialogClose, DialogModal, Message } from "ui";
+import { Button, DialogClose, DialogModal, Message } from "ui/dist/index.mjs";
 
 export const ContactUsModal = ({ trigger }) => {
   return (

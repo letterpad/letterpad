@@ -2,7 +2,14 @@
 
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Button, Content, Input, PageHeader, Table, Tabs } from "ui";
+import {
+  Button,
+  Content,
+  Input,
+  PageHeader,
+  Table,
+  Tabs,
+} from "ui/dist/index.mjs";
 
 import { Editor } from "@/app/(protected)/post/[postId]/_feature";
 

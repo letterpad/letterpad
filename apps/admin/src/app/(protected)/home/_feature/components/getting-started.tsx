@@ -1,7 +1,7 @@
 import { InputAuthor, MeFragmentFragment } from "letterpad-graphql";
 import Link from "next/link";
 import { FC, useEffect } from "react";
-import { Button } from "ui";
+import { Button } from "ui/dist/index.mjs";
 
 import { setIntroDimissed } from "@/app/(protected)/home/_feature/components/visibility";
 import { useUpdateAuthor } from "@/app/(protected)/posts/_feature/api.client";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Content, Table } from "ui";
+import { Content, Table } from "ui/dist/index.mjs";
 
 import { TOPIC_PREFIX } from "@/shared/utils";
 

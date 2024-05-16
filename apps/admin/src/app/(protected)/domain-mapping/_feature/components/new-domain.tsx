@@ -1,7 +1,7 @@
 import { useAddDomainMutation } from "letterpad-graphql/hooks";
 import { ChangeEvent, useState } from "react";
 import { BsInfoCircleFill } from "react-icons/bs";
-import { Button, Input, Message } from "ui";
+import { Button, Input, Message } from "ui/dist/index.mjs";
 
 import { useIsPaidAndNotTrialMember } from "@/hooks/useIsPaidMember";
 

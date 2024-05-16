@@ -1,7 +1,7 @@
 import axios from "axios";
 import classNames from "classnames";
 import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
-import { Label } from "ui";
+import { Label } from "ui/dist/index.mjs";
 
 import { FileExplorer } from "@/components/file-explorer";
 

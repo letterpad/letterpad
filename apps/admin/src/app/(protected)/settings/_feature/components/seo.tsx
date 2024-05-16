@@ -1,6 +1,6 @@
 import { Setting } from "letterpad-graphql";
 import { useFormContext } from "react-hook-form";
-import { Input, TextArea } from "ui";
+import { Input, TextArea } from "ui/dist/index.mjs";
 
 interface Props {}
 const General: React.FC<Props> = () => {

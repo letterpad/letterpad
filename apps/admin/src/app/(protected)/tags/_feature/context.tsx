@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Button, Input, Message, Modal } from "ui";
+import { Button, Input, Message, Modal } from "ui/dist/index.mjs";
 
 import { useDeleteTags, useGetTags, useUpdateTags } from "./api.client";
 import { getHeaders } from "./components/headers";

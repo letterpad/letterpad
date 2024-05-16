@@ -6,7 +6,7 @@ import {
   useRemoveDomainMutation,
 } from "letterpad-graphql/hooks";
 import { AiFillCheckCircle } from "react-icons/ai";
-import { Button, Message } from "ui";
+import { Button, Message } from "ui/dist/index.mjs";
 
 import { Spinner } from "@/components/loading";
 

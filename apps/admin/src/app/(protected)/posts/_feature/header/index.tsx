@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "ui";
+} from "ui/dist/index.mjs";
 
 import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";
 

@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { PostTypes, PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Drawer } from "ui";
+import { Drawer } from "ui/dist/index.mjs";
 
 import { useGetSettings } from "@/app/(protected)/settings/_feature/api.client";
 

@@ -1,4 +1,4 @@
-import { PageHeader } from "ui/isomorphic";
+import { PageHeader } from "ui/dist/isomorphic.mjs";
 
 import { Feature } from "./_feature";
 

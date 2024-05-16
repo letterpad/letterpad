@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Input, Message, TextArea } from "ui";
+import { Input, Message, TextArea } from "ui/dist/index.mjs";
 
 import { getDirtyFields } from "@/lib/react-form";
 

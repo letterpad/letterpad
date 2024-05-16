@@ -1,4 +1,4 @@
-import { PageHeader } from "ui/isomorphic";
+import { PageHeader } from "ui/dist/isomorphic.mjs";
 
 import { Content } from "@/components/client-wrapper";
 import { UpgradeBanner } from "@/components/upgrade-plan-banner/upgrade-banner";

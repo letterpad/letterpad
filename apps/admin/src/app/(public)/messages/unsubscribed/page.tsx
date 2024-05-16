@@ -5,7 +5,7 @@ export const metadata = {
 import { BsArrowRight } from "react-icons/bs";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
 import { VscDebugDisconnect } from "react-icons/vsc";
-import { Button } from "ui/isomorphic";
+import { Button } from "ui/dist/isomorphic.mjs";
 
 export default function Unsubscribed({ searchParams }) {
   const msg =

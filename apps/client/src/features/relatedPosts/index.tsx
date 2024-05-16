@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { GridCard } from 'ui/isomorphic';
+import { GridCard } from 'ui/dist/isomorphic.mjs';
 
 import { getRelatedPosts } from '../../data';
 import { getReadableDate } from '../../utils';

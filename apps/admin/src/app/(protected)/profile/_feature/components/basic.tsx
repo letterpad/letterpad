@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { Input, Label, TextArea } from "ui";
+import { Input, Label, TextArea } from "ui/dist/index.mjs";
 
 import { Upload } from "@/components/upload";
 

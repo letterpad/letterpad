@@ -7,7 +7,7 @@ import { CgPassword } from "react-icons/cg";
 import { CiLock } from "react-icons/ci";
 import { IoSparkles } from "react-icons/io5";
 import { TbPassword } from "react-icons/tb";
-import { Button } from "ui/isomorphic";
+import { Button } from "ui/dist/isomorphic.mjs";
 
 export default function PasswordChanged() {
   return (

@@ -97,7 +97,7 @@ export const MiniEditor: React.FC<Props> = ({
           ],
         }}
       />
-      <style jsx global>{`
+      <style>{`
         .tox .tox-edit-area__iframe {
           background-color: transparent !important;
           line-height: 24 !important;

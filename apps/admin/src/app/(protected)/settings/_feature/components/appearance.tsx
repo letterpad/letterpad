@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Button, Label, TextArea } from "ui";
+import { Button, Label, TextArea } from "ui/dist/index.mjs";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 

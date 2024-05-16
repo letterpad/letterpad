@@ -1,6 +1,6 @@
 import { CgClose } from "@react-icons/all-files/cg/CgClose";
 import { cookies } from "next/headers";
-import { EventAction, EventCategory, EventLabel } from "ui/isomorphic";
+import { EventAction, EventCategory, EventLabel } from "ui/dist/isomorphic.mjs";
 
 import { onClose } from "./action";
 import { ClickAndTrack } from "../click";

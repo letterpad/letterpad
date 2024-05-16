@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { IoEyeOutline, IoSettingsOutline } from "react-icons/io5";
-import { useTheme } from "ui";
+import { useTheme } from "ui/dist/index.mjs";
 
 import { Dropdown } from "@/components/dropdown/dropdown";
 

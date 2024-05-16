@@ -1,7 +1,6 @@
 import { SettingsFragmentFragment } from "letterpad-graphql";
 import { Controller, useFormContext } from "react-hook-form";
-import { Divider, Switch } from "ui";
-
+import { Divider, Switch } from "ui/dist/index.mjs";
 
 interface Props {
   settings: SettingsFragmentFragment;

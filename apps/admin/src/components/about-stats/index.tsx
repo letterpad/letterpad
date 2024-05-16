@@ -6,7 +6,7 @@ import {
   useGetFollowingQuery,
 } from "letterpad-graphql/hooks";
 import Link from "next/link";
-import { Button, DialogClose, DialogModal } from "ui";
+import { Button, DialogClose, DialogModal } from "ui/dist/index.mjs";
 
 export const AboutStats = ({ username, id, siteUrl }) => {
   const [{ data, fetching }] = useAboutStatsQuery({ variables: { username } });

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
-import { Button, ThemeSwitcher, useResponsiveLayout } from "ui";
+import { Button, ThemeSwitcher, useResponsiveLayout } from "ui/dist/index.mjs";
 
 import FeedbackForm from "./feedback-form";
 import { NotificationDropdown } from "../notification-dd/list";
