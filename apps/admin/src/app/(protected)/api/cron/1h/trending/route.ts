@@ -11,11 +11,11 @@ const MAX_ROW_LIMIT = 20;
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new Response("Unauthorized", {
-      status: 401,
-    });
-  }
+  // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  //   return new Response("Unauthorized", {
+  //     status: 401,
+  //   });
+  // }
   const today = dayjs();
   const startDate = today.subtract(14, "day").format("YYYY-MM-DD");
   const endDate = today.format("YYYY-MM-DD")
@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
 
 
   await prisma.trending.createMany({
-    data: trendingPostsData,
+    data: trendingPostsData.filter((item) => item.post_id),
   });
 
   const count = await prisma.trending.count();

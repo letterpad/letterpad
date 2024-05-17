@@ -58,7 +58,7 @@ export const updateAuthor = async (
     };
   }
   try {
-    const dataToUpdate = { ...args.author } as InputAuthorForDb & {
+    const dataToUpdate = { ...args.author, username: args.author.username?.toLowerCase() } as InputAuthorForDb & {
       verified?: boolean;
     };
     const newEmail =
