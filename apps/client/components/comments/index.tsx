@@ -1,7 +1,11 @@
 'use client';
 
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { CommentBox, SingleComment, useIntersectionObserver } from 'ui';
+import {
+  CommentBox,
+  SingleComment,
+  useIntersectionObserver,
+} from 'ui/dist/index.mjs';
 
 import { totalComments } from './utils';
 import { useSession } from '../../context/SessionProvider';

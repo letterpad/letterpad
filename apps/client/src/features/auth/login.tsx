@@ -1,6 +1,6 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import { Button } from 'ui';
+import { Button } from 'ui/dist/index.mjs';
 
 import { getApiRootUrl } from '@/lib/utils/url';
 
