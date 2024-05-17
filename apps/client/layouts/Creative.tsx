@@ -4,7 +4,7 @@ import {
   PageFragmentFragment,
   SettingsFragmentFragment,
 } from 'letterpad-sdk';
-import { BuilderContext, StaticLayout } from 'ui';
+import { BuilderContext, StaticLayout } from 'ui/dist/index.mjs';
 
 import './creatives.css';
 

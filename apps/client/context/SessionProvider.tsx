@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Button, Drawer, Modal } from 'ui';
+import { Button, Drawer, Modal } from 'ui/dist/index.mjs';
 
 import { getApiRootUrl } from '../lib/utils/url';
 import { Subscribe } from '../src/components/subscribe';

@@ -2,7 +2,7 @@
 import { PageFragmentFragment } from 'letterpad-sdk';
 import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { GoComment } from 'react-icons/go';
-import { Button, useIntersectionObserver } from 'ui';
+import { Button, useIntersectionObserver } from 'ui/dist/index.mjs';
 
 import { LikeComponent } from '@/features/like/component';
 import { useLikeContext } from '@/features/like/context';

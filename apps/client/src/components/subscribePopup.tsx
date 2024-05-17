@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { useIntersectionObserver } from 'ui';
+import { useIntersectionObserver } from 'ui/dist/index.mjs';
 
 import { useSession } from '../../context/SessionProvider';
 

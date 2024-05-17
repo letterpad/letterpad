@@ -2,7 +2,7 @@
 
 import { FC, useState } from 'react';
 import { LuMailPlus } from 'react-icons/lu';
-import { Modal } from 'ui';
+import { Modal } from 'ui/dist/index.mjs';
 
 import { Subscribe } from './subscribe';
 

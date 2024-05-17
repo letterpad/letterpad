@@ -9,7 +9,7 @@ import {
   RedditShareButton,
   TwitterShareButton,
 } from 'react-share';
-import { Button } from 'ui';
+import { Button } from 'ui/dist/index.mjs';
 
 import { useOnClickOutside } from '../../src/hooks/useOnClickOutisde';
 

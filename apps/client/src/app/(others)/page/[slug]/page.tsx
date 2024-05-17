@@ -1,14 +1,15 @@
 // export const runtime = 'edge';
 
 import { Metadata } from 'next';
+import { lazy } from 'react';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 import { Post } from '@/features/post/post';
-import Creative from '@/layouts/Creative';
 
 import { StructuredData } from '../../../../components/structured-data';
 import Custom404 from '../../../not-found';
+const Creative = lazy(() => import('@/layouts/Creative'));
 
 export default async function Page(props) {
   const [post, data] = await Promise.all([
@@ -67,10 +68,7 @@ export default async function Page(props) {
   );
 }
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}): Promise<Metadata> {
+export async function generateMetadata({ params }): Promise<Metadata> {
   const post = await getPostData(params.slug);
   const data = await getAuthorAndSettingsData();
   if (!post || !data?.me || !data?.settings) return {};
