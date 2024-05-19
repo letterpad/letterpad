@@ -17,13 +17,18 @@ export function createRequester(options: LetterpadSdkOptions) {
         }),
       });
       const body = await response.json();
-      if(body.errors) {
+      if (body.errors) {
         console.log("Requester failed", body.errors);
         throw new Error("There was a graphql error while contacting the server.");
       }
       return body.data;
     } catch (e) {
-      console.log("Requester failed", e);
+      // print more info
+      console.log("Server URL", options.letterpadServer.url);
+      console.log("Server Token", options.letterpadServer.token);
+      console.log("Server Host", options.letterpadServer.host);
+
+      console.log(`Exception - Requester failed`, e);
     }
   };
 }
