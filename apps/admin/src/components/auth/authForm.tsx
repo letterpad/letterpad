@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Link from "next/link";
 import { FC, MouseEvent, useState } from "react";
 import {
@@ -25,13 +26,14 @@ interface FormProps {
 interface Props {
   serviceUrl: string;
   source: string;
+  className?: string;
 }
 
 type AuthViews = "login" | "register";
 
 const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_KEY;
 
-export const AuthForm: FC<Props> = ({ serviceUrl, source }) => {
+export const AuthForm: FC<Props> = ({ serviceUrl, source, className }) => {
   const [busy, setBusy] = useState(false);
   const { register, handleSubmit } = useForm<FormProps>();
   const [type, setType] = useState<AuthViews>("login");
@@ -133,9 +135,9 @@ export const AuthForm: FC<Props> = ({ serviceUrl, source }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex items-center justify-center"
+      className="flex items-center justify-center w-full px-8"
     >
-      <Card className="m-auto max-w-xl w-full">
+      <Card className={classNames("m-auto max-w-xl w-full", className)}>
         <CardHeader>
           <CardTitle className="text-2xl">
             {type === "login" && "Welcome Back."}
