@@ -33,21 +33,22 @@ export const getPosts = cache(
     const { page = 1, limit = 10 } = args.filters;
     const skip = page && limit ? (page - 1) * limit : 0;
     const isPage = args.filters.type === PostTypes.Page;
+    const status = getStatus(session?.user.id, args.filters?.status!)
     const condition: Partial<Prisma.PostFindManyArgs> = {
       where: {
         html: {},
-        banned: args.filters.banned,
+        banned: args.filters.banned!,
         author_id: authorId,
         exclude_from_home: undefined,
-        featured: args.filters?.featured,
-        status: getStatus(session?.user.id, args.filters?.status),
+        featured: args.filters?.featured!,
+        status,
         type: args.filters?.type ?? PostTypes.Post,
         tags: getTags({
-          slug: args.filters.tagSlug,
+          slug: args.filters.tagSlug!,
           isPage,
           loggedIn: !!session,
         }),
-        page_type: args.filters.page_type,
+        page_type: args.filters.page_type!,
       },
       take: args.filters?.limit || 100,
       skip,
@@ -118,7 +119,7 @@ function getTags({ slug, loggedIn, isPage }: GetTagsProps) {
 function getStatus(session, status?: InputMaybe<PostStatusOptions>[]) {
   return {
     in: session
-      ? status ?? [PostStatusOptions.Published, PostStatusOptions.Draft]
+      ? status?.length ? status : [PostStatusOptions.Published, PostStatusOptions.Draft]
       : [PostStatusOptions.Published],
-  };
+  } as { in: PostStatusOptions[] };
 }

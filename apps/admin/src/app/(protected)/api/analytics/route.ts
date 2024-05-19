@@ -25,7 +25,7 @@ export const createAnalyticsDataClient = () => {
 
 export async function GET(req: Request) {
     const session = await getServerSession({ req });
-    if (!session?.user.email) {
+    if (!session?.user?.email) {
         return NextResponse.json({ error: "You are not authorized" }, { status: 401 });
     }
 

@@ -92,7 +92,7 @@ export const updatePost = async (
     const isBanned = isAdmin && typeof args.data.banned !== "undefined";
     if (isBanned) {
       await prisma.post.update({
-        data: { banned: args.data.banned },
+        data: { banned: args.data.banned! },
         where: { id: args.data.id },
       });
       revalidateTag("letterpadLatestPosts");
@@ -113,13 +113,13 @@ export const updatePost = async (
       newPostArgs.data.status = args.data.status;
     }
     if (typeof args.data.featured !== "undefined") {
-      newPostArgs.data.featured = args.data.featured;
+      newPostArgs.data.featured = args.data.featured!;
     }
     if (args.data.type) {
       newPostArgs.data.type = args.data.type;
     }
     if (typeof args.data.exclude_from_home !== "undefined") {
-      newPostArgs.data.exclude_from_home = args.data.exclude_from_home;
+      newPostArgs.data.exclude_from_home = args.data.exclude_from_home!;
     }
     if (args.data.mail_status) {
       newPostArgs.data.mail_status = args.data.mail_status;

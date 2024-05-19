@@ -24,7 +24,7 @@ export const onBoardUser = async (id: string) => {
       slug: siteConfig.default_tag,
     };
 
-    const welcomeContent = getWelcomePost(newAuthor.name);
+    const welcomeContent = getWelcomePost(newAuthor.name!);
     await prisma.post.create({
       data: {
         ...welcomeContent.post,

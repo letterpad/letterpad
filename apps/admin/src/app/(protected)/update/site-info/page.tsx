@@ -1,41 +1,63 @@
 "use client";
 
-import { RegisterStep, SettingInputType } from "letterpad-graphql";
+import classNames from "classnames";
+import { RegisterStep, Setting } from "letterpad-graphql";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Input, Label, Message, TextArea } from "ui/dist/index.mjs";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  TextArea,
+} from "ui/dist/index.mjs";
 
-import { getDirtyFields } from "@/lib/react-form";
+import { Logo } from "@/components/auth/logo";
 
 import { useUpdateAuthor } from "@/app/(protected)/posts/_feature/api.client";
 import {
   useGetSettings,
   useUpdateSettings,
 } from "@/app/(protected)/settings/_feature/api.client";
-import { Logo } from "@/app/(public)/login/_feature";
 import { registrationPaths } from "@/constants";
 import { EventAction, EventCategory, track } from "@/track";
 import { isAuthor } from "@/utils/type-guards";
 
+type UpdateProps = Pick<
+  Setting,
+  "site_title" | "site_description" | "design" | "site_tagline"
+>;
+
 export const SiteInfo = () => {
   const { data: settings } = useGetSettings();
   const session = useSession();
-  const methods = useForm({
-    values: settings,
+  const {
+    design,
+    site_title = "",
+    site_description = "",
+    site_tagline = "",
+  } = settings ?? {};
+
+  const methods = useForm<UpdateProps>({
+    values: { site_title, site_description, design, site_tagline },
   });
   const { handleSubmit, formState, register } = methods;
 
   const { updateSettings } = useUpdateSettings();
   const { updateAuthor } = useUpdateAuthor();
-  const [_, setProcessing] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const router = useRouter();
 
-  const updateSite = async (change: SettingInputType) => {
+  const updateSite = async (change: UpdateProps) => {
     if (!session.data?.user?.id) return null;
-    setProcessing(true);
+    setBusy(true);
     try {
       await updateSettings({
         options: {
@@ -45,11 +67,7 @@ export const SiteInfo = () => {
     } catch (e: any) {
       // eslint-disable-next-line no-console
       console.log(e);
-      Message().error({
-        content: "Site information update failed - " + e.message,
-        duration: 5,
-      });
-      setProcessing(false);
+      setBusy(false);
       return;
     }
 
@@ -59,76 +77,57 @@ export const SiteInfo = () => {
     });
     if (result.data?.updateAuthor && isAuthor(result.data?.updateAuthor)) {
       const updatedAuthor = result.data.updateAuthor;
-      Message().success({
-        content: "Site information updated successfully",
-        duration: 3,
-      });
       track({
         eventAction: EventAction.Click,
         eventCategory: EventCategory.Auth,
         eventLabel: updatedAuthor.register_step!,
       });
-      setProcessing(false);
+      setBusy(false);
 
       await session.update({
-        ...session.data,
-        user: { ...session.data?.user, register_step: RegisterStep.Registered },
+        register_step: RegisterStep.Registered,
       });
       router.push(registrationPaths[RegisterStep.Registered]);
     } else if (result.data?.updateAuthor?.__typename === "Failed") {
-      setProcessing(false);
-      Message().error({
-        content: result.data?.updateAuthor?.message,
-        duration: 5,
-      });
+      setBusy(false);
     }
   };
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit((data) => {
-          const change = getDirtyFields(data, formState.dirtyFields);
-          if (change) {
-            updateSite(change as any);
-          }
-
-          // updateSettingsAPI(change).then(() => methods.reset(change));
-        })}
-      >
-        <div className="bg-white dark:bg-gray-900">
-          <div className="flex h-screen justify-center">
-            <div className="mx-auto flex w-full items-center px-6 lg:w-3/5">
-              <div className="flex-1">
-                <div className="pb-12 text-center">
-                  <h2 className="mb-8 flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
-                    <Logo />
-                  </h2>
-                  <h2 className="text-center text-2xl font-bold text-gray-700 dark:text-white">
-                    We need a few more details to update your dashboard
-                  </h2>
-                  <p className="mt-3 font-semibold uppercase text-gray-500 dark:text-gray-300">
-                    Site Information (2/2)
-                  </p>
-                </div>
-                <div className="md:px-40">
-                  <div className="mt-4">
-                    <div>
-                      <Label
-                        label="Choose a brand color"
-                        className="mb-2 text-md"
-                      />
-                      <input
-                        type="color"
-                        {...register("design.brand_color", {
-                          required: {
-                            value: true,
-                            message: "Name is required",
-                          },
-                        })}
-                      />
-                    </div>
+    <div className="flex items-center justify-center flex-1 flex-col">
+      <FormProvider {...methods}>
+        <form
+          onSubmit={handleSubmit(updateSite)}
+          className="m-auto max-w-xl w-full"
+        >
+          <Card
+            className={classNames({
+              "border-transparent bg-transparent shadow-none": true,
+            })}
+          >
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg">Blog Details</CardTitle>
+              <CardDescription>Site Information (2/2)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                <div className="mt-4">
+                  <div>
+                    <Label
+                      label="Choose a brand color"
+                      className="mb-2 text-md"
+                    />
+                    <input
+                      type="color"
+                      {...register("design.brand_color", {
+                        required: {
+                          value: true,
+                          message: "Name is required",
+                        },
+                      })}
+                    />
                   </div>
+
                   <div className="mt-4">
                     <div>
                       <Input
@@ -210,20 +209,21 @@ export const SiteInfo = () => {
                     </div>
                   </div>
                   <div className="mt-6">
-                    <button
-                      className="w-full transform rounded-md bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                    <Button
                       data-testid="updateSiteBtn"
+                      type="submit"
+                      className="w-full"
                     >
                       Update Site
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </FormProvider>
+            </CardContent>
+          </Card>
+        </form>
+      </FormProvider>
+    </div>
   );
 };
 

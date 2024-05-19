@@ -1,10 +1,8 @@
 import classNames from "classnames";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FC, MouseEvent, useState } from "react";
-import {
-  GoogleReCaptchaProvider,
-  useGoogleReCaptcha,
-} from "react-google-recaptcha-v3";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Button,
@@ -17,35 +15,48 @@ import {
 } from "ui/dist/index.mjs";
 
 import { onLoginAction, onRegisterAction } from "./action";
-import { SocialLogin } from "../../app/(public)/login/_feature";
+import { CaptchaProvider } from "./captchaProvider";
+import { SocialLogin } from "./social-login";
 
 interface FormProps {
   email: string;
 }
+type AuthViews = "login" | "register";
 
 interface Props {
   serviceUrl: string;
   source: string;
   className?: string;
+  view: AuthViews;
+  border?: boolean;
+  changeRouteOnViewChange?: boolean;
 }
-
-type AuthViews = "login" | "register";
 
 const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_KEY;
 
-export const AuthForm: FC<Props> = ({ serviceUrl, source, className }) => {
+export const AuthForm: FC<Props> = ({
+  serviceUrl,
+  source,
+  className,
+  view: type,
+  border = true,
+  changeRouteOnViewChange = true,
+}) => {
   const [busy, setBusy] = useState(false);
   const { register, handleSubmit } = useForm<FormProps>();
-  const [type, setType] = useState<AuthViews>("login");
+  const [view, setView] = useState<AuthViews>(type);
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const router = useRouter();
+  const isLoginView = view === "login";
+  const isRegisterView = view === "register";
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     setBusy(true);
     let captchaToken = "";
     try {
-      if (type === "login") {
+      if (view === "login") {
         onLoginAction({ data, serviceUrl, source });
-      } else if (type === "register") {
+      } else if (view === "register") {
         if (executeRecaptcha && !!recaptchaKey) {
           captchaToken = await executeRecaptcha("register");
         }
@@ -59,15 +70,20 @@ export const AuthForm: FC<Props> = ({ serviceUrl, source, className }) => {
 
   const switchView = (view: AuthViews) => (e: MouseEvent) => {
     e.preventDefault();
-    setType(view);
+    if (changeRouteOnViewChange) {
+      if (view === "login") router.push("/login");
+      if (view === "register") router.push("/register");
+    } else {
+      setView(view);
+    }
   };
 
   const renderFormContent = () => {
-    switch (type) {
+    switch (view) {
       case "register":
         return (
           <>
-            <AddRecaptchaIfExist>
+            <CaptchaProvider>
               <Input
                 id="email"
                 type="email"
@@ -95,7 +111,7 @@ export const AuthForm: FC<Props> = ({ serviceUrl, source, className }) => {
                   Sign in
                 </Link>
               </div>
-            </AddRecaptchaIfExist>
+            </CaptchaProvider>
           </>
         );
       case "login":
@@ -137,17 +153,21 @@ export const AuthForm: FC<Props> = ({ serviceUrl, source, className }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex items-center justify-center w-full px-8"
     >
-      <Card className={classNames("m-auto max-w-xl w-full", className)}>
+      <Card
+        className={classNames("m-auto max-w-xl w-full", className, {
+          "border-transparent bg-transparent shadow-none": !border,
+        })}
+      >
         <CardHeader>
           <CardTitle className="text-2xl">
-            {type === "login" && "Welcome Back."}
-            {type === "register" && "Join Letterpad."}
+            {isLoginView && "Welcome Back."}
+            {isRegisterView && "Join Letterpad."}
           </CardTitle>
           <CardDescription>
-            {type === "login" &&
+            {isLoginView &&
               "Enter the email address associated with your account, and we’ll send a magic link to your inbox."}
-            {type === "register" &&
-              "Enter your email below to register your account"}
+            {isRegisterView &&
+              "Enter your email below and click continue to create an account."}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -155,14 +175,5 @@ export const AuthForm: FC<Props> = ({ serviceUrl, source, className }) => {
         </CardContent>
       </Card>
     </form>
-  );
-};
-
-const AddRecaptchaIfExist = ({ children }) => {
-  if (!recaptchaKey) return children;
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
-      {children}
-    </GoogleReCaptchaProvider>
   );
 };

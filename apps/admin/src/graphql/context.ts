@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Author, Post, Setting, Tag } from "@prisma/client";
 import DataLoader from "dataloader";
+import { getServerSession as getServerSession1 } from "next-auth";
 import { andThen, pipe } from "ramda";
 
 import { prisma } from "@/lib/prisma";
@@ -9,6 +10,7 @@ import { getSessionUrl } from "@/shared/getRootUrl";
 
 import { SessionData } from "./types";
 import { basePath } from "../constants";
+import { options } from "../pages/api/auth/[...nextauth]";
 import {
   findAuthorIdFromCustomDomain,
   findAuthorIdFromLetterpadSubdomain,
@@ -49,6 +51,7 @@ export const getResolverContext = async (request: Request) => {
     const session = (await getServerSession({ req: request })) as unknown as {
       user: SessionData;
     };
+    console.log("session be", session);
     if (session?.user?.id) {
       return { session };
     }
@@ -167,15 +170,6 @@ export const context = async ({ request }) => {
 export type ResolverContext = Awaited<ReturnType<typeof context>>;
 
 export const getServerSession = async ({ req }) => {
-  try {
-    const headers = req.headers;
-    const sessionURL = getSessionUrl();
-    const res = await fetch(sessionURL, {
-      headers: { cookie: getHeader(headers, "cookie") },
-    });
-    const session = await res.json();
-    return session.user ? (session as { user: SessionData }) : null;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-  }
+  const session = await getServerSession1(options());
+  return session;
 };

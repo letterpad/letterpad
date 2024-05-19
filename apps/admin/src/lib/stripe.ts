@@ -2,15 +2,14 @@ import Stripe from "stripe";
 
 import { prisma } from "@/lib/prisma";
 
-import { SessionData } from "../graphql/types";
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-08-01",
 });
 
-export const createCustomer = async (session: SessionData) => {
+export const createCustomer = async ({ id, email, name }) => {
   try {
-    const { id, email, name } = session;
+    if (!email || !name) return;
     const customer: Stripe.Customer = await stripe.customers.create({
       email,
       name,

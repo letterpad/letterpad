@@ -13,7 +13,7 @@ import { getRootUrl } from "@/shared/getRootUrl";
 export async function POST(req: Request) {
   const session = await getServerSession({ req });
 
-  if (!session || !session.user.id) {
+  if (!session || !session.user?.id) {
     const url = new URL(`login?callbackUrl=${getRootUrl()}/membership`, getRootUrl());
     return NextResponse.redirect(new URL(url, getRootUrl()).toString());
   }
@@ -26,7 +26,8 @@ export async function POST(req: Request) {
   });
   let customerId: string | undefined | null = author?.stripe_customer_id;
   if (!author?.stripe_customer_id) {
-    const customer = await createCustomer(session.user);
+    const { id, email, name } = session.user;
+    const customer = await createCustomer({ id, email, name });
     if (customer?.id) {
       customerId = customer.id;
     }

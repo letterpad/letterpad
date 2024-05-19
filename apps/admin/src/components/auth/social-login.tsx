@@ -60,7 +60,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
         <div className="px-4 py-2 absolute left-0">
           <svg
             role="img"
-            className="h-5 w-5 fill-slate-700"
+            className="h-5 w-5 dark:fill-slate-700 fill-slate-50"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >

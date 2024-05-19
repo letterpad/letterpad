@@ -66,7 +66,10 @@ export const options = (): NextAuthOptions => ({
     }
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        return { ...token, ...session };
+      }
       if (user?.email) {
         const author = await prisma.author.findUnique({
           where: { email: user.email },
@@ -94,6 +97,7 @@ export const options = (): NextAuthOptions => ({
         register_step: token.register_step as RegisterStep,
         membership: token.membership as any,
       }
+
       return session;
     },
     async signIn({ user, email }) {

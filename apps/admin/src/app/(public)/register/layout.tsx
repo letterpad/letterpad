@@ -5,8 +5,8 @@ import { Logo } from "../../../components/auth/logo";
 import Footer from "../../../components/website_v2/Footer";
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Login to Letterpad",
+  title: "Register",
+  description: "Create Letterpad Account",
   robots: "follow, index",
 };
 
@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 
 const LoginLayout = ({ children }) => {
   return (
-    <div className="flex flex-col h-screen overflow-y-auto">
+    <div className="flex flex-col min-h-screen overflow-y-auto">
       <header>
         <h2 className="pt-16 flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
           <Logo />

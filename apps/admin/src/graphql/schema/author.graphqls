@@ -14,7 +14,7 @@ enum RegisterStep {
 
 type FollowAuthor {
   username: String!
-  name: String!
+  name: String
   avatar: String
   createdAt: String
 }
@@ -23,7 +23,7 @@ type Author {
   id: String!
   email: String!
   username: String
-  name: String!
+  name: String
   social: Social
   bio: String
   occupation: String

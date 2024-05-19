@@ -39,7 +39,7 @@ export const getPostsFromTag = cache(
     return {
       __typename: "PostsNode",
       count: posts?.length,
-      rows: posts.map(mapPostToGraphql),
+      rows: posts.map(p => mapPostToGraphql(p)),
     };
   }
 );

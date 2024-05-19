@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import {
   AuthorResponse,
   InputAuthor,
@@ -48,7 +49,7 @@ export const updateAuthor = async (
         id: args.author.id,
       },
       data: {
-        favourite: args.author.favourite
+        favourite: args.author.favourite!
       }
     })
     return {
@@ -92,7 +93,7 @@ export const updateAuthor = async (
       }
     }
 
-    if (newEmail) {
+    if (newEmail && args.author.email) {
       const emailExist = await prisma.author.findFirst({
         where: {
           email: args.author.email,
@@ -112,7 +113,7 @@ export const updateAuthor = async (
       }
       dataToUpdate.verified = false;
     }
-    const { id: _id, ...data } = dataToUpdate;
+    const { id: _id, ...data } = dataToUpdate as Prisma.AuthorUpdateInput;
     const author = await prisma.author.update({
       data: { ...data },
       where: { id: session.user.id },

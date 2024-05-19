@@ -1,21 +1,22 @@
 import { signIn } from "next-auth/react";
 
-import { doLogin } from "../../app/(public)/login/_feature/actions";
+import { basePath } from "../../constants";
 import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 
 export const onLoginAction = async ({ data, serviceUrl, source }) => {
-    const result = await doLogin({
-        ...data,
-        callbackUrl: serviceUrl,
+    const result = await signIn("email", {
+        redirect: false,
+        email: data.email,
+        callbackUrl: serviceUrl ?? basePath + "/posts",
     });
     track({
         eventAction: EventAction.Click,
         eventCategory: EventCategory.Auth,
         eventLabel: EventLabel.CredentialsLogin,
     });
-    if (result.success) {
-        let redirectUrl = result.redirectUrl;
+    if (result?.ok) {
+        let redirectUrl = result.url;
         if (serviceUrl && new URL(serviceUrl).host !== document.location.host) {
             document.location.href = `/api/identity/login?serviceUrl=${serviceUrl}&source=${source}`;
             return;

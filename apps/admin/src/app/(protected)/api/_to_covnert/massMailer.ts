@@ -18,9 +18,9 @@ const users = async (req: NextApiRequestWithFormData, res: NextApiResponse) => {
       subject,
       html,
       author_id: session.user!.id,
-      name: session.user!.name,
+      name: session.user?.name!,
       to: process.env.SENDER_EMAIL!,
-      username: session.user!.username,
+      username: session.user!.username!,
     });
     return res.status(200).json({
       accepted: response?.accepted.pop(),

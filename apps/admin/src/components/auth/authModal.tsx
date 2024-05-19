@@ -7,12 +7,14 @@ interface Props {
   TriggerComponent: React.ReactNode;
   serviceUrl: string;
   source: string;
+  view?: "login" | "register";
 }
 
 export const AuthModal: FC<Props> = ({
   TriggerComponent,
   serviceUrl,
   source,
+  view = "login",
 }) => {
   return (
     <DialogModal
@@ -20,7 +22,13 @@ export const AuthModal: FC<Props> = ({
       type="trigger"
       contentClassName="w-full overflow-y-scroll bg-opacity-80"
     >
-      <AuthForm serviceUrl={serviceUrl} source={source} />
+      <AuthForm
+        serviceUrl={serviceUrl}
+        source={source}
+        view={view}
+        border={false}
+        changeRouteOnViewChange={false}
+      />
     </DialogModal>
   );
 };

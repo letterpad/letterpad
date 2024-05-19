@@ -82,7 +82,7 @@ export const updateSetting = async (
     }
     logger.info(`Updating settings with id ${setting_id}- `, data);
     const res = await prisma.setting.update({
-      data: data,
+      data,
       where: { id: setting_id },
     });
     const setting = await prisma.setting.findUnique({
