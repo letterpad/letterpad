@@ -14,7 +14,6 @@ import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { EmailTemplates } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { sanitizeUsername } from "@/shared/utils";
-import { getHashedPassword } from "@/utils/bcrypt";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -64,9 +63,6 @@ export const updateAuthor = async (
     const newEmail =
       args.author.email && session.user.email !== args.author.email;
 
-    if (args.author.password) {
-      dataToUpdate.password = await getHashedPassword(args.author.password);
-    }
     if (args.author.social) {
       dataToUpdate.social = JSON.stringify(args.author.social);
     }

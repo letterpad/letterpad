@@ -1,19 +1,15 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { RegisterStep } from "letterpad-graphql";
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { RegisterStep, Role } from "letterpad-graphql";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
-import { prisma } from "@/lib/prisma";
-
-import { report } from "@/components/error";
-import { createAuthorWithSettings } from "@/components/onboard";
+import PrismaClient, { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
-import { isPasswordValid } from "@/utils/bcrypt";
 
 import { isBlackListed } from "./blacklist";
 
@@ -21,139 +17,95 @@ const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    allowDangerousEmailAccountLinking: true,
   }),
   GithubProvider({
     clientId: process.env.GITHUB_CLIENT_ID!,
     clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    allowDangerousEmailAccountLinking: true,
   }),
-  CredentialsProvider({
-    name: "Credentials",
-    credentials: {
-      email: { label: "Email" },
-      password: { label: "Password", type: "password" },
+  EmailProvider({
+    server: {
+      host: process.env.SMTP_HOST!,
+      port: 465,
+      auth: {
+        user: process.env.SMTP_USERNAME!,
+        pass: process.env.SMTP_PASSWORD!,
+      },
     },
-    authorize: async (credentials): Promise<any> => {
-      try {
-        if (isBlackListed(credentials?.email!)) {
-          return Promise.reject(
-            new Error("Your email domain has been blacklisted.")
-          );
-        }
-        const author = await prisma.author.findFirst({
-          where: { email: credentials?.email },
-        });
-        if (author) {
-          if (!author.verified) {
-            return Promise.reject(
-              new Error("Your email id is not verified yet.")
-            );
-          }
-          const authenticated = await isPasswordValid(
-            credentials?.password || "",
-            author.password
-          );
-          return authenticated
-            ? author
-            : Promise.reject(
-              new Error("Incorrect password. Please try again.")
-            );
-        } else {
-          return Promise.reject(
-            new Error("The email you provided is not registered.")
-          );
-        }
-      } catch (e: any) {
-        report.error(e);
-        if (e instanceof PrismaClientKnownRequestError) {
-          if (e.code === "P2021") {
-            return Promise.reject(
-              new Error("Database is not ready. Run `yarn seed` from terminal.")
-            );
-          }
-        }
-      }
-    },
+    from: process.env.SENDER_EMAIL!,
   }),
 ];
 
+const authPrisma = {
+  account: prisma.account,
+  user: prisma.author,
+  session: prisma.session,
+  verificationToken: prisma.verificationRequest,
+} as unknown as PrismaClient
+
 export const options = (): NextAuthOptions => ({
   providers: providers(),
-  callbacks: {
-    redirect: async ({ url, baseUrl }) => {
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-      return new URL("/posts", getRootUrl()).toString();
-    },
-    jwt: async ({ token, trigger, session }) => {
-      if (trigger === "update") {
-        return { ...token, user: { ...session.user } };
-      }
-      return token;
-    },
-    session: async ({ session, token }) => {
-      if (!token.email) {
-        throw new Error("Invalid session");
-      }
-
-      let author = await prisma.author.findFirst({
-        where: { email: token.email },
-        include: {
-          role: true,
-          membership: true
-        },
-      });
-      try {
-        // If the user logins with google or github, create their letterpad account
-        if (!author && token.sub && token.name) {
-          await createAuthorWithSettings(
-            {
-              email: token.email,
-              name: token.name,
-              avatar: token.picture || "",
-              username: token.sub,
-              password: "",
-              token: "",
-              verified: true,
-              register_step: RegisterStep.ProfileInfo,
-              login_type: token.provider as string,
-            },
-            {
-              site_email: token.email,
+  adapter: PrismaAdapter(authPrisma),
+  events: {
+    createUser: async ({ user }) => {
+      if (!user.email) return;
+      await prisma.author.update({
+        where: { email: user.email },
+        data: {
+          avatar: user.image,
+          register_step: RegisterStep.ProfileInfo,
+          role: {
+            connect: {
+              name: Role.Author
             }
-          );
-          author = await prisma.author.findFirst({
-            where: { email: token.email },
-            include: {
-              role: true,
-              membership: true
-            },
-          });
-        }
+          }
+        },
 
+      })
+    }
+  },
+  callbacks: {
+    async session({ session, token }) {
+      if (session.user?.email) {
+        const author = await prisma.author.findUnique({
+          where: { email: session.user.email },
+          include: { role: true, membership: true },
+        });
         if (author) {
-          const { id, email, username, avatar, name, register_step, createdAt } = author;
+          const { id, email, username, name, avatar = token.picture, createdAt, register_step } = author;
           session.user = {
             id,
             email,
             username,
             name,
             avatar,
-            image: avatar,
-            role: author.role.name,
+            role: author.role?.name,
             createdAt,
             membership: author.membership?.status ?? "free",
             can_start_trial: !!!author.membership?.status,
             register_step,
           } as any;
-
-          return session;
         }
-      } catch (e: any) {
-        report.error(e);
-        throw new Error("Could not create a valid session");
       }
-      throw new Error("Could not create a valid session");
+      return session;
+    },
+    async signIn({ user, email }) {
+      if (email?.verificationRequest) return true;
+      if (user.email) {
+        if (isBlackListed(user.email)) {
+          return false;
+        }
+        // const userExists = await prisma.author.findUnique({ where: { email: user.email } });
+        // return userExists ? true : '/register'
+      }
+      return true;
+    },
+    redirect: async ({ url, baseUrl }) => {
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      return new URL("/posts", getRootUrl()).toString();
     },
   },
   jwt: {
@@ -163,18 +115,6 @@ export const options = (): NextAuthOptions => ({
     signIn: `${basePath}/login`,
   },
   secret: process.env.SECRET_KEY,
-  // cookies: {
-  //   sessionToken: {
-  //     name: getAuthCookieName(),
-  //     options: {
-  //       httpOnly: useSecureCookies,
-  //       sameSite: "lax",
-  //       path: "/",
-  //       domain: `.${host}`,
-  //       secure: useSecureCookies,
-  //     },
-  //   },
-  // },
 });
 
 const auth = (req: NextApiRequest, res: NextApiResponse) =>

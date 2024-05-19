@@ -1,6 +1,7 @@
 // import * as React from "react";
 export * from "./components/accordion";
 export * from "./components/button";
+export * from "./components/cardv2"
 export * from "./components/comments";
 export * from "./components/content";
 export * from "./components/creatives";

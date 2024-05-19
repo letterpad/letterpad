@@ -1,8 +1,8 @@
 import classNames from "classnames";
-import { FC } from "react";
+import React, { FC } from "react";
 
 interface Props {
-  label: string;
+  label: string | React.ReactNode;
   className?: string;
 }
 export const Label: FC<Props> = ({ label, className = "" }) => {

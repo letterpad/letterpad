@@ -103,7 +103,8 @@
     "video.js": "^7.14.3",
     "react-image-crop": "^11.0.5",
     "posthog-js": "^1.130.2",
-    "@builder.io/partytown": "0.10.2"
+    "@builder.io/partytown": "0.10.2",
+    "@next-auth/prisma-adapter": "1.0.7"
   },
   "devDependencies": {
     "@types/video.js": "^7.3.57",

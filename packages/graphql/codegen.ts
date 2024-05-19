@@ -26,7 +26,7 @@ const config: CodegenConfig = {
         withHooks: false,
         withComponent: false,
         avoidOptionals: false,
-        maybeValue: 'T'
+        maybeValue: "T | null"
       }
     },
     "./src/hooks.ts": {

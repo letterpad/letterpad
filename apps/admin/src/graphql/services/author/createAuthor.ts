@@ -11,7 +11,6 @@ import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { validateCaptcha } from "@/graphql/resolvers/helpers";
 import { EmailTemplates } from "@/graphql/types";
 import { isBlackListed } from "@/pages/api/auth/blacklist";
-import { getHashedPassword, isPasswordValid } from "@/utils/bcrypt";
 
 
 
@@ -40,28 +39,22 @@ export const createAuthor = async (
   });
 
   if (authorExistData) {
-    const validated = await isPasswordValid(
-      args.data?.password || "",
-      authorExistData.password
-    );
-    if (validated) {
-      if (
-        authorExistData.register_step === RegisterStep.ProfileInfo ||
-        authorExistData.register_step === RegisterStep.SiteInfo
-      ) {
-        const { id, email, username, name, register_step, verified } =
-          authorExistData;
-        return {
-          id,
-          email,
-          username,
-          name,
-          register_step,
-          verified,
-          __typename: "Author",
-        };
-      }
+    if (
+      authorExistData.register_step === RegisterStep.ProfileInfo ||
+      authorExistData.register_step === RegisterStep.SiteInfo
+    ) {
+      const { id, email, name, register_step, verified } =
+        authorExistData;
+      return {
+        id,
+        email,
+        name,
+        register_step,
+        verified,
+        __typename: "Author",
+      };
     }
+
 
     return {
       __typename: "Failed",
@@ -70,9 +63,6 @@ export const createAuthor = async (
   }
 
   const { setting = {}, ...authorData } = args.data;
-  if (authorData.password) {
-    authorData.password = await getHashedPassword(authorData.password);
-  }
 
   const created = await createAuthorWithSettings(authorData, setting);
 
@@ -85,11 +75,10 @@ export const createAuthor = async (
         author_id: newAuthor.id,
         template_id: EmailTemplates.VerifyNewUser,
       });
-      const { id, email, username, name } = newAuthor;
+      const { id, email, name } = newAuthor;
       return {
         id,
         email,
-        username,
         name,
         register_step: (created.register_step ??
           RegisterStep.ProfileInfo) as RegisterStep,
