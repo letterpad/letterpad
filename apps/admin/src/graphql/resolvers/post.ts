@@ -45,12 +45,8 @@ const Post: PostResolvers<ResolverContext> = {
       height: cover_image_height,
     };
   },
-  featured: async (attrs, _args, { prisma }) => {
-    const isFeatured = await prisma.featuredWeek.findUnique({
-      where: {
-        post_id: attrs.id,
-      }
-    });
+  featured: async (attrs, _args, { dataloaders }) => {
+    const isFeatured = await dataloaders.batchFeatured.load(attrs.id);
     return !!isFeatured;
   },
   author: async (attrs, _args, context) => {
@@ -78,27 +74,9 @@ const Post: PostResolvers<ResolverContext> = {
     }
     return { reading_time: oldReadingTime };
   },
-  likes: async ({ id }, _, { prisma }) => {
-    const result = await prisma.likes.findMany({
-      select: {
-        author: {
-          select: {
-            avatar: true,
-            username: true,
-          },
-        },
-      },
-      where: {
-        post: {
-          id,
-        },
-      },
-    });
-
-    return result.map((row) => ({
-      avatar: row.author.avatar,
-      username: row.author.username,
-    }));
+  likes: async ({ id }, _, { dataloaders }) => {
+    const likes = await dataloaders.likes.load(id);
+    return likes;
   },
 };
 
