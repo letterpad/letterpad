@@ -27,6 +27,8 @@ import {
 import { EventAction, EventCategory, track } from "@/track";
 import { isAuthor } from "@/utils/type-guards";
 
+import { registrationPaths } from "../../../../constants";
+
 type UpdateProps = Pick<Author, "name" | "bio" | "username">;
 
 export const UpdateProfile = () => {
@@ -47,7 +49,7 @@ export const UpdateProfile = () => {
     setProcessing(true);
     Message().loading({
       content: "Please wait",
-      duration: 5,
+      duration: 50,
     });
 
     const result = await updateAuthor({
@@ -75,7 +77,8 @@ export const UpdateProfile = () => {
           name: updatedAuthor.name,
           register_step: RegisterStep.SiteInfo,
         });
-        // router.push(registrationPaths[updatedAuthor.register_step]);
+
+        router.push(registrationPaths[updatedAuthor.register_step]);
       }
     } else if (updatedAuthor?.__typename === "Failed") {
       Message().error({
@@ -83,6 +86,7 @@ export const UpdateProfile = () => {
         duration: 5,
       });
     }
+    Message().destroy();
     setProcessing(false);
   };
 

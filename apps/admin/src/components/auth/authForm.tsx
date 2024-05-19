@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FC, MouseEvent, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,7 +24,6 @@ interface FormProps {
 type AuthViews = "login" | "register";
 
 interface Props {
-  serviceUrl: string;
   source: string;
   className?: string;
   view: AuthViews;
@@ -35,7 +34,6 @@ interface Props {
 const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_KEY;
 
 export const AuthForm: FC<Props> = ({
-  serviceUrl,
   source,
   className,
   view: type,
@@ -43,12 +41,14 @@ export const AuthForm: FC<Props> = ({
   changeRouteOnViewChange = true,
 }) => {
   const [busy, setBusy] = useState(false);
+  const params = useSearchParams();
   const { register, handleSubmit } = useForm<FormProps>();
   const [view, setView] = useState<AuthViews>(type);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const isLoginView = view === "login";
   const isRegisterView = view === "register";
+  const serviceUrl = params.get("serviceUrl") || "";
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     setBusy(true);
@@ -151,7 +151,7 @@ export const AuthForm: FC<Props> = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex items-center justify-center w-full px-8"
+      className="flex items-center justify-center w-full px-6"
     >
       <Card
         className={classNames("m-auto max-w-xl w-full", className, {
@@ -172,6 +172,17 @@ export const AuthForm: FC<Props> = ({
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">{renderFormContent()}</div>
+          <div className="mt-8 text-center text-xs opacity-80">
+            Click “Sign {isLoginView ? "in" : "up"}” to agree to Letterpad's{" "}
+            <Link href="/terms" target="_blank" className="underline">
+              Terms of Service
+            </Link>{" "}
+            and acknowledge that Letterpad's{" "}
+            <Link href="/privacy" target="_blank" className="underline">
+              Privacy Policy
+            </Link>{" "}
+            applies to you.
+          </div>
         </CardContent>
       </Card>
     </form>

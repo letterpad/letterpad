@@ -26,7 +26,6 @@ export const onLoginAction = async ({ data, serviceUrl, source }) => {
             redirectUrl = redirectUrl.replace("login", "posts");
         }
         if (redirectUrl) {
-            alert(redirectUrl);
             // router.push(redirectUrl);
             // document.location.href = `/api/identity/login?source=${redirectUrl}`;
             return;

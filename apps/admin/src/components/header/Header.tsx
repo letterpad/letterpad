@@ -122,7 +122,6 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                 ))}
               <AuthModal
                 TriggerComponent={<Button>Login</Button>}
-                serviceUrl=""
                 source={source}
               />
               <li>

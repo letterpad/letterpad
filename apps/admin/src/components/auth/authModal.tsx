@@ -5,14 +5,12 @@ import { AuthForm } from "./authForm";
 
 interface Props {
   TriggerComponent: React.ReactNode;
-  serviceUrl: string;
   source: string;
   view?: "login" | "register";
 }
 
 export const AuthModal: FC<Props> = ({
   TriggerComponent,
-  serviceUrl,
   source,
   view = "login",
 }) => {
@@ -23,7 +21,6 @@ export const AuthModal: FC<Props> = ({
       contentClassName="w-full overflow-y-scroll bg-opacity-80"
     >
       <AuthForm
-        serviceUrl={serviceUrl}
         source={source}
         view={view}
         border={false}

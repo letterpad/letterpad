@@ -60,7 +60,6 @@ model Author {
   following            Follows[]       @relation("follower")
   likes                Likes[]
   notifications        Notifications[]
-  views                PageViews[]
   membership           Membership?
   comments             Comment[]
 
@@ -204,10 +203,8 @@ model Post {
   mail_status        String         @default("INACTIVE")
   exclude_from_home  Boolean        @default(false)
   banned             Boolean        @default(false)
-  views              PageViews[]
   featured_weeks     FeaturedWeek[]
   trending           Trending[]
-  pageTimeLog        PageTimeLog[]
   comments           Comment[]
 
   @@index([author_id])
@@ -235,25 +232,6 @@ model RolePermissions {
 
   @@index([permission_id])
   @@index([role_id])
-}
-
-model PageViews {
-  id        String    @id @default(uuid())
-  post_id   String?
-  author_id String?
-  view_type String
-  count     Int       @default(0)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  post      Post?     @relation(fields: [post_id], references: [id], onDelete: Cascade)
-
-  @@unique([post_id, view_type])
-  @@unique([author_id, view_type])
-  @@index([author_id])
-  @@index([post_id])
-  @@index([view_type])
-  @@index([author_id, post_id])
 }
 
 model Role {
@@ -363,21 +341,6 @@ model EmailTemplates {
   template String @unique
   subject  String
   body     String @db.VarChar(2000)
-}
-
-model PageTimeLog {
-  id        String    @id @default(uuid())
-  ip        String    @db.VarChar(20)
-  post_id   String
-  post      Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  snapshot  String    @db.VarChar(500)
-  page_time Int       @default(0)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-
-  @@unique([ip, post_id])
-  @@index([post_id])
-  @@index([ip, post_id])
 }
 
 model Trending {
