@@ -1,4 +1,4 @@
-import { signIn } from "next-auth/react";
+import { signIn, } from "next-auth/react";
 import { Message } from "ui/dist/index.mjs";
 
 import { basePath } from "@/constants";
@@ -11,7 +11,6 @@ type LoginResult = {
 
 export const doLogin = async ({
   email,
-  password,
   callbackUrl,
 }: {
   email: string;
@@ -19,9 +18,8 @@ export const doLogin = async ({
   callbackUrl?: string | null;
 }): Promise<LoginResult> => {
   Message().loading({ content: "Please wait..." });
-  const result = await signIn("credentials", {
+  const result = await signIn("email", {
     redirect: false,
-    password: password,
     email: email,
     callbackUrl: callbackUrl ?? basePath + "/posts",
   });

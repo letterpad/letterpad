@@ -1,7 +1,0 @@
-Hello {{ full_name }},
-
-We have received a request to change the password for your <strong>{{ company_name }}</strong> account. Please click the below button to change your password.
-
-{{ change_password_link }}
-
-If you have received this by mistake, you can safely ignore this email.

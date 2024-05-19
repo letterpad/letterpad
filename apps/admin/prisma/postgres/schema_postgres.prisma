@@ -26,24 +26,23 @@ model Notifications {
 model Author {
   id                   String          @id @default(uuid())
   name                 String
-  username             String          @unique
+  username             String?         @unique
   email                String          @unique
-  password             String
-  bio                  String          @db.Text
-  occupation           String          @db.VarChar(100)
-  company_name         String          @db.VarChar(100)
-  avatar               String          @db.VarChar(300)
+  password             String?
+  bio                  String?         @db.Text
+  occupation           String?         @db.VarChar(100)
+  company_name         String?         @db.VarChar(100)
+  avatar               String?         @db.VarChar(300)
   signature            String?         @db.VarChar(400)
   social               String          @default("{}") @db.VarChar(500)
   verified             Boolean         @default(false)
   createdAt            DateTime?       @default(now())
   updatedAt            DateTime?       @updatedAt
   verify_attempt_left  Int?            @default(3)
-  role_id              Int
-  login_type           String          @default("credentials")
+  role_id              Int?
   last_seen            DateTime?
   register_step        String?         @default("") @db.VarChar(50)
-  role                 Role            @relation(fields: [role_id], references: [id])
+  role                 Role?           @relation(fields: [role_id], references: [id])
   domain               Domain?
   posts                Post[]
   setting              Setting?
@@ -54,6 +53,9 @@ model Author {
   profile_updated      Boolean         @default(false)
   favourite            Boolean         @default(false)
   session              Session[]
+  image                String?
+  emailVerified        DateTime?       @map("email_verified_at")
+  accounts             Account[]
   followers            Follows[]       @relation("following")
   following            Follows[]       @relation("follower")
   likes                Likes[]
@@ -132,15 +134,15 @@ model Likes {
 }
 
 model Session {
-  id        Int       @id @default(autoincrement())
-  domain    String
-  author_id String
-  token     String    @db.VarChar(500)
-  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  expiresAt DateTime?
-  createdAt DateTime? @default(now())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("author_id")
+  expires      DateTime
+  user         Author   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([author_id])
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@index([userId])
 }
 
 model EmailDelivery {
@@ -387,4 +389,34 @@ model Trending {
   updatedAt DateTime? @updatedAt
 
   @@index([post_id])
+}
+
+model VerificationRequest {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Account {
+  userId            String  @map("author_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user Author @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
 }

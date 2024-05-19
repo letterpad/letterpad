@@ -147,12 +147,8 @@ type Query {
 }
 
 type Mutation {
-  login(data: LoginData): LoginResponse
   deleteAuthor: DeleteAuthorResponse
   updateAuthor(author: InputAuthor!): AuthorResponse
-  createAuthor(data: InputCreateAuthor!): AuthorResponse
-  forgotPassword(email: String!): ForgotPasswordResponse!
-  resetPassword(password: String!, token: String!): ForgotPasswordResponse!
   followAuthor(username: String!): FollowAuthorResponse!
   unFollowAuthor(username: String!): FollowAuthorResponse!
 }

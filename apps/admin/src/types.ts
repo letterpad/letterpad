@@ -7,13 +7,13 @@ import { ROLES, SessionData } from "@/graphql/types";
 declare module "next-auth" {
   interface Session {
     user?: DefaultUser & {
-      username: string;
-      avatar: string;
-      name: string;
+      username?: string;
+      avatar?: string;
+      name?: string | null;
       id: string;
-      role: ROLES;
+      role?: ROLES | undefined;
       register_step: RegisterStep;
-      can_start_trial: boolean;
+      can_start_trial?: boolean | undefined;
       membership: "free" | "complete" | "cancelled" | "profree" | "trialing" | "active" | "past_due" | "canceled";
     };
   }

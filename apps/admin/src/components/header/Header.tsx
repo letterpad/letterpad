@@ -4,11 +4,12 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
+import { Button, Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
 
+import { AuthModal } from "../auth";
 import { EventAction, EventCategory, track } from "../../track";
 
 // @ts-ignore
@@ -119,6 +120,11 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                     </Link>
                   </li>
                 ))}
+              <AuthModal
+                TriggerComponent={<Button>Login</Button>}
+                serviceUrl=""
+                source={source}
+              />
               <li>
                 {isLoggedIn ? (
                   <ProfileDropdown />

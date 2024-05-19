@@ -2,8 +2,6 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { decode } from "next-auth/jwt";
 
-import { prisma } from "@/lib/prisma";
-
 import { getLoginUrl, getRootUrl } from "@/shared/getRootUrl";
 import { getAuthCookieName } from "@/utils/authCookie";
 
@@ -37,15 +35,6 @@ export async function GET(
   }
 
   if (params.action === "logout") {
-    const author = await prisma.author.findFirst({
-      select: { id: true },
-      where: { email: decodedToken.email! },
-    });
-    await prisma.session.deleteMany({
-      where: {
-        author_id: author?.id!,
-      },
-    });
     const requestHeaders = new Headers(req.headers);
     req.cookies.delete(getAuthCookieName());
     requestHeaders.delete("cookie");
@@ -72,44 +61,6 @@ export async function GET(
       }
       const cookieStore = cookies();
       const sessionToken = cookieStore.get(getAuthCookieName())?.value!;
-      const author = await prisma.author.findFirst({
-        select: { id: true },
-        where: { email: decodedToken.email! },
-      });
-      const found = await prisma.session.findFirst({
-        where: {
-          author_id: author?.id,
-          domain: new URL(serviceUrl).origin,
-        },
-      });
-      if (found) {
-        await prisma.session.update({
-          where: {
-            id: found.id,
-          },
-          data: {
-            token: sessionToken,
-            expiresAt: decodedToken?.exp
-              ? new Date(decodedToken?.exp! as Date)
-              : new Date(),
-          },
-        });
-      } else {
-        await prisma.session.create({
-          data: {
-            domain: new URL(serviceUrl).origin,
-            token: cookieStore.get(getAuthCookieName())?.value!,
-            expiresAt: decodedToken?.exp
-              ? new Date(decodedToken?.exp! as Date)
-              : new Date(),
-            author: {
-              connect: {
-                id: author?.id,
-              },
-            },
-          },
-        });
-      }
       if (new URL(serviceUrl).host === new URL(getRootUrl()).host) {
         return NextResponse.redirect(sourceUrl, { status: 302 });
       }

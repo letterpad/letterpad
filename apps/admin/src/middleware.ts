@@ -1,14 +1,16 @@
+import { RegisterStep } from "letterpad-graphql";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { decode } from "next-auth/jwt";
 import { isInMaintenanceModeEnabled } from "ui/dist/server.mjs";
 
+import { SessionData } from "./graphql/types";
 import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
 
-export const config = { matcher: "/((?!static|.*\\..*|_next).*)" };
+export const config = { matcher: '/((?!_next/static|_next/image|favicon.ico|graphql).*)', };
 
-const isPlatform = process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM;
+const isPlatform = process.env.LETTERPAD_PLATFORM;
 
 export async function middleware(request: NextRequest) {
   try {
@@ -29,7 +31,33 @@ export async function middleware(request: NextRequest) {
   const source = new URL(request.url).searchParams.get("source");
   const ROOT_URL = proto + "://" + host;
 
-  if (request.nextUrl.pathname === "/" && !isPlatform) {
+  const pathname = request.nextUrl.pathname;
+  if (cookie?.value) {
+    try {
+      const user = await decode({
+        token: cookie.value,
+        secret: process.env.SECRET_KEY,
+      }) as unknown as SessionData
+
+      if (!user?.email) {
+        return NextResponse.redirect(ROOT_URL + "/login");
+      }
+      if (!pathname.includes("/update/") && pathname !== "/") {
+        if (user.register_step === RegisterStep.ProfileInfo) {
+          return NextResponse.redirect(ROOT_URL + "/update/profile-info")
+        }
+        if (user.register_step === RegisterStep.SiteInfo) {
+          return NextResponse.redirect(ROOT_URL + "update/site-info")
+        }
+      }
+      if (["/login", "/register"].includes(pathname)) {
+        return NextResponse.redirect(ROOT_URL + "/posts");
+      }
+    } catch (e) {
+      // return NextResponse.redirect(ROOT_URL + "/login");
+    }
+  }
+  if (pathname === "/" && !isPlatform) {
     return NextResponse.redirect(ROOT_URL + "/login");
   }
   if (!process.env.SECRET_KEY) {
@@ -38,28 +66,15 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  if (cookie?.value) {
-    try {
-      const user = await decode({
-        token: cookie.value,
-        secret: process.env.SECRET_KEY,
-      });
-      if (!user?.email) {
-        return NextResponse.redirect(ROOT_URL + "/login");
-      }
-    } catch (e) {
-      // return NextResponse.redirect(ROOT_URL + "/login");
-    }
-
-    if (request.nextUrl.pathname === "/posts") {
-      const isPricing = request.cookies.get('loginRedirect')?.value === "pricing";
-      if (isPricing) {
-        return NextResponse.redirect(ROOT_URL + "/membership", {
-          headers: new Headers({ "Set-Cookie": "loginRedirect=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT" })
-        })
-      }
+  if (request.nextUrl.pathname === "/posts") {
+    const isPricing = request.cookies.get('loginRedirect')?.value === "pricing";
+    if (isPricing) {
+      return NextResponse.redirect(ROOT_URL + "/membership", {
+        headers: new Headers({ "Set-Cookie": "loginRedirect=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT" })
+      })
     }
   }
+
   if (source) {
     return handleAuth({ request, source });
   }

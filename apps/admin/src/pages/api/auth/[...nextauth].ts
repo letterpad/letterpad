@@ -66,38 +66,41 @@ export const options = (): NextAuthOptions => ({
     }
   },
   callbacks: {
-    async session({ session, token }) {
-      if (session.user?.email) {
+    async jwt({ token, user }) {
+      if (user?.email) {
         const author = await prisma.author.findUnique({
-          where: { email: session.user.email },
+          where: { email: user.email },
           include: { role: true, membership: true },
         });
         if (author) {
-          const { id, email, username, name, avatar = token.picture, createdAt, register_step } = author;
-          session.user = {
-            id,
-            email,
-            username,
-            name,
-            avatar,
-            role: author.role?.name,
-            createdAt,
-            membership: author.membership?.status ?? "free",
-            can_start_trial: !!!author.membership?.status,
-            register_step,
-          } as any;
+          token.id = author.id;
+          token.email = author.email;
+          token.username = author.username;
+          token.name = author.name;
+          token.avatar = author.avatar;
+          token.role = author.role?.name;
+          token.membership = author.membership?.status ?? "free";
+          token.can_start_trial = !!!author.membership?.status;
+          token.register_step = author.register_step;
         }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = {
+        id: token.id as string,
+        ...session.user,
+        ...token,
+        register_step: token.register_step as RegisterStep,
+        membership: token.membership as any,
       }
       return session;
     },
     async signIn({ user, email }) {
-      if (email?.verificationRequest) return true;
       if (user.email) {
         if (isBlackListed(user.email)) {
           return false;
         }
-        // const userExists = await prisma.author.findUnique({ where: { email: user.email } });
-        // return userExists ? true : '/register'
       }
       return true;
     },
@@ -115,6 +118,10 @@ export const options = (): NextAuthOptions => ({
     signIn: `${basePath}/login`,
   },
   secret: process.env.SECRET_KEY,
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
 });
 
 const auth = (req: NextApiRequest, res: NextApiResponse) =>
