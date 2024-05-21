@@ -1,15 +1,13 @@
 /* eslint-disable no-console */
 import { Author, Post, Setting, Tag } from "@prisma/client";
 import DataLoader from "dataloader";
+import { Like } from "letterpad-graphql";
 import { getServerSession as getServerSession1 } from "next-auth";
 import { andThen, pipe } from "ramda";
 
 import { prisma } from "@/lib/prisma";
 
-import { getSessionUrl } from "@/shared/getRootUrl";
-
 import { SessionData } from "./types";
-import { basePath } from "../constants";
 import { options } from "../pages/api/auth/[...nextauth]";
 import {
   findAuthorIdFromCustomDomain,
@@ -48,7 +46,7 @@ export const getResolverContext = async (request: Request) => {
   }
 
   if (!authorId && !isTest) {
-    const session = (await getServerSession({ req: request })) as unknown as {
+    const session = (await getServerSession()) as unknown as {
       user: SessionData;
     };
     console.log("session be", session);
@@ -109,6 +107,7 @@ const batchPosts = async (keys: readonly string[]) => {
     },
     include: {
       featured_weeks: true,
+      likes: true,
     },
   });
 
@@ -119,6 +118,36 @@ const batchPosts = async (keys: readonly string[]) => {
   });
 
   return keys.map((key) => postsMap[key]);
+};
+const batchLikes = async (keys: readonly string[]) => {
+  const result = await prisma.likes.findMany({
+    select: {
+      post_id: true,
+      author: {
+        select: {
+          avatar: true,
+          username: true,
+        },
+      },
+    },
+    where: {
+      post: {
+        id: { in: [...keys] },
+      }
+    },
+  });
+  const likesMap: Record<string, { avatar: string, username: string }[]> = {};
+
+  result.forEach((row) => {
+    if (!likesMap[row.post_id]) {
+      likesMap[row.post_id] = [];
+    }
+    likesMap[row.post_id].push({
+      avatar: row.author.avatar,
+      username: row.author.username,
+    })
+  });
+  return keys.map((key) => likesMap[key] ?? []);
 };
 const batchTags = async (keys: readonly string[]) => {
   const tags = await prisma.tag.findMany({
@@ -145,6 +174,23 @@ const batchTags = async (keys: readonly string[]) => {
 
   return keys.map((key) => postTags[key] ?? []);
 };
+const batchFeatured = async (keys: readonly string[]) => {
+  const featured = await prisma.featuredWeek.findMany({
+    where: {
+      post_id: {
+        in: [...keys],
+      },
+
+    }
+  });
+  const featuredPosts = {} as Record<string, boolean>
+  featured.forEach((post) => {
+    if (!featuredPosts[post.id]) {
+      featuredPosts[post.id] = true;
+    }
+  });
+  return keys.map((key) => featuredPosts[key]);
+};
 
 const dataLoaderOptions = {
   batchScheduleFn: (callback) => setTimeout(callback, 20),
@@ -152,9 +198,11 @@ const dataLoaderOptions = {
 
 const createDataLoaders = () => ({
   author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
+  likes: new DataLoader<any, Like[]>(batchLikes, dataLoaderOptions),
   setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
   post: new DataLoader<Readonly<string>, Post>(batchPosts, dataLoaderOptions),
   tagsByPostId: new DataLoader<any, Tag[]>(batchTags, dataLoaderOptions),
+  batchFeatured: new DataLoader<any, boolean>(batchFeatured, dataLoaderOptions),
 });
 
 export const context = async ({ request }) => {
@@ -169,7 +217,7 @@ export const context = async ({ request }) => {
 
 export type ResolverContext = Awaited<ReturnType<typeof context>>;
 
-export const getServerSession = async ({ req }) => {
+export const getServerSession = async () => {
   const session = await getServerSession1(options());
   return session;
 };

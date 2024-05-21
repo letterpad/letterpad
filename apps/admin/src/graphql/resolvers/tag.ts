@@ -1,7 +1,7 @@
 import {
   MutationResolvers,
   QueryResolvers,
-  Tag,
+  Tag as ITag,
   TagResolvers,
   TagType,
 } from "letterpad-graphql";
@@ -28,7 +28,7 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async popularTags(_root, args, { prisma }) {
     // Postgress needs double quotes for table names or else it will convert tables to lowercase
-    const tags: Tag[] =
+    const tags: ITag[] =
       !isPostgresDb() ? await prisma.$queryRaw`
         SELECT count(*) as c, T.name, T.slug  
           FROM _PostToTag

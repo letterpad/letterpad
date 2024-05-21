@@ -8,7 +8,7 @@ import { NextApiRequestWithFormData } from "../../graphql/types";
 import { AdminUsersType } from "@/types";
 
 const Users = async (req: NextApiRequestWithFormData, res: NextApiResponse) => {
-  const session = await getServerSession({ req });
+  const session = await getServerSession();
   if (!session || session.user?.role !== "ADMIN") {
     return res.status(401).send("Unauthorized");
   }

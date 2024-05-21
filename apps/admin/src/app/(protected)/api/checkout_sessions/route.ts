@@ -11,7 +11,7 @@ import { getRootUrl } from "@/shared/getRootUrl";
 
 
 export async function POST(req: Request) {
-  const session = await getServerSession({ req });
+  const session = await getServerSession();
 
   if (!session || !session.user?.id) {
     const url = new URL(`login?callbackUrl=${getRootUrl()}/membership`, getRootUrl());

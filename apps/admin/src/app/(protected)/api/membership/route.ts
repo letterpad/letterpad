@@ -6,7 +6,7 @@ import { stripe } from "@/lib/stripe";
 import { getServerSession } from "@/graphql/context";
 
 export async function GET(req: Request) {
-    const session = await getServerSession({ req });
+    const session = await getServerSession();
     if (!session?.user.email) {
         return NextResponse.json({ active: false, error: "You are not authorized" }, { status: 401 });
     }

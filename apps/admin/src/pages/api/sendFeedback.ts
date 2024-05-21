@@ -14,7 +14,7 @@ const sendFeedback = async (
   if (!req.body.feedback) {
     return res.status(403).send("Invalid input");
   }
-  const _session = await getServerSession({ req });
+  const _session = await getServerSession();
 
   if (!_session || !_session.user?.email)
     return res.status(401).send("Unauthorized");
