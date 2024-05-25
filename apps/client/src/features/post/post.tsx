@@ -93,20 +93,20 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                 <span className="mb-2">Author</span>
                 <div className="inline-flex mr-3 text-gray-900 dark:text-white py-4 border-t dark:border-slate-800">
                   <Link
-                    href={getProfileUrl(author.username)}
-                    rel={author.name}
+                    href={getProfileUrl(author.username!)}
+                    rel={author.name!}
                     className="contents"
                   >
                     <img
                       className="mr-4 w-16 h-16 rounded-full object-cover"
                       src={author.avatar!}
-                      alt={author.name}
+                      alt={author.name!}
                     />
                   </Link>
                   <div>
                     <Link
-                      href={getProfileUrl(author.username)}
-                      rel={author.name}
+                      href={getProfileUrl(author.username!)}
+                      rel={author.name!}
                       className="text-xl font-bold text-gray-900 dark:text-white"
                     >
                       {author.name}
@@ -137,7 +137,7 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
         {!isPage && (
           <PostFooter
             author={{
-              name: author.name,
+              name: author.name!,
               avatar: author.avatar!,
             }}
             likes={post.likes}

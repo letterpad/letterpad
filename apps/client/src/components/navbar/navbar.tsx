@@ -34,7 +34,7 @@ export const Navbar: FC<Props> = async ({
   const logoOrTitle = (
     <LogoOrTitle
       logo={settings.site_logo}
-      title={settings.site_title}
+      title={settings.site_title!}
       tagline={settings.site_tagline!}
     />
   );
@@ -80,7 +80,7 @@ export const Navbar: FC<Props> = async ({
             )}
           >
             <div className="flex gap-1 items-center">
-              <Link href="/" aria-label={settings.site_title}>
+              <Link href="/" aria-label={settings.site_title!}>
                 {logoOrTitle}
               </Link>
             </div>

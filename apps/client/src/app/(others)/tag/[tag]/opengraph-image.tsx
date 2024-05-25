@@ -14,7 +14,7 @@ export default async function AboutOG(props) {
           style={{ objectFit: 'cover' }}
           tw="absolute inset-0 w-full h-full"
           src={settings?.banner?.src ?? image}
-          alt={settings?.site_title}
+          alt={settings?.site_title!}
         />
         <div tw="bg-black absolute inset-0 bg-opacity-60"></div>
         <main tw="flex grow pt-4 w-full justify-center items-center p-10">
@@ -35,7 +35,7 @@ export default async function AboutOG(props) {
                     {data?.me?.avatar && (
                       <img
                         tw="rounded-full"
-                        alt={me?.name}
+                        alt={me?.name!}
                         style={{ objectFit: 'cover' }}
                         src={data?.me.avatar}
                         width={40}

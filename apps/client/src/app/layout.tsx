@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
       metadataBase: new URL(settings.site_url),
       title: {
         default:
-          settings.site_title === 'Letterpad' ? me.name : settings.site_title,
+          settings.site_title === 'Letterpad' ? me.name! : settings.site_title!,
         template: `%s | by ${me.name}`,
       },
       description,
@@ -98,13 +98,13 @@ export async function generateMetadata(): Promise<Metadata> {
       robots: { index: true, follow: true },
 
       twitter: {
-        title: settings.site_title,
+        title: settings.site_title!,
         images: [
           {
             url: settings.banner?.src!,
             width: settings.banner?.width!,
             height: settings.banner?.height!,
-            alt: settings.site_title,
+            alt: settings.site_title!,
           },
         ],
         card: 'summary_large_image',
@@ -117,23 +117,23 @@ export async function generateMetadata(): Promise<Metadata> {
         },
       },
       generator: 'Letterpad',
-      authors: [{ name: me.name }],
+      authors: [{ name: me.name! }],
       creator: me.name,
       publisher: settings.site_title,
       abstract: description,
       openGraph: {
-        url: settings.site_url,
-        title: settings.site_title,
+        url: settings.site_url!,
+        title: settings.site_title!,
         description,
-        authors: [me.name],
+        authors: [me.name!],
         firstName: me.name,
-        siteName: settings.site_title,
+        siteName: settings.site_title!,
         images: [
           {
             url: settings.banner?.src!,
             width: 800,
             height: 600,
-            alt: settings.site_title,
+            alt: settings.site_title!,
           },
         ],
       },

@@ -65,8 +65,8 @@ export async function generateMetadata({
       url: `${settings.site_url}${post.slug}`,
       title: post.title,
       description: post.excerpt,
-      authors: [me.name],
-      siteName: settings.site_title,
+      authors: [me.name!],
+      siteName: settings.site_title!,
       type: 'article',
     },
   };

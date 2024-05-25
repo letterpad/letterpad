@@ -57,7 +57,7 @@ export default async function Page(props) {
       {post.page_type === 'story-builder' ? (
         <Creative
           data={post}
-          site_name={settings.site_title}
+          site_name={settings.site_title!}
           settings={settings}
           me={me}
         />
@@ -96,8 +96,8 @@ export async function generateMetadata({ params }): Promise<Metadata> {
       url: `${settings.site_url}${post.slug}`,
       title: post.title,
       description: post.excerpt,
-      authors: [me.name],
-      siteName: settings.site_title,
+      authors: [me.name!],
+      siteName: settings.site_title!,
       type: 'article',
       images: [
         {
