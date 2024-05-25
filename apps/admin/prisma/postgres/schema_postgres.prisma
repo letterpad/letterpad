@@ -133,7 +133,7 @@ model Likes {
 }
 
 model Session {
-  sessionToken String   @unique @map("session_token1")
+  sessionToken String   @unique @map("session_token")
   userId       String   @map("author_id")
   expires      DateTime @default(now())
   user         Author   @relation(fields: [userId], references: [id], onDelete: Cascade)
