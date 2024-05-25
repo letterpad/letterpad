@@ -19,7 +19,6 @@ export const getPostsFromTag = cache(
         message: "You must be logged in to view this page",
       };
     }
-
     const posts = await prisma.post.findMany({
       where: {
         status: session?.user.id ? undefined : PostStatusOptions.Published,
