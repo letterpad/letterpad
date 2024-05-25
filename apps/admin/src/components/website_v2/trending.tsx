@@ -28,10 +28,7 @@ export const Trending = async () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-10 w-full">
           {posts?.map((article) => {
             const author = isAuthor(article.author) ? article.author : null;
-            const link = new URL(
-              article.slug ?? "",
-              author?.site_url!
-            ).toString();
+            const link = author?.site_url! + article.slug;
             const authorLink = new URL(
               `@${author?.username}`,
               getRootUrl()
