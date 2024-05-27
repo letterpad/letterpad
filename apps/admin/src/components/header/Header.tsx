@@ -4,8 +4,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Button, Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
-import { AuthModal } from "ui/src/components/auth";
+import { AuthModal, Button, Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";

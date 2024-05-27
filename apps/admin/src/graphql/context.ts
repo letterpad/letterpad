@@ -49,7 +49,6 @@ export const getResolverContext = async (request: Request) => {
     const session = (await getServerSession()) as unknown as {
       user: SessionData;
     };
-    console.log("session be", session);
     if (session?.user?.id) {
       return { session };
     }
@@ -143,8 +142,8 @@ const batchLikes = async (keys: readonly string[]) => {
       likesMap[row.post_id] = [];
     }
     likesMap[row.post_id].push({
-      avatar: row.author.avatar,
-      username: row.author.username,
+      avatar: row.author.avatar!,
+      username: row.author.username!,
     })
   });
   return keys.map((key) => likesMap[key] ?? []);
