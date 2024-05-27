@@ -77,7 +77,6 @@ export async function middleware(request: NextRequest) {
       })
     }
   }
-
   if (source) {
     return handleAuth({ request, source });
   }

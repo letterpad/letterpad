@@ -1,16 +1,21 @@
 'use client';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import { getApiRootUrl } from '../../../lib/utils/url';
 
 export const AuthButtons = () => {
-  const location = typeof window !== 'undefined' ? document.location.href : '';
+  const [location, setLocation] = useState<string | null>(null);
   const apiRoot = getApiRootUrl();
-
   const login = new URL(`/api/identity/login`, apiRoot);
-  login.searchParams.set('source', location);
-
   const register = new URL(`/register`, apiRoot);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setLocation(window.location.href);
+    }
+  }, []);
+
+  if (location) login.searchParams.set('source', location);
   register.searchParams.set('ref', 'clientHeader');
 
   return (

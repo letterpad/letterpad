@@ -1,20 +1,16 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 import { AuthForm } from "../../../components/auth";
 
 const Login = () => {
-  const serviceUrl = "/api/identity/login";
-  const source = "/login";
+  const params = useSearchParams();
+  const source = params.get("source") || "/";
   return (
     <div className="bg-white dark:bg-gray-900 flex justify-center  flex-1">
-      <AuthForm
-        serviceUrl={serviceUrl}
-        source={source}
-        className="!max-w-lg p-8"
-        view="login"
-      />
+      <AuthForm source={source} className="!max-w-lg p-8" view="login" />
     </div>
   );
 };

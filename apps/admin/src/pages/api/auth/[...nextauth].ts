@@ -12,8 +12,25 @@ import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 
 import { isBlackListed } from "./blacklist";
+import { sendMail } from "../../../graphql/mail/sendMail";
 
-const providers = (): NextAuthOptions["providers"] => [
+function emailSender(callbackUrl: string) {
+  return async ({ identifier, url }) => {
+    try {
+      const emailVerificationLink = new URL(url)
+      emailVerificationLink.searchParams.set("callbackUrl", callbackUrl);
+      sendMail({
+        to: identifier,
+        subject: "Sign in to Letterpad",
+        html: `Sign in to Letterpad\n${emailVerificationLink.href}`,
+      });
+    } catch (error) {
+      // handle error
+    }
+  }
+}
+
+const providers = (req?: NextApiRequest): NextAuthOptions["providers"] => [
   GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -34,6 +51,8 @@ const providers = (): NextAuthOptions["providers"] => [
       },
     },
     from: process.env.SENDER_EMAIL!,
+    sendVerificationRequest: req && emailSender(req.body.callbackUrl),
+
   }),
 ];
 
@@ -44,8 +63,8 @@ const authPrisma = {
   verificationToken: prisma.verificationRequest,
 } as unknown as PrismaClient
 
-export const options = (): NextAuthOptions => ({
-  providers: providers(),
+export const options = (req?: NextApiRequest): NextAuthOptions => ({
+  providers: providers(req),
   adapter: PrismaAdapter(authPrisma),
   events: {
     createUser: async ({ user }) => {
@@ -65,6 +84,7 @@ export const options = (): NextAuthOptions => ({
       })
     }
   },
+
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {
@@ -100,7 +120,7 @@ export const options = (): NextAuthOptions => ({
 
       return session;
     },
-    async signIn({ user, email }) {
+    async signIn({ user }) {
       if (user.email) {
         if (isBlackListed(user.email)) {
           return false;
@@ -109,6 +129,11 @@ export const options = (): NextAuthOptions => ({
       return true;
     },
     redirect: async ({ url, baseUrl }) => {
+      const callback = getCallbackUrl(url);
+      if (callback) {
+        return callback;
+      }
+
       if (url.startsWith(baseUrl)) {
         return url;
       }
@@ -129,6 +154,14 @@ export const options = (): NextAuthOptions => ({
 });
 
 const auth = (req: NextApiRequest, res: NextApiResponse) =>
-  NextAuth(req, res, options());
+  NextAuth(req, res, options(req));
 
 export default auth;
+
+function getCallbackUrl(url: string) {
+  const queryString = url.split('?')[1];
+  const params = new URLSearchParams(queryString);
+  const encodeCallbackUrl = params.get('callbackUrl');
+  const callbackUrl = encodeCallbackUrl ? decodeURIComponent(encodeCallbackUrl) : null;
+  return callbackUrl;
+}

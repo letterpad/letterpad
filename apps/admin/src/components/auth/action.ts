@@ -1,6 +1,7 @@
 import { signIn } from "next-auth/react";
 
 import { basePath } from "../../constants";
+import { getRootUrl } from "../../shared/getRootUrl";
 import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 
@@ -8,7 +9,7 @@ export const onLoginAction = async ({ data, serviceUrl, source }) => {
     const result = await signIn("email", {
         redirect: false,
         email: data.email,
-        callbackUrl: serviceUrl ?? basePath + "/posts",
+        callbackUrl: `${getRootUrl()}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? basePath + "/posts",
     });
     track({
         eventAction: EventAction.Click,
@@ -16,23 +17,8 @@ export const onLoginAction = async ({ data, serviceUrl, source }) => {
         eventLabel: EventLabel.CredentialsLogin,
     });
     if (result?.ok) {
-        let redirectUrl = result.url;
-        if (serviceUrl && new URL(serviceUrl).host !== document.location.host) {
-            document.location.href = `/api/identity/login?serviceUrl=${serviceUrl}&source=${source}`;
-            return;
-        }
-
-        if (redirectUrl?.includes("login")) {
-            redirectUrl = redirectUrl.replace("login", "posts");
-        }
-        if (redirectUrl) {
-            // router.push(redirectUrl);
-            // document.location.href = `/api/identity/login?source=${redirectUrl}`;
-            return;
-        }
-        return;
+        // redirect to a page displaying a message that the email has been sent with the login link
     }
-    // Message().error({ content: result.message, duration: 5 });
 };
 export const onRegisterAction = async ({ data, captchaToken }) => {
     if (captchaToken) {

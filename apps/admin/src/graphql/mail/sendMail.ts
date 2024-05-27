@@ -5,7 +5,7 @@ import logger from "@/shared/logger";
 
 import { baseTemplate } from "./templates/base";
 
-export async function sendMail(data: Mail, meta: EmailTemplateMeta) {
+export async function sendMail(data: Mail, meta?: EmailTemplateMeta) {
   if (!hasCredentials()) {
     return logger.debug("No client found to send emails");
   }
@@ -17,14 +17,18 @@ export async function sendMail(data: Mail, meta: EmailTemplateMeta) {
       .replace("{{ signature }}", "<br><br>Cheers,<br>Letterpad Team");
     // send mail
     const fromEmail = process.env.SENDER_EMAIL;
-
-    const response = await mail({
+    const options = {
       from: `"Letterpad" <${fromEmail}>`,
-      replyTo: `"${meta.author.name}" <${to}>`,
-      to: `"${meta.author.name}" <${to}>`,
+      replyTo: `"Letterpad User" <${to}>`,
+      to: `"Letterpad User" <${to}>`,
       subject: data.subject,
       html: body,
-    });
+    }
+    if (meta && meta.author.email && meta.author.name) {
+      options.replyTo = `"${meta.author.name}" <${meta.author.email}>`;
+      options.to = `"${meta.author.name}" <${to}>`;
+    }
+    const response = await mail(options);
     return response;
   });
   return Promise.all(mails);
