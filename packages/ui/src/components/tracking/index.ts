@@ -102,7 +102,7 @@ export enum EventLabel {
 
 
 export const track = (info: EventInfo) => {
-    if (typeof window === "undefined") return;
+    if (typeof gtag === "undefined") return;
     gtag("event", info.eventAction, {
         event_category: info.eventCategory,
         event_label: info.eventLabel,
