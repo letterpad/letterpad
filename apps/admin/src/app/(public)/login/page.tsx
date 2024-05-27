@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import React from "react";
-import { AuthForm } from "ui/src/components/auth";
+import { AuthForm } from "ui/dist/index.mjs";
 
 const Login = () => {
   const params = useSearchParams();

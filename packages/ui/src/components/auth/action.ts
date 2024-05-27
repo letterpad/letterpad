@@ -1,7 +1,6 @@
 import { signIn } from "next-auth/react";
 
 import { EventAction, EventCategory, EventLabel, track } from "../tracking";
-import { getRootUrl } from "../../utils";
 
 interface LoginProps {
     data: {
@@ -14,7 +13,7 @@ export const onLoginAction = async ({ data, serviceUrl, source }: LoginProps) =>
     const result = await signIn("email", {
         redirect: false,
         email: data.email,
-        callbackUrl: `${getRootUrl()}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? "/posts",
+        callbackUrl: `${window.location.origin}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? "/posts",
     });
     track({
         eventAction: EventAction.Click,
