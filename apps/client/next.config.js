@@ -69,6 +69,10 @@ module.exports = withAxiom({
         source: '/analytics/:path*',
         destination: `https://region1.analytics.google.com/:path*`,
       },
+      {
+        source: '/api/auth/:path*',
+        destination: `${new URL(process.env.API_URL).origin}/api/auth/:path*`,
+      },
     ];
   },
   reactStrictMode: true,
@@ -157,6 +161,5 @@ module.exports = withAxiom({
     NEXT_PUBLIC_API_URL: process.env.API_URL,
     GRAPHQL_URL: process.env.API_URL,
     CLIENT_ID: process.env.CLIENT_ID,
-    NEXTAUTH_URL: new URL(process.env.API_URL).origin + '/api/auth',
   },
 });
