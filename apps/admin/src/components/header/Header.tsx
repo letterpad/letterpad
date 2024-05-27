@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button, Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
+import { AuthModal } from "ui/src/components/auth";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
 
-import { AuthModal } from "../auth";
 import { EventAction, EventCategory, track } from "../../track";
 
 // @ts-ignore

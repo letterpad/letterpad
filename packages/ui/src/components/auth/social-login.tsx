@@ -1,8 +1,8 @@
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Button } from "ui/dist/isomorphic.mjs";
 
-import { EventAction, EventCategory, EventLabel, track } from "@/track";
+import { Button } from "../button";
+import { EventAction, EventCategory, EventLabel, track } from "../tracking";
 
 interface Props {
   mode: "login" | "register";

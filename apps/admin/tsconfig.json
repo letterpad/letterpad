@@ -48,6 +48,7 @@
     "public/website/css",
     "src/graphql/schema/index.ts",
     ".next/types/**/*.ts",
+    "../../packages/ui/src/components/auth",
   ],
   "exclude": [
     "letterpad-graphql",

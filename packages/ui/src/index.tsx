@@ -1,5 +1,6 @@
 // import * as React from "react";
 export * from "./components/accordion";
+export * from "./components/auth";
 export * from "./components/button";
 export * from "./components/cardv2"
 export * from "./components/comments";
@@ -31,7 +32,7 @@ export * from "./components/theme";
 export * from "./components/toggle";
 export * from "./components/toggle-group";
 export * from "./components/tooltip";
-export * from "./components/vercelEdgeConfig/client"
+export * from "./components/vercelEdgeConfig/client";
 export { useIdle } from "./hooks/useIdle";
 export { useIntersectionObserver } from "./hooks/useIntersectionObserver";
 export { useKeyPress } from "./hooks/useKeyPress";

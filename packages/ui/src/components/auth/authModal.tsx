@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { DialogModal } from "ui/dist/index.mjs";
 
 import { AuthForm } from "./authForm";
+import { DialogModal } from "../dialog";
 
 interface Props {
   TriggerComponent: React.ReactNode;

@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-
-import { AuthForm } from "../../../components/auth";
+import { AuthForm } from "ui/src/components/auth";
 
 const Register = () => {
   const serviceUrl = "/api/identity/login";

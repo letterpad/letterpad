@@ -97,3 +97,13 @@ export enum EventLabel {
     LikedAvatars = "liked_avatars",
     ReadMore = 'read_more'
 }
+
+
+
+
+export const track = (info: EventInfo) => {
+    gtag("event", info.eventAction, {
+        event_category: info.eventCategory,
+        event_label: info.eventLabel,
+    });
+};

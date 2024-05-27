@@ -4,19 +4,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FC, MouseEvent, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Input,
-} from "ui/dist/index.mjs";
 
 import { onLoginAction, onRegisterAction } from "./action";
 import { CaptchaProvider } from "./captchaProvider";
 import { SocialLogin } from "./social-login";
+import { Button } from "../button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../cardv2";
+import { Input } from "../input";
 
 interface FormProps {
   email: string;

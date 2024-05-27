@@ -1,15 +1,20 @@
 import { signIn } from "next-auth/react";
 
-import { basePath } from "../../constants";
-import { getRootUrl } from "../../shared/getRootUrl";
-import { EventAction, EventCategory, EventLabel, track } from "../../track";
+import { EventAction, EventCategory, EventLabel, track } from "../tracking";
+import { getRootUrl } from "../../utils";
 
-
-export const onLoginAction = async ({ data, serviceUrl, source }) => {
+interface LoginProps {
+    data: {
+        email: string;
+    };
+    serviceUrl: string;
+    source: string;
+}
+export const onLoginAction = async ({ data, serviceUrl, source }: LoginProps) => {
     const result = await signIn("email", {
         redirect: false,
         email: data.email,
-        callbackUrl: `${getRootUrl()}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? basePath + "/posts",
+        callbackUrl: `${getRootUrl()}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? "/posts",
     });
     track({
         eventAction: EventAction.Click,
@@ -20,7 +25,14 @@ export const onLoginAction = async ({ data, serviceUrl, source }) => {
         // redirect to a page displaying a message that the email has been sent with the login link
     }
 };
-export const onRegisterAction = async ({ data, captchaToken }) => {
+
+interface RegisterProps {
+    data: {
+        email: string;
+    };
+    captchaToken: string;
+}
+export const onRegisterAction = async ({ data, captchaToken }: RegisterProps) => {
     if (captchaToken) {
         const result = await fetch("/api/validateCaptcha", {
             method: "POST",

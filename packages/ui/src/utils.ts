@@ -47,3 +47,16 @@ export function throttle<T extends (...args: any[]) => void>(delay: number, func
     }
   };
 }
+
+export const getRootUrl = () => {
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "preview") {
+    const protocol = "https://";
+    return new URL(
+      protocol + process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL
+    ).toString();
+  }
+  if (typeof process.env.NEXT_PUBLIC_ROOT_URL === "undefined") {
+    throw new Error("NEXT_PUBLIC_ROOT_URL is not defined in apps/admin/.env")
+  }
+  return new URL(process.env.NEXT_PUBLIC_ROOT_URL).toString();
+};
