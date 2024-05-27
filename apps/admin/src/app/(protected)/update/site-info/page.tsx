@@ -15,7 +15,6 @@ import {
   CardTitle,
   Input,
   Label,
-  Logo,
   TextArea,
 } from "ui/dist/index.mjs";
 
