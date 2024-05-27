@@ -1,31 +1,37 @@
 'use client';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
-import { getApiRootUrl } from '../../../lib/utils/url';
+import { AuthModal, Button } from 'ui/dist/index.mjs';
 
 export const AuthButtons = () => {
-  const [location, setLocation] = useState<string | null>(null);
-  const apiRoot = getApiRootUrl();
-  const login = new URL(`/api/identity/login`, apiRoot);
-  const register = new URL(`/register`, apiRoot);
+  const [source, setSource] = useState('');
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setLocation(window.location.href);
-    }
+    const source = typeof window !== 'undefined' ? window.location.href : '';
+    setSource(source);
   }, []);
 
-  if (location) login.searchParams.set('source', location);
-  register.searchParams.set('ref', 'clientHeader');
-
   return (
-    <>
-      <Link href={login.href} className="text-sm">
-        Login
-      </Link>
-      <Link href={register.href} className="text-sm">
-        Register
-      </Link>
-    </>
+    <ul className="flex gap-4">
+      <li>
+        <AuthModal
+          TriggerComponent={
+            <Button variant={'link'} className="!p-0">
+              Login
+            </Button>
+          }
+          source={source}
+        />
+      </li>
+      <li>
+        <AuthModal
+          TriggerComponent={
+            <Button variant={'link'} className="!p-0">
+              Register
+            </Button>
+          }
+          source={source}
+          view="register"
+        />
+      </li>
+    </ul>
   );
 };
