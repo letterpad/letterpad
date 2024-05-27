@@ -15,10 +15,9 @@ import {
   CardTitle,
   Input,
   Label,
+  Logo,
   TextArea,
 } from "ui/dist/index.mjs";
-
-import { Logo } from "@/components/auth/logo";
 
 import { useUpdateAuthor } from "@/app/(protected)/posts/_feature/api.client";
 import {

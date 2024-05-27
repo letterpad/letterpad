@@ -14,11 +14,10 @@ import {
   CardHeader,
   CardTitle,
   Input,
+  Logo,
   Message,
   TextArea,
 } from "ui/dist/index.mjs";
-
-import { Logo } from "@/components/auth/logo";
 
 import {
   useGetAuthor,
