@@ -10,10 +10,11 @@ interface LoginProps {
     source: string;
 }
 export const onLoginAction = async ({ data, serviceUrl, source }: LoginProps) => {
+    const origin = new URL(process.env.NEXT_PUBLIC_ROOT_URL! || process.env.NEXT_PUBLIC_API_URL!).origin;
     const result = await signIn("email", {
         redirect: false,
         email: data.email,
-        callbackUrl: `${window.location.origin}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? "/posts",
+        callbackUrl: `${origin}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? "/posts",
     });
     track({
         eventAction: EventAction.Click,
