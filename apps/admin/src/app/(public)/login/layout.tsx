@@ -1,6 +1,7 @@
 import { Metadata, Viewport } from "next";
 import React from "react";
-import { Logo } from "ui/dist/index.mjs";
+
+import { Logo } from "@/components/logo";
 
 import Footer from "../../../components/website_v2/Footer";
 

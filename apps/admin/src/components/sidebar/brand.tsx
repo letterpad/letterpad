@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { FC } from "react";
-import { Logo } from "ui/dist/index.mjs";
+
+import { Logo } from "@/components/logo";
 
 interface Props {
   site_name: string;
