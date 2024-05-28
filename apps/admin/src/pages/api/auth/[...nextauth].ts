@@ -22,7 +22,7 @@ function emailSender(callbackUrl: string) {
       sendMail({
         to: identifier,
         subject: "Sign in to Letterpad",
-        html: `Sign in to Letterpad\n${emailVerificationLink.href}`,
+        html: `<p>Click the below button to verify your email address and to login.</p> <a href="${emailVerificationLink.toString()}" class="btn">Verify and Login</a>`,
       });
     } catch (error) {
       // handle error

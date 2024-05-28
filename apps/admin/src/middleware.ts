@@ -8,7 +8,7 @@ import { SessionData } from "./graphql/types";
 import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
 
-export const config = { matcher: '/((?!_next/static|_next/image|favicon.ico|graphql|api/auth|api/graphql).*)', };
+export const config = { matcher: '/((?!_next/static|_next/image|logo|manifest.webmanifest|favicon.ico|graphql|api/auth|api/graphql).*)', };
 
 const isPlatform = process.env.LETTERPAD_PLATFORM;
 
@@ -24,7 +24,6 @@ export async function middleware(request: NextRequest) {
     // eslint-disable-next-line no-console
     console.error(error)
   }
-
   const cookie = request.cookies.get(getAuthCookieName());
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
