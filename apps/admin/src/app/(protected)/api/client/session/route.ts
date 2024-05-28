@@ -12,6 +12,7 @@ export async function GET() {
     return NextResponse.json(null, { status: 200 });
   }
   try {
+    // todo: check if this works
     const session = await decode({
       token: hasToken.value,
       secret: process.env.SECRET_KEY,
