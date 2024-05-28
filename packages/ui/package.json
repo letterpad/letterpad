@@ -17,7 +17,7 @@
     "clean": "rm -rf ./dist",
     "typecheck": "tsc --noEmit",
     "build": "NODE_OPTIONS='--max-old-space-size=16384' tsup",
-    "watch": "bun run clean && NODE_OPTIONS='--max-old-space-size=16384' tsup --watch",
+    "watch": "NODE_OPTIONS='--max-old-space-size=16384' tsup --watch",
     "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "devDependencies": {

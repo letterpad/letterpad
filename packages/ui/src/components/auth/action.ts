@@ -19,11 +19,9 @@ export const onLoginAction = async ({ data, serviceUrl, source }: LoginProps) =>
     track({
         eventAction: EventAction.Click,
         eventCategory: EventCategory.Auth,
-        eventLabel: EventLabel.CredentialsLogin,
+        eventLabel: EventLabel.MagicLink,
     });
-    if (result?.ok) {
-        // redirect to a page displaying a message that the email has been sent with the login link
-    }
+    return result;
 };
 
 interface RegisterProps {
@@ -64,4 +62,5 @@ export const onRegisterAction = async ({ data, captchaToken }: RegisterProps) =>
             eventLabel: EventLabel.Registered,
         });
     }
+    return result;
 }

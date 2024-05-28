@@ -16,7 +16,7 @@ import { Input } from "../input";
 interface FormProps {
   email: string;
 }
-type AuthViews = "login" | "register";
+type AuthViews = "login" | "register" | "success";
 
 interface Props {
   source: string;
@@ -43,6 +43,7 @@ export const AuthForm: FC<Props> = ({
   const router = useRouter();
   const isLoginView = view === "login";
   const isRegisterView = view === "register";
+  const isSuccessView = view === "success";
   const serviceUrl = params.get("serviceUrl") || "";
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
@@ -50,12 +51,18 @@ export const AuthForm: FC<Props> = ({
     let captchaToken = "";
     try {
       if (view === "login") {
-        onLoginAction({ data, serviceUrl, source });
+        const result = await onLoginAction({ data, serviceUrl, source });
+        if(result?.ok && result.status === 200) {
+          setView("success")
+        }
       } else if (view === "register") {
         if (executeRecaptcha && !!recaptchaKey) {
           captchaToken = await executeRecaptcha("register");
         }
-        onRegisterAction({ data, captchaToken });
+        const result = await onRegisterAction({ data, captchaToken });
+        if(result?.ok && result.status === 200) {
+          setView("success")
+        }
       }
     } catch (e) {
       // console.error(e);
@@ -157,17 +164,20 @@ export const AuthForm: FC<Props> = ({
           <CardTitle className="text-2xl">
             {isLoginView && "Welcome Back."}
             {isRegisterView && "Join Letterpad."}
+            {view === "success" && "Check your inbox."}
           </CardTitle>
           <CardDescription>
             {isLoginView &&
               "Enter the email address associated with your account, and we’ll send a magic link to your inbox."}
             {isRegisterView &&
               "Enter your email below and click continue to create an account."}
+            {view === "success" &&
+              "We have sent a magic link to your email. Click on the link to continue."}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">{renderFormContent()}</div>
-          <div className="mt-8 text-center text-xs opacity-80">
+          {!isSuccessView && <div className="mt-8 text-center text-xs opacity-80">
             Click “Sign {isLoginView ? "in" : "up"}” to agree to Letterpad's{" "}
             <Link href="/terms" target="_blank" className="underline">
               Terms of Service
@@ -177,7 +187,7 @@ export const AuthForm: FC<Props> = ({
               Privacy Policy
             </Link>{" "}
             applies to you.
-          </div>
+          </div>}
         </CardContent>
       </Card>
     </form>

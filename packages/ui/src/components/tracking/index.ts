@@ -54,7 +54,7 @@ export enum EventLabel {
     CredentialsRegistration = "credentials_registration",
     GoogleLogin = "google_login",
     GitHubLogin = "github_login",
-    CredentialsLogin = "credentials_login",
+    MagicLink = "magiclink",
     Preview = "preview",
     ForgotPassword = "forgot_password",
     ResetPassword = "reset_password",
