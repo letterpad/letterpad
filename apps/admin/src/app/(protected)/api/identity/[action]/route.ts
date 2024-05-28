@@ -15,7 +15,6 @@ export async function GET(
     token: req.cookies.get(getAuthCookieName())?.value!,
     secret: process.env.SECRET_KEY,
   });
-
   if (!decodedToken && params.action === "logout") {
     return NextResponse.redirect(`${serviceUrl}?source=${sourceUrl}`, {
       status: 302,

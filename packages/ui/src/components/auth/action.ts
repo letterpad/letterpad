@@ -10,14 +10,7 @@ interface LoginProps {
     source: string;
 }
 export const onLoginAction = async ({ data, serviceUrl, source }: LoginProps) => {
-    // check if session exists in admin. If so, get the cookie and redirect to the source.
     const origin = new URL(process.env.NEXT_PUBLIC_ROOT_URL! || process.env.NEXT_PUBLIC_API_URL!).origin;
-    const checkIdentity = await fetch(`${origin}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}`);
-    if (checkIdentity.status === 301) {
-        const redirect = checkIdentity.headers.get('cookie');
-        // eslint-disable-next-line no-console
-        console.log(redirect);
-    }
     const result = await signIn("email", {
         redirect: false,
         email: data.email,
