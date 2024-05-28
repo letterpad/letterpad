@@ -21,6 +21,12 @@ export const getPosts = cache(
     const session_author_id = session?.user.id;
     const authorId = session_author_id || client_author_id || undefined;
 
+    if (!authorId) {
+      return {
+        __typename: "UnAuthorized",
+        message: "You are not authorized",
+      };
+    }
     if (!args.filters) {
       args.filters = {};
     }

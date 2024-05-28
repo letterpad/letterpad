@@ -1,4 +1,5 @@
 import { Metadata, Viewport } from "next";
+import Link from "next/link";
 import React from "react";
 
 import { Logo } from "@/components/logo";
@@ -21,7 +22,9 @@ const LoginLayout = ({ children }) => {
     <div className="flex flex-col h-screen overflow-y-auto">
       <header>
         <h2 className="pt-16 flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>
         </h2>
       </header>
       {children}

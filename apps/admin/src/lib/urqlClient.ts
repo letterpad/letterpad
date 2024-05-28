@@ -25,6 +25,8 @@ export const cache = cacheExchange({
     Notification: () => null,
     FavAuthorResponse: () => null,
     DeleteAuthorResponse: () => null,
+    UnAuthorized: () => null,
+    StatsError:() => null
   },
 });
 
@@ -34,23 +36,23 @@ const makeClient = () => {
   if (_client) return _client;
   _client = createClient({
     url,
-    maskTypename: true,
+    suspense: true,
     exchanges: [
       cache,
-      // mapExchange({
-      //   onResult(result) {
-      //     const isAuthorized =
-      //       result?.data?.[Object.keys(result?.data)[0]]?.__typename !==
-      //       "UnAuthorized";
+      mapExchange({
+        onResult(result) {
+          const isAuthorized =
+            result?.data?.[Object.keys(result?.data)[0]]?.__typename !==
+            "UnAuthorized";
 
-      //     if (!isAuthorized && typeof window !== "undefined") {
-      //       window.location.replace(
-      //         `/login?callbackUrl=${window.location.href}`
-      //       );
-      //     }
-      //     if (result.operation.kind === "query") return;
-      //   },
-      // }),
+          if (!isAuthorized && typeof window !== "undefined") {
+            window.location.replace(
+              `/login?callbackUrl=${window.location.href}`
+            );
+          }
+          if (result.operation.kind === "query") return;
+        },
+      }),
       fetchExchange,
     ],
   });
