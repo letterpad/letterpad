@@ -1,5 +1,7 @@
 // export const runtime = 'edge';
 
+import { Image } from 'ui/dist/isomorphic.mjs';
+
 import { getData } from '@/data';
 
 import Custom404 from './not-found';
@@ -67,9 +69,11 @@ export default async function Home() {
 const AboutMe = ({ me }) => {
   return (
     <div className="rounded text-center text-gray-500 dark:text-gray-200 p-8 md:px-0 dark:bg-slate-800 bg-slate-100 shadow-inner">
-      <img
+      <Image
         className="w-20 h-20 rounded-full mx-auto border-[1px] object-cover"
-        src={me.avatar}
+        src={me.avatar
+          .replace('image/upload', 'image/upload/c_scale,w_200')
+          .replace('w=1080', 'w=200')}
         alt={me.name}
       />
       <div className="mt-5">

@@ -34,7 +34,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, className }) => {
                   <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
                     <span>
                       <Image
-                        src={cover_image.src ?? ''}
+                        src={cover_image.src?.replace('w=1080', 'w=600')}
                         alt={title}
                         style={{ objectFit: 'cover' }}
                       />
