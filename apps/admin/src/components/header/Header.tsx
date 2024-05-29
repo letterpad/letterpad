@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { AuthModal, Button, Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
+import { Image } from "ui/dist/isomorphic.mjs";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
@@ -79,7 +80,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
               <AiOutlineMenu size="20" className="bold" />
             </button>
             <Link className="flex gap-2" href="/" aria-label="Letterpad">
-              <img
+              <Image
                 className="mx-auto md:max-w-none w-28 md:w-36"
                 src={Logo.src}
                 alt="Letterpad"

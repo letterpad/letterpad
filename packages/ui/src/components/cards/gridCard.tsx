@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 import { BiBook } from 'react-icons/bi';
 
+import { Image } from '../image';
 
 interface Props { 
     slug: string;
@@ -30,9 +30,8 @@ export const GridCard: FC<Props> = ({ slug, publishedAt, title, excerpt, cover_i
         >
             <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
             <span>
-                <Image
-                src={cover_image.src ?? ''}
-                fill={true}
+            <Image
+                src={cover_image.src?.replace('w=1080', 'w=600')}
                 alt={title}
                 style={{ objectFit: 'cover' }}
                 />

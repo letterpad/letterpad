@@ -214,3 +214,34 @@ select {
   );
   filter: blur(160px);
 }
+
+.dark {
+  .home-gradient {
+    background: radial-gradient(
+      ellipse 84% 35% at 50% -25%,
+      rgb(113 153 243 / 70%),
+      transparent
+    );
+  }
+  .features-gradient {
+    background: radial-gradient(
+      ellipse 80% 49% at 50% -25%,
+      rgb(126 172 255 / 70%),
+      transparent
+    );
+  }
+  .pricing-gradient {
+    background: radial-gradient(
+      129% 70% at 50% -23%,
+      rgb(113 178 157 / 27%),
+      transparent
+    );
+  }
+  .resource-gradient {
+    background: radial-gradient(
+      84% 79% at 50% -25%,
+      rgb(113 138 243 / 70%),
+      transparent
+    );
+  }
+}

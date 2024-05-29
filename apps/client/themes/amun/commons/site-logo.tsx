@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 interface Logo {
   __typename?: 'Image';

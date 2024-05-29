@@ -11,12 +11,7 @@ export const metadata: Metadata = {
 
 const Layout = ({ children }) => {
   return (
-    <div
-      style={{
-        background:
-          "radial-gradient(84% 79% at 50% -25%, rgb(113 138 243 / 70%), transparent)",
-      }}
-    >
+    <div className="resource-gradient">
       <Header displayBg={false} />
       <div className="mb-20">{children}</div>
       <Footer />

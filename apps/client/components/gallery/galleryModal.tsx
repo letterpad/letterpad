@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 import { Controls } from './controls';
 import { ThumbnailList } from './thumbnails';

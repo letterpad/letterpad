@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import { PostsFragmentFragment } from 'letterpad-sdk';
-import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 import formatDate from '@/lib/utils/formatDate';
 
-import Image from '@/components/Image';
 import Link from '@/components/Link';
 
 export const Card: FC<{
@@ -34,9 +33,8 @@ export const Card: FC<{
         >
           <Image
             src={post.cover_image?.src ?? ''}
-            layout="fill"
             alt={post.title}
-            objectFit="cover"
+            className="object-cover"
           />
         </div>
       </Link>
@@ -107,9 +105,7 @@ export const HorizontalCard = ({ post }) => {
         <Image
           src={post.cover_image?.src ?? ''}
           alt={post.title}
-          objectFit="cover"
-          layout="fill"
-          className="rounded-t-lg  md:rounded-lg"
+          className="rounded-t-lg  md:rounded-lg object-cover"
         />
       </div>
 

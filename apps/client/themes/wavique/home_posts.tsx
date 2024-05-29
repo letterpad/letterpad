@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { HomePostsProps } from 'types/pageTypes';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 import formatDate from '@/lib/utils/formatDate';
 
 import { IconBook } from '@/components/icons';
-import Image from '@/components/Image';
 import Link from '@/components/Link';
 
 import { Layout } from './layout';
@@ -92,7 +92,6 @@ function GridPostCard({
             <Image
               className=""
               src={coverImage ?? ''}
-              fill={true}
               alt={title}
               style={{ objectFit: 'cover' }}
             />

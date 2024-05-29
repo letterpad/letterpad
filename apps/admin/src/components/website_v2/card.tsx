@@ -4,10 +4,9 @@ import {
   LetterpadLatestPostsQuery,
   PostStats,
 } from "letterpad-graphql";
-import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-import { ProfileCard } from "ui/dist/isomorphic.mjs";
+import { Image, ProfileCard } from "ui/dist/isomorphic.mjs";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";
@@ -106,10 +105,9 @@ export const Card: FC<Props> = ({
           <Link className="hidden md:block" href={link}>
             <Image
               src={
-                cover_image.src?.replace(
-                  "image/upload",
-                  "image/upload/c_scale,w_200"
-                )!
+                cover_image.src
+                  ?.replace("image/upload", "image/upload/c_scale,w_200")
+                  .replace("w=1080", "w=200")!
               }
               alt="Product"
               loading="lazy"

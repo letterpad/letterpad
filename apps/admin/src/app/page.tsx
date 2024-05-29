@@ -17,13 +17,7 @@ const Home = () => {
           __html: JSON.stringify(letterpadStructuredData),
         }}
       />
-      <div
-        className="flex flex-col justify-between min-h-screen"
-        style={{
-          background:
-            "radial-gradient(ellipse 84% 35% at 50% -25%, rgb(113 153 243 / 70%), transparent)",
-        }}
-      >
+      <div className="flex flex-col justify-between min-h-screen home-gradient">
         <AiAd />
         <Header displayBg={false} />
         <div className="md:px-0 flex-1">

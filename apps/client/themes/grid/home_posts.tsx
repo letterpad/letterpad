@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { FC } from 'react';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 import formatDate from '@/lib/utils/formatDate';
 
 import { IconBook } from '@/components/icons';
-import Image from '@/components/Image';
 import Link from '@/components/Link';
 
 import { SectionContainer } from '../../src/components/section';
@@ -34,11 +34,9 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, className }) => {
                   <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
                     <span>
                       <Image
-                        src={cover_image.src ?? ''}
-                        fill={true}
+                        src={cover_image.src?.replace('w=1080', 'w=600')}
                         alt={title}
                         style={{ objectFit: 'cover' }}
-                        priority={index === 1}
                       />
                     </span>
                   </div>

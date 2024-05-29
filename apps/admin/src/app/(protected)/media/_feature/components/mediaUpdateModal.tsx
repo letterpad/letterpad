@@ -1,6 +1,6 @@
 import { Media } from "letterpad-graphql";
-import Image from "next/image";
 import { Button, Input, Modal, TextArea } from "ui/dist/index.mjs";
+import { Image } from "ui/dist/isomorphic.mjs";
 
 export const MediaUpdateModal = ({
   img,

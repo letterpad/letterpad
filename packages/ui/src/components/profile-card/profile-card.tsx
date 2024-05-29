@@ -2,6 +2,8 @@ import classNames from "classnames";
 import Link from "next/link";
 import { FC, ReactNode } from "react";
 
+import { Image } from "../image";
+
 interface Props {
   link: string;
   avatar: string;
@@ -32,8 +34,8 @@ export const ProfileCard:FC<Props> = ({
       target={target}
     >
       <div className="rounded-full flex-none ">
-        <img
-          src={avatar?.replace("image/upload", "image/upload/c_scale,w_200")}
+        <Image
+          src={avatar?.replace("image/upload", "image/upload/c_scale,w_200,f_auto").replace("w=1080", "w=200")}
           alt={"Author name"}
           loading="lazy"
           className={classNames("object-cover rounded-full bg-slate-200", {
