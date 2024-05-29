@@ -90,6 +90,7 @@ const RootLayout = async ({ children }) => {
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 overflow-hidden`}
       >
+        <CookieBanner />
         <Script
           id="google-analytics"
           dangerouslySetInnerHTML={{
@@ -104,7 +105,6 @@ const RootLayout = async ({ children }) => {
           }}
         ></Script>
         <Providers theme={theme}>{children}</Providers>
-        <CookieBanner />
         {process.env.NODE_ENV === "production" && (
           <Script
             defer={true}

@@ -2,10 +2,8 @@ import { BiCookie } from "@react-icons/all-files/bi/BiCookie";
 import { cookies } from "next/headers";
 
 import { CloseButton } from "./closeButton";
-// import { EventAction, EventCategory, EventLabel, track } from "../../track";
 
 export const CookieBanner = () => {
-  // const [show, setShow] = useState(false);
   const cookie = cookies();
   const hasConcent = cookie.get("cookie-consent")?.value === "true";
   if (hasConcent) return null;
