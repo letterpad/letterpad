@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { useEffect, useRef } from 'react';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 interface Props<T> {
   items: T[];

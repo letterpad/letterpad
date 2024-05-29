@@ -2,15 +2,13 @@ import classNames from 'classnames';
 import { PostsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
 import { HomePostsProps } from 'types/pageTypes';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 import formatDate from '@/lib/utils/formatDate';
 
 import Link from '@/components/Link';
 
-import Image from '../../components/Image';
 import { SectionContainer } from '../../src/components/section';
-
-const style = {};
 
 export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   let featuredThreePosts;
@@ -89,9 +87,8 @@ const Card: FC<{
         <div className="relative block bg-black/5 pt-[75%] dark:bg-white/5 ">
           <Image
             src={post.cover_image.src ?? ''}
-            layout="fill"
+            className="object-cover"
             alt={post.title}
-            objectFit="cover"
           />
         </div>
       </Link>

@@ -4,10 +4,9 @@ import {
   LetterpadLatestPostsQuery,
   PostStats,
 } from "letterpad-graphql";
-import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-import { ProfileCard } from "ui/dist/isomorphic.mjs";
+import { Image, ProfileCard } from "ui/dist/isomorphic.mjs";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";

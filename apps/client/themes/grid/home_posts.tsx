@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { FC } from 'react';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 import formatDate from '@/lib/utils/formatDate';
 
 import { IconBook } from '@/components/icons';
-import Image from '@/components/Image';
 import Link from '@/components/Link';
 
 import { SectionContainer } from '../../src/components/section';
@@ -35,10 +35,8 @@ export const HomePosts: FC<HomePostsProps> = ({ posts, className }) => {
                     <span>
                       <Image
                         src={cover_image.src ?? ''}
-                        fill={true}
                         alt={title}
                         style={{ objectFit: 'cover' }}
-                        priority={index === 1}
                       />
                     </span>
                   </div>

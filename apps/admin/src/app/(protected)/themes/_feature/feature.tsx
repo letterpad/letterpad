@@ -1,9 +1,9 @@
 "use client";
 
 import classNames from "classnames";
-import Image from "next/image";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Button } from "ui/dist/index.mjs";
+import { Image } from "ui/dist/isomorphic.mjs";
 
 import { themes as themesList } from "./components/themes";
 import {

@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import { forwardRef } from 'react';
 
-// import { getRootUrl } from "../../shared/getRootUrl";
-
 export const Image = forwardRef<
   HTMLImageElement,
   React.ImgHTMLAttributes<HTMLImageElement>
 >(({ className, src, alt, loading, ...props }, ref) => {
+
+  const root = new URL(process.env.NEXT_PUBLIC_ROOT_URL! || process.env.NEXT_PUBLIC_API_URL!).origin;
   if (src?.startsWith('/') && process.env.NODE_ENV === 'production') {
-    const fullImgUrl = new URL(src, getRootUrl()).href;
+    const fullImgUrl = new URL(src, root).href;
     src = `https://res.cloudinary.com/abhisheksaha/image/fetch/${fullImgUrl}`;
   }
   return (
