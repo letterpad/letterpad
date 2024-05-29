@@ -105,10 +105,9 @@ export const Card: FC<Props> = ({
           <Link className="hidden md:block" href={link}>
             <Image
               src={
-                cover_image.src?.replace(
-                  "image/upload",
-                  "image/upload/c_scale,w_200"
-                )!
+                cover_image.src
+                  ?.replace("image/upload", "image/upload/c_scale,w_200")
+                  .replace("w=1020", "w=200")!
               }
               alt="Product"
               loading="lazy"

@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import {
   EventAction,
   EventCategory,
+  Image,
   ProfileCard,
   Skeleton,
 } from "ui/dist/isomorphic.mjs";
@@ -37,11 +38,10 @@ export const Trending = async () => {
             return (
               <div key={article.id} className="flex mb-4 flex-col gap-2">
                 <div className="flex items-center">
-                  <img
-                    src={article.cover_image.src?.replace(
-                      "image/upload",
-                      "image/upload/c_scale,w_200"
-                    )}
+                  <Image
+                    src={article.cover_image.src
+                      ?.replace("image/upload", "image/upload/c_scale,w_200")
+                      .replace("w=1020", "w=200")}
                     loading="lazy"
                     alt={article.title}
                     className="w-20 h-24 rounded-lg mr-4 object-cover"
