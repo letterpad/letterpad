@@ -9,7 +9,8 @@ export const Image = forwardRef<
   const root = new URL(process.env.NEXT_PUBLIC_ROOT_URL! || process.env.NEXT_PUBLIC_API_URL!).origin;
   if (src?.startsWith('/') && process.env.NODE_ENV === 'production') {
     const fullImgUrl = new URL(src, root).href;
-    src = `https://res.cloudinary.com/abhisheksaha/image/fetch/${fullImgUrl}`;
+    src =`https://res.cloudinary.com/abhisheksaha/image/fetch/f_auto,q_auto/${fullImgUrl}`;
+
   }
   return (
     <img
