@@ -47,7 +47,7 @@ const uploadApi = async (
   res: NextApiResponse
 ) => {
   await multerAny(req, res);
-  const _session = await getServerSession({ req });
+  const _session = await getServerSession();
   const session = _session as unknown as { user: SessionData };
   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
 

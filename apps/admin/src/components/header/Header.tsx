@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
+import { AuthModal, Button, Drawer, ThemeSwitcher } from "ui/dist/index.mjs";
 
 import { ProfileDropdown } from "@/components/profile-dd";
 import { Search } from "@/components/website_v2/search";
@@ -38,16 +38,6 @@ const menu = () => [
     title: "Features",
     className: "hidden md:block",
     visible: true,
-  },
-];
-
-const authItems = (isLoggedIn, source) => [
-  {
-    link: `/api/identity/login?source=${source}`,
-    title: "Login",
-    className: "hidden md:block",
-    visible: !isLoggedIn,
-    prefetch: false,
   },
 ];
 
@@ -110,28 +100,37 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                     </Link>
                   </li>
                 ))}
-              {authItems(isLoggedIn, source)
-                .filter((item) => item.visible)
-                .map((item) => (
-                  <li className={item.className} key={item.title}>
-                    <Link href={item.link} prefetch={false} onClick={onClick}>
-                      {item.title}
-                    </Link>
-                  </li>
-                ))}
-              <li>
-                {isLoggedIn ? (
+
+              {isLoggedIn ? (
+                <li>
                   <ProfileDropdown />
-                ) : (
-                  <Link
-                    href="/register"
-                    onClick={onClick}
-                    className="rounded-full border px-3 py-1.5 bg-black text-white text-sm"
-                  >
-                    Get Started
-                  </Link>
-                )}
-              </li>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <AuthModal
+                      TriggerComponent={
+                        <Button variant={"link"} className="!p-0">
+                          Login
+                        </Button>
+                      }
+                      source={source}
+                    />
+                  </li>
+                  <li>
+                    <AuthModal
+                      TriggerComponent={
+                        <Button variant={"link"} className="!p-0">
+                          Register
+                        </Button>
+                      }
+                      source={source}
+                      view="register"
+                    />
+                  </li>
+                </>
+              )}
+
               <li>
                 <ThemeSwitcher />
               </li>

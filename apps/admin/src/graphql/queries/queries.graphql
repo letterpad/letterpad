@@ -37,6 +37,35 @@ query Post($filters: PostFilters) {
   }
 }
 
+query AdminPosts($filters: PostsFilters) {
+  posts(filters: $filters) {
+    __typename
+    ... on PostsNode {
+      count
+      rows {
+        title
+        updatedAt
+        createdAt
+        status
+        id
+        tags {
+          ... on TagsNode {
+            rows {
+              name
+              slug
+            }
+          }
+        }
+      }
+    }
+
+    ... on UnAuthorized {
+      __typename
+      message
+    }
+  }
+}
+
 query Posts($filters: PostsFilters) {
   posts(filters: $filters) {
     __typename

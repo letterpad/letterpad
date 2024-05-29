@@ -33,7 +33,7 @@ export const getLetterpadFeaturedPosts = async (
 
     return {
       __typename: "PostsNode",
-      rows: posts.map(mapPostToGraphql),
+      rows: posts.map(p => mapPostToGraphql(p)),
       count: posts.length,
     };
   } catch (e: any) {

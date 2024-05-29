@@ -7,7 +7,7 @@ import { mail } from "@/lib/mail";
 import { getServerSession } from "@/graphql/context";
 
 export async function POST(req: Request): Promise<Response> {
-  const session = await getServerSession({ req });
+  const session = await getServerSession();
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }

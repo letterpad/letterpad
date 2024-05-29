@@ -69,6 +69,10 @@ module.exports = withAxiom({
         source: '/analytics/:path*',
         destination: `https://region1.analytics.google.com/:path*`,
       },
+      {
+        source: '/api/auth/:path*',
+        destination: `${new URL(process.env.API_URL).origin}/api/auth/:path*`,
+      },
     ];
   },
   reactStrictMode: true,

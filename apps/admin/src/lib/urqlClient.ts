@@ -25,6 +25,8 @@ export const cache = cacheExchange({
     Notification: () => null,
     FavAuthorResponse: () => null,
     DeleteAuthorResponse: () => null,
+    UnAuthorized: () => null,
+    StatsError:() => null
   },
 });
 
@@ -34,7 +36,7 @@ const makeClient = () => {
   if (_client) return _client;
   _client = createClient({
     url,
-    maskTypename: true,
+    suspense: true,
     exchanges: [
       cache,
       mapExchange({

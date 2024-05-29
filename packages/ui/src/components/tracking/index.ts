@@ -54,7 +54,7 @@ export enum EventLabel {
     CredentialsRegistration = "credentials_registration",
     GoogleLogin = "google_login",
     GitHubLogin = "github_login",
-    CredentialsLogin = "credentials_login",
+    MagicLink = "magiclink",
     Preview = "preview",
     ForgotPassword = "forgot_password",
     ResetPassword = "reset_password",
@@ -97,3 +97,14 @@ export enum EventLabel {
     LikedAvatars = "liked_avatars",
     ReadMore = 'read_more'
 }
+
+
+
+
+export const track = (info: EventInfo) => {
+    if (typeof gtag === "undefined") return;
+    gtag("event", info.eventAction, {
+        event_category: info.eventCategory,
+        event_label: info.eventLabel,
+    });
+};

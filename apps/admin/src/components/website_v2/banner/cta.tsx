@@ -1,20 +1,25 @@
 "use client";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Button } from "ui/dist/isomorphic.mjs"; // removed isomorphic;
+import { useEffect, useState } from "react";
+import { AuthModal, Button } from "ui/dist/index.mjs";
 
 import { EventAction, EventCategory, track } from "../../../track";
 
 export const CtaButtons = () => {
   const session = useSession();
-
+  const [source, setSource] = useState("");
+  useEffect(() => {
+    const source = typeof window !== "undefined" ? window.location.href : "";
+    setSource(source);
+  }, []);
   const hasSession = !!session.data?.user?.id || session.status === "loading";
 
-  const onClick = (e) => {
+  const onClick = (label: string) => {
     track({
       eventAction: EventAction.Click,
       eventCategory: EventCategory.HeroBanner,
-      eventLabel: e.target.innerText,
+      eventLabel: label,
     });
   };
   return (
@@ -25,11 +30,11 @@ export const CtaButtons = () => {
       data-aos-duration="200"
     >
       {!hasSession ? (
-        <Button variant={"primary"}>
-          <Link href="/register" onClick={() => onClick("register")}>
-            Register
-          </Link>
-        </Button>
+        <AuthModal
+          TriggerComponent={<Button>Register</Button>}
+          source={source}
+          view="register"
+        />
       ) : null}
       <Button variant={"outline"}>
         <Link href="/features" onClick={() => onClick("features")}>

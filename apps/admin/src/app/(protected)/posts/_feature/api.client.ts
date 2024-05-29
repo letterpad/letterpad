@@ -4,6 +4,7 @@ import {
   PostsFilters,
 } from "letterpad-graphql";
 import {
+  useAdminPostsQuery,
   useCreatePostMutation,
   usePostsQuery,
   useStatsQuery, useUpdateAuthorMutation
@@ -38,6 +39,25 @@ export const useCreatePost = () => {
       });
       return result;
     },
+  };
+};
+
+export const useGetAdminPosts = (
+  variables: PostsFilters = {},
+  options = { skip: false }
+) => {
+  const [{ fetching, data, error }, refetch] = useAdminPostsQuery({
+    variables: {
+      filters: variables,
+    },
+    pause: options.skip,
+  });
+  const postsNode = isPostsNode(data?.posts) ? data?.posts.rows : [];
+  return {
+    fetching,
+    error,
+    data: postsNode,
+    refetch,
   };
 };
 

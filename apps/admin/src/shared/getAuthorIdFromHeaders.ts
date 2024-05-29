@@ -1,6 +1,4 @@
 import { prisma } from "@/lib/prisma";
-
-
 interface P {
   identifierHeader: string | null;
   authHeader: string | null;
@@ -26,8 +24,6 @@ export async function findAuthorIdFromLetterpadSubdomain({
   authorId,
 }: P) {
   if (!authorId) {
-    // eslint-disable-next-line no-console
-    console.log("identifierHeader", identifierHeader);
     if (identifierHeader?.includes("letterpad.app")) {
       const username = identifierHeader.split(".")[0];
       const author = await prisma.author.findFirst({
@@ -35,8 +31,6 @@ export async function findAuthorIdFromLetterpadSubdomain({
           username,
         },
       });
-      // eslint-disable-next-line no-console
-      console.log("author_id", author?.id)
       if (author) return { identifierHeader, authHeader, authorId: author.id };
     }
     if (identifierHeader?.includes("letterpad-client-git")) {

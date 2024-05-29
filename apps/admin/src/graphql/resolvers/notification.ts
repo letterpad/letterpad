@@ -5,6 +5,12 @@ import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
   notifications: async (_root, args, { prisma, session }) => {
+    if (!session?.user.id) {
+      return {
+        __typename: "UnAuthorized",
+        message: "You are not authorized",
+      }
+    }
     const notifications = await prisma.notifications.findMany({
       where: {
         author: {

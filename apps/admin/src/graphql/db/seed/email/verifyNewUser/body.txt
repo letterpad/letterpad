@@ -1,7 +1,0 @@
-Hello {{ full_name }}, 
-
-You have used this email address while registering in <strong>{{ company_name }}</strong>. Please click the below button to verify this email address.
-
-{{ verify_link }}
-
-If you have received this by mistake, you can safely ignore this email.

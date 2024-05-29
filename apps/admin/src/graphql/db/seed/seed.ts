@@ -321,6 +321,9 @@ export const cleanupDatabase = async () => {
   await prisma.upload.deleteMany();
   await prisma.emailTemplates.deleteMany();
   await prisma.membership.deleteMany();
+  await prisma.session.deleteMany();
+  await prisma.account.deleteMany();
+  await prisma.verificationRequest.deleteMany();
 };
 
 function getTemplates(rootFolder, templates) {

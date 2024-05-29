@@ -9,7 +9,7 @@ const getHashFromPostId = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse
 ) => {
-  const _session = await getServerSession({ req });
+  const _session = await getServerSession();
 
   if (!_session || !_session.user?.email)
     return res.status(401).send("Unauthorized");

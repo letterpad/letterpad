@@ -13,7 +13,7 @@ export async function GET() {
 
   let sitemaps = "";
   usernames.forEach(({ username }) => {
-    if (isAlphaNumericWithUnderscore(username)) {
+    if (username && isAlphaNumericWithUnderscore(username)) {
       sitemaps += `<sitemap>
       <loc>https://${username}.letterpad.app/sitemap.xml</loc>
       <lastmod>${lastModified}</lastmod>

@@ -14,15 +14,11 @@ import { getSocialLink } from "./helpers";
 import { convertNotificationMetaIn } from "./utils/dbTypeCheck";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import {
-  createAuthor,
-  forgotPassword,
   getAuthor,
   getPermissionFromAuthor,
   getRoleFromAuthor,
-  resetPassword,
   updateAuthor,
 } from "../services/author";
-import { loginAuthor } from "../services/author/loginAuthor";
 import { EmailTemplates } from "../types";
 
 const Author: AuthorResolvers<ResolverContext> = {
@@ -102,6 +98,12 @@ const Query: QueryResolvers<ResolverContext> = {
     });
     const fixedAuthors = authors.map((author) => ({
       ...author,
+      avatar: author.avatar!,
+      bio: author.bio!,
+      name: author.name!,
+      occupation: author.occupation!,
+      username: author.username!,
+      company_name: author.company_name!,
       register_step: author.register_step as RegisterStep,
       social: getSocialLink(JSON.parse(author.social as string)),
       createdAt: author.createdAt?.toISOString(),
@@ -161,20 +163,9 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createAuthor(_, args, context) {
-    return createAuthor(args, context);
-  },
-  async login(_parent, args, context) {
-    return loginAuthor(args, context);
-  },
+
   async updateAuthor(_root, args, context) {
     return updateAuthor(args, context);
-  },
-  async forgotPassword(_root, args, context) {
-    return forgotPassword(args, context);
-  },
-  async resetPassword(_root, args, context) {
-    return resetPassword(args, context);
   },
   async followAuthor(_root, { username }, { prisma, session }) {
     if (!session?.user?.id)
@@ -288,6 +279,12 @@ const getFollowing = async (id: string, prisma: ResolverContext['prisma']) => {
   return Promise.resolve(
     rows.map((row) => ({
       ...row,
+      name: row.name!,
+      avatar: row.avatar!,
+      username: row.username!,
+      bio: row.bio!,
+      occupation: row.occupation!,
+      company_name: row.company_name!,
       createdAt: row.createdAt?.toISOString(),
       register_step: row.register_step as RegisterStep,
       social: getSocialLink(JSON.parse(row.social as string)),
@@ -317,6 +314,12 @@ const getFollowers = async (id: string, prisma: ResolverContext['prisma']) => {
   return Promise.resolve(
     rows.map((row) => ({
       ...row,
+      name: row.name!,
+      avatar: row.avatar!,
+      username: row.username!,
+      bio: row.bio!,
+      occupation: row.occupation!,
+      company_name: row.company_name!,
       createdAt: row.createdAt?.toISOString(),
       register_step: row.register_step as RegisterStep,
       social: getSocialLink(JSON.parse(row.social as string)),

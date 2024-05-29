@@ -54,9 +54,9 @@ export async function generateMetadata({
       url: `${settings.site_url}/tag/${params.tag}`,
       title: `#${params.tag} - Posts from ${settings.site_title}`,
       description: `Posts tagged with #${params.tag}`,
-      authors: [me.name],
-      firstName: me.name,
-      siteName: settings.site_title,
+      authors: [me.name!],
+      firstName: me.name!,
+      siteName: settings.site_title!,
     },
     twitter: {
       title: `#${params.tag} - Posts from ${settings.site_title}`,

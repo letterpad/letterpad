@@ -17,14 +17,14 @@ import { textToSlug } from "@/utils/slug";
 
 export const onBoardUser = async (id: string) => {
   const newAuthor = await prisma.author.findUnique({ where: { id } });
-  if (newAuthor && newAuthor.verified) {
+  if (newAuthor && newAuthor.emailVerified) {
     // create new tag for author
     const newTag = {
       name: siteConfig.default_tag,
       slug: siteConfig.default_tag,
     };
 
-    const welcomeContent = getWelcomePost(newAuthor.name);
+    const welcomeContent = getWelcomePost(newAuthor.name!);
     await prisma.post.create({
       data: {
         ...welcomeContent.post,
@@ -101,7 +101,6 @@ export async function createAuthorWithSettings(
 ) {
   const {
     token: _token,
-    verified = false,
     avatar = "https://res.cloudinary.com/abhisheksaha/image/upload/v1708881374/avatar.png",
     ...authorData
   } = data;
@@ -116,21 +115,15 @@ export async function createAuthorWithSettings(
         username:
           authorData.username ?? generateUsernameFromEmail(authorData.email),
         avatar,
-        verified,
-        bio: "",
-        occupation: "",
-        company_name: "",
         social: JSON.stringify({
           twitter: "",
           facebook: "",
           github: "",
           instagram: "",
         }),
-        password: data.password,
         role: {
           connect: { id: role.id },
         },
-        signature: "",
         setting: {
           create: {
             ...defaultSettings,

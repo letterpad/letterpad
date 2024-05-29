@@ -1,6 +1,5 @@
 "use client";
 
-import { isCancel } from "axios";
 import { useSession } from "next-auth/react"
 
 export const useIsPaidMember = () => {

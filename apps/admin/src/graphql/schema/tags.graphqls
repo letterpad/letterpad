@@ -41,7 +41,7 @@ type Tag {
 }
 
 type PopularTagsResponse {
-  rows: [Tag]
+  rows: [Tag!]
   ok: Boolean!
   message: String
 }

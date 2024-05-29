@@ -5,7 +5,6 @@ import {
   PostStatusOptions,
   PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
-import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -15,12 +14,7 @@ import { postsStyles } from "@/components/posts.css";
 
 import { useRedirectToOnboard } from "@/components/onboard/useRedirectToOnboard";
 
-import {
-  isIntroDismissed,
-  setIntroDimissed,
-} from "@/app/(protected)/home/_feature/components/visibility";
-
-import { useGetPosts } from "./api.client";
+import { useGetAdminPosts } from "./api.client";
 import { DEFAULT_FILTERS } from "./constants";
 import Filters from "./filters";
 import { columns } from "./header";
@@ -32,7 +26,7 @@ export const Feature = () => {
   const router = useRouter();
   const [postId, setPostId] = useState<string | null>(null);
   const [filters, setFilters] = useState<PostsFilters>(DEFAULT_FILTERS);
-  const { data, refetch, fetching } = useGetPosts(filters);
+  const { data, refetch, fetching } = useGetAdminPosts(filters);
   const selectedPost = data?.find((p) => p.id === postId);
   const { sidebarVisible } = useResponsiveLayout();
   const methods = useForm<PostWithAuthorAndTagsFragment | {}>({
@@ -40,7 +34,6 @@ export const Feature = () => {
     mode: "all",
     reValidateMode: "onBlur",
   });
-  const [{ data: homeData }] = useHomeQueryQuery();
   const { updatePost } = useUpdatePost();
   useRedirectToOnboard();
 
@@ -54,15 +47,6 @@ export const Feature = () => {
       methods.reset(selectedPost);
     }
   }, [methods, selectedPost, postId]);
-
-  React.useEffect(() => {
-    if (!homeData?.settings) {
-      if (!isIntroDismissed()) {
-        setIntroDimissed(true);
-        router.push("/home");
-      }
-    }
-  }, [router, homeData?.settings]);
 
   return (
     <>

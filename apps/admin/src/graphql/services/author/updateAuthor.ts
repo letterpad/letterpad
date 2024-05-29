@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import {
   AuthorResponse,
   InputAuthor,
@@ -14,7 +15,6 @@ import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { EmailTemplates } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { sanitizeUsername } from "@/shared/utils";
-import { getHashedPassword } from "@/utils/bcrypt";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -49,7 +49,7 @@ export const updateAuthor = async (
         id: args.author.id,
       },
       data: {
-        favourite: args.author.favourite
+        favourite: args.author.favourite!
       }
     })
     return {
@@ -64,9 +64,6 @@ export const updateAuthor = async (
     const newEmail =
       args.author.email && session.user.email !== args.author.email;
 
-    if (args.author.password) {
-      dataToUpdate.password = await getHashedPassword(args.author.password);
-    }
     if (args.author.social) {
       dataToUpdate.social = JSON.stringify(args.author.social);
     }
@@ -96,7 +93,7 @@ export const updateAuthor = async (
       }
     }
 
-    if (newEmail) {
+    if (newEmail && args.author.email) {
       const emailExist = await prisma.author.findFirst({
         where: {
           email: args.author.email,
@@ -116,7 +113,7 @@ export const updateAuthor = async (
       }
       dataToUpdate.verified = false;
     }
-    const { id: _id, ...data } = dataToUpdate;
+    const { id: _id, ...data } = dataToUpdate as Prisma.AuthorUpdateInput;
     const author = await prisma.author.update({
       data: { ...data },
       where: { id: session.user.id },

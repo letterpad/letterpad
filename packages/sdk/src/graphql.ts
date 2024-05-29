@@ -42,13 +42,14 @@ export type Author = {
   company_name?: Maybe<Scalars["String"]>;
   createdAt?: Maybe<Scalars["String"]>;
   email: Scalars["String"];
+  email_verified_at?: Maybe<Scalars["Date"]>;
   favourite?: Maybe<Scalars["Boolean"]>;
   first_post_published?: Maybe<Scalars["Boolean"]>;
   followers?: Maybe<Array<FollowAuthor>>;
   following?: Maybe<Array<FollowAuthor>>;
   id: Scalars["String"];
   is_paid_member?: Maybe<Scalars["Boolean"]>;
-  name: Scalars["String"];
+  name?: Maybe<Scalars["String"]>;
   occupation?: Maybe<Scalars["String"]>;
   permissions?: Maybe<Array<Permissions>>;
   profile_updated?: Maybe<Scalars["Boolean"]>;
@@ -58,7 +59,7 @@ export type Author = {
   signature?: Maybe<Scalars["String"]>;
   site_url?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
-  username: Scalars["String"];
+  username?: Maybe<Scalars["String"]>;
   verified?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -244,7 +245,7 @@ export type FollowAuthor = {
   __typename?: "FollowAuthor";
   avatar?: Maybe<Scalars["String"]>;
   createdAt?: Maybe<Scalars["String"]>;
-  name: Scalars["String"];
+  name?: Maybe<Scalars["String"]>;
   username: Scalars["String"];
 };
 
@@ -512,7 +513,6 @@ export type Mutation = {
   __typename?: "Mutation";
   addDomain: AddDomainResponse;
   addSubscriber?: Maybe<SubscribersAddResult>;
-  createAuthor?: Maybe<AuthorResponse>;
   createComment: CreateCommentResponse;
   createPost: CreatePostResponse;
   deleteAuthor?: Maybe<DeleteAuthorResponse>;
@@ -520,13 +520,10 @@ export type Mutation = {
   deleteMedia?: Maybe<MediaDeleteResponse>;
   deleteTags: DeleteTagsResponse;
   followAuthor: FollowAuthorResponse;
-  forgotPassword: ForgotPasswordResponse;
   likePost: ToggleLikePostResponse;
-  login?: Maybe<LoginResponse>;
   markAllAsRead: NotificationUpdateResult;
   markAsRead: NotificationUpdateResult;
   removeDomain: RemoveDomainResponse;
-  resetPassword: ForgotPasswordResponse;
   unFollowAuthor: FollowAuthorResponse;
   unLikePost: ToggleLikePostResponse;
   updateAuthor?: Maybe<AuthorResponse>;
@@ -544,10 +541,6 @@ export type MutationAddDomainArgs = {
 
 export type MutationAddSubscriberArgs = {
   email: Scalars["String"];
-};
-
-export type MutationCreateAuthorArgs = {
-  data: InputCreateAuthor;
 };
 
 export type MutationCreateCommentArgs = {
@@ -576,25 +569,12 @@ export type MutationFollowAuthorArgs = {
   username: Scalars["String"];
 };
 
-export type MutationForgotPasswordArgs = {
-  email: Scalars["String"];
-};
-
 export type MutationLikePostArgs = {
   postId: Scalars["String"];
 };
 
-export type MutationLoginArgs = {
-  data?: InputMaybe<LoginData>;
-};
-
 export type MutationMarkAsReadArgs = {
   notification_id: Scalars["String"];
-};
-
-export type MutationResetPasswordArgs = {
-  password: Scalars["String"];
-  token: Scalars["String"];
 };
 
 export type MutationUnFollowAuthorArgs = {
@@ -729,7 +709,7 @@ export type PopularTagsResponse = {
   __typename?: "PopularTagsResponse";
   message?: Maybe<Scalars["String"]>;
   ok: Scalars["Boolean"];
-  rows?: Maybe<Array<Maybe<Tag>>>;
+  rows?: Maybe<Array<Tag>>;
 };
 
 export type Post = {
@@ -1039,7 +1019,7 @@ export type Setting = {
   site_footer?: Maybe<Scalars["String"]>;
   site_logo?: Maybe<Image>;
   site_tagline?: Maybe<Scalars["String"]>;
-  site_title: Scalars["String"];
+  site_title?: Maybe<Scalars["String"]>;
   site_url: Scalars["String"];
   theme?: Maybe<Scalars["String"]>;
 };
@@ -1255,24 +1235,24 @@ export type MeQuery = {
     | {
         __typename: "Author";
         id: string;
-        name: string;
+        name?: string | null;
         bio?: string | null;
         occupation?: string | null;
         signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
-        username: string;
+        username?: string | null;
         favourite?: boolean | null;
         createdAt?: string | null;
         followers?: Array<{
           __typename?: "FollowAuthor";
-          name: string;
+          name?: string | null;
           avatar?: string | null;
           username: string;
         }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
-          name: string;
+          name?: string | null;
           avatar?: string | null;
           username: string;
         }> | null;
@@ -1295,24 +1275,24 @@ export type MeQuery = {
 export type MeFragmentFragment = {
   __typename: "Author";
   id: string;
-  name: string;
+  name?: string | null;
   bio?: string | null;
   occupation?: string | null;
   signature?: string | null;
   avatar?: string | null;
   company_name?: string | null;
-  username: string;
+  username?: string | null;
   favourite?: boolean | null;
   createdAt?: string | null;
   followers?: Array<{
     __typename?: "FollowAuthor";
-    name: string;
+    name?: string | null;
     avatar?: string | null;
     username: string;
   }> | null;
   following?: Array<{
     __typename?: "FollowAuthor";
-    name: string;
+    name?: string | null;
     avatar?: string | null;
     username: string;
   }> | null;
@@ -1378,24 +1358,24 @@ export type MeAndSettingsQuery = {
     | {
         __typename: "Author";
         id: string;
-        name: string;
+        name?: string | null;
         bio?: string | null;
         occupation?: string | null;
         signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
-        username: string;
+        username?: string | null;
         favourite?: boolean | null;
         createdAt?: string | null;
         followers?: Array<{
           __typename?: "FollowAuthor";
-          name: string;
+          name?: string | null;
           avatar?: string | null;
           username: string;
         }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
-          name: string;
+          name?: string | null;
           avatar?: string | null;
           username: string;
         }> | null;
@@ -1417,7 +1397,7 @@ export type MeAndSettingsQuery = {
     | { __typename: "NotFound"; message: string }
     | {
         __typename: "Setting";
-        site_title: string;
+        site_title?: string | null;
         site_tagline?: string | null;
         site_email: string;
         site_url: string;
@@ -1516,12 +1496,12 @@ export type PostQuery = {
           | {
               __typename: "Author";
               id: string;
-              name: string;
+              name?: string | null;
               avatar?: string | null;
               occupation?: string | null;
               bio?: string | null;
               signature?: string | null;
-              username: string;
+              username?: string | null;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1577,12 +1557,12 @@ export type PageFragmentFragment = {
     | {
         __typename: "Author";
         id: string;
-        name: string;
+        name?: string | null;
         avatar?: string | null;
         occupation?: string | null;
         bio?: string | null;
         signature?: string | null;
-        username: string;
+        username?: string | null;
       }
     | { __typename: "Exception"; message: string }
     | { __typename: "Failed"; message: string }
@@ -1646,12 +1626,12 @@ export type PostPageQuery = {
           | {
               __typename: "Author";
               id: string;
-              name: string;
+              name?: string | null;
               avatar?: string | null;
               occupation?: string | null;
               bio?: string | null;
               signature?: string | null;
-              username: string;
+              username?: string | null;
             }
           | { __typename: "Exception"; message: string }
           | { __typename: "Failed"; message: string }
@@ -1670,24 +1650,24 @@ export type PostPageQuery = {
     | {
         __typename: "Author";
         id: string;
-        name: string;
+        name?: string | null;
         bio?: string | null;
         occupation?: string | null;
         signature?: string | null;
         avatar?: string | null;
         company_name?: string | null;
-        username: string;
+        username?: string | null;
         favourite?: boolean | null;
         createdAt?: string | null;
         followers?: Array<{
           __typename?: "FollowAuthor";
-          name: string;
+          name?: string | null;
           avatar?: string | null;
           username: string;
         }> | null;
         following?: Array<{
           __typename?: "FollowAuthor";
-          name: string;
+          name?: string | null;
           avatar?: string | null;
           username: string;
         }> | null;
@@ -1709,7 +1689,7 @@ export type PostPageQuery = {
     | { __typename: "NotFound"; message: string }
     | {
         __typename: "Setting";
-        site_title: string;
+        site_title?: string | null;
         site_tagline?: string | null;
         site_email: string;
         site_url: string;
@@ -1789,9 +1769,9 @@ export type RelatedPostsQuery = {
           author?:
             | {
                 __typename: "Author";
-                name: string;
+                name?: string | null;
                 avatar?: string | null;
-                username: string;
+                username?: string | null;
               }
             | { __typename: "Exception"; message: string }
             | { __typename: "Failed"; message: string }
@@ -1849,9 +1829,9 @@ export type PostsQuery = {
           author?:
             | {
                 __typename: "Author";
-                name: string;
+                name?: string | null;
                 avatar?: string | null;
-                username: string;
+                username?: string | null;
               }
             | { __typename: "Exception"; message: string }
             | { __typename: "Failed"; message: string }
@@ -1900,9 +1880,9 @@ export type PostsFragmentFragment = {
     author?:
       | {
           __typename: "Author";
-          name: string;
+          name?: string | null;
           avatar?: string | null;
-          username: string;
+          username?: string | null;
         }
       | { __typename: "Exception"; message: string }
       | { __typename: "Failed"; message: string }
@@ -1935,7 +1915,7 @@ export type SettingsQuery = {
     | { __typename: "NotFound"; message: string }
     | {
         __typename: "Setting";
-        site_title: string;
+        site_title?: string | null;
         site_tagline?: string | null;
         site_email: string;
         site_url: string;
@@ -1987,7 +1967,7 @@ export type SettingsQuery = {
 
 export type SettingsFragmentFragment = {
   __typename?: "Setting";
-  site_title: string;
+  site_title?: string | null;
   site_tagline?: string | null;
   site_email: string;
   site_url: string;
@@ -2103,7 +2083,7 @@ export type TagsQuery = {
                     | {
                         __typename: "Author";
                         id: string;
-                        name: string;
+                        name?: string | null;
                         avatar?: string | null;
                         occupation?: string | null;
                         bio?: string | null;

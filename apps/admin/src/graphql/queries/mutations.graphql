@@ -1,26 +1,5 @@
 # import './partial.graphql'
 
-mutation Login($data: LoginData) {
-  login(data: $data) {
-    __typename
-    ... on Author {
-      id
-      name
-      email
-      role
-      avatar
-      permissions
-      bio
-      username
-      register_step
-    }
-
-    ... on LoginError {
-      message
-    }
-  }
-}
-
 mutation UpdateTags($data: InputTags) {
   updateTags(data: $data) {
     __typename
@@ -47,22 +26,6 @@ mutation DeleteTags($name: String!) {
       ok
     }
     ... on UnAuthorized {
-      message
-    }
-  }
-}
-
-mutation createAuthor($data: InputCreateAuthor!) {
-  createAuthor(data: $data) {
-    __typename
-    ... on Author {
-      name
-      id
-      register_step
-      verified
-      username
-    }
-    ... on Failed {
       message
     }
   }
@@ -209,20 +172,6 @@ mutation DeleteMedia($ids: [Int!]!) {
     ... on UnAuthorized {
       message
     }
-  }
-}
-
-mutation ForgotPassword($email: String!) {
-  forgotPassword(email: $email) {
-    ok
-    message
-  }
-}
-
-mutation ResetPassword($password: String!, $token: String!) {
-  resetPassword(password: $password, token: $token) {
-    ok
-    message
   }
 }
 

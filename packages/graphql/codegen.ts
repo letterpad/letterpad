@@ -26,7 +26,8 @@ const config: CodegenConfig = {
         withHooks: false,
         withComponent: false,
         avoidOptionals: false,
-        maybeValue: 'T'
+        maybeValue: "T | undefined",
+        inputMaybeValue: 'T | null | undefined'
       }
     },
     "./src/hooks.ts": {
@@ -41,7 +42,7 @@ const config: CodegenConfig = {
         documentMode: 'external',
         importDocumentNodeExternallyFrom: './graphql.ts',
         avoidOptionals: false,
-        maybeValue: 'T',
+        maybeValue: "T | undefined",
         content: "//@ts-nocheck"
       },
       presetConfig: {

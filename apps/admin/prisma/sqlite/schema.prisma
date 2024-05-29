@@ -46,6 +46,7 @@ model Author {
   views                PageViews[]
   membership           Membership?
   comments             Comment[]
+  accounts             Account[]
 
   @@index([role_id])
   @@index([username])
@@ -140,15 +141,15 @@ model Comment {
 }
 
 model Session {
-  id        Int       @id @default(autoincrement())
-  domain    String
-  author_id String
-  token     String
-  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  expiresAt DateTime?
-  createdAt DateTime? @default(now())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("author_id")
+  expires      DateTime @default(now())
+  user         Author   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([author_id])
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@index([userId])
 }
 
 model EmailDelivery {
@@ -381,4 +382,34 @@ model Trending {
   updatedAt DateTime? @updatedAt
 
   @@index([post_id])
+}
+
+model VerificationRequest {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Account {
+  userId            String  @map("author_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user Author @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
 }

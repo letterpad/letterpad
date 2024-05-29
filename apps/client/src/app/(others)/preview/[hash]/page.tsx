@@ -22,7 +22,7 @@ export default async function Preview({ params, searchParams }) {
     return (
       <Creative
         data={post}
-        site_name={settings.site_title}
+        site_name={settings.site_title!}
         settings={settings}
         me={me}
       />

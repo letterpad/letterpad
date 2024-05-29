@@ -137,21 +137,5 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
       </div>}
     </div>
   );
-
-  return (
-    <input
-      ref={ref}
-      type={type}
-      disabled={disabled}
-      className={classNames(
-        error && classes.error,
-        classes.base,
-        classes.variant[variant],
-        disabled && classes.disabled,
-        className
-      )}
-      {...rest}
-    />
-  );
 });
 Input.displayName = "Input";

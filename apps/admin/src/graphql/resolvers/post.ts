@@ -45,6 +45,10 @@ const Post: PostResolvers<ResolverContext> = {
       height: cover_image_height,
     };
   },
+
+  title: async ({ title }) => {
+    return title?.length ? title : "Untitled";
+  },
   featured: async (attrs, _args, { dataloaders }) => {
     const isFeatured = await dataloaders.batchFeatured.load(attrs.id);
     return !!isFeatured;

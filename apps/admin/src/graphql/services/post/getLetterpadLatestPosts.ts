@@ -78,7 +78,7 @@ export const getLetterpadLatestPosts = async (
     return {
       __typename: "PostsNode",
       rows: posts
-        .map(mapPostToGraphql)
+        .map(p => mapPostToGraphql(p))
         .filter((row) => (row.html?.length ?? 0) > 800),
       count: await prisma.post.count({ where: condition.where }),
     };

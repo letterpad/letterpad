@@ -1,5 +1,6 @@
+"use client";
 import classNames from "classnames";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 export interface MenuItem {
   icon?: JSX.Element;
@@ -24,7 +25,7 @@ const classes = {
   group: "my-4  px-4 text-sm font-medium uppercase text-gray-300",
   selected: "bg-gray-800 text-gray-200",
   badge:
-    "ml-auto flex items-center justify-center rounded-full bg-gray-700 w-6 h-6 font-semibold text-xs text-gray-200 shadow-md",
+    "ml-auto flex items-center justify-center rounded-full bg-gray-700 w-6 h-6 text-[0.7rem] text-gray-200 shadow-md",
 };
 
 export const Menu: FC<Props> = ({
@@ -34,6 +35,12 @@ export const Menu: FC<Props> = ({
   Link,
   ...props
 }) => {
+  const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
+
   return (
     <ul className="flex w-full flex-col">
       {items.filter(item=> !item.hidden).map((item) => {
@@ -66,7 +73,7 @@ export const Menu: FC<Props> = ({
                 {item.icon}
               </span>
               <span className="ml-3">{item.label}</span>
-              {item.badge && (
+              {domLoaded && item.badge && (
                 <span className={classes.badge}>{item.badge}</span>
               )}
             </Link>
