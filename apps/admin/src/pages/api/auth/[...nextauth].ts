@@ -19,13 +19,16 @@ function emailSender(callbackUrl: string) {
     try {
       const emailVerificationLink = new URL(url)
       emailVerificationLink.searchParams.set("callbackUrl", callbackUrl);
-      sendMail({
+      const res = await sendMail({
         to: identifier,
         subject: "Sign in to Letterpad",
         html: `<p>Click the below button to verify your email address and to login.</p> <a href="${emailVerificationLink.toString()}" class="btn">Verify and Login</a>`,
       });
+      // eslint-disable-next-line no-console
+      console.log(res)
     } catch (error) {
-      // handle error
+      // eslint-disable-next-line no-console
+      console.log("Could not send email for passwordless", error)
     }
   }
 }
@@ -52,7 +55,6 @@ const providers = (req?: NextApiRequest): NextAuthOptions["providers"] => [
     },
     from: process.env.SENDER_EMAIL!,
     sendVerificationRequest: req && emailSender(req.body.callbackUrl),
-
   }),
 ];
 
