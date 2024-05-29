@@ -71,10 +71,15 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
   events: {
     createUser: async ({ user }) => {
       if (!user.email) return;
+      const author = await prisma.author.findFirst({
+        where: {
+          email: user.email
+        }
+      })
       await prisma.author.update({
         where: { email: user.email },
         data: {
-          avatar: user.image,
+          avatar: author?.avatar ?? user.image,
           register_step: RegisterStep.ProfileInfo,
           role: {
             connect: {

@@ -189,8 +189,8 @@ export const UpdateProfile = () => {
                       labelClassName="text-md"
                       {...register("bio", {
                         maxLength: {
-                          value: 250,
-                          message: "Should be maximum 250 character long",
+                          value: 4000,
+                          message: "Should be maximum 4000 character long",
                         },
                       })}
                       data-testid="bio"
