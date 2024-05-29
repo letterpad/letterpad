@@ -107,7 +107,7 @@ export const Card: FC<Props> = ({
               src={
                 cover_image.src
                   ?.replace("image/upload", "image/upload/c_scale,w_200")
-                  .replace("w=1020", "w=200")!
+                  .replace("w=1080", "w=200")!
               }
               alt="Product"
               loading="lazy"

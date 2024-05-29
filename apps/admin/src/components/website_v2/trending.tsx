@@ -41,7 +41,7 @@ export const Trending = async () => {
                   <Image
                     src={article.cover_image.src
                       ?.replace("image/upload", "image/upload/c_scale,w_200")
-                      .replace("w=1020", "w=200")}
+                      .replace("w=1080", "w=200")}
                     loading="lazy"
                     alt={article.title}
                     className="w-20 h-24 rounded-lg mr-4 object-cover"
