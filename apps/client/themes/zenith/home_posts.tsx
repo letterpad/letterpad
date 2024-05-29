@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FC } from 'react';
+import { Image } from 'ui/dist/isomorphic.mjs';
 
 import { Tag } from './tag';
 import { SectionContainer } from '../../src/components/section';
@@ -62,7 +63,7 @@ const Post = ({
         <div className="lg:max-w-4xl">
           <div className="relative">
             <Link href={slug}>
-              <img
+              <Image
                 src={coverImage}
                 alt={title}
                 className="mb-8 w-full h-72 object-cover rounded-lg"
