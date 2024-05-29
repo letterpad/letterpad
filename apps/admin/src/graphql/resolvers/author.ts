@@ -27,7 +27,7 @@ const Author: AuthorResolvers<ResolverContext> = {
       ? new URL(avatar, getRootUrl()).href
       : avatar;
     if (_avatar) {
-      return `https://res.cloudinary.com/abhisheksaha/image/fetch/${_avatar}`;
+      return `https://res.cloudinary.com/abhisheksaha/image/fetch/f_auto/${_avatar}`;
     }
     return "https://www.gravatar.com/avatar/";
   },
