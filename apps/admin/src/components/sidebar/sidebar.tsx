@@ -10,16 +10,15 @@ import { Button, Menu, useResponsiveLayout } from "ui/dist/index.mjs";
 
 import { useMembershipDetails } from "@/hooks/useIsPaidMember";
 
-import { createCustomerAndAddTrial } from "@/actions";
 import { EventAction, EventCategory, EventLabel, track } from "@/track";
 import { isAuthor, isSettings, isStats } from "@/utils/type-guards";
 
 import { Brand } from "./brand";
 import { items } from "./menuItems";
+import { checkout } from "../../app/(protected)/membership/checkout";
 
 export const Sidebar = () => {
   const [{ data }] = useHomeQueryQuery();
-  const { update } = useSession();
   const membership = useMembershipDetails();
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState<any>({});
@@ -45,22 +44,16 @@ export const Sidebar = () => {
   const current = dayjs(trialEnd);
   const remainingTrialDays = current.diff(new Date(), "day");
 
-  const startTrial = async () => {
+  const checkoutAndStartTrial = async () => {
     if (isAuthor(data?.me)) {
       setLoading(true);
-      const res = await createCustomerAndAddTrial(data?.me?.id);
-      if (res) {
-        await update({
-          can_start_trial: false,
-          membership: "trialing",
-        });
-      }
-      setLoading(false);
       track({
         eventAction: EventAction.Click,
         eventCategory: EventCategory.Membership,
-        eventLabel: EventLabel.TrialActivated,
+        eventLabel: EventLabel.Checkout,
       });
+      await checkout();
+      setLoading(false);
     }
   };
   return (
@@ -115,7 +108,7 @@ export const Sidebar = () => {
               <Button
                 variant="success"
                 size={"small"}
-                onClick={startTrial}
+                onClick={checkoutAndStartTrial}
                 className="text-white"
                 disabled={loading}
               >

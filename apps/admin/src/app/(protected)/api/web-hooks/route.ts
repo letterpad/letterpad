@@ -14,8 +14,7 @@ enum StripeWebhooks {
     SubscriptionDeleted = 'customer.subscription.deleted',
     SubscriptionUpdated = 'customer.subscription.updated',
     SubscriptionCreated = 'customer.subscription.created',
-    PaymentSucceeded = 'payment_intent.succeeded',
-    InvoiceSucceeded = 'invoice.payment_succeeded',
+    PaymentSucceeded = 'invoice.payment_succeeded',
     ChargeSucceeded = 'charge.succeeded',
 }
 
@@ -42,31 +41,23 @@ export async function POST(req: Request) {
 
     try {
         switch (event.type) {
-            case StripeWebhooks.InvoiceSucceeded: {
+            case StripeWebhooks.PaymentSucceeded: {
                 const invoice = event.data.object as Stripe.Invoice;
                 const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
-                const author = await prisma.author.findFirst({
+
+                await prisma.membership.update({
                     where: {
-                        email: invoice.customer_email as string
+                        stripe_customer_id: invoice.customer as string
                     },
-                    select: { id: true }
+                    data: {
+                        status: subscription.status as string,
+                    },
                 });
-                if (!author) {
-                    break;
-                }
-                if (author) {
-                    await prisma.membership.update({
-                        where: {
-                            author_id: author.id
-                        },
-                        data: {
-                            status: subscription.status as string,
-                        },
-                    })
-                }
+
                 break;
             }
             case StripeWebhooks.PaymentFailed:
+                console.log(event.data.object)
                 const invoice = event.data.object as Stripe.Invoice;
                 const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
                 const author = await prisma.author.findFirst({
@@ -94,6 +85,7 @@ export async function POST(req: Request) {
                 const customer = await stripe.customers.retrieve(
                     subscription.customer as string,
                 ) as Stripe.Customer;
+                if (!customer.email) break;
                 const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
                 if (author) {
                     await prisma.membership.update({
@@ -108,41 +100,18 @@ export async function POST(req: Request) {
                 }
                 break;
             }
-            case StripeWebhooks.Completed: {
-                // const session = event.data.object as Stripe.Checkout.Session;
-                // const customer = await stripe.customers.retrieve(
-                //     session.customer as string,
-                // ) as Stripe.Customer;
-                // const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
-                // if (author) {
-                //     await prisma.membership.update({
-                //         where: {
-                //             author_id: author.id
-                //         },
-                //         data: {
-                //             status: session.status as string,
-                //         },
-                //     })
-                // }
-                break;
-            }
             case StripeWebhooks.SubscriptionDeleted: {
                 const subscription = event.data.object as Stripe.Subscription;
-                const customer = await stripe.customers.retrieve(
-                    subscription.customer as string,
-                ) as Stripe.Customer;
-                const author = await prisma.author.findUnique({ where: { email: customer.email as string } });
-                if (author) {
-                    await prisma.membership.update({
-                        where: {
-                            author_id: author.id
-                        },
-                        data: {
-                            stripe_subscription_id: null,
-                            status: subscription.status,
-                        },
-                    })
-                }
+                await prisma.membership.update({
+                    where: {
+                        stripe_subscription_id: subscription.id
+                    },
+                    data: {
+                        stripe_subscription_id: null,
+                        status: subscription.status,
+                    },
+                })
+
                 break;
             }
             case StripeWebhooks.SubscriptionCreated: {
@@ -152,33 +121,22 @@ export async function POST(req: Request) {
                 ) as Stripe.Customer;
                 const author = await prisma?.author.findUnique({ where: { email: customer.email as string } });
                 if (author) {
-                    await prisma?.author.update({
-                        where: { id: author.id },
-                        data: {
-                            membership: {
-                                update: {
-                                    data: {
-                                        stripe_customer_id: customer.id,
-                                        stripe_subscription_id: subscription.id,
-                                        status: subscription.status,
-                                    },
-                                    where: {
-                                        author_id: author.id
-                                    }
-                                },
-                                connectOrCreate: {
-                                    where: {
-                                        author_id: author.id
-                                    },
-                                    create: {
-                                        stripe_customer_id: customer.id,
-                                        stripe_subscription_id: subscription.id,
-                                        status: subscription.status,
-                                    }
-                                }
+                    try {
+                        await prisma.membership.update({
+                            data: {
+                                status: subscription.status as string,
+                                stripe_customer_id: customer.id,
+                                stripe_subscription_id: subscription.id,
+                            },
+                            where: {
+                                author_id: author.id
                             }
-                        },
-                    });
+                        });
+                        console.log("Subscription created")
+                    } catch (err) {
+                        console.log("Web hook: Subscription created error", customer.email)
+                        console.log(err)
+                    }
                 }
                 console.log('✅  Subscription created successfully');
                 break;
