@@ -87,7 +87,6 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
             }
           }
         },
-
       })
     }
   },
