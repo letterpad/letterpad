@@ -57,8 +57,8 @@ model Author {
 model Membership {
   id                     String    @id @default(uuid())
   author_id              String    @unique
-  stripe_customer_id     String?
-  stripe_subscription_id String?
+  stripe_customer_id     String?   @unique
+  stripe_subscription_id String?   @unique
   status                 String    @default("inactive")
   createdAt              DateTime? @default(now())
   updatedAt              DateTime? @updatedAt

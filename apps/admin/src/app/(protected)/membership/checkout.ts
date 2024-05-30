@@ -32,3 +32,4 @@ export const checkout = async () => {
         sessionId: res.id,
     });
 };
+

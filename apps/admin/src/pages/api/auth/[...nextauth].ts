@@ -110,7 +110,7 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
           token.avatar = author.avatar;
           token.role = author.role?.name;
           token.membership = author.membership?.status ?? "free";
-          token.can_start_trial = !!!author.membership?.status;
+          token.can_start_trial = !!author.membership?.status;
           token.register_step = author.register_step;
         }
       }

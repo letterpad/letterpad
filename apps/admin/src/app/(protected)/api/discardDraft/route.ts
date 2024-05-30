@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/graphql/context";
 
 export async function POST(request: Request) {
-  const session = await getServerSession({ req: request });
+  const session = await getServerSession();
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }

@@ -3,6 +3,7 @@ import confetti from "canvas-confetti";
 import dayjs from "dayjs";
 import { InferGetServerSidePropsType } from "next";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { Content, TablePlaceholder } from "ui/dist/index.mjs";
@@ -22,6 +23,32 @@ const Payments: FC<P & { session: SessionData }> = () => {
   const [fetching, setFetching] = useState(true);
   const { active } = membership;
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { update, data: sessionData } = useSession();
+
+  const fetchMembership = useCallback(async () => {
+    try {
+      const req = await fetch("/api/membership");
+      const data = await req.json();
+      setMembership(data);
+      const lastSubscription = data.customer.subscriptions.data[0];
+      if (
+        lastSubscription &&
+        sessionData?.user?.membership !== lastSubscription.status
+      ) {
+        await update({
+          membership: lastSubscription.status,
+          can_start_trial: false,
+        });
+        setFetching(false);
+      }
+    } catch (e) {
+      setFetching(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMembership();
+  }, [fetchMembership]);
 
   const showConfetti = useCallback(() => {
     const node = canvasRef.current;
@@ -40,20 +67,8 @@ const Payments: FC<P & { session: SessionData }> = () => {
   }, [active]);
 
   useEffect(() => {
-    fetchMembership();
-  }, []);
-
-  useEffect(() => {
     showConfetti();
   }, [active, showConfetti]);
-
-  const fetchMembership = () => {
-    fetch("/api/membership")
-      .then((res) => res?.json())
-      .then(setMembership)
-      .then(() => setFetching(false))
-      .catch(() => setFetching(false));
-  };
 
   const { invoice, customer } = membership;
   const paymentLink = invoice?.hosted_invoice_url;
@@ -77,57 +92,47 @@ const Payments: FC<P & { session: SessionData }> = () => {
 
   let visibleContent: ReactNode = null;
 
-  switch (true) {
-    case isLoading:
-      visibleContent = <TablePlaceholder loading={true} />;
-      break;
-    case isActiveMember && isNotFreeOrProFree:
-      visibleContent = (
-        <ActiveMember
-          membership={membership}
-          onCancel={() => setMembership({ ...membership, active: false })}
-        />
-      );
-      break;
-    case isOnTrial:
-      visibleContent = (
-        <Alert
-          content={`✨ You are using the trial version of Letterpad Pro. Your trial ends
+  if (isLoading) {
+    visibleContent = <TablePlaceholder loading={true} />;
+  } else if (isActiveMember && isNotFreeOrProFree) {
+    visibleContent = (
+      <ActiveMember
+        membership={membership}
+        onCancel={() => setMembership({ ...membership, active: false })}
+      />
+    );
+  } else if (isOnTrial) {
+    visibleContent = (
+      <Alert
+        content={`✨ You are using the trial version of Letterpad Pro. Your trial ends
           after ${remainingTrialDays} days.`}
-        />
-      );
-      break;
-    case isPastDue:
-      visibleContent = (
-        <Alert
-          content="Your subscription is past due. Update your payment details."
-          cta={
-            <Link
-              target="_blank"
-              href={paymentLink}
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Pay Now
-            </Link>
-          }
-        />
-      );
-      break;
-    case isProFree:
-      visibleContent = (
-        <Alert content="✨ Congratulations! You have been provided with the Letterpad Pro membership for free." />
-      );
-      break;
-    case hasNoActiveSubscription:
-      visibleContent = (
-        <div className="py-8 px-4 mx-auto max-w-screen-md lg:py-16 lg:px-6">
-          <PricingTable hasSession={true} showFreeTier={false} />
-        </div>
-      );
-      break;
-    default:
-      visibleContent = null;
-      break;
+      />
+    );
+  } else if (isPastDue) {
+    visibleContent = (
+      <Alert
+        content="Your subscription is past due. Update your payment details."
+        cta={
+          <Link
+            target="_blank"
+            href={paymentLink}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-4 py-2 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Pay Now
+          </Link>
+        }
+      />
+    );
+  } else if (isProFree) {
+    visibleContent = (
+      <Alert content="✨ Congratulations! You have been provided with the Letterpad Pro membership for free." />
+    );
+  } else if (hasNoActiveSubscription) {
+    visibleContent = (
+      <div className="py-8 px-4 mx-auto max-w-screen-md lg:py-16 lg:px-6">
+        <PricingTable hasSession={true} showFreeTier={false} />
+      </div>
+    );
   }
 
   return (
