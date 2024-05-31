@@ -12,7 +12,6 @@ import { getDirtyFields } from "@/lib/react-form";
 
 import { useGetAuthor, useUpdateAuthor } from "./api.client";
 import { Basic } from "./components/basic";
-import { ChangePassword } from "./components/change-password";
 import { EmailAndUsername } from "./components/emailAndUsername";
 import { Social } from "./components/social";
 import { SaveButton } from "../../../../components/save-button";
@@ -52,7 +51,6 @@ export const Feature = () => {
 
   if (fetching || !data) return <>Please wait...</>;
   const dirtyFields = Object.keys(formState.dirtyFields).filter((key) => {
-    if (key === "password") return false;
     if (key === "email") return false;
     if (key === "username") return false;
     return true;
@@ -130,7 +128,6 @@ export const Feature = () => {
                 description="Credentials related information"
               />
               <EmailAndUsername data={data} />
-              <ChangePassword id={data.id} />
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 

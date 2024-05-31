@@ -76,8 +76,6 @@ export enum EmailTemplates {
   VerifyChangedEmail = "verifyChangedEmail",
   VerifySubscriber = "verifySubscriber",
   SubscriberVerified = "subscriberVerified",
-  ForgotPassword = "forgotPassword",
-  PasswordChangeSuccess = "passwordChangeSuccess",
   WelcomeUser = "welcomeUser",
   NewFollower = "newFollower",
   NewPost = "newPost",
@@ -107,10 +105,6 @@ export interface EmailChangeSuccessProps {
   author_id: string;
   template_id: EmailTemplates.EmailChangeSuccess;
 }
-export interface PasswordChangeSuccessProps {
-  author_id: string;
-  template_id: EmailTemplates.PasswordChangeSuccess;
-}
 
 export interface EmailVerifySubscriberProps {
   author_id: string;
@@ -127,11 +121,6 @@ export interface NewFollowerProps {
   follower_id: string;
   following_id: string;
   template_id: EmailTemplates.NewFollower;
-}
-
-export interface EmailForgotPasswordProps {
-  author_id: string;
-  template_id: EmailTemplates.ForgotPassword;
 }
 
 export interface EmailWelcomeUserProps {
@@ -158,8 +147,6 @@ export type EmailProps =
   | EmailWelcomeUserProps
   | EmailChangeSuccessProps
   | DomainMapSuccessProps
-  | PasswordChangeSuccessProps
-  | EmailForgotPasswordProps
   | NewFollowerProps
   | NewPostProps
   | PaymentFailedProps;

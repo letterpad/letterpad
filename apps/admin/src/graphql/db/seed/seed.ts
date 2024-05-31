@@ -220,7 +220,7 @@ async function insertAuthors() {
       name: "John Doe",
       email: process.env.EMAIL || "demo@demo.com",
       username: "demo",
-      password: await bcrypt.hash(process.env.PASSWORD || "demo", 12),
+      password: '',
       register_step: RegisterStep.Registered,
       token: "",
     },

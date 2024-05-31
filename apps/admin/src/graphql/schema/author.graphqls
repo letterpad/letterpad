@@ -49,7 +49,6 @@ type Author {
 
 input LoginData {
   email: String!
-  password: String!
 }
 
 input InputSocial {
@@ -68,7 +67,6 @@ input InputAuthor {
   signature: String
   company_name: String
   social: InputSocial
-  password: String
   roleId: Int
   avatar: String
   register_step: RegisterStep
@@ -85,7 +83,6 @@ input InputCreateAuthor {
   name: String
   username: String
   register_step: RegisterStep
-  password: String!
   token: String!
 }
 
@@ -97,10 +94,6 @@ union AuthorResponse = Author | NotFound | Exception | UnAuthorized | Failed
 
 union LoginResponse = Author | LoginError
 
-type ForgotPasswordResponse {
-  ok: Boolean!
-  message: String
-}
 type DeleteAuthorResponse {
   ok: Boolean!
   message: String

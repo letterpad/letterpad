@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useState } from "react";
 import { PageHeader } from "ui/dist/isomorphic.mjs";
 
 import { Content } from "@/components/client-wrapper";
@@ -5,6 +7,12 @@ import { Content } from "@/components/client-wrapper";
 import { Feature } from "./_feature/feature";
 
 function Profile() {
+  const [mount, setMount] = useState(false);
+
+  useEffect(() => {
+    setMount(true);
+  }, []);
+
   return (
     <>
       <PageHeader className="site-page-header" title="Profile">
@@ -13,9 +21,7 @@ function Profile() {
           information for your blog posts.
         </span>
       </PageHeader>
-      <Content>
-        <Feature />
-      </Content>
+      <Content>{mount && <Feature />}</Content>
     </>
   );
 }
