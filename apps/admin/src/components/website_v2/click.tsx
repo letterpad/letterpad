@@ -24,7 +24,13 @@ export const ClickAndTrack: FC<Props> = ({
     if (trackOptions) track(trackOptions);
   };
   return (
-    <Link href={href} className={className} target={target} onClick={onClick}>
+    <Link
+      href={href}
+      className={className}
+      target={target}
+      onClick={onClick}
+      prefetch={false}
+    >
       {children}
     </Link>
   );

@@ -27,6 +27,7 @@ export const GridCard: FC<Props> = ({ slug, publishedAt, title, excerpt, cover_i
         <Link
             className="c-card block transform overflow-hidden rounded-lg bg-transparent transition duration-300 group-hover:scale-[1.02]"
             href={slug ?? ''}
+            prefetch={false}
         >
             <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
             <span>

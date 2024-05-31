@@ -31,6 +31,7 @@ export const MenuItem: FC<Props> = ({
         href={path}
         onClick={onClick}
         target={target}
+        prefetch={false}
       >
         <span>{icon}</span>
         <span>{label}</span>

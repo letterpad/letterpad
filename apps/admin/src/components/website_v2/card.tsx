@@ -79,7 +79,7 @@ export const Card: FC<Props> = ({
       </div>
       <div className="flex flex-row justify-between md:gap-6">
         <div className="flex flex-1 flex-col gap-y-4 justify-between py-2 text-gray-800 dark:text-gray-200">
-          <Link className="flex flex-col gap-2" href={link}>
+          <Link className="flex flex-col gap-2" href={link} prefetch={false}>
             <p className="font-sans md:text-md font-extrabold block text-ellipsis">
               {title}
             </p>
@@ -94,7 +94,11 @@ export const Card: FC<Props> = ({
             {category && (
               <>
                 <span>·</span>
-                <Link href={categorySlug!} className="font-semibold">
+                <Link
+                  href={categorySlug!}
+                  className="font-semibold"
+                  prefetch={false}
+                >
                   {transformText(category)}
                 </Link>
               </>
@@ -102,7 +106,7 @@ export const Card: FC<Props> = ({
           </div>
         </div>
         {cover_image.src && (
-          <Link className="hidden md:block" href={link}>
+          <Link className="hidden md:block" href={link} prefetch={false}>
             <Image
               src={
                 cover_image.src

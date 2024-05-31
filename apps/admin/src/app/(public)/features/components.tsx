@@ -4,6 +4,7 @@ import "./style.css";
 export const CustomLink = ({ href, children }) => {
   return (
     <Link
+      prefetch={false}
       data-aos="zoom-in"
       data-aos-delay="200"
       href={href}

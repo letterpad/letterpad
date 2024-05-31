@@ -37,7 +37,11 @@ export const CtaButtons = () => {
         />
       ) : null}
       <Button variant={"outline"}>
-        <Link href="/features" onClick={() => onClick("features")}>
+        <Link
+          href="/features"
+          onClick={() => onClick("features")}
+          prefetch={false}
+        >
           Pro Features
         </Link>
       </Button>

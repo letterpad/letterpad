@@ -67,7 +67,7 @@ export const Menu: FC<Props> = ({
               onClick={(e: any) => {
                 onSelect(e, item.key);
               }}
-              prefetch={true}
+              prefetch={false}
             >
               <span className="flex items-center justify-center text-lg text-gray-400">
                 {item.icon}

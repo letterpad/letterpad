@@ -24,7 +24,7 @@ export const Topics: FC<Props> = async ({ limit, selected }) => {
       </ul>
       {limit && (
         <div className="py-6 px-2">
-          <Link href="/topics" className="text-brand text-sm">
+          <Link href="/topics" className="text-brand text-sm" prefetch={false}>
             Explore all topics
           </Link>
         </div>

@@ -19,6 +19,7 @@ const Resources = async () => {
           {posts.map((post) => {
             return (
               <Link
+                prefetch={false}
                 href={
                   new URL(
                     `resources${post.slug.replace("post/", "")}`,
