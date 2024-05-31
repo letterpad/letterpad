@@ -94,11 +94,21 @@ export async function getTagsLinkedWithPosts({
         },
       },
     },
+    select: {
+      name: true,
+      slug: true,
+      likes: true,
+      views: true,
+      posts: {
+        select: {
+          id: true,
+        }
+      }
+    },
     orderBy: {
       name: "asc",
     },
   });
-
   const rows = tags.map((tag) => ({
     ...tag,
     slug: tag.slug!,

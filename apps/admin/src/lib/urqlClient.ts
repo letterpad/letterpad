@@ -12,8 +12,12 @@ export const cache = cacheExchange({
   keys: {
     Tag: () => null,
     TagsNode: () => null,
+    NotificationNode: () => null,
+    MediaNode: () => null,
+    PostNewMeta: (p) => p.post_id?.toString() ?? null,
+    PostLikeMeta: (p) => p.post_id?.toString() ?? null,
     Social: () => null,
-    // Setting: () => null,
+    Setting: (p) => p.id?.toString() ?? null,
     Design: () => null,
     Navigation: () => null,
     Image: () => null,
@@ -26,7 +30,7 @@ export const cache = cacheExchange({
     FavAuthorResponse: () => null,
     DeleteAuthorResponse: () => null,
     UnAuthorized: () => null,
-    StatsError:() => null
+    StatsError: () => null
   },
 });
 

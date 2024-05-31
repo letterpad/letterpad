@@ -1,7 +1,6 @@
 import { decodeJwt, jwtVerify, SignJWT } from "jose";
 
 import {
-  ForgotPasswordToken,
   UnsubscribeToken,
   VerifySubscriberToken,
 } from "../types";
@@ -32,10 +31,6 @@ export function getVerifySubscriberToken({
   subscriber_id,
 }: VerifySubscriberToken) {
   return sign({ email, author_id, subscriber_id });
-}
-
-export function getForgotPasswordToken({ email }: ForgotPasswordToken) {
-  return sign({ email });
 }
 
 export function getUnsubscribeToken({

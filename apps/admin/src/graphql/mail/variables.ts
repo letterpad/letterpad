@@ -24,7 +24,6 @@ export const replaceBodyVariables = (str: string, data: Record<string, string>) 
     str = str.replaceAll("{{ blog_name }}", data.site_title);
     str = str.replaceAll("{{ blog_url }}", data.blog_url);
     str = str.replaceAll("{{ invoice_url }}", data.invoice_url);
-    str = str.replaceAll("{{ change_password_link }}", `<a href="https://${data.change_password_link}">Change Password</a>`);
     str = str.replaceAll("{{ following_name }}", data?.following_name);
     str = str.replaceAll("{{ follower_profile_link }}", `<a href="${getRootUrl()}/@${data.follower_username}">${data.follower_name}</a>`);
 

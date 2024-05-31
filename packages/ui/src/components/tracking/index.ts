@@ -56,8 +56,6 @@ export enum EventLabel {
     GitHubLogin = "github_login",
     MagicLink = "magiclink",
     Preview = "preview",
-    ForgotPassword = "forgot_password",
-    ResetPassword = "reset_password",
     Registered = "registered",
     SiteInfo = "site_info",
     Successful = "successful",
