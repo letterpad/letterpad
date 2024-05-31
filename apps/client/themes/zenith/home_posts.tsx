@@ -62,7 +62,7 @@ const Post = ({
       <div className="lg:px-8">
         <div className="lg:max-w-4xl">
           <div className="relative">
-            <Link href={slug}>
+            <Link href={slug} prefetch={false}>
               <Image
                 src={coverImage}
                 alt={title}
@@ -78,7 +78,9 @@ const Post = ({
           <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0">
             <div className="flex flex-col items-start">
               <h2 className="mt-2 text-lg font-bold ">
-                <Link href={slug}>{title}</Link>
+                <Link href={slug} prefetch={false}>
+                  {title}
+                </Link>
               </h2>
               <time
                 dateTime={date}
@@ -93,6 +95,7 @@ const Post = ({
                 <Link
                   className="flex items-center text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900"
                   href={slug}
+                  prefetch={false}
                 >
                   Read More
                 </Link>

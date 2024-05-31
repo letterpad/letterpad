@@ -12,7 +12,7 @@ interface Logo {
 export const LetterpadLogo: FC<Logo> = ({ className = '' }) => {
   return (
     <span className={className}>
-      <Link href={getApiRootUrl()!} aria-label={'Letterpad'}>
+      <Link href={getApiRootUrl()!} aria-label={'Letterpad'} prefetch={false}>
         <Image
           alt={'Letterpad'}
           src={getApiRootUrl() + 'logo/lp_logo_white.svg'}

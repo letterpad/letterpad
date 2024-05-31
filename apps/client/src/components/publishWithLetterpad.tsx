@@ -16,6 +16,7 @@ export const PublishWithLetterpad = () => {
           eventLabel: EventLabel.Register,
         });
       }}
+      prefetch={false}
     >
       <img
         src={new URL('/logo/logo.png', getApiRootUrl()).toString()}

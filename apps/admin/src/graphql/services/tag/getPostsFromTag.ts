@@ -10,7 +10,7 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 export const getPostsFromTag = cache(
   async (
     name: string,
-    { session, prisma, client_author_id }: ResolverContext
+    { session, prisma, client_author_id, dataloaders }: ResolverContext
   ): Promise<PostsResponse> => {
     const authorId = session?.user.id || client_author_id;
     if (!authorId) {
@@ -19,7 +19,10 @@ export const getPostsFromTag = cache(
         message: "You must be logged in to view this page",
       };
     }
-    const posts = await prisma.post.findMany({
+    const postIds = await prisma.post.findMany({
+      select: {
+        id: true
+      },
       where: {
         status: session?.user.id ? undefined : PostStatusOptions.Published,
         author: {
@@ -35,6 +38,11 @@ export const getPostsFromTag = cache(
         createdAt: "desc",
       },
     });
+
+    const posts = await dataloaders.post.loadMany(
+      postIds.map((p) => p.id)
+    );
+
     return {
       __typename: "PostsNode",
       count: posts?.length,

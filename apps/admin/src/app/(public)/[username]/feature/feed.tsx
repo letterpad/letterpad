@@ -41,6 +41,7 @@ export const Feed = async ({ authorId, site_url }) => {
               <p className="text-base font-normal text-gray-500 dark:text-gray-400"></p>
               <h3 className="text-[0.9rem] font-semibold text-gray-900 dark:text-white">
                 <Link
+                  prefetch={false}
                   href={new URL(`post/${row.slug}`, site_url).href}
                   target="_blank"
                 >

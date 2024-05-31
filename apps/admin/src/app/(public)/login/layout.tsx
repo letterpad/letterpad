@@ -22,7 +22,7 @@ const LoginLayout = ({ children }) => {
     <div className="flex flex-col h-screen overflow-y-auto">
       <header>
         <h2 className="pt-16 flex justify-center text-4xl font-bold text-gray-700 dark:text-white">
-          <Link href="/">
+          <Link href="/" prefetch={false}>
             <Logo />
           </Link>
         </h2>

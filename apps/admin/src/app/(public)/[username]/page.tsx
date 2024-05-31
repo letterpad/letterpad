@@ -204,7 +204,12 @@ const About = async ({ params }: { params: { username: string } }) => {
                 Publishes At:
               </h3>
               <div className="flex gap-2 flex-row justify-between items-center">
-                <Link href={siteUrl} target="_blank" rel="noreferrer">
+                <Link
+                  href={siteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  prefetch={false}
+                >
                   <div>
                     <span className="font-bold text-md">
                       {setting?.site_title}
@@ -225,6 +230,7 @@ const About = async ({ params }: { params: { username: string } }) => {
                 {data?.map((tag) => {
                   return (
                     <Link
+                      prefetch={false}
                       key={tag.id}
                       target="_blank"
                       href={new URL(`/tag/${tag.name}`, siteUrl).href}

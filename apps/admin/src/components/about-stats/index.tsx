@@ -115,7 +115,7 @@ const FollowList = ({ data, loading }) => {
               {data?.map((follower) => {
                 return (
                   <li className="py-3 sm:py-4">
-                    <Link href={`/@${follower.username}`}>
+                    <Link href={`/@${follower.username}`} prefetch={false}>
                       <div className="flex items-center ">
                         <div className="flex-shrink-0">
                           <img

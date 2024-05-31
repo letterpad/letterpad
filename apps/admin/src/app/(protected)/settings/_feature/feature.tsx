@@ -120,6 +120,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
             <div className="hidden md:flex flex-col  gap-2">
               {settingsLinks.map(({ key, text, url }) => (
                 <Link
+                  prefetch={false}
                   key={key}
                   className={classNames({
                     "text-blue-500": selectedKey == key,

@@ -79,7 +79,12 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
             >
               <AiOutlineMenu size="20" className="bold" />
             </button>
-            <Link className="flex gap-2" href="/" aria-label="Letterpad">
+            <Link
+              className="flex gap-2"
+              href="/"
+              aria-label="Letterpad"
+              prefetch={false}
+            >
               <Image
                 className="mx-auto md:max-w-none w-28 md:w-36"
                 src={Logo.src}
@@ -96,7 +101,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
                 .filter((item) => item.visible)
                 .map((item) => (
                   <li className={item.className} key={item.title}>
-                    <Link href={item.link} onClick={onClick}>
+                    <Link href={item.link} onClick={onClick} prefetch={false}>
                       {item.title}
                     </Link>
                   </li>
@@ -151,7 +156,7 @@ function Header({ displayBg = true }: { displayBg?: boolean }) {
             .filter((item) => item.visible)
             .map((item) => (
               <li key={item.title}>
-                <Link href={item.link} onClick={onClick}>
+                <Link href={item.link} onClick={onClick} prefetch={false}>
                   {item.title}
                 </Link>
               </li>

@@ -32,6 +32,7 @@ export const ProfileCard:FC<Props> = ({
       })}
       href={link}
       target={target}
+      prefetch={false}
     >
       <div className="rounded-full flex-none ">
         <Image

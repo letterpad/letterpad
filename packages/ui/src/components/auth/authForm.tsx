@@ -179,11 +179,11 @@ export const AuthForm: FC<Props> = ({
           <div className="grid gap-4">{renderFormContent()}</div>
           {!isSuccessView && <div className="mt-8 text-center text-xs opacity-80">
             Click “Sign {isLoginView ? "in" : "up"}” to agree to Letterpad's{" "}
-            <Link href="/terms" target="_blank" className="underline">
+            <Link href="/terms" target="_blank" className="underline" prefetch={false}>
               Terms of Service
             </Link>{" "}
             and acknowledge that Letterpad's{" "}
-            <Link href="/privacy" target="_blank" className="underline">
+            <Link href="/privacy" target="_blank" className="underline" prefetch={false}>
               Privacy Policy
             </Link>{" "}
             applies to you.

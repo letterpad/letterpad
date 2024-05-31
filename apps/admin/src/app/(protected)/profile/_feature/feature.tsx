@@ -85,6 +85,7 @@ export const Feature = () => {
             <div className="hidden md:flex flex-col  gap-2">
               {profileLinks.map(({ key, text, url }) => (
                 <Link
+                  prefetch={false}
                   key={key}
                   className={classNames({
                     "text-blue-500": selectedKey == key,

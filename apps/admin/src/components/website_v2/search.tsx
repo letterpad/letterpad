@@ -99,7 +99,7 @@ export const Search = () => {
                 key={p.id}
               >
                 <div className="flex-none items-center justify-center bg-slate-100 cursor-pointer relative w-10 h-10 rounded-full overflow-hidden">
-                  <Link href={`/@${author?.username}`}>
+                  <Link href={`/@${author?.username}`} prefetch={false}>
                     <img
                       alt={author?.name}
                       src={author?.avatar}
@@ -110,13 +110,16 @@ export const Search = () => {
                 </div>
                 <div className="flex flex-col w-full">
                   <div className="text-gray-500 dark:text-gray-400 flex gap-2">
-                    <Link href={`/@${author?.username}`}>{author?.name}</Link>
+                    <Link href={`/@${author?.username}`} prefetch={false}>
+                      {author?.name}
+                    </Link>
                     <span>•</span>
                     <span>{getReadableDate(p.publishedAt)}</span>
                     <span>•</span>
                     <span>{p.reading_time}</span>
                   </div>
                   <Link
+                    prefetch={false}
                     className="font-bold text-gray-700 dark:text-gray-300 text-[1rem]"
                     href={link}
                     target="_blank"

@@ -90,6 +90,7 @@ export const Row: FC<Props> = ({
             />
             <div className="flex justify-center lg:justify-start">
               <Link
+                prefetch={false}
                 href="/register"
                 className="relative h-8 w-32 rounded-full"
                 style={{

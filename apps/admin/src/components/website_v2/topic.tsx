@@ -21,6 +21,7 @@ export const Topic: FC<Props> = ({ name, slug, selected }) => {
   return (
     <li key={slug} data-selected={slug}>
       <Link
+        prefetch={false}
         href={`${slug!}`}
         onClick={() => onClick(name)}
         className={classNames(

@@ -55,6 +55,7 @@ export const Featured = async () => {
                         size="xs"
                       />
                       <Link
+                        prefetch={false}
                         className="flex items-center gap-2 mb-2"
                         href={link}
                         target="_blank"
