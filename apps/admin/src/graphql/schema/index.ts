@@ -13,6 +13,7 @@ import subscribers from "./subscribers.graphqls";
 import subscriptions from "./subscriptions.graphqls";
 import tags from "./tags.graphqls";
 import defs from "./type-defs.graphqls";
+import badge from "./badge.graphqls";
 
 export const typeDefsList = [
   author,
@@ -30,4 +31,5 @@ export const typeDefsList = [
   notifications,
   comments,
   defs,
+  badge,
 ];

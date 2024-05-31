@@ -1,5 +1,5 @@
 import { InputAuthor } from "letterpad-graphql";
-import { useMeQuery, useUpdateAuthorMutation } from "letterpad-graphql/hooks";
+import { useMeQuery, useUpdateAuthorMutation, useGetAuthorBadgesQuery } from "letterpad-graphql/hooks";
 
 import { isAuthor } from "@/utils/type-guards";
 
@@ -28,5 +28,15 @@ export const useGetAuthor = () => {
     fetching,
     error,
     data: isAuthor(data?.me) ? data?.me : undefined,
+  };
+};
+
+export const useGetAuthorBadges = () => {
+  const [{ data, fetching, error }] = useGetAuthorBadgesQuery();
+
+  return {
+    fetching,
+    error,
+    data: data?.getAuthorBadges,
   };
 };
