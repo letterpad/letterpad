@@ -13,7 +13,7 @@ export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
           {posts.rows.map((post) => (
             <div key={post.id} className="rounded overflow-hidden shadow-lg bg-white">
               <Link href={`/post/${post.slug}`}>
-                <Image src={post.cover_image.src} alt={post.title} className="w-full" />
+                <Image src={post.cover_image.src!} alt={post.title} className="w-full" />
                 <div className="px-6 py-4">
                   <div className="font-bold text-xl mb-2">{post.title}</div>
                   <p className="text-gray-700 text-base">
