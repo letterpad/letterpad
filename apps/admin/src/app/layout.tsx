@@ -86,6 +86,12 @@ const RootLayout = async ({ children }) => {
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {process.env.ADSENSE_CLIENT_ID && (
+          <meta
+            name="google-adsense-account"
+            content={process.env.ADSENSE_CLIENT_ID}
+          />
+        )}
       </head>
       <body
         className={`text-base tracking-tight antialiased dark:bg-gray-900 dark:text-gray-100 overflow-hidden`}
