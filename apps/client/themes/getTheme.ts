@@ -7,6 +7,7 @@ import * as GridDefaultTheme from './grid';
 import * as List from './list';
 import * as Wavique from './wavique';
 import * as Zenith from './zenith';
+import * as Sunset from './90s-sunset'; // Added 90s sunset theme import
 
 export interface Theme {
   HomePosts: ComponentType<HomePostsProps>;
@@ -32,6 +33,9 @@ export const getTheme: (theme?: string | null) => Theme = (theme) => {
       break;
     case 'zenith':
       selectedTheme = Zenith;
+      break;
+    case '90s-sunset': // Added case for 90s sunset theme
+      selectedTheme = Sunset;
       break;
     default:
       selectedTheme = GridDefaultTheme;
