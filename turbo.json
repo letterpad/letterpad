@@ -30,7 +30,8 @@
         "letterpad-sdk#build",
         "letterpad-graphql#build"
       ],
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "prisma:generate": {
       "outputs": [

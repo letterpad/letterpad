@@ -7,7 +7,8 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "build.tsc.mjs": "tsc -p tsconfig.json",
     "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
-    "build": "bun run codegen && bun run build.tsc.mjs && bun run build.tsc.cjs"
+    "build": "bun run codegen && bun run build.tsc.mjs && bun run build.tsc.cjs",
+    "dev": "bun run build"
   },
   "main": "dist/cjs/graphql.js",
   "module": "dist/mjs/graphql.js",
