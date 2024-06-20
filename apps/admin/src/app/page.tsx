@@ -2,6 +2,7 @@ import { Metadata, Viewport } from "next";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 
+import { Ads } from "./ads";
 import Header from "../components/header/Header";
 import { Website as WebsiteV2 } from "../components/website_v2";
 import { AiAd } from "../components/website_v2/banner/aiAd";
@@ -17,13 +18,7 @@ const Home = () => {
           __html: JSON.stringify(letterpadStructuredData),
         }}
       />
-      {process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM && (
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8634830579255969"
-          crossOrigin="anonymous"
-        ></script>
-      )}
+      <Ads />
       <div className="flex flex-col justify-between min-h-screen home-gradient">
         <AiAd />
         <Header displayBg={false} />
