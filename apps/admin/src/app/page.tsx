@@ -17,6 +17,13 @@ const Home = () => {
           __html: JSON.stringify(letterpadStructuredData),
         }}
       />
+      {process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM && (
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8634830579255969"
+          crossOrigin="anonymous"
+        ></script>
+      )}
       <div className="flex flex-col justify-between min-h-screen home-gradient">
         <AiAd />
         <Header displayBg={false} />
