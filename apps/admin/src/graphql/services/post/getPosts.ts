@@ -36,7 +36,7 @@ export const getPosts = cache(
       args.filters.status = [PostStatusOptions.Published];
     }
 
-    const { page = 1, limit = 10 } = args.filters;
+    const { page = 1, limit = 2 } = args.filters;
     const skip = page && limit ? (page - 1) * limit : 0;
     const isPage = args.filters.type === PostTypes.Page;
     const status = getStatus(session?.user.id, args.filters?.status!)
@@ -56,7 +56,7 @@ export const getPosts = cache(
         }),
         page_type: args.filters.page_type!,
       },
-      take: args.filters?.limit || 100,
+      take: limit as number,
       skip,
       orderBy: {
         updatedAt: session?.user ? args?.filters?.sortBy || "desc" : undefined,
@@ -68,7 +68,6 @@ export const getPosts = cache(
         id: true,
       },
     };
-
     if (condition.where && args.filters.tagSlug === "/") {
       condition.where.exclude_from_home = false;
       condition.where.tags = undefined;
