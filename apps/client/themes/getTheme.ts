@@ -16,7 +16,6 @@ export interface Theme {
 
 export const getTheme: (theme?: string | null) => Theme = (theme) => {
   let selectedTheme: Theme;
-  theme = 'zenith';
   switch (theme) {
     case 'minimal':
       selectedTheme = List;
