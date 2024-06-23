@@ -1,0 +1,7 @@
+type Badge {
+  id: ID!
+  name: String!
+  author_id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}

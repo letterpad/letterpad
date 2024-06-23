@@ -607,3 +607,11 @@ query GetFollowing($id: String!) {
     }
   }
 }
+
+query getAuthorBadges($authorId: Int!) {
+  getAuthorBadges(authorId: $authorId) {
+    id
+    name
+    createdAt
+  }
+}

@@ -1,11 +1,13 @@
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input, Label, TextArea } from "ui/dist/index.mjs";
+import { useGetAuthorBadges } from "@/app/(protected)/profile/_feature/api.client";
 
 import { Upload } from "@/components/upload";
 
 export const Basic = () => {
   const { register, watch, control } = useFormContext();
+  const { data: badges } = useGetAuthorBadges();
 
   return (
     <>
@@ -76,6 +78,16 @@ export const Basic = () => {
           {...register("company_name")}
           data-testid="company"
         />
+        {badges && badges.length > 0 && (
+          <div>
+            <Label label="Your Badges" />
+            <ul>
+              {badges.map((badge) => (
+                <li key={badge.id}>{badge.name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </>
   );
