@@ -5,6 +5,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import WebAuthnProvider from "next-auth/providers/webauthn";
 
 import PrismaClient, { prisma } from "@/lib/prisma";
 
@@ -55,6 +56,9 @@ const providers = (req?: NextApiRequest): NextAuthOptions["providers"] => [
     },
     from: process.env.SENDER_EMAIL!,
     sendVerificationRequest: req && emailSender(req.body.callbackUrl),
+  }),
+  WebAuthnProvider({
+    // Configuration for WebAuthn will be added here
   }),
 ];
 
