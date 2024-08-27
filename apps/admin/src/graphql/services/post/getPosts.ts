@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Post, Prisma } from "@prisma/client";
 import {
   InputMaybe,
   PostsResponse,
@@ -7,15 +7,18 @@ import {
   QueryPostsArgs,
 } from "letterpad-graphql";
 import { cache } from "react";
-
+import { getMatchingFields } from "@/graphql/utils/getMatchingFields";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { isSqliteDb } from "@/utils/utils";
+import { DEFAULT_FILTERS } from "@/constants";
+import { MapResult } from "graphql-fields-list";
 
 export const getPosts = cache(
   async (
     args: QueryPostsArgs,
-    context: ResolverContext
+    context: ResolverContext,
+    fields: MapResult
   ): Promise<PostsResponse> => {
     const { session, client_author_id, prisma } = context;
     const session_author_id = session?.user.id;
@@ -36,7 +39,7 @@ export const getPosts = cache(
       args.filters.status = [PostStatusOptions.Published];
     }
 
-    const { page = 1, limit = 2 } = args.filters;
+    const { page = DEFAULT_FILTERS.page, limit = DEFAULT_FILTERS.limit } = args.filters;
     const skip = page && limit ? (page - 1) * limit : 0;
     const isPage = args.filters.type === PostTypes.Page;
     const status = getStatus(session?.user.id, args.filters?.status!)
@@ -82,10 +85,10 @@ export const getPosts = cache(
     }
     try {
       const postIds = await prisma.post.findMany(condition);
-      const posts = await context.dataloaders.post.loadMany(
+      const selections = getMatchingFields(fields.rows as MapResult);
+      const posts = await context.dataloaders.post(selections).loadMany(
         postIds.map((p) => p.id)
       );
-
       return {
         __typename: "PostsNode",
         rows: posts.map(p => mapPostToGraphql(p)),

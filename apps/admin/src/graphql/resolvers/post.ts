@@ -3,9 +3,8 @@ import {
   PostResolvers,
   QueryResolvers,
 } from "letterpad-graphql";
-
+import { fieldsMap } from 'graphql-fields-list';
 import { report } from "@/components/error";
-
 import { ResolverContext } from "@/graphql/context";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { createPathWithPrefix } from "@/utils/slug";
@@ -145,9 +144,11 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
   },
-  async posts(_parent, args, context) {
+  async posts(_parent, args, context, info) {
     try {
-      const response = await getPosts(args, context);
+      // Extract requested fields from info
+      const fields = fieldsMap(info);
+      const response = await getPosts(args, context, fields);
       const { session, prisma } = context;
       if (session?.user.id) {
         await prisma.author.update({
@@ -165,9 +166,10 @@ const Query: QueryResolvers<ResolverContext> = {
     }
   },
 
-  async post(_parent, args, context) {
+  async post(_parent, args, context, info) {
     try {
-      const response = await getPost(args, context);
+      const fields = fieldsMap(info)
+      const response = await getPost(args, context, fields);
       return response;
     } catch (e: any) {
       report.error(e);
