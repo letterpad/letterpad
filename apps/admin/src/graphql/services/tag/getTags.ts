@@ -102,8 +102,8 @@ export async function getTagsLinkedWithPosts({
       posts: {
         select: {
           id: true,
-        },
-      },
+        }
+      }
     },
     orderBy: {
       name: "asc",

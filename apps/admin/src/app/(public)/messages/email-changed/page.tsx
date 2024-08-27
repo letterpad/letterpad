@@ -2,6 +2,7 @@ export const metadata = {
   title: "Letterpad - Email Changed",
 };
 
+import { BiRocket } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
 import { IoSparkles } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";

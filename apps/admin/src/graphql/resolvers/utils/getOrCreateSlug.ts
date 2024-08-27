@@ -38,11 +38,7 @@ export async function getOrCreateSlug(
   }
 
   if (!existingPost.title && !newTitle && !newSlug) {
-    newSlug = await slugify(
-      "untitled",
-      existingPost.author_id,
-      existingPost.id
-    );
+    newSlug = await slugify("untitled", existingPost.author_id, existingPost.id);
     return newSlug;
   }
 

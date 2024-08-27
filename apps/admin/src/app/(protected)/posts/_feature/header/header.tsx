@@ -10,12 +10,12 @@ import { useIsPaidMember } from "@/hooks/useIsPaidMember";
 
 import { UpgradeLabel } from "@/components/upgrade-plan-banner";
 
-import { DEFAULT_FILTERS } from "@/constants";
 import { PageType } from "@/graphql/types";
 import { EventAction, EventCategory, EventLabel, track } from "@/track";
 import { isPost } from "@/utils/type-guards";
 
 import { useCreatePost, useGetPosts } from "../api.client";
+import { DEFAULT_FILTERS } from "../constants";
 
 interface IProps {
   type: PostTypes;

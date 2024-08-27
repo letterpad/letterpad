@@ -5,12 +5,15 @@ import { getRootUrl } from "@/shared/getRootUrl";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
-import { replaceBodyVariables } from "../variables";
+import {
+  replaceBodyVariables,
+} from "../variables";
 
 export async function getNewFollowerContent(
   data: NewFollowerProps,
   prisma: PrismaClient
 ): Promise<EmailTemplateResponse> {
+
   const template = await getTemplate(data.template_id);
   const author = await prisma.author.findMany({
     where: {
@@ -31,7 +34,7 @@ export async function getNewFollowerContent(
     follower_name: follower?.name!,
     following_name: following?.name!,
     follower_profile_link: `${getRootUrl()}/@${follower?.username}`,
-  });
+  })
 
   return {
     ok: true,

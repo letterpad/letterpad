@@ -9,7 +9,7 @@ const Query: QueryResolvers<ResolverContext> = {
       return {
         __typename: "UnAuthorized",
         message: "You are not authorized",
-      };
+      }
     }
     const notifications = await prisma.notifications.findMany({
       where: {

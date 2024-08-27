@@ -1,8 +1,7 @@
 import {
   DeleteTagsDocument,
   TagDocument,
-  TagsDocument,
-  UpdateTagsDocument,
+  TagsDocument, UpdateTagsDocument
 } from "letterpad-graphql";
 
 import { API } from "@/../tests/testClient";
@@ -77,4 +76,4 @@ describe("Test Tags Graphql API", () => {
     expect(result.deleteTags.ok).toBe(true);
   });
 });
-export {};
+export { };

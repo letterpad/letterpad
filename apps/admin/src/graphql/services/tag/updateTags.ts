@@ -1,4 +1,7 @@
-import { MutationUpdateTagsArgs, UpdateTagsResponse } from "letterpad-graphql";
+import {
+  MutationUpdateTagsArgs,
+  UpdateTagsResponse,
+} from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 

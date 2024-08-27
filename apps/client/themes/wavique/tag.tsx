@@ -1,6 +1,6 @@
-'use client';
-
 import kebabCase from '@/lib/utils/kebabCase';
+
+import Link from '@/components/Link';
 
 export const Tag = ({
   text,
@@ -16,15 +16,12 @@ export const Tag = ({
     tag = tag.split(' ').join('-');
   }
 
-  const onClick = () => {
-    window.location.href = `/tag/${kebabCase(text)}`;
-  };
   return (
-    <span
-      onClick={onClick}
+    <Link
+      href={`/tag/${kebabCase(text)}`}
       className={`text-xs font-medium uppercase ${className}`}
     >
       {tag}
-    </span>
+    </Link>
   );
 };

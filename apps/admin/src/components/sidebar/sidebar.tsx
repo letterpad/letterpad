@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button, Menu, useResponsiveLayout } from "ui/dist/index.mjs";
 

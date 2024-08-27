@@ -11,18 +11,17 @@ import {
   LetterpadLatestPostsQuery,
   LetterpadLatestPostsQueryVariables,
   LetterpadTrendingPostsDocument,
-  LetterpadTrendingPostsQuery,
-  PopularTagsDocument,
+  LetterpadTrendingPostsQuery, PopularTagsDocument,
   PopularTagsQuery,
   PostsDocument,
   PostsQuery,
-  PostsQueryVariables,
+  PostsQueryVariables
 } from "letterpad-graphql";
-import { cookies } from "next/headers";
 
 import { getApiUrl } from "@/shared/getRootUrl";
 
 import { client } from "../../lib/urqlClient";
+import { cookies } from "next/headers";
 
 const apiUrl = typeof window === "undefined" ? getApiUrl() : "";
 
@@ -47,6 +46,7 @@ export async function getLetterpadPosts(
   });
   const data = await resp.json();
   return data.data as LetterpadLatestPostsQuery;
+
 }
 
 export async function getLetterpadCategories() {
@@ -102,10 +102,7 @@ export async function getfavAuthors() {
 
 export async function getFeaturedPosts() {
   "use server";
-  const res = await client.query<
-    LetterpadFeaturedPostsQuery,
-    LetterpadFeaturedPostsQueryVariables
-  >(
+  const res = await client.query<LetterpadFeaturedPostsQuery, LetterpadFeaturedPostsQueryVariables>(
     LetterpadFeaturedPostsDocument,
     {},
     {
@@ -119,17 +116,12 @@ export async function getFeaturedPosts() {
       },
     }
   );
-  return res.data?.letterpadFeaturedPosts.__typename === "PostsNode"
-    ? res.data.letterpadFeaturedPosts.rows
-    : [];
+  return res.data?.letterpadFeaturedPosts.__typename === "PostsNode" ? res.data.letterpadFeaturedPosts.rows : [];
 }
 
 export async function getTrendingPosts() {
   "use server";
-  const res = await client.query<
-    LetterpadTrendingPostsQuery,
-    LetterpadFeaturedPostsQueryVariables
-  >(
+  const res = await client.query<LetterpadTrendingPostsQuery, LetterpadFeaturedPostsQueryVariables>(
     LetterpadTrendingPostsDocument,
     {},
     {
@@ -142,12 +134,10 @@ export async function getTrendingPosts() {
       },
     }
   );
-  return res.data?.letterpadTrendingPosts.__typename === "PostsNode"
-    ? res.data.letterpadTrendingPosts.rows
-    : [];
+  return res.data?.letterpadTrendingPosts.__typename === "PostsNode" ? res.data.letterpadTrendingPosts.rows : [];
 }
 
 export async function setAbTestVersion(isControl: boolean) {
-  "use server";
+  "use server"
   cookies().set("trendingPosition", isControl ? "control" : "variation");
 }

@@ -1,4 +1,7 @@
-import { DeleteTagsResponse, MutationDeleteTagsArgs } from "letterpad-graphql";
+import {
+  DeleteTagsResponse,
+  MutationDeleteTagsArgs,
+} from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 

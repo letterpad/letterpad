@@ -27,10 +27,9 @@ export class Letterpad {
     this.sdk = getSdk(createRequester(options));
   }
 
-  async listPosts(tagSlug?: string, page?: number) {
+  async listPosts(tagSlug?: string) {
     const postResult = await this.sdk.posts({
       tagSlug,
-      page
     });
     const posts = postResult.posts;
 

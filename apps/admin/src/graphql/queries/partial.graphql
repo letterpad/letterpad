@@ -1,21 +1,3 @@
-fragment AdminPostsFragment on Post {
-  title
-  updatedAt
-  createdAt
-  status
-  id
-  type
-  excerpt
-  tags {
-    ... on TagsNode {
-      rows {
-        name
-        slug
-      }
-    }
-  }
-}
-
 fragment Partial on Post {
   id
   title

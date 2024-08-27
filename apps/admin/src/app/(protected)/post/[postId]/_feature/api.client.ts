@@ -1,8 +1,4 @@
-import {
-  InputUpdatePost,
-  PostFilters,
-  PostWithAuthorAndTagsFragment,
-} from "letterpad-graphql";
+import { InputUpdatePost, PostFilters, PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import { usePostQuery, useUpdatePostMutation } from "letterpad-graphql/hooks";
 import { useCallback, useMemo } from "react";
 import { RequestPolicy } from "urql";
@@ -44,7 +40,7 @@ export const useUpdatePost = () => {
       if (savingIndicator) {
         Message().loading({ content: "Saving...", duration: 3 });
       } else {
-        setSaving?.(true);
+        setSaving?.(true)
       }
 
       const res = await updatePost({

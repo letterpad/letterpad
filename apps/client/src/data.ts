@@ -1,5 +1,4 @@
-'use server';
-
+/* eslint-disable no-console */
 import {
   Letterpad,
   MeFragmentFragment,
@@ -8,6 +7,7 @@ import {
   SettingsFragmentFragment,
 } from 'letterpad-sdk';
 import { headers } from 'next/headers';
+import { cache } from 'react';
 
 import { getApiUrl } from '../lib/utils/url';
 
@@ -23,7 +23,7 @@ function getLetterpad() {
   });
 }
 
-export const getData = async () => {
+export const getData = cache(async () => {
   try {
     const letterpad = getLetterpad();
 
@@ -41,7 +41,7 @@ export const getData = async () => {
         page: null as unknown as PageFragmentFragment,
       },
     };
-    const posts = await letterpad.listPosts('/', 1);
+    const posts = await letterpad.listPosts('/');
     result.props = {
       ...result.props,
       posts,
@@ -52,15 +52,9 @@ export const getData = async () => {
     console.log(e);
     return undefined;
   }
-};
+});
 
-export const getPosts = async (page: number) => {
-  const letterpad = getLetterpad();
-  const posts = await letterpad.listPosts('/', page);
-  return posts;
-};
-
-export const getPostData = async (slug: string) => {
+export const getPostData = cache(async (slug: string) => {
   try {
     const letterpad = getLetterpad();
     const r = await letterpad.getPost(slug);
@@ -71,9 +65,9 @@ export const getPostData = async (slug: string) => {
     console.log(e);
     return undefined;
   }
-};
+});
 
-export const getTagsData = async () => {
+export const getTagsData = cache(async () => {
   try {
     const letterpad = getLetterpad();
     const [tags, data] = await Promise.all([
@@ -87,9 +81,9 @@ export const getTagsData = async () => {
       me: data?.me,
     };
   } catch (e) {}
-};
+});
 
-export const getPostsByTag = async (tag: string) => {
+export const getPostsByTag = cache(async (tag: string) => {
   try {
     const letterpad = getLetterpad();
     const [posts, data] = await Promise.all([
@@ -104,27 +98,27 @@ export const getPostsByTag = async (tag: string) => {
       tagName: tag,
     };
   } catch (e) {}
-};
+});
 
-export const getAbout = async () => {
+export const getAbout = cache(async () => {
   try {
     const data = await getAuthorAndSettingsData();
     return data;
   } catch (e) {
     return null;
   }
-};
+});
 
-export const getSiteMap = async () => {
+export const getSiteMap = cache(async () => {
   try {
     const letterpad = getLetterpad();
 
     const sitemapResponse = await letterpad.getSitemap();
     return sitemapResponse;
   } catch (e) {}
-};
+});
 
-export const getFeed = async () => {
+export const getFeed = cache(async () => {
   try {
     const letterpad = getLetterpad();
     const [feedResponse, data] = await Promise.all([
@@ -138,9 +132,9 @@ export const getFeed = async () => {
       settings: data?.settings,
     };
   } catch (e) {}
-};
+});
 
-export const getPreviewData = async (hash: string) => {
+export const getPreviewData = cache(async (hash: string) => {
   try {
     const letterpad = getLetterpad();
     const post = await letterpad.getPost({
@@ -155,27 +149,27 @@ export const getPreviewData = async (hash: string) => {
   } catch (e) {
     return null;
   }
-};
+});
 
-export const getSettingsData = async () => {
+export const getSettingsData = cache(async () => {
   try {
     const data = await getAuthorAndSettingsData();
     return data?.settings as SettingsFragmentFragment;
   } catch (e) {
     return null;
   }
-};
+});
 
-export const getAuthorData = async () => {
+export const getAuthorData = cache(async () => {
   try {
     const data = await getAuthorAndSettingsData();
     return data?.me as MeFragmentFragment;
   } catch (e) {
     return null;
   }
-};
+});
 
-export const getAuthorAndSettingsData = async () => {
+export const getAuthorAndSettingsData = cache(async () => {
   try {
     const letterpad = getLetterpad();
     const data = await letterpad.getMeAndSetting();
@@ -186,14 +180,15 @@ export const getAuthorAndSettingsData = async () => {
   } catch (e) {
     return null;
   }
-};
+});
 
-export const getRelatedPosts = async ({ post_id }) => {
+export const getRelatedPosts = cache(async ({ post_id }) => {
   try {
     const letterpad = getLetterpad();
     const data = await letterpad.getRelatedPosts({ post_id });
+    console.log('Fired');
     return data;
   } catch (e) {
     return null;
   }
-};
+});

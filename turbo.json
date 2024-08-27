@@ -3,7 +3,7 @@
   "globalEnv": [
     "NEXT_PUBLIC_VERCEL_ENV"
   ],
-  "tasks": {
+  "pipeline": {
     "clean": {
       "cache": false
     },

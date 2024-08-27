@@ -24,15 +24,13 @@ module.exports = {
     "import/no-duplicates": ["error", {"considerQueryString": true}],
     "react/prop-types": 0,
     "no-unused-vars": "off",
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
+    "@typescript-eslint/no-unused-vars": [
       "warn", // or "error"
       {
-        "vars": "all",
-        "varsIgnorePattern": "^_",
-        "args": "after-used",
         "argsIgnorePattern": "^_",
-      },
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
     ],
     "react/no-unescaped-entities": 0,
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -84,6 +82,6 @@ module.exports = {
   plugins: [
     "@typescript-eslint",
     "simple-import-sort",
-    "unused-imports"
+    // "eslint-plugin-prettier",
   ],
 };

@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
-import { MapResult } from "graphql-fields-list";
 import {
+  InputMaybe,
   PostsResponse,
   PostStatusOptions,
   QueryRelatedPostsArgs,
@@ -10,45 +10,41 @@ import { cache } from "react";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
-import { getMatchingFields } from "../../utils/getMatchingFields";
 import { TOPIC_PREFIX } from "../../../shared/utils";
 
 export const getRelatedPosts = cache(
   async (
     args: QueryRelatedPostsArgs,
-    context: ResolverContext,
-    fields: MapResult
+    context: ResolverContext
   ): Promise<PostsResponse> => {
     const { prisma, client_author_id } = context;
 
     const post = await prisma.post.findFirst({
       where: {
-        id: args.filters?.post_id,
+        id: args.filters?.post_id
       },
       include: {
-        tags: true,
-      },
+        tags: true
+      }
     });
-    const topic =
-      post?.tags.find((tag) => tag.slug?.startsWith(TOPIC_PREFIX))?.name ??
-      post?.tags[0]?.name;
+    const topic = post?.tags.find((tag) => tag.slug?.startsWith(TOPIC_PREFIX))?.name ?? post?.tags[0]?.name;
     const condition: Partial<Prisma.PostFindManyArgs> = {
       where: {
         html: {},
         tags: {
           some: {
-            name: topic,
-          },
+            name: topic
+          }
         },
         id: {
-          not: args.filters?.post_id,
+          not: args.filters?.post_id
         },
         author_id: client_author_id ?? undefined,
-        status: PostStatusOptions.Published,
+        status: PostStatusOptions.Published
       },
       take: 10,
       orderBy: {
-        publishedAt: "desc",
+        publishedAt: "desc"
       },
       select: {
         id: true,
@@ -56,14 +52,13 @@ export const getRelatedPosts = cache(
     };
     try {
       const postIds = await prisma.post.findMany(condition);
-      const selections = getMatchingFields(fields.rows as MapResult);
-      const posts = await context.dataloaders
-        .post(selections)
-        .loadMany(postIds.map((p) => p.id));
+      const posts = await context.dataloaders.post.loadMany(
+        postIds.map((p) => p.id)
+      );
 
       return {
         __typename: "PostsNode",
-        rows: posts.map((p) => mapPostToGraphql(p)),
+        rows: posts.map(p => mapPostToGraphql(p)),
         count: await prisma.post.count({ where: condition.where }),
       };
     } catch (e: any) {
@@ -76,3 +71,30 @@ export const getRelatedPosts = cache(
     }
   }
 );
+
+interface GetTagsProps {
+  isPage: boolean;
+  slug?: string;
+  loggedIn: boolean;
+}
+
+function getTags({ slug, loggedIn, isPage }: GetTagsProps) {
+  if (isPage) return { every: {} };
+  if (!loggedIn && !slug) return undefined;
+  if (slug) {
+    return {
+      some: {
+        slug,
+      },
+    };
+  }
+  return undefined;
+}
+
+function getStatus(session, status?: InputMaybe<PostStatusOptions>[]) {
+  return {
+    in: session
+      ? status ?? [PostStatusOptions.Published, PostStatusOptions.Draft]
+      : [PostStatusOptions.Published],
+  };
+}

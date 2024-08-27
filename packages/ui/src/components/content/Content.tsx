@@ -3,10 +3,7 @@
 import classNames from "classnames";
 import { FC, ReactNode, useLayoutEffect, useRef } from "react";
 
-export const Content: FC<{ children?: ReactNode; className?: string }> = ({
-  children,
-  className,
-}) => {
+export const Content: FC<{ children?: ReactNode, className?:string }> = ({ children, className }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -17,14 +14,11 @@ export const Content: FC<{ children?: ReactNode; className?: string }> = ({
   }, []);
   return (
     <div
-      className={classNames(
-        "flex min-h-0 w-full overflow-y-auto overflow-x-hidden",
-        className
-      )}
+      className={classNames("flex min-h-0 w-full overflow-y-auto overflow-x-hidden", className)}
       ref={ref}
       id="lp-content"
     >
-      <div className="flex-1 flex flex-col">{children}</div>
+      <div className="flex-1">{children}</div>
     </div>
   );
 };

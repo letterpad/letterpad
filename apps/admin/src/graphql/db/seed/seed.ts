@@ -1,5 +1,6 @@
 require("dotenv/config");
 /* eslint-disable no-console */
+import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import fs from "fs";
 import { RegisterStep } from "letterpad-graphql";
@@ -219,7 +220,7 @@ async function insertAuthors() {
       name: "John Doe",
       email: process.env.EMAIL || "demo@demo.com",
       username: "demo",
-      password: "",
+      password: '',
       register_step: RegisterStep.Registered,
       token: "",
     },

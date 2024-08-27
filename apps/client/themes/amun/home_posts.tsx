@@ -13,17 +13,17 @@ const pickThreePostsMax = (posts: PostsFragmentFragment['rows']) => {
   return posts;
 };
 
-export const HomePosts: FC<HomePostsProps> = ({ posts, loadMore }) => {
+export const HomePosts: FC<HomePostsProps> = ({ posts }) => {
   const firstThreeMax = pickThreePostsMax(posts.rows);
   const olderPosts = posts.rows.slice(firstThreeMax.length);
   return (
     <SectionContainer className="mx-auto max-w-7xl md:px-20">
       <div className="mb-10 flex flex-col gap-12 lg:flex-row">
         <LatestPosts posts={firstThreeMax} />
-        <SidePosts loadMore={loadMore} />
+        <SidePosts />
       </div>
 
-      <OlderPosts posts={olderPosts} loadMore={loadMore} />
+      <OlderPosts posts={olderPosts} />
     </SectionContainer>
   );
 };
@@ -56,10 +56,10 @@ const LatestPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
         <Card post={posts[0]} size="md" />
         <div className="flex flex-col gap-6 lg:flex-row xl:flex-col">
           <div className="flex-1">
-            <Card post={posts[1]} size="sm" />
+            <Card post={posts[1]} imageHeight="sm" size="sm" />
           </div>
           <div className="flex-1">
-            <Card post={posts[2]} size="sm" />
+            <Card post={posts[2]} imageHeight="sm" size="sm" />
           </div>
         </div>
       </>
@@ -76,13 +76,7 @@ const LatestPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
   );
 };
 
-const OlderPosts = ({
-  posts,
-  loadMore,
-}: {
-  posts: PostsFragmentFragment['rows'];
-  loadMore: (Card: FC<{ post: PostsFragmentFragment['rows'][0] }>) => ReactNode;
-}) => {
+const OlderPosts = ({ posts }: { posts: PostsFragmentFragment['rows'] }) => {
   if (posts.length === 0) return null;
   return (
     <div className="flex flex-col">
@@ -91,13 +85,12 @@ const OlderPosts = ({
         {posts.map((post) => (
           <Card post={post} />
         ))}
-        {loadMore(Card)}
       </div>
     </div>
   );
 };
 
-const SidePosts = async ({ loadMore }) => {
+const SidePosts = async () => {
   const data = await getTagsData();
   if (!data) return null;
   const { tags } = data;
@@ -116,7 +109,6 @@ const SidePosts = async ({ loadMore }) => {
         {postsTag.posts.rows.slice(0, 3).map((tag) => (
           <HorizontalCard post={tag} key={tag.id} />
         ))}
-        {loadMore(HorizontalCard)}
       </div>
     </div>
   );

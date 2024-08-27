@@ -58,7 +58,7 @@ export async function slugify(
 export async function getImageDimensions(
   url: string
 ): Promise<{ width: number; height: number; type: string }> {
-  const src = new URL("/api/imageSize", getRootUrl());
+  const src = new URL("/api/imageSize", getRootUrl())
   src.searchParams.append("url", url);
   const req = await fetch(src);
   const data = await req.json();

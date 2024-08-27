@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import {
   ChangeEvent,
+  FC,
   forwardRef,
   HTMLProps,
   useEffect,
