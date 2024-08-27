@@ -1,4 +1,4 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { RegisterStep, Role } from "letterpad-graphql";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
@@ -17,7 +17,7 @@ import { sendMail } from "../../../graphql/mail/sendMail";
 function emailSender(callbackUrl: string) {
   return async ({ identifier, url }) => {
     try {
-      const emailVerificationLink = new URL(url);
+      const emailVerificationLink = new URL(url)
       emailVerificationLink.searchParams.set("callbackUrl", callbackUrl);
       const res = await sendMail({
         to: identifier,
@@ -25,12 +25,12 @@ function emailSender(callbackUrl: string) {
         html: `<p>Click the below button to verify your email address and to login.</p> <a href="${emailVerificationLink.toString()}" class="btn">Verify and Login</a>`,
       });
       // eslint-disable-next-line no-console
-      console.log(res);
+      console.log(res)
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log("Could not send email for passwordless", error);
+      console.log("Could not send email for passwordless", error)
     }
-  };
+  }
 }
 
 const providers = (req?: NextApiRequest): NextAuthOptions["providers"] => [
@@ -63,7 +63,7 @@ const authPrisma = {
   user: prisma.author,
   session: prisma.session,
   verificationToken: prisma.verificationRequest,
-} as unknown as PrismaClient;
+} as unknown as PrismaClient
 
 export const options = (req?: NextApiRequest): NextAuthOptions => ({
   providers: providers(req),
@@ -73,9 +73,9 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
       if (!user.email) return;
       const author = await prisma.author.findFirst({
         where: {
-          email: user.email,
-        },
-      });
+          email: user.email
+        }
+      })
       await prisma.author.update({
         where: { email: user.email },
         data: {
@@ -83,12 +83,13 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
           register_step: RegisterStep.ProfileInfo,
           role: {
             connect: {
-              name: Role.Author,
-            },
-          },
+              name: Role.Author
+            }
+          }
         },
-      });
-    },
+
+      })
+    }
   },
 
   callbacks: {
@@ -122,7 +123,7 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
         ...token,
         register_step: token.register_step as RegisterStep,
         membership: token.membership as any,
-      };
+      }
 
       return session;
     },
@@ -165,11 +166,9 @@ const auth = (req: NextApiRequest, res: NextApiResponse) =>
 export default auth;
 
 function getCallbackUrl(url: string) {
-  const queryString = url.split("?")[1];
+  const queryString = url.split('?')[1];
   const params = new URLSearchParams(queryString);
-  const encodeCallbackUrl = params.get("callbackUrl");
-  const callbackUrl = encodeCallbackUrl
-    ? decodeURIComponent(encodeCallbackUrl)
-    : null;
+  const encodeCallbackUrl = params.get('callbackUrl');
+  const callbackUrl = encodeCallbackUrl ? decodeURIComponent(encodeCallbackUrl) : null;
   return callbackUrl;
 }

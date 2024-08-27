@@ -30,13 +30,13 @@ export const cache = cacheExchange({
     FavAuthorResponse: () => null,
     DeleteAuthorResponse: () => null,
     UnAuthorized: () => null,
-    StatsError: () => null,
+    StatsError: () => null
   },
 });
 
 const url = getApiUrl();
 const makeClient = () => {
-  // eslint-disable-next-line no-console
+  // eslint-disable-next-line no-console 
   if (_client) return _client;
   _client = createClient({
     url,

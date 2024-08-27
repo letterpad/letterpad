@@ -8,7 +8,7 @@ import { isInMaintenanceModeEnabled } from 'ui/dist/server.mjs';
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
 
-import { getAuthorAndSettingsData } from '@/data';
+import { getData } from '@/data';
 
 import { HeadMeta } from '@/components/Scripts';
 
@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
         robots: { index: false, follow: false },
       };
     }
-    const data = await getAuthorAndSettingsData();
+    const data = await getData();
     if (!data) return {};
     const { settings, me } = data;
     const description =
@@ -152,7 +152,7 @@ const Layout = async ({ children }) => {
       </html>
     );
   }
-  const data = await getAuthorAndSettingsData();
+  const data = await getData();
   if (!data) {
     return <Custom404 />;
   }

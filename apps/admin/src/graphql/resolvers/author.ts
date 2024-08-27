@@ -44,19 +44,15 @@ const Author: AuthorResolvers<ResolverContext> = {
     const setting = await dataloaders.setting.load(id);
     const host = new URL(getRootUrl()).host;
     const site_url = setting?.site_url ?? `https://${username}.${host}`;
-    return `https://${site_url.replace(/https?:\/\//, "")}`;
+    return `https://${site_url.replace(/https?:\/\//, "")}`
   },
   is_paid_member: async ({ id }, _args, { prisma }) => {
     const membership = await prisma.membership.findFirst({
       where: {
-        author_id: id,
-      },
+        author_id: id
+      }
     });
-    return (
-      membership?.status === "complete" ||
-      membership?.status === "profree" ||
-      membership?.status === "active"
-    );
+    return membership?.status === "complete" || membership?.status === "profree" || membership?.status === "active";
   },
   followers: async ({ id }, _args, { prisma }) => {
     return getFollowers(id, prisma);
@@ -72,18 +68,19 @@ const Query: QueryResolvers<ResolverContext> = {
     return getAuthor(authorId, context);
   },
   async followers(_parent, args, context) {
-    const authorId = args.id;
+    const authorId = args.id
     return {
       rows: await getFollowers(authorId, context.prisma),
-      ok: true,
-    };
+      ok: true
+    }
+
   },
   async following(_parent, args, context) {
     const authorId = args.id;
     return {
       rows: await getFollowing(authorId, context.prisma),
-      ok: true,
-    };
+      ok: true
+    }
   },
   async favAuthors(_parent, _args, { prisma }) {
     const authors = await prisma.author.findMany({
@@ -166,6 +163,7 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
+
   async updateAuthor(_root, args, context) {
     return updateAuthor(args, context);
   },
@@ -260,7 +258,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
 export default { Mutation, Author, Query };
 
-const getFollowing = async (id: string, prisma: ResolverContext["prisma"]) => {
+
+const getFollowing = async (id: string, prisma: ResolverContext['prisma']) => {
   const following = await prisma.follows.findMany({
     where: {
       follower: {
@@ -292,9 +291,10 @@ const getFollowing = async (id: string, prisma: ResolverContext["prisma"]) => {
       signature: row.signature || undefined,
     }))
   );
-};
+}
 
-const getFollowers = async (id: string, prisma: ResolverContext["prisma"]) => {
+const getFollowers = async (id: string, prisma: ResolverContext['prisma']) => {
+
   const followers = await prisma.follows.findMany({
     where: {
       following: {
@@ -326,4 +326,4 @@ const getFollowers = async (id: string, prisma: ResolverContext["prisma"]) => {
       signature: row.signature || undefined,
     }))
   );
-};
+}

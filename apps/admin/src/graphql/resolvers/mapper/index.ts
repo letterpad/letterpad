@@ -16,7 +16,7 @@ import { parseFragment, serialize } from "parse5";
 import { transformHtml } from "./transforms";
 
 export const mapPostToGraphql = (
-  post: Partial<DbPost> | Error,
+  post: DbPost | Error,
   callSource: "server" | "client" = "server"
 ) => {
   if (post instanceof Error) {

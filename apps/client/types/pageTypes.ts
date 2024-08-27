@@ -4,7 +4,7 @@ import {
   PostsFragmentFragment,
   SettingsFragmentFragment,
 } from 'letterpad-sdk';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import {
   getAbout,
@@ -21,14 +21,6 @@ export interface HomePostsProps {
   posts: PostsFragmentFragment;
   settings?: SettingsFragmentFragment;
   className?: string;
-  /**
-   * For infinite scroll, the next items should be without wrapper
-   */
-  loadMore: (
-    renderer: FC<{
-      post: PostsFragmentFragment['rows'][0];
-    }>
-  ) => ReactNode;
 }
 
 export interface HomePageProps {

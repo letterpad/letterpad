@@ -69,17 +69,14 @@ export async function GET(request: NextRequest) {
         switch (update.__typename) {
           case "PostLikeMeta":
             emailContent.push(
-              `👉 <a href="https://${getRootUrl()}/@${
-                update.author_username
-              }">${update.author_name}</a> liked this <a href="https://${
-                recipient.username
+              `👉 <a href="https://${getRootUrl()}/@${update.author_username
+              }">${update.author_name}</a> liked this <a href="https://${recipient.username
               }.letterpad.app/post/${update.post_slug}">post</a> of yours.`
             );
             break;
           case "FollowerNewMeta":
             emailContent.push(
-              `👉 <a href="${getRootUrl()}/@${update.follower_username}">${
-                update.follower_name
+              `👉 <a href="${getRootUrl()}/@${update.follower_username}">${update.follower_name
               }</a> started following you.`
             );
             break;
@@ -87,9 +84,8 @@ export async function GET(request: NextRequest) {
       });
       if (emailContent.length === 0) return;
       const verb = emailContent.length === 1 ? "an update" : "updates";
-      const body = `Hello ${
-        recipient.name
-      }, <br><br>We have ${verb} for you.<br><br>${emailContent.join("<br>")}`;
+      const body = `Hello ${recipient.name
+        }, <br><br>We have ${verb} for you.<br><br>${emailContent.join("<br>")}`;
 
       return new Promise<SMTPTransport.SentMessageInfo | void>(
         async (resolve) => {

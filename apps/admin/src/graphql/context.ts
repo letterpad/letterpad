@@ -41,7 +41,7 @@ export const getResolverContext = async (request: Request) => {
   )({ authHeader, identifierHeader, authorId: null });
 
   if (authorId) {
-    console.log(`Found author id from header: ${authorId}`);
+    console.log(`Found author id from header: ${authorId}}`);
     cache[`${authHeader}-${identifierHeader}`] = authorId;
   }
 
@@ -99,19 +99,17 @@ const batchSettings = async (keys: readonly string[]) => {
   return keys.map((key) => settingsMap[key]);
 };
 
-const batchPosts = async (keys: readonly string[], fields: (keyof Post)[]) => {
+const batchPosts = async (keys: readonly string[]) => {
   const posts = await prisma?.post.findMany({
     where: {
       id: { in: [...keys] },
     },
-    select: fields.reduce(
-      (acc, key) => {
-        acc[key] = true;
-        return acc;
-      },
-      { title: true, id: true, author_id: true, type: true }
-    ),
+    include: {
+      featured_weeks: true,
+      likes: true,
+    },
   });
+
   const postsMap: Record<string, (typeof posts)[0]> = {};
 
   posts?.forEach((post) => {
@@ -134,10 +132,10 @@ const batchLikes = async (keys: readonly string[]) => {
     where: {
       post: {
         id: { in: [...keys] },
-      },
+      }
     },
   });
-  const likesMap: Record<string, { avatar: string; username: string }[]> = {};
+  const likesMap: Record<string, { avatar: string, username: string }[]> = {};
 
   result.forEach((row) => {
     if (!likesMap[row.post_id]) {
@@ -146,7 +144,7 @@ const batchLikes = async (keys: readonly string[]) => {
     likesMap[row.post_id].push({
       avatar: row.author.avatar!,
       username: row.author.username!,
-    });
+    })
   });
   return keys.map((key) => likesMap[key] ?? []);
 };
@@ -157,16 +155,8 @@ const batchTags = async (keys: readonly string[]) => {
         some: { id: { in: [...keys] } },
       },
     },
-    select: {
-      name: true,
-      slug: true,
-      likes: true,
-      views: true,
-      posts: {
-        select: {
-          id: true,
-        },
-      },
+    include: {
+      posts: true,
     },
   });
 
@@ -189,9 +179,10 @@ const batchFeatured = async (keys: readonly string[]) => {
       post_id: {
         in: [...keys],
       },
-    },
+
+    }
   });
-  const featuredPosts = {} as Record<string, boolean>;
+  const featuredPosts = {} as Record<string, boolean>
   featured.forEach((post) => {
     if (!featuredPosts[post.id]) {
       featuredPosts[post.id] = true;
@@ -208,11 +199,7 @@ const createDataLoaders = () => ({
   author: new DataLoader<any, Author>(batchAuthors, dataLoaderOptions),
   likes: new DataLoader<any, Like[]>(batchLikes, dataLoaderOptions),
   setting: new DataLoader<any, Setting>(batchSettings, dataLoaderOptions),
-  post: (fields: (keyof Partial<Post>)[]) =>
-    new DataLoader<Readonly<string>, Partial<Post>>(
-      (ids) => batchPosts(ids, fields),
-      dataLoaderOptions
-    ),
+  post: new DataLoader<Readonly<string>, Post>(batchPosts, dataLoaderOptions),
   tagsByPostId: new DataLoader<any, Tag[]>(batchTags, dataLoaderOptions),
   batchFeatured: new DataLoader<any, boolean>(batchFeatured, dataLoaderOptions),
 });

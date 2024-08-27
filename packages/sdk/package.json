@@ -23,6 +23,6 @@
   "dependencies": {},
   "devDependencies": {
     "@graphql-codegen/typescript-generic-sdk": "^3.0.4",
-    "undici": "^6.19.8"
+    "undici": "^4.0.0"
   }
 }

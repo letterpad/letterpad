@@ -7,11 +7,7 @@ import {
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
-import {
-  getBaseVariables,
-  replaceBodyVariables,
-  replaceSubjectVariables,
-} from "../variables";
+import { getBaseVariables, replaceBodyVariables, replaceSubjectVariables } from "../variables";
 
 export async function getSubscriberVerifiedEmailContent(
   data: EmailSubscriberVerifiedProps,

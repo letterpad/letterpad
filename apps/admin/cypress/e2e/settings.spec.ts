@@ -26,11 +26,11 @@ describe("Settings", () => {
 
   it("can can select pages", () => {
     cy.visitSettings();
-    cy.getTestId("aboutPageCb").click({ force: true });
+    cy.getTestId("aboutPageCb").click({ force: true })
     cy.getTestId("save-btn").click({ force: true });
     cy.wait("@UpdateOptionsMutation");
 
-    cy.getTestId("tagsPageCb").click({ force: true });
+    cy.getTestId("tagsPageCb").click({ force: true })
     cy.getTestId("save-btn").click({ force: true });
     cy.wait("@UpdateOptionsMutation");
   });
@@ -50,7 +50,7 @@ describe("Settings", () => {
   });
 });
 
-export {};
+export { };
 
 // cy.url().then((url) => {
 //   const saveLocation = `cypress/results/data/${Cypress.spec.name}.location.txt`;

@@ -30,7 +30,8 @@ export const themes = () => {
     {
       label: "Zenith",
       value: "zenith",
-      description: "Free from excess, focusing on essentials.",
+      description:
+        "Free from excess, focusing on essentials.",
       image: Zenith,
     },
     {

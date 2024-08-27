@@ -79,7 +79,7 @@ export enum EmailTemplates {
   WelcomeUser = "welcomeUser",
   NewFollower = "newFollower",
   NewPost = "newPost",
-  PaymentFailed = "paymentFailed",
+  PaymentFailed = "paymentFailed"
 }
 export interface Template {
   body: string;

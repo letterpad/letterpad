@@ -6,6 +6,7 @@ export const getAuthorFromPost = async (
   id: string,
   { dataloaders }: ResolverContext
 ): Promise<AuthorResponse> => {
+
   const author = await dataloaders.author.load(id);
   if (author) {
     return {

@@ -10,6 +10,7 @@ declare global {
 export const prisma =
   global.prisma ||
   new PrismaClient({
+
     log: [
       {
         emit: "event",
@@ -31,7 +32,8 @@ export const prisma =
   });
 export default PrismaClient;
 
-if (process.env.NODE_ENV !== "production" && !global.prisma) {
+
+if (process.env.NODE_ENV !== 'production' && !global.prisma) {
   // prisma.$use(async (params, next) => {
   //   const before = Date.now()
   //   await next(params)
@@ -41,5 +43,5 @@ if (process.env.NODE_ENV !== "production" && !global.prisma) {
   //   // )
   // })
 
-  global.prisma = prisma;
+  global.prisma = prisma
 }

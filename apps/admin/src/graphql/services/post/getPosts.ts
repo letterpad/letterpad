@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-import { MapResult } from "graphql-fields-list";
 import {
   InputMaybe,
   PostsResponse,
@@ -9,17 +8,14 @@ import {
 } from "letterpad-graphql";
 import { cache } from "react";
 
-import { DEFAULT_FILTERS } from "@/constants";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
-import { getMatchingFields } from "@/graphql/utils/getMatchingFields";
 import { isSqliteDb } from "@/utils/utils";
 
 export const getPosts = cache(
   async (
     args: QueryPostsArgs,
-    context: ResolverContext,
-    fields: MapResult
+    context: ResolverContext
   ): Promise<PostsResponse> => {
     const { session, client_author_id, prisma } = context;
     const session_author_id = session?.user.id;
@@ -40,11 +36,10 @@ export const getPosts = cache(
       args.filters.status = [PostStatusOptions.Published];
     }
 
-    const { page = DEFAULT_FILTERS.page, limit = DEFAULT_FILTERS.limit } =
-      args.filters;
+    const { page = 1, limit = 10 } = args.filters;
     const skip = page && limit ? (page - 1) * limit : 0;
     const isPage = args.filters.type === PostTypes.Page;
-    const status = getStatus(session?.user.id, args.filters?.status!);
+    const status = getStatus(session?.user.id, args.filters?.status!)
     const condition: Partial<Prisma.PostFindManyArgs> = {
       where: {
         html: {},
@@ -61,7 +56,7 @@ export const getPosts = cache(
         }),
         page_type: args.filters.page_type!,
       },
-      take: limit as number,
+      take: args.filters?.limit || 100,
       skip,
       orderBy: {
         updatedAt: session?.user ? args?.filters?.sortBy || "desc" : undefined,
@@ -73,6 +68,7 @@ export const getPosts = cache(
         id: true,
       },
     };
+
     if (condition.where && args.filters.tagSlug === "/") {
       condition.where.exclude_from_home = false;
       condition.where.tags = undefined;
@@ -87,13 +83,13 @@ export const getPosts = cache(
     }
     try {
       const postIds = await prisma.post.findMany(condition);
-      const selections = getMatchingFields(fields.rows as MapResult);
-      const posts = await context.dataloaders
-        .post(selections)
-        .loadMany(postIds.map((p) => p.id));
+      const posts = await context.dataloaders.post.loadMany(
+        postIds.map((p) => p.id)
+      );
+
       return {
         __typename: "PostsNode",
-        rows: posts.map((p) => mapPostToGraphql(p)),
+        rows: posts.map(p => mapPostToGraphql(p)),
         count: await prisma.post.count({ where: condition.where }),
       };
     } catch (e: any) {
@@ -129,9 +125,7 @@ function getTags({ slug, loggedIn, isPage }: GetTagsProps) {
 function getStatus(session, status?: InputMaybe<PostStatusOptions>[]) {
   return {
     in: session
-      ? status?.length
-        ? status
-        : [PostStatusOptions.Published, PostStatusOptions.Draft]
+      ? status?.length ? status : [PostStatusOptions.Published, PostStatusOptions.Draft]
       : [PostStatusOptions.Published],
   } as { in: PostStatusOptions[] };
 }

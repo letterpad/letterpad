@@ -1,4 +1,3 @@
-import { fieldsMap } from "graphql-fields-list";
 import {
   MutationResolvers,
   QueryResolvers,
@@ -29,8 +28,8 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async popularTags(_root, args, { prisma }) {
     // Postgress needs double quotes for table names or else it will convert tables to lowercase
-    const tags: ITag[] = !isPostgresDb()
-      ? await prisma.$queryRaw`
+    const tags: ITag[] =
+      !isPostgresDb() ? await prisma.$queryRaw`
         SELECT count(*) as c, T.name, T.slug  
           FROM _PostToTag
           INNER JOIN Tag T ON B = T.name 
@@ -44,8 +43,7 @@ const Query: QueryResolvers<ResolverContext> = {
           GROUP BY T.name 
           HAVING count(*) > 2 
           ORDER BY c DESC;
-      `
-      : await prisma.$queryRaw`
+      `: await prisma.$queryRaw`
         SELECT count(*) as c, T.name, T.slug  
           FROM "_PostToTag"
           INNER JOIN "Tag" T ON "B" = T.name 
@@ -78,9 +76,8 @@ const Tag: TagResolvers<ResolverContext> = {
   async slug({ slug }) {
     return createPathWithPrefix(slug, "tag");
   },
-  async posts({ id }, _args, context, info) {
-    const fields = fieldsMap(info);
-    return getPostsFromTag(id, context, fields);
+  async posts({ id }, _args, context) {
+    return getPostsFromTag(id, context);
   },
 };
 

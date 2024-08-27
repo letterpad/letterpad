@@ -1,1 +1,1 @@
-export { GetProModalProvider, useGetProModal } from "./ProModalWithContext";
+export { GetProModalProvider, useGetProModal } from './ProModalWithContext';

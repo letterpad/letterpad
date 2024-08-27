@@ -21,7 +21,7 @@ import { columns } from "@/app/(protected)/posts/_feature/header";
 import { useUpdatePost } from "../../post/[postId]/_feature/api.client";
 import { AutoSaveForm } from "../../post/[postId]/_feature/AutoSaveForm";
 import { PostSettingsModal } from "../../post/[postId]/_feature/components/post-settings/drawer";
-import { DEFAULT_FILTERS } from "../../../../constants";
+import { DEFAULT_FILTERS } from "../../posts/_feature/constants";
 import { isPostsNode } from "../../../../utils/type-guards";
 
 export const Feature = () => {
@@ -58,6 +58,10 @@ export const Feature = () => {
         showTags={false}
         showSort={false}
         showPageTypes={true}
+        onChange={(_filters) => {
+          //   setFilters({ ...filters, type: PostTypes.Page });
+          //   refetch({ filters: { ...filters, type: PostTypes.Page } });
+        }}
         filters={filters}
         setFilters={setFilters}
       />

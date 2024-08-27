@@ -8,20 +8,12 @@ function Footer() {
         <div className="flex items-center justify-center">
           <ul className="flex flex-wrap items-center text-xs font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
             <li>
-              <Link
-                href="/terms"
-                className="hover:underline me-4 md:me-6"
-                prefetch={false}
-              >
+              <Link href="/terms" className="hover:underline me-4 md:me-6" prefetch={false}>
                 Terms
               </Link>
             </li>
             <li>
-              <Link
-                href="/privacy"
-                className="hover:underline me-4 md:me-6"
-                prefetch={false}
-              >
+              <Link href="/privacy" className="hover:underline me-4 md:me-6" prefetch={false}>
                 Privacy
               </Link>
             </li>

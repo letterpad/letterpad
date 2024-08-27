@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./index"
+import { Button } from "../button"
 
 export type DropdownMenuChecked = DropdownMenuCheckboxItemProps["checked"]
 

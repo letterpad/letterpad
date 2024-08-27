@@ -1,4 +1,9 @@
-import { NavigationType, Post, PostTypes, Tag } from "letterpad-graphql";
+import {
+  NavigationType,
+  Post,
+  PostTypes,
+  Tag,
+} from "letterpad-graphql";
 import { useEffect, useState } from "react";
 
 import { Collection } from "./types";

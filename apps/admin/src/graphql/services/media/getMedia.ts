@@ -28,8 +28,8 @@ export const getMedia = async (
     },
     cursor: cursor
       ? {
-          id: cursor,
-        }
+        id: cursor,
+      }
       : undefined,
     skip: (page - 1) * limit,
   };

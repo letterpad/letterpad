@@ -2,14 +2,10 @@ import { EmailTemplateResponse, EmailWelcomeUserProps } from "@/graphql/types";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
-import {
-  getBaseVariables,
-  replaceBodyVariables,
-  replaceSubjectVariables,
-} from "../variables";
+import { getBaseVariables, replaceBodyVariables, replaceSubjectVariables } from "../variables";
 
 export async function getWelcomeUserContent(
-  data: EmailWelcomeUserProps
+  data: EmailWelcomeUserProps,
 ): Promise<EmailTemplateResponse> {
   const template = await getTemplate(data.template_id);
 
@@ -25,11 +21,7 @@ export async function getWelcomeUserContent(
 
   return {
     ok: true,
-    content: {
-      subject,
-      html: addLineBreaks(body),
-      to: variables.meta.author.email,
-    },
+    content: { subject, html: addLineBreaks(body), to: variables.meta.author.email },
     meta: variables.meta,
   };
 }

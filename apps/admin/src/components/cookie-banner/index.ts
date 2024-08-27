@@ -1,1 +1,1 @@
-export { CookieBanner } from "./cookieBanner";
+export { CookieBanner } from "./cookieBanner"

@@ -36,7 +36,7 @@ export async function findAuthorIdFromLetterpadSubdomain({
     if (identifierHeader?.includes("letterpad-client-git")) {
       const author = await prisma.author.findFirst({
         where: {
-          username: "demo",
+          username: 'demo',
         },
       });
       if (author) return { identifierHeader, authHeader, authorId: author.id };

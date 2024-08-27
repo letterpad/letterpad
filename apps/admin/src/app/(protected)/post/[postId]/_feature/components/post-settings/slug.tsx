@@ -27,7 +27,7 @@ export const Slug = () => {
   const [slug, setSlug] = useState(
     getLastPartFromPath(
       post?.slug && post.slug?.startsWith("/post/untitled")
-        ? (formatSlug(post.title) ?? post.slug)
+        ? formatSlug(post.title) ?? post.slug
         : post.slug!
     )
   );

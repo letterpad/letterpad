@@ -3,6 +3,7 @@ import { FC } from "react";
 import {
   IconDown,
   IconFullWidth,
+  IconSmallHeight,
   IconSplit,
   IconUp,
 } from "./icons";

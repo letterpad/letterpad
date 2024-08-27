@@ -1,13 +1,14 @@
-import { MapResult } from "graphql-fields-list";
-import { PostResponse, QueryLetterpadLatestPostArgs } from "letterpad-graphql";
+import {
+  PostResponse,
+  QueryLetterpadLatestPostArgs,
+} from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 export const getLetterpadLatestPost = async (
   args: QueryLetterpadLatestPostArgs,
-  { prisma }: ResolverContext,
-  fields: MapResult
+  { prisma }: ResolverContext
 ): Promise<PostResponse> => {
   if (!args.filters) {
     return {

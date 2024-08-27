@@ -18,8 +18,7 @@
     "typecheck": "tsc --noEmit",
     "build": "NODE_OPTIONS='--max-old-space-size=16384' tsup",
     "watch": "NODE_OPTIONS='--max-old-space-size=16384' tsup --watch",
-    "lint": "TIMING=1 eslint \"**/*.ts*\"",
-    "lint:fix": "TIMING=1 eslint \"**/*.ts*\" --fix"
+    "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "devDependencies": {
     "eslint": "^7.32.0",
