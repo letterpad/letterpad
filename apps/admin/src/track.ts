@@ -1,5 +1,4 @@
-
-import { EventAction, EventCategory, EventLabel } from "ui/dist/isomorphic.mjs" // removed isomorphic;
+import { EventAction, EventCategory, EventLabel } from "ui/dist/isomorphic.mjs"; // removed isomorphic;
 
 interface EventInfo {
   eventCategory: EventCategory;
@@ -14,4 +13,4 @@ export const track = (info: EventInfo) => {
   });
 };
 
-export { EventAction, EventCategory, EventLabel }
+export { EventAction, EventCategory, EventLabel };

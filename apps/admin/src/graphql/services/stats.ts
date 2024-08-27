@@ -1,8 +1,4 @@
-import {
-  PostStatusOptions,
-  PostTypes,
-  StatsResponse,
-} from "letterpad-graphql";
+import { PostStatusOptions, PostTypes, StatsResponse } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 
@@ -16,6 +12,7 @@ export const getStats = async (
     tags: 0,
     media: 0,
   };
+
   client_author_id = session?.user.id || client_author_id;
 
   if (!client_author_id) {

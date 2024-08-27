@@ -1,6 +1,6 @@
-import { FC, lazy, useEffect } from "react";
+import { FC, lazy } from "react";
 
-import { getHeight, Wrapper } from "./wrapper";
+import { Wrapper } from "./wrapper";
 import { useBuilderContext } from "../context/context";
 import { BlockItem } from "../types";
 

@@ -1,2 +1,2 @@
-export { UpgradeBanner } from "./upgrade-banner"
-export { UpgradeLabel } from "./upgrade-label"
+export { UpgradeBanner } from "./upgrade-banner";
+export { UpgradeLabel } from "./upgrade-label";

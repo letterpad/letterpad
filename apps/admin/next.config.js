@@ -12,24 +12,24 @@ const ContentSecurityPolicy = `
 
 const securityHeaders = [
   {
-    key: 'Content-Security-Policy',
-    value: ContentSecurityPolicy.replace(/\n/g, ''),
+    key: "Content-Security-Policy",
+    value: ContentSecurityPolicy.replace(/\n/g, ""),
   },
   {
-    key: 'Referrer-Policy',
-    value: 'strict-origin-when-cross-origin',
+    key: "Referrer-Policy",
+    value: "strict-origin-when-cross-origin",
   },
   {
-    key: 'X-Frame-Options',
-    value: 'DENY',
+    key: "X-Frame-Options",
+    value: "DENY",
   },
   {
-    key: 'X-Content-Type-Options',
-    value: 'nosniff',
+    key: "X-Content-Type-Options",
+    value: "nosniff",
   },
   {
-    key: 'Strict-Transport-Security',
-    value: 'max-age=31536000; includeSubDomains',
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000; includeSubDomains",
   },
 ];
 
@@ -42,7 +42,7 @@ const nextConfig = {
   },
   productionBrowserSourceMaps: false,
   experimental: {
-    serverComponentsExternalPackages: ["@whatwg-node"]
+    serverComponentsExternalPackages: ["@whatwg-node"],
   },
   env: {
     ROOT: __dirname,
@@ -58,7 +58,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: securityHeaders,
       },
     ];
@@ -127,4 +127,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig
+module.exports = nextConfig;

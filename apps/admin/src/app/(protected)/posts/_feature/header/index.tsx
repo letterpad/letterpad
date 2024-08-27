@@ -1,5 +1,8 @@
 import classNames from "classnames";
-import { Post, PostStatusOptions } from "letterpad-graphql";
+import {
+  AdminPostsFragmentFragment,
+  PostStatusOptions,
+} from "letterpad-graphql";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { LuArrowUpDown } from "react-icons/lu";
 import {
@@ -20,7 +23,7 @@ export const columns = ({
   onSettingsClick,
   onClick,
   displayTags,
-}): ColumnDef<Post>[] => [
+}): ColumnDef<AdminPostsFragmentFragment>[] => [
   {
     accessorKey: "title",
     header: "Title",

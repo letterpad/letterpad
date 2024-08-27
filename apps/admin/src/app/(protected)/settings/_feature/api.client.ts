@@ -1,16 +1,16 @@
 import {
-  SettingInputType, UpdateOptionsMutation,
+  SettingInputType,
+  UpdateOptionsMutation,
   UpdateOptionsMutationVariables,
 } from "letterpad-graphql";
 import {
-  useSettingsQuery, useUpdateOptionsMutation
+  useSettingsQuery,
+  useUpdateOptionsMutation,
 } from "letterpad-graphql/hooks";
 
 import { client } from "@/lib/urqlClient";
 
-import {
-  UpdateOptionsDocument,
-} from "@/graphql/queries/mutations.graphql";
+import { UpdateOptionsDocument } from "@/graphql/queries/mutations.graphql";
 import { isSettings } from "@/utils/type-guards";
 
 export const updateSetting = (change: SettingInputType) =>

@@ -19,5 +19,5 @@ export const resolversArr = [
   Domain,
   Sitemap,
   Notification,
-  Comment
+  Comment,
 ];

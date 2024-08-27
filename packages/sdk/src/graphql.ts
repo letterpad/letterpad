@@ -270,12 +270,6 @@ export type Forbidden = LetterpadError & {
   type?: Maybe<Failed>;
 };
 
-export type ForgotPasswordResponse = {
-  __typename?: "ForgotPasswordResponse";
-  message?: Maybe<Scalars["String"]>;
-  ok: Scalars["Boolean"];
-};
-
 export type Image = {
   __typename?: "Image";
   height?: Maybe<Scalars["Int"]>;
@@ -293,7 +287,6 @@ export type InputAuthor = {
   id: Scalars["String"];
   name?: InputMaybe<Scalars["String"]>;
   occupation?: InputMaybe<Scalars["String"]>;
-  password?: InputMaybe<Scalars["String"]>;
   profile_updated?: InputMaybe<Scalars["Boolean"]>;
   register_step?: InputMaybe<RegisterStep>;
   roleId?: InputMaybe<Scalars["Int"]>;
@@ -306,7 +299,6 @@ export type InputAuthor = {
 export type InputCreateAuthor = {
   email: Scalars["String"];
   name?: InputMaybe<Scalars["String"]>;
-  password: Scalars["String"];
   register_step?: InputMaybe<RegisterStep>;
   setting?: InputMaybe<SettingInputType>;
   token: Scalars["String"];
@@ -451,7 +443,6 @@ export type Like = {
 
 export type LoginData = {
   email: Scalars["String"];
-  password: Scalars["String"];
 };
 
 export type LoginError = LetterpadError & {
@@ -1801,6 +1792,7 @@ export type RelatedPostsQuery = {
 export type PostsQueryVariables = Exact<{
   tagSlug?: InputMaybe<Scalars["String"]>;
   search?: InputMaybe<Scalars["String"]>;
+  page?: InputMaybe<Scalars["Int"]>;
 }>;
 
 export type PostsQuery = {
@@ -2414,8 +2406,8 @@ export const RelatedPostsDocument = `
 }
     ${PostsFragmentFragmentDoc}`;
 export const PostsDocument = `
-    query posts($tagSlug: String, $search: String) {
-  posts(filters: {tagSlug: $tagSlug, search: $search}) {
+    query posts($tagSlug: String, $search: String, $page: Int) {
+  posts(filters: {tagSlug: $tagSlug, search: $search, page: $page}) {
     __typename
     ...postsFragment
     ... on LetterpadError {

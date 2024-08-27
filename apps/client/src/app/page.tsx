@@ -5,6 +5,7 @@ import { Image } from 'ui/dist/isomorphic.mjs';
 import { getData } from '@/data';
 
 import Custom404 from './not-found';
+import { InfiniteList } from '../components/infinite-list';
 import { Navbar } from '../components/navbar';
 import { StructuredData } from '../components/structured-data';
 import { getProfileUrl } from '../../lib/utils/url';
@@ -59,7 +60,11 @@ export default async function Home() {
             </span>
           )}
         </SectionContainer>
-        <HomePosts posts={posts} settings={settings} />
+        <HomePosts
+          posts={posts}
+          settings={settings}
+          loadMore={(Renderer) => <InfiniteList RenderCard={Renderer} />}
+        />
         <AboutMe me={me} />
       </div>
     </>

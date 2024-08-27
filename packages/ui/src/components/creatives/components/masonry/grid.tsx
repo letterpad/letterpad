@@ -1,9 +1,7 @@
 import { FC } from "react";
-import { IoRemoveCircleOutline } from "react-icons/io5";
 import { RiDeleteBin4Fill } from "react-icons/ri";
 
 import { BlockMasonry } from "../../types";
-import { Button } from "../../../button";
 
 interface Props {
   items: BlockMasonry[];

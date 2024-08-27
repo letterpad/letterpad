@@ -1,3 +1,4 @@
+import { MapResult } from "graphql-fields-list";
 import {
   PostResponse,
   PostStatusOptions,
@@ -7,11 +8,13 @@ import { cache } from "react";
 
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+import { getMatchingFields as getMatchingPostFields } from "@/graphql/utils/getMatchingFields";
 
 export const getPost = cache(
   async (
     args: QueryPostArgs,
-    { prisma, session, client_author_id, dataloaders }: ResolverContext
+    { prisma, session, client_author_id, dataloaders }: ResolverContext,
+    fields: MapResult
   ): Promise<PostResponse> => {
     const callSource = client_author_id ? "client" : "server";
     const session_author_id = session?.user.id;
@@ -53,8 +56,10 @@ export const getPost = cache(
     }
 
     if (id) {
-      const post = await dataloaders.post.load(id);
-
+      const selections = getMatchingPostFields(fields);
+      const post = await dataloaders
+        .post([...selections, "author_id"])
+        .load(id);
       if (post) {
         if (session_author_id && post?.author_id !== session_author_id) {
           return {

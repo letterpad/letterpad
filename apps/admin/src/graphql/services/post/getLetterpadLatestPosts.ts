@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { MapResult } from "graphql-fields-list";
 import {
   PostsResponse,
   PostStatusOptions,
@@ -9,25 +10,30 @@ import {
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
+import { getMatchingFields } from "../../utils/getMatchingFields";
+
 export const getLetterpadLatestPosts = async (
   args: Partial<QueryLetterpadLatestPostsArgs>,
-  { prisma, dataloaders }: ResolverContext
+  { prisma, dataloaders }: ResolverContext,
+  fields: MapResult
 ): Promise<PostsResponse> => {
   const cursor = args.filters?.cursor
     ? {
-      cursor: {
-        id: args.filters.cursor,
-      },
-    }
+        cursor: {
+          id: args.filters.cursor,
+        },
+      }
     : {};
 
-  const tags = args.filters?.tag ? {
-    tags: {
-      some: {
-        slug: args.filters?.tag,
-      },
-    },
-  } : {};
+  const tags = args.filters?.tag
+    ? {
+        tags: {
+          some: {
+            slug: args.filters?.tag,
+          },
+        },
+      }
+    : {};
 
   const condition: Prisma.PostFindManyArgs = {
     where: {
@@ -58,7 +64,7 @@ export const getLetterpadLatestPosts = async (
         },
       ],
     },
-    skip: cursor.cursor?.id ?? 0 > 0 ? 1 : 0,
+    skip: (cursor.cursor?.id ?? 0 > 0) ? 1 : 0,
     take: 13,
     ...cursor,
     orderBy: {
@@ -69,18 +75,19 @@ export const getLetterpadLatestPosts = async (
     },
   };
   try {
-    // const posts = await prisma.post.findMany(condition);
     const postIds = await prisma.post.findMany(condition);
-    const posts = await dataloaders.post.loadMany(
-      postIds.map((p) => p.id)
-    );
+    const selections = getMatchingFields(fields.rows as MapResult);
+
+    const postsPromise = dataloaders
+      .post(selections)
+      .loadMany(postIds.map((p) => p.id));
+    const countPromise = prisma.post.count({ where: condition.where });
+    const [posts, count] = await Promise.all([postsPromise, countPromise]);
 
     return {
       __typename: "PostsNode",
-      rows: posts
-        .map(p => mapPostToGraphql(p))
-        .filter((row) => (row.html?.length ?? 0) > 800),
-      count: await prisma.post.count({ where: condition.where }),
+      rows: posts.map((p) => mapPostToGraphql(p)),
+      count,
     };
   } catch (e: any) {
     // eslint-disable-next-line no-console

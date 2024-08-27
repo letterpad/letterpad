@@ -1,20 +1,19 @@
 export const fetchResource = async (slug: string) => {
-    if (!process.env.LETTERPAD_BLOG_KEY) {
-        throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
-    }
-    const req = await fetch("https://letterpad.app/api/graphql", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization:
-                `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
-        },
-        cache: "force-cache",
-        next: {
-            tags: ["resource"],
-        },
-        body: JSON.stringify({
-            query: `
+  if (!process.env.LETTERPAD_BLOG_KEY) {
+    throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
+  }
+  const req = await fetch("https://letterpad.app/api/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
+    },
+    cache: "force-cache",
+    next: {
+      tags: ["resource"],
+    },
+    body: JSON.stringify({
+      query: `
             query {
                 post(filters: {slug: "${slug}"}) {
                     ...on Post {
@@ -31,29 +30,33 @@ export const fetchResource = async (slug: string) => {
                 }
             }
             `,
-        }),
-    });
-    const data = await req.json();
-    return data?.data?.post as { title: string, html: string, updatedAt: string, sub_title: string };
-}
+    }),
+  });
+  const data = await req.json();
+  return data?.data?.post as {
+    title: string;
+    html: string;
+    updatedAt: string;
+    sub_title: string;
+  };
+};
 
 export const fetchPostsOfClient = async () => {
-    if (!process.env.LETTERPAD_BLOG_KEY) {
-        throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
-    }
-    const req = await fetch("https://letterpad.app/api/graphql", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization:
-                `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
-        },
-        cache: "force-cache",
-        next: {
-            tags: ["resources"],
-        },
-        body: JSON.stringify({
-            query: `
+  if (!process.env.LETTERPAD_BLOG_KEY) {
+    throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
+  }
+  const req = await fetch("https://letterpad.app/api/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
+    },
+    cache: "force-cache",
+    next: {
+      tags: ["resources"],
+    },
+    body: JSON.stringify({
+      query: `
             query {
                 posts(filters: {status: published, sortBy: asc}) {
                     ...on PostsNode {
@@ -78,36 +81,41 @@ export const fetchPostsOfClient = async () => {
                 }
             }
             `,
-        }),
-    });
-    const data = await req.json();
-    return data?.data?.posts.rows.filter(post => parseInt(post.title)) as {
-        title: string, html: string, sub_title: string, excerpt: string, slug: string, author: { name: string, avatar: string }, cover_image: {
-            src: string,
-            width: number,
-            height: number
-        }
-    }[];
-}
+    }),
+  });
+  const data = await req.json();
+  return data?.data?.posts.rows.filter((post) => parseInt(post.title)) as {
+    title: string;
+    html: string;
+    sub_title: string;
+    excerpt: string;
+    slug: string;
+    author: { name: string; avatar: string };
+    cover_image: {
+      src: string;
+      width: number;
+      height: number;
+    };
+  }[];
+};
 
 export const fetchPostsByTag = async () => {
-    if (!process.env.LETTERPAD_BLOG_KEY) {
-        throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
-    }
-    try {
-        const req = await fetch('https://letterpad.app/api/graphql', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:
-                    `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
-            },
-            cache: "force-cache",
-            next: {
-                tags: ["announcement"],
-            },
-            body: JSON.stringify({
-                query: `
+  if (!process.env.LETTERPAD_BLOG_KEY) {
+    throw new Error("Please set the environment variable LETTERPAD_BLOG_KEY");
+  }
+  try {
+    const req = await fetch("https://letterpad.app/api/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.LETTERPAD_BLOG_KEY}`,
+      },
+      cache: "force-cache",
+      next: {
+        tags: ["announcement"],
+      },
+      body: JSON.stringify({
+        query: `
             query {
                 tag(slug:"announcement"){
                     __typename
@@ -132,18 +140,24 @@ export const fetchPostsByTag = async () => {
                   }
             }
             `,
-            }),
-        });
-        const data = await req.json();
-        return data?.data?.tag?.posts?.rows as {
-            title: string, html: string, sub_title: string, excerpt: string, slug: string, author: { name: string, avatar: string }, cover_image: {
-                src: string,
-                width: number,
-                height: number
-            },
-            publishedAt: Date
-        }[];
-    } catch (e) {
-        return []
-    }
-}
+      }),
+    });
+    const data = await req.json();
+    return data?.data?.tag?.posts?.rows as {
+      title: string;
+      html: string;
+      sub_title: string;
+      excerpt: string;
+      slug: string;
+      author: { name: string; avatar: string };
+      cover_image: {
+        src: string;
+        width: number;
+        height: number;
+      };
+      publishedAt: Date;
+    }[];
+  } catch (e) {
+    return [];
+  }
+};

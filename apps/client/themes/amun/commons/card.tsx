@@ -1,3 +1,4 @@
+'use client';
 import classNames from 'classnames';
 import { PostsFragmentFragment } from 'letterpad-sdk';
 import { FC } from 'react';
@@ -10,27 +11,11 @@ import Link from '@/components/Link';
 export const Card: FC<{
   post: PostsFragmentFragment['rows'][0];
   size?: 'sm' | 'md' | 'xs';
-  imageHeight?: 'lg' | 'md' | 'sm';
-}> = ({ post, size = 'sm', imageHeight = 'lg' }) => {
-  let imagePaddingTop = '75%';
-  switch (imageHeight) {
-    case 'lg':
-      imagePaddingTop = 'pt-[75%]';
-      break;
-    case 'md':
-      imagePaddingTop = 'pt-[70%]';
-      break;
-    case 'sm':
-      imagePaddingTop = 'pt-[50%]';
-      break;
-  }
-
+}> = ({ post, size = 'sm' }) => {
   return (
     <div className="shrink-0 basis-full xl:basis-[55%]">
       <Link className="block" href={post.slug!}>
-        <div
-          className={`relative block bg-black/5 ${imagePaddingTop} dark:bg-white/5`}
-        >
+        <div className={`relative block bg-black/5 dark:bg-white/5`}>
           <Image
             src={post.cover_image?.src ?? ''}
             alt={post.title}

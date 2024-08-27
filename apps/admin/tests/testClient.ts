@@ -1,6 +1,5 @@
 import { GraphQLClient } from "graphql-request";
 
-
 interface IArgs {
   query?: any;
   mutation?: any;
@@ -8,7 +7,6 @@ interface IArgs {
   token?: string;
   sessionId?: string;
 }
-
 
 const client = (token, sessionId) =>
   new GraphQLClient("http://localhost:3000/api/graphql", {

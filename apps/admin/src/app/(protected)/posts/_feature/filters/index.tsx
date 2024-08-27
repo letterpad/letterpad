@@ -18,7 +18,6 @@ import { EventAction, EventCategory, EventLabel, track } from "@/track";
 
 interface IProps {
   showTags?: boolean;
-  onChange: (filters: PostsFilters) => void;
   showPageTypes?: boolean;
   filters: PostsFilters;
   setFilters: (data: PostsFilters) => void;
@@ -27,7 +26,6 @@ interface IProps {
 
 export const Filters = ({
   showTags = true,
-  onChange,
   showPageTypes = false,
   showSort = true,
   filters,
@@ -55,7 +53,7 @@ export const Filters = ({
         name: tag.name,
       }))
     );
-  }, [filters, fetching, onChange, showPageTypes, showTags, data]);
+  }, [filters, fetching, showPageTypes, showTags, data]);
 
   const onBadgeClick = (status: PostStatusOptions) => {
     let newStatusFilters = [...(filters.status ?? []), status];
@@ -64,7 +62,6 @@ export const Filters = ({
     }
     const changedFilters = { ...filters, status: newStatusFilters };
     setFilters(changedFilters);
-    onChange({ ...changedFilters });
   };
 
   // if (fetching && showTags) return null;
@@ -82,7 +79,6 @@ export const Filters = ({
                 eventLabel: EventLabel.SortBy,
               });
               setFilters({ ...filters, sortBy: value as SortBy });
-              onChange({ ...filters, sortBy: value as SortBy });
             }}
           >
             <SelectTrigger className="w-[120px]">
@@ -99,7 +95,7 @@ export const Filters = ({
             defaultValue={"all"}
             onValueChange={(value) => {
               if (value === "all") {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                /* eslint-disable unused-imports/no-unused-vars */
                 const { tagSlug, ...rest } = filters;
                 return setFilters({
                   ...rest,
@@ -111,7 +107,6 @@ export const Filters = ({
                 eventLabel: EventLabel.Tags,
               });
               setFilters({ ...filters, tagSlug: value });
-              onChange({ ...filters, tagSlug: value });
             }}
           >
             <SelectTrigger className="w-[180px]">
@@ -155,7 +150,6 @@ export const Filters = ({
                 page_type: value as PageType,
                 // type: PostTypes.Page,
               });
-              onChange({ ...filters, page_type: value as PageType });
             }}
           >
             <SelectTrigger className="w-[180px]">

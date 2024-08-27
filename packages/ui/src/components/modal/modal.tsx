@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { CSSProperties, ReactNode, useEffect, useState } from "react";
+import { CSSProperties, ReactNode, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 
 import { Portal } from "./portal";

@@ -1,4 +1,3 @@
-
 import {
   EmailTemplateResponse,
   EmailVerifyNewEmailProps,
@@ -8,10 +7,14 @@ import { getVerifyUserToken } from "@/shared/token";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
-import { getBaseVariables, replaceBodyVariables, replaceSubjectVariables } from "../variables";
+import {
+  getBaseVariables,
+  replaceBodyVariables,
+  replaceSubjectVariables,
+} from "../variables";
 
 export async function getVerifyUserEmailChangeContent(
-  data: EmailVerifyNewEmailProps,
+  data: EmailVerifyNewEmailProps
 ): Promise<EmailTemplateResponse> {
   const template = await getTemplate(data.template_id);
 
@@ -28,13 +31,20 @@ export async function getVerifyUserEmailChangeContent(
   });
   const verify_link = `${getRootUrl()}/api/verify?token=${token}`;
 
-
   const subject = replaceSubjectVariables(template.subject, variables.subject);
-  const body = replaceBodyVariables(template.body, { ...variables.body, verify_link, verify_link_text: "Verify Email" });
+  const body = replaceBodyVariables(template.body, {
+    ...variables.body,
+    verify_link,
+    verify_link_text: "Verify Email",
+  });
 
   return {
     ok: true,
-    content: { subject, html: addLineBreaks(body), to: variables.meta.author.email },
+    content: {
+      subject,
+      html: addLineBreaks(body),
+      to: variables.meta.author.email,
+    },
     meta: variables.meta,
   };
 }

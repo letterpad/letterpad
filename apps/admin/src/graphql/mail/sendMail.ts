@@ -23,7 +23,7 @@ export async function sendMail(data: Mail, meta?: EmailTemplateMeta) {
       to: `"Letterpad User" <${to}>`,
       subject: data.subject,
       html: body,
-    }
+    };
     if (meta && meta.author.email && meta.author.name) {
       options.replyTo = `"${meta.author.name}" <${meta.author.email}>`;
       options.to = `"${meta.author.name}" <${to}>`;

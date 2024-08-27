@@ -1,4 +1,4 @@
-import { OpenAIStream, StreamingTextResponse, } from "ai";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
@@ -20,26 +20,29 @@ export async function POST(req: Request): Promise<Response> {
 
   if (field === "post") {
     try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are a expert content writer. Do not write any code even if you are asked to do so and always respond with html content. Do not add class attributes to the tags. You may add id attributes to the tags.",
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 800,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-        stream: false,
-        n: 1,
-      }).withResponse();
+      const response = await openai.chat.completions
+        .create({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a expert content writer. Do not write any code even if you are asked to do so and always respond with html content. Do not add class attributes to the tags. You may add id attributes to the tags.",
+            },
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 800,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+          stream: false,
+          n: 1,
+        })
+        .withResponse();
       emailLowTokens(response.response.headers);
       return Response.json(response.data);
     } catch (e) {
@@ -47,53 +50,57 @@ export async function POST(req: Request): Promise<Response> {
     }
   }
   if (field === "tags") {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content:
-            "Suggest 5 tags for better seo and discoverability separated by comma. If the tag has space, replace it with a hyphen. Do not use any special characters. Use lowercase.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.7,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      stream: true,
-      n: 1,
-    }).withResponse();
+    const response = await openai.chat.completions
+      .create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content:
+              "Suggest 5 tags for better seo and discoverability separated by comma. If the tag has space, replace it with a hyphen. Do not use any special characters. Use lowercase.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+        stream: true,
+        n: 1,
+      })
+      .withResponse();
     emailLowTokens(response.response.headers);
     const stream = OpenAIStream(response.data);
 
     return new StreamingTextResponse(stream);
   }
   if (field === "excerpt") {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are SEO expert who is responsible to write meta descriptions of a blog for better SEO. The tone should be casual. " +
-            "Make it no longer than 20 words",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.7,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      stream: true,
-      n: 1,
-    }).withResponse();
+    const response = await openai.chat.completions
+      .create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are SEO expert who is responsible to write meta descriptions of a blog for better SEO. The tone should be casual. " +
+              "Make it no longer than 20 words",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+        stream: true,
+        n: 1,
+      })
+      .withResponse();
     emailLowTokens(response.response.headers);
     const stream = OpenAIStream(response.data);
 
@@ -132,9 +139,8 @@ export async function POST(req: Request): Promise<Response> {
   return new StreamingTextResponse(stream);
 }
 
-
 const emailLowTokens = (headers: Headers) => {
-  const remaining = headers.get('x-ratelimit-remaining-tokens');
+  const remaining = headers.get("x-ratelimit-remaining-tokens");
   mail(
     {
       from: `"Letterpad" <admin@letterpad.app>`,
@@ -145,4 +151,4 @@ const emailLowTokens = (headers: Headers) => {
     },
     false
   );
-}
+};

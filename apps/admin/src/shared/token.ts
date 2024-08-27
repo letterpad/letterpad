@@ -1,9 +1,6 @@
 import { decodeJwt, jwtVerify, SignJWT } from "jose";
 
-import {
-  UnsubscribeToken,
-  VerifySubscriberToken,
-} from "../types";
+import { UnsubscribeToken, VerifySubscriberToken } from "../types";
 
 export async function verifyToken(token: string) {
   const { payload } = await jwtVerify(

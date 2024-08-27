@@ -4,7 +4,6 @@ import { BiPencil } from "react-icons/bi";
 
 import { prisma } from "@/lib/prisma";
 
-import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate } from "@/shared/utils";
 
 export const Feed = async ({ authorId, site_url }) => {

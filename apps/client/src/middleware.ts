@@ -3,7 +3,20 @@ import { isInMaintenanceModeEnabled } from 'ui/dist/server.mjs';
 
 import { getAuthCookieName } from '../lib/utils/authCookie';
 import { getSessionUrl } from '../lib/utils/url';
-export const config = { matcher: '/((?!static|.*\\..*|_next).*)' };
+// export const config = { matcher: '/((?!static|.*\\..*|_next).*)' };
+
+export const config = {
+  matcher: [
+    {
+      source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
+      missing: [
+        { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'next-action' },
+        { type: 'header', key: 'purpose', value: 'prefetch' },
+      ],
+    },
+  ],
+};
 
 export async function middleware(request: NextRequest) {
   try {

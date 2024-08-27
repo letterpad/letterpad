@@ -1,8 +1,8 @@
+import { getServerSession } from "next-auth";
 import { FC } from "react";
 
 import { CtaButtons } from "./cta";
 import { HeroText } from "../../../app/(public)/features/hero-text";
-import { getServerSession } from "next-auth";
 import { options } from "../../../pages/api/auth/[...nextauth]";
 
 export const BannerAd: FC = async () => {
