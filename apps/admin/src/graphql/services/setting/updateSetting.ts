@@ -65,18 +65,18 @@ export const updateSetting = async (
     });
     if (settings.site_url) {
       try {
-        const res = await fetch(settings.site_url)
-        const isLetterpadSite = res.headers.get('x-platform') === "Letterpad"
+        const res = await fetch(settings.site_url);
+        const isLetterpadSite = res.headers.get("x-platform") === "Letterpad";
         if (!isLetterpadSite) {
           return {
             message: "The site url is not a valid Letterpad site",
-            __typename: "NotFound"
+            __typename: "NotFound",
           };
         }
       } catch (e) {
         return {
           message: "The site url is not a valid Letterpad site",
-          __typename: "NotFound"
+          __typename: "NotFound",
         };
       }
     }
@@ -109,8 +109,8 @@ export type ChangeTypeOfKeys<
   Keys extends keyof T,
   NewType,
 > = {
-    // Loop to every key. We gonna check if the key
-    // is assignable to Keys. If yes, change the type.
-    // Else, retain the type.
-    [key in keyof T]: key extends Keys ? NewType : T[key];
-  };
+  // Loop to every key. We gonna check if the key
+  // is assignable to Keys. If yes, change the type.
+  // Else, retain the type.
+  [key in keyof T]: key extends Keys ? NewType : T[key];
+};

@@ -95,7 +95,7 @@ export const Filters = ({
             defaultValue={"all"}
             onValueChange={(value) => {
               if (value === "all") {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                /* eslint-disable unused-imports/no-unused-vars */
                 const { tagSlug, ...rest } = filters;
                 return setFilters({
                   ...rest,

@@ -1,10 +1,12 @@
+import { fieldsMap } from "graphql-fields-list";
 import {
   MutationResolvers,
   PostResolvers,
   QueryResolvers,
 } from "letterpad-graphql";
-import { fieldsMap } from 'graphql-fields-list';
+
 import { report } from "@/components/error";
+
 import { ResolverContext } from "@/graphql/context";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { createPathWithPrefix } from "@/utils/slug";
@@ -53,7 +55,7 @@ const Post: PostResolvers<ResolverContext> = {
     return !!isFeatured;
   },
   author: async (attrs, _args, context) => {
-    return getAuthorFromPost(attrs['author_id'], context);
+    return getAuthorFromPost(attrs["author_id"], context);
   },
   tags: async ({ id }, _args, context) => {
     return getTagsFromPost(id, context);
@@ -84,9 +86,10 @@ const Post: PostResolvers<ResolverContext> = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  async letterpadFeaturedPosts(_parent, args, context) {
+  async letterpadFeaturedPosts(_parent, args, context, info) {
     try {
-      const response = await getLetterpadFeaturedPosts(args, context);
+      const fields = fieldsMap(info);
+      const response = await getLetterpadFeaturedPosts(args, context, fields);
       return response;
     } catch (e: any) {
       report.error(e);
@@ -96,9 +99,10 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
   },
-  async letterpadTrendingPosts(_parent, args, context) {
+  async letterpadTrendingPosts(_parent, args, context, info) {
     try {
-      const response = await getLetterpadTrendingPosts(args, context);
+      const fields = fieldsMap(info);
+      const response = await getLetterpadTrendingPosts(args, context, fields);
       return response;
     } catch (e: any) {
       report.error(e);
@@ -108,9 +112,10 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
   },
-  async letterpadLatestPost(_parent, args, context) {
+  async letterpadLatestPost(_parent, args, context, info) {
     try {
-      const response = await getLetterpadLatestPost(args, context);
+      const fields = fieldsMap(info);
+      const response = await getLetterpadLatestPost(args, context, fields);
       return response;
     } catch (e: any) {
       report.error(e);
@@ -120,9 +125,10 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
   },
-  async letterpadLatestPosts(_parent, args, context) {
+  async letterpadLatestPosts(_parent, args, context, info) {
     try {
-      const response = await getLetterpadLatestPosts(args, context);
+      const fields = fieldsMap(info);
+      const response = await getLetterpadLatestPosts(args, context, fields);
       return response;
     } catch (e: any) {
       report.error(e);
@@ -132,9 +138,10 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
   },
-  async relatedPosts(_parent, args, context) {
+  async relatedPosts(_parent, args, context, info) {
     try {
-      const response = await getRelatedPosts(args, context);
+      const fields = fieldsMap(info);
+      const response = await getRelatedPosts(args, context, fields);
       return response;
     } catch (e: any) {
       report.error(e);
@@ -146,7 +153,6 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   async posts(_parent, args, context, info) {
     try {
-      // Extract requested fields from info
       const fields = fieldsMap(info);
       const response = await getPosts(args, context, fields);
       const { session, prisma } = context;
@@ -168,7 +174,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
   async post(_parent, args, context, info) {
     try {
-      const fields = fieldsMap(info)
+      const fields = fieldsMap(info);
       const response = await getPost(args, context, fields);
       return response;
     } catch (e: any) {

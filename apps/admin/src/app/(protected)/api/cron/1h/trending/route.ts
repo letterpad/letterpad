@@ -18,39 +18,40 @@ export async function GET(request: NextRequest) {
   // }
   const today = dayjs();
   const startDate = today.subtract(14, "day").format("YYYY-MM-DD");
-  const endDate = today.format("YYYY-MM-DD")
+  const endDate = today.format("YYYY-MM-DD");
 
-
-  const response = await createAnalyticsDataClient().runReport({
-    property: `properties/${process.env.GA_PROPERTY_ID}`,
-    dateRanges: [
-      {
-        startDate,
-        endDate,
+  const response = await createAnalyticsDataClient()
+    .runReport({
+      property: `properties/${process.env.GA_PROPERTY_ID}`,
+      dateRanges: [
+        {
+          startDate,
+          endDate,
+        },
+      ],
+      dimensions: [
+        {
+          name: "pageLocation",
+        },
+      ],
+      metrics: [
+        {
+          name: "engagedSessions",
+        },
+      ],
+      dimensionFilter: {
+        filter: {
+          fieldName: "pagePath",
+          stringFilter: {
+            matchType: "BEGINS_WITH",
+            value: "/post/",
+          },
+        },
       },
-    ],
-    dimensions: [
-      {
-        name: 'pageLocation',
-      },
-    ],
-    metrics: [
-      {
-        name: 'engagedSessions',
-      },
-    ],
-    dimensionFilter: {
-      filter: {
-        fieldName: 'pagePath',
-        stringFilter: {
-          matchType: 'BEGINS_WITH',
-          value: '/post/',
-        }
-      }
-    },
-    limit: 10,
+      limit: 10,
+    })
     // eslint-disable-next-line no-console
-  }).catch(console.log);
+    .catch(console.log);
 
   const data = response[0]?.rows?.map((row: any) => {
     const site = row.dimensionValues[0].value.split("/")[2];
@@ -65,40 +66,39 @@ export async function GET(request: NextRequest) {
           slug: slug,
           author: {
             domain: {
-              name: domainName
-            }
-          }
+              name: domainName,
+            },
+          },
         },
         select: {
-          id: true
-        }
+          id: true,
+        },
       });
     }
     return prisma.post.findFirst({
       where: {
         slug: slug,
         author: {
-          username: username
-        }
+          username: username,
+        },
       },
       select: {
         id: true,
-      }
+      },
     });
   });
   const trendingPosts = await Promise.all(data);
 
   const trendingViews = response[0]?.rows?.map((row: any) => {
-    return Number(row.metricValues[0].value)
+    return Number(row.metricValues[0].value);
   });
 
   const trendingPostsData = trendingPosts.map((post, index) => {
     return {
       post_id: post?.id,
-      views: trendingViews[index]
-    }
+      views: trendingViews[index],
+    };
   });
-
 
   await prisma.trending.createMany({
     data: trendingPostsData.filter((item) => item.post_id),
@@ -109,23 +109,23 @@ export async function GET(request: NextRequest) {
   if (count >= MAX_ROW_LIMIT) {
     const idsToDelete = await prisma.trending.findMany({
       orderBy: {
-        updatedAt: "asc"
+        updatedAt: "asc",
       },
       select: {
-        id: true
+        id: true,
       },
       take: count - MAX_ROW_LIMIT,
-      skip: 0
+      skip: 0,
     });
     await prisma.trending.deleteMany({
       where: {
         id: {
-          in: idsToDelete.map((item) => item.id)
-        }
-      }
+          in: idsToDelete.map((item) => item.id),
+        },
+      },
     });
   }
 
-  revalidateTag("trendingPosts")
+  revalidateTag("trendingPosts");
   return NextResponse.json({ success: true });
 }

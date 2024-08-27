@@ -21,4 +21,4 @@ if (typeof window !== "undefined") {
   require("tinymce/plugins/pagebreak");
   require("tinymce/icons/default");
 }
-export { };
+export {};

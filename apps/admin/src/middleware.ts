@@ -8,7 +8,10 @@ import { SessionData } from "./graphql/types";
 import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
 
-export const config = { matcher: '/((?!_next/static|_next/image|logo|manifest.webmanifest|favicon.ico|graphql|api/auth|api/graphql).*)', };
+export const config = {
+  matcher:
+    "/((?!_next/static|_next/image|logo|manifest.webmanifest|favicon.ico|graphql|api/auth|api/graphql).*)",
+};
 
 const isPlatform = process.env.LETTERPAD_PLATFORM;
 
@@ -16,13 +19,12 @@ export async function middleware(request: NextRequest) {
   try {
     const isInMaintenanceMode = await isInMaintenanceModeEnabled();
     if (isInMaintenanceMode) {
-      request.nextUrl.pathname = `/maintenance`
-      return NextResponse.rewrite(request.nextUrl)
+      request.nextUrl.pathname = `/maintenance`;
+      return NextResponse.rewrite(request.nextUrl);
     }
-
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(error)
+    console.error(error);
   }
   const cookie = request.cookies.get(getAuthCookieName());
   const proto = request.headers.get("x-forwarded-proto");
@@ -33,23 +35,26 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   if (cookie?.value) {
     try {
-      const user = await decode({
+      const user = (await decode({
         token: cookie.value,
         secret: process.env.SECRET_KEY,
-      }) as unknown as SessionData
+      })) as unknown as SessionData;
 
       if (!user?.email) {
         return NextResponse.redirect(ROOT_URL + "/login");
       }
       if (!pathname.includes("/update/") && pathname !== "/") {
         if (user.register_step === RegisterStep.ProfileInfo) {
-          return NextResponse.redirect(ROOT_URL + "/update/profile-info")
+          return NextResponse.redirect(ROOT_URL + "/update/profile-info");
         }
         if (user.register_step === RegisterStep.SiteInfo) {
-          return NextResponse.redirect(ROOT_URL + "update/site-info")
+          return NextResponse.redirect(ROOT_URL + "update/site-info");
         }
       }
-      if (pathname.includes("/update") && user.register_step === RegisterStep.Registered) {
+      if (
+        pathname.includes("/update") &&
+        user.register_step === RegisterStep.Registered
+      ) {
         return NextResponse.redirect(ROOT_URL + "/posts");
       }
       if (["/login", "/register"].includes(pathname)) {
@@ -69,11 +74,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname === "/posts") {
-    const isPricing = request.cookies.get('loginRedirect')?.value === "pricing";
+    const isPricing = request.cookies.get("loginRedirect")?.value === "pricing";
     if (isPricing) {
       return NextResponse.redirect(ROOT_URL + "/membership", {
-        headers: new Headers({ "Set-Cookie": "loginRedirect=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT" })
-      })
+        headers: new Headers({
+          "Set-Cookie":
+            "loginRedirect=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT",
+        }),
+      });
     }
   }
   if (source) {
@@ -85,14 +93,17 @@ export async function middleware(request: NextRequest) {
     if (!participant) {
       const isControl = Math.random() > 0.5;
       participant = isControl ? "control" : "variation";
-      request.nextUrl.searchParams.set("testVersion", `${isControl ? 'control' : 'variation'}`);
+      request.nextUrl.searchParams.set(
+        "testVersion",
+        `${isControl ? "control" : "variation"}`
+      );
     } else {
       request.nextUrl.searchParams.set("testVersion", participant);
     }
     return NextResponse.rewrite(request.nextUrl, {
       headers: new Headers({
-        "Set-Cookie": `trendingPosition=${participant}; path=/; secure; HttpOnly; SameSite=None; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=None`
-      })
+        "Set-Cookie": `trendingPosition=${participant}; path=/; secure; HttpOnly; SameSite=None; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=None`,
+      }),
     });
   }
   return NextResponse.rewrite(nextUrl);

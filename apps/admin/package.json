@@ -6,11 +6,6 @@
   "prisma": {
     "seed": "node ./src/graphql/db/dist/index.js"
   },
-  "eslint": {
-    "dirs": [
-      "src"
-    ]
-  },
   "scripts": {
     "seedIfNotSeeded": "bun run buildSeed && node ./src/graphql/db/dist/seedIfNoSeed.js",
     "prepare": "bun run prisma:generate && bun run prisma:migrate:run",

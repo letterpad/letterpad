@@ -1,6 +1,8 @@
 import {
   CreatePostDocument,
-  PostsDocument, PostStatusOptions, UpdatePostDocument
+  PostsDocument,
+  PostStatusOptions,
+  UpdatePostDocument,
 } from "letterpad-graphql";
 
 import { API } from "@/../tests/testClient";
@@ -126,7 +128,7 @@ describe("Test Post Query Graphql API", () => {
     expect(updatePost.slug).toBe("/post/new-slug");
   });
 });
-export { };
+export {};
 
 async function runQuery(query, args) {
   return API({
@@ -139,4 +141,4 @@ async function runQuery(query, args) {
   });
 }
 
-export { };
+export {};

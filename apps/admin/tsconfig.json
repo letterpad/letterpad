@@ -5,37 +5,21 @@
     "module": "commonjs",
     "skipLibCheck": true,
     "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/pages/*": [
-        "src/pages/*"
-      ],
-      "@/config/*": [
-        "config/*"
-      ],
-      "@/graphql/db/models": [
-        "src/graphql/db/models"
-      ],
-      "@/graphql/schema": [
-        "src/graphql/schema"
-      ],
-      "@/graphql/*": [
-        "src/graphql/*"
-      ],
-      "@/utils": [
-        "src/utils/*"
-      ],
-      "@/*": [
-        "src/*"
-      ],
+      "@/components/*": ["src/components/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/config/*": ["config/*"],
+      "@/graphql/db/models": ["src/graphql/db/models"],
+      "@/graphql/schema": ["src/graphql/schema"],
+      "@/graphql/*": ["src/graphql/*"],
+      "@/utils": ["src/utils/*"],
+      "@/*": ["src/*"]
     },
     "plugins": [
       {
-        "name": "next",
-      },
+        "name": "next"
+      }
     ],
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
   "include": [
     "src/**/*",
@@ -48,11 +32,7 @@
     "public/website/css",
     "src/graphql/schema/index.ts",
     ".next/types/**/*.ts",
-    "../../packages/ui/src/components/auth",
+    "../../packages/ui/src/components/auth"
   ],
-  "exclude": [
-    "letterpad-graphql",
-    "node_modules",
-    "**/*.js"
-  ],
+  "exclude": ["letterpad-graphql", "node_modules", "**/*.js"]
 }

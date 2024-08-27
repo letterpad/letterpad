@@ -5,7 +5,7 @@ import { Skeleton } from "ui/dist/isomorphic.mjs";
 import { ClickAndTrack } from "./click";
 import { timeAgo } from "../../lib/timeAgo";
 import { fetchPostsByTag } from "../../resourceFetcher";
-import { EventAction, EventCategory, EventLabel, track } from "../../track";
+import { EventAction, EventCategory, EventLabel } from "../../track";
 
 export const Announcements: FC = async () => {
   const posts = await fetchPostsByTag();

@@ -1,8 +1,4 @@
-import {
-  QueryTagArgs,
-  TagResponse,
-  TagType,
-} from "letterpad-graphql";
+import { QueryTagArgs, TagResponse, TagType } from "letterpad-graphql";
 import { cache } from "react";
 
 import { ResolverContext } from "@/graphql/context";

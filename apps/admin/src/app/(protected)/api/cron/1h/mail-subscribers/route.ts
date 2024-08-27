@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
   const allEmails: Variables[] = await Promise.all(
     posts.map((post) => getQueuedSubscriberEmails(post.id))
   );
-  const flatEmails = allEmails.flat().filter(email => email)
+  const flatEmails = allEmails.flat().filter((email) => email);
 
   const template = await getTemplate(EmailTemplates.NewPost);
 

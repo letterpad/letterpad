@@ -1,7 +1,4 @@
-import {
-  MutationResolvers,
-  QueryResolvers,
-} from "letterpad-graphql";
+import { MutationResolvers, QueryResolvers } from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 
@@ -12,86 +9,92 @@ const Query: QueryResolvers<ResolverContext> = {
     const comments = await prisma.comment.findMany({
       where: {
         post: {
-          id: args.post_id
+          id: args.post_id,
         },
-        parent_id: null
+        parent_id: null,
       },
       include: {
         replies: {
           include: {
-            author: true
-          }
+            author: true,
+          },
         },
         author: true,
       },
       orderBy: {
-        createdAt: "desc"
-      }
+        createdAt: "desc",
+      },
     });
-    return comments
+    return comments;
   },
-}
+};
 
 const Mutation: MutationResolvers<ResolverContext> = {
   async deleteComment(_root, { comment_id }, { prisma, session }) {
     if (!session?.user.id) {
-      return false
+      return false;
     }
 
     await prisma.comment.delete({
       where: {
-        id: comment_id
-      }
+        id: comment_id,
+      },
     });
 
     return true;
   },
-  async createComment(_root, { parent_id, content, post_id }, { prisma, session }) {
+  async createComment(
+    _root,
+    { parent_id, content, post_id },
+    { prisma, session }
+  ) {
     if (!session?.user.id) {
       return {
         message: "You must be logged in to comment",
-      }
+      };
     }
-    const parent = parent_id ? {
-      connect: {
-        id: parent_id
-      }
-    } : {};
+    const parent = parent_id
+      ? {
+          connect: {
+            id: parent_id,
+          },
+        }
+      : {};
 
     const createdComment = await prisma.comment.create({
       data: {
         post: {
           connect: {
-            id: post_id
-          }
+            id: post_id,
+          },
         },
         content: content,
         parent,
         author: {
           connect: {
-            id: session.user.id
-          }
-        }
-      }
+            id: session.user.id,
+          },
+        },
+      },
     });
 
     const [comment, existingPost] = await Promise.all([
       prisma.comment.findUnique({
         where: {
-          id: createdComment.id
+          id: createdComment.id,
         },
         include: {
           replies: {
             include: {
-              author: true
-            }
+              author: true,
+            },
           },
           author: true,
         },
       }),
       prisma.post.findUnique({
         where: {
-          id: post_id
+          id: post_id,
         },
         include: {
           author: true,
@@ -99,14 +102,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
             where: {
               NOT: {
                 author: {
-                  id: session.user.id
-                }
-              }
-            }
-          }
-        }
-      })
-    ])
+                  id: session.user.id,
+                },
+              },
+            },
+          },
+        },
+      }),
+    ]);
 
     if (existingPost?.comments) {
       await Promise.all(
@@ -132,40 +135,39 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     if (!comment) {
       return {
-        message: "Comment not found"
-      }
+        message: "Comment not found",
+      };
     }
 
     return {
       ...comment,
-      __typename: "Comment"
-    }
-
+      __typename: "Comment",
+    };
   },
 
   async updateComment(_root, args, { prisma, session }) {
     if (!session?.user.id) {
       return {
         message: "You must be logged in to comment",
-      }
+      };
     }
     const updatedComment = await prisma.comment.update({
       where: {
-        id: args.comment_id
+        id: args.comment_id,
       },
       data: {
-        content: args.content
-      }
-    })
+        content: args.content,
+      },
+    });
     const comment = await prisma.comment.findUnique({
       where: {
-        id: updatedComment.id
+        id: updatedComment.id,
       },
       include: {
         replies: {
           include: {
-            author: true
-          }
+            author: true,
+          },
         },
         author: true,
       },
@@ -173,11 +175,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     if (!comment) {
       return {
-        message: "Comment not found"
-      }
+        message: "Comment not found",
+      };
     }
 
-    return comment
+    return comment;
   },
 };
 export default { Query, Mutation };

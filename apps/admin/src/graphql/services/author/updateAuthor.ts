@@ -32,7 +32,9 @@ export const updateAuthor = async (
       message: "You are not authorized to update this author",
     };
   }
-  const isFavourite = session.user.role === Role.Admin && typeof args.author.favourite !== "undefined";
+  const isFavourite =
+    session.user.role === Role.Admin &&
+    typeof args.author.favourite !== "undefined";
 
   const exisitingAuthor = await prisma.author.findFirst({
     where: {
@@ -49,16 +51,22 @@ export const updateAuthor = async (
         id: args.author.id,
       },
       data: {
-        favourite: args.author.favourite!
-      }
-    })
+        favourite: args.author.favourite!,
+      },
+    });
     return {
       __typename: "Author",
-      ...mapAuthorToGraphql({ ...exisitingAuthor, favourite: args.author.favourite! }),
+      ...mapAuthorToGraphql({
+        ...exisitingAuthor,
+        favourite: args.author.favourite!,
+      }),
     };
   }
   try {
-    const dataToUpdate = { ...args.author, username: args.author.username?.toLowerCase() } as InputAuthorForDb & {
+    const dataToUpdate = {
+      ...args.author,
+      username: args.author.username?.toLowerCase(),
+    } as InputAuthorForDb & {
       verified?: boolean;
     };
     const newEmail =

@@ -26,9 +26,8 @@ describe("Profile", () => {
     cy.getTestId("name").type("Testing User");
     cy.getTestId("bio").type(
       "This is a bio that has been written automatically by tests"
-    )
+    );
     cy.getTestId("updateProfile").click();
-
 
     cy.location("pathname").should("include", "/update/site-info");
     cy.getTestId("siteName").type("Site Name");
@@ -56,4 +55,4 @@ describe("Profile", () => {
   });
 });
 
-export { };
+export {};

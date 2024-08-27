@@ -21,7 +21,7 @@ import {
 } from "@/components/creatives-data";
 import { FileExplorer } from "@/components/file-explorer";
 
-import { EventAction, EventCategory, EventLabel, track } from "@/track";
+import { EventAction, EventCategory, track } from "@/track";
 
 const TryCreatives = () => {
   return (

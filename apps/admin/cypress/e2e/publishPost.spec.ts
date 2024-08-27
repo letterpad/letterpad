@@ -41,7 +41,7 @@ describe("Publishing", () => {
       content: "Content written from cypress test",
     });
     cy.openSettings();
-    cy.getTestId("excerpt").type("This is an excerpt of the post")
+    cy.getTestId("excerpt").type("This is an excerpt of the post");
     cy.getTestId("topicSelect").select("_topic_gaming", { force: true });
 
     cy.enterTags(["new-tag"]);

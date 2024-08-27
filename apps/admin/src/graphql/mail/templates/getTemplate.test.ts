@@ -15,7 +15,6 @@ import { getVerifySubscriberToken } from "@/shared/token";
 
 import { getEmailTemplate } from "./getTemplate";
 
-
 describe("Email templates", () => {
   it("gets new post email template", async () => {
     const post = await API({
@@ -44,7 +43,7 @@ describe("Email templates", () => {
           secret_id: await getVerifySubscriberToken({
             email: subscriberEmail,
             subscriber_id: 1,
-            author_id: '1',
+            author_id: "1",
           }),
         },
       },
@@ -82,7 +81,7 @@ describe("Email templates", () => {
       {
         template_id: EmailTemplates.VerifySubscriber,
         subscriber_id: 1,
-        author_id: '2',
+        author_id: "2",
       },
       prisma
     );
@@ -102,7 +101,7 @@ describe("Email templates", () => {
           secret_id: await getVerifySubscriberToken({
             email: subscriberEmail,
             subscriber_id: 1,
-            author_id: '1',
+            author_id: "1",
           }),
         },
       },
@@ -111,7 +110,7 @@ describe("Email templates", () => {
       {
         template_id: EmailTemplates.SubscriberVerified,
         subscriber_id: 1,
-        author_id: '2',
+        author_id: "2",
       },
       prisma
     );
@@ -219,7 +218,7 @@ describe("Email templates", () => {
     const data = await getEmailTemplate(
       {
         template_id: EmailTemplates.ForgotPassword,
-        author_id: '2',
+        author_id: "2",
       },
       prisma
     );
@@ -236,7 +235,7 @@ describe("Email templates", () => {
   });
 });
 
-export { };
+export {};
 
 function removeToken(content: string) {
   const [_part1, part2] = content.split("token=");

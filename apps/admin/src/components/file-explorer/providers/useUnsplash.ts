@@ -4,119 +4,117 @@ import { useCallback, useEffect, useState } from "react";
 import { getRootUrl } from "../../../shared/getRootUrl";
 
 export const useUnsplash = () => {
-    const url = new URL("/api/unsplash", getRootUrl()).href;
-    const [data, setData] = useState<Media[]>([]);
-    const [query, setQuery] = useState("");
-    const [page, setPage] = useState(1);
-    const [totalCount, setTotalCount] = useState(0);
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+  const url = new URL("/api/unsplash", getRootUrl()).href;
+  const [data, setData] = useState<Media[]>([]);
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const handleUnsplashResponse = useCallback(
-        ({ rows, count, error, page }: any) => {
-            setLoading(false);
-            if (error) {
-                return setError(
-                    "Rate limit for Unsplash has exceeded for free version. Please try after sometime."
-                );
-            }
-            if (rows.length === 0) {
-                return setError("No images found.");
-            }
-            if (page === 1) {
-                setData(rows);
-            } else {
-                setData([...data, ...rows]);
-            }
-            setTotalCount(count);
-        },
-        [data]
-    );
+  const handleUnsplashResponse = useCallback(
+    ({ rows, count, error, page }: any) => {
+      setLoading(false);
+      if (error) {
+        return setError(
+          "Rate limit for Unsplash has exceeded for free version. Please try after sometime."
+        );
+      }
+      if (rows.length === 0) {
+        return setError("No images found.");
+      }
+      if (page === 1) {
+        setData(rows);
+      } else {
+        setData([...data, ...rows]);
+      }
+      setTotalCount(count);
+    },
+    [data]
+  );
 
-    const searchUnsplash = useCallback(
-        async (searchTerm, page = 1) => {
-            if (!searchTerm || searchTerm.length === 0) {
-                return setLoading(false);
-            }
-            setLoading(true);
-            setPage(page);
-            fetchUnsplashMedia(url, page, searchTerm)
-                .then(handleUnsplashResponse)
-                .catch((_e) => {
-                    setError(_e.message);
-                    setLoading(false);
-                });
-        },
-        [handleUnsplashResponse, url]
-    );
+  const searchUnsplash = useCallback(
+    async (searchTerm, page = 1) => {
+      if (!searchTerm || searchTerm.length === 0) {
+        return setLoading(false);
+      }
+      setLoading(true);
+      setPage(page);
+      fetchUnsplashMedia(url, page, searchTerm)
+        .then(handleUnsplashResponse)
+        .catch((_e) => {
+          setError(_e.message);
+          setLoading(false);
+        });
+    },
+    [handleUnsplashResponse, url]
+  );
 
-    const resetAll = () => {
-        setError("");
-        setLoading(false);
-        setData([]);
-    };
+  const resetAll = () => {
+    setError("");
+    setLoading(false);
+    setData([]);
+  };
 
-    const onSearchEnter = async (searchTerm) => {
-        if (searchTerm && searchTerm.length > 0) {
-            resetAll();
-            setQuery(searchTerm);
-            setPage(1);
-            searchUnsplash(searchTerm);
-        }
-    };
-
-    const loadMore = () => {
-        const nextPage = page + 1;
-        setPage(nextPage);
-        searchUnsplash(query === "" ? "random" : query, nextPage);
-    };
-
-    useEffect(() => {
-        searchUnsplash("random");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-
-    return {
-        data,
-        query,
-        page,
-        totalCount,
-        error,
-        loading,
-        onSearchEnter,
-        loadMore
+  const onSearchEnter = async (searchTerm) => {
+    if (searchTerm && searchTerm.length > 0) {
+      resetAll();
+      setQuery(searchTerm);
+      setPage(1);
+      searchUnsplash(searchTerm);
     }
-}
+  };
 
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    searchUnsplash(query === "" ? "random" : query, nextPage);
+  };
+
+  useEffect(() => {
+    searchUnsplash("random");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return {
+    data,
+    query,
+    page,
+    totalCount,
+    error,
+    loading,
+    onSearchEnter,
+    loadMore,
+  };
+};
 
 const fetchUnsplashMedia = async (url: string, page: number, query: string) => {
-    if (!query) return;
-    // unsplash.com/page/1/query/forest
-    const endpoint = url + "?page=" + page + "&query=" + query;
-    try {
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error("Umable to reach unsplash");
-        const data = await response.json();
-        const { rows, count } = data;
+  if (!query) return;
+  // unsplash.com/page/1/query/forest
+  const endpoint = url + "?page=" + page + "&query=" + query;
+  try {
+    const response = await fetch(endpoint);
+    if (!response.ok) throw new Error("Umable to reach unsplash");
+    const data = await response.json();
+    const { rows, count } = data;
 
-        const images = {
-            rows: rows?.map((item) => {
-                return {
-                    id: item.id,
-                    url: item.urls.regular,
-                    description: `Photo by <a href="${item.user.links.html}?utm_source=Letterpad Editor&utm_medium=referral">${item.user.name}</a> on <a href="https://unsplash.com/?utm_source=Letterpad Editor&utm_medium=referral">Unsplash</a>`,
-                    createdAt: item.created_at,
-                    width: item.width,
-                    height: item.height,
-                    download_location: item.links.download_location,
-                };
-            }),
-            count,
-            page,
+    const images = {
+      rows: rows?.map((item) => {
+        return {
+          id: item.id,
+          url: item.urls.regular,
+          description: `Photo by <a href="${item.user.links.html}?utm_source=Letterpad Editor&utm_medium=referral">${item.user.name}</a> on <a href="https://unsplash.com/?utm_source=Letterpad Editor&utm_medium=referral">Unsplash</a>`,
+          createdAt: item.created_at,
+          width: item.width,
+          height: item.height,
+          download_location: item.links.download_location,
         };
-        return images;
-    } catch (e: any) {
-        throw new Error(e);
-    }
+      }),
+      count,
+      page,
+    };
+    return images;
+  } catch (e: any) {
+    throw new Error(e);
+  }
 };

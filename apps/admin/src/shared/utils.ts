@@ -7,25 +7,28 @@ import { IUploadFileProps } from "../types";
 import { getAuthCookieName } from "../utils/authCookie";
 
 export const getReadableDate = (timestamp: Date | number | string) => {
-  return dayjs(timestamp).format('MMM D, YYYY')
+  return dayjs(timestamp).format("MMM D, YYYY");
 };
 
 export const getDateTime = (d?: Date) => {
-  return dayjs(d).format('YYYY-MM-DDTHH:mm:ssZ[Z]');
+  return dayjs(d).format("YYYY-MM-DDTHH:mm:ssZ[Z]");
 };
 
-export const debounce = <F extends (...args: any[]) => any>(func: F, waitFor: number) => {
-  let timeout
+export const debounce = <F extends (...args: any[]) => any>(
+  func: F,
+  waitFor: number
+) => {
+  let timeout;
 
   return (...args: Parameters<F>): Promise<ReturnType<F>> =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
       if (timeout) {
-        clearTimeout(timeout)
+        clearTimeout(timeout);
       }
 
-      timeout = setTimeout(() => resolve(func(...args)), waitFor)
-    })
-}
+      timeout = setTimeout(() => resolve(func(...args)), waitFor);
+    });
+};
 
 export function getBase64(file: File) {
   return new Promise((resolve, reject) => {
@@ -97,19 +100,18 @@ export const TOPIC_PREFIX = "_topic_";
 
 export const replaceLpTopicTagPrefix = (str: string) => {
   return str.replace(TOPIC_PREFIX, "");
-}
+};
 
 export const beautifyTopic = (str: string) => {
-  return replaceLpTopicTagPrefix(str).replaceAll("-", " ")
-    .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-      letter.toUpperCase()
-    )
-}
+  return replaceLpTopicTagPrefix(str)
+    .replaceAll("-", " ")
+    .replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
+};
 
 const isClient = typeof window !== "undefined";
 export const getEdgeConfigClient = () => {
-  return (isClient) ? window['edgeConfig'] as Record<string, any> : null
-}
+  return isClient ? (window["edgeConfig"] as Record<string, any>) : null;
+};
 
 export function dirtyValues<T>(
   dirtyFields: object | boolean,
@@ -124,20 +126,21 @@ export function dirtyValues<T>(
   ) as Partial<T>;
 }
 
-
 interface IResizeImageOptions {
   maxSize: number;
   file: File;
 }
 
-export const resizeImageClient = (settings: IResizeImageOptions): Promise<Blob> => {
+export const resizeImageClient = (
+  settings: IResizeImageOptions
+): Promise<Blob> => {
   return new Promise((resolve, _reject) => {
     const reader = new FileReader();
     reader.onload = () => {
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
 
         // Calculate dimensions to fit under maxSizeInMB
         const maxSizeInBytes = settings.maxSize * 1024 * 1024;
@@ -145,7 +148,7 @@ export const resizeImageClient = (settings: IResizeImageOptions): Promise<Blob> 
         let height = img.height;
         let scaleFactor = 1;
 
-        while ((width * height * (scaleFactor ** 2)) > maxSizeInBytes) {
+        while (width * height * scaleFactor ** 2 > maxSizeInBytes) {
           scaleFactor -= 0.1;
           width = Math.floor(img.width * scaleFactor);
           height = Math.floor(img.height * scaleFactor);
@@ -158,10 +161,14 @@ export const resizeImageClient = (settings: IResizeImageOptions): Promise<Blob> 
         ctx?.drawImage(img, 0, 0, width, height);
 
         // Convert canvas to blob
-        canvas.toBlob((blob) => {
-          canvas.remove();
-          resolve(blob as Blob);
-        }, 'image/jpeg', 0.9); // Adjust quality (0.0 - 1.0) to reduce file size
+        canvas.toBlob(
+          (blob) => {
+            canvas.remove();
+            resolve(blob as Blob);
+          },
+          "image/jpeg",
+          0.9
+        ); // Adjust quality (0.0 - 1.0) to reduce file size
       };
       img.src = reader.result as string;
     };

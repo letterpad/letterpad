@@ -27,10 +27,7 @@ export async function GET(
     url.searchParams.append("source", sourceUrl);
     url.searchParams.append("serviceUrl", serviceUrl);
 
-    return NextResponse.redirect(
-      url.href,
-      { status: 307 }
-    );
+    return NextResponse.redirect(url.href, { status: 307 });
   }
 
   if (params.action === "logout") {
@@ -53,10 +50,7 @@ export async function GET(
       if (!serviceUrl) {
         const url = new URL(getLoginUrl());
         url.searchParams.append("error", "serviceUrl_is_missing");
-        return NextResponse.redirect(
-          url.href,
-          { status: 302 }
-        );
+        return NextResponse.redirect(url.href, { status: 302 });
       }
       const cookieStore = cookies();
       const sessionToken = cookieStore.get(getAuthCookieName())?.value!;
@@ -66,10 +60,7 @@ export async function GET(
       const src = new URL(serviceUrl);
       src.searchParams.append("token", sessionToken);
       src.searchParams.append("source", sourceUrl);
-      const response = NextResponse.redirect(
-        src.href,
-        { status: 302 }
-      );
+      const response = NextResponse.redirect(src.href, { status: 302 });
       return response;
     } catch (e) {
       // eslint-disable-next-line no-console

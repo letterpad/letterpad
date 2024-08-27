@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import {
   AdminPostsFragmentFragment,
-  Post,
   PostStatusOptions,
 } from "letterpad-graphql";
 import { FiMoreHorizontal } from "react-icons/fi";
