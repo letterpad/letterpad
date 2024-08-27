@@ -15,7 +15,7 @@ import { EventAction, EventCategory, EventLabel, track } from "@/track";
 import { isPost } from "@/utils/type-guards";
 
 import { useCreatePost, useGetPosts } from "../api.client";
-import { DEFAULT_FILTERS } from "../constants";
+import { DEFAULT_FILTERS } from "@/constants";
 
 interface IProps {
   type: PostTypes;

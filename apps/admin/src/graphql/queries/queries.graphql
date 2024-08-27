@@ -43,19 +43,7 @@ query AdminPosts($filters: PostsFilters) {
     ... on PostsNode {
       count
       rows {
-        title
-        updatedAt
-        createdAt
-        status
-        id
-        tags {
-          ... on TagsNode {
-            rows {
-              name
-              slug
-            }
-          }
-        }
+        ...AdminPostsFragment
       }
     }
 

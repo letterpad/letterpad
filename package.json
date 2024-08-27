@@ -46,6 +46,7 @@
   "packageManager": "bun@1.0.21",
   "dependencies": {
     "@google-analytics/data": "^4.4.0",
+    "@react-icons/all-files": "^4.1.0",
     "@react-spring/web": "^9.7.3",
     "@upstash/redis": "^1.28.2",
     "@vercel/edge-config": "^1.1.0",
@@ -55,6 +56,7 @@
     "chartjs-adapter-dayjs-4": "^1.0.4",
     "class-variance-authority": "^0.7.0",
     "dayjs": "^1.11.10",
+    "graphql-fields-list": "^2.2.4",
     "hashids": "^2.3.0",
     "ioredis": "^5.3.2",
     "js-cookie": "^3.0.5",
@@ -64,7 +66,6 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.3.1",
     "react-icons": "^5.2.0",
-    "@react-icons/all-files": "^4.1.0",
     "react-spring": "^9.7.3",
     "tippy.js": "^6.3.7",
     "turbo": "latest",

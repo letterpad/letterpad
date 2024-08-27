@@ -26,22 +26,26 @@ export async function GET(req: Request) {
     }
 
     const details = async () => {
-        const customer = await stripe.customers.retrieve(
-            author.stripe_customer_id!,
-            {
-                expand: ["subscriptions"], // 2
+        try {
+            const customer = await stripe.customers.retrieve(
+                author.stripe_customer_id!,
+                {
+                    expand: ["subscriptions"], // 2
+                }
+            );
+            if (!customer.deleted) {
+                const charges = await stripe.charges.list({
+                    customer: author?.stripe_customer_id!,
+                    limit: 3,
+                });
+                let invoice;
+                if (customer?.subscriptions?.data[0]?.latest_invoice) {
+                    invoice = await stripe.invoices.retrieve(customer?.subscriptions?.data[0].latest_invoice as string)
+                }
+                return { customer, charges, invoice };
             }
-        );
-        if (!customer.deleted) {
-            const charges = await stripe.charges.list({
-                customer: author?.stripe_customer_id!,
-                limit: 3,
-            });
-            let invoice;
-            if (customer?.subscriptions?.data[0]?.latest_invoice) {
-                invoice = await stripe.invoices.retrieve(customer?.subscriptions?.data[0].latest_invoice as string)
-            }
-            return { customer, charges, invoice };
+        } catch (e: any) {
+            // console.error(e.message);
         }
 
         return { customer: null, charges: null, invoice: null };
