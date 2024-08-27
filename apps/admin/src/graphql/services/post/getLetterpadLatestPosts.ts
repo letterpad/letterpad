@@ -64,7 +64,7 @@ export const getLetterpadLatestPosts = async (
         },
       ],
     },
-    skip: cursor.cursor?.id ?? 0 > 0 ? 1 : 0,
+    skip: (cursor.cursor?.id ?? 0 > 0) ? 1 : 0,
     take: 13,
     ...cursor,
     orderBy: {

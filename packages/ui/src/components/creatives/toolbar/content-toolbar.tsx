@@ -1,6 +1,6 @@
 import classNames from "classnames";
 // import dynamic from "next/dynamic";
-import { FC, lazy, ReactChild, ReactNode, useCallback, useState } from "react";
+import { FC, lazy, ReactNode, useCallback, useState } from "react";
 
 import { ColorPicker } from "./color";
 import { ColorPickerGradient } from "./colorpicker";

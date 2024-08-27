@@ -3,7 +3,6 @@ import { generatePaginationLinks } from "./generatePages";
 import {
   Pagination,
   PaginationContent,
-  PaginationItem,
   PaginationNext,
   PaginationPrevious,
 } from "./pagination";
