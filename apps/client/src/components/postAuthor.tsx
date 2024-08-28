@@ -4,7 +4,7 @@ import { ProfileCard } from 'ui/dist/isomorphic.mjs';
 
 import { Share } from '@/components/share';
 
-import { getApiRootUrl, getProfileUrl } from '../../lib/utils/url';
+import { getProfileUrl } from '../../lib/utils/url';
 
 interface Props {
   settings: SettingsFragmentFragment;
