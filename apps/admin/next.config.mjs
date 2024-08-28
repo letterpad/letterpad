@@ -10,6 +10,8 @@ const ContentSecurityPolicy = `
   frame-src youtube.com www.youtube.com js.stripe.com *;
 `;
 
+console.log("Print env variables:=================================")
+console.log(process.env)
 if(!process.env.ROOT_URL){
   throw new Error("ROOT_URL is not defined in .env");
 }
