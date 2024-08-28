@@ -90,7 +90,7 @@ const nextConfig = {
       },
     ],
   },
-  // what is the type of config and options
+
 
   /**
    *
