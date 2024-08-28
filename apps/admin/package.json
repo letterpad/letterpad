@@ -52,7 +52,8 @@
     "axios": "^1.2.0",
     "bcryptjs": "^2.4.3",
     "jose": "5.2.0",
-    "cheerio": "^1.0.0",
+    "cheerio": "^1.0.0-rc.12",
+    "undici": "^6.19.8",
     "classnames": "^2.3.2",
     "clipboard": "^2.0.11",
     "cloudinary": "^1.40.0",
@@ -130,7 +131,7 @@
     "tsconfig": "workspace:*",
     "tsconfig-paths": "^3.9.0",
     "tsup": "^8.0.2",
-    "typescript": "5.1.6",
+    "typescript": "5.5.4",
     "webpack-graphql-loader": "1.0.2",
     "yaml-loader": "0.6.0"
   },
