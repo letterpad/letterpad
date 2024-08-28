@@ -1,8 +1,5 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "globalEnv": [
-    "NEXT_PUBLIC_VERCEL_ENV"
-  ],
   "tasks": {
     "clean": {
       "cache": false
