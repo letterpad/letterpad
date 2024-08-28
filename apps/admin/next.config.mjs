@@ -10,6 +10,10 @@ const ContentSecurityPolicy = `
   frame-src youtube.com www.youtube.com js.stripe.com *;
 `;
 
+if(!process.env.ROOT_URL){
+  throw new Error("ROOT_URL is not defined in .env");
+}
+
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
