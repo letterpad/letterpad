@@ -51,6 +51,8 @@ const securityHeaders = [
 ];
 
 const API_URL = process.env.API_URL?.replace('/api/graphql', '');
+console.log("Print env variables:=================================")
+console.log(process.env)
 if(!API_URL){
   throw new Error("API_URL is not defined in .env");
 }
