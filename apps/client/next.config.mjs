@@ -53,7 +53,7 @@ const securityHeaders = [
 const API_URL = process.env.API_URL?.replace('/api/graphql', '');
 
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   async rewrites() {
     return [
       {
@@ -66,7 +66,7 @@ module.exports = {
       },
       {
         source: '/api/auth/:path*',
-        destination: `${getOrigin()}/api/auth/:path*`,
+        destination: `${API_URL}/api/auth/:path*`,
       },
     ];
   },
@@ -139,16 +139,6 @@ module.exports = {
       use: ['@svgr/webpack'],
     });
 
-    if (!dev && !isServer) {
-      // Replace React with Preact only in client production build
-      // Object.assign(config.resolve.alias, {
-      //   'react/jsx-runtime.js': 'preact/compat/jsx-runtime',
-      //   react: 'preact/compat',
-      //   'react-dom/test-utils': 'preact/test-utils',
-      //   'react-dom': 'preact/compat',
-      // });
-    }
-
     return config;
   },
   env: {
@@ -158,10 +148,3 @@ module.exports = {
     CLIENT_ID: process.env.CLIENT_ID,
   },
 };
-
-function getOrigin() {
-  if (!process.env.API_URL) {
-    throw new Error('API_URL is not defined in .env');
-  }
-  return new URL(process.env.API_URL).origin;
-}
