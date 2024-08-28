@@ -1,7 +1,4 @@
-const { withAxiom } = require('next-axiom');
-// const withBundleAnalyzer = require('@next/bundle-analyzer')({
-//   enabled: process.env.ANALYZE === 'true',
-// });
+// @ts-check
 
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
@@ -55,10 +52,8 @@ const securityHeaders = [
 
 const API_URL = process.env.API_URL?.replace('/api/graphql', '');
 
-/**
- * @type {import('next/dist/next-server/server/config').NextConfig}
- **/
-module.exports = withAxiom({
+/** @type {import('next').NextConfig} */
+module.exports = {
   async rewrites() {
     return [
       {
@@ -71,7 +66,7 @@ module.exports = withAxiom({
       },
       {
         source: '/api/auth/:path*',
-        destination: `${new URL(process.env.API_URL).origin}/api/auth/:path*`,
+        destination: `${getOrigin()}/api/auth/:path*`,
       },
     ];
   },
@@ -162,4 +157,11 @@ module.exports = withAxiom({
     GRAPHQL_URL: process.env.API_URL,
     CLIENT_ID: process.env.CLIENT_ID,
   },
-});
+};
+
+function getOrigin() {
+  if (!process.env.API_URL) {
+    throw new Error('API_URL is not defined in .env');
+  }
+  return new URL(process.env.API_URL).origin;
+}
