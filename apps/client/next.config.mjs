@@ -51,6 +51,7 @@ const securityHeaders = [
 ];
 
 const API_URL = process.env.API_URL?.replace('/api/graphql', '');
+console.log("API URL",API_URL)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -148,3 +149,5 @@ const nextConfig = {
     CLIENT_ID: process.env.CLIENT_ID,
   },
 };
+
+export default nextConfig;
