@@ -26,7 +26,12 @@ export const RelatedPosts: FC<Props> = async ({ postId }) => {
               cover_image={
                 { ...(post.cover_image ?? {}), src: post.cover_image?.src! }!
               }
-              stats={post.stats!}
+              stats={
+                {
+                  ...(post.stats ?? {}),
+                  reading_time: post.stats?.reading_time ?? '2 mins',
+                }!
+              }
             />
           );
         })}
