@@ -19,14 +19,14 @@ declare module "next-auth" {
       register_step: RegisterStep;
       can_start_trial?: boolean | undefined;
       membership:
-        | "free"
-        | "complete"
-        | "cancelled"
-        | "profree"
-        | "trialing"
-        | "active"
-        | "past_due"
-        | "canceled";
+      | "free"
+      | "complete"
+      | "cancelled"
+      | "profree"
+      | "trialing"
+      | "active"
+      | "past_due"
+      | "canceled";
     };
   }
 }
@@ -34,7 +34,7 @@ declare module "next-auth" {
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      ROOT_URL: string;
+      NEXT_PUBLIC_ROOT_URL: string;
       PWD: string;
       SECRET_KEY: string;
       RECAPTCHA_KEY_CLIENT: string;

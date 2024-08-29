@@ -1,7 +1,4 @@
-const { withAxiom } = require('next-axiom');
-// const withBundleAnalyzer = require('@next/bundle-analyzer')({
-//   enabled: process.env.ANALYZE === 'true',
-// });
+// @ts-check
 
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
@@ -53,12 +50,13 @@ const securityHeaders = [
   },
 ];
 
-const API_URL = process.env.API_URL?.replace('/api/graphql', '');
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api/graphql', '');
+if(!API_URL){
+  throw new Error("NEXT_PUBLIC_API_URL is not defined in .env");
+}
 
-/**
- * @type {import('next/dist/next-server/server/config').NextConfig}
- **/
-module.exports = withAxiom({
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   async rewrites() {
     return [
       {
@@ -71,7 +69,7 @@ module.exports = withAxiom({
       },
       {
         source: '/api/auth/:path*',
-        destination: `${new URL(process.env.API_URL).origin}/api/auth/:path*`,
+        destination: `${API_URL}/api/auth/:path*`,
       },
     ];
   },
@@ -144,22 +142,8 @@ module.exports = withAxiom({
       use: ['@svgr/webpack'],
     });
 
-    if (!dev && !isServer) {
-      // Replace React with Preact only in client production build
-      // Object.assign(config.resolve.alias, {
-      //   'react/jsx-runtime.js': 'preact/compat/jsx-runtime',
-      //   react: 'preact/compat',
-      //   'react-dom/test-utils': 'preact/test-utils',
-      //   'react-dom': 'preact/compat',
-      // });
-    }
-
     return config;
   },
-  env: {
-    API_URL: process.env.API_URL,
-    NEXT_PUBLIC_API_URL: process.env.API_URL,
-    GRAPHQL_URL: process.env.API_URL,
-    CLIENT_ID: process.env.CLIENT_ID,
-  },
-});
+};
+
+export default nextConfig;

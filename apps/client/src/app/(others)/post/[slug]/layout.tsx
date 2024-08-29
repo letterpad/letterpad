@@ -50,13 +50,13 @@ export async function generateMetadata({
       images: [
         {
           url: post.cover_image?.src!,
-          width: post.cover_image?.width,
-          height: post.cover_image?.height,
+          width: post.cover_image?.width!,
+          height: post.cover_image?.height!,
           alt: post.title,
         },
       ],
       card: 'summary_large_image',
-      description: post.excerpt,
+      description: post.excerpt!,
     },
     alternates: {
       canonical: `${settings.site_url}${post.slug}`,
@@ -64,7 +64,7 @@ export async function generateMetadata({
     openGraph: {
       url: `${settings.site_url}${post.slug}`,
       title: post.title,
-      description: post.excerpt,
+      description: post.excerpt!,
       authors: [me.name!],
       siteName: settings.site_title!,
       type: 'article',

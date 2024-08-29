@@ -10,6 +10,10 @@ const ContentSecurityPolicy = `
   frame-src youtube.com www.youtube.com js.stripe.com *;
 `;
 
+if(!process.env.NEXT_PUBLIC_ROOT_URL){
+  throw new Error("NEXT_PUBLIC_ROOT_URL is not defined in .env");
+}
+
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
@@ -43,13 +47,6 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   experimental: {
     serverComponentsExternalPackages: ["@whatwg-node"],
-  },
-  env: {
-    ROOT: __dirname,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    NEXT_PUBLIC_BASE_PATH: process.env.BASE_PATH,
-    NEXT_PUBLIC_ROOT_URL: process.env.ROOT_URL,
-    NEXT_PUBLIC_LETTERPAD_PLATFORM: process.env.LETTERPAD_PLATFORM,
   },
   swcMinify: true,
   typescript: {
@@ -97,7 +94,7 @@ const nextConfig = {
       },
     ],
   },
-  // what is the type of config and options
+
 
   /**
    *
@@ -127,4 +124,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

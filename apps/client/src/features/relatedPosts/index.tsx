@@ -23,8 +23,15 @@ export const RelatedPosts: FC<Props> = async ({ postId }) => {
               publishedAt={getReadableDate(post.publishedAt!)}
               title={post.title}
               excerpt={post.excerpt! ?? post.sub_title}
-              cover_image={post.cover_image}
-              stats={post.stats!}
+              cover_image={
+                { ...(post.cover_image ?? {}), src: post.cover_image?.src! }!
+              }
+              stats={
+                {
+                  ...(post.stats ?? {}),
+                  reading_time: post.stats?.reading_time ?? '2 mins',
+                }!
+              }
             />
           );
         })}
