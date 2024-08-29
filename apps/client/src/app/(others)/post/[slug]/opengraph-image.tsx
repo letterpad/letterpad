@@ -48,8 +48,8 @@ export default async function AboutOG(props) {
           </div>
           <div tw="flex items-center flex-row">
             <img
-              alt={post.author.name}
-              src={post.author.avatar}
+              alt={post.author.name!}
+              src={post.author.avatar!}
               style={{ objectFit: 'cover' }}
               tw="w-16 h-16 rounded-full object-cover"
             />
