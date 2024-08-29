@@ -12,8 +12,8 @@ const ContentSecurityPolicy = `
 
 console.log("Print env variables:=================================")
 console.log(process.env)
-if(!process.env.ROOT_URL){
-  throw new Error("ROOT_URL is not defined in .env");
+if(!process.env.NEXT_PUBLIC_ROOT_URL){
+  throw new Error("NEXT_PUBLIC_ROOT_URL is not defined in .env");
 }
 
 const securityHeaders = [
