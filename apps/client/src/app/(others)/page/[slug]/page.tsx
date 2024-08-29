@@ -81,8 +81,8 @@ export async function generateMetadata({ params }): Promise<Metadata> {
       images: [
         {
           url: post.cover_image?.src!,
-          width: post.cover_image?.width,
-          height: post.cover_image?.height,
+          width: post.cover_image?.width!,
+          height: post.cover_image?.height!,
           alt: post.title,
         },
       ],
