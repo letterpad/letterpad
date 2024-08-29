@@ -27,7 +27,7 @@ export const Feature = () => {
           >
             <Image
               className="rounded-t-lg object-cover"
-              src={theme.image}
+              src={theme.image.src}
               height={380}
               width={380}
               alt=""
