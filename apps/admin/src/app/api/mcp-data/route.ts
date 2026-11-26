@@ -1,9 +1,8 @@
-import { createHash, timingSafeEqual } from "node:crypto";
-
 import { imageSize } from "image-size";
 import { PostStatusOptions, PostTypes } from "letterpad-graphql";
 
 import { createPost } from "@/graphql/services/post/createPost";
+import { getMcpWriter } from "@/lib/mcpTokens";
 import { prisma } from "@/lib/prisma";
 import { storeMediaUpload } from "@/lib/storeMediaUpload";
 import { getRootUrl } from "@/shared/getRootUrl";
@@ -66,30 +65,12 @@ function failure(error: unknown) {
   return reply({ error: "Letterpad could not complete the request." }, 500);
 }
 
-function matchesToken(header: string | null, secret: string) {
-  const token = /^Bearer ([^\s]+)$/i.exec(header ?? "")?.[1];
-  if (!token) return false;
-  const digest = (value: string) => createHash("sha256").update(value).digest();
-  return timingSafeEqual(digest(token), digest(secret));
-}
-
 async function getWriter(request: Request) {
-  const secret = process.env.LETTERPAD_MCP_TOKEN?.trim();
-  const email = process.env.LETTERPAD_MCP_AUTHOR_EMAIL?.trim();
-  if (
-    !secret ||
-    secret.length < 32 ||
-    !email ||
-    !matchesToken(request.headers.get("authorization"), secret)
-  ) {
+  const authorId = await getMcpWriter(request.headers.get("authorization"));
+  if (!authorId) {
     throw new RequestError("A valid Letterpad MCP token is required.", 401);
   }
-  const author = await prisma.author.findUnique({
-    where: { email },
-    select: { id: true },
-  });
-  if (!author) throw new RequestError("The MCP writer is unavailable.", 403);
-  return author.id;
+  return authorId;
 }
 
 async function readBody(request: Request, maxBytes: number) {

@@ -20,7 +20,10 @@ const Page = async () => {
         </span>
       </PageHeader>
       <Content>
-        <Settings cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin} />
+        <Settings
+          cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
+          mcpEnabled={process.env.LETTERPAD_MCP_ENABLED === "true"}
+        />
       </Content>
     </>
   );

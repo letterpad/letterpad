@@ -55,7 +55,7 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
       !/^Bearer [^\s]+$/i.test(authorization)
     ) {
       throw new Error(
-        "Configure the Letterpad bearer token in your MCP client.",
+        "Create a token in Letterpad Settings → Keys and configure it in your MCP client.",
       );
     }
     return authorization;

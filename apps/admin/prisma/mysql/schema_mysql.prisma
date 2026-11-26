@@ -48,6 +48,7 @@ model Author {
   setting              Setting?
   subscribers          Subscriber[]
   uploads              Upload[]
+  mcp_tokens           McpToken[]
   first_post_published Boolean         @default(false)
   settings_updated     Boolean         @default(false)
   profile_updated      Boolean         @default(false)
@@ -425,4 +426,16 @@ model Account {
 
   @@id([provider, providerAccountId])
   @@index([userId])
+}
+
+model McpToken {
+  id         String   @id @default(uuid())
+  name       String
+  token_hash String   @unique
+  author_id  String
+  author     Author   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+
+  @@index([author_id])
 }

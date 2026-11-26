@@ -4,7 +4,9 @@ This service exposes published Letterpad articles, private draft editing, and im
 
 ## Run it
 
-Set `LETTERPAD_MCP_ENABLED=true` on the admin app to enable its `/api/mcp-data` endpoint. Published article tools then work without credentials. To enable writes for one writer, also set `LETTERPAD_MCP_AUTHOR_EMAIL` to that author’s existing Letterpad email and `LETTERPAD_MCP_TOKEN` to a random secret. Generate the value with `openssl rand -hex 32`, keep it out of Git, and rotate it in the admin configuration to revoke access.
+Apply the Prisma migration for your database and regenerate Prisma Client before starting the updated admin app. Set `LETTERPAD_MCP_ENABLED=true` on the admin app to enable its `/api/mcp-data` endpoint and show MCP token management. Published article tools work without credentials.
+
+To write, sign in to Letterpad and go to **Settings → Keys → MCP tokens**. Create a token for the client and copy it when it is shown. A token belongs to the signed-in author, expires after 90 days, and can be revoked from the same page. A token permits draft edits and image uploads only for that author.
 
 From the repository root:
 
@@ -19,7 +21,7 @@ To make it available remotely, route HTTPS traffic from your reverse proxy to po
 
 ## Connect Codex
 
-For public reading tools, run `codex mcp add letterpad --url http://127.0.0.1:3030/mcp`. For drafts and uploads, configure Codex with the bearer token environment variable:
+For public reading tools, run `codex mcp add letterpad --url http://127.0.0.1:3030/mcp`. For drafts and uploads, set `LETTERPAD_MCP_TOKEN` in the client environment to the token you created in Letterpad, then configure Codex:
 
 ```toml
 [mcp_servers.letterpad]
@@ -32,7 +34,7 @@ bearer_token_env_var = "LETTERPAD_MCP_TOKEN"
 | `list_published_posts` | Browse public articles. Filter by writer with `username`, or use the returned `nextOffset` to continue. |
 | `get_published_post` | Fetch a writer’s published article by its final URL segment. |
 | `create_draft` | Save a title, plain-text body, and optional cover image as an unpublished post. |
-| `update_draft` | Update one of the configured writer’s unpublished posts by ID. |
+| `update_draft` | Update one of the signed-in writer’s unpublished posts by ID. |
 | `upload_image` | Save standard base64 image data to the writer’s media library. |
 
 ## Upload a local image
