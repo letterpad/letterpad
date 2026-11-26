@@ -142,9 +142,16 @@ export const updateAuthor = async (
     // remove this after 2023-06-06
     if (
       dataToUpdate.register_step === RegisterStep.Registered &&
+      exisitingAuthor?.register_step !== RegisterStep.Registered &&
       exisitingAuthor?.createdAt
     ) {
-      await onBoardUser(author.id);
+      try {
+        await onBoardUser(author.id);
+      } catch (error) {
+        // Signup completion must succeed even if the welcome post or email fails.
+        // eslint-disable-next-line no-console
+        console.error("Could not finish welcome setup", error);
+      }
     }
 
     if (newEmail) {

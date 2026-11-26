@@ -88,6 +88,8 @@ export const SiteInfo = () => {
       router.push(registrationPaths[RegisterStep.Registered]);
     } else if (result.data?.updateAuthor?.__typename === "Failed") {
       setBusy(false);
+    } else {
+      setBusy(false);
     }
   };
 
