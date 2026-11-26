@@ -1,8 +1,37 @@
-import { MutationResolvers, QueryResolvers } from "letterpad-graphql";
+import {
+  CommenterResolvers,
+  MutationResolvers,
+  QueryResolvers,
+} from "letterpad-graphql";
 
 import { ResolverContext } from "@/graphql/context";
 
 import { convertNotificationMetaIn } from "./utils/dbTypeCheck";
+
+const Commenter: CommenterResolvers<ResolverContext> = {
+  username: async ({ id, username }, _args, { prisma }) => {
+    if (username?.trim()) return username;
+
+    // Older SSO profiles can be created before a user picks a username.
+    // Give commenters a stable handle and persist it so the required GraphQL
+    // field remains valid for both existing and new comments.
+    const fallback = `reader-${id.toLowerCase().replace(/[^a-z0-9]/g, "")}`;
+    try {
+      await prisma.author.updateMany({
+        where: { id, username: username ?? null },
+        data: { username: fallback },
+      });
+    } catch {
+      // A concurrent profile update or existing handle is resolved below.
+    }
+
+    const author = await prisma.author.findUnique({
+      where: { id },
+      select: { username: true },
+    });
+    return author?.username?.trim() || fallback;
+  },
+};
 
 const Query: QueryResolvers<ResolverContext> = {
   async comments(_root, args, { prisma }) {
@@ -183,4 +212,4 @@ const Mutation: MutationResolvers<ResolverContext> = {
     return comment;
   },
 };
-export default { Query, Mutation };
+export default { Query, Mutation, Commenter };
