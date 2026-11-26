@@ -28,9 +28,8 @@ export const Comments: FC<Props> = ({ postId }) => {
     try {
       const res = await getComments(postId);
       setComments(Array.isArray(res?.comments) ? res.comments : []);
-    } catch (error) {
+    } catch {
       // A comments request should not take down the post page.
-      console.error('Unable to load comments', error);
       setComments([]);
     }
   }, [postId]);
@@ -62,8 +61,7 @@ export const Comments: FC<Props> = ({ postId }) => {
         return;
       }
       await fetchComments();
-    } catch (error) {
-      console.error('Unable to post comment', error);
+    } catch {
       setSubmitError('Unable to post your comment. Please try again.');
     }
   };
