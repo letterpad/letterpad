@@ -239,7 +239,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
   },
 
-  async likePost(_parent, args, { prisma, session: adminSession, clientSession }) {
+  async likePost(
+    _parent,
+    args,
+    { prisma, session: adminSession, clientSession }
+  ) {
     const session = adminSession ?? clientSession;
     if (!session?.user.id) {
       return {
@@ -312,7 +316,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async unLikePost(_parent, args, { prisma, session: adminSession, clientSession }) {
+  async unLikePost(
+    _parent,
+    args,
+    { prisma, session: adminSession, clientSession }
+  ) {
     const session = adminSession ?? clientSession;
     if (!session?.user.id) {
       return {

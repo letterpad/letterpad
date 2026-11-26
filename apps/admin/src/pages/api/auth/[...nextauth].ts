@@ -73,7 +73,8 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
   events: {
     async signOut({ token }) {
       const parent = token && parentSessionId(token);
-      if (parent && process.env.LETTERPAD_SSO_SECRET) await revokeClientSessions(parent);
+      if (parent && process.env.LETTERPAD_SSO_SECRET)
+        await revokeClientSessions(parent);
     },
     createUser: async ({ user }) => {
       if (!user.email) return;
@@ -100,7 +101,12 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {
-        return { ...token, ...session, sub: token.sub, ssoSessionId: token.ssoSessionId };
+        return {
+          ...token,
+          ...session,
+          sub: token.sub,
+          ssoSessionId: token.ssoSessionId,
+        };
       }
       if (user?.email) {
         token.ssoSessionId = randomUUID();
@@ -142,15 +148,21 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
       return true;
     },
     redirect: async ({ url, baseUrl }) => {
-      const callback = getCallbackUrl(url);
-      if (callback) {
-        return callback;
+      const root = new URL(baseUrl);
+      try {
+        const target = new URL(url, root);
+        if (target.origin === root.origin) {
+          const callback = target.searchParams.get("callbackUrl");
+          if (callback) {
+            const nested = new URL(callback, root);
+            if (nested.origin === root.origin) return nested.href;
+          }
+          return target.href;
+        }
+      } catch {
+        // Fall back to the dashboard for an invalid callback.
       }
-
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-      return new URL("/posts", getRootUrl()).toString();
+      return new URL("/posts", getRootUrl()).href;
     },
   },
   jwt: {
@@ -170,13 +182,3 @@ const auth = (req: NextApiRequest, res: NextApiResponse) =>
   NextAuth(req, res, options(req));
 
 export default auth;
-
-function getCallbackUrl(url: string) {
-  const queryString = url.split("?")[1];
-  const params = new URLSearchParams(queryString);
-  const encodeCallbackUrl = params.get("callbackUrl");
-  const callbackUrl = encodeCallbackUrl
-    ? decodeURIComponent(encodeCallbackUrl)
-    : null;
-  return callbackUrl;
-}

@@ -10,7 +10,11 @@ export const AuthButtons = () => {
 
   return (
     <>
-      <button type="button" onClick={() => startClientSso(true)} className="text-sm">
+      <button
+        type="button"
+        onClick={() => startClientSso(true)}
+        className="text-sm"
+      >
         Login
       </button>
       <Link href={register.href} className="text-sm">

@@ -103,4 +103,3 @@ export async function middleware(request: NextRequest) {
   }
   return NextResponse.rewrite(nextUrl);
 }
-

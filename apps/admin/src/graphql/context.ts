@@ -221,11 +221,14 @@ const createDataLoaders = () => ({
 export const context = async ({ request }) => {
   const resolverContext = await getResolverContext(request);
   const origin = request.headers.get("origin");
-  const cookie = request.headers.get("cookie")?.split(";")
+  const cookie = request.headers
+    .get("cookie")
+    ?.split(";")
     .map((item: string) => item.trim())
     .find((item: string) => item.startsWith(`${CLIENT_SESSION_COOKIE}=`))
     ?.slice(CLIENT_SESSION_COOKIE.length + 1);
-  const clientSession = origin && cookie ? await readClientSession(cookie, origin) : null;
+  const clientSession =
+    origin && cookie ? await readClientSession(cookie, origin) : null;
 
   return {
     ...resolverContext,

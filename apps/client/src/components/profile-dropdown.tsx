@@ -118,14 +118,27 @@ type MenuItemProps = {
 };
 
 const MenuItem = ({ label, icon, path, target, onClick }: MenuItemProps) => {
-  const content = <><span>{icon}</span><span>{label}</span></>;
+  const content = (
+    <>
+      <span>{icon}</span>
+      <span>{label}</span>
+    </>
+  );
   const className = 'flex items-center gap-2';
   return (
     <li className="py-2.5 px-6 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer">
       {path ? (
-        <a className={className} href={new URL(path, getApiRootUrl()).href} target={target}>{content}</a>
+        <a
+          className={className}
+          href={new URL(path, getApiRootUrl()).href}
+          target={target}
+        >
+          {content}
+        </a>
       ) : (
-        <button type="button" className={className} onClick={onClick}>{content}</button>
+        <button type="button" className={className} onClick={onClick}>
+          {content}
+        </button>
       )}
     </li>
   );

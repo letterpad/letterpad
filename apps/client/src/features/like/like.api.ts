@@ -38,7 +38,8 @@ export const likePost = async (postId: string) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      query: 'mutation LikePost($postId: String!) { likePost(postId: $postId) { ok message } }',
+      query:
+        'mutation LikePost($postId: String!) { likePost(postId: $postId) { ok message } }',
       variables: { postId },
     }),
   });
