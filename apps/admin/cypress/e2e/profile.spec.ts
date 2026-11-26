@@ -3,7 +3,9 @@ describe("Profile", () => {
     cy.clearCookie("next-auth.session-token");
     cy.intercept("POST", "/api/auth/signin/email", {
       statusCode: 200,
-      body: { url: null, status: 200, ok: true, error: null },
+      body: {
+        url: "http://localhost:3000/api/auth/callback/email?token=test&email=demo%40demo.com",
+      },
     }).as("sendMagicLink");
     cy.visitLogin();
     cy.getTestId("email").type("demo@demo.com");
@@ -20,7 +22,9 @@ describe("Profile", () => {
       cy.setCookie("next-auth.session-token", String(token));
     });
     cy.visit("/update/site-info");
-    cy.getTestId("siteName").should("be.visible").clear().type("Demo Writer Site");
+    cy.wait("@settingsQuery");
+    cy.getTestId("siteName").should("be.visible").clear();
+    cy.getTestId("siteName").type("Demo Writer Site");
     cy.getTestId("siteTagline").clear().type("A site created in the onboarding test");
     cy.getTestId("siteDescription")
       .clear()

@@ -40,7 +40,6 @@ const loadConfig = (on: any, _config: any) => {
             register_step: registerStep ?? author.register_step,
           },
           secret: process.env.SECRET_KEY,
-          salt: "next-auth.session-token",
         });
       } finally {
         await prisma.$disconnect();

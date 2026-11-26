@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-import { aliasMutation } from "cypress/utils/graphql-test-utils";
+import { aliasMutation, aliasQuery } from "cypress/utils/graphql-test-utils";
 
 //-----
 function getTestId(value) {
@@ -107,6 +107,7 @@ beforeEach(function () {
     aliasMutation(req, "UpdateOptions");
     aliasMutation(req, "UpdateAuthor");
     aliasMutation(req, "createAuthor");
+    aliasQuery(req, "settings");
   });
   cy.intercept("/api/auth/session").as("getSession");
   cy.intercept("/api/auth/callback/credentials?").as("getCredentials");
