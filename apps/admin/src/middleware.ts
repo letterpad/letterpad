@@ -1,7 +1,7 @@
 import { RegisterStep } from "letterpad-graphql";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decode } from "next-auth/jwt";
+import { getToken } from "next-auth/jwt";
 import { isInMaintenanceModeEnabled } from "ui/dist/server.mjs";
 
 import { SessionData } from "./graphql/types";
@@ -25,22 +25,23 @@ export async function middleware(request: NextRequest) {
     // eslint-disable-next-line no-console
     console.error(error);
   }
-  const cookie = request.cookies.get(getAuthCookieName());
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
   const ROOT_URL = proto + "://" + host;
 
   const pathname = request.nextUrl.pathname;
-  if (cookie?.value) {
-    try {
-      const user = (await decode({
-        token: cookie.value,
-        secret: process.env.SECRET_KEY,
-      })) as unknown as SessionData;
+  try {
+    const user = (await getToken({
+      req: request,
+      secret: process.env.SECRET_KEY,
+      cookieName: getAuthCookieName(),
+    })) as unknown as SessionData | null;
 
-      if (!user?.email) {
-        return NextResponse.redirect(ROOT_URL + "/login");
-      }
+    if (user && !user.email && pathname !== "/login") {
+      return NextResponse.redirect(ROOT_URL + "/login");
+    }
+
+    if (user?.email) {
       if (!pathname.includes("/update/") && pathname !== "/") {
         if (user.register_step === RegisterStep.ProfileInfo) {
           return NextResponse.redirect(ROOT_URL + "/update/profile-info");
@@ -58,9 +59,9 @@ export async function middleware(request: NextRequest) {
       if (["/login", "/register"].includes(pathname)) {
         return NextResponse.redirect(ROOT_URL + "/posts");
       }
-    } catch (e) {
-      // return NextResponse.redirect(ROOT_URL + "/login");
     }
+  } catch (e) {
+    // An invalid or expired session should be handled by the page's auth flow.
   }
   if (pathname === "/" && !isPlatform) {
     return NextResponse.redirect(ROOT_URL + "/login");

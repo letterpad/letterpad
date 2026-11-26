@@ -15,6 +15,7 @@ import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { EmailTemplates } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { sanitizeUsername } from "@/shared/utils";
+import { generateAvailableUsername } from "./generateUsername";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -69,6 +70,16 @@ export const updateAuthor = async (
     } as InputAuthorForDb & {
       verified?: boolean;
     };
+    if (
+      !dataToUpdate.username &&
+      dataToUpdate.name &&
+      exisitingAuthor.register_step === RegisterStep.ProfileInfo
+    ) {
+      dataToUpdate.username = await generateAvailableUsername(
+        dataToUpdate.name,
+        exisitingAuthor.email
+      );
+    }
     const newEmail =
       args.author.email && session.user.email !== args.author.email;
 

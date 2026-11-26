@@ -3,23 +3,19 @@ import { cache } from "react";
 
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
+import { ensureAuthorSetting } from "./ensureSetting";
 
 export const getSetting = cache(
   async (
     _args: unknown,
-    { session, client_author_id, dataloaders }: ResolverContext
+    { session, client_author_id }: ResolverContext
   ): Promise<SettingResponse> => {
     const authorId = session?.user.id || client_author_id;
 
     if (authorId) {
-      const author = await dataloaders.author.load(authorId);
-      const setting = await dataloaders.setting.load(authorId);
-      const authorWithSetting = {
-        ...author,
-        setting,
-      };
-      if (authorWithSetting.setting) {
-        return { ...mapSettingToGraphql(authorWithSetting.setting) };
+      const setting = await ensureAuthorSetting(authorId);
+      if (setting) {
+        return { ...mapSettingToGraphql(setting) };
       }
     }
 

@@ -13,8 +13,7 @@ import { defaultSettings } from "@/graphql/db/seed/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { EmailTemplates, ROLES } from "@/graphql/types";
-import { createUsernameSuggestion } from "@/shared/username";
-import { sanitizeUsername } from "@/shared/utils";
+import { generateAvailableUsername } from "@/graphql/services/author/generateUsername";
 import { textToSlug } from "@/utils/slug";
 
 export const onBoardUser = async (id: string) => {
@@ -139,23 +138,5 @@ export async function createAuthorWithSettings(
     });
 
     return newAuthor;
-  }
-}
-
-async function generateAvailableUsername(
-  name?: string | null,
-  email?: string | null
-) {
-  let base = createUsernameSuggestion(name, email);
-  if (!sanitizeUsername(base)) base = `${base}-writer`.slice(0, 30);
-
-  for (let suffix = 1; ; suffix += 1) {
-    const suffixText = suffix === 1 ? "" : `-${suffix}`;
-    const candidate = `${base.slice(0, 30 - suffixText.length)}${suffixText}`;
-    const existing = await prisma.author.findUnique({
-      where: { username: candidate },
-      select: { id: true },
-    });
-    if (!existing) return candidate;
   }
 }

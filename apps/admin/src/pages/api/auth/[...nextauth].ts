@@ -12,6 +12,8 @@ import PrismaClient, { prisma } from "@/lib/prisma";
 import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { parentSessionId, revokeClientSessions } from "@/lib/clientSso";
+import { generateAvailableUsername } from "@/graphql/services/author/generateUsername";
+import { ensureAuthorSetting } from "@/graphql/services/setting/ensureSetting";
 
 import { isBlackListed } from "./blacklist";
 import { sendMail } from "../../../graphql/mail/sendMail";
@@ -83,10 +85,15 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
           email: user.email,
         },
       });
-      await prisma.author.update({
+      if (!author) return;
+      const username =
+        author.username ||
+        (await generateAvailableUsername(author.name, author.email));
+      const updatedAuthor = await prisma.author.update({
         where: { email: user.email },
         data: {
           avatar: author?.avatar ?? user.image,
+          username,
           register_step: RegisterStep.ProfileInfo,
           role: {
             connect: {
@@ -95,6 +102,7 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
           },
         },
       });
+      await ensureAuthorSetting(updatedAuthor.id);
     },
   },
 
