@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { SettingsFragmentFragment } from 'letterpad-sdk';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { ComponentType, FC } from 'react';
 
 import Link from '@/components/Link';
@@ -14,7 +14,7 @@ import { SubscribeModal } from '../subscribe-modal';
 import { Menu } from '../../components/menu';
 import { ProfileDropdown } from '../../components/profile-dropdown';
 import { LogoOrTitle } from '../../components/site-logo';
-import { getSessionUrl } from '../../../lib/utils/url';
+import { getApiRootUrl, getSessionUrl } from '../../../lib/utils/url';
 
 interface Props {
   settings: SettingsFragmentFragment;
@@ -114,10 +114,57 @@ export const Navbar: FC<Props> = async ({
 };
 
 export const getServerSession = async () => {
+  const requestCookies = cookies();
+  const clientToken = requestCookies.get(
+    '__Host-letterpad-client-session'
+  )?.value;
+  const secret = process.env.LETTERPAD_SSO_SECRET;
+
+  if (clientToken && secret) {
+    const requestHeaders = headers();
+    const host = (
+      requestHeaders.get('x-forwarded-host') ?? requestHeaders.get('host')
+    )
+      ?.split(',')[0]
+      .trim();
+    const protocol = (
+      requestHeaders.get('x-forwarded-proto') ??
+      (process.env.NODE_ENV === 'development' ? 'http' : 'https')
+    )
+      .split(',')[0]
+      .trim();
+
+    if (host && protocol === 'https') {
+      try {
+        const response = await fetch(
+          new URL('/api/sso/session', getApiRootUrl()),
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${secret}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              origin: `https://${host}`,
+              token: clientToken,
+            }),
+            cache: 'no-store',
+            redirect: 'error',
+            signal: AbortSignal.timeout(5000),
+          }
+        );
+        const session = await response.json();
+        if (response.ok && session?.user) return session;
+      } catch {
+        // Fall back to the legacy admin session lookup below.
+      }
+    }
+  }
+
   try {
     const sessionURL = getSessionUrl();
     const res = await fetch(sessionURL, {
-      headers: { cookie: cookies().toString() },
+      headers: { cookie: requestCookies.toString() },
     });
     const session = await res.json();
     return session.user ? (session as { user: any }) : null;
