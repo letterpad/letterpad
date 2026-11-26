@@ -3,7 +3,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends bash ca-certifi
     && rm -rf /var/lib/apt/lists/* \
     && npm install --global bun@1.0.21
 WORKDIR /app
-COPY package.json bun.lockb turbo.json ./
+COPY package.json bun.lockb ./
 COPY apps/admin/package.json apps/admin/
 COPY apps/client/package.json apps/client/
 COPY packages/config/package.json packages/config/
@@ -13,6 +13,7 @@ COPY packages/sdk/package.json packages/sdk/
 COPY packages/tsconfig/package.json packages/tsconfig/
 COPY packages/ui/package.json packages/ui/
 RUN bun install --ignore-scripts
+COPY turbo.json ./
 COPY packages/ packages/
 # Code generation uses the admin schema and query documents.
 COPY apps/admin/src/graphql/schema/ apps/admin/src/graphql/schema/
