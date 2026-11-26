@@ -6,7 +6,7 @@ This service exposes published Letterpad articles, private draft editing, and im
 
 Apply the Prisma migration for your database and regenerate Prisma Client before starting the updated admin app. Set `LETTERPAD_MCP_ENABLED=true` on the admin app to enable its `/api/mcp-data` endpoint and show MCP token management. Published article tools work without credentials.
 
-To write, sign in to Letterpad and go to **Settings → Keys → MCP tokens**. Create a token for the client and copy it when it is shown. A token belongs to the signed-in author, expires after 90 days, and can be revoked from the same page. A token permits draft edits and image uploads only for that author.
+To write, sign in to Letterpad and go to **Settings → Keys → MCP tokens**. Create a token for the client and copy it when it is shown. A token belongs to the signed-in author, expires after 90 days, and can be revoked from the same page. A token permits draft reads and edits and image uploads only for that author.
 
 From the repository root:
 
@@ -33,6 +33,8 @@ bearer_token_env_var = "LETTERPAD_MCP_TOKEN"
 | --- | --- |
 | `list_published_posts` | Browse public articles. Filter by writer with `username`, or use the returned `nextOffset` to continue. |
 | `get_published_post` | Fetch a writer’s published article by its final URL segment. |
+| `list_my_drafts` | List your drafts, newest edit first. Use `nextOffset` to continue. |
+| `get_my_draft` | Read the draft body and metadata using an ID from your own draft list. |
 | `create_draft` | Save a title, plain-text body, and optional cover image as an unpublished post. |
 | `update_draft` | Update one of the signed-in writer’s unpublished posts by ID. |
 | `upload_image` | Save standard base64 image data to the writer’s media library. |

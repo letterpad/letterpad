@@ -16,6 +16,11 @@ const MAX_BASE64_LENGTH = Math.ceil((4 * 1024 * 1024) / 3) * 4;
 
 function registerTools(server, api) {
   const username = z.string().trim().min(1).max(100);
+  const draftId = z.string().trim().min(1).max(100);
+  const page = {
+    limit: z.number().int().min(1).max(25).optional(),
+    offset: z.number().int().min(0).max(1000).optional(),
+  };
   const title = z.string().trim().min(1).max(190);
   const body = z.string().trim().min(1).max(60_000);
   const cover_image_url = z
@@ -69,8 +74,7 @@ function registerTools(server, api) {
     "List public Letterpad articles, optionally by writer.",
     {
       username: username.optional(),
-      limit: z.number().int().min(1).max(25).optional(),
-      offset: z.number().int().min(0).max(1000).optional(),
+      ...page,
     },
     api.listPublishedPosts,
     true,
@@ -88,6 +92,22 @@ function registerTools(server, api) {
   );
 
   register(
+    "list_my_drafts",
+    "List your unpublished Letterpad posts, newest edit first. Use the returned draft ID with get_my_draft.",
+    page,
+    api.listMyDrafts,
+    true,
+  );
+
+  register(
+    "get_my_draft",
+    "Read the private draft body and metadata for one of your unpublished Letterpad posts.",
+    { id: draftId },
+    api.getMyDraft,
+    true,
+  );
+
+  register(
     "create_draft",
     "Create an unpublished Letterpad post with a plain-text body and optional uploaded cover.",
     draftFields,
@@ -98,7 +118,7 @@ function registerTools(server, api) {
     "update_draft",
     "Edit an existing unpublished post owned by the authenticated writer. Provide the draft ID and any fields to change.",
     {
-      id: z.string().trim().min(1).max(100),
+      id: draftId,
       title: title.optional(),
       body: body.optional(),
       cover_image_url: cover_image_url.optional(),
@@ -200,12 +220,9 @@ app.put(
       return res.status(201).json(image);
     } catch (error) {
       const status = Number.isInteger(error?.status) ? error.status : 502;
-      return res
-        .status(status)
-        .json({
-          error:
-            error instanceof Error ? error.message : "Image upload failed.",
-        });
+      return res.status(status).json({
+        error: error instanceof Error ? error.message : "Image upload failed.",
+      });
     }
   },
 );

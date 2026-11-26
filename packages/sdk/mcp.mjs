@@ -40,13 +40,13 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
     return result;
   }
 
-  function read(op, params) {
+  function read(op, params, headers) {
     const url = new URL(endpoint);
     url.searchParams.set("op", op);
     for (const [key, value] of Object.entries(params)) {
       if (value !== undefined) url.searchParams.set(key, String(value));
     }
-    return request(url);
+    return request(url, { headers });
   }
 
   function requireAuthorization() {
@@ -59,6 +59,10 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
       );
     }
     return authorization;
+  }
+
+  function readDraft(op, params) {
+    return read(op, params, { authorization: requireAuthorization() });
   }
 
   function write(op, args) {
@@ -75,6 +79,8 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
   return {
     listPublishedPosts: (params) => read("list", params),
     getPublishedPost: (params) => read("get", params),
+    listMyDrafts: (params) => readDraft("list-drafts", params),
+    getMyDraft: (params) => readDraft("get-draft", params),
     createDraft: (args) => write("create", args),
     updateDraft: (args) => write("update", args),
     uploadImage: (args) => write("upload", args),

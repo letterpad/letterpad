@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 const MAX_BODY_BYTES = 6 * 1024 * 1024;
 const MAX_BODY_TEXT = 60_000;
+const MAX_RETURNED_HTML = 60_000;
 const ALLOWED_IMAGES: Record<string, string> = {
   jpg: "jpg",
   png: "png",
@@ -161,14 +162,94 @@ function articleResponse(post: {
   };
 }
 
+function readPage(query: URLSearchParams) {
+  const limit = Number(query.get("limit") ?? 10);
+  const offset = Number(query.get("offset") ?? 0);
+  if (
+    !Number.isInteger(limit) ||
+    limit < 1 ||
+    limit > 25 ||
+    !Number.isInteger(offset) ||
+    offset < 0 ||
+    offset > 1000
+  ) {
+    throw new RequestError(
+      "Use a limit from 1 to 25 and an offset from 0 to 1000."
+    );
+  }
+  return { limit, offset };
+}
+
+function nextOffset(count: number, limit: number, offset: number) {
+  return count > limit && offset + limit <= 1000 ? offset + limit : null;
+}
+
+function editableDrafts(authorId: string) {
+  return {
+    author_id: authorId,
+    status: PostStatusOptions.Draft,
+    type: PostTypes.Post,
+    banned: false,
+  };
+}
+
+const draftMetadata = {
+  id: true,
+  title: true,
+  slug: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
+
+function htmlResponse(html: string) {
+  return {
+    html: html.slice(0, MAX_RETURNED_HTML),
+    truncated: html.length > MAX_RETURNED_HTML,
+  };
+}
+
+async function readDrafts(
+  request: Request,
+  query: URLSearchParams,
+  op: string
+) {
+  const authorId = await getWriter(request);
+  const where = editableDrafts(authorId);
+  if (op === "get-draft") {
+    const draft = await prisma.post.findFirst({
+      where: { ...where, id: textField(query.get("id"), "id", 100) },
+      select: { ...draftMetadata, html_draft: true },
+    });
+    if (!draft) throw new RequestError("Draft not found.", 404);
+    const { html_draft, ...metadata } = draft;
+    return reply({ ...metadata, ...htmlResponse(html_draft ?? "") });
+  }
+
+  const { limit, offset } = readPage(query);
+  const drafts = await prisma.post.findMany({
+    where,
+    select: draftMetadata,
+    orderBy: [{ updatedAt: "desc" }, { id: "desc" }],
+    skip: offset,
+    take: limit + 1,
+  });
+  return reply({
+    drafts: drafts.slice(0, limit),
+    nextOffset: nextOffset(drafts.length, limit, offset),
+  });
+}
+
 export async function GET(request: Request) {
   if (process.env.LETTERPAD_MCP_ENABLED !== "true")
     return reply({ error: "Not found." }, 404);
   try {
     const query = new URL(request.url).searchParams;
+    const op = query.get("op");
+    if (op === "list-drafts" || op === "get-draft") {
+      return await readDrafts(request, query, op);
+    }
     const username = query.get("username");
     if (username !== null) textField(username, "username", 100);
-    const op = query.get("op");
     if (op === "get") {
       const post = await prisma.post.findFirst({
         where: {
@@ -182,25 +263,11 @@ export async function GET(request: Request) {
       const { html, ...metadata } = post;
       return reply({
         ...articleResponse(metadata),
-        html: html.slice(0, 60_000),
-        truncated: html.length > 60_000,
+        ...htmlResponse(html),
       });
     }
     if (op !== "list") throw new RequestError("Unknown public operation.");
-    const limit = Number(query.get("limit") ?? 10);
-    const offset = Number(query.get("offset") ?? 0);
-    if (
-      !Number.isInteger(limit) ||
-      limit < 1 ||
-      limit > 25 ||
-      !Number.isInteger(offset) ||
-      offset < 0 ||
-      offset > 1000
-    ) {
-      throw new RequestError(
-        "Use a limit from 1 to 25 and an offset from 0 to 1000."
-      );
-    }
+    const { limit, offset } = readPage(query);
     const posts = await prisma.post.findMany({
       where: {
         ...publishedArticle,
@@ -215,8 +282,7 @@ export async function GET(request: Request) {
     const postList = posts.slice(0, limit).map(articleResponse);
     return reply({
       posts: postList,
-      nextOffset:
-        posts.length > limit && offset + limit <= 1000 ? offset + limit : null,
+      nextOffset: nextOffset(posts.length, limit, offset),
     });
   } catch (error) {
     return failure(error);
@@ -392,13 +458,7 @@ export async function POST(request: Request) {
     }
     const id = textField(input.id, "id", 100);
     const updated = await prisma.post.updateMany({
-      where: {
-        id,
-        author_id: authorId,
-        status: PostStatusOptions.Draft,
-        type: PostTypes.Post,
-        banned: false,
-      },
+      where: { ...editableDrafts(authorId), id },
       data: {
         title,
         html_draft: body,
