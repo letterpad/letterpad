@@ -33,6 +33,7 @@ function login() {
   cy.task("createSessionToken", { registerStep: "Registered" }).then((token) => {
     cy.setCookie("next-auth.session-token", String(token));
   });
+  cy.setCookie("theme-preference", "dark");
   cy.visitPosts();
   cy.wait("@getSession");
 }
