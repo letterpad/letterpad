@@ -20,7 +20,7 @@ export const FollowMe = ({ username }) => {
   }, []);
 
   const doFollowOrUnfollow = async () => {
-    if (!session?.user?.avatar) {
+    if (!session?.user) {
       session.showLogin(true);
       return;
     }
