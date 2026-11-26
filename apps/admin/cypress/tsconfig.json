@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
+    "declarationMap": false,
     // be explicit about types included
     // to avoid clashing with Jest types
     "types": ["cypress", "./support"]
