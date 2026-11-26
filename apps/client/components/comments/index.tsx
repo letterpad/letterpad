@@ -18,14 +18,20 @@ interface Props {
 export const Comments: FC<Props> = ({ postId }) => {
   const [comments, setComments] = useState<any[]>([]);
   const [replyTo, setReplyTo] = useState<string | undefined>(undefined);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const { isIntersecting } = useIntersectionObserver(ref, {});
   const [seen, setSeen] = useState(false);
 
   const session = useSession();
   const fetchComments = useCallback(async () => {
-    const res = await getComments(postId);
-    setComments(res?.comments);
+    try {
+      const res = await getComments(postId);
+      setComments(Array.isArray(res?.comments) ? res.comments : []);
+    } catch {
+      // A comments request should not take down the post page.
+      setComments([]);
+    }
   }, [postId]);
 
   useEffect(() => {
@@ -36,13 +42,28 @@ export const Comments: FC<Props> = ({ postId }) => {
     setReplyTo(undefined);
   }, [fetchComments, isIntersecting]);
 
-  const onSubmit = (text: string, child?: boolean) => {
+  const onSubmit = async (text: string, child?: boolean) => {
     if (!session?.user) {
       return session.showLogin(true);
     }
     if (child && !replyTo) return;
     if (!text) return alert('Please enter a comment');
-    postComment(postId, text, child ? replyTo : undefined).then(fetchComments);
+    setSubmitError(null);
+    try {
+      const result = await postComment(
+        postId,
+        text,
+        child ? replyTo : undefined
+      );
+      const created = result?.createComment;
+      if (!created?.id) {
+        setSubmitError(created?.message || 'Unable to post your comment.');
+        return;
+      }
+      await fetchComments();
+    } catch {
+      setSubmitError('Unable to post your comment. Please try again.');
+    }
   };
 
   return (
@@ -55,6 +76,14 @@ export const Comments: FC<Props> = ({ postId }) => {
             </h2>
           </div>
           {seen && <CommentBox onSubmit={onSubmit} />}
+          {submitError && (
+            <p
+              role="alert"
+              className="mb-4 text-sm text-red-700 dark:text-red-300"
+            >
+              {submitError}
+            </p>
+          )}
         </div>
         <div className="flex gap-3 flex-col">
           {comments.map((comment) => {
