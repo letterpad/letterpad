@@ -1,42 +1,37 @@
 describe("Profile", () => {
-  it("can register and login", () => {
-    const email = `test@test.com`;
-    cy.url().should("contain", "/posts");
-    cy.getTestId("menu-open-btn").click();
-    // cy.getTestId("close-cookie-banner").click();
-    cy.getTestId("logout").click();
-    // cy.url().should("contain", "/login");
-    cy.visitRegister();
-    cy.url().should("contain", "/register");
-    cy.getTestId("email").type(email);
-    cy.getTestId("password").type("testing@123");
-    cy.getTestId("registerBtn").click();
-    cy.wait("@createAuthorMutation");
-    cy.location("pathname").should("include", "/messages/registered");
-    cy.request(`/api/testVerified?email=${email}`);
+  it("offers the email magic-link login flow", () => {
+    cy.clearCookie("next-auth.session-token");
+    cy.intercept("POST", "/api/auth/signin/email", {
+      statusCode: 200,
+      body: {
+        url: "http://localhost:3000/api/auth/callback/email?token=test&email=demo%40demo.com",
+      },
+    }).as("sendMagicLink");
     cy.visitLogin();
-    cy.getTestId("email").type(email);
-    cy.getTestId("password").type("testing@123");
-    cy.getTestId("loginBtn").click();
+    cy.getTestId("email").type("demo@demo.com");
+    cy.contains("button", "Continue").click();
+    cy.wait("@sendMagicLink");
+    cy.contains("Check your inbox.").should("be.visible");
+  });
 
-    cy.location("pathname").should("include", "/update/profile-info");
-
-    cy.getTestId("name").type("Testing User");
-    cy.getTestId("username").type("test");
-    cy.getTestId("name").type("Testing User");
-    cy.getTestId("bio").type(
-      "This is a bio that has been written automatically by tests"
-    );
-    cy.getTestId("updateProfile").click();
-
-    cy.location("pathname").should("include", "/update/site-info");
-    cy.getTestId("siteName").type("Site Name");
-    cy.getTestId("siteTagline").type("A tagling for site");
-    cy.getTestId("siteDescription").type("Site description");
+  it("loads site info for an onboarding user without settings", () => {
+    cy.task("createSessionToken", {
+      registerStep: "SiteInfo",
+      removeSettings: true,
+    }).then((token) => {
+      cy.setCookie("next-auth.session-token", String(token));
+    });
+    cy.visit("/update/site-info");
+    cy.wait("@settingsQuery");
+    cy.getTestId("siteName").should("be.visible").clear();
+    cy.getTestId("siteName").type("Demo Writer Site");
+    cy.getTestId("siteTagline").clear().type("A site created in the onboarding test");
+    cy.getTestId("siteDescription")
+      .clear()
+      .type("Checking that onboarding can load and save missing default settings.");
     cy.getTestId("updateSiteBtn").click();
     cy.wait("@UpdateOptionsMutation");
-
-    // cy.location("pathname").should("include", "/posts");
+    cy.location("pathname").should("eq", "/posts");
   });
   it("Can update basic profile details", () => {
     cy.visitProfile();
