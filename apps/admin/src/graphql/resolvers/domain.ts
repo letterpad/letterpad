@@ -4,6 +4,10 @@ import { ResolverContext } from "@/graphql/context";
 
 import { getDomain, removeDomain } from "../services/domain";
 import { check } from "../services/domain/check";
+import {
+  managedDomainMessage,
+  usesManagedDomains,
+} from "../services/domain/provider";
 
 import { Optional } from "@/types";
 
@@ -23,6 +27,10 @@ const Mutation: Optional<MutationResolvers<ResolverContext>> = {
         ok: false,
         message: "No session found",
       };
+    }
+
+    if (usesManagedDomains()) {
+      return { __typename: "DomainError", message: managedDomainMessage };
     }
 
     const response = await fetch(

@@ -3,6 +3,7 @@ import { RemoveDomainResponse } from "letterpad-graphql";
 import { ResolverContext } from "@/graphql/context";
 
 import { check } from "./check";
+import { managedDomainMessage, usesManagedDomains } from "./provider";
 
 export const removeDomain = async (
   _args: unknown,
@@ -13,6 +14,10 @@ export const removeDomain = async (
       ok: false,
       message: "No session found",
     };
+  }
+
+  if (usesManagedDomains()) {
+    return { ok: false, message: managedDomainMessage };
   }
 
   const domain = await prisma.domain.findFirst({
