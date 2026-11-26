@@ -1,6 +1,6 @@
 type Commenter {
   id: String!
-  username: String
+  username: String!
   avatar: String
   name: String
 }
