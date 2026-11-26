@@ -15,6 +15,7 @@ import {
   CardTitle,
   Input,
   Label,
+  Message,
   TextArea,
 } from "ui/dist/index.mjs";
 
@@ -67,12 +68,20 @@ export const SiteInfo = () => {
         !isSettings(settingsResult.data?.updateOptions)
       ) {
         setBusy(false);
+        Message().error({
+          content: "Could not save your site details. Please try again.",
+          duration: 4,
+        });
         return;
       }
     } catch (e: any) {
       // eslint-disable-next-line no-console
       console.log(e);
       setBusy(false);
+      Message().error({
+        content: "Could not save your site details. Please try again.",
+        duration: 4,
+      });
       return;
     }
 
@@ -93,10 +102,12 @@ export const SiteInfo = () => {
         register_step: RegisterStep.Registered,
       });
       router.push(registrationPaths[RegisterStep.Registered]);
-    } else if (result.data?.updateAuthor?.__typename === "Failed") {
-      setBusy(false);
     } else {
       setBusy(false);
+      Message().error({
+        content: "Could not finish setting up your site. Please try again.",
+        duration: 4,
+      });
     }
   };
 
