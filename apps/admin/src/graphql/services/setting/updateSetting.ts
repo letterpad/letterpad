@@ -26,8 +26,8 @@ export const updateSetting = async (
       where: { id: author_id },
       select: { id: true, username: true },
     });
-    const setting = author && (await ensureAuthorSetting(author_id));
-    const setting_id = setting?.id;
+    const ensuredSetting = author && (await ensureAuthorSetting(author_id));
+    const setting_id = ensuredSetting?.id;
     const settings = args.options.pop();
     if (!setting_id || !settings)
       return { __typename: "NotFound", message: "Setting now found" };
