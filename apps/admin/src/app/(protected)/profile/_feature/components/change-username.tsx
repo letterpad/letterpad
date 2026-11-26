@@ -40,11 +40,11 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
     setUsername(e.target.value);
     setSaveButtonEnabled(true);
 
-    if (!allowed) {
-      setError("Only letters or letters and numbers are allowed");
-      setSaveButtonEnabled(false);
-    } else if (e.target.value.length < 4) {
+    if (e.target.value.length < 4) {
       setError("Username should be atleast 4 characters long");
+      setSaveButtonEnabled(false);
+    } else if (!allowed) {
+      setError("Use letters or numbers, with single hyphens between words.");
       setSaveButtonEnabled(false);
     } else {
       setError(null);

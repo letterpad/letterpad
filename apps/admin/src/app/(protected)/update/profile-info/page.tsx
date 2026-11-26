@@ -24,6 +24,11 @@ import {
 } from "@/app/(protected)/profile/_feature/api.client";
 import { EventAction, EventCategory, track } from "@/track";
 import { isAuthor } from "@/utils/type-guards";
+import {
+  createUsernameSuggestion,
+  isLegacyGeneratedUsername,
+} from "@/shared/username";
+import { sanitizeUsername } from "@/shared/utils";
 
 import { registrationPaths } from "../../../../constants";
 
@@ -35,7 +40,12 @@ export const UpdateProfile = () => {
   const { updateAuthor } = useUpdateAuthor();
 
   const [_, setProcessing] = useState(false);
-  const { name = "", bio, username } = me || {};
+  const { name = "", bio, email, username: savedUsername } = me || {};
+  const username =
+    me?.register_step === RegisterStep.ProfileInfo &&
+    isLegacyGeneratedUsername(savedUsername)
+      ? createUsernameSuggestion(name, email)
+      : savedUsername ?? createUsernameSuggestion(name, email);
   const router = useRouter();
   const methods = useForm({
     values: { name, bio, username },
@@ -164,14 +174,14 @@ export const UpdateProfile = () => {
                           value: 30,
                           message: "Should be maximum 30 character long",
                         },
-                        validate: (value) => {
-                          // regex to contain alphabets or numbers or both
-                          const regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]*$/;
-                          if (value && !regex.test(value)) {
-                            return "Can be either alphabets or alphabets and numbers.";
-                          }
-                          return true;
+                        minLength: {
+                          value: 4,
+                          message:
+                            "Username should be at least 4 characters long",
                         },
+                        validate: (value) =>
+                          sanitizeUsername(value) ||
+                          "Use 4–30 letters or numbers, with single hyphens between words.",
                       })}
                       id="username"
                       placeholder="jacksparrow"
