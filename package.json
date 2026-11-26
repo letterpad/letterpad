@@ -46,10 +46,6 @@
   },
   "packageManager": "bun@1.0.21",
   "dependencies": {
-    "@fontsource-variable/dm-sans": "5.3.0",
-    "@fontsource-variable/nunito": "5.3.0",
-    "@fontsource-variable/outfit": "5.3.0",
-    "@fontsource-variable/roboto-mono": "5.3.0",
     "@google-analytics/data": "^4.4.0",
     "@react-icons/all-files": "^4.1.0",
     "@react-spring/web": "^9.7.3",
