@@ -11,6 +11,16 @@ import { totalComments } from './utils';
 import { useSession } from '../../context/SessionProvider';
 import { getComments, postComment } from '../../src/graphql';
 
+const normalizeComments = (value: unknown): any[] => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((comment) => comment && typeof comment === 'object')
+    .map((comment) => ({
+      ...comment,
+      replies: normalizeComments((comment as any).replies),
+    }));
+};
+
 interface Props {
   postId: string;
 }
@@ -27,7 +37,7 @@ export const Comments: FC<Props> = ({ postId }) => {
   const fetchComments = useCallback(async () => {
     try {
       const res = await getComments(postId);
-      setComments(Array.isArray(res?.comments) ? res.comments : []);
+      setComments(normalizeComments(res?.comments));
     } catch {
       // A comments request should not take down the post page.
       setComments([]);
