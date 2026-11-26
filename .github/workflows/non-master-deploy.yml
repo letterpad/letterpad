@@ -1,171 +1,108 @@
 name: PR Checks
+
 on:
   push:
     branches-ignore:
-      - "master"
+      - master
+
+permissions:
+  contents: read
+
 env:
-  CYPRESS_CACHE_FOLDER: /home/runner/work/letterpad/letterpad/apps/admin/cypress/cache
+  BUN_VERSION: '1.0.21'
+  NEXT_PUBLIC_ROOT_URL: http://localhost:3000
+  NEXT_PUBLIC_API_URL: http://localhost:3000/api/graphql
 
 jobs:
   checks:
-    name: "PR Checks"
+    name: PR Checks
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: '22'
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
       - name: Install
-        run: bun install --frozen-lockfile
-        env:
-          DATABASE_URL: "file:data/test_3.sqlite"
+        run: bun install --ignore-scripts
       - name: Lint
         run: bun run lint
 
-  # job_one:
-  #   name: API Test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 2
-
-  #     - name: Turbo Cache
-  #       id: turbo-cache
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: .turbo
-  #         key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
-  #         restore-keys: |
-  #           turbo-${{ github.job }}-${{ github.ref_name }}-
-
-  #     - name: Setup Node.js environment
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: 18
-
-  #     - name: Cache node_modules
-  #       uses: actions/cache@v2
-  #       id: yarn-dep-cache
-  #       env:
-  #         cache-name: cache-node-modules
-  #       with:
-  #         path: "**/node_modules"
-  #         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-build-${{ env.cache-name }}-
-  #           ${{ runner.os }}-build-
-  #           ${{ runner.os }}-
-
-  #     - name: Install Yarn
-  #       run: npm install -g yarn
-
-  #     - name: Yarn install deps
-  #       run: |
-  #         yarn install --frozen-lockfile
-  #       if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
-
-  #     - name: Create .env file
-  #       run: mv apps/admin/.env.sample apps/admin/.env
-
-  #     - name: Graphql Codegen
-  #       run: yarn codegen
-
-  #     - name: Generate Prisma Client
-  #       working-directory: apps/admin
-  #       run: npx prisma generate --schema prisma/sqlite/schema.prisma
-  #       env:
-  #         DATABASE_URL: "file:data/test_1.sqlite"
-
-  #     - name: Test GraphQL API
-  #       run: yarn run test
-  #       env:
-  #         NODE_ENV: test
   job_two:
     name: Cypress Test
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: letterpad
+          POSTGRES_PASSWORD: letterpad
+          POSTGRES_DB: letterpad
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U letterpad -d letterpad"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      CYPRESS_CACHE_FOLDER: ${{ github.workspace }}/.cache/Cypress
+      DATABASE_URL: postgresql://letterpad:letterpad@127.0.0.1:5432/letterpad
+      DIRECT_URL: postgresql://letterpad:letterpad@127.0.0.1:5432/letterpad
+      ROOT_URL: http://localhost:3000
+      NEXTAUTH_URL: http://localhost:3000/api/auth
+      SECRET_KEY: some-secret
+      STRIPE_SECRET_KEY: sk_test_build_placeholder
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 2
+          node-version: '22'
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
 
-      - name: Turbo Cache
+      - name: Restore Turbo build artifacts
         id: turbo-cache
-        uses: actions/cache@v2
+        uses: actions/cache/restore@v4
         with:
-          path: .turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          path: .turbo/cache
+          key: letterpad-turbo-pr-v1-${{ runner.os }}-${{ runner.arch }}-node22-${{ hashFiles('bun.lockb', 'turbo.json') }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+            letterpad-turbo-pr-v1-${{ runner.os }}-${{ runner.arch }}-node22-${{ hashFiles('bun.lockb', 'turbo.json') }}-
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+      - name: Install
+        run: bun install --ignore-scripts
+
+      - name: Prepare admin and generate Prisma Client
+        run: |
+          cp apps/admin/.env.sample apps/admin/.env
+          ./node_modules/.bin/prisma generate --schema=apps/admin/prisma/postgres/schema_postgres.prisma
+          ./node_modules/.bin/prisma migrate deploy --schema=apps/admin/prisma/postgres/schema_postgres.prisma
+
+      - name: Build admin
+        run: ./node_modules/.bin/turbo run build --filter=admin --cache-dir=.turbo/cache --env-mode=loose
+
+      - name: Save Turbo build artifacts
+        if: steps.turbo-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
         with:
-          node-version: 18
+          path: .turbo/cache
+          key: ${{ steps.turbo-cache.outputs.cache-primary-key }}
 
-      # - name: Cache node_modules
-      #   uses: actions/cache@v2
-      #   id: yarn-dep-cache
-      #   env:
-      #     cache-name: cache-node-modules
-      #   with:
-      #     path: "**/node_modules"
-      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-build-${{ env.cache-name }}-
-      #       ${{ runner.os }}-build-
-      #       ${{ runner.os }}-
-
-      - name: Cache Cypress Binary
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-cypress
+      - name: Cache Cypress binary
+        uses: actions/cache@v4
         with:
-          path: "/home/runner/work/letterpad/letterpad/apps/admin/cypress/cache"
-          key: ${{ runner.os }}-cypress
-          # key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-${{ env.cache-name }}-
-            ${{ runner.os }}-cypress-
-            ${{ runner.os }}-
-
-      - uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      # - run: |
-      #     node_modules/cypress/bin/cypress install
-
-      - name: Create .env file
-        run: mv apps/admin/.env.sample apps/admin/.env
-
-      - name: Bun install deps
-        run: bun install
-        env:
-          DATABASE_URL: "file:data/test_3.sqlite"
-
-      - name: Generate Prisma Client
-        working-directory: apps/admin
-        run: npx prisma generate --schema prisma/sqlite/schema.prisma
-        env:
-          DATABASE_URL: "file:data/test_3.sqlite"
-
-      - name: Run Build
-        run: bun run build --filter=admin
+          path: ${{ env.CYPRESS_CACHE_FOLDER }}
+          key: letterpad-cypress-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('apps/admin/package.json', 'bun.lockb') }}
 
       - name: Run Cypress
         run: |
-          node_modules/cypress/bin/cypress install
-          bun run e2e:ci
+          ./node_modules/.bin/cypress install
+          bun run e2e:ci --env-mode=loose
         env:
-          DATABASE_URL: "file:data/test_3.sqlite"
-          ROOT_URL: "http://localhost:3000"
-          NEXTAUTH_URL: "http://localhost:3000/api/auth"
-          SECRET_KEY: "some-secret"
-          NODE_ENV: "test"
-          RECAPTCHA_KEY_CLIENT: "6Lf3a9QjAAAAALIzxbDw5MX9-Mu_ZjH8NLzRxAAc" # test key
-          RECAPTCHA_KEY_SERVER: "6Lf3a9QjAAAAAKwvGzcmUTJNaEcnxNqu7hU0giDI" # test key
+          NODE_ENV: test
+          RECAPTCHA_KEY_CLIENT: 6Lf3a9QjAAAAALIzxbDw5MX9-Mu_ZjH8NLzRxAAc # test key
+          RECAPTCHA_KEY_SERVER: 6Lf3a9QjAAAAAKwvGzcmUTJNaEcnxNqu7hU0giDI # test key
