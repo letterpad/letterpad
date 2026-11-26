@@ -59,7 +59,7 @@ export const ProfileDropdown = () => {
         ref={ref}
       >
         {show &&
-          (session?.user?.username ? (
+          (session?.user ? (
             <>
               <MenuItem
                 label="Posts"
