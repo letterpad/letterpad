@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM node:22-bookworm-slim AS workspace
 RUN apt-get update && apt-get install -y --no-install-recommends bash ca-certificates openssl \
     && rm -rf /var/lib/apt/lists/* \
@@ -29,17 +30,23 @@ ENV NEXT_PUBLIC_ROOT_URL=${LETTERPAD_ADMIN_URL} \
 FROM app-build AS admin-build
 COPY apps/admin/ apps/admin/
 RUN ./node_modules/.bin/prisma generate --schema=apps/admin/prisma/postgres/schema_postgres.prisma
-RUN test -n "$LETTERPAD_ADMIN_URL" \
+RUN --mount=type=cache,id=letterpad-admin-next,target=/app/apps/admin/.next/cache,sharing=locked \
+    test -n "$LETTERPAD_ADMIN_URL" \
     && ROOT_URL="$LETTERPAD_ADMIN_URL" NEXTAUTH_URL="$LETTERPAD_ADMIN_URL/api/auth" \
        DATABASE_URL=postgresql://build:build@127.0.0.1:1/letterpad \
        DIRECT_URL=postgresql://build:build@127.0.0.1:1/letterpad \
        STRIPE_SECRET_KEY=sk_test_build_placeholder \
-       ./node_modules/.bin/turbo run build --filter=admin --only --env-mode=loose
+       ./node_modules/.bin/turbo run build --filter=admin --only --env-mode=loose \
+    && mkdir -p /tmp/letterpad-admin-next-cache \
+    && cp -a /app/apps/admin/.next/cache/. /tmp/letterpad-admin-next-cache/
 
 FROM app-build AS client-build
 COPY apps/client/ apps/client/
-RUN test -n "$LETTERPAD_ADMIN_URL" \
-    && ./node_modules/.bin/turbo run build --filter=letterpad-client --only --env-mode=loose
+RUN --mount=type=cache,id=letterpad-client-next,target=/app/apps/client/.next/cache,sharing=locked \
+    test -n "$LETTERPAD_ADMIN_URL" \
+    && ./node_modules/.bin/turbo run build --filter=letterpad-client --only --env-mode=loose \
+    && mkdir -p /tmp/letterpad-client-next-cache \
+    && cp -a /app/apps/client/.next/cache/. /tmp/letterpad-client-next-cache/
 
 FROM node:22-bookworm-slim AS runtime
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates openssl \
@@ -54,12 +61,14 @@ USER node
 
 FROM runtime AS admin
 COPY --from=admin-build --chown=node:node /app /app
+COPY --from=admin-build --chown=node:node /tmp/letterpad-admin-next-cache/ /app/apps/admin/.next/cache/
 WORKDIR /app/apps/admin
 EXPOSE 3000
 CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3000"]
 
 FROM runtime AS client
 COPY --from=client-build --chown=node:node /app /app
+COPY --from=client-build --chown=node:node /tmp/letterpad-client-next-cache/ /app/apps/client/.next/cache/
 WORKDIR /app/apps/client
 EXPOSE 3001
 CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3001"]
