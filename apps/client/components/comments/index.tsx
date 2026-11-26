@@ -37,7 +37,7 @@ export const Comments: FC<Props> = ({ postId }) => {
   }, [fetchComments, isIntersecting]);
 
   const onSubmit = (text: string, child?: boolean) => {
-    if (!session?.user?.name) {
+    if (!session?.user) {
       return session.showLogin(true);
     }
     if (child && !replyTo) return;
