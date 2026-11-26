@@ -13,6 +13,7 @@ import { Button, Drawer, Modal } from 'ui/dist/index.mjs';
 import { startClientSso } from '../lib/utils/clientSso';
 import { Subscribe } from '../src/components/subscribe';
 interface Session {
+  sessionChecked?: boolean;
   user?: {
     avatar: string;
     name: string;
@@ -36,10 +37,19 @@ export function SessionProvider({ children }: any) {
     const refresh = async () => {
       try {
         const response = await fetch('/api/sso/session', { cache: 'no-store' });
-        if (!response.ok) return;
+        if (!response.ok) {
+          if (active)
+            setSession((current) => ({ ...current, sessionChecked: true }));
+          return;
+        }
         const { user, canCheck } = await response.json();
         if (!active) return;
-        setSession({ user, showLogin, showSubscribe: setShowSubscribe });
+        setSession({
+          user,
+          showLogin,
+          showSubscribe: setShowSubscribe,
+          sessionChecked: true,
+        });
         if (!user && canCheck) {
           const key = 'letterpad-sso-last-check';
           const now = Date.now();
@@ -50,6 +60,7 @@ export function SessionProvider({ children }: any) {
         }
       } catch {
         // Public reading continues if session discovery is unavailable.
+        if (active) setSession((current) => ({ ...current, sessionChecked: true }));
       }
     };
     void refresh();
