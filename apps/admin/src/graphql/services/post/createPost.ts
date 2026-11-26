@@ -13,7 +13,11 @@ import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";
 
 export const createPost = async (
   args: MutationCreatePostArgs,
-  { prisma, session }: ResolverContext
+  { prisma, session }: {
+    prisma: ResolverContext["prisma"];
+    session?: { user: { id: string } } | null;
+  },
+  draftHtml?: string
 ): Promise<CreatePostResponse> => {
   if (!args.data || !session?.user.id) {
     return {
@@ -34,6 +38,7 @@ export const createPost = async (
   }
   const dataToUpdate: Prisma.PostCreateInput = {
     html: args.data.html || "",
+    html_draft: draftHtml,
     page_data: JSON.stringify({ rows: [] }),
   };
 
@@ -47,10 +52,10 @@ export const createPost = async (
     dataToUpdate.cover_image = args.data.cover_image.src;
   }
   if (args.data.cover_image?.width) {
-    dataToUpdate.cover_image = args.data.cover_image.width.toString();
+    dataToUpdate.cover_image_width = args.data.cover_image.width;
   }
   if (args.data.cover_image?.height) {
-    dataToUpdate.cover_image = args.data.cover_image.height.toString();
+    dataToUpdate.cover_image_height = args.data.cover_image.height;
   }
   if (args.data.status) {
     dataToUpdate.status = args.data.status;
