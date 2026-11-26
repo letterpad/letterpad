@@ -2,8 +2,9 @@
 import { useCallback, useEffect, useState } from "react";
 
 export const useResponsive = () => {
-  const initialWidth = typeof window !== "undefined" ? window.innerWidth : 0;
-  const [width, setWidth] = useState(initialWidth);
+  // Use the same first-render width on the server and browser. The effect
+  // updates it to the real viewport after hydration.
+  const [width, setWidth] = useState(1024);
 
   const handleWindowSizeChange = useCallback(() => {
     setWidth(typeof window !== "undefined" ? window.innerWidth : 0);
@@ -20,13 +21,12 @@ export const useResponsive = () => {
 
   const isMobile = width <= 768;
   const isTablet = width <= 1024;
-  const isDesktop = width > 1024 || typeof window === "undefined";
+  const isDesktop = width > 1024;
 
   return {
     isDesktop,
     isMobile,
     isTablet,
-    isMobileOrTablet:
-      typeof window === "undefined" ? false : isMobile || isTablet,
+    isMobileOrTablet: isMobile || isTablet,
   };
 };
