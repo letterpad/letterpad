@@ -36,13 +36,20 @@ export async function POST() {
       ).toString(),
       cancel_url: new URL("membership", getRootUrl()).toString(),
     });
-    return NextResponse.json({ id: session.id });
+    if (!session.url) {
+      return NextResponse.json(
+        { message: "Stripe did not return a checkout URL." },
+        { status: 502 }
+      );
+    }
+    return NextResponse.json({ id: session.id, url: session.url });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(error);
     if (error instanceof Stripe.errors.StripeError) {
       const { message } = error;
-      return NextResponse.json({ message }, { status: error.statusCode });
+      return NextResponse.json({ message }, { status: error.statusCode ?? 502 });
     }
+    return NextResponse.json({ message: "Checkout is unavailable." }, { status: 502 });
   }
 }

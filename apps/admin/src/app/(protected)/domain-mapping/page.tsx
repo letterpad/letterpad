@@ -2,8 +2,13 @@ import { PageHeader } from "ui/dist/isomorphic.mjs";
 
 import { Content } from "@/components/client-wrapper";
 import { UpgradeBanner } from "@/components/upgrade-plan-banner/upgrade-banner";
+import {
+  managedDomainMessage,
+  usesManagedDomains,
+} from "@/graphql/services/domain/provider";
 
 import { Feature } from "@/app/(protected)/domain-mapping/_feature";
+import { ManagedDomain } from "@/app/(protected)/domain-mapping/_feature/components/managed-domain";
 
 interface Props {
   readOnly: boolean;
@@ -22,8 +27,14 @@ const DomainMapping: React.FC<Props> = () => {
 
       <Content>
         <div className="flex max-w-4xl flex-auto flex-col gap-1">
-          <UpgradeBanner />
-          <Feature />
+          {usesManagedDomains() ? (
+            <ManagedDomain description={managedDomainMessage} />
+          ) : (
+            <>
+              <UpgradeBanner />
+              <Feature />
+            </>
+          )}
         </div>
       </Content>
     </>
