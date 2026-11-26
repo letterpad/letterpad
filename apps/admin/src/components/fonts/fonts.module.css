@@ -1,0 +1,12 @@
+.paragraph {
+  --font-paragraph: "DM Sans Variable", sans-serif;
+}
+.code {
+  --font-code: "Roboto Mono Variable", monospace;
+}
+.heading {
+  --font-heading: "Outfit Variable", sans-serif;
+}
+.sans {
+  --font-sans: "Nunito Variable", sans-serif;
+}

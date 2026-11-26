@@ -1,0 +1,41 @@
+FROM node:22-bookworm-slim AS build
+RUN apt-get update && apt-get install -y --no-install-recommends bash ca-certificates openssl \
+    && rm -rf /var/lib/apt/lists/* \
+    && npm install --global bun@1.0.21
+WORKDIR /app
+COPY . .
+RUN bun install --ignore-scripts
+RUN ./node_modules/.bin/prisma generate --schema=apps/admin/prisma/postgres/schema_postgres.prisma
+
+ARG LETTERPAD_ADMIN_URL
+ENV NEXT_PUBLIC_ROOT_URL=${LETTERPAD_ADMIN_URL} \
+    NEXT_PUBLIC_API_URL=${LETTERPAD_ADMIN_URL}/api/graphql \
+    NEXT_TELEMETRY_DISABLED=1
+RUN test -n "$LETTERPAD_ADMIN_URL" \
+    && ROOT_URL="$LETTERPAD_ADMIN_URL" NEXTAUTH_URL="$LETTERPAD_ADMIN_URL/api/auth" \
+       DATABASE_URL=postgresql://build:build@127.0.0.1:1/letterpad \
+       DIRECT_URL=postgresql://build:build@127.0.0.1:1/letterpad \
+       STRIPE_SECRET_KEY=sk_test_build_placeholder \
+       ./node_modules/.bin/turbo run build --env-mode=loose --concurrency=2
+
+FROM node:22-bookworm-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates openssl \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --from=build --chown=node:node /app /app
+ARG LETTERPAD_ADMIN_URL
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    NEXT_PUBLIC_ROOT_URL=${LETTERPAD_ADMIN_URL} \
+    NEXT_PUBLIC_API_URL=${LETTERPAD_ADMIN_URL}/api/graphql
+USER node
+
+FROM runtime AS admin
+WORKDIR /app/apps/admin
+EXPOSE 3000
+CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3000"]
+
+FROM runtime AS client
+WORKDIR /app/apps/client
+EXPOSE 3001
+CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3001"]

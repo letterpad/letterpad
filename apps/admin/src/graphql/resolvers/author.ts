@@ -144,7 +144,12 @@ const Query: QueryResolvers<ResolverContext> = {
       ok: true,
     };
   },
-  async isFollowing(_parent, { username }, { prisma, session }) {
+  async isFollowing(
+    _parent,
+    { username },
+    { prisma, session: adminSession, clientSession }
+  ) {
+    const session = adminSession ?? clientSession;
     if (!session?.user?.id) return { following: false, ok: false };
     const a = await prisma.author.findFirst({ where: { username } });
     const b = await prisma.follows.findFirst({
@@ -169,7 +174,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async updateAuthor(_root, args, context) {
     return updateAuthor(args, context);
   },
-  async followAuthor(_root, { username }, { prisma, session }) {
+  async followAuthor(
+    _root,
+    { username },
+    { prisma, session: adminSession, clientSession }
+  ) {
+    const session = adminSession ?? clientSession;
     if (!session?.user?.id)
       return { ok: false, message: "You are not logged in" };
 
@@ -218,7 +228,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "You are now following this author",
     };
   },
-  async unFollowAuthor(_root, { username }, { prisma, session }) {
+  async unFollowAuthor(
+    _root,
+    { username },
+    { prisma, session: adminSession, clientSession }
+  ) {
+    const session = adminSession ?? clientSession;
     const author = await prisma.author.findFirst({
       where: { username },
       select: { id: true },

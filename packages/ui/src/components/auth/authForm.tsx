@@ -51,7 +51,7 @@ export const AuthForm: FC<Props> = ({
     let captchaToken = "";
     try {
       if (view === "login") {
-        const result = await onLoginAction({ data, serviceUrl, source });
+        const result = await onLoginAction({ data, serviceUrl, source, callbackUrl: params.get("callbackUrl") });
         if(result?.ok && result.status === 200) {
           setView("success")
         }
