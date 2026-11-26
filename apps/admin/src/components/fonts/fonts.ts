@@ -1,24 +1,13 @@
-import { DM_Sans, Nunito, Outfit, Roboto_Mono } from "next/font/google";
+import "@fontsource-variable/dm-sans";
+import "@fontsource-variable/nunito";
+import "@fontsource-variable/outfit";
+import "@fontsource-variable/roboto-mono";
 
-const paragraph = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-paragraph",
-});
-const code = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-code",
-});
-const heading = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-heading",
-});
-const sans = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-sans",
-});
+import styles from "./fonts.module.css";
 
-export const fonts = { paragraph, code, heading, sans };
+export const fonts = {
+  paragraph: { variable: styles.paragraph },
+  code: { variable: styles.code },
+  heading: { variable: styles.heading },
+  sans: { variable: styles.sans },
+};
