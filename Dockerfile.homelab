@@ -14,8 +14,9 @@ COPY packages/tsconfig/package.json packages/tsconfig/
 COPY packages/ui/package.json packages/ui/
 RUN bun install --ignore-scripts
 COPY packages/ packages/
-# Both GraphQL packages generate their clients from the admin schema.
+# Code generation uses the admin schema and query documents.
 COPY apps/admin/src/graphql/schema/ apps/admin/src/graphql/schema/
+COPY apps/admin/src/graphql/queries/ apps/admin/src/graphql/queries/
 RUN ./node_modules/.bin/turbo run build --filter=ui --filter=letterpad-graphql --filter=letterpad-sdk --concurrency=2
 
 FROM workspace AS app-build
