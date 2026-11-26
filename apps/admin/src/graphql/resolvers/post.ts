@@ -186,7 +186,8 @@ const Query: QueryResolvers<ResolverContext> = {
     }
   },
 
-  async isPostLiked(_, args, { prisma, session }) {
+  async isPostLiked(_, args, { prisma, session: adminSession, clientSession }) {
+    const session = adminSession ?? clientSession;
     if (!session?.user.id) {
       return {
         ok: false,
@@ -238,7 +239,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
   },
 
-  async likePost(_parent, args, { prisma, session }) {
+  async likePost(_parent, args, { prisma, session: adminSession, clientSession }) {
+    const session = adminSession ?? clientSession;
     if (!session?.user.id) {
       return {
         message: "You need to be logged in to like a post",
@@ -310,7 +312,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async unLikePost(_parent, args, { prisma, session }) {
+  async unLikePost(_parent, args, { prisma, session: adminSession, clientSession }) {
+    const session = adminSession ?? clientSession;
     if (!session?.user.id) {
       return {
         message: "You need to be logged in to like a post",

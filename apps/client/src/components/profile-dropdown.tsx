@@ -12,6 +12,7 @@ import { LuLogIn, LuLogOut } from 'react-icons/lu';
 import { useOnClickOutside } from '@/hooks/useOnClickOutisde';
 
 import { useSession } from '../../context/SessionProvider';
+import { signOutClient, startClientSso } from '../../lib/utils/clientSso';
 import { getApiRootUrl } from '../../lib/utils/url';
 
 export const ProfileDropdown = () => {
@@ -86,7 +87,7 @@ export const ProfileDropdown = () => {
               <MenuItem
                 label="Logout"
                 icon={<LuLogOut size={18} />}
-                path={`/api/identity/logout?source=${document.location.href}`}
+                onClick={() => void signOutClient()}
               />
             </>
           ) : (
@@ -94,7 +95,7 @@ export const ProfileDropdown = () => {
               <MenuItem
                 label="SignIn"
                 icon={<LuLogIn size={18} />}
-                path={`/api/identity/login?source=${document.location.href}`}
+                onClick={() => startClientSso(true)}
               />
               <MenuItem
                 label="Start Publishing"
@@ -108,14 +109,24 @@ export const ProfileDropdown = () => {
   );
 };
 
-const MenuItem = ({ label, icon, path, target = '' }) => {
-  const link = new URL(path, getApiRootUrl()).href;
+type MenuItemProps = {
+  label: string;
+  icon: React.ReactNode;
+  path?: string;
+  target?: string;
+  onClick?: () => void;
+};
+
+const MenuItem = ({ label, icon, path, target, onClick }: MenuItemProps) => {
+  const content = <><span>{icon}</span><span>{label}</span></>;
+  const className = 'flex items-center gap-2';
   return (
-    <li className="py-2.5 px-6  hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer ">
-      <a className="flex items-center gap-2" href={link} target={target}>
-        <span>{icon}</span>
-        <span>{label}</span>
-      </a>
+    <li className="py-2.5 px-6 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-100 text-sm cursor-pointer">
+      {path ? (
+        <a className={className} href={new URL(path, getApiRootUrl()).href} target={target}>{content}</a>
+      ) : (
+        <button type="button" className={className} onClick={onClick}>{content}</button>
+      )}
     </li>
   );
 };

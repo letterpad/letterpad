@@ -1,71 +1,34 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decode } from "next-auth/jwt";
+import { getToken } from "next-auth/jwt";
 
+import { allowedClientOrigin } from "@/lib/clientSso";
 import { getLoginUrl, getRootUrl } from "@/shared/getRootUrl";
-import { getAuthCookieName } from "@/utils/authCookie";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { action: string } }
-) {
-  const sourceUrl = req.nextUrl.searchParams.get("source") ?? "";
-  const serviceUrl = req.nextUrl.searchParams.get("serviceUrl") ?? "";
-  const decodedToken = await decode({
-    token: req.cookies.get(getAuthCookieName())?.value!,
-    secret: process.env.SECRET_KEY,
-  });
-  if (!decodedToken && params.action === "logout") {
-    return NextResponse.redirect(`${serviceUrl}?source=${sourceUrl}`, {
-      status: 302,
-    });
+export async function GET(req: NextRequest, { params }: { params: { action: string } }) {
+  if (params.action !== "login") return new Response(null, { status: 404 });
+  const root = new URL(getRootUrl());
+  const headers = { "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" };
+  let target: URL;
+  try {
+    target = new URL(req.nextUrl.searchParams.get("source") ?? "/posts", root);
+  } catch {
+    return new Response(null, { status: 400, headers });
   }
-
-  if (!decodedToken) {
-    const url = new URL(getLoginUrl());
-    url.searchParams.append("error", "unauthorized");
-    url.searchParams.append("source", sourceUrl);
-    url.searchParams.append("serviceUrl", serviceUrl);
-
-    return NextResponse.redirect(url.href, { status: 307 });
-  }
-
-  if (params.action === "logout") {
-    const requestHeaders = new Headers(req.headers);
-    req.cookies.delete(getAuthCookieName());
-    requestHeaders.delete("cookie");
-    requestHeaders.set(
-      "set-cookie",
-      `${getAuthCookieName()}=; Max-Age=-1; path=/; secure;`
-    );
-    const response = NextResponse.redirect(
-      `${serviceUrl}?source=${sourceUrl}`,
-      { status: 302, headers: requestHeaders }
-    );
-    return response;
-  }
-
-  if (params.action === "login") {
-    try {
-      if (!serviceUrl) {
-        const url = new URL(getLoginUrl());
-        url.searchParams.append("error", "serviceUrl_is_missing");
-        return NextResponse.redirect(url.href, { status: 302 });
-      }
-      const cookieStore = cookies();
-      const sessionToken = cookieStore.get(getAuthCookieName())?.value!;
-      if (new URL(serviceUrl).host === new URL(getRootUrl()).host) {
-        return NextResponse.redirect(sourceUrl, { status: 302 });
-      }
-      const src = new URL(serviceUrl);
-      src.searchParams.append("token", sessionToken);
-      src.searchParams.append("source", sourceUrl);
-      const response = NextResponse.redirect(src.href, { status: 302 });
-      return response;
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(e);
-      // return NextResponse.redirect("/login?error=serviceUrl is missing", { status: 307 });
+  if (target.origin !== root.origin) {
+    if (!await allowedClientOrigin(target.origin)) {
+      return new Response(null, { status: 400, headers });
     }
+    const start = new URL("/api/sso/start", target.origin);
+    start.searchParams.set("return", target.pathname + target.search + target.hash);
+    start.searchParams.set("interactive", "1");
+    return NextResponse.redirect(start, { headers });
   }
+  if (target.pathname.startsWith("/api/")) target = new URL("/posts", root);
+  const token = await getToken({
+    req, secret: process.env.SECRET_KEY, secureCookie: root.protocol === "https:",
+  });
+  if (token) return NextResponse.redirect(target, { headers });
+  const login = new URL(getLoginUrl());
+  login.searchParams.set("callbackUrl", target.href);
+  return NextResponse.redirect(login, { headers });
 }

@@ -1,13 +1,6 @@
 'use client';
+import { signOutClient } from '@/lib/utils/clientSso';
 
-import { getApiRootUrl } from 'lib/utils/url';
-
-export const Logout = () => {
-  const onClick = (e) => {
-    e.preventDefault();
-    document.location.href = `${getApiRootUrl()}api/identity/logout?source=${
-      document.location.href
-    }`;
-  };
-  return <button onClick={onClick}>Logout</button>;
-};
+export const Logout = () => (
+  <button type="button" onClick={() => void signOutClient()}>Logout</button>
+);

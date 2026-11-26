@@ -46,8 +46,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async createComment(
     _root,
     { parent_id, content, post_id },
-    { prisma, session }
+    { prisma, session: adminSession, clientSession }
   ) {
+    const session = adminSession ?? clientSession;
     if (!session?.user.id) {
       return {
         message: "You must be logged in to comment",

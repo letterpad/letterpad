@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { RegisterStep, Role } from "letterpad-graphql";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -10,6 +11,7 @@ import PrismaClient, { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
+import { parentSessionId, revokeClientSessions } from "@/lib/clientSso";
 
 import { isBlackListed } from "./blacklist";
 import { sendMail } from "../../../graphql/mail/sendMail";
@@ -69,6 +71,10 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
   providers: providers(req),
   adapter: PrismaAdapter(authPrisma),
   events: {
+    async signOut({ token }) {
+      const parent = token && parentSessionId(token);
+      if (parent && process.env.LETTERPAD_SSO_SECRET) await revokeClientSessions(parent);
+    },
     createUser: async ({ user }) => {
       if (!user.email) return;
       const author = await prisma.author.findFirst({
@@ -94,9 +100,10 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {
-        return { ...token, ...session };
+        return { ...token, ...session, sub: token.sub, ssoSessionId: token.ssoSessionId };
       }
       if (user?.email) {
+        token.ssoSessionId = randomUUID();
         const author = await prisma.author.findUnique({
           where: { email: user.email },
           include: { role: true, membership: true },

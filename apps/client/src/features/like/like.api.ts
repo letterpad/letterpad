@@ -33,13 +33,15 @@ export const hasLiked = async (postId: string) => {
 };
 
 export const likePost = async (postId: string) => {
-  const url = new URL('/redirect-api/events/like', window.location.href);
-  const params = new URLSearchParams({
-    id: postId.toString(),
-    type: 'post',
+  const url = new URL('/redirect-api/graphql', window.location.href);
+  const req = await fetch(url.href, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: 'mutation LikePost($postId: String!) { likePost(postId: $postId) { ok message } }',
+      variables: { postId },
+    }),
   });
-  url.search = params.toString();
-  const req = await fetch(url.href);
   const data = await req.json();
   return data.data;
 };

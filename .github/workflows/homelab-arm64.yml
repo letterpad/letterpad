@@ -2,7 +2,7 @@ name: Letterpad homelab ARM64
 
 on:
   push:
-    branches: [homelab-arm64]
+    branches: [homelab-arm64, homelab-sso]
   workflow_dispatch:
     inputs:
       admin_url:

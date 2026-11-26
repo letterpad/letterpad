@@ -5,12 +5,11 @@ import { decode } from "next-auth/jwt";
 import { isInMaintenanceModeEnabled } from "ui/dist/server.mjs";
 
 import { SessionData } from "./graphql/types";
-import { getRootUrl } from "./shared/getRootUrl";
 import { getAuthCookieName } from "./utils/authCookie";
 
 export const config = {
   matcher:
-    "/((?!_next/static|_next/image|logo|manifest.webmanifest|favicon.ico|graphql|api/auth|api/graphql).*)",
+    "/((?!_next/static|_next/image|logo|manifest.webmanifest|favicon.ico|graphql|api/auth|api/graphql|api/sso/|api/identity/).*)",
 };
 
 const isPlatform = process.env.LETTERPAD_PLATFORM;
@@ -29,7 +28,6 @@ export async function middleware(request: NextRequest) {
   const cookie = request.cookies.get(getAuthCookieName());
   const proto = request.headers.get("x-forwarded-proto");
   const host = request.headers.get("host");
-  const source = new URL(request.url).searchParams.get("source");
   const ROOT_URL = proto + "://" + host;
 
   const pathname = request.nextUrl.pathname;
@@ -84,9 +82,6 @@ export async function middleware(request: NextRequest) {
       });
     }
   }
-  if (source) {
-    return handleAuth({ request, source });
-  }
   const nextUrl = request.nextUrl;
   if (request.nextUrl.pathname === "/") {
     let participant = cookies().get("trendingPosition")?.value;
@@ -109,38 +104,3 @@ export async function middleware(request: NextRequest) {
   return NextResponse.rewrite(nextUrl);
 }
 
-interface Props {
-  request: NextRequest;
-  source: string;
-  user?: any;
-}
-function handleAuth({ request, source }: Props) {
-  const sourceURL = new URL(source);
-  const callback = new URL(`${sourceURL.protocol}//${sourceURL.host}`);
-  const adminURL = new URL(getRootUrl()!);
-  const url = request.nextUrl;
-  const isLogin = url.pathname === "/api/identity/login";
-  const isLogout = url.pathname === "/api/identity/logout";
-
-  if (adminURL.host !== callback.host) {
-    if (!url.searchParams.get("serviceUrl")) {
-      const requestHeaders = new Headers();
-      url.searchParams.set("source", source);
-      if (isLogin) {
-        url.pathname = "api/identity/login";
-        url.searchParams.set(
-          "serviceUrl",
-          `${callback.href}api/identity/login`
-        );
-      }
-      if (isLogout) {
-        url.pathname = "api/identity/logout";
-        url.searchParams.set(
-          "serviceUrl",
-          `${callback.href}api/identity/logout`
-        );
-      }
-      return NextResponse.redirect(url, { headers: requestHeaders });
-    }
-  }
-}
