@@ -46,7 +46,7 @@ export async function middleware(request: NextRequest) {
           return NextResponse.redirect(ROOT_URL + "/update/profile-info");
         }
         if (user.register_step === RegisterStep.SiteInfo) {
-          return NextResponse.redirect(ROOT_URL + "update/site-info");
+          return NextResponse.redirect(ROOT_URL + "/update/site-info");
         }
       }
       if (
