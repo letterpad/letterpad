@@ -25,7 +25,7 @@ import {
 } from "@/app/(protected)/settings/_feature/api.client";
 import { registrationPaths } from "@/constants";
 import { EventAction, EventCategory, track } from "@/track";
-import { isAuthor } from "@/utils/type-guards";
+import { isAuthor, isSettings } from "@/utils/type-guards";
 
 type UpdateProps = Pick<
   Setting,
@@ -57,11 +57,18 @@ export const SiteInfo = () => {
     if (!session.data?.user?.id) return null;
     setBusy(true);
     try {
-      await updateSettings({
+      const settingsResult = await updateSettings({
         options: {
           ...change,
         },
       });
+      if (
+        settingsResult.error ||
+        !isSettings(settingsResult.data?.updateOptions)
+      ) {
+        setBusy(false);
+        return;
+      }
     } catch (e: any) {
       // eslint-disable-next-line no-console
       console.log(e);
