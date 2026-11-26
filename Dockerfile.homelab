@@ -1,28 +1,48 @@
-FROM node:22-bookworm-slim AS build
+FROM node:22-bookworm-slim AS workspace
 RUN apt-get update && apt-get install -y --no-install-recommends bash ca-certificates openssl \
     && rm -rf /var/lib/apt/lists/* \
     && npm install --global bun@1.0.21
 WORKDIR /app
-COPY . .
+COPY package.json bun.lockb turbo.json ./
+COPY apps/admin/package.json apps/admin/
+COPY apps/client/package.json apps/client/
+COPY packages/config/package.json packages/config/
+COPY packages/eslint-config-custom/package.json packages/eslint-config-custom/
+COPY packages/graphql/package.json packages/graphql/
+COPY packages/sdk/package.json packages/sdk/
+COPY packages/tsconfig/package.json packages/tsconfig/
+COPY packages/ui/package.json packages/ui/
 RUN bun install --ignore-scripts
-RUN ./node_modules/.bin/prisma generate --schema=apps/admin/prisma/postgres/schema_postgres.prisma
+COPY packages/ packages/
+# Both GraphQL packages generate their clients from the admin schema.
+COPY apps/admin/src/graphql/schema/ apps/admin/src/graphql/schema/
+RUN ./node_modules/.bin/turbo run build --filter=ui --filter=letterpad-graphql --filter=letterpad-sdk --concurrency=2
 
+FROM workspace AS app-build
 ARG LETTERPAD_ADMIN_URL
 ENV NEXT_PUBLIC_ROOT_URL=${LETTERPAD_ADMIN_URL} \
     NEXT_PUBLIC_API_URL=${LETTERPAD_ADMIN_URL}/api/graphql \
     NEXT_TELEMETRY_DISABLED=1
+
+FROM app-build AS admin-build
+COPY apps/admin/ apps/admin/
+RUN ./node_modules/.bin/prisma generate --schema=apps/admin/prisma/postgres/schema_postgres.prisma
 RUN test -n "$LETTERPAD_ADMIN_URL" \
     && ROOT_URL="$LETTERPAD_ADMIN_URL" NEXTAUTH_URL="$LETTERPAD_ADMIN_URL/api/auth" \
        DATABASE_URL=postgresql://build:build@127.0.0.1:1/letterpad \
        DIRECT_URL=postgresql://build:build@127.0.0.1:1/letterpad \
        STRIPE_SECRET_KEY=sk_test_build_placeholder \
-       ./node_modules/.bin/turbo run build --env-mode=loose --concurrency=2
+       ./node_modules/.bin/turbo run build --filter=admin --only --env-mode=loose
+
+FROM app-build AS client-build
+COPY apps/client/ apps/client/
+RUN test -n "$LETTERPAD_ADMIN_URL" \
+    && ./node_modules/.bin/turbo run build --filter=letterpad-client --only --env-mode=loose
 
 FROM node:22-bookworm-slim AS runtime
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates openssl \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-COPY --from=build --chown=node:node /app /app
 ARG LETTERPAD_ADMIN_URL
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
@@ -31,11 +51,13 @@ ENV NODE_ENV=production \
 USER node
 
 FROM runtime AS admin
+COPY --from=admin-build --chown=node:node /app /app
 WORKDIR /app/apps/admin
 EXPOSE 3000
 CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3000"]
 
 FROM runtime AS client
+COPY --from=client-build --chown=node:node /app /app
 WORKDIR /app/apps/client
 EXPOSE 3001
 CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3001"]
