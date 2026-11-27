@@ -30,6 +30,12 @@ const Status = ({ status }: { status: PostStatusOptions }) => (
   </span>
 );
 
+const getTopic = (tags: AdminPostsFragmentFragment["tags"]) => {
+  if (!tags || !("rows" in tags)) return undefined;
+  const topic = tags.rows.find((tag) => tag.name.startsWith(TOPIC_PREFIX));
+  return topic?.name.slice(TOPIC_PREFIX.length);
+};
+
 export const columns = ({
   changeStatus,
   onSettingsClick,
@@ -38,30 +44,34 @@ export const columns = ({
   {
     accessorKey: "title",
     header: "Title",
-    cell: ({ row: { original: post } }) => (
-      <>
-        <Link
-          className="workspace-post-title"
-          href={`/post/${post.id}`}
-          prefetch={false}
-        >
-          {post.title || "Untitled"}
-        </Link>
-        {post.excerpt && (
-          <p className="workspace-post-excerpt workspace-post-meta">
-            {post.excerpt}
-          </p>
-        )}
-        <div className="workspace-post-mobile-meta workspace-post-meta">
-          <Status status={post.status} />
-          {post.updatedAt && (
-            <time dateTime={post.updatedAt}>
-              {getReadableDate(post.updatedAt)}
-            </time>
+    cell: ({ row: { original: post } }) => {
+      const topic = displayTags ? getTopic(post.tags) : undefined;
+      return (
+        <>
+          <Link
+            className="workspace-post-title"
+            href={`/post/${post.id}`}
+            prefetch={false}
+          >
+            {post.title || "Untitled"}
+          </Link>
+          {post.excerpt && (
+            <p className="workspace-post-excerpt workspace-post-meta">
+              {post.excerpt}
+            </p>
           )}
-        </div>
-      </>
-    ),
+          <div className="workspace-post-mobile-meta workspace-post-meta">
+            <Status status={post.status} />
+            {topic && <span>{topic}</span>}
+            {post.updatedAt && (
+              <time dateTime={post.updatedAt}>
+                {getReadableDate(post.updatedAt)}
+              </time>
+            )}
+          </div>
+        </>
+      );
+    },
   },
   {
     accessorKey: "status",
@@ -83,14 +93,9 @@ export const columns = ({
     header: () => (displayTags ? "Topic" : null),
     cell: ({ row }) => {
       if (!displayTags) return null;
-      const tags = row.original.tags;
-      const topic =
-        tags?.__typename === "TagsNode"
-          ? tags.rows.find((tag) => tag.name.startsWith(TOPIC_PREFIX))
-          : undefined;
       return (
         <span className="workspace-post-meta">
-          {topic ? topic.name.replace(TOPIC_PREFIX, "") : "—"}
+          {getTopic(row.original.tags) ?? "—"}
         </span>
       );
     },

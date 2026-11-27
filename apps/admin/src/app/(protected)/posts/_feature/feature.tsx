@@ -108,17 +108,19 @@ export const Feature = () => {
         data={posts}
         loading={loading}
       />
-      <div className="flex justify-end mt-6">
-        <Paginator
-          currentPage={parseInt(params.get("page") || "1", 10)}
-          totalPages={totalPages}
-          onPageChange={(page) => {
-            setPosts([]);
-            updateParamsAndNavigate({ page });
-          }}
-          showPreviousNext={false}
-        />
-      </div>
+      {totalPages > 1 && (
+        <div className="flex justify-end mt-6">
+          <Paginator
+            currentPage={parseInt(params.get("page") || "1", 10)}
+            totalPages={totalPages}
+            onPageChange={(page) => {
+              setPosts([]);
+              updateParamsAndNavigate({ page });
+            }}
+            showPreviousNext={false}
+          />
+        </div>
+      )}
       <FormProvider {...methods}>
         <AutoSaveForm defaultValue={selectedPost} />
         <PostSettingsModal visible={!!postId} onClose={() => setPostId(null)} />
