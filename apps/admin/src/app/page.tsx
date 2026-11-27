@@ -1,62 +1,57 @@
 import { Metadata, Viewport } from "next";
 
+import { Homepage } from "@/components/homepage";
+
 import { getRootUrl } from "@/shared/getRootUrl";
 
-import { Ads } from "./ads";
-import Header from "../components/header/Header";
-import { Website as WebsiteV2 } from "../components/website_v2";
-import { AiAd } from "../components/website_v2/banner/aiAd";
-import Footer from "../components/website_v2/Footer";
-
-const Home = () => {
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { before?: string };
+}) {
+  const before = searchParams.before;
+  const cursor =
+    typeof before === "string" && /^[\w-]{1,100}$/.test(before)
+      ? before
+      : undefined;
   return (
     <>
       <script
-        key="structured-data"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(letterpadStructuredData),
         }}
       />
-      <Ads />
-      <div className="flex flex-col justify-between min-h-screen home-gradient">
-        <AiAd />
-        <Header displayBg={false} />
-        <div className="md:px-0 flex-1">
-          <div className="flex flex-col justify-between">
-            <WebsiteV2 />
-          </div>
-        </div>
-        <Footer />
-      </div>
+      <Homepage cursor={cursor} />
     </>
   );
-};
-
-export default Home;
+}
 
 export const viewport: Viewport = {
-  themeColor: "black",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf9f6" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1b19" },
+  ],
   width: "device-width",
 };
 
 export const metadata: Metadata = {
-  title: "Letterpad - A blog publishing platform",
+  title: "Letterpad — Discover independent writing",
   description:
-    "Letterpad simplifies blogging, making it easy to start your online writing journey.",
+    "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
   openGraph: {
     type: "website",
     url: getRootUrl(),
-    title: "Letterpad - A blog publishing platform",
+    title: "Letterpad — Discover independent writing",
     description:
-      "Letterpad simplifies blogging, making it easy to start your online writing journey.",
-    siteName: "Letterpad - A blog publishing platform",
+      "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
+    siteName: "Letterpad — Discover independent writing",
     images: [
       {
         url: getRootUrl() + "/website/theme-1.png",
         width: 1200,
         height: 630,
-        alt: "Letterpad - A blog publishing platform",
+        alt: "Letterpad — Discover independent writing",
       },
     ],
   },
@@ -64,8 +59,8 @@ export const metadata: Metadata = {
     site: "@__abhisaha",
     card: "summary_large_image",
     description:
-      "Letterpad simplifies blogging, making it easy to start your online writing journey.",
-    title: "Letterpad - A blog publishing platform",
+      "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
+    title: "Letterpad — Discover independent writing",
     images: [
       {
         url: getRootUrl() + "/website/theme-1.png",
@@ -96,5 +91,5 @@ const letterpadStructuredData = {
     },
   },
   description:
-    "Letterpad simplifies blogging, making it easy to start your online writing journey.",
+    "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
 };

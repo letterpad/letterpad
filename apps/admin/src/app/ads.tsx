@@ -1,36 +1,33 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 
-export const Ads = () => {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) return null;
+type AdsWindow = Window & { adsbygoogle?: Record<string, never>[] };
+
+export function Ads({ clientId, slot }: { clientId: string; slot: string }) {
+  const requested = useRef(false);
   return (
     <>
-      {process.env.NEXT_PUBLIC_LETTERPAD_PLATFORM && (
-        <Script
-          id="gscript-ads"
-          strategy="lazyOnload" // CANNOT Omit!!!
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8634830579255969"
-          crossOrigin="anonymous"
-        />
-      )}
       <ins
         className="adsbygoogle block"
-        data-ad-client="ca-pub-8634830579255969"
-        data-ad-slot="3222387411"
+        data-ad-client={clientId}
+        data-ad-slot={slot}
         data-ad-format="auto"
         data-full-width-responsive="true"
-      ></ins>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `(adsbygoogle = window.adsbygoogle || []).push({})`,
+      />
+      <Script
+        id="letterpad-homepage-ads"
+        strategy="lazyOnload"
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(clientId)}`}
+        crossOrigin="anonymous"
+        onReady={() => {
+          if (requested.current) return;
+          requested.current = true;
+          const target = window as AdsWindow;
+          (target.adsbygoogle ??= []).push({});
         }}
       />
     </>
   );
-};
+}
