@@ -9,7 +9,8 @@ import { uploadToInternal } from "@/pages/api/providers/internal";
 
 export async function storeMediaUpload(
   authorId: string,
-  file: MediaUploadFile
+  file: MediaUploadFile,
+  options: { requireCloudinary?: boolean } = {}
 ) {
   const settings = await prisma.setting.findUnique({
     where: { author_id: authorId },
@@ -32,6 +33,13 @@ export async function storeMediaUpload(
           api_secret: settings?.cloudinary_secret,
           cloud_name: settings?.cloudinary_name,
         };
+
+  if (
+    options.requireCloudinary &&
+    !(creds.api_key && creds.api_secret && creds.cloud_name)
+  ) {
+    throw new Error("Cloudinary credentials are not configured.");
+  }
 
   const hash = createHash("sha256").update(file.buffer).digest("hex");
   const extension = path.extname(file.originalname).toLowerCase();

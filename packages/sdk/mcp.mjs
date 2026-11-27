@@ -29,7 +29,13 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
     }
     const result = await response.json().catch(() => null);
     if (!response.ok) {
-      if (response.status < 500 && typeof result?.error === "string") {
+      if (
+        typeof result?.error === "string" &&
+        (
+          response.status < 500 ||
+          result.error.startsWith("Image storage failed:")
+        )
+      ) {
         throw Object.assign(new Error(result.error), {
           status: response.status,
         });
@@ -77,14 +83,15 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
   }
 
   return {
-    listPublishedPosts: (params) => read("list", params),
-    getPublishedPost: (params) => read("get", params),
+    listMyPosts: (params) => readPrivate("list-my-posts", params),
+    getMyPost: (params) => readPrivate("get-my-post", params),
     listMyDrafts: (params) => readPrivate("list-drafts", params),
     getMyDraft: (params) => readPrivate("get-draft", params),
     getMyBlogSettings: () => readPrivate("get-settings", {}),
     updateMyBlogSettings: (args) => write("update-settings", args),
     createDraft: (args) => write("create", args),
     updateDraft: (args) => write("update", args),
+    publishMyDraft: (args) => write("publish", args),
     uploadImage: (args) => write("upload", args),
     uploadImageFile: (filename, file) =>
       request(endpoint, {

@@ -1,7 +1,9 @@
 import { imageSize } from "image-size";
-import { PostStatusOptions, PostTypes } from "letterpad-graphql";
+import { PostStatusOptions, PostTypes, Role } from "letterpad-graphql";
 
+import { IMediaUploadResult } from "@/graphql/types";
 import { createPost } from "@/graphql/services/post/createPost";
+import { updatePost } from "@/graphql/services/post/updatePost";
 import { updateSetting } from "@/graphql/services/setting/updateSetting";
 import { getMcpWriter } from "@/lib/mcpTokens";
 import { prisma } from "@/lib/prisma";
@@ -246,6 +248,37 @@ async function readDrafts(
   });
 }
 
+async function readMyPosts(
+  request: Request,
+  query: URLSearchParams,
+  op: string
+) {
+  const authorId = await getWriter(request);
+  const where = { ...publishedArticle, author_id: authorId };
+  if (op === "get-my-post") {
+    const post = await prisma.post.findFirst({
+      where: { ...where, id: textField(query.get("id"), "id", 100) },
+      select: { ...articleMetadata, html: true },
+    });
+    if (!post) throw new RequestError("Published post not found.", 404);
+    const { html, ...metadata } = post;
+    return reply({ ...articleResponse(metadata), ...htmlResponse(html) });
+  }
+
+  const { limit, offset } = readPage(query);
+  const posts = await prisma.post.findMany({
+    where,
+    select: articleMetadata,
+    orderBy: [{ publishedAt: "desc" }, { id: "desc" }],
+    skip: offset,
+    take: limit + 1,
+  });
+  return reply({
+    posts: posts.slice(0, limit).map(articleResponse),
+    nextOffset: nextOffset(posts.length, limit, offset),
+  });
+}
+
 async function readBlogSettings(request: Request) {
   const authorId = await getWriter(request);
   const settings = await prisma.setting.findUnique({
@@ -312,45 +345,13 @@ export async function GET(request: Request) {
     const query = new URL(request.url).searchParams;
     const op = query.get("op");
     if (op === "get-settings") return await readBlogSettings(request);
+    if (op === "list-my-posts" || op === "get-my-post") {
+      return await readMyPosts(request, query, op);
+    }
     if (op === "list-drafts" || op === "get-draft") {
       return await readDrafts(request, query, op);
     }
-    const username = query.get("username");
-    if (username !== null) textField(username, "username", 100);
-    if (op === "get") {
-      const post = await prisma.post.findFirst({
-        where: {
-          ...publishedArticle,
-          author: { username: textField(username, "username", 100) },
-          slug: textField(query.get("slug"), "slug", 255),
-        },
-        select: { ...articleMetadata, html: true },
-      });
-      if (!post) throw new RequestError("Published article not found.", 404);
-      const { html, ...metadata } = post;
-      return reply({
-        ...articleResponse(metadata),
-        ...htmlResponse(html),
-      });
-    }
-    if (op !== "list") throw new RequestError("Unknown public operation.");
-    const { limit, offset } = readPage(query);
-    const posts = await prisma.post.findMany({
-      where: {
-        ...publishedArticle,
-        exclude_from_home: false,
-        ...(username ? { author: { username: username.trim() } } : {}),
-      },
-      select: articleMetadata,
-      orderBy: [{ publishedAt: "desc" }, { id: "desc" }],
-      skip: offset,
-      take: limit + 1,
-    });
-    const postList = posts.slice(0, limit).map(articleResponse);
-    return reply({
-      posts: postList,
-      nextOffset: nextOffset(posts.length, limit, offset),
-    });
+    throw new RequestError("Unknown MCP read operation.");
   } catch (error) {
     return failure(error);
   }
@@ -449,10 +450,29 @@ async function saveImage(
   const label = textField(rawFilename, "filename", 140).replace(/\.[^.]*$/, "");
   const filename =
     (label.replace(/[^a-zA-Z0-9_-]/g, "-") || "image") + "." + extension;
-  const media = await storeMediaUpload(authorId, {
-    buffer,
-    originalname: filename,
-  });
+  let media: IMediaUploadResult;
+  try {
+    media = await storeMediaUpload(
+      authorId,
+      {
+        buffer,
+        originalname: filename,
+      },
+      { requireCloudinary: true }
+    );
+  } catch (error) {
+    const detail =
+      error instanceof Error
+        ? error.message
+        : typeof error === "object" && error && "error" in error
+          ? String(error.error)
+          : "Unknown storage error";
+    logger.error("MCP image storage failed", detail);
+    throw new RequestError(
+      `Image storage failed: ${detail.slice(0, 240)}`,
+      502
+    );
+  }
   return reply(
     {
       url: new URL(media.src, getRootUrl()).toString(),
@@ -461,6 +481,74 @@ async function saveImage(
     },
     201
   );
+}
+
+async function publishDraft(authorId: string, input: Record<string, unknown>) {
+  const id = textField(input.id, "id", 100);
+  const post = await prisma.post.findFirst({
+    where: {
+      author_id: authorId,
+      id,
+      type: PostTypes.Post,
+      banned: false,
+      status: { in: [PostStatusOptions.Draft, PostStatusOptions.Published] },
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      status: true,
+      author: { select: { setting: { select: { site_url: true } } } },
+    },
+  });
+  if (!post) throw new RequestError("Your draft was not found.", 404);
+  if (post.status === PostStatusOptions.Published) {
+    return reply({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      url: canonicalUrl(post.author?.setting?.site_url, post.slug),
+      status: "published",
+    });
+  }
+
+  const author = await prisma.author.findUnique({
+    where: { id: authorId },
+    select: {
+      username: true,
+      avatar: true,
+      role: { select: { name: true } },
+    },
+  });
+  if (!author) throw new RequestError("Letterpad author not found.", 404);
+
+  const result = await updatePost(
+    { data: { id: post.id, status: PostStatusOptions.Published } },
+    {
+      prisma,
+      session: {
+        user: {
+          id: authorId,
+          username: author.username ?? "",
+          avatar: author.avatar ?? "",
+          role: author.role?.name ?? Role.Author,
+        },
+      },
+    } as Parameters<typeof updatePost>[1]
+  );
+  if (result.__typename === "PostError") {
+    throw new RequestError(result.message, 400);
+  }
+  if (result.__typename !== "Post") {
+    throw new RequestError("Letterpad could not publish your draft.", 400);
+  }
+  return reply({
+    id: result.id,
+    title: result.title,
+    slug: result.slug,
+    url: canonicalUrl(post.author?.setting?.site_url, result.slug),
+    status: "published",
+  });
 }
 
 export async function PUT(request: Request) {
@@ -491,6 +579,7 @@ export async function POST(request: Request) {
     if (input.op === "upload") return await uploadImage(authorId, input);
     if (input.op === "update-settings")
       return await updateBlogSettings(authorId, input);
+    if (input.op === "publish") return await publishDraft(authorId, input);
     if (input.op !== "create" && input.op !== "update") {
       throw new RequestError("Unknown draft operation.");
     }
