@@ -14,11 +14,10 @@ import {
   LetterpadTrendingPostsQuery,
   PopularTagsDocument,
   PopularTagsQuery,
-  PostsDocument,
-  PostsQuery,
-  PostsQueryVariables,
 } from "letterpad-graphql";
 import { cookies } from "next/headers";
+
+import { searchHomepageStories } from "@/components/homepage/data";
 
 import { getApiUrl } from "@/shared/getRootUrl";
 
@@ -68,17 +67,7 @@ export async function getLetterpadCategories() {
 }
 
 export async function doOmniSearch(search: string) {
-  "use server";
-  const res = await client.query<PostsQuery, PostsQueryVariables>(
-    PostsDocument,
-    {
-      filters: {
-        search,
-      },
-    },
-    { requestPolicy: "network-only" }
-  );
-  return res.data?.posts.__typename === "PostsNode" ? res.data.posts.rows : [];
+  return searchHomepageStories(search);
 }
 
 export async function getfavAuthors() {

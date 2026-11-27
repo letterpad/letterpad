@@ -4,6 +4,7 @@ import { PostStatusOptions, PostTypes } from "letterpad-graphql";
 import { prisma } from "@/lib/prisma";
 
 import { getRootUrl } from "@/shared/getRootUrl";
+import { isPostgresDb } from "@/utils/utils";
 
 const storySelect = {
   id: true,
@@ -78,7 +79,9 @@ function storyFromRow(row: StoryRow) {
     authorId,
     favourite,
     authorHref: `/@${encodeURIComponent(username)}`,
-    readingTime: readingTime && (/\bread\b/i.test(readingTime) ? readingTime : readingTime + " read"),
+    readingTime:
+      readingTime &&
+      (/\bread\b/i.test(readingTime) ? readingTime : readingTime + " read"),
     publishedAt: row.publishedAt,
   };
 }
@@ -173,4 +176,26 @@ export async function getHomepageStories(cursor?: string) {
         ? latestRows[latestPageSize - 1].id
         : null,
   };
+}
+
+export async function searchHomepageStories(query: string) {
+  const term = typeof query === "string" ? query.trim().slice(0, 120) : "";
+  if (term.length < 2) return [];
+  const match = {
+    contains: term,
+    ...(isPostgresDb() ? { mode: "insensitive" as const } : {}),
+  };
+  const rows = await prisma.post.findMany({
+    where: {
+      ...publicStories,
+      publishedAt: { lte: new Date() },
+      OR: [{ title: match }, { excerpt: match }],
+    },
+    select: storySelect,
+    orderBy: [{ publishedAt: "desc" }, { id: "desc" }],
+    take: 12,
+  });
+  return rows
+    .map(storyFromRow)
+    .filter((story): story is HomepageStory => !!story);
 }
