@@ -4,7 +4,7 @@ import { AiOutlineLoading3Quarters } from "@react-icons/all-files/ai/AiOutlineLo
 import { BiSearch } from "@react-icons/all-files/bi/BiSearch";
 import { IoSearchOutline } from "@react-icons/all-files/io5/IoSearchOutline";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal } from "ui/dist/index.mjs";
 
 import { doOmniSearch } from "./data";
@@ -16,7 +16,7 @@ type SearchResults = UnwrapPromise<ReturnType<typeof doOmniSearch>>;
 
 const searchId = "default-search";
 
-export const Search = () => {
+export const Search = ({ showLabel = false }: { showLabel?: boolean }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [posts, setPosts] = useState<SearchResults>([]);
   const [loading, setLoading] = useState(false);
@@ -25,15 +25,17 @@ export const Search = () => {
     setPosts([]);
   };
 
-  useEffect(() => {}, []);
-
   return (
     <>
-      <IoSearchOutline
-        size={24}
-        className="cursor-pointer"
+      <button
+        type="button"
+        aria-label="Search"
+        className={showLabel ? "editorial-search" : "inline-flex items-center"}
         onClick={() => setShowSearch(true)}
-      />
+      >
+        <IoSearchOutline size={22} aria-hidden="true" />
+        {showLabel && <span>Search</span>}
+      </button>
       <Modal toggle={closeModal} show={showSearch} header="Search">
         <form
           onSubmit={async (e) => {

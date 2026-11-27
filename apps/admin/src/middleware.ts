@@ -1,5 +1,4 @@
 import { RegisterStep } from "letterpad-graphql";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { isInMaintenanceModeEnabled } from "ui/dist/server.mjs";
@@ -83,24 +82,5 @@ export async function middleware(request: NextRequest) {
       });
     }
   }
-  const nextUrl = request.nextUrl;
-  if (request.nextUrl.pathname === "/") {
-    let participant = cookies().get("trendingPosition")?.value;
-    if (!participant) {
-      const isControl = Math.random() > 0.5;
-      participant = isControl ? "control" : "variation";
-      request.nextUrl.searchParams.set(
-        "testVersion",
-        `${isControl ? "control" : "variation"}`
-      );
-    } else {
-      request.nextUrl.searchParams.set("testVersion", participant);
-    }
-    return NextResponse.rewrite(request.nextUrl, {
-      headers: new Headers({
-        "Set-Cookie": `trendingPosition=${participant}; path=/; secure; HttpOnly; SameSite=None; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=None`,
-      }),
-    });
-  }
-  return NextResponse.rewrite(nextUrl);
+  return NextResponse.rewrite(request.nextUrl);
 }
