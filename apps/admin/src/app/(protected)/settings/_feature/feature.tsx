@@ -5,7 +5,7 @@ import { SettingInputType } from "letterpad-graphql";
 import { useDeleteAuthorMutation } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button, Message, PopConfirm, TextArea } from "ui/dist/index.mjs";
 
@@ -57,7 +57,11 @@ const settingsLinks = [
 export function Settings({ cloudinaryEnabledByAdmin, mcpEnabled }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data } = useGetSettings();
+  // Wait for hydration before loading the authenticated form.
+  const [mounted, setMounted] = useState(false);
+  const { data } = useGetSettings(mounted);
+
+  useEffect(() => setMounted(true), []);
   const { updateSettings } = useUpdateSettings();
   const [_, deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
@@ -107,7 +111,7 @@ export function Settings({ cloudinaryEnabledByAdmin, mcpEnabled }: Props) {
     })(e);
   };
 
-  if (!data) return null;
+  if (!mounted || !data) return null;
 
   return (
     <FormProvider {...methods}>

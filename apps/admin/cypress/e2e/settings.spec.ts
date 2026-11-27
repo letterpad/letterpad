@@ -10,32 +10,31 @@ describe("Settings", () => {
   it("can fill SEO settings", () => {
     cy.visitSettings();
 
-    cy.getTestId("siteTitle").type("site title");
+    cy.getTestId("siteTitle").clear().type("site title");
+    cy.getTestId("shortDescription").clear().type("short description");
+    cy.getTestId("siteTagline").clear().type("site tagline");
+    cy.getTestId("siteEmail").clear().type("editor@example.com");
+    cy.getTestId("css").clear().type("body { color: black; }", {
+      parseSpecialCharSequences: false,
+    });
 
-    cy.getTestId("shortDescription").type("short description").tab();
+    saveSettings();
 
-    cy.getTestId("siteTagline").type("site tagline");
-
-    cy.getTestId("siteEmail").type("site email");
-
-    cy.getTestId("css").type("css stuff");
-    // cy.getTestId("close-cookie-banner").click();
-    cy.getTestId("save-btn").click({ force: true });
-    cy.wait("@UpdateOptionsMutation");
+    cy.reload();
+    cy.getTestId("siteTitle").should("have.value", "site title");
+    cy.getTestId("shortDescription").should("have.value", "short description");
   });
 
-  it("can can select pages", () => {
+  it("can select pages", () => {
     cy.visitSettings();
     cy.getTestId("aboutPageCb").click({ force: true });
-    cy.getTestId("save-btn").click({ force: true });
-    cy.wait("@UpdateOptionsMutation");
+    saveSettings();
 
     cy.getTestId("tagsPageCb").click({ force: true });
-    cy.getTestId("save-btn").click({ force: true });
-    cy.wait("@UpdateOptionsMutation");
+    saveSettings();
   });
 
-  it("can can set integrations", () => {
+  it("can set integrations", () => {
     cy.visitSettings();
 
     cy.getTestId("cKey").type("123");
@@ -44,25 +43,15 @@ describe("Settings", () => {
 
     cy.getTestId("cSecret").type("123");
 
-    cy.getTestId("save-btn").click({ force: true });
-
-    cy.wait("@UpdateOptionsMutation");
+    saveSettings();
   });
 });
 
+function saveSettings() {
+  cy.getTestId("save-btn").click({ force: true });
+  cy.wait("@UpdateOptionsMutation")
+    .its("response.body.data.updateOptions.__typename")
+    .should("eq", "Setting");
+}
+
 export {};
-
-// cy.url().then((url) => {
-//   const saveLocation = `cypress/results/data/${Cypress.spec.name}.location.txt`;
-//   cy.writeFile(saveLocation, url);
-// });
-
-// cy.readFile(`cypress/results/data/${Cypress.spec.name}.location.txt`).then(
-//   (url) => {
-//     cy.log(`returning back to editor ${url}`);
-//     cy.visit(url);
-//     cy.openSettings();
-//     cy.getTestId("publishCb").click();
-//     cy.wait("@updatePostMutation");
-//   },
-// );
