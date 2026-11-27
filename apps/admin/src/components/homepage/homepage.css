@@ -244,16 +244,23 @@ body:has(.editorial-home) {
   padding-inline-start: clamp(1.15rem, 2.15vw, 1.95rem);
 }
 
-.editorial-trending li {
+.editorial-discovery-note {
+  margin: -0.45rem 0 0.7rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.editorial-discovery li {
   padding-block: 0.9rem;
   border-bottom: 1px solid var(--rule);
 }
 
-.editorial-trending li:first-child {
+.editorial-discovery li:first-child {
   padding-block-start: 0.35rem;
 }
 
-.editorial-trending h3,
+.editorial-discovery h3,
 .editorial-latest h3 {
   font-size: clamp(1.2rem, 1.85vw, 1.65rem);
   line-height: 1.23;
