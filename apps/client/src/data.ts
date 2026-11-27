@@ -68,9 +68,15 @@ export const getPostData = async (slug: string) => {
     const r = await letterpad.getPost(slug);
 
     return r;
-  } catch (e) {
+  } catch (error) {
+    if (
+      error instanceof LetterpadNotFoundError ||
+      error instanceof LetterpadUnauthorizedError
+    ) {
+      return undefined;
+    }
     // eslint-disable-next-line no-console
-    console.log(e);
+    console.error("Could not load post", error);
     return undefined;
   }
 };

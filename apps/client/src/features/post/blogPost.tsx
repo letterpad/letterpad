@@ -1,7 +1,8 @@
+import { notFound } from 'next/navigation';
+
 import { getAuthorAndSettingsData, getPostData } from '@/data';
 
 import { Post } from './post';
-import Custom404 from '../../app/not-found';
 import { StructuredData } from '../../components/structured-data';
 
 export async function BlogPost(props) {
@@ -10,7 +11,7 @@ export async function BlogPost(props) {
     getAuthorAndSettingsData(),
   ]);
   if (!post || !data?.settings || !data?.me) {
-    return <Custom404 />;
+    notFound();
   }
   const { settings, me } = data;
 
