@@ -1,3 +1,7 @@
+body:has(.editorial-home) {
+  overflow-y: auto;
+}
+
 .editorial-home {
   --paper: #faf9f6;
   --ink: #24221f;
@@ -7,12 +11,17 @@
   --button: #24221f;
   --button-text: #fffdf9;
   --ad-surface: #f1efeb;
+  display: flex;
   min-height: 100vh;
-  flex: 1;
+  flex-direction: column;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--editorial-sans);
   letter-spacing: normal;
+}
+
+.editorial-home > main {
+  flex: 1;
 }
 
 .dark .editorial-home {
@@ -82,11 +91,11 @@
   white-space: nowrap;
 }
 
-.editorial-nav a[aria-current="page"] {
+.editorial-nav a[aria-current] {
   font-weight: 650;
 }
 
-.editorial-nav a[aria-current="page"]::after {
+.editorial-nav a[aria-current]::after {
   position: absolute;
   inset: auto 0 0.55rem;
   height: 2px;
@@ -297,10 +306,51 @@
 }
 
 .editorial-home
-  :is(.editorial-nav, .editorial-topics, .editorial-stories, .editorial-footer)
+  :is(
+    .editorial-nav,
+    .editorial-topics,
+    .editorial-stories,
+    .editorial-topic-directory,
+    .editorial-footer
+  )
   a:hover {
   text-decoration: underline;
   text-underline-offset: 0.18em;
+}
+
+.editorial-topic-stories {
+  max-width: 59rem;
+}
+
+.editorial-topic-directory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(1.25rem, 4vw, 4rem);
+  padding-block: 0.75rem 3rem;
+}
+
+.editorial-topic-directory li {
+  border-bottom: 1px solid var(--rule);
+}
+
+.editorial-topic-directory a {
+  display: flex;
+  min-height: 4rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding-block: 1.15rem;
+}
+
+.editorial-topic-directory h2 {
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.editorial-topic-directory .editorial-meta {
+  margin-top: 0;
 }
 
 .editorial-footer {
@@ -331,7 +381,7 @@
     padding-block: 0 0.65rem;
   }
 
-  .editorial-nav a[aria-current="page"]::after {
+  .editorial-nav a[aria-current]::after {
     inset-block-end: 0;
   }
 
@@ -342,6 +392,10 @@
 }
 
 @media (max-width: 640px) {
+  .editorial-topic-directory {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .editorial-frame {
     width: calc(100% - 2rem);
   }

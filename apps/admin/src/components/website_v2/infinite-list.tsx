@@ -1,8 +1,12 @@
 "use client";
 import { AiOutlineLoading3Quarters } from "@react-icons/all-files/ai/AiOutlineLoading3Quarters";
-import { Post } from "letterpad-graphql";
 import { FC, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+
+import {
+  EditorialTopicStory,
+  TopicStoryRow,
+} from "@/components/homepage/story";
 
 import { RenderCard } from "./card";
 import { getLetterpadPosts } from "./data";
@@ -10,37 +14,61 @@ import { getLetterpadPosts } from "./data";
 interface Props {
   cursor: string;
   tag?: string;
+  editorial?: { initialCount: number; canModerate: boolean };
 }
 
-export const InfiniteList: FC<Props> = ({ tag, cursor }) => {
-  const [data, setData] = useState<Post[]>([]);
+export const InfiniteList: FC<Props> = ({ tag, cursor, editorial }) => {
+  const [data, setData] = useState<TopicStoryRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  const loadMore = () => {
+  async function loadMore() {
+    if (loading || !hasMore) return;
     setLoading(true);
-    getLetterpadPosts({
-      filters: { cursor: data[data.length - 1]?.id ?? cursor, tag },
-    }).then((res) => {
-      if (res?.letterpadLatestPosts.__typename === "PostsNode") {
-        const newRows = res.letterpadLatestPosts.rows;
-        setData((data) => [...data, ...(newRows as any)]);
-        setLoading(false);
+    try {
+      const response = await getLetterpadPosts({
+        filters: { cursor: data[data.length - 1]?.id ?? cursor, tag },
+      });
+      const result = response?.letterpadLatestPosts;
+      if (result?.__typename !== "PostsNode") {
+        setHasMore(false);
+        return;
       }
-    });
-  };
+      const rows = result.rows;
+      setData((current) => [...current, ...rows]);
+      const count = (editorial?.initialCount ?? 0) + data.length + rows.length;
+      setHasMore(rows.length > 0 && count < result.count);
+    } catch {
+      setHasMore(false);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <InfiniteScroll
       dataLength={data.length}
       next={loadMore}
-      hasMore={true}
+      hasMore={hasMore}
       loader={null}
       style={{ overflow: "hidden" }}
-      className="w-full mb-5 flex flex-col overflow-hidden gap-8"
+      className={
+        editorial
+          ? undefined
+          : "w-full mb-5 flex flex-col overflow-hidden gap-8"
+      }
     >
-      {data.map((post) => (
-        <RenderCard key={post.slug} post={post} />
-      ))}
+      {data.map((post) =>
+        editorial ? (
+          <EditorialTopicStory
+            key={post.id}
+            post={post}
+            canModerate={editorial.canModerate}
+          />
+        ) : (
+          <RenderCard key={post.id} post={post} />
+        )
+      )}
       {loading && (
         <div className="flex items-center justify-center">
           <AiOutlineLoading3Quarters className="animate-spin" size={24} />
