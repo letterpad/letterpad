@@ -46,7 +46,11 @@ const nextConfig = {
   },
   productionBrowserSourceMaps: false,
   experimental: {
-    serverComponentsExternalPackages: ["@whatwg-node"],
+    serverComponentsExternalPackages: [
+      "@whatwg-node",
+      "cloudinary",
+      "streamifier",
+    ],
   },
   swcMinify: true,
   typescript: {
