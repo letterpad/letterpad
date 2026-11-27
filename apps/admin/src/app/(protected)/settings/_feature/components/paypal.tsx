@@ -20,7 +20,7 @@ const Paypal: React.FC<Props> = () => {
               maxLength: 100,
             })}
             id="paypal_email"
-            className="w-96"
+            className="max-w-sm"
             type="email"
           />
         </div>

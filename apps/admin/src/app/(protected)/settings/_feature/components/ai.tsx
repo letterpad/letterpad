@@ -9,6 +9,7 @@ const Ai: React.FC<Props> = () => {
         We have made the AI feature more powerful and is now available in the
         Pro Plan. If you are interested in using this feature, please upgrade.
         <Button
+          type="button"
           onClick={() => {
             window.open("/membership", "_blank");
           }}

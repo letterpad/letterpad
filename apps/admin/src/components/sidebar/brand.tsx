@@ -1,21 +1,18 @@
-import classNames from "classnames";
-import { FC } from "react";
-
-import { Logo } from "@/components/logo";
+import Link from "next/link";
 
 interface Props {
-  site_name: string;
-  className?: string;
+  siteName?: string;
+  onNavigate?: () => void;
 }
 
-export const Brand: FC<Props> = ({ className }) => (
-  <div
-    className={classNames("sidebar-header flex items-center sticky", className)}
+export const Brand = ({ siteName, onNavigate }: Props) => (
+  <Link
+    href="/posts"
+    prefetch={false}
+    className="workspace-brand"
+    onClick={onNavigate}
   >
-    <div className="inline-flex">
-      <a href="/" className="inline-flex flex-row items-center">
-        <Logo width={140} isDarkBg={true} />
-      </a>
-    </div>
-  </div>
+    <span className="workspace-brand-name">Letterpad</span>
+    {siteName && <span className="workspace-site-name">{siteName}</span>}
+  </Link>
 );

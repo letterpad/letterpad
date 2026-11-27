@@ -1,46 +1,64 @@
-import classNames from "classnames";
-import { CgClose } from "react-icons/cg";
-import { HiOutlineMenu } from "react-icons/hi";
-import { Button, ThemeSwitcher, useResponsiveLayout } from "ui/dist/index.mjs";
+import { RefObject } from "react";
+import { FiExternalLink, FiMenu, FiMoon, FiSun } from "react-icons/fi";
+import { useTheme } from "ui/dist/index.mjs";
 
 import FeedbackForm from "./feedback-form";
 import { NotificationDropdown } from "../notification-dd/list";
 import { ProfileDropdown } from "../profile-dd";
 
-export const TopBar = () => {
-  const { sidebarVisible, setSidebarVisible } = useResponsiveLayout();
+interface Props {
+  sidebarVisible: boolean;
+  toggleSidebar: () => void;
+  toggleRef: RefObject<HTMLButtonElement>;
+}
+
+export const TopBar = ({ sidebarVisible, toggleSidebar, toggleRef }: Props) => {
+  const { theme, toggleTheme } = useTheme();
+  const dark = theme === "dark";
+  const themeLabel = dark ? "Switch to light theme" : "Switch to dark theme";
+
   return (
-    <div className="flex flex-row items-center justify-between py-4">
-      <div>
-        <Button
-          size={"extrasmall"}
-          className={classNames("menu px-2", {
-            hidden: sidebarVisible,
-          })}
-          variant="outline"
-          onClick={() => setSidebarVisible(!sidebarVisible)}
-          data-testid="menu-open-btn"
+    <header className="workspace-topbar">
+      <button
+        ref={toggleRef}
+        type="button"
+        className="workspace-icon-button"
+        onClick={toggleSidebar}
+        aria-label={sidebarVisible ? "Close navigation" : "Open navigation"}
+        aria-expanded={sidebarVisible}
+        aria-controls="workspace-sidebar"
+        data-testid="menu-open-btn"
+      >
+        <FiMenu aria-hidden="true" />
+      </button>
+      <div className="workspace-tools">
+        <a
+          href="https://docs.letterpad.app/"
+          target="_blank"
+          rel="noreferrer"
+          className="workspace-help"
         >
-          {sidebarVisible ? <CgClose /> : <HiOutlineMenu />}
-        </Button>
-      </div>
-      <div className="flex flex-row gap-2">
-        <Button size="small" variant="ghost">
-          <a
-            href="https://docs.letterpad.app/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Help
-          </a>
-        </Button>
+          Help <FiExternalLink aria-hidden="true" />
+        </a>
         <FeedbackForm />
-        <div className="px-2 flex items-center">
-          <ThemeSwitcher />
+        <div className="workspace-utility-group">
+          <button
+            type="button"
+            className="workspace-icon-button"
+            aria-label={themeLabel}
+            title={themeLabel}
+            onClick={toggleTheme}
+          >
+            {dark ? (
+              <FiSun aria-hidden="true" />
+            ) : (
+              <FiMoon aria-hidden="true" />
+            )}
+          </button>
+          <NotificationDropdown />
+          <ProfileDropdown adminPage />
         </div>
-        <NotificationDropdown />
-        <ProfileDropdown adminPage={true} />
       </div>
-    </div>
+    </header>
   );
 };

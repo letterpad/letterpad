@@ -68,6 +68,8 @@ export const NotificationDropdown = () => {
       <button
         className="relative inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none dark:hover:text-white dark:text-gray-300"
         type="button"
+        aria-label="Notifications"
+        aria-expanded={show}
         onClick={onShow}
       >
         <BiBell size={24} />

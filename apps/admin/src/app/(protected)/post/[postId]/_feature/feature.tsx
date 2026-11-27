@@ -34,16 +34,13 @@ export const Feature = () => {
   const isStoryBuilder = post?.page_type === "story-builder";
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div>
       <FormProvider {...methods}>
         <AutoSaveForm defaultValue={post} />
         <div
-          className={classNames(
-            "sticky top-0 dark:bg-slate-900 bg-slate-100 md:bg-transparent lg:z-0 z-10",
-            {
-              "px-4": isStoryBuilder,
-            }
-          )}
+          className={classNames("workspace-editor-toolbar", {
+            "px-4": isStoryBuilder,
+          })}
         >
           {post && <Header post={post} setShowPostSetting={showDrawer} />}
         </div>

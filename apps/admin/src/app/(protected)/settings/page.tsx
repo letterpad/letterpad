@@ -1,8 +1,6 @@
 import React from "react";
 import { PageHeader } from "ui/dist/isomorphic.mjs";
 
-import { Content } from "@/components/client-wrapper";
-
 import { Settings } from "./_feature/feature";
 
 const Page = async () => {
@@ -15,16 +13,12 @@ const Page = async () => {
   return (
     <>
       <PageHeader className="site-page-header" title="Settings">
-        <span className="help-text">
-          Here you can customize your blog&apos;s settings.
-        </span>
+        <span className="help-text">Manage your website and account.</span>
       </PageHeader>
-      <Content>
-        <Settings
-          cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
-          mcpEnabled={process.env.LETTERPAD_MCP_ENABLED === "true"}
-        />
-      </Content>
+      <Settings
+        cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
+        mcpEnabled={process.env.LETTERPAD_MCP_ENABLED === "true"}
+      />
     </>
   );
 };

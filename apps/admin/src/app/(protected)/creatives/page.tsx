@@ -1,7 +1,5 @@
 import { PostTypes } from "letterpad-graphql";
 
-import { Content } from "@/components/client-wrapper";
-
 import { Header } from "@/app/(protected)/posts/_feature/header/header";
 
 import { Feature } from "./_feature";
@@ -25,9 +23,7 @@ function Pages() {
           </a>
         </div>
       </Header>
-      <Content>
-        <Feature />
-      </Content>
+      <Feature />
     </>
   );
 }

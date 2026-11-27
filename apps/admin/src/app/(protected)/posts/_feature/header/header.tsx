@@ -68,7 +68,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
                   key="1"
                   data-testid="createPostBtn"
                   onClick={() => onNewClick()}
-                  className="flex items-center gap-1"
+                  className="workspace-primary-action flex items-center gap-1"
                 >
                   <BiPlus size={16} />
                   {buttonLabel}

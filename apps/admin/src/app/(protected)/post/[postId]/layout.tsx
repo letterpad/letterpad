@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import { Metadata } from "next";
 
-import { fonts } from "../../../../components/fonts/fonts";
+import "@/components/layouts/workspace.css";
+
+import { fonts, workspaceFonts } from "../../../../components/fonts/fonts";
 
 export const metadata: Metadata = {
   title: "Editing Post",
@@ -12,11 +14,10 @@ const Layout = ({ children }) => {
   return (
     <div
       className={classNames(
-        "px-4 md:px-6",
-        fonts.paragraph.variable,
-        fonts.code.variable,
-        fonts.heading.variable,
-        fonts.sans.variable
+        "admin-editor",
+        workspaceFonts.sans.variable,
+        workspaceFonts.serif.variable,
+        fonts.code.variable
       )}
     >
       {children}

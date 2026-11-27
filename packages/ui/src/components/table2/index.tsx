@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   ColumnDef,
@@ -9,8 +9,9 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
+} from '@tanstack/react-table';
+import { useState } from 'react';
+import { FiSearch } from 'react-icons/fi';
 
 import {
   Table,
@@ -19,9 +20,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
-import { Input } from "../input";
-import { TablePlaceholder } from "../placeholders";
+} from './table';
+import { Input } from '../input';
+import { TablePlaceholder } from '../placeholders';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,7 +31,7 @@ interface DataTableProps<TData, TValue> {
   rightToolBar?: React.ReactNode;
 }
 
-export { type ColumnDef } from "@tanstack/react-table";
+export { type ColumnDef } from '@tanstack/react-table';
 
 export function DataTable<TData, TValue>({
   columns,
@@ -60,18 +61,25 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="flex items-center pb-4 gap-4">
-        <Input
-          placeholder="Filter title..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+      <div className="data-table-toolbar flex items-center gap-4 pb-4">
+        <div className="data-table-search-wrap relative w-full max-w-xs">
+          <FiSearch
+            aria-hidden="true"
+            className="pointer-events-none absolute z-10 left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          />
+          <Input
+            aria-label="Filter by title"
+            placeholder="Filter by title…"
+            value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+            onChange={(event) =>
+              table.getColumn('title')?.setFilterValue(event.target.value)
+            }
+            className="data-table-search pl-9"
+          />
+        </div>
         {rightToolBar}
       </div>
-      <div className="rounded-md border overflow-y-scroll h-full">
+      <div className="data-table-results h-full overflow-y-auto rounded-md border">
         <Table>
           <TableHeader className="sticky top-0">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -99,7 +107,7 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

@@ -1,25 +1,20 @@
-import { SettingsFragmentFragment } from "letterpad-graphql";
 import { Controller, useFormContext } from "react-hook-form";
 import { Divider, Switch } from "ui/dist/index.mjs";
 
-interface Props {
-  settings: SettingsFragmentFragment;
-}
-
-const Pages: React.FC<Props> = ({ settings }) => {
+const Pages = () => {
   const data = useFormContext();
   return (
     <>
       <Controller
         name="show_about_page"
         control={data.control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Switch
             data-testid="aboutPageCb"
-            active={!!settings.show_about_page}
+            active={!!value}
             onChange={onChange}
-            label='Select this to add a new menu item "About" which will display
-        information about you.'
+            aria-label="Show About page"
+            label="Show About page"
           />
         )}
       />
@@ -28,13 +23,13 @@ const Pages: React.FC<Props> = ({ settings }) => {
       <Controller
         name="show_tags_page"
         control={data.control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Switch
-            active={!!settings.show_tags_page}
+            active={!!value}
             data-testid="tagsPageCb"
             onChange={onChange}
-            label='Select this to add a new menu item "Tags" which will display
-        all the tags with the post count.'
+            aria-label="Show Tags page"
+            label="Show Tags page"
           />
         )}
       />

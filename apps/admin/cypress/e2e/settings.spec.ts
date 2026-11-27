@@ -1,68 +1,65 @@
 describe("Settings", () => {
+  beforeEach(() => {
+    cy.setCookie("cookie-consent", "true");
+  });
+
   it.skip("add new item in navigation", () => {
-    cy.visitSettings();
-    cy.getTestId("menu-open-btn").click();
+    cy.visit("/settings?selected=navigation");
     cy.getTestId("newMenuBtn").click();
     cy.addNavItem("New Tag", "first-post");
-    cy.getTestId("save-btn").click({ force: true });
+    saveSettings();
   });
 
-  it("can fill SEO settings", () => {
+  it("saves SEO and appearance changes across sections", () => {
     cy.visitSettings();
+    cy.getTestId("siteTitle").clear().type("site title");
+    cy.getTestId("shortDescription").clear().type("short description");
+    cy.getTestId("siteTagline").clear().type("site tagline");
+    cy.getTestId("siteEmail").clear().type("editor@example.com");
 
-    cy.getTestId("siteTitle").type("site title");
+    cy.contains('nav[aria-label="Settings sections"] a', "Appearance").click();
+    cy.getTestId("css").clear().type("body { color: black; }", {
+      parseSpecialCharSequences: false,
+    });
+    saveSettings();
 
-    cy.getTestId("shortDescription").type("short description").tab();
-
-    cy.getTestId("siteTagline").type("site tagline");
-
-    cy.getTestId("siteEmail").type("site email");
-
-    cy.getTestId("css").type("css stuff");
-    // cy.getTestId("close-cookie-banner").click();
-    cy.getTestId("save-btn").click({ force: true });
-    cy.wait("@UpdateOptionsMutation");
+    cy.reload();
+    cy.getTestId("css").should("have.value", "body { color: black; }");
+    cy.contains('nav[aria-label="Settings sections"] a', "Site & SEO").click();
+    cy.getTestId("siteTitle").should("have.value", "site title");
+    cy.getTestId("shortDescription").should("have.value", "short description");
   });
 
-  it("can can select pages", () => {
-    cy.visitSettings();
-    cy.getTestId("aboutPageCb").click({ force: true });
-    cy.getTestId("save-btn").click({ force: true });
-    cy.wait("@UpdateOptionsMutation");
-
-    cy.getTestId("tagsPageCb").click({ force: true });
-    cy.getTestId("save-btn").click({ force: true });
-    cy.wait("@UpdateOptionsMutation");
+  it("saves both page toggles in succession", () => {
+    cy.visit("/settings?selected=pages");
+    toggleAndSave("aboutPageCb");
+    toggleAndSave("tagsPageCb");
   });
 
-  it("can can set integrations", () => {
-    cy.visitSettings();
-
-    cy.getTestId("cKey").type("123");
-
-    cy.getTestId("cName").type("123");
-
-    cy.getTestId("cSecret").type("123");
-
-    cy.getTestId("save-btn").click({ force: true });
-
-    cy.wait("@UpdateOptionsMutation");
+  it("can set integrations", () => {
+    cy.visit("/settings?selected=integrations");
+    cy.getTestId("cKey").clear().type("123");
+    cy.getTestId("cName").clear().type("123");
+    cy.getTestId("cSecret").clear().type("123");
+    saveSettings();
   });
 });
 
+function saveSettings() {
+  cy.getTestId("save-btn").should("be.enabled").click();
+  cy.wait("@UpdateOptionsMutation")
+    .its("response.body.data.updateOptions.__typename")
+    .should("eq", "Setting");
+  cy.getTestId("save-btn").should("be.disabled");
+}
+
+function toggleAndSave(testId: string) {
+  cy.getTestId(testId).then(($checkbox) => {
+    const checked = $checkbox.is(":checked");
+    cy.wrap($checkbox)[checked ? "uncheck" : "check"]({ force: true });
+    saveSettings();
+    cy.getTestId(testId).should(checked ? "not.be.checked" : "be.checked");
+  });
+}
+
 export {};
-
-// cy.url().then((url) => {
-//   const saveLocation = `cypress/results/data/${Cypress.spec.name}.location.txt`;
-//   cy.writeFile(saveLocation, url);
-// });
-
-// cy.readFile(`cypress/results/data/${Cypress.spec.name}.location.txt`).then(
-//   (url) => {
-//     cy.log(`returning back to editor ${url}`);
-//     cy.visit(url);
-//     cy.openSettings();
-//     cy.getTestId("publishCb").click();
-//     cy.wait("@updatePostMutation");
-//   },
-// );

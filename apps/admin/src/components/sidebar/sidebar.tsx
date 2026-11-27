@@ -6,7 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Button, Menu, useResponsiveLayout } from "ui/dist/index.mjs";
+import { FiLogOut } from "react-icons/fi";
+import { Button } from "ui/dist/index.mjs";
 
 import { useMembershipDetails } from "@/hooks/useIsPaidMember";
 
@@ -14,19 +15,18 @@ import { EventAction, EventCategory, EventLabel, track } from "@/track";
 import { isAuthor, isSettings, isStats } from "@/utils/type-guards";
 
 import { Brand } from "./brand";
-import { items } from "./menuItems";
+import { accountItems, menuGroups } from "./menuItems";
 import { checkout } from "../../app/(protected)/membership/checkout";
 
-export const Sidebar = () => {
+export const Sidebar = ({ onNavigate }: { onNavigate?: () => void }) => {
   const [{ data }] = useHomeQueryQuery();
   const membership = useMembershipDetails();
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState<any>({});
   const pathname = usePathname();
-  const { isDesktop, setSidebarVisible } = useResponsiveLayout();
   const settings = isSettings(data?.settings) ? data?.settings : null;
   const stats = isStats(data?.stats) ? data?.stats : null;
-  const activePlan = isAuthor(data?.me) ? data?.me?.is_paid_member : false;
 
   const fetchMembership = () => {
     fetch("/api/membership")
@@ -35,7 +35,10 @@ export const Sidebar = () => {
       .catch(() => setDetails({}));
   };
 
-  useEffect(fetchMembership, []);
+  useEffect(() => {
+    setMounted(true);
+    fetchMembership();
+  }, []);
 
   const { invoice, customer } = details;
   const paymentLink = invoice?.hosted_invoice_url;
@@ -56,28 +59,72 @@ export const Sidebar = () => {
       setLoading(false);
     }
   };
+  const counts: Record<string, number | null | undefined> = {
+    "/posts": stats?.posts?.published,
+    "/creatives": stats?.pages?.published,
+    "/tags": stats?.tags,
+  };
+
+  const renderItem = ({
+    href,
+    icon: Icon,
+    label,
+  }: (typeof accountItems)[number]) => (
+    <li key={href}>
+      <Link
+        href={href}
+        prefetch={false}
+        aria-current={pathname === href ? "page" : undefined}
+        className="workspace-nav-link"
+        onClick={onNavigate}
+      >
+        <Icon aria-hidden="true" />
+        <span>{label}</span>
+        {mounted && counts[href] != null && (
+          <span className="workspace-nav-count">
+            {counts[href]}
+            <span className="sr-only">
+              {href === "/tags" ? " total" : " published"}
+            </span>
+          </span>
+        )}
+      </Link>
+    </li>
+  );
+
   return (
-    <div className="h-full shadow-lg text-slate-300">
-      <div className="h-full flex flex-col ">
-        <Brand site_name={settings?.site_title ?? ""} className="p-4" />
-        <div className="sidebar-content p-4 overflow-y-auto font-paragraph text-sm flex-1">
-          <Menu
-            Link={Link}
-            onSelect={async (e, key) => {
-              if (key === "/logout") {
-                e.preventDefault();
-                await signOut({ callbackUrl: "/login" });
-              }
-              !isDesktop && setSidebarVisible(false);
-            }}
-            selectedKey={pathname}
-            items={items(stats, !!activePlan)}
-          />
-        </div>
+    <>
+      <Brand
+        siteName={mounted ? settings?.site_title : undefined}
+        onNavigate={onNavigate}
+      />
+      <nav aria-label="Admin navigation" className="workspace-nav">
+        {menuGroups.map(({ label, items }) => (
+          <div key={label} className="workspace-nav-group">
+            <h2 className="workspace-nav-heading">{label}</h2>
+            <ul>{items.map(renderItem)}</ul>
+          </div>
+        ))}
+        <ul className="workspace-account" aria-label="Account">
+          {accountItems.map(renderItem)}
+          <li>
+            <button
+              type="button"
+              className="workspace-nav-link"
+              data-testid="logout"
+              onClick={() => signOut({ callbackUrl: "/login" })}
+            >
+              <FiLogOut aria-hidden="true" />
+              Sign out
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <div className="workspace-membership">
         {membership?.isTrialing && (
-          <div className="rounded-lg border !border-slate-800 m-2 bg-black/20 shadow-sm max-w-[240px]">
+          <div className="rounded-md border">
             <div className="flex flex-col space-y-1.5 p-2 pt-0 md:p-4">
-              <h3 className="text-md font-semibold leading-none tracking-tight text-slate-100">
+              <h3 className="text-md font-semibold leading-none tracking-tight text-foreground">
                 Letterpad Trial Active
               </h3>
               <p className="text-xs text-muted-foreground whitespace-normal">
@@ -87,9 +134,9 @@ export const Sidebar = () => {
           </div>
         )}
         {membership?.canStartTrial && (
-          <div className="rounded-lg border !border-slate-800 m-2 bg-black/20 shadow-sm max-w-[240px]">
+          <div className="rounded-md border">
             <div className="flex flex-col space-y-1.5 p-2 pt-0 md:p-4">
-              <h3 className="text-md font-semibold leading-none tracking-tight text-slate-100">
+              <h3 className="text-md font-semibold leading-none tracking-tight text-foreground">
                 Start 7 days free trial
               </h3>
               <p className="text-xs text-muted-foreground whitespace-normal">
@@ -110,9 +157,9 @@ export const Sidebar = () => {
           </div>
         )}
         {membership?.paymentDue && (
-          <div className="rounded-lg border !border-slate-800 m-2 bg-black/20 shadow-sm max-w-[240px]">
+          <div className="rounded-md border">
             <div className="flex flex-col space-y-1.5 p-2 pt-0 md:p-4">
-              <h3 className="text-md font-semibold leading-none tracking-tight text-slate-100">
+              <h3 className="text-md font-semibold leading-none tracking-tight text-foreground">
                 Upgrade to <span className="text-orange-400">Pro</span>
               </h3>
               <p className="text-xs text-muted-foreground whitespace-normal">
@@ -126,12 +173,12 @@ export const Sidebar = () => {
                 onClick={() => (window.open(paymentLink), false)}
                 className="text-white"
               >
-                Upgrade {paymentLink}
+                Upgrade
               </Button>
             </div>
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
