@@ -1,0 +1,153 @@
+.workspace-settings {
+  display: grid;
+  grid-template-columns: minmax(154px, 205px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(18px, 3vw, 40px);
+}
+
+.settings-sections {
+  position: sticky;
+  top: 82px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 14px 12px;
+  border: 1px solid var(--workspace-line);
+  border-radius: 8px;
+  background: var(--workspace-panel);
+}
+
+.settings-section-group h2 {
+  padding: 4px 10px 5px;
+  color: var(--workspace-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.settings-section-group a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 5px;
+  color: var(--workspace-muted);
+  font-size: 14px;
+}
+
+.settings-section-group a:hover,
+.settings-section-group a[aria-current="page"] {
+  color: var(--workspace-green);
+  background: var(--workspace-active);
+}
+
+.settings-section-group a[aria-current="page"] {
+  font-weight: 620;
+}
+
+.settings-section-select {
+  display: none;
+}
+
+.settings-panel {
+  min-width: 0;
+  border: 1px solid var(--workspace-line);
+  border-radius: 8px;
+  background: var(--workspace-card);
+}
+
+.settings-panel-body {
+  padding: clamp(18px, 4vw, 36px);
+}
+
+.settings-panel-body h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+
+.settings-section-description {
+  margin: 8px 0 26px;
+  color: var(--workspace-muted);
+  font-size: 14px;
+}
+
+.settings-panel-body input:is([type="text"], [type="email"]),
+.settings-panel-body textarea,
+.settings-section-select select {
+  border-color: hsl(var(--input));
+  background: var(--workspace-paper);
+  color: var(--workspace-ink);
+}
+
+.settings-panel-body :is(input, textarea)::placeholder {
+  color: var(--workspace-muted);
+}
+
+.settings-save {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px clamp(18px, 4vw, 36px);
+  border-top: 1px solid var(--workspace-line);
+  border-radius: 0 0 8px 8px;
+  background: var(--workspace-panel);
+  color: var(--workspace-muted);
+  font-size: 13px;
+}
+
+.settings-save .settings-save-button {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.settings-save .settings-save-button:hover {
+  background: color-mix(
+    in srgb,
+    hsl(var(--primary)),
+    var(--workspace-paper) 14%
+  );
+}
+
+.settings-site-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  gap: 12px;
+}
+
+.settings-client-key {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+}
+
+.settings-client-key > button {
+  margin-top: 27px;
+}
+
+@media (max-width: 767px) {
+  .workspace-settings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-sections {
+    display: none;
+  }
+
+  .settings-section-select {
+    display: block;
+  }
+
+  .settings-section-select select {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+}

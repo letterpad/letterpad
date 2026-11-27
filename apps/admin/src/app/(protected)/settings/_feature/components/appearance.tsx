@@ -27,7 +27,7 @@ const Appearance = () => {
                 <input
                   type="color"
                   className="h-20 w-32"
-                  value={data?.getValues("design.brand_color")}
+                  value={data.watch("design.brand_color") || "#000000"}
                   onChange={(e) =>
                     onChange({
                       ...removeTypenames(data?.watch("design")),
@@ -64,14 +64,14 @@ const Appearance = () => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-3">
+      <div className="settings-site-images">
         <Controller
           name="site_logo"
           control={data.control}
           render={({ field: { onChange } }) => (
             <Upload
               label="Logo"
-              className="h-28 w-28"
+              className="h-28 w-28 max-w-full"
               url={data?.watch("site_logo.src") ?? ""}
               onSuccess={([res]) => {
                 onChange({
@@ -89,7 +89,7 @@ const Appearance = () => {
           render={({ field: { onChange } }) => (
             <Upload
               label="Favicon"
-              className="h-28 w-28"
+              className="h-28 w-28 max-w-full"
               url={data?.watch("site_favicon.src") ?? ""}
               onSuccess={([res]) => {
                 onChange({
@@ -107,7 +107,7 @@ const Appearance = () => {
           render={({ field: { onChange } }) => (
             <Upload
               label="Banner"
-              className="h-28 w-28"
+              className="h-28 w-28 max-w-full"
               url={data?.watch("banner.src") ?? ""}
               onSuccess={([res]) => {
                 onChange({

@@ -1,7 +1,6 @@
 "use client";
 
-import classNames from "classnames";
-import { SettingInputType } from "letterpad-graphql";
+import { SettingInputType, SettingsFragmentFragment } from "letterpad-graphql";
 import { useDeleteAuthorMutation } from "letterpad-graphql/hooks";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,9 +8,12 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button, Message, PopConfirm, TextArea } from "ui/dist/index.mjs";
 
+import "./settings.css";
+
 import { getDirtyFields } from "@/lib/react-form";
 
 import { CopyToClipboard } from "@/components/clipboard";
+import { SaveButton } from "@/components/save-button";
 
 import { useGetSettings, useUpdateSettings } from "./api.client";
 import Ai from "./components/ai";
@@ -22,252 +24,253 @@ import Navigation from "./components/navigation";
 import Pages from "./components/pages";
 import Paypal from "./components/paypal";
 import SeoSettings from "./components/seo";
-import { SaveButton } from "../../../../components/save-button";
-import { SectionHeader } from "../../../../components/sectionHeader/sectionHeader";
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
   mcpEnabled: boolean;
 }
 
-const settingsLinks = [
-  { key: "seo", text: "Seo Configuration", url: "/settings?selected=seo" },
-  { key: "payment", text: "Payments", url: "/settings?selected=payment" },
-  { key: "ai", text: "Ai", url: "/settings?selected=ai" },
+const sectionGroups = [
   {
-    key: "appearance",
-    text: "Appearance",
-    url: "/settings?selected=appearance",
+    label: "Website",
+    sections: [
+      {
+        key: "seo",
+        title: "Site & SEO",
+        description:
+          "Edit your site details and how they appear in search results.",
+      },
+      {
+        key: "appearance",
+        title: "Appearance",
+        description:
+          "Manage your branding, site images, footer, and custom CSS.",
+      },
+      {
+        key: "navigation",
+        title: "Navigation",
+        description:
+          "Build your site's menu. The first item becomes your homepage.",
+      },
+      {
+        key: "pages",
+        title: "Pages",
+        description: "Choose which built-in pages appear on your site.",
+      },
+    ],
   },
-  { key: "pages", text: "Pages", url: "/settings?selected=pages" },
   {
-    key: "navigation",
-    text: "Navigation",
-    url: "/settings?selected=navigation",
+    label: "Services",
+    sections: [
+      {
+        key: "integrations",
+        title: "Integrations",
+        description:
+          "Configure Cloudinary and add scripts or meta tags to your site.",
+      },
+      {
+        key: "payment",
+        title: "Payments",
+        description: "Choose where to receive your earnings.",
+      },
+      {
+        key: "ai",
+        title: "AI",
+        description: "Manage access to Letterpad's AI features.",
+      },
+    ],
   },
   {
-    key: "integrations",
-    text: "Integration",
-    url: "/settings?selected=integrations",
+    label: "Account",
+    sections: [
+      {
+        key: "keys",
+        title: "API keys",
+        description:
+          "Manage credentials for the Letterpad API and connected tools.",
+      },
+      {
+        key: "delete",
+        title: "Delete account",
+        description: "Permanently delete your account and its data.",
+      },
+    ],
   },
-  { key: "keys", text: "Keys", url: "/settings?selected=keys" },
-  { key: "delete", text: "Delete Account", url: "/settings?selected=delete" },
 ];
 
-export function Settings({ cloudinaryEnabledByAdmin, mcpEnabled }: Props) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  // Wait for hydration before loading the authenticated form.
+const sections = sectionGroups.flatMap((group) => group.sections);
+
+export function Settings(props: Props) {
+  // The authenticated query can resolve at a different time on either side of hydration.
   const [mounted, setMounted] = useState(false);
   const { data } = useGetSettings(mounted);
-
   useEffect(() => setMounted(true), []);
+
+  if (!mounted || !data) return null;
+  return <SettingsForm key={data.id} initialValues={data} {...props} />;
+}
+
+function SettingsForm({
+  initialValues,
+  cloudinaryEnabledByAdmin,
+  mcpEnabled,
+}: Props & { initialValues: SettingsFragmentFragment }) {
+  const router = useRouter();
+  const selected = useSearchParams().get("selected");
+  const section = sections.find(({ key }) => key === selected) ?? sections[0];
   const { updateSettings } = useUpdateSettings();
-  const [_, deleteAuthor] = useDeleteAuthorMutation();
+  const [, deleteAuthor] = useDeleteAuthorMutation();
   const methods = useForm({
-    values: data,
+    defaultValues: initialValues,
     mode: "all",
     reValidateMode: "onChange",
   });
-  const { handleSubmit, formState } = methods;
-  const selectedKey = searchParams.get("selected") ?? "seo";
+  const {
+    handleSubmit,
+    reset,
+    formState: { dirtyFields, isDirty, isSubmitting },
+  } = methods;
 
-  useEffect(() => {
-    const container = document.querySelector(`#lp-content`);
-    const element = document.querySelector(`#${selectedKey}`) as HTMLElement;
-    if (container && element) {
-      container.scroll({
-        top: element.offsetTop,
-        left: 0,
-        behavior: "smooth",
+  const save = handleSubmit(async (values) => {
+    if (!isDirty) return;
+
+    const change = getDirtyFields<SettingInputType>(values, dirtyFields);
+    const { data, error } = await updateSettings({ options: change });
+    const result = data?.updateOptions;
+    if (result?.__typename !== "Setting") {
+      Message().error({
+        content:
+          result && "message" in result
+            ? result.message
+            : (error?.message ?? "Unable to save settings."),
+        duration: 3,
       });
+      return;
     }
-  }, [selectedKey]);
+
+    reset(result);
+  });
 
   const confirm = async () => {
     await deleteAuthor({});
     router.push("/login?deleted=true");
   };
 
-  const save = async (e) => {
-    e.preventDefault();
-    // do your early validation here
-    handleSubmit((data) => {
-      const change = getDirtyFields<SettingInputType>(
-        data,
-        formState.dirtyFields
-      );
-      Message().loading({ content: "Saving...", duration: 3 });
-      return updateSettings({ options: change }).then((res) => {
-        if (res.data?.updateOptions?.__typename === "NotFound") {
-          return Message().error({
-            content: res.data?.updateOptions.message,
-            duration: 3,
-          });
-        }
-        methods.reset(change);
-        Message().success({ content: "Saved", duration: 2 });
-      });
-    })(e);
-  };
-
-  if (!mounted || !data) return null;
-
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={save}>
-        {formState.isDirty && (
-          <div className="absolute bottom-0 z-20 w-full py-2 text-right -ml-8 md:-ml-16">
-            <SaveButton />
-          </div>
-        )}
-        <div className="flex flex-col md:flex-row relative gap-10 md:gap-20">
-          <div className="md:p-8 md:sticky top-0 h-full">
-            <div className="hidden md:flex flex-col  gap-2">
-              {settingsLinks.map(({ key, text, url }) => (
-                <Link
-                  prefetch={false}
-                  key={key}
-                  className={classNames({
-                    "text-blue-500": selectedKey == key,
-                  })}
-                  href={url}
-                >
-                  {text}
-                </Link>
+    <div className="workspace-settings">
+      <nav className="settings-sections" aria-label="Settings sections">
+        {sectionGroups.map(({ label, sections }) => (
+          <div key={label} className="settings-section-group">
+            <h2>{label}</h2>
+            <ul>
+              {sections.map(({ key, title }) => (
+                <li key={key}>
+                  <Link
+                    href={`/settings?selected=${key}`}
+                    scroll={false}
+                    prefetch={false}
+                    aria-current={section.key === key ? "page" : undefined}
+                  >
+                    {title}
+                  </Link>
+                </li>
               ))}
-            </div>
-            <div className="md:hidden">
-              <select
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                onChange={(e) => {
-                  const selectedKey = e.target.value;
-                  router.push(`/settings?selected=${selectedKey}`);
-                }}
-                value={selectedKey}
-              >
-                {settingsLinks.map(({ key, text }) => (
-                  <option key={key} value={key}>
-                    {text}
-                  </option>
-                ))}
-              </select>
-            </div>
+            </ul>
           </div>
-          <div className="md:p-8 flex-col space-y-10 w-full md:w-1/2">
-            <div>
-              <SectionHeader
-                heading={"Seo Configuration"}
-                description={"Basic details and metadata of your site"}
-                id="seo"
-              />
-              <SeoSettings />
-            </div>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div>
-              <SectionHeader
-                heading={"Payment Information"}
-                description={"Your earnings will be trasferred to this account"}
-                id="payment"
-              />
-              <Paypal />
-            </div>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div>
-              <SectionHeader
-                heading={"Open AI"}
-                description={"Unlock premium AI-powered features"}
-                id="ai"
-              />
-              <Ai />
-            </div>
-            <div>
-              <SectionHeader
-                heading={"Appearance"}
-                description={"Customise the look and feel of your site"}
-                id="appearance"
-              />
-              <Appearance />
-            </div>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div>
-              <SectionHeader
-                heading={"Pages"}
-                description={"Optional pages to add to your site"}
-                id="pages"
-              />
-              <Pages settings={data} />
-            </div>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div className="">
-              <SectionHeader
-                heading={"Navigation"}
-                description={
-                  "Configure the navigation menu of your site. The first item in the navigation menu will be the homepage of your blog."
-                }
-                id="navigation"
-              />
-              <Navigation />
-            </div>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div>
-              <SectionHeader
-                heading={"Integrations"}
-                description={"Integrations and code injections"}
-                id="integrations"
-              />
-              <Integrations
-                cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
-              />
-            </div>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div>
-              <SectionHeader
-                heading={"Keys"}
-                description={"Custom token to access letterpad API"}
-                id="keys"
-              />
+        ))}
+      </nav>
+      <label className="settings-section-select">
+        <span className="sr-only">Settings section</span>
+        <select
+          value={section.key}
+          onChange={(event) =>
+            router.push(`/settings?selected=${event.target.value}`, {
+              scroll: false,
+            })
+          }
+        >
+          {sectionGroups.map(({ label, sections }) => (
+            <optgroup key={label} label={label}>
+              {sections.map(({ key, title }) => (
+                <option key={key} value={key}>
+                  {title}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      </label>
 
-              <div className="mb-8 flex flex-1 items-center gap-2">
-                <TextArea
-                  label="Client Key"
-                  value={data.client_token}
-                  id="client_token"
-                  rows={2}
-                  readOnly
-                  className="w-96"
-                  cols={100}
+      <FormProvider {...methods}>
+        <form className="settings-panel" onSubmit={save}>
+          <section
+            className="settings-panel-body"
+            aria-labelledby="settings-section-title"
+          >
+            <h2 id="settings-section-title">{section.title}</h2>
+            <p className="settings-section-description">
+              {section.description}
+            </p>
+
+            <fieldset disabled={isSubmitting} className="min-w-0">
+              {section.key === "seo" && <SeoSettings />}
+              {section.key === "appearance" && <Appearance />}
+              {section.key === "navigation" && <Navigation />}
+              {section.key === "pages" && <Pages />}
+              {section.key === "integrations" && (
+                <Integrations
+                  cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
                 />
-
-                <CopyToClipboard elementId="client_token" />
-              </div>
-              {mcpEnabled && <McpTokens />}
-            </div>
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div>
-              <SectionHeader
-                heading={"Delete Account"}
-                description={""}
-                id="delete"
+              )}
+              {section.key === "payment" && <Paypal />}
+              {section.key === "ai" && <Ai />}
+              {section.key === "keys" && (
+                <>
+                  <div className="settings-client-key">
+                    <TextArea
+                      label="Client key"
+                      value={initialValues.client_token}
+                      id="client_token"
+                      rows={2}
+                      readOnly
+                    />
+                    <CopyToClipboard elementId="client_token" />
+                  </div>
+                  {mcpEnabled && <McpTokens />}
+                </>
+              )}
+              {section.key === "delete" && (
+                <PopConfirm
+                  title="Are you sure you want to delete your account?"
+                  description="Your data will be permanently deleted and you will be signed out."
+                  onConfirm={confirm}
+                  okText="Yes, delete"
+                  cancelText="Cancel"
+                >
+                  <Button type="button" variant="danger">
+                    Delete account
+                  </Button>
+                </PopConfirm>
+              )}
+            </fieldset>
+          </section>
+          {(section.key !== "delete" || isDirty) && (
+            <div className="settings-save">
+              <span role="status">
+                {isSubmitting
+                  ? "Saving…"
+                  : isDirty
+                    ? "Unsaved changes"
+                    : "All changes saved"}
+              </span>
+              <SaveButton
+                disabled={!isDirty || isSubmitting}
+                className="settings-save-button"
               />
-              <div className="mb-4 text-gray-700 dark:text-gray-400 whitespace-normal">
-                If due to some reason you wish to move out of Letterpad, you may
-                delete your account. <br />
-                All data will be deleted and you will not be able to recover it.
-                You will be logged out after this action.
-              </div>
-              <PopConfirm
-                title="Are you sure you want to delete your account?"
-                onConfirm={() => confirm()}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button variant="danger">Delete your account</Button>
-              </PopConfirm>
             </div>
-          </div>
-        </div>
-      </form>
-    </FormProvider>
+          )}
+        </form>
+      </FormProvider>
+    </div>
   );
 }
