@@ -1,7 +1,7 @@
 "use client";
 
 import classNames from "classnames";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useResponsiveLayout } from "ui/dist/index.mjs";
 
 import "tippy.js/dist/tippy.css";
@@ -20,25 +20,33 @@ export const TwoColumnLayout = ({ children }) => {
   const main = useRef<HTMLDivElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (main.current) main.current.inert = sidebarVisible && !isDesktop;
-  }, [isDesktop, sidebarVisible]);
-
-  const closeSidebar = () => {
+  const closeSidebar = useCallback(() => {
     if (main.current) main.current.inert = false;
     setSidebarVisible(false);
     toggle.current?.focus();
-  };
+  }, [setSidebarVisible]);
+
+  useEffect(() => {
+    const modalNavigation = sidebarVisible && !isDesktop;
+    if (main.current) main.current.inert = modalNavigation;
+    if (!modalNavigation) return;
+
+    sidebar.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !event.defaultPrevented) {
+        closeSidebar();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [closeSidebar, isDesktop, sidebarVisible]);
 
   const toggleSidebar = () => {
     if (sidebarVisible) {
       closeSidebar();
-      return;
-    }
-
-    setSidebarVisible(true);
-    if (!isDesktop) {
-      requestAnimationFrame(() => sidebar.current?.focus());
+    } else {
+      setSidebarVisible(true);
     }
   };
 
@@ -50,16 +58,6 @@ export const TwoColumnLayout = ({ children }) => {
         workspaceFonts.serif.variable
       )}
       data-sidebar-open={sidebarVisible}
-      onKeyDown={(event) => {
-        if (
-          event.key === "Escape" &&
-          sidebarVisible &&
-          !isDesktop &&
-          !event.defaultPrevented
-        ) {
-          closeSidebar();
-        }
-      }}
     >
       <aside
         id="workspace-sidebar"
