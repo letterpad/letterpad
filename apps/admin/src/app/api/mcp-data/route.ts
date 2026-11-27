@@ -1,13 +1,17 @@
+import { Prisma } from "@prisma/client";
 import { imageSize } from "image-size";
 import { PostStatusOptions, PostTypes, Role } from "letterpad-graphql";
+import { revalidateTag } from "next/cache";
 
-import { IMediaUploadResult } from "@/graphql/types";
-import { createPost } from "@/graphql/services/post/createPost";
-import { updatePost } from "@/graphql/services/post/updatePost";
-import { updateSetting } from "@/graphql/services/setting/updateSetting";
 import { getMcpWriter } from "@/lib/mcpTokens";
 import { prisma } from "@/lib/prisma";
 import { storeMediaUpload } from "@/lib/storeMediaUpload";
+
+import { getSocialLink } from "@/graphql/resolvers/helpers";
+import { createPost } from "@/graphql/services/post/createPost";
+import { updatePost } from "@/graphql/services/post/updatePost";
+import { updateSetting } from "@/graphql/services/setting/updateSetting";
+import { IMediaUploadResult } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
 import { textToSlug } from "@/utils/slug";
@@ -61,6 +65,35 @@ const blogSettings = {
   site_tagline: true,
   site_description: true,
 } as const;
+
+const profileSelect = {
+  username: true,
+  name: true,
+  bio: true,
+  occupation: true,
+  company_name: true,
+  signature: true,
+  avatar: true,
+  social: true,
+} satisfies Prisma.AuthorSelect;
+
+const profileTextLimits = {
+  name: 100,
+  bio: 4000,
+  occupation: 100,
+  company_name: 100,
+  signature: 400,
+} as const;
+const socialFields = [
+  "twitter",
+  "facebook",
+  "instagram",
+  "github",
+  "linkedin",
+] as const;
+
+type Profile = Prisma.AuthorGetPayload<{ select: typeof profileSelect }>;
+type ProfileSocial = Partial<Record<(typeof socialFields)[number], string>>;
 
 class RequestError extends Error {
   constructor(
@@ -371,12 +404,181 @@ async function updateBlogSettings(
   });
 }
 
+function parseProfileSocial(value: string): ProfileSocial {
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (parsed && typeof parsed === "object") {
+      const data = parsed as Record<string, unknown>;
+      const social: ProfileSocial = {};
+      for (const field of socialFields) {
+        const entry = data[field];
+        if (typeof entry === "string") social[field] = entry;
+      }
+      return social;
+    }
+  } catch {
+    // Older profiles can have an empty or malformed social field.
+  }
+  return {};
+}
+
+function profileResponse({ avatar, bio, social, ...profile }: Profile) {
+  return reply({
+    ...profile,
+    bio_html: bio ?? "",
+    avatar_url: avatar?.startsWith("/")
+      ? getRootUrl().replace(/\/$/, "") + avatar
+      : (avatar ?? ""),
+    social: getSocialLink(parseProfileSocial(social)),
+  });
+}
+
+async function readProfile(request: Request) {
+  const authorId = await getWriter(request);
+  const profile = await prisma.author.findUnique({
+    where: { id: authorId },
+    select: profileSelect,
+  });
+  if (!profile) throw new RequestError("Profile not found.", 404);
+  return profileResponse(profile);
+}
+
+function profileText(value: unknown, field: keyof typeof profileTextLimits) {
+  const max = profileTextLimits[field];
+  if (field === "name") return textField(value, field, max);
+  if (typeof value !== "string" || value.length > max) {
+    throw new RequestError(`${field} must be at most ${max} characters.`);
+  }
+  return value.trim();
+}
+
+function socialValue(value: unknown, field: string) {
+  if (typeof value === "string" && value.length <= 255) {
+    const entry = value.trim();
+    const handle = entry.replace(/^@/, "");
+    if (!entry || /^[a-zA-Z0-9_.-]+$/.test(handle)) return handle;
+    if (entry.startsWith("https://")) {
+      try {
+        const url = new URL(entry);
+        if (!url.username && !url.password) return url.href;
+      } catch {
+        // Return the validation error below.
+      }
+    }
+  }
+  throw new RequestError(
+    `social.${field} must be a handle, an HTTPS URL, or an empty string.`
+  );
+}
+
+async function updateProfile(authorId: string, input: Record<string, unknown>) {
+  if (
+    Object.keys(input).some(
+      (field) =>
+        field !== "op" &&
+        field !== "avatar_url" &&
+        field !== "social" &&
+        !Object.hasOwn(profileTextLimits, field)
+    )
+  ) {
+    throw new RequestError(
+      "Only the supported public profile fields can be changed."
+    );
+  }
+
+  const data: Prisma.AuthorUpdateInput = {};
+  for (const field of Object.keys(
+    profileTextLimits
+  ) as (keyof typeof profileTextLimits)[]) {
+    if (input[field] === undefined) continue;
+    const value = profileText(input[field], field);
+    data[field] = field === "bio" && value ? plainTextToHtml(value) : value;
+  }
+
+  if (input.avatar_url !== undefined) {
+    data.avatar =
+      input.avatar_url === ""
+        ? ""
+        : (await findOwnedImage(authorId, input.avatar_url, "avatar_url")).src;
+  }
+
+  const where: Prisma.AuthorWhereUniqueInput = { id: authorId };
+  if (input.social !== undefined) {
+    if (
+      !input.social ||
+      typeof input.social !== "object" ||
+      Array.isArray(input.social)
+    ) {
+      throw new RequestError(
+        "social must be an object of supported social links."
+      );
+    }
+    const changes: ProfileSocial = {};
+    for (const [field, value] of Object.entries(input.social)) {
+      const key = socialFields.find((item) => item === field);
+      if (!key) throw new RequestError(`Unsupported social link: ${field}.`);
+      changes[key] = socialValue(value, key);
+    }
+    if (Object.keys(changes).length) {
+      const profile = await prisma.author.findUnique({
+        where: { id: authorId },
+        select: { social: true },
+      });
+      if (!profile) throw new RequestError("Profile not found.", 404);
+      where.social = profile.social;
+      const social = JSON.stringify({
+        ...parseProfileSocial(profile.social),
+        ...changes,
+      });
+      if (social.length > 500) {
+        throw new RequestError(
+          "The combined social links are too long. Use handles or shorter URLs."
+        );
+      }
+      data.social = social;
+    }
+  }
+
+  if (!Object.keys(data).length) {
+    throw new RequestError(
+      "Provide at least one public profile field to update."
+    );
+  }
+  try {
+    const profile = await prisma.author.update({
+      where,
+      data,
+      select: profileSelect,
+    });
+    revalidateTag("letterpadLatestPosts");
+    revalidateTag("featuredPosts");
+    revalidateTag("trendingPosts");
+    revalidateTag("newAuthors");
+    return profileResponse(profile);
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      if (where.social !== undefined) {
+        throw new RequestError(
+          "The social links changed. Read your profile and retry.",
+          409
+        );
+      }
+      throw new RequestError("Profile not found.", 404);
+    }
+    throw error;
+  }
+}
+
 export async function GET(request: Request) {
   if (process.env.LETTERPAD_MCP_ENABLED !== "true")
     return reply({ error: "Not found." }, 404);
   try {
     const query = new URL(request.url).searchParams;
     const op = query.get("op");
+    if (op === "get-profile") return await readProfile(request);
     if (op === "get-settings") return await readBlogSettings(request);
     if (op === "list-my-posts" || op === "get-my-post") {
       return await readMyPosts(request, query, op);
@@ -502,14 +704,24 @@ async function updateOwnedPost(
       },
     } as Parameters<typeof updatePost>[1]
   );
-  if (result.__typename === "PostError") throw new RequestError(result.message, 400);
-  if (result.__typename !== "Post") throw new RequestError("Letterpad could not update the post.", 400);
-  return reply({ id, title: result.title, slug: result.slug, status: status.toLowerCase() });
+  if (result.__typename === "PostError")
+    throw new RequestError(result.message, 400);
+  if (result.__typename !== "Post")
+    throw new RequestError("Letterpad could not update the post.", 400);
+  return reply({
+    id,
+    title: result.title,
+    slug: result.slug,
+    status: status.toLowerCase(),
+  });
 }
 
-async function findCover(authorId: string, value: unknown) {
-  if (value === undefined) return undefined;
-  const url = textField(value, "cover_image_url", 255);
+async function findOwnedImage(
+  authorId: string,
+  value: unknown,
+  field: "cover_image_url" | "avatar_url"
+) {
+  const url = textField(value, field, 255);
   let relative: string | undefined;
   try {
     const absolute = new URL(url);
@@ -539,8 +751,19 @@ async function findCover(authorId: string, value: unknown) {
     select: { url: true, width: true, height: true },
   });
   if (!image)
-    throw new RequestError("Cover image not found in your media library.", 404);
+    throw new RequestError(
+      field === "avatar_url"
+        ? "Avatar not found in your media library."
+        : "Cover image not found in your media library.",
+      404
+    );
   return { src: image.url, width: image.width, height: image.height };
+}
+
+function findCover(authorId: string, value: unknown) {
+  return value === undefined
+    ? undefined
+    : findOwnedImage(authorId, value, "cover_image_url");
 }
 
 async function uploadImage(authorId: string, input: Record<string, unknown>) {
@@ -716,6 +939,8 @@ export async function POST(request: Request) {
   try {
     const authorId = await getWriter(request);
     const input = await readInput(request);
+    if (input.op === "update-profile")
+      return await updateProfile(authorId, input);
     if (input.op === "upload") return await uploadImage(authorId, input);
     if (input.op === "update-settings")
       return await updateBlogSettings(authorId, input);

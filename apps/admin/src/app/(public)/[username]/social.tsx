@@ -24,11 +24,11 @@ export const SocialIcons = ({ social }: { social: Social }) => {
       />
       <SocialIcon
         icon={<FaFacebook className="h-5 w-5" />}
-        href={social?.twitter}
+        href={social?.facebook}
       />
       <SocialIcon
         icon={<FaInstagram className="h-5 w-5" />}
-        href={social?.twitter}
+        href={social?.instagram}
       />
     </div>
   );

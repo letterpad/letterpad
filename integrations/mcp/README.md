@@ -6,7 +6,7 @@ This service exposes published Letterpad articles, private draft editing, and im
 
 Apply the Prisma migration for your database and regenerate Prisma Client before starting the updated admin app. Set `LETTERPAD_MCP_ENABLED=true` on the admin app to enable its `/api/mcp-data` endpoint and show MCP token management. Published article tools work without credentials.
 
-To write, sign in to Letterpad and go to **Settings → Keys → MCP tokens**. Create a token for the client and copy it when it is shown. A token belongs to the signed-in author, expires after 90 days, and can be revoked from the same page. A token permits draft reads and edits, image uploads, and changes to the public blog title, tagline, and description, all scoped to the author.
+To write, sign in to Letterpad and go to **Settings → Keys → MCP tokens**. Create a token for the client and copy it when it is shown. A token belongs to the signed-in author, expires after 90 days, and can be revoked from the same page. A token permits draft reads and edits, image uploads, and changes to the public author profile and blog settings, all scoped to the author.
 
 From the repository root:
 
@@ -40,9 +40,25 @@ bearer_token_env_var = "LETTERPAD_MCP_TOKEN"
 | `update_draft` | Update your unpublished post’s title, body, cover, tags, or topic category by ID. |
 | `update_my_post` | Update your published post’s title, body, cover, tags, or topic category by ID. |
 | `publish_my_draft` | Publish one of your own drafts. |
+| `get_my_profile` | Read your public author profile, including the stored bio HTML and social URLs. |
+| `update_my_profile` | Update your display name, plain-text bio, occupation, company, signature, avatar, or social links. |
 | `get_my_blog_settings` | Read your blog’s current title, tagline, and description. |
 | `update_my_blog_settings` | Change your blog title, tagline, or description. Omitted fields keep their current values. Send an empty description to clear it. |
 | `upload_image` | Save standard base64 image data to the writer’s media library. |
+
+## Update your profile
+
+Use `update_my_profile` with just the fields you want to change. For example:
+
+```json
+{
+  "name": "Rail & Trail",
+  "bio": "European rail routes and time outdoors.",
+  "social": { "github": "railandtrail" }
+}
+```
+
+Social accounts can be handles or HTTPS URLs. An empty string clears an optional field or social link. To set your avatar, upload an image and pass the returned URL as `avatar_url`. To manage your username or credentials, use the account section of your Letterpad profile.
 
 ## Upload a local image
 
