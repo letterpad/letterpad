@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import Header from "@/components/header/Header";
 import Footer from "@/components/website_v2/Footer";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Resources",
   description:
