@@ -127,6 +127,25 @@ function registerTools(server, api) {
   );
 
   register(
+    "get_my_blog_settings",
+    "Read your own blog's public title, tagline, and description.",
+    {},
+    api.getMyBlogSettings,
+    true,
+  );
+
+  register(
+    "update_my_blog_settings",
+    "Change your own blog's public title, tagline, or description. Provided fields replace the current values, and an empty description clears it.",
+    z.strictObject({
+      site_title: z.string().trim().min(1).max(30).optional(),
+      site_tagline: z.string().trim().min(1).max(60).optional(),
+      site_description: z.string().trim().max(190).optional(),
+    }),
+    api.updateMyBlogSettings,
+  );
+
+  register(
     "upload_image",
     "Save a JPEG, PNG, WebP, or GIF of up to 4 MiB to the writer’s Letterpad media library.",
     {

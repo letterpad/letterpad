@@ -61,7 +61,7 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
     return authorization;
   }
 
-  function readDraft(op, params) {
+  function readPrivate(op, params) {
     return read(op, params, { authorization: requireAuthorization() });
   }
 
@@ -79,8 +79,10 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
   return {
     listPublishedPosts: (params) => read("list", params),
     getPublishedPost: (params) => read("get", params),
-    listMyDrafts: (params) => readDraft("list-drafts", params),
-    getMyDraft: (params) => readDraft("get-draft", params),
+    listMyDrafts: (params) => readPrivate("list-drafts", params),
+    getMyDraft: (params) => readPrivate("get-draft", params),
+    getMyBlogSettings: () => readPrivate("get-settings", {}),
+    updateMyBlogSettings: (args) => write("update-settings", args),
     createDraft: (args) => write("create", args),
     updateDraft: (args) => write("update", args),
     uploadImage: (args) => write("upload", args),

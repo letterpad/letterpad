@@ -2,6 +2,7 @@ import { imageSize } from "image-size";
 import { PostStatusOptions, PostTypes } from "letterpad-graphql";
 
 import { createPost } from "@/graphql/services/post/createPost";
+import { updateSetting } from "@/graphql/services/setting/updateSetting";
 import { getMcpWriter } from "@/lib/mcpTokens";
 import { prisma } from "@/lib/prisma";
 import { storeMediaUpload } from "@/lib/storeMediaUpload";
@@ -40,6 +41,12 @@ const articleMetadata = {
       setting: { select: { site_url: true } },
     },
   },
+} as const;
+
+const blogSettings = {
+  site_title: true,
+  site_tagline: true,
+  site_description: true,
 } as const;
 
 class RequestError extends Error {
@@ -239,12 +246,72 @@ async function readDrafts(
   });
 }
 
+async function readBlogSettings(request: Request) {
+  const authorId = await getWriter(request);
+  const settings = await prisma.setting.findUnique({
+    where: { author_id: authorId },
+    select: blogSettings,
+  });
+  if (!settings) throw new RequestError("Blog settings not found.", 404);
+  return reply(settings);
+}
+
+async function updateBlogSettings(
+  authorId: string,
+  input: Record<string, unknown>
+) {
+  if (
+    Object.keys(input).some(
+      (key) => key !== "op" && !Object.hasOwn(blogSettings, key)
+    )
+  ) {
+    throw new RequestError(
+      "Only site title, tagline, and description can be changed."
+    );
+  }
+
+  const { site_title, site_tagline, site_description } = input;
+  const changes: Partial<Record<keyof typeof blogSettings, string>> = {};
+  if (site_title !== undefined)
+    changes.site_title = textField(site_title, "site_title", 30);
+  if (site_tagline !== undefined)
+    changes.site_tagline = textField(site_tagline, "site_tagline", 60);
+  if (site_description !== undefined) {
+    if (typeof site_description !== "string" || site_description.length > 190) {
+      throw new RequestError(
+        "site_description must be at most 190 characters."
+      );
+    }
+    changes.site_description = site_description.trim();
+  }
+  if (!Object.keys(changes).length) {
+    throw new RequestError("Provide at least one setting to update.");
+  }
+
+  const settings = await updateSetting(
+    { options: [changes] },
+    { prisma, session: { user: { id: authorId } } }
+  );
+  if (settings.__typename === "NotFound") {
+    throw new RequestError("Blog settings not found.", 404);
+  }
+  if (settings.__typename !== "Setting") {
+    throw new Error("Could not update blog settings.");
+  }
+  return reply({
+    site_title: settings.site_title,
+    site_tagline: settings.site_tagline,
+    site_description: settings.site_description,
+  });
+}
+
 export async function GET(request: Request) {
   if (process.env.LETTERPAD_MCP_ENABLED !== "true")
     return reply({ error: "Not found." }, 404);
   try {
     const query = new URL(request.url).searchParams;
     const op = query.get("op");
+    if (op === "get-settings") return await readBlogSettings(request);
     if (op === "list-drafts" || op === "get-draft") {
       return await readDrafts(request, query, op);
     }
@@ -422,6 +489,8 @@ export async function POST(request: Request) {
     const authorId = await getWriter(request);
     const input = await readInput(request);
     if (input.op === "upload") return await uploadImage(authorId, input);
+    if (input.op === "update-settings")
+      return await updateBlogSettings(authorId, input);
     if (input.op !== "create" && input.op !== "update") {
       throw new RequestError("Unknown draft operation.");
     }
