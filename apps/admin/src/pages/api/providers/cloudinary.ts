@@ -16,7 +16,7 @@ export async function uploadToCloudinary(
     const stream = Cloudinary.v2.uploader.upload_stream(
       {
         ...options,
-        folder: "blog-images/",
+        folder: "blog-images",
       },
       (error, result) => {
         return result

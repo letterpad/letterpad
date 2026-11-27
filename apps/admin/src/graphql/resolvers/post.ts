@@ -39,11 +39,12 @@ const Post: PostResolvers<ResolverContext> = {
     cover_image_width,
     cover_image_height,
   }: PostAttributes) => {
-    const baseUrl = cover_image.startsWith("/") ? getRootUrl() : "";
+    const image = cover_image ?? "";
+    const baseUrl = image.startsWith("/") ? getRootUrl() : "";
     return {
-      src: baseUrl + cover_image,
-      width: cover_image_width,
-      height: cover_image_height,
+      src: baseUrl + image,
+      width: cover_image_width ?? 0,
+      height: cover_image_height ?? 0,
     };
   },
 
