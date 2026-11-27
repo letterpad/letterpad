@@ -20,7 +20,7 @@ export const FeaturedImage = () => {
         render={({ field: { onChange } }) => {
           return (
             <Upload
-              className="bg-transparent text-[var(--workspace-muted)] hover:text-[var(--workspace-green)]"
+              className="bg-transparent text-[var(--workspace-muted)] hover:text-[var(--workspace-ink)]"
               url={watch("cover_image.src") ?? ""}
               emptyIcon={
                 <div className="flex items-center justify-center gap-2">

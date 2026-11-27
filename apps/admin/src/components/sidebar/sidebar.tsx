@@ -145,10 +145,9 @@ export const Sidebar = ({ onNavigate }: { onNavigate?: () => void }) => {
             </div>
             <div className="p-2 pt-0 md:p-4 md:pt-0">
               <Button
-                variant="success"
                 size={"small"}
                 onClick={checkoutAndStartTrial}
-                className="text-white"
+                className="workspace-primary-action"
                 disabled={loading}
               >
                 Start Trial
@@ -168,10 +167,9 @@ export const Sidebar = ({ onNavigate }: { onNavigate?: () => void }) => {
             </div>
             <div className="p-2 pt-0 md:p-4 md:pt-0">
               <Button
-                variant="success"
                 size={"small"}
                 onClick={() => (window.open(paymentLink), false)}
-                className="text-white"
+                className="workspace-primary-action"
               >
                 Upgrade
               </Button>
