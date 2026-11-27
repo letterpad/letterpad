@@ -20,7 +20,7 @@ export const setupYoga = (context) => {
       )
     ),
     context,
-    graphqlEndpoint: getApiUrl(),
+    graphqlEndpoint: new URL(getApiUrl()).pathname,
     fetchAPI: { Response },
   });
 };

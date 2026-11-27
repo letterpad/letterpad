@@ -39,14 +39,14 @@ export const LikeProvider: FC<Props> = ({ children, postId, likes }) => {
   const session = useSession();
 
   useEffect(() => {
-    if (!session?.user?.name) {
+    if (!session?.user) {
       return;
     }
     hasLiked(postId).then(setLiked);
   }, [session, postId]);
 
   const sendRequest = useCallback(async () => {
-    if (!session?.user?.name) {
+    if (!session?.user) {
       setLiked(false);
       session.showLogin(true);
     }

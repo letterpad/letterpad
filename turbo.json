@@ -1,5 +1,12 @@
 {
   "$schema": "https://turborepo.org/schema.json",
+  "globalDependencies": [
+    "apps/admin/src/graphql/schema/**/*.graphqls",
+    "apps/**/*.graphql",
+    "packages/config/fonts/*.woff2",
+    "packages/config/postcss.config.js",
+    "packages/config/tailwind.config.js"
+  ],
   "tasks": {
     "clean": {
       "cache": false
@@ -8,9 +15,29 @@
       "dependsOn": [
         "^build"
       ],
+      "env": [
+        "DATABASE_URL",
+        "DIRECT_URL",
+        "NEXT_PUBLIC_*",
+        "NEXTAUTH_URL",
+        "ROOT_URL",
+        "SECRET_KEY",
+        "STRIPE_SECRET_KEY"
+      ],
       "outputs": [
         "dist/**",
-        ".next/**"
+        ".next/**",
+        "!.next/cache/**",
+        "public/~partytown/**"
+      ]
+    },
+    "letterpad-graphql#build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/**",
+        "graphql.schema.json",
+        "src/graphql.ts",
+        "src/hooks.ts"
       ]
     },
     "lint": {

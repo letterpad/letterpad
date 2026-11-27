@@ -1,18 +1,20 @@
 import fs from "fs";
 import { imageSize } from "image-size";
+import path from "path";
 
 import { report } from "@/components/error";
 
-import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
+import { MediaUploadFile, IMediaUploadResult } from "@/graphql/types";
 
 export function uploadToInternal(
-  file: BlobCorrected,
+  file: MediaUploadFile,
   uploadPath: string,
   src: string
 ): Promise<IMediaUploadResult> {
   return new Promise((resolve, reject) => {
     const { buffer, originalname } = file;
     try {
+      fs.mkdirSync(path.dirname(uploadPath), { recursive: true });
       fs.writeFileSync(uploadPath, buffer);
       const size = imageSize(uploadPath);
 

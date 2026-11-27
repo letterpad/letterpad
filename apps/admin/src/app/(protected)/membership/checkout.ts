@@ -1,34 +1,27 @@
-import { loadStripe } from "@stripe/stripe-js";
+import { Message } from "ui/dist/index.mjs";
 
 import { EventAction, EventCategory, EventLabel, track } from "../../../track";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
-
 export const checkout = async () => {
-  const body = {
-    interval: "month",
-    amount: 2000,
-    plan: "Monthly",
-    planDescription: "Subscribe for $5 per month",
-  };
+  try {
+    const response = await fetch("/api/checkout_sessions", { method: "POST" });
+    if (response.redirected) {
+      window.location.assign(response.url);
+      return;
+    }
+    const { url, message } = await response.json();
+    if (!response.ok || !url) {
+      Message().error({ content: message || "Checkout is unavailable." });
+      return;
+    }
 
-  const res = await fetch("/api/checkout_sessions", {
-    method: "POST",
-    body: JSON.stringify(body, null),
-    headers: { "Content-Type": "application/json" },
-  }).then((res) => res.json());
-
-  const stripe = await stripePromise;
-
-  track({
-    eventAction: EventAction.Click,
-    eventCategory: EventCategory.Membership,
-    eventLabel: EventLabel.Checkout,
-  });
-
-  return await stripe?.redirectToCheckout({
-    sessionId: res.id,
-  });
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: EventCategory.Membership,
+      eventLabel: EventLabel.Checkout,
+    });
+    window.location.assign(url);
+  } catch {
+    Message().error({ content: "Checkout is unavailable. Please try again." });
+  }
 };

@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { RegisterStep, Role } from "letterpad-graphql";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -10,6 +11,9 @@ import PrismaClient, { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
 import { getRootUrl } from "@/shared/getRootUrl";
+import { parentSessionId, revokeClientSessions } from "@/lib/clientSso";
+import { generateAvailableUsername } from "@/graphql/services/author/generateUsername";
+import { ensureAuthorSetting } from "@/graphql/services/setting/ensureSetting";
 
 import { isBlackListed } from "./blacklist";
 import { sendMail } from "../../../graphql/mail/sendMail";
@@ -69,6 +73,11 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
   providers: providers(req),
   adapter: PrismaAdapter(authPrisma),
   events: {
+    async signOut({ token }) {
+      const parent = token && parentSessionId(token);
+      if (parent && process.env.LETTERPAD_SSO_SECRET)
+        await revokeClientSessions(parent);
+    },
     createUser: async ({ user }) => {
       if (!user.email) return;
       const author = await prisma.author.findFirst({
@@ -76,10 +85,15 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
           email: user.email,
         },
       });
-      await prisma.author.update({
+      if (!author) return;
+      const username =
+        author.username ||
+        (await generateAvailableUsername(author.name, author.email));
+      const updatedAuthor = await prisma.author.update({
         where: { email: user.email },
         data: {
           avatar: author?.avatar ?? user.image,
+          username,
           register_step: RegisterStep.ProfileInfo,
           role: {
             connect: {
@@ -88,15 +102,22 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
           },
         },
       });
+      await ensureAuthorSetting(updatedAuthor.id);
     },
   },
 
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {
-        return { ...token, ...session };
+        return {
+          ...token,
+          ...session,
+          sub: token.sub,
+          ssoSessionId: token.ssoSessionId,
+        };
       }
       if (user?.email) {
+        token.ssoSessionId = randomUUID();
         const author = await prisma.author.findUnique({
           where: { email: user.email },
           include: { role: true, membership: true },
@@ -135,15 +156,21 @@ export const options = (req?: NextApiRequest): NextAuthOptions => ({
       return true;
     },
     redirect: async ({ url, baseUrl }) => {
-      const callback = getCallbackUrl(url);
-      if (callback) {
-        return callback;
+      const root = new URL(baseUrl);
+      try {
+        const target = new URL(url, root);
+        if (target.origin === root.origin) {
+          const callback = target.searchParams.get("callbackUrl");
+          if (callback) {
+            const nested = new URL(callback, root);
+            if (nested.origin === root.origin) return nested.href;
+          }
+          return target.href;
+        }
+      } catch {
+        // Fall back to the dashboard for an invalid callback.
       }
-
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
-      return new URL("/posts", getRootUrl()).toString();
+      return new URL("/posts", getRootUrl()).href;
     },
   },
   jwt: {
@@ -163,13 +190,3 @@ const auth = (req: NextApiRequest, res: NextApiResponse) =>
   NextAuth(req, res, options(req));
 
 export default auth;
-
-function getCallbackUrl(url: string) {
-  const queryString = url.split("?")[1];
-  const params = new URLSearchParams(queryString);
-  const encodeCallbackUrl = params.get("callbackUrl");
-  const callbackUrl = encodeCallbackUrl
-    ? decodeURIComponent(encodeCallbackUrl)
-    : null;
-  return callbackUrl;
-}

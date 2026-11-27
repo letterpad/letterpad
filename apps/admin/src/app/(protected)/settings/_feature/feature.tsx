@@ -17,6 +17,7 @@ import { useGetSettings, useUpdateSettings } from "./api.client";
 import Ai from "./components/ai";
 import Appearance from "./components/appearance";
 import Integrations from "./components/integrations";
+import { McpTokens } from "./components/mcpTokens";
 import Navigation from "./components/navigation";
 import Pages from "./components/pages";
 import Paypal from "./components/paypal";
@@ -26,6 +27,7 @@ import { SectionHeader } from "../../../../components/sectionHeader/sectionHeade
 
 interface Props {
   cloudinaryEnabledByAdmin: boolean;
+  mcpEnabled: boolean;
 }
 
 const settingsLinks = [
@@ -52,7 +54,7 @@ const settingsLinks = [
   { key: "delete", text: "Delete Account", url: "/settings?selected=delete" },
 ];
 
-export function Settings({ cloudinaryEnabledByAdmin }: Props) {
+export function Settings({ cloudinaryEnabledByAdmin, mcpEnabled }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data } = useGetSettings();
@@ -235,6 +237,7 @@ export function Settings({ cloudinaryEnabledByAdmin }: Props) {
 
                 <CopyToClipboard elementId="client_token" />
               </div>
+              {mcpEnabled && <McpTokens />}
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
             <div>

@@ -3,8 +3,7 @@ import { DomainResponse } from "letterpad-graphql";
 import { ResolverContext } from "@/graphql/context";
 
 import { check } from "./check";
-
-// import { check } from "./check";
+import { usesManagedDomains } from "./provider";
 
 export const getDomain = async (
   _args: unknown,
@@ -21,6 +20,9 @@ export const getDomain = async (
       where: { author_id: session.user.id },
     });
     if (domain) {
+      if (usesManagedDomains()) {
+        return { __typename: "Domain", ...domain };
+      }
       const res = await check(domain.name);
       return {
         __typename: "Domain",

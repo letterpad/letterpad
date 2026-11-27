@@ -1,0 +1,5 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "bun install --ignore-scripts",
+  "buildCommand": "cd ../.. && bun x turbo run build --filter=letterpad-client --env-mode=loose"
+}

@@ -5,6 +5,7 @@ import { IMediaUploadResult } from "@/graphql/types";
 
 import { IUploadFileProps } from "../types";
 import { getAuthCookieName } from "../utils/authCookie";
+import { usernameMaxLength, usernameMinLength } from "./username";
 
 export const getReadableDate = (timestamp: Date | number | string) => {
   return dayjs(timestamp).format("MMM D, YYYY");
@@ -78,11 +79,31 @@ export function removeTypenames<T>(data: T = {} as T): Omit<T, "__typename"> {
   return JSON.parse(JSON.stringify(data), omitTypename);
 }
 
-const expr = /^(?=.*[a-zA-Z])[a-zA-Z0-9]*$/;
-const bannedUsernames = ["admin", "administrator", "moderator", "mod"];
+const expr = /^(?=.*[a-z])[a-z0-9]+(?:-[a-z0-9]+)*$/i;
+const bannedUsernames = [
+  "admin",
+  "administrator",
+  "api",
+  "help",
+  "login",
+  "mail",
+  "mod",
+  "moderator",
+  "posts",
+  "register",
+  "settings",
+  "support",
+  "update",
+  "www",
+];
 export const sanitizeUsername = (username: string) => {
-  if (bannedUsernames.includes(username)) return false;
-  return expr.test(username);
+  const normalized = username.toLowerCase();
+  if (bannedUsernames.includes(normalized)) return false;
+  return (
+    username.length >= usernameMinLength &&
+    username.length <= usernameMaxLength &&
+    expr.test(username)
+  );
 };
 
 export const mapFileListToArray = (files: FileList) => {

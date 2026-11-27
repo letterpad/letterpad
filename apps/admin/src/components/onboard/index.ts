@@ -13,6 +13,7 @@ import { defaultSettings } from "@/graphql/db/seed/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { EmailTemplates, ROLES } from "@/graphql/types";
+import { generateAvailableUsername } from "@/graphql/services/author/generateUsername";
 import { textToSlug } from "@/utils/slug";
 
 export const onBoardUser = async (id: string) => {
@@ -107,13 +108,15 @@ export async function createAuthorWithSettings(
 
   const role = await prisma.role.findFirst({ where: { name: rolename } });
   if (role) {
+    const username =
+      authorData.username ??
+      (await generateAvailableUsername(authorData.name, authorData.email));
     const newAuthor = await prisma.author.create({
       data: {
         name: "",
         register_step: RegisterStep.ProfileInfo,
         ...authorData,
-        username:
-          authorData.username ?? generateUsernameFromEmail(authorData.email),
+        username,
         avatar,
         social: JSON.stringify({
           twitter: "",
@@ -128,7 +131,7 @@ export async function createAuthorWithSettings(
           create: {
             ...defaultSettings,
             ...mapSettingToDb(setting),
-            site_url: `https://${authorData.username}.letterpad.app`,
+            site_url: `https://${username}.letterpad.app`,
           },
         },
       },
@@ -136,22 +139,4 @@ export async function createAuthorWithSettings(
 
     return newAuthor;
   }
-}
-
-function generateUsernameFromEmail(email: string) {
-  const hashedEmail = btoa(
-    decodeURIComponent(encodeURIComponent(randomizeString(email)))
-  );
-  // Take the first 6 characters of the hash
-  const shortHash = hashedEmail.substring(0, 6).toLowerCase();
-
-  return shortHash;
-}
-
-function randomizeString(str: string) {
-  return str
-    .split("")
-    .sort(() => Math.random() - 0.5)
-    .join("")
-    .replace(/[^a-zA-Z0-9]/g, "");
 }

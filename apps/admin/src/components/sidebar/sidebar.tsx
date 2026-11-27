@@ -66,15 +66,7 @@ export const Sidebar = () => {
             onSelect={async (e, key) => {
               if (key === "/logout") {
                 e.preventDefault();
-                await fetch(
-                  `${document.location.origin}/api/identity/logout?source=
-                    ${document.location.origin}`
-                );
-                signOut({
-                  redirect: true,
-                }).then(async () => {
-                  window.location.href = "/login";
-                });
+                await signOut({ callbackUrl: "/login" });
               }
               !isDesktop && setSidebarVisible(false);
             }}

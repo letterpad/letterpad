@@ -6,6 +6,7 @@ import { getServerSession as getServerSession1 } from "next-auth";
 import { andThen, pipe } from "ramda";
 
 import { prisma } from "@/lib/prisma";
+import { CLIENT_SESSION_COOKIE, readClientSession } from "@/lib/clientSso";
 
 import { SessionData } from "./types";
 import { options } from "../pages/api/auth/[...nextauth]";
@@ -219,9 +220,19 @@ const createDataLoaders = () => ({
 
 export const context = async ({ request }) => {
   const resolverContext = await getResolverContext(request);
+  const origin = request.headers.get("origin");
+  const cookie = request.headers
+    .get("cookie")
+    ?.split(";")
+    .map((item: string) => item.trim())
+    .find((item: string) => item.startsWith(`${CLIENT_SESSION_COOKIE}=`))
+    ?.slice(CLIENT_SESSION_COOKIE.length + 1);
+  const clientSession =
+    origin && cookie ? await readClientSession(cookie, origin) : null;
 
   return {
     ...resolverContext,
+    clientSession,
     prisma,
     dataloaders: createDataLoaders(),
   };

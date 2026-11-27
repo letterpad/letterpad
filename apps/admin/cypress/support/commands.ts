@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-import { aliasMutation } from "cypress/utils/graphql-test-utils";
+import { aliasMutation, aliasQuery } from "cypress/utils/graphql-test-utils";
 
 //-----
 function getTestId(value) {
@@ -29,20 +29,13 @@ function getTestId(value) {
 Cypress.Commands.add("getTestId", getTestId);
 
 //-----
-function login({ email, password }) {
-  cy.getTestId("email").type(email);
-  cy.getTestId("password").type(password);
-  cy.getTestId("loginBtn").click();
-  // cy.wait("@getCredentials");
-  cy.wait("@getSession");
-  cy.url().then(($url) => {
-    if ($url.includes("home")) {
-      cy.getTestId("dismissIntro").click();
-      cy.wait("@UpdateOptionsMutation");
-      // cy.visitPosts();
-      // cy.visit("/posts");
-    }
+function login() {
+  cy.task("createSessionToken", { registerStep: "Registered" }).then((token) => {
+    cy.setCookie("next-auth.session-token", String(token));
   });
+  cy.setCookie("theme-preference", "dark");
+  cy.visitPosts();
+  cy.wait("@getSession");
 }
 Cypress.Commands.add("login", login);
 
@@ -115,12 +108,15 @@ beforeEach(function () {
     aliasMutation(req, "UpdateOptions");
     aliasMutation(req, "UpdateAuthor");
     aliasMutation(req, "createAuthor");
+    aliasQuery(req, "settings");
   });
   cy.intercept("/api/auth/session").as("getSession");
   cy.intercept("/api/auth/callback/credentials?").as("getCredentials");
-  window.localStorage.setItem("intro_dismissed", "true");
-  window.localStorage.setItem("cookie-concent", "true");
-  cy.login({ email: "demo@demo.com", password: "demo" });
+  cy.window().then((window) => {
+    window.localStorage.setItem("intro_dismissed", "true");
+    window.localStorage.setItem("cookie-concent", "true");
+  });
+  cy.login();
 });
 
 afterEach(function () {

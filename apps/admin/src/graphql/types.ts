@@ -53,11 +53,12 @@ export type NextApiRequestWithFormData = NextApiRequest & {
   files: BlobCorrected[];
 };
 
-export type BlobCorrected = Blob & {
+export type MediaUploadFile = {
   buffer: Buffer;
   originalname: string;
-  hash: string;
 };
+
+export type BlobCorrected = Blob & MediaUploadFile;
 
 interface IImageAttrs {
   src: string;

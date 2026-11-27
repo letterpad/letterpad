@@ -10,9 +10,10 @@ import {
 } from 'react';
 import { Button, Drawer, Modal } from 'ui/dist/index.mjs';
 
-import { getApiRootUrl } from '../lib/utils/url';
+import { startClientSso } from '../lib/utils/clientSso';
 import { Subscribe } from '../src/components/subscribe';
 interface Session {
+  sessionChecked?: boolean;
   user?: {
     avatar: string;
     name: string;
@@ -32,15 +33,42 @@ export function SessionProvider({ children }: any) {
   });
 
   useEffect(() => {
-    fetch(`/redirect-api/client/session`, {
-      headers: {
-        siteurl: window.location.origin,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setSession({ ...data, showLogin, showSubscribe: setShowSubscribe });
-      });
+    let active = true;
+    const refresh = async () => {
+      try {
+        const response = await fetch('/api/sso/session', { cache: 'no-store' });
+        if (!response.ok) {
+          if (active)
+            setSession((current) => ({ ...current, sessionChecked: true }));
+          return;
+        }
+        const { user, canCheck } = await response.json();
+        if (!active) return;
+        setSession({
+          user,
+          showLogin,
+          showSubscribe: setShowSubscribe,
+          sessionChecked: true,
+        });
+        if (!user && canCheck) {
+          const key = 'letterpad-sso-last-check';
+          const now = Date.now();
+          // A declined handoff returns to this page. Avoid a redirect loop.
+          if (now - Number(sessionStorage.getItem(key)) < 60_000) return;
+          sessionStorage.setItem(key, String(now));
+          startClientSso(false);
+        }
+      } catch {
+        // Public reading continues if session discovery is unavailable.
+        if (active) setSession((current) => ({ ...current, sessionChecked: true }));
+      }
+    };
+    void refresh();
+    window.addEventListener('focus', refresh);
+    return () => {
+      active = false;
+      window.removeEventListener('focus', refresh);
+    };
   }, []);
 
   return (
@@ -60,7 +88,7 @@ export function SessionProvider({ children }: any) {
             key="submit"
             onClick={() => {
               showLogin(false);
-              window.location.href = `${getApiRootUrl()}api/identity/login?source=${document.location.href}`;
+              startClientSso(true);
             }}
           >
             Login

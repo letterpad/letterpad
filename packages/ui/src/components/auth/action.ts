@@ -8,13 +8,16 @@ interface LoginProps {
     };
     serviceUrl: string;
     source: string;
+    callbackUrl?: string | null;
 }
-export const onLoginAction = async ({ data, serviceUrl, source }: LoginProps) => {
+export const onLoginAction = async ({ data, serviceUrl, source, callbackUrl }: LoginProps) => {
     const origin = new URL(process.env.NEXT_PUBLIC_ROOT_URL! || process.env.NEXT_PUBLIC_API_URL!).origin;
     const result = await signIn("email", {
         redirect: false,
         email: data.email,
-        callbackUrl: `${origin}/api/identity/login?serviceUrl=${serviceUrl}&source=${source}` ?? "/posts",
+        callbackUrl: callbackUrl ?? (source && serviceUrl
+            ? `${origin}/api/identity/login?${new URLSearchParams({ serviceUrl, source })}`
+            : "/posts"),
     });
     track({
         eventAction: EventAction.Click,

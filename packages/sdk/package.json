@@ -14,10 +14,12 @@
     ".": {
       "import": "./dist/mjs/index.js",
       "require": "./dist/cjs/index.js"
-    }
+    },
+    "./mcp": "./mcp.mjs"
   },
   "files": [
     "dist",
+    "mcp.mjs",
     "README.md"
   ],
   "dependencies": {},

@@ -1,7 +1,7 @@
 import Cloudinary from "cloudinary";
 import streamifier from "streamifier";
 
-import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
+import { MediaUploadFile, IMediaUploadResult } from "@/graphql/types";
 
 interface IOptions {
   api_key: string;
@@ -9,14 +9,13 @@ interface IOptions {
   cloud_name: string;
 }
 export async function uploadToCloudinary(
-  file: BlobCorrected,
+  file: MediaUploadFile,
   options: IOptions
 ): Promise<IMediaUploadResult> {
-  Cloudinary.v2.config(options);
-
-  return new Promise(async (resolve, reject) => {
-    const stream = await Cloudinary.v2.uploader.upload_stream(
+  return new Promise((resolve, reject) => {
+    const stream = Cloudinary.v2.uploader.upload_stream(
       {
+        ...options,
         folder: "blog-images/",
       },
       (error, result) => {
@@ -31,13 +30,11 @@ export async function uploadToCloudinary(
                 type: result.format,
               },
             })
-          : reject({
-              src: "",
-              error: error?.message,
-              name: "",
-            });
+          : reject(
+              new Error(error?.message || "Cloudinary rejected the image.")
+            );
       }
     );
-    streamifier.createReadStream(file.buffer).pipe(stream);
+    streamifier.createReadStream(file.buffer).on("error", reject).pipe(stream);
   });
 }
