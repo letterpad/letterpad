@@ -1,39 +1,77 @@
-import { RenderCard } from "@/components/website_v2/card";
-import {
-  getLetterpadCategories,
-  getLetterpadPosts,
-} from "@/components/website_v2/data";
+import { Metadata } from "next";
+import Link from "next/link";
+import { getServerSession } from "next-auth";
+
+import { EditorialIntro } from "@/components/homepage/frame";
+import { EditorialTopicStory } from "@/components/homepage/story";
+import { EditorialTopicNav, topicTitle } from "@/components/homepage/topics";
+import { getLetterpadPosts } from "@/components/website_v2/data";
 import { InfiniteList } from "@/components/website_v2/infinite-list";
-import { Topics } from "@/components/website_v2/topics";
 
-const Tag = async ({ params }: { params: { name: string } }) => {
-  const [data, response] = await Promise.all([
-    getLetterpadPosts({
-      filters: { tag: decodeURIComponent(params.name), cursor: "" },
-    }),
-    getLetterpadCategories(),
+import { ROLES } from "@/graphql/types";
+import { options } from "@/pages/api/auth/[...nextauth]";
+
+type TopicParams = { params: { name: string } };
+
+function topicDescription(title: string) {
+  return `Read the latest stories on ${title.toLowerCase()} from writers across Letterpad.`;
+}
+
+export function generateMetadata({ params }: TopicParams): Metadata {
+  const title = topicTitle(params.name);
+  return {
+    title: `${title} | Letterpad`,
+    description: topicDescription(title),
+  };
+}
+
+export default async function TopicPage({ params }: TopicParams) {
+  const slug = params.name;
+  const title = topicTitle(slug);
+  const [data, session] = await Promise.all([
+    getLetterpadPosts({ filters: { tag: slug } }),
+    getServerSession(options()),
   ]);
+  const result = data?.letterpadLatestPosts;
+  const rows = result?.__typename === "PostsNode" ? result.rows : [];
+  const count = result?.__typename === "PostsNode" ? result.count : 0;
+  const canModerate = session?.user?.role === ROLES.ADMIN;
 
-  const rows =
-    data?.letterpadLatestPosts.__typename === "PostsNode"
-      ? data.letterpadLatestPosts.rows
-      : [];
-
-  const topics = response?.popularTags?.rows;
   return (
-    <div className="flex flex-col py-10">
-      <h1 className="text-xl py-10 text-center font-heading">
-        Explore what matters to you
-      </h1>
-      <Topics topics={topics!} selected={params.name} />
-      <section className="w-full mb-5 flex flex-col overflow-hidden gap-8 my-20 max-w-3xl mx-auto">
-        {rows.map((item) => (
-          <RenderCard key={item.slug} post={item} />
-        ))}
-        <InfiniteList cursor={rows?.[rows.length - 1]?.id} tag={params.name} />
+    <>
+      <EditorialIntro title={title} description={topicDescription(title)} />
+      <EditorialTopicNav current={{ slug }} />
+      <section
+        className="editorial-stories editorial-topic-stories"
+        aria-labelledby="topic-stories"
+      >
+        <div className="editorial-latest">
+          <h2 id="topic-stories">Latest stories</h2>
+          {rows.map((post) => (
+            <EditorialTopicStory
+              key={post.id}
+              post={post}
+              canModerate={canModerate}
+            />
+          ))}
+          {!rows.length && (
+            <>
+              <p className="editorial-meta">No stories in this topic yet.</p>
+              <Link className="editorial-more" href="/topics">
+                Browse all topics
+              </Link>
+            </>
+          )}
+          {rows.length > 0 && rows.length < count && (
+            <InfiniteList
+              key={slug}
+              cursor={rows[rows.length - 1].id}
+              tag={slug}
+              editorial={{ initialCount: rows.length, canModerate }}
+            />
+          )}
+        </div>
       </section>
-    </div>
+    </>
   );
-};
-
-export default Tag;
+}

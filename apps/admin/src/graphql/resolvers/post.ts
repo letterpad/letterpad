@@ -40,7 +40,7 @@ const Post: PostResolvers<ResolverContext> = {
     cover_image_height,
   }: PostAttributes) => {
     const image = cover_image ?? "";
-    const baseUrl = image.startsWith("/") ? getRootUrl() : "";
+    const baseUrl = image.startsWith("/") ? getRootUrl().replace(/\/$/, "") : "";
     return {
       src: baseUrl + image,
       width: cover_image_width ?? 0,

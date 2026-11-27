@@ -9,6 +9,7 @@ import {
 
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
+import { TOPIC_PREFIX } from "@/shared/utils";
 
 import { getMatchingFields } from "../../utils/getMatchingFields";
 
@@ -25,11 +26,18 @@ export const getLetterpadLatestPosts = async (
       }
     : {};
 
-  const tags = args.filters?.tag
+  const tag = args.filters?.tag;
+  const tags = tag
     ? {
         tags: {
           some: {
-            slug: args.filters?.tag,
+            OR: [
+              { name: tag },
+              { slug: tag },
+              ...(tag.startsWith(TOPIC_PREFIX)
+                ? [{ slug: tag.slice(TOPIC_PREFIX.length).toLowerCase() }]
+                : []),
+            ],
           },
         },
       }
@@ -64,12 +72,10 @@ export const getLetterpadLatestPosts = async (
         },
       ],
     },
-    skip: (cursor.cursor?.id ?? 0 > 0) ? 1 : 0,
+    skip: cursor.cursor ? 1 : 0,
     take: 13,
     ...cursor,
-    orderBy: {
-      publishedAt: "desc",
-    },
+    orderBy: [{ publishedAt: "desc" }, { id: "desc" }],
     select: {
       id: true,
     },

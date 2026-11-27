@@ -1,8 +1,9 @@
 import { fieldsMap } from "graphql-fields-list";
 import {
   MutationResolvers,
+  PostStatusOptions,
+  PostTypes,
   QueryResolvers,
-  Tag as ITag,
   TagResolvers,
   TagType,
 } from "letterpad-graphql";
@@ -18,7 +19,6 @@ import {
   updateTags,
 } from "../services/tag";
 import { beautifyTopic, TOPIC_PREFIX } from "../../shared/utils";
-import { isPostgresDb } from "../../utils/utils";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, context) {
@@ -28,48 +28,43 @@ const Query: QueryResolvers<ResolverContext> = {
     return getTags(args, context);
   },
   async popularTags(_root, args, { prisma }) {
-    // Postgress needs double quotes for table names or else it will convert tables to lowercase
-    const tags: ITag[] = !isPostgresDb()
-      ? await prisma.$queryRaw`
-        SELECT count(*) as c, T.name, T.slug  
-          FROM _PostToTag
-          INNER JOIN Tag T ON B = T.name 
-          INNER JOIN Post P ON A = P.id 
-          WHERE T.name LIKE CONCAT(${TOPIC_PREFIX}, '%') 
-            AND P.title != 'Coming Soon' 
-            AND P.title != '' 
-            AND P.excerpt != '' 
-            AND P.status = 'published' 
-            AND P.type = 'post'
-          GROUP BY T.name 
-          HAVING count(*) > 2 
-          ORDER BY c DESC;
-      `
-      : await prisma.$queryRaw`
-        SELECT count(*) as c, T.name, T.slug  
-          FROM "_PostToTag"
-          INNER JOIN "Tag" T ON "B" = T.name 
-          INNER JOIN "Post" P ON "A" = P.id 
-          WHERE T.name LIKE CONCAT(${TOPIC_PREFIX}, '%') 
-            AND P.title != 'Coming Soon' 
-            AND P.title != '' 
-            AND P.excerpt != '' 
-            AND P.status = 'published' 
-            AND P.type = 'post'
-          GROUP BY T.name 
-          HAVING count(*) > 2 
-          ORDER BY c DESC;
-      `;
-
+    const tags = await prisma.tag.findMany({
+      where: { name: { startsWith: TOPIC_PREFIX } },
+      select: {
+        name: true,
+        _count: {
+          select: {
+            posts: {
+              where: {
+                status: PostStatusOptions.Published,
+                type: PostTypes.Post,
+                banned: false,
+                title: { notIn: ["Coming Soon", ""] },
+                excerpt: { not: "" },
+                html: { not: "" },
+              },
+            },
+          },
+        },
+      },
+    });
     return {
       ok: true,
-      rows: tags.map((tag) => ({
-        name: beautifyTopic(tag.name),
-        slug: tag.name,
-        count: parseInt(tag.count?.toString() ?? "0"),
-        id: tag.name,
-        type: TagType.Tag,
-      })),
+      rows: tags
+        .filter(
+          (tag) => tag.name.startsWith(TOPIC_PREFIX) && tag._count.posts > 2
+        )
+        .sort(
+          (a, b) =>
+            b._count.posts - a._count.posts || a.name.localeCompare(b.name)
+        )
+        .map((tag) => ({
+          name: beautifyTopic(tag.name),
+          slug: tag.name,
+          count: tag._count.posts,
+          id: tag.name,
+          type: TagType.Tag,
+        })),
     };
   },
 };
