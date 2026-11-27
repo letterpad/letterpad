@@ -12,7 +12,13 @@ import { ensureAuthorSetting } from "./ensureSetting";
 
 export const updateSetting = async (
   args: MutationUpdateOptionsArgs,
-  { prisma, session }: ResolverContext
+  {
+    prisma,
+    session,
+  }: {
+    prisma: ResolverContext["prisma"];
+    session?: { user: { id: string } } | null;
+  }
 ): Promise<SettingResponse> => {
   if (!session?.user.id) {
     return {

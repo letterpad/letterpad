@@ -1,0 +1,9 @@
+**
+!integrations/
+!integrations/mcp/
+!integrations/mcp/package.json
+!integrations/mcp/package-lock.json
+!integrations/mcp/server.mjs
+!packages/
+!packages/sdk/
+!packages/sdk/mcp.mjs

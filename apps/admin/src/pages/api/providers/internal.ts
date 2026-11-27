@@ -3,10 +3,10 @@ import { imageSize } from "image-size";
 
 import { report } from "@/components/error";
 
-import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
+import { MediaUploadFile, IMediaUploadResult } from "@/graphql/types";
 
 export function uploadToInternal(
-  file: BlobCorrected,
+  file: MediaUploadFile,
   uploadPath: string,
   src: string
 ): Promise<IMediaUploadResult> {
