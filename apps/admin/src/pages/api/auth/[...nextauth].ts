@@ -41,6 +41,7 @@ const providers = (req?: NextApiRequest): NextAuthOptions["providers"] => [
   GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    httpOptions: { timeout: 10_000 },
     allowDangerousEmailAccountLinking: true,
   }),
   GithubProvider({
