@@ -1,5 +1,6 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef } from "react";
+import { useTheme } from "ui/dist/index.mjs";
 import "./core";
 
 import { useIsPaidMember } from "@/hooks/useIsPaidMember";
@@ -27,7 +28,7 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange }) => {
     setHelpers,
   } = usePostContext();
   const editorRef = useRef<Editor["editor"]>();
-  const isDark = document.body.classList.contains("dark");
+  const { theme } = useTheme();
   const textRef = useRef("");
   const allowEditorChange = useActivateEditorChangeAfterClick();
   const isPaidMember = useIsPaidMember();
@@ -70,7 +71,7 @@ export const LpEditor: React.FC<Props> = memo(({ text, onChange }) => {
         }}
         licenseKey="gpl"
         init={blogEditorConfig({
-          isDark,
+          isDark: theme === "dark",
           editorRef,
           isPaidMember,
           openProModal: () => setIsOpen(true),

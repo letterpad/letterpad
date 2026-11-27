@@ -70,6 +70,7 @@ html.dark body:has(.admin-workspace, .admin-editor) {
   --font-heading: var(--workspace-serif), Georgia, serif;
   --font-paragraph: var(--workspace-sans), system-ui, sans-serif;
   --font-sans: var(--font-paragraph);
+  background: var(--workspace-paper);
   color: var(--workspace-ink);
   font-family: var(--font-paragraph);
   letter-spacing: normal;
@@ -555,12 +556,14 @@ html.dark body:has(.admin-workspace, .admin-editor) {
   }
 }
 
-.admin-workspace .workspace-primary-action {
+.admin-workspace .workspace-primary-action,
+.workspace-editor-toolbar .dropdown-container > button {
   background: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
 }
 
-.admin-workspace .workspace-primary-action:hover {
+.admin-workspace .workspace-primary-action:hover,
+.workspace-editor-toolbar .dropdown-container > button:hover {
   background: color-mix(
     in srgb,
     hsl(var(--primary)),
