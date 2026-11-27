@@ -22,6 +22,15 @@ function registerTools(server, api) {
   };
   const title = z.string().trim().min(1).max(190);
   const body = z.string().trim().min(1).max(60_000);
+  const tag = z.string().trim().min(1).max(50);
+  const categories = z.array(z.enum([
+    "health-&-wellness", "technology", "travel-&-adventure", "entertainment",
+    "business-&-finance", "food-&-cooking", "personal-development", "science",
+    "sports", "art-&-creativity", "fashion", "environment", "education",
+    "philosophy", "social-media", "programming", "gaming", "photography",
+    "literature", "music", "film", "design", "entrepreneurship", "mindfulness",
+    "psychology", "sustainability", "history", "astronomy", "fitness", "diy-crafts",
+  ])).max(1).describe("Letterpad topic category. Supply zero or one category; [] clears it.");
   const cover_image_url = z
     .url()
     .max(255)
@@ -30,6 +39,8 @@ function registerTools(server, api) {
     title,
     body,
     cover_image_url: cover_image_url.optional(),
+    tags: z.array(tag).max(20).optional(),
+    categories: categories.optional(),
   };
 
   function register(
@@ -116,6 +127,8 @@ function registerTools(server, api) {
       title: title.optional(),
       body: body.optional(),
       cover_image_url: cover_image_url.optional(),
+      tags: z.array(tag).max(20).optional(),
+      categories: categories.optional(),
     },
     api.updateDraft,
   );
@@ -127,6 +140,20 @@ function registerTools(server, api) {
     api.publishMyDraft,
     false,
     true,
+  );
+
+  register(
+    "update_my_post",
+    "Edit your own published post, including its content, cover, tags, and Letterpad topic category.",
+    {
+      id: draftId,
+      title: title.optional(),
+      body: body.optional(),
+      cover_image_url: cover_image_url.optional(),
+      tags: z.array(tag).max(20).optional(),
+      categories: categories.optional(),
+    },
+    api.updateMyPost,
   );
 
   register(

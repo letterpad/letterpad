@@ -91,6 +91,7 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
     updateMyBlogSettings: (args) => write("update-settings", args),
     createDraft: (args) => write("create", args),
     updateDraft: (args) => write("update", args),
+    updateMyPost: (args) => write("update-post", args),
     publishMyDraft: (args) => write("publish", args),
     uploadImage: (args) => write("upload", args),
     uploadImageFile: (filename, file) =>
