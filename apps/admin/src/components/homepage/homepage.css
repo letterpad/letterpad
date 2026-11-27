@@ -305,19 +305,6 @@ body:has(.editorial-home) {
   font-weight: 600;
 }
 
-.editorial-home
-  :is(
-    .editorial-nav,
-    .editorial-topics,
-    .editorial-stories,
-    .editorial-topic-directory,
-    .editorial-footer
-  )
-  a:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-}
-
 .editorial-topic-stories {
   max-width: 59rem;
 }
