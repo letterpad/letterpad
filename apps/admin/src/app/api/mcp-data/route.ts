@@ -452,10 +452,14 @@ async function saveImage(
     (label.replace(/[^a-zA-Z0-9_-]/g, "-") || "image") + "." + extension;
   let media: IMediaUploadResult;
   try {
-    media = await storeMediaUpload(authorId, {
-      buffer,
-      originalname: filename,
-    });
+    media = await storeMediaUpload(
+      authorId,
+      {
+        buffer,
+        originalname: filename,
+      },
+      { requireCloudinary: true }
+    );
   } catch (error) {
     const detail =
       error instanceof Error
