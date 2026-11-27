@@ -70,6 +70,14 @@ export const createPost = async (
   if (args.data.page_data) {
     dataToUpdate.page_data = args.data.page_data;
   }
+  if (args.data.tags) {
+    dataToUpdate.tags = {
+      connectOrCreate: args.data.tags.map(({ name, slug }) => ({
+        where: { name },
+        create: { name, slug },
+      })),
+    };
+  }
 
   const slug = args.data.slug;
 
