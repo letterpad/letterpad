@@ -1,8 +1,0 @@
-.git
-.github
-**/node_modules
-**/.turbo
-**/.next
-**/.env*
-**/*.dump
-**/uploads

@@ -1,1 +1,0 @@
-export { GridCard } from "./gridCard"

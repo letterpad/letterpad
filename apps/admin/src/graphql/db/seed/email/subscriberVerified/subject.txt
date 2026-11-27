@@ -1,1 +1,0 @@
-You are subscribed to {{ blog_name }}

@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `Post` ADD COLUMN `sub_title` VARCHAR(190) NOT NULL DEFAULT '';

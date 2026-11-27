@@ -1,5 +1,0 @@
-Hello {{ full_name }}, 
-
-Your custom domain - {{ domain_name}} has been mapped Successfully with Letterpad!
-
-
