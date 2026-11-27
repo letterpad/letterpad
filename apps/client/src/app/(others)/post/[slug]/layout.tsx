@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import { getAuthorAndSettingsData, getPostData } from '@/data';
-
-import Custom404 from '@/app/not-found';
 
 interface PostPageLayoutProps {
   katex: React.ReactNode;
@@ -18,7 +17,7 @@ export default async function PostPageLayout({
   const post = await getPostData(params.slug);
 
   if (!post) {
-    return <Custom404 />;
+    notFound();
   }
 
   if (post.html?.includes('letterpad-katex')) {

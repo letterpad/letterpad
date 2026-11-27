@@ -8,14 +8,18 @@ export default async function AboutOG(props) {
   const post = await getPostData(props.params.slug);
   const data = await getAuthorAndSettingsData();
 
-  if (!data?.settings || !data?.me) return {};
+  if (!post || !data?.settings || !data?.me) {
+    return new Response(null, { status: 404 });
+  }
 
   const { settings } = data;
 
   const image =
     'https://images.unsplash.com/photo-1550100136-e092101726f4?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
-  if (!post || post.author?.__typename !== 'Author') return {};
+  if (post.author?.__typename !== 'Author') {
+    return new Response(null, { status: 404 });
+  }
   return new ImageResponse(
     (
       <div
@@ -27,7 +31,7 @@ export default async function AboutOG(props) {
       >
         <div tw="w-1/3 bg-gray-200 flex h-full">
           <img
-            src={post.cover_image.src ?? image}
+            src={post.cover_image?.src || image}
             tw="flex w-full h-full"
             style={{ objectFit: 'cover' }}
             alt="Post cover image"
@@ -42,14 +46,19 @@ export default async function AboutOG(props) {
         >
           <div tw={`flex flex-col`}>
             <p>{settings.site_title}</p>
-            <h1 tw="text-5xl" style={{ fontWeight: 'bolder' }}>
+            <h1 tw="text-5xl" style={{ fontWeight: 700 }}>
               {post.title}
             </h1>
           </div>
           <div tw="flex items-center flex-row">
             <img
               alt={post.author.name!}
-              src={post.author.avatar!}
+              src={
+                post.author.avatar ||
+                data.me.avatar ||
+                settings.site_logo?.src ||
+                image
+              }
               style={{ objectFit: 'cover' }}
               tw="w-16 h-16 rounded-full object-cover"
             />
