@@ -9,3 +9,57 @@
 #article-content {
   --font-paragraph: var(--font-heading, Georgia, serif);
 }
+
+.reader-post .article-title {
+  font-size: clamp(1.75rem, 1.45rem + 1.35vw, 2.25rem);
+  line-height: 1.2;
+}
+
+.reader-post .article-subtitle {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.reader-post .prose {
+  font-size: clamp(1rem, 0.95rem + 0.22vw, 1.0625rem);
+  line-height: 1.65;
+}
+
+.reader-post .prose p {
+  line-height: inherit;
+}
+
+.reader-post .prose h1 {
+  font-size: 1.625rem;
+  line-height: 1.25;
+}
+
+.reader-post .prose h2 {
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+.reader-post .prose h3 {
+  font-size: 1.1875rem;
+  line-height: 1.4;
+}
+
+.reader-post .prose :not(pre) > code {
+  font-size: 0.9em;
+}
+
+.reader-post .prose .article-sources-heading {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+}
+
+.reader-post .prose .article-sources-list {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0;
+}
+
+.reader-post .prose .article-sources-list li {
+  margin-block: 0.3rem;
+}

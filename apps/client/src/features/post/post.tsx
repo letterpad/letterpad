@@ -35,7 +35,12 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
       <ScrollTop />
       <LikeProvider likes={post.likes} postId={post.id}>
         <div className="mx-auto flex w-full  max-w-3xl justify-between pt-10 flex-col">
-          <article className="post format-blue dark:format-invert mx-auto w-full">
+          <article
+            className={classNames(
+              'post format-blue dark:format-invert mx-auto w-full',
+              { 'reader-post': !isPage }
+            )}
+          >
             <header className={'mb-4 lg:mb-4'}>
               {featured && (
                 <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 inline-flex items-center gap-1">
@@ -43,7 +48,9 @@ export const Post: FC<PostProps> = ({ post, settings }) => {
                   Featured
                 </span>
               )}
-              <PageTitle className="leading-10">{title}</PageTitle>
+              <PageTitle className="article-title leading-10">
+                {title}
+              </PageTitle>
               <PostSubTitle text={sub_title} />
               <div className="flex flex-col py-4">
                 <PostAuthor settings={settings} post={post} />
@@ -168,7 +175,7 @@ export default function PostSubTitle({ text, className }: Props) {
   return (
     <h4
       className={classNames(
-        'py-2 text-md leading-7 font-body',
+        'article-subtitle py-2 text-md leading-7 font-body',
         className,
         textColor
       )}
