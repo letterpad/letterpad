@@ -61,7 +61,7 @@ const PublishButton: React.FC<Props> = ({ postId, menu }) => {
                     .catch(() => setBusy(false));
                 }}
                 data-testid="publishBtn"
-                className="button btn-success"
+                className="workspace-primary-action"
                 disabled={busy}
               >
                 {busy ? "Publishing..." : "Publish"}

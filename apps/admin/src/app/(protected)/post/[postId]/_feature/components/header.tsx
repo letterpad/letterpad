@@ -1,7 +1,4 @@
-import {
-  PostTypes,
-  PostWithAuthorAndTagsFragment,
-} from "letterpad-graphql";
+import { PostTypes, PostWithAuthorAndTagsFragment } from "letterpad-graphql";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 import { Button } from "ui/dist/index.mjs";
@@ -56,7 +53,7 @@ export const Header: React.FC<Props> = ({ post, setShowPostSetting }) => {
             <Button
               size="small"
               variant={"link"}
-              className="text-green-600 dark:text-green-500 text-sm"
+              className="text-foreground text-sm hover:underline"
               onClick={validateAndPublish}
             >
               Update

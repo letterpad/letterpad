@@ -36,7 +36,7 @@
 
 .settings-section-group a:hover,
 .settings-section-group a[aria-current="page"] {
-  color: var(--workspace-green);
+  color: var(--workspace-ink);
   background: var(--workspace-active);
 }
 
@@ -79,10 +79,6 @@
   border-color: hsl(var(--input));
   background-color: var(--workspace-paper);
   color: var(--workspace-ink);
-}
-
-.settings-panel-body :is(input, textarea)::placeholder {
-  color: var(--workspace-muted);
 }
 
 .settings-panel-body .text-gray-500 {
