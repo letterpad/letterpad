@@ -101,7 +101,9 @@ const SidePosts = async ({ loadMore }) => {
   const data = await getTagsData();
   if (!data) return null;
   const { tags } = data;
+  if (!tags.rows.length) return null;
   const tag = getRandom(tags.rows);
+  if (!tag) return null;
 
   const postsTag = await getPostsByTag(tag.slug);
   if (!postsTag?.posts) return null;

@@ -2,6 +2,7 @@
 import classNames from 'classnames';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
 import Script from 'next/script';
 import { isInMaintenanceModeEnabled } from 'ui/dist/server.mjs';
 
@@ -15,7 +16,6 @@ import { HeadMeta } from '@/components/Scripts';
 
 import { Css } from './_css';
 import { ClientThemeProvider } from './ClientThemeProvider';
-import Custom404 from './not-found';
 import { fonts } from '../components/fonts';
 import { Footer } from '../components/footer';
 import { SessionProvider } from '../../context/SessionProvider';
@@ -155,7 +155,7 @@ const Layout = async ({ children }) => {
   }
   const data = await getAuthorAndSettingsData();
   if (!data) {
-    return <Custom404 />;
+    notFound();
   }
   const theme = cookies().get('theme-preference')?.value ?? 'light';
   const { settings, me } = data;

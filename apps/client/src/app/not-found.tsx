@@ -14,14 +14,20 @@ export default function Custom404() {
             The page is missing.
           </p>
           <p className="mb-4 text-md font-light text-gray-500 dark:text-gray-400">
-            {`Sorry, we can't find that page. You'll find lots to explore on the
-            home page.`}
+            {`Sorry, we can't find this Letterpad site or page. You can return to
+            this site's homepage or head back to Letterpad.`}
           </p>
           <a
             href={domain!}
             className="my-4 inline-flex rounded-lg bg-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-50 dark:focus:ring-blue-50"
           >
-            Back to Homepage
+            Back to this site
+          </a>
+          <a
+            href="https://letterpad.app"
+            className="my-4 ml-3 inline-flex rounded-lg border border-blue-500 px-5 py-2.5 text-center text-sm font-medium text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-slate-800"
+          >
+            Go to Letterpad
           </a>
         </div>
       </div>
