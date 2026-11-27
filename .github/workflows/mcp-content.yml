@@ -1,0 +1,43 @@
+name: MCP Markdown content
+
+on:
+  pull_request:
+    paths:
+      - "apps/admin/src/lib/mcp-body.*"
+      - "apps/admin/src/app/api/mcp-data/**"
+      - "apps/admin/package.json"
+      - "integrations/mcp/**"
+      - "packages/sdk/mcp.mjs"
+      - ".github/workflows/mcp-content.yml"
+  push:
+    branches: [master]
+    paths:
+      - "apps/admin/src/lib/mcp-body.*"
+      - "apps/admin/src/app/api/mcp-data/**"
+      - "apps/admin/package.json"
+      - "integrations/mcp/**"
+      - "packages/sdk/mcp.mjs"
+      - ".github/workflows/mcp-content.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  content-and-bridge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Install isolated parser and bridge test dependencies
+        run: |
+          version=$(node -p "require('./apps/admin/package.json').dependencies['markdown-it']")
+          npm install --prefix "$RUNNER_TEMP/mcp-body-deps" --ignore-scripts --no-audit --no-fund "markdown-it@$version"
+          ln -s "$RUNNER_TEMP/mcp-body-deps/node_modules" node_modules
+          npm ci --prefix integrations/mcp --ignore-scripts --no-audit --no-fund
+      - name: Test body rendering, safety and MCP forwarding
+        run: node --test integrations/mcp/test/*.test.mjs

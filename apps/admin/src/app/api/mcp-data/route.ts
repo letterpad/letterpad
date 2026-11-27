@@ -1,3 +1,4 @@
+import { renderMcpBody } from "@/lib/mcp-body.mjs";
 import { Prisma } from "@prisma/client";
 import { imageSize } from "image-size";
 import { PostStatusOptions, PostTypes, Role } from "letterpad-graphql";
@@ -602,6 +603,16 @@ function plainTextToHtml(text: string) {
     .join("");
 }
 
+function postBodyToHtml(input: Record<string, unknown>) {
+  const body = textField(input.body, "body", MAX_BODY_TEXT);
+  try {
+    return renderMcpBody(body, input.body_format);
+  } catch (error) {
+    if (error instanceof TypeError) throw new RequestError(error.message);
+    throw error;
+  }
+}
+
 function postTags(
   existing: { name: string }[],
   input: Record<string, unknown>
@@ -672,7 +683,7 @@ async function updateOwnedPost(
   const data: Record<string, unknown> = { id };
   if (input.title !== undefined) data.title = textField(input.title, "title", 190);
   if (input.body !== undefined) {
-    data.html_draft = plainTextToHtml(textField(input.body, "body", MAX_BODY_TEXT));
+    data.html_draft = postBodyToHtml(input);
   }
   if (input.cover_image_url !== undefined) {
     const cover = await findCover(authorId, input.cover_image_url);
@@ -939,6 +950,9 @@ export async function POST(request: Request) {
   try {
     const authorId = await getWriter(request);
     const input = await readInput(request);
+    if (["create", "update", "update-post"].includes(String(input.op)) && input.body_format !== undefined && input.body === undefined) {
+      throw new RequestError("body is required when body_format is provided.");
+    }
     if (input.op === "update-profile")
       return await updateProfile(authorId, input);
     if (input.op === "upload") return await uploadImage(authorId, input);
@@ -958,7 +972,7 @@ export async function POST(request: Request) {
         : undefined;
     const body =
       input.op === "create" || input.body !== undefined
-        ? plainTextToHtml(textField(input.body, "body", MAX_BODY_TEXT))
+        ? postBodyToHtml(input)
         : undefined;
     if (input.op === "create") {
       const cover = await findCover(authorId, input.cover_image_url);

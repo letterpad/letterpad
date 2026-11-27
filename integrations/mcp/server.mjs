@@ -22,6 +22,7 @@ function registerTools(server, api) {
   };
   const title = z.string().trim().min(1).max(190);
   const body = z.string().trim().min(1).max(60_000);
+  const body_format = z.enum(["plain", "markdown"]).optional().describe("Body format: plain (default, literal text) or markdown (safe semantic HTML). Raw HTML in Markdown is escaped.");
   const tag = z.string().trim().min(1).max(50);
   const categories = z.array(z.enum([
     "health-&-wellness", "technology", "travel-&-adventure", "entertainment",
@@ -38,6 +39,7 @@ function registerTools(server, api) {
   const draftFields = {
     title,
     body,
+    body_format,
     cover_image_url: cover_image_url.optional(),
     tags: z.array(tag).max(20).optional(),
     categories: categories.optional(),
@@ -114,7 +116,7 @@ function registerTools(server, api) {
 
   register(
     "create_draft",
-    "Create an unpublished Letterpad post with a plain-text body and optional uploaded cover.",
+    "Create an unpublished Letterpad post with a plain-text body by default, or set body_format to markdown for headings, links and code blocks. Optional uploaded cover.",
     draftFields,
     api.createDraft,
   );
@@ -126,6 +128,7 @@ function registerTools(server, api) {
       id: draftId,
       title: title.optional(),
       body: body.optional(),
+      body_format,
       cover_image_url: cover_image_url.optional(),
       tags: z.array(tag).max(20).optional(),
       categories: categories.optional(),
@@ -149,6 +152,7 @@ function registerTools(server, api) {
       id: draftId,
       title: title.optional(),
       body: body.optional(),
+      body_format,
       cover_image_url: cover_image_url.optional(),
       tags: z.array(tag).max(20).optional(),
       categories: categories.optional(),
