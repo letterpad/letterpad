@@ -13,8 +13,8 @@ const Pages = () => {
             data-testid="aboutPageCb"
             active={!!value}
             onChange={onChange}
-            label='Select this to add a new menu item "About" which will display
-        information about you.'
+            aria-label="Show About page"
+            label="Show About page"
           />
         )}
       />
@@ -28,8 +28,8 @@ const Pages = () => {
             active={!!value}
             data-testid="tagsPageCb"
             onChange={onChange}
-            label='Select this to add a new menu item "Tags" which will display
-        all the tags with the post count.'
+            aria-label="Show Tags page"
+            label="Show Tags page"
           />
         )}
       />

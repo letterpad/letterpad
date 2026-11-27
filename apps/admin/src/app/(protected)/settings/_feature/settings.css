@@ -77,12 +77,25 @@
 .settings-panel-body textarea,
 .settings-section-select select {
   border-color: hsl(var(--input));
-  background: var(--workspace-paper);
+  background-color: var(--workspace-paper);
   color: var(--workspace-ink);
 }
 
 .settings-panel-body :is(input, textarea)::placeholder {
   color: var(--workspace-muted);
+}
+
+.settings-panel-body .text-gray-500 {
+  color: var(--workspace-muted);
+}
+
+.settings-panel-body input.peer:checked + div {
+  background: hsl(var(--primary));
+}
+
+.settings-panel-body input.peer:checked + div::after {
+  border-color: hsl(var(--primary-foreground));
+  background: hsl(var(--primary-foreground));
 }
 
 .settings-save {

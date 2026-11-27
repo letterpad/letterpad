@@ -20,7 +20,6 @@ const General: React.FC<Props> = () => {
             data-testid="siteTitle"
             maxLength={30}
             help="This title will appear in search engines and browser tabs."
-            limit={30}
           />
         </div>
         <div>
@@ -34,7 +33,6 @@ const General: React.FC<Props> = () => {
             placeholder="A short phrase for your blog"
             data-testid="siteTagline"
             help="In certain scenarios, this tagline will be displayed along with the title."
-            limit={60}
           />
         </div>
         <Input
@@ -46,7 +44,7 @@ const General: React.FC<Props> = () => {
         />
 
         <Input
-          label="Site Url / Canonical Url"
+          label="Canonical site URL"
           {...data.register("site_url", { required: true })}
           placeholder="URL of your site"
           help="If you have a custom domain, enter it here."
@@ -72,7 +70,6 @@ const General: React.FC<Props> = () => {
             data-testid="shortDescription"
             maxLength={190}
             help="Search engines will show this description in search results"
-            limit={190}
           />
         </div>
       </div>
