@@ -15,6 +15,7 @@ import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { EmailTemplates } from "@/graphql/types";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { sanitizeUsername } from "@/shared/utils";
+import { generateAvailableUsername } from "./generateUsername";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -69,6 +70,16 @@ export const updateAuthor = async (
     } as InputAuthorForDb & {
       verified?: boolean;
     };
+    if (
+      !dataToUpdate.username &&
+      dataToUpdate.name &&
+      exisitingAuthor.register_step === RegisterStep.ProfileInfo
+    ) {
+      dataToUpdate.username = await generateAvailableUsername(
+        dataToUpdate.name,
+        exisitingAuthor.email
+      );
+    }
     const newEmail =
       args.author.email && session.user.email !== args.author.email;
 
@@ -131,9 +142,16 @@ export const updateAuthor = async (
     // remove this after 2023-06-06
     if (
       dataToUpdate.register_step === RegisterStep.Registered &&
+      exisitingAuthor?.register_step !== RegisterStep.Registered &&
       exisitingAuthor?.createdAt
     ) {
-      await onBoardUser(author.id);
+      try {
+        await onBoardUser(author.id);
+      } catch (error) {
+        // Signup completion must succeed even if the welcome post or email fails.
+        // eslint-disable-next-line no-console
+        console.error("Could not finish welcome setup", error);
+      }
     }
 
     if (newEmail) {

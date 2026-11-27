@@ -8,6 +8,7 @@ import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
+import { ensureAuthorSetting } from "./ensureSetting";
 
 export const updateSetting = async (
   args: MutationUpdateOptionsArgs,
@@ -27,13 +28,12 @@ export const updateSetting = async (
   }
   const author_id = session?.user.id;
   if (author_id) {
-    const author = await prisma.author.findFirst({
+    const author = await prisma.author.findUnique({
       where: { id: author_id },
-      include: {
-        setting: true,
-      },
+      select: { id: true, username: true },
     });
-    const setting_id = author?.setting?.id;
+    const ensuredSetting = author && (await ensureAuthorSetting(author_id));
+    const setting_id = ensuredSetting?.id;
     const settings = args.options.pop();
     if (!setting_id || !settings)
       return { __typename: "NotFound", message: "Setting now found" };

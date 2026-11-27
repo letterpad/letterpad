@@ -15,6 +15,7 @@ import {
   CardTitle,
   Input,
   Label,
+  Message,
   TextArea,
 } from "ui/dist/index.mjs";
 
@@ -25,7 +26,7 @@ import {
 } from "@/app/(protected)/settings/_feature/api.client";
 import { registrationPaths } from "@/constants";
 import { EventAction, EventCategory, track } from "@/track";
-import { isAuthor } from "@/utils/type-guards";
+import { isAuthor, isSettings } from "@/utils/type-guards";
 
 type UpdateProps = Pick<
   Setting,
@@ -57,15 +58,30 @@ export const SiteInfo = () => {
     if (!session.data?.user?.id) return null;
     setBusy(true);
     try {
-      await updateSettings({
+      const settingsResult = await updateSettings({
         options: {
           ...change,
         },
       });
+      if (
+        settingsResult.error ||
+        !isSettings(settingsResult.data?.updateOptions)
+      ) {
+        setBusy(false);
+        Message().error({
+          content: "Could not save your site details. Please try again.",
+          duration: 4,
+        });
+        return;
+      }
     } catch (e: any) {
       // eslint-disable-next-line no-console
       console.log(e);
       setBusy(false);
+      Message().error({
+        content: "Could not save your site details. Please try again.",
+        duration: 4,
+      });
       return;
     }
 
@@ -86,8 +102,12 @@ export const SiteInfo = () => {
         register_step: RegisterStep.Registered,
       });
       router.push(registrationPaths[RegisterStep.Registered]);
-    } else if (result.data?.updateAuthor?.__typename === "Failed") {
+    } else {
       setBusy(false);
+      Message().error({
+        content: "Could not finish setting up your site. Please try again.",
+        duration: 4,
+      });
     }
   };
 
