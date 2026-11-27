@@ -63,8 +63,18 @@ WORKDIR /app/apps/admin
 EXPOSE 3000
 CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3000"]
 
-FROM runtime AS client
-COPY --from=client-build --chown=node:node /app /app
-WORKDIR /app/apps/client
-EXPOSE 3001
-CMD ["node", "/app/node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3001"]
+# The existing homelab workflow only builds its admin and client targets. On
+# this deployment branch, reuse the client target to publish the standalone
+# MCP service without building application assets on the Pi.
+FROM node:22-bookworm-slim AS mcp-runtime
+ENV NODE_ENV=production
+WORKDIR /app/integrations/mcp
+COPY integrations/mcp/package.json integrations/mcp/package-lock.json ./
+RUN npm ci --omit=dev
+COPY --chown=node:node integrations/mcp/server.mjs ./server.mjs
+COPY --chown=node:node packages/sdk/mcp.mjs /app/packages/sdk/mcp.mjs
+USER node
+EXPOSE 3030
+CMD ["node", "server.mjs"]
+
+FROM mcp-runtime AS client
