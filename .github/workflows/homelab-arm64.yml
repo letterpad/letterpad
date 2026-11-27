@@ -8,7 +8,7 @@ on:
       admin_url:
         description: Public HTTPS origin for the admin app
         required: true
-        default: https://letterpad-admin.test
+        default: https://letterpad.app
         type: string
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
       - name: Set image names and public admin origin
         id: image
         env:
-          ADMIN_URL: ${{ inputs.admin_url || 'https://letterpad-admin.test' }}
+          ADMIN_URL: ${{ inputs.admin_url || 'https://letterpad.app' }}
         run: |
           if [[ ! "$ADMIN_URL" =~ ^https://[a-zA-Z0-9.-]+(:[0-9]+)?$ ]]; then
             echo "Enter an HTTPS origin without a trailing slash or path."
