@@ -1,0 +1,11 @@
+:root {
+  --font-sans: var(--font-paragraph, system-ui, sans-serif);
+}
+
+:where(h1, h2, h3, h4, h5, h6):not(:where(#creative *)) {
+  font-family: var(--font-heading, Georgia, serif);
+}
+
+#article-content {
+  --font-paragraph: var(--font-heading, Georgia, serif);
+}

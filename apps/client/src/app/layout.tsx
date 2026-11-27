@@ -7,6 +7,7 @@ import { isInMaintenanceModeEnabled } from 'ui/dist/server.mjs';
 
 import 'ui/css/tailwind.css';
 import 'ui/css/editor.css';
+import './typography.css';
 
 import { getAuthorAndSettingsData } from '@/data';
 
@@ -167,8 +168,7 @@ const Layout = async ({ children }) => {
           `scroll-smooth ${theme}`,
           fonts.heading.variable,
           fonts.code.variable,
-          fonts.paragraph.variable,
-          fonts.sans.variable
+          fonts.paragraph.variable
         )}
       >
         <Css css={settings.css} />

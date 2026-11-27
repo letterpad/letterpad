@@ -1,3 +1,16 @@
-// With the below line, tailwind JIT doesnt work.
-// module.exports = require('config/tailwind.config');
-module.exports = require('../../packages/config/tailwind.config');
+const config = require('../../packages/config/tailwind.config');
+
+module.exports = {
+  ...config,
+  theme: {
+    ...config.theme,
+    extend: {
+      ...config.theme.extend,
+      fontFamily: {
+        ...config.theme.extend.fontFamily,
+        sans: 'var(--font-sans, system-ui, sans-serif)',
+        serif: 'var(--font-heading, Georgia, serif)',
+      },
+    },
+  },
+};
