@@ -14,10 +14,6 @@ export async function uploadToCloudinary(
 ): Promise<IMediaUploadResult> {
   return new Promise((resolve, reject) => {
     const stream = Cloudinary.v2.uploader.upload_stream(
-      {
-        ...options,
-        folder: "blog-images/",
-      },
       (error, result) => {
         return result
           ? resolve({
@@ -33,6 +29,10 @@ export async function uploadToCloudinary(
           : reject(
               new Error(error?.message || "Cloudinary rejected the image.")
             );
+      },
+      {
+        ...options,
+        folder: "blog-images/",
       }
     );
     streamifier.createReadStream(file.buffer).on("error", reject).pipe(stream);
