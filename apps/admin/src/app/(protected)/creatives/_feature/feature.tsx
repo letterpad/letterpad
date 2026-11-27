@@ -6,12 +6,9 @@ import {
   PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
 import { usePostsQuery } from "letterpad-graphql/hooks";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { DataTable, useResponsiveLayout } from "ui/dist/index.mjs";
-
-import { postsStyles } from "@/components/posts.css";
+import { DataTable } from "ui/dist/index.mjs";
 
 import ErrorMessage from "@/components/ErrorMessage";
 
@@ -26,7 +23,6 @@ import { isPostsNode } from "../../../../utils/type-guards";
 
 export const Feature = () => {
   const [postId, setPostId] = useState<string | null>(null);
-  const { sidebarVisible } = useResponsiveLayout();
   const [filters, setFilters] = useState<PostsFilters>({
     ...DEFAULT_FILTERS,
     type: PostTypes.Page,
@@ -42,7 +38,6 @@ export const Feature = () => {
     mode: "all",
     reValidateMode: "onBlur",
   });
-  const router = useRouter();
   const { updatePost } = useUpdatePost();
 
   if (error) {
@@ -53,20 +48,20 @@ export const Feature = () => {
   };
 
   return (
-    <>
-      <Filters
-        showTags={false}
-        showSort={false}
-        showPageTypes={true}
-        filters={filters}
-        setFilters={setFilters}
-      />
-
+    <div className="admin-post-list">
       <DataTable
+        rightToolBar={
+          <Filters
+            showTags={false}
+            showSort={false}
+            showPageTypes
+            filters={filters}
+            setFilters={setFilters}
+          />
+        }
         columns={columns({
           changeStatus,
           onSettingsClick: setPostId,
-          onClick: (id: string) => router.push("/post/" + id),
           displayTags: false,
         })}
         data={isPostsNode(data?.posts) ? data.posts.rows : []}
@@ -74,13 +69,8 @@ export const Feature = () => {
       />
       <FormProvider {...methods}>
         <AutoSaveForm defaultValue={selectedPost} />
-        <PostSettingsModal
-          visible={!!postId}
-          onClose={() => setPostId(null)}
-          className={sidebarVisible ? "!w-[calc(100vw-250px)]" : ""}
-        />
+        <PostSettingsModal visible={!!postId} onClose={() => setPostId(null)} />
       </FormProvider>
-      <style jsx>{postsStyles}</style>
-    </>
+    </div>
   );
 };

@@ -55,6 +55,8 @@ export const ProfileDropdown = ({
     <div className="relative w-max mx-auto">
       <button
         type="button"
+        aria-label="Account"
+        aria-expanded={show}
         className={classNames(
           "p-1 dark:hover:bg-slate-400/45 hover:bg-slate-200/45 rounded-full h-10 w-10 flex justify-center items-center",
           {

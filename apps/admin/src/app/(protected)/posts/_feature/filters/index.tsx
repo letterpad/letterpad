@@ -1,7 +1,7 @@
 import { PostsFilters, PostStatusOptions, SortBy } from "letterpad-graphql";
 import { useHomeQueryQuery } from "letterpad-graphql/hooks";
 import { useEffect, useState } from "react";
-import { CiFilter } from "react-icons/ci";
+import { FiFilter } from "react-icons/fi";
 import {
   Button,
   DropdownMenuCheckboxes,
@@ -32,12 +32,14 @@ export const Filters = ({
   setFilters,
 }: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
-  // const { data: stats } = useGetStats();
   const [{ data: homeData }] = useHomeQueryQuery();
   const statsData = homeData?.stats
     ? homeData.stats[showPageTypes ? "pages" : "posts"]
     : { published: 0, drafts: 0, trashed: 0 };
-  const { data, fetching } = useGetTags();
+  const { data, fetching } = useGetTags(
+    {},
+    { skip: !showTags || showPageTypes }
+  );
 
   useEffect(() => {
     if (!showTags || showPageTypes) return;
@@ -64,14 +66,12 @@ export const Filters = ({
     setFilters(changedFilters);
   };
 
-  // if (fetching && showTags) return null;
-
   return (
-    <div className="flex flex-row items-center justify-between gap-2">
-      <div className="flex-row items-center gap-2 md:flex hidden">
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {showSort && (
           <Select2
-            defaultValue={SortBy.Desc}
+            value={filters.sortBy ?? SortBy.Desc}
             onValueChange={(value) => {
               track({
                 eventAction: EventAction.Click,
@@ -81,12 +81,15 @@ export const Filters = ({
               setFilters({ ...filters, sortBy: value as SortBy });
             }}
           >
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger
+              aria-label="Sort by update date"
+              className="w-[130px]"
+            >
               <SelectValue placeholder="Sort" />
             </SelectTrigger>
             <SelectContent id="filters-sort">
-              <SelectItem value={SortBy.Desc}>Latest</SelectItem>
-              <SelectItem value={SortBy.Asc}>Oldest</SelectItem>
+              <SelectItem value={SortBy.Desc}>Latest first</SelectItem>
+              <SelectItem value={SortBy.Asc}>Oldest first</SelectItem>
             </SelectContent>
           </Select2>
         )}
@@ -202,8 +205,16 @@ export const Filters = ({
             },
           ]}
           trigger={
-            <Button size={"small"} className="!p-1 w-8 !h-8">
-              <CiFilter />
+            <Button
+              size="small"
+              variant="outline"
+              className="workspace-status-filter gap-2 !h-10"
+            >
+              <FiFilter aria-hidden="true" />
+              Status
+              {!!filters.status?.length && (
+                <span>({filters.status.length})</span>
+              )}
             </Button>
           }
         />

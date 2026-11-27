@@ -30,16 +30,15 @@ export const WordCount = () => {
 
   if (!words) return null;
   return (
-    <div className="fixed bottom-0 left-0 z-10 flex h-8 w-full cursor-pointer items-center justify-center rounded-md bg-white dark:bg-gray-800">
+    <div className="workspace-editor-word-count fixed bottom-0 left-0 z-10 flex h-8 w-full items-center justify-center">
       {!editor ? (
         <LinePlaceholder />
       ) : (
-        <a
-          className="flex justify-center gap-4 text-sm  text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-300"
-          onClick={(e) => {
-            e.preventDefault();
-            setVisible(!visible);
-          }}
+        <button
+          type="button"
+          className="flex justify-center gap-4 text-sm"
+          aria-expanded={visible}
+          onClick={() => setVisible(!visible)}
         >
           <span>{words} words</span>
           <span>{readingTime} min read</span>
@@ -51,7 +50,7 @@ export const WordCount = () => {
               </span>
             </>
           )}
-        </a>
+        </button>
       )}
     </div>
   );

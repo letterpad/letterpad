@@ -41,3 +41,23 @@ const sans = localFont({
 });
 
 export const fonts = { paragraph, code, heading, sans };
+
+const workspaceSans = localFont({
+  src: "../../../../../packages/config/fonts/geist.woff2",
+  variable: "--workspace-sans",
+  weight: "100 900",
+  display: "swap",
+  adjustFontFallback: false,
+  preload: false,
+});
+
+const workspaceSerif = localFont({
+  src: "../../../../../packages/config/fonts/literata.woff2",
+  variable: "--workspace-serif",
+  weight: "200 900",
+  display: "swap",
+  adjustFontFallback: false,
+  preload: false,
+});
+
+export const workspaceFonts = { sans: workspaceSans, serif: workspaceSerif };

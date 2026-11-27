@@ -9,12 +9,9 @@ import {
   PostStatusOptions,
   PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
-import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { DataTable, Paginator, useResponsiveLayout } from "ui/dist/index.mjs";
-
-import { postsStyles } from "@/components/posts.css";
+import { DataTable, Paginator } from "ui/dist/index.mjs";
 
 import { client } from "@/lib/urqlClient";
 import { useNavigateWithParams } from "@/hooks/useSearchParams";
@@ -34,8 +31,6 @@ import Filters from "./filters";
 import { columns } from "./header";
 
 export const Feature = () => {
-  const router = useRouter();
-  const { sidebarVisible } = useResponsiveLayout();
   const { updateParamsAndNavigate, params } = useNavigateWithParams();
 
   const [postId, setPostId] = useState<string | null>(null);
@@ -93,7 +88,7 @@ export const Feature = () => {
   }, [methods, selectedPost, postId]);
 
   return (
-    <>
+    <div className="admin-post-list">
       <DataTable
         rightToolBar={
           <Filters
@@ -108,13 +103,12 @@ export const Feature = () => {
         columns={columns({
           changeStatus,
           onSettingsClick: setPostId,
-          onClick: (id: string) => router.push("/post/" + id),
           displayTags: true,
         })}
         data={posts}
         loading={loading}
       />
-      <div className="flex justify-end my-8">
+      <div className="flex justify-end mt-6">
         <Paginator
           currentPage={parseInt(params.get("page") || "1", 10)}
           totalPages={totalPages}
@@ -125,15 +119,10 @@ export const Feature = () => {
           showPreviousNext={false}
         />
       </div>
-      <style jsx>{postsStyles}</style>
       <FormProvider {...methods}>
         <AutoSaveForm defaultValue={selectedPost} />
-        <PostSettingsModal
-          visible={!!postId}
-          onClose={() => setPostId(null)}
-          className={sidebarVisible ? "!w-[calc(100vw-250px)]" : ""}
-        />
+        <PostSettingsModal visible={!!postId} onClose={() => setPostId(null)} />
       </FormProvider>
-    </>
+    </div>
   );
 };

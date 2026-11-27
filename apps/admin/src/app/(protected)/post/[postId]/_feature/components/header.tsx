@@ -1,6 +1,4 @@
-import classNames from "classnames";
 import {
-  PostStatusOptions,
   PostTypes,
   PostWithAuthorAndTagsFragment,
 } from "letterpad-graphql";
@@ -28,23 +26,19 @@ export const Header: React.FC<Props> = ({ post, setShowPostSetting }) => {
   if (post.__typename === "Post") {
     const isPost = post.type === PostTypes.Post;
     return (
-      <div className="flex flex-row justify-between py-4">
+      <div className="flex items-center justify-between gap-3 py-3">
         <div className="left flex flex-row items-center gap-4">
           <Link
             href={isPost ? "/posts" : "/creatives"}
             data-testid="back-button"
-            className="cursor-pointer"
+            className="workspace-icon-button"
+            aria-label={isPost ? "Back to posts" : "Back to creatives"}
           >
-            <BsArrowLeft size={24} />
+            <BsArrowLeft aria-hidden="true" />
           </Link>
           <span
-            className={classNames(
-              "rounded-md p-1.5 px-2 text-xs  font-semibold uppercase tracking-wide",
-              {
-                "text-green-500": post.status === PostStatusOptions.Published,
-                "text-orange-500": post.status === PostStatusOptions.Draft,
-              }
-            )}
+            className="workspace-post-status capitalize"
+            data-status={post.status}
             data-testid="postStatus"
           >
             {post.status}
