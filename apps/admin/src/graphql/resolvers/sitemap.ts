@@ -7,11 +7,13 @@ import { ResolverContext } from "@/graphql/context";
 const Query: QueryResolvers<ResolverContext> = {
   feed: async (_root, _args, { client_author_id, prisma, session }) => {
     const id = client_author_id || session?.user.id;
-    if (!id) return { message: "Author Id not found", rows: [] };
+    if (!id)
+      return { __typename: "FeedError", message: "Author Id not found" };
     const setting = await prisma.setting.findFirst({
       where: { author: { id } },
     });
-    if (!setting) return { message: "Author not found", rows: [] };
+    if (!setting)
+      return { __typename: "FeedError", message: "Author not found" };
     const siteUrl = setting?.site_url;
     const posts = await prisma.post.findMany({
       select: {
@@ -73,11 +75,13 @@ const Query: QueryResolvers<ResolverContext> = {
   },
   sitemap: async (_root, _args, { client_author_id, prisma, session }) => {
     const id = client_author_id || session?.user.id;
-    if (!id) return { message: "Author Id not found", rows: [] };
+    if (!id)
+      return { __typename: "SiteMapError", message: "Author Id not found" };
     const setting = await prisma.setting.findFirst({
       where: { author: { id } },
     });
-    if (!setting) return { message: "Author not found", rows: [] };
+    if (!setting)
+      return { __typename: "SiteMapError", message: "Author not found" };
 
     const siteUrl = setting?.site_url;
     const posts = await prisma.post.findMany({
