@@ -31,12 +31,15 @@ bearer_token_env_var = "LETTERPAD_MCP_TOKEN"
 
 | Tool | Purpose |
 | --- | --- |
-| `list_published_posts` | Browse public articles. Filter by writer with `username`, or use the returned `nextOffset` to continue. |
-| `get_published_post` | Fetch a writer’s published article by its final URL segment. |
+| `list_my_posts` | List only your published posts, newest first. Use `nextOffset` to continue. |
+| `get_my_post` | Read one of your published posts by ID, including tags and topic category. |
 | `list_my_drafts` | List your drafts, newest edit first. Use `nextOffset` to continue. |
-| `get_my_draft` | Read the draft body and metadata using an ID from your own draft list. |
-| `create_draft` | Save a title, plain-text body, and optional cover image as an unpublished post. |
-| `update_draft` | Update one of the signed-in writer’s unpublished posts by ID. |
+| `get_my_post` | Read your published post, including tags and topic category, by ID. |
+| `get_my_draft` | Read the draft body and metadata, including tags and topic category, using an ID from your own draft list. |
+| `create_draft` | Save a title, plain-text body, optional cover, tags, and topic category as an unpublished post. |
+| `update_draft` | Update your unpublished post’s title, body, cover, tags, or topic category by ID. |
+| `update_my_post` | Update your published post’s title, body, cover, tags, or topic category by ID. |
+| `publish_my_draft` | Publish one of your own drafts. |
 | `get_my_blog_settings` | Read your blog’s current title, tagline, and description. |
 | `update_my_blog_settings` | Change your blog title, tagline, or description. Omitted fields keep their current values. Send an empty description to clear it. |
 | `upload_image` | Save standard base64 image data to the writer’s media library. |
@@ -54,4 +57,4 @@ curl --fail-with-body --request PUT \
   http://127.0.0.1:3030/uploads
 ```
 
-Uploads accept JPEG, PNG, WebP, and GIF up to 4 MiB and 24 megapixels. Letterpad uses its configured Cloudinary account or its existing local uploads directory. On a container host, persist the admin uploads directory or use Cloudinary. Pass the returned `url` as `cover_image_url` to `create_draft` or `update_draft`. The MCP tools leave final publishing to the Letterpad editor.
+Uploads accept JPEG, PNG, WebP, and GIF up to 4 MiB and 24 megapixels. MCP uploads use the configured Cloudinary account. Pass the returned `url` as `cover_image_url` to `create_draft`, `update_draft`, or `update_my_post`. Pass ordinary tag names in `tags`. Letterpad's “category” is its single topic category; use `categories` with zero or one supported topic value (for example, `["technology"]`, or `[]` to clear it). Every post operation is restricted to posts owned by the token's writer.

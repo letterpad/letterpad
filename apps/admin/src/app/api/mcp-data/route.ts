@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { storeMediaUpload } from "@/lib/storeMediaUpload";
 import { getRootUrl } from "@/shared/getRootUrl";
 import logger from "@/shared/logger";
+import { textToSlug } from "@/utils/slug";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +19,15 @@ const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 const MAX_BODY_BYTES = 6 * 1024 * 1024;
 const MAX_BODY_TEXT = 60_000;
 const MAX_RETURNED_HTML = 60_000;
+const TOPIC_PREFIX = "_topic_";
+const TOPIC_CATEGORIES = new Set([
+  "health-&-wellness", "technology", "travel-&-adventure", "entertainment",
+  "business-&-finance", "food-&-cooking", "personal-development", "science",
+  "sports", "art-&-creativity", "fashion", "environment", "education",
+  "philosophy", "social-media", "programming", "gaming", "photography",
+  "literature", "music", "film", "design", "entrepreneurship", "mindfulness",
+  "psychology", "sustainability", "history", "astronomy", "fitness", "diy-crafts",
+]);
 const ALLOWED_IMAGES: Record<string, string> = {
   jpg: "jpg",
   png: "png",
@@ -36,6 +46,7 @@ const articleMetadata = {
   slug: true,
   excerpt: true,
   publishedAt: true,
+  tags: { select: { name: true } },
   author: {
     select: {
       name: true,
@@ -157,15 +168,21 @@ function articleResponse(post: {
   slug: string;
   excerpt: string;
   publishedAt: Date | null;
+  tags: { name: string }[];
   author: {
     name: string | null;
     username: string | null;
     setting: { site_url: string } | null;
   } | null;
 }) {
-  const { author, ...data } = post;
+  const { author, tags, ...data } = post;
   return {
     ...data,
+    tags: tags.map((tag) => tag.name).filter((name) => !name.startsWith(TOPIC_PREFIX)),
+    categories: tags
+      .map((tag) => tag.name)
+      .filter((name) => name.startsWith(TOPIC_PREFIX))
+      .map((name) => name.slice(TOPIC_PREFIX.length)),
     author: author ? { name: author.name, username: author.username } : null,
     url: canonicalUrl(author?.setting?.site_url, post.slug),
   };
@@ -208,6 +225,7 @@ const draftMetadata = {
   slug: true,
   createdAt: true,
   updatedAt: true,
+  tags: { select: { name: true } },
 } as const;
 
 function htmlResponse(html: string) {
@@ -230,8 +248,16 @@ async function readDrafts(
       select: { ...draftMetadata, html_draft: true },
     });
     if (!draft) throw new RequestError("Draft not found.", 404);
-    const { html_draft, ...metadata } = draft;
-    return reply({ ...metadata, ...htmlResponse(html_draft ?? "") });
+    const { html_draft, tags, ...metadata } = draft;
+    return reply({
+      ...metadata,
+      tags: tags.map((tag) => tag.name).filter((name) => !name.startsWith(TOPIC_PREFIX)),
+      categories: tags
+        .map((tag) => tag.name)
+        .filter((name) => name.startsWith(TOPIC_PREFIX))
+        .map((name) => name.slice(TOPIC_PREFIX.length)),
+      ...htmlResponse(html_draft ?? ""),
+    });
   }
 
   const { limit, offset } = readPage(query);
@@ -243,7 +269,14 @@ async function readDrafts(
     take: limit + 1,
   });
   return reply({
-    drafts: drafts.slice(0, limit),
+    drafts: drafts.slice(0, limit).map(({ tags, ...draft }) => ({
+      ...draft,
+      tags: tags.map((tag) => tag.name).filter((name) => !name.startsWith(TOPIC_PREFIX)),
+      categories: tags
+        .map((tag) => tag.name)
+        .filter((name) => name.startsWith(TOPIC_PREFIX))
+        .map((name) => name.slice(TOPIC_PREFIX.length)),
+    })),
     nextOffset: nextOffset(drafts.length, limit, offset),
   });
 }
@@ -365,6 +398,113 @@ function plainTextToHtml(text: string) {
     .split(/\n{2,}/)
     .map((paragraph) => `<p>${escape(paragraph).replace(/\n/g, "<br>")}</p>`)
     .join("");
+}
+
+function postTags(
+  existing: { name: string }[],
+  input: Record<string, unknown>
+) {
+  let regular = existing
+    .map(({ name }) => name)
+    .filter((name) => !name.startsWith(TOPIC_PREFIX));
+  let topics = existing
+    .map(({ name }) => name)
+    .filter((name) => name.startsWith(TOPIC_PREFIX));
+
+  if (input.tags !== undefined) {
+    if (!Array.isArray(input.tags) || input.tags.length > 20) {
+      throw new RequestError("tags must contain at most 20 tag names.");
+    }
+    regular = input.tags.map((raw) => {
+      const name = typeof raw === "string" ? textToSlug(raw.trim()) : "";
+      if (!name || name.startsWith(TOPIC_PREFIX) || name.length > 50) {
+        throw new RequestError("Each tag must be a valid name of at most 50 characters.");
+      }
+      return name;
+    });
+  }
+
+  if (input.categories !== undefined) {
+    if (
+      !Array.isArray(input.categories) ||
+      input.categories.length > 1 ||
+      input.categories.some(
+        (category) => typeof category !== "string" || !TOPIC_CATEGORIES.has(category)
+      )
+    ) {
+      throw new RequestError(
+        "categories must be an empty array or one supported Letterpad topic."
+      );
+    }
+    topics = input.categories.map((category) => `${TOPIC_PREFIX}${category}`);
+  }
+
+  return [...new Set([...regular, ...topics])].map((name) => ({ name, slug: name }));
+}
+
+async function updateOwnedPost(
+  authorId: string,
+  input: Record<string, unknown>,
+  status: PostStatusOptions
+) {
+  const id = textField(input.id, "id", 100);
+  const post = await prisma.post.findFirst({
+    where: {
+      author_id: authorId,
+      id,
+      type: PostTypes.Post,
+      banned: false,
+      status,
+    },
+    select: { id: true, status: true, tags: { select: { name: true } } },
+  });
+  if (!post) {
+    throw new RequestError(
+      status === PostStatusOptions.Published
+        ? "Published post not found."
+        : "Editable draft not found.",
+      404
+    );
+  }
+
+  const data: Record<string, unknown> = { id };
+  if (input.title !== undefined) data.title = textField(input.title, "title", 190);
+  if (input.body !== undefined) {
+    data.html_draft = plainTextToHtml(textField(input.body, "body", MAX_BODY_TEXT));
+  }
+  if (input.cover_image_url !== undefined) {
+    const cover = await findCover(authorId, input.cover_image_url);
+    data.cover_image = cover;
+  }
+  if (input.tags !== undefined || input.categories !== undefined) {
+    data.tags = postTags(post.tags, input);
+  }
+  if (Object.keys(data).length === 1) {
+    throw new RequestError("Supply a title, body, cover image, tags, or categories to update.");
+  }
+
+  const author = await prisma.author.findUnique({
+    where: { id: authorId },
+    select: { username: true, avatar: true, role: { select: { name: true } } },
+  });
+  if (!author) throw new RequestError("Letterpad author not found.", 404);
+  const result = await updatePost(
+    { data: data as Parameters<typeof updatePost>[0]["data"] },
+    {
+      prisma,
+      session: {
+        user: {
+          id: authorId,
+          username: author.username ?? "",
+          avatar: author.avatar ?? "",
+          role: author.role?.name ?? Role.Author,
+        },
+      },
+    } as Parameters<typeof updatePost>[1]
+  );
+  if (result.__typename === "PostError") throw new RequestError(result.message, 400);
+  if (result.__typename !== "Post") throw new RequestError("Letterpad could not update the post.", 400);
+  return reply({ id, title: result.title, slug: result.slug, status: status.toLowerCase() });
 }
 
 async function findCover(authorId: string, value: unknown) {
@@ -580,6 +720,9 @@ export async function POST(request: Request) {
     if (input.op === "update-settings")
       return await updateBlogSettings(authorId, input);
     if (input.op === "publish") return await publishDraft(authorId, input);
+    if (input.op === "update-post") {
+      return await updateOwnedPost(authorId, input, PostStatusOptions.Published);
+    }
     if (input.op !== "create" && input.op !== "update") {
       throw new RequestError("Unknown draft operation.");
     }
@@ -592,14 +735,15 @@ export async function POST(request: Request) {
       input.op === "create" || input.body !== undefined
         ? plainTextToHtml(textField(input.body, "body", MAX_BODY_TEXT))
         : undefined;
-    const cover = await findCover(authorId, input.cover_image_url);
-
     if (input.op === "create") {
+      const cover = await findCover(authorId, input.cover_image_url);
+      const tags = postTags([], input);
       const post = await createPost(
         {
           data: {
             title,
             cover_image: cover,
+            tags,
             status: PostStatusOptions.Draft,
             type: PostTypes.Post,
           },
@@ -611,23 +755,7 @@ export async function POST(request: Request) {
         throw new Error("Unable to create MCP draft.");
       return reply({ id: post.id, title: post.title, status: "draft" }, 201);
     }
-    if (title === undefined && body === undefined && cover === undefined) {
-      throw new RequestError("Supply a title, body, or cover image to update.");
-    }
-    const id = textField(input.id, "id", 100);
-    const updated = await prisma.post.updateMany({
-      where: { ...editableDrafts(authorId), id },
-      data: {
-        title,
-        html_draft: body,
-        cover_image: cover?.src,
-        cover_image_width: cover?.width,
-        cover_image_height: cover?.height,
-      },
-    });
-    if (updated.count === 0)
-      throw new RequestError("Editable draft not found.", 404);
-    return reply({ id, status: "draft" });
+    return await updateOwnedPost(authorId, input, PostStatusOptions.Draft);
   } catch (error) {
     return failure(error);
   }

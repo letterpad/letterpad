@@ -195,8 +195,14 @@ export const updatePost = async (
         Math.ceil((args.data.stats?.words ?? 200) / 200) + "" ?? "2";
     }
 
-    if (nowPublished) {
-      newPostArgs.data.html = await formatHtml(existingPost.html_draft ?? "");
+    if (
+      nowPublished ||
+      (existingPost.status === PostStatusOptions.Published &&
+        args.data.html_draft !== undefined)
+    ) {
+      newPostArgs.data.html = await formatHtml(
+        args.data.html_draft ?? existingPost.html_draft ?? ""
+      );
     }
 
     if (isFirstPublish) {
@@ -217,7 +223,7 @@ export const updatePost = async (
     }
     const updatedPost = await prisma.post.update(newPostArgs);
 
-    if (nowPublished) {
+    if (existingPost.status === PostStatusOptions.Published || nowPublished) {
       revalidateTag("letterpadLatestPosts");
       revalidateTag("categories");
     }
