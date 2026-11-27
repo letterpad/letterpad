@@ -157,6 +157,36 @@ function registerTools(server, api) {
   );
 
   register(
+    "get_my_profile",
+    "Read your public Letterpad author profile, including your username, avatar, bio HTML, signature, and social links.",
+    {},
+    api.getMyProfile,
+    true,
+  );
+
+  const socialLink = z.string().trim().max(255).optional().describe("A handle, HTTPS URL, or an empty string to clear the link.");
+  register(
+    "update_my_profile",
+    "Change public fields on your own Letterpad author profile. Omitted fields and omitted social links are preserved.",
+    z.strictObject({
+      name: z.string().trim().min(1).max(100).optional(),
+      bio: z.string().trim().max(4000).optional().describe("Plain text. Send an empty string to clear the bio."),
+      occupation: z.string().trim().max(100).optional(),
+      company_name: z.string().trim().max(100).optional(),
+      signature: z.string().trim().max(400).optional(),
+      avatar_url: z.string().trim().max(255).optional().describe("URL returned by upload_image, or an empty string to clear the avatar."),
+      social: z.strictObject({
+        twitter: socialLink,
+        facebook: socialLink,
+        instagram: socialLink,
+        github: socialLink,
+        linkedin: socialLink,
+      }).optional(),
+    }),
+    api.updateMyProfile,
+  );
+
+  register(
     "get_my_blog_settings",
     "Read your own blog's public title, tagline, and description.",
     {},

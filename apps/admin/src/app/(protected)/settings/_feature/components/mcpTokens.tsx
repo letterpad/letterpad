@@ -94,7 +94,7 @@ export function McpTokens() {
       <h3 className="font-semibold">MCP tokens</h3>
       <p className="text-sm text-gray-500 dark:text-gray-400">
         Allow a client to read and edit drafts, upload images, and change your
-        blog title, tagline, and description. Tokens expire after 90 days.
+        public author profile and blog settings. Tokens expire after 90 days.
       </p>
       <div className="flex flex-wrap items-center gap-2">
         <label htmlFor="mcp-token-name" className="sr-only">

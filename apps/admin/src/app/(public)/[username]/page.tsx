@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 
 import { AboutStats } from "@/components/about-stats";
 
+import { getSocialLink } from "@/graphql/resolvers/helpers";
 import { getTagsLinkedWithPosts } from "@/graphql/services/tag/getTags";
 import { getRootUrl } from "@/shared/getRootUrl";
 import { getReadableDate, TOPIC_PREFIX } from "@/shared/utils";
@@ -123,7 +124,9 @@ const About = async ({ params }: { params: { username: string } }) => {
       <script
         key="structured-data"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       <div className="h-96">
         <img
@@ -195,7 +198,7 @@ const About = async ({ params }: { params: { username: string } }) => {
                 Socials:
               </h3>
               <div className="flex items-center justify-start">
-                <SocialIcons social={JSON.parse(author.social)} />
+                <SocialIcons social={getSocialLink(JSON.parse(author.social))} />
               </div>
             </div>
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />

@@ -87,6 +87,8 @@ export function createLetterpadMcpClient(dataUrl, authorization) {
     getMyPost: (params) => readPrivate("get-my-post", params),
     listMyDrafts: (params) => readPrivate("list-drafts", params),
     getMyDraft: (params) => readPrivate("get-draft", params),
+    getMyProfile: () => readPrivate("get-profile", {}),
+    updateMyProfile: (args) => write("update-profile", args),
     getMyBlogSettings: () => readPrivate("get-settings", {}),
     updateMyBlogSettings: (args) => write("update-settings", args),
     createDraft: (args) => write("create", args),
