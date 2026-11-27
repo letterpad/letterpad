@@ -46,32 +46,58 @@ function LeadStory({
   );
 }
 
-function Trending({ stories }: { stories: HomepageStory[] }) {
-  if (!stories.length) return null;
+function ReaderDiscovery({
+  recommendations,
+}: {
+  recommendations: {
+    kind: "popular" | "fresh" | "empty";
+    stories: HomepageStory[];
+  };
+}) {
+  const title =
+    recommendations.kind === "popular"
+      ? "Popular with readers"
+      : recommendations.kind === "fresh"
+        ? "Fresh stories to explore"
+        : "Explore a topic";
+
   return (
     <section
-      className="editorial-trending"
-      aria-labelledby="editorial-trending-label"
+      className="editorial-discovery"
+      aria-labelledby="editorial-discovery-label"
     >
-      <h2 id="editorial-trending-label">Trending</h2>
-      <ul>
-        {stories.map((story) => (
-          <li key={story.id}>
-            <h3>
-              <Link href={story.url} prefetch={false}>
-                {story.title}
-              </Link>
-            </h3>
-            <StoryMeta story={story} />
-          </li>
-        ))}
-      </ul>
+      <h2 id="editorial-discovery-label">{title}</h2>
+      <p className="editorial-discovery-note">
+        {recommendations.kind === "popular"
+          ? "Substantive posts with the most engaged visits over the last two weeks."
+          : recommendations.kind === "fresh"
+            ? "Recent posts while more reader signals build."
+            : "New stories are on their way. Browse a topic in the meantime."}
+      </p>
+      {recommendations.stories.length ? (
+        <ul>
+          {recommendations.stories.map((story) => (
+            <li key={story.id}>
+              <h3>
+                <Link href={story.url} prefetch={false}>
+                  {story.title}
+                </Link>
+              </h3>
+              <StoryMeta story={story} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <Link className="editorial-more" href="/topics">
+          Browse topics
+        </Link>
+      )}
     </section>
   );
 }
 
 export async function Homepage({ cursor }: { cursor?: string }) {
-  const [{ lead, leadIsPick, trending, latest, nextCursor }, session] =
+  const [{ lead, leadIsPick, recommendations, latest, nextCursor }, session] =
     await Promise.all([
       getHomepageStories(cursor),
       getServerSession(options()),
@@ -88,10 +114,7 @@ export async function Homepage({ cursor }: { cursor?: string }) {
         description="Read stories from writers across Letterpad."
       />
       <EditorialTopicNav />
-      <div
-        className="editorial-stories"
-        data-has-rail={!!trending.length || enableAd}
-      >
+      <div className="editorial-stories" data-has-rail={!cursor || enableAd}>
         <div className="editorial-main-column">
           {lead && (
             <LeadStory
@@ -138,9 +161,9 @@ export async function Homepage({ cursor }: { cursor?: string }) {
             )}
           </section>
         </div>
-        {(!!trending.length || enableAd) && (
+        {(!cursor || enableAd) && (
           <aside className="editorial-rail" aria-label="More from Letterpad">
-            <Trending stories={trending} />
+            {!cursor && <ReaderDiscovery recommendations={recommendations} />}
             {enableAd && (
               <div className="editorial-ad">
                 <p>Advertisement</p>

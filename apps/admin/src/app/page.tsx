@@ -38,13 +38,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Letterpad — Discover independent writing",
   description:
-    "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
+    "Discover thoughtful stories from independent writers across Letterpad. Explore popular reads, find a topic, and start a blog of your own.",
   openGraph: {
     type: "website",
     url: getRootUrl(),
     title: "Letterpad — Discover independent writing",
     description:
-      "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
+      "Discover thoughtful stories from independent writers across Letterpad. Explore popular reads, find a topic, and start a blog of your own.",
     siteName: "Letterpad — Discover independent writing",
     images: [
       {
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     site: "@__abhisaha",
     card: "summary_large_image",
     description:
-      "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
+      "Discover thoughtful stories from independent writers across Letterpad. Explore popular reads, find a topic, and start a blog of your own.",
     title: "Letterpad — Discover independent writing",
     images: [
       {
@@ -91,5 +91,5 @@ const letterpadStructuredData = {
     },
   },
   description:
-    "Discover stories from independent writers across Letterpad. Explore trending articles, find your next read, and start a blog of your own.",
+    "Discover thoughtful stories from independent writers across Letterpad. Explore popular reads, find a topic, and start a blog of your own.",
 };
