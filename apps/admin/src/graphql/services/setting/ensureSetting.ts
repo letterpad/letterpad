@@ -11,15 +11,30 @@ export async function ensureAuthorSetting(authorId: string) {
   if (!author) return null;
 
   const rootUrl = getRootUrl();
-  return prisma.setting.upsert({
-    where: { author_id: authorId },
-    create: {
-      ...defaultSettings,
-      site_url: author.username
-        ? `https://${author.username}.${new URL(rootUrl).hostname}`
-        : rootUrl,
-      author_id: authorId,
-    },
-    update: {},
-  });
+  try {
+    return await prisma.setting.upsert({
+      where: { author_id: authorId },
+      create: {
+        ...defaultSettings,
+        site_url: author.username
+          ? `https://${author.username}.${new URL(rootUrl).hostname}`
+          : rootUrl,
+        author_id: authorId,
+      },
+      update: {},
+    });
+  } catch (error) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 'P2002'
+    ) {
+      const setting = await prisma.setting.findUnique({
+        where: { author_id: authorId },
+      });
+      if (setting) return setting;
+    }
+    throw error;
+  }
 }

@@ -2,6 +2,8 @@
 
 import {
   Letterpad,
+  LetterpadNotFoundError,
+  LetterpadUnauthorizedError,
   MeFragmentFragment,
   PageFragmentFragment,
   PostsFragmentFragment,
@@ -183,8 +185,14 @@ export const getAuthorAndSettingsData = async () => {
       me: MeFragmentFragment;
       settings: SettingsFragmentFragment;
     };
-  } catch (e) {
-    return null;
+  } catch (error) {
+    if (
+      error instanceof LetterpadNotFoundError ||
+      error instanceof LetterpadUnauthorizedError
+    ) {
+      return null;
+    }
+    throw error;
   }
 };
 
