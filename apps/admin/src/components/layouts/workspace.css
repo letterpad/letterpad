@@ -72,7 +72,6 @@ html.dark body:has(.admin-workspace, .admin-editor) {
 html
   body:has(.admin-workspace, .admin-editor)
   :is(input, textarea)[placeholder]::placeholder,
-body:has(.admin-workspace, .admin-editor) [role="combobox"][data-placeholder],
 html
   .admin-editor
   :is(#title-editor, #sub-title-editor, #main-editor)[data-mce-placeholder]:not(
@@ -80,6 +79,10 @@ html
   )::before {
   color: var(--workspace-placeholder);
   opacity: 1;
+}
+
+body:has(.admin-workspace, .admin-editor) [role="combobox"][data-placeholder] {
+  color: var(--workspace-placeholder);
 }
 
 :is(.admin-workspace, .admin-editor)
