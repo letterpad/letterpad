@@ -1,5 +1,6 @@
 import fs from "fs";
 import { imageSize } from "image-size";
+import path from "path";
 
 import { report } from "@/components/error";
 
@@ -13,6 +14,7 @@ export function uploadToInternal(
   return new Promise((resolve, reject) => {
     const { buffer, originalname } = file;
     try {
+      fs.mkdirSync(path.dirname(uploadPath), { recursive: true });
       fs.writeFileSync(uploadPath, buffer);
       const size = imageSize(uploadPath);
 

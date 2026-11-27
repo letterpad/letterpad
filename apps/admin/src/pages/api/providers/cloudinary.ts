@@ -30,11 +30,9 @@ export async function uploadToCloudinary(
                 type: result.format,
               },
             })
-          : reject({
-              src: "",
-              error: error?.message,
-              name: "",
-            });
+          : reject(
+              new Error(error?.message || "Cloudinary rejected the image.")
+            );
       }
     );
     streamifier.createReadStream(file.buffer).on("error", reject).pipe(stream);

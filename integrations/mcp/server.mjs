@@ -15,7 +15,6 @@ const allowedOrigin = process.env.LETTERPAD_MCP_ALLOWED_ORIGIN;
 const MAX_BASE64_LENGTH = Math.ceil((4 * 1024 * 1024) / 3) * 4;
 
 function registerTools(server, api) {
-  const username = z.string().trim().min(1).max(100);
   const draftId = z.string().trim().min(1).max(100);
   const page = {
     limit: z.number().int().min(1).max(25).optional(),
@@ -39,13 +38,14 @@ function registerTools(server, api) {
     inputSchema,
     action,
     readOnlyHint = false,
+    destructiveHint = false,
   ) {
     server.registerTool(
       name,
       {
         description,
         inputSchema,
-        annotations: { readOnlyHint, destructiveHint: false },
+        annotations: { readOnlyHint, destructiveHint },
       },
       async (args) => {
         try {
@@ -70,24 +70,18 @@ function registerTools(server, api) {
   }
 
   register(
-    "list_published_posts",
-    "List public Letterpad articles, optionally by writer.",
-    {
-      username: username.optional(),
-      ...page,
-    },
-    api.listPublishedPosts,
+    "list_my_posts",
+    "List only your own published Letterpad posts, newest first.",
+    page,
+    api.listMyPosts,
     true,
   );
 
   register(
-    "get_published_post",
-    "Read the published article by writer and article slug.",
-    {
-      username,
-      slug: z.string().trim().min(1).max(255),
-    },
-    api.getPublishedPost,
+    "get_my_post",
+    "Read one of your own published Letterpad posts by its post ID.",
+    { id: draftId },
+    api.getMyPost,
     true,
   );
 
@@ -124,6 +118,15 @@ function registerTools(server, api) {
       cover_image_url: cover_image_url.optional(),
     },
     api.updateDraft,
+  );
+
+  register(
+    "publish_my_draft",
+    "Publish one of your own drafts so it becomes public on your Letterpad blog.",
+    { id: draftId },
+    api.publishMyDraft,
+    false,
+    true,
   );
 
   register(
