@@ -46,6 +46,27 @@ bearer_token_env_var = "LETTERPAD_MCP_TOKEN"
 | `update_my_blog_settings` | Change your blog title, tagline, or description. Omitted fields keep their current values. Send an empty description to clear it. |
 | `upload_image` | Save standard base64 image data to the writer’s media library. |
 
+## Write Markdown articles
+
+`create_draft`, `update_draft` and `update_my_post` accept optional `body_format`:
+
+- Omitted or `"plain"`: preserve the existing literal plain-text behaviour. Markdown markers remain text.
+- `"markdown"`: render semantic HTML for headings, emphasis, lists, links, images and fenced code blocks. Raw HTML is escaped rather than executed; dangerous URL schemes are rejected by the parser.
+
+For example, update an existing draft without creating a duplicate:
+
+```json
+{
+  "id": "your-draft-id",
+  "body_format": "markdown",
+  "body": "## A small example\n\n```python\nprint(1)\n```\n\n[Read the source](https://example.com/docs)"
+}
+```
+
+Supply `body` whenever specifying `body_format`; unknown formats are rejected. Format is per write, not a persistent preference: later body edits must specify `"markdown"` again. Read `get_my_draft` back to inspect the saved HTML before publishing. The `publish_my_draft` operation publishes that saved content and does not reinterpret it. Existing posts, tokens, ownership checks and omitted metadata are unchanged. Do not send raw HTML expecting it to be trusted.
+
+Both the admin app and MCP bridge must be updated for this feature. The SDK forwards `body_format` with other author-scoped write arguments. Focused tests run with `node --test integrations/mcp/test/*.test.mjs` after installing the bridge and parser dependencies; `.github/workflows/mcp-content.yml` provides an isolated CI setup.
+
 ## Update your profile
 
 Use `update_my_profile` with just the fields you want to change. For example:
