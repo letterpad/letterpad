@@ -4,6 +4,8 @@ import { PostsResponse } from "letterpad-graphql";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
+import { discoveryEligibilityWhere } from "./discoveryEligibility";
+
 export const getLetterpadTrendingPosts = async (
   _args,
   { prisma }: ResolverContext,
@@ -14,7 +16,7 @@ export const getLetterpadTrendingPosts = async (
       orderBy: {
         updatedAt: "desc",
       },
-      take: 6,
+      take: 24,
     });
 
     const posts = await prisma.post.findMany({
@@ -22,13 +24,19 @@ export const getLetterpadTrendingPosts = async (
         id: {
           in: trendingIds.map((p) => p.post_id),
         },
+        ...discoveryEligibilityWhere,
       },
     });
+    const postsById = new Map(posts.map((post) => [post.id, post]));
+    const rows = trendingIds
+      .map((trending) => postsById.get(trending.post_id))
+      .filter((post) => post !== undefined)
+      .slice(0, 6);
 
     return {
       __typename: "PostsNode",
-      rows: posts?.map((p) => mapPostToGraphql(p)),
-      count: posts.length,
+      rows: rows.map((post) => mapPostToGraphql(post)),
+      count: rows.length,
     };
   } catch (e: any) {
     // eslint-disable-next-line no-console
