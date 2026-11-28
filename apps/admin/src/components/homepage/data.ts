@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { PostStatusOptions, PostTypes } from "letterpad-graphql";
 
 import { prisma } from "@/lib/prisma";
+import { getHomepageReviews } from "@/lib/redis";
 
 import { getRootUrl } from "@/shared/getRootUrl";
 import { isPostgresDb } from "@/utils/utils";
@@ -31,7 +32,7 @@ const storySelect = {
   publishedAt: true,
 } satisfies Prisma.PostSelect;
 
-const publicStories = {
+export const publicStories = {
   status: PostStatusOptions.Published,
   type: PostTypes.Post,
   banned: false,
@@ -160,9 +161,39 @@ function pickPopularStories(
     .map(({ story }) => story);
 }
 
+async function getHomepageStoryFilter(): Promise<Prisma.PostWhereInput> {
+  const published = { ...publicStories, publishedAt: { lte: new Date() } };
+  const reviews = await getHomepageReviews().catch(() => null);
+  if (!reviews) return published;
+
+  const approved = Object.entries(reviews)
+    .filter(([, review]) => review.status === "approved")
+    .sort(([, a], [, b]) => b.revision.localeCompare(a.revision))
+    .slice(0, 500)
+    .map(([id, review]) => ({
+      id,
+      updatedAt: review.revision ? new Date(review.revision) : null,
+    }));
+  const reviewed: Prisma.PostWhereInput = { ...published, OR: approved };
+  // Keep the feed populated while the initial review builds a supply of stories.
+  if (
+    approved.length >= 14 &&
+    (await prisma.post.count({ where: reviewed })) >= 14
+  ) {
+    return reviewed;
+  }
+  return {
+    ...published,
+    id: {
+      notIn: Object.entries(reviews)
+        .filter(([, review]) => review.status !== "approved")
+        .map(([id]) => id),
+    },
+  };
+}
+
 export async function getHomepageStories(cursor?: string) {
-  const currentTime = new Date();
-  const where = { ...publicStories, publishedAt: { lte: currentTime } };
+  const where = await getHomepageStoryFilter();
   const popularWhere = { ...where, excerpt: { not: "" } };
   const pickPromise = cursor ? Promise.resolve(null) : getNewsroomPick();
   const latestPromise = prisma.post.findMany({

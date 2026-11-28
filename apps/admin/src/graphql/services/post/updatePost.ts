@@ -95,7 +95,7 @@ export const updatePost = async (
         data: { banned: args.data.banned! },
         where: { id: args.data.id },
       });
-      revalidateTag("letterpadLatestPosts");
+      revalidateDiscoveryFeeds();
       return {
         ...mapPostToGraphql({ ...existingPost, banned: args.data.banned! }),
       };
@@ -224,7 +224,7 @@ export const updatePost = async (
     const updatedPost = await prisma.post.update(newPostArgs);
 
     if (existingPost.status === PostStatusOptions.Published || nowPublished) {
-      revalidateTag("letterpadLatestPosts");
+      revalidateDiscoveryFeeds();
       revalidateTag("categories");
     }
     if (!author.first_post_published && nowPublished) {
@@ -311,3 +311,9 @@ export const updatePost = async (
     };
   }
 };
+
+function revalidateDiscoveryFeeds() {
+  revalidateTag("letterpadLatestPosts");
+  revalidateTag("featuredPosts");
+  revalidateTag("trendingPosts");
+}

@@ -2,8 +2,6 @@ import { Prisma } from "@prisma/client";
 import { MapResult } from "graphql-fields-list";
 import {
   PostsResponse,
-  PostStatusOptions,
-  PostTypes,
   QueryLetterpadLatestPostsArgs,
 } from "letterpad-graphql";
 
@@ -12,6 +10,7 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { TOPIC_PREFIX } from "@/shared/utils";
 
 import { getMatchingFields } from "../../utils/getMatchingFields";
+import { discoveryEligibilityWhere } from "./discoveryEligibility";
 
 export const getLetterpadLatestPosts = async (
   args: Partial<QueryLetterpadLatestPostsArgs>,
@@ -46,31 +45,7 @@ export const getLetterpadLatestPosts = async (
   const condition: Prisma.PostFindManyArgs = {
     where: {
       ...tags,
-      status: PostStatusOptions.Published,
-      type: PostTypes.Post,
-      excerpt: {
-        not: {
-          equals: "",
-        },
-      },
-      html: {
-        not: {
-          equals: "",
-        },
-      },
-      banned: false,
-      NOT: [
-        {
-          title: {
-            equals: "",
-          },
-        },
-        {
-          title: {
-            equals: "Coming Soon",
-          },
-        },
-      ],
+      ...discoveryEligibilityWhere,
     },
     skip: cursor.cursor ? 1 : 0,
     take: 13,

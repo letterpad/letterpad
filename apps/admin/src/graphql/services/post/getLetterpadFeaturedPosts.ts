@@ -8,6 +8,7 @@ import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 
 import { getMatchingFields } from "../../utils/getMatchingFields";
+import { discoveryEligibilityWhere } from "./discoveryEligibility";
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
 
@@ -20,6 +21,7 @@ export const getLetterpadFeaturedPosts = async (
     const postIds = await prisma.featuredWeek.findMany({
       where: {
         week_number: dayjs().week(),
+        post: { is: discoveryEligibilityWhere },
       },
       include: {
         post: {

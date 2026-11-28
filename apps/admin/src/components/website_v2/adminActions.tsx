@@ -29,7 +29,7 @@ const Buttons: FC<Props> = ({ id, banned, isFavourite, authorId }) => {
   const { updateAuthor, fetching: updatingAuthor } = useUpdateAuthor();
   const { data } = useSession();
   const banPost = async () => {
-    updatePost({ id, banned: true });
+    updatePost({ id, banned: !banned });
   };
   const favAuthor = async () => {
     updateAuthor({ id: authorId, favourite: true });

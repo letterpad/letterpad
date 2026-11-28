@@ -30,6 +30,10 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   if (!data) return {};
   const { setting, ...me } = data;
   const banner = JSON.parse(setting?.banner ?? "{}");
+  const profileUrl = new URL(
+    `/@${encodeURIComponent(me.username ?? "")}`,
+    getRootUrl()
+  ).toString();
   return {
     title: `${me.name}'s profile on Letterpad`,
     description: me.signature ?? me.bio,
@@ -48,10 +52,10 @@ export async function generateMetadata({ params }): Promise<Metadata> {
       description: me.signature! ?? me.bio,
     },
     alternates: {
-      canonical: `${getRootUrl()}/@${me.username}`,
+      canonical: profileUrl,
     },
     openGraph: {
-      url: `${getRootUrl()}/@${me.username}`,
+      url: profileUrl,
       title: `${me.name}'s profile on Letterpad`,
       description: me.signature! ?? me.bio,
       authors: [me.name],

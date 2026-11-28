@@ -8,6 +8,25 @@ if (process.env.REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
     token: process.env.UPSTASH_REDIS_TOKEN!,
   });
 }
+export type HomepageReview = {
+  revision: string;
+  status: "approved" | "excluded" | "held";
+  reason: string;
+};
+
+const homepageReviewsKey = "letterpad:homepage-reviews:v1";
+
+export async function getHomepageReviews() {
+  return client?.hgetall<Record<string, HomepageReview>>(homepageReviewsKey);
+}
+
+export async function saveHomepageReviews(
+  reviews: Record<string, HomepageReview>
+) {
+  if (!client) throw new Error("Redis is not configured");
+  await client.hset(homepageReviewsKey, reviews);
+}
+
 export const incrementPageViews = async (key: string, value: string) => {
   await client?.sadd(key, value);
 };
